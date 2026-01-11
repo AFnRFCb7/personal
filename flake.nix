@@ -1850,6 +1850,7 @@
                                                                                         ExecStart =
                                                                                             _resource-logger.implementation
                                                                                                 {
+                                                                                                    channel = config.personal.channel ;
                                                                                                     log-directory = "/home/${ config.personal.name }/resources/log" ;
                                                                                                 } ;
                                                                                         User = config.personal.name ;
