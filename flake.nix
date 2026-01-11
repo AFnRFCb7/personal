@@ -48,8 +48,6 @@
                                             failure = _failure.implementation "f135add3" ;
                                             findutils = pkgs.findutils ;
                                             flock = pkgs.flock ;
-                                            # FIXME
-                                            gc-roots-directory = "/home/emory/.gc-roots" ;
                                             jq = pkgs.jq ;
                                             makeBinPath = pkgs.lib.makeBinPath ;
                                             makeWrapper = pkgs.makeWrapper ;
