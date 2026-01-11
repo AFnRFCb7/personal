@@ -1852,6 +1852,8 @@
                                                                                                 {
                                                                                                     channel = config.personal.channel ;
                                                                                                     log-directory = "/home/${ config.personal.name }/resources/log" ;
+                                                                                                    log-file = "log.yaml" ;
+                                                                                                    log-lock = "log.lock" ;
                                                                                                 } ;
                                                                                         User = config.personal.name ;
                                                                                     } ;
