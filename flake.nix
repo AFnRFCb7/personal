@@ -466,6 +466,7 @@
                                                                                                     runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                     text =
                                                                                                         ''
+                                                                                                            echo f7b85260
                                                                                                             env
                                                                                                         '' ;
                                                                                                 } ;
@@ -1218,12 +1219,12 @@
                                                                                                                                                                             git checkout -b "$BRANCH"
                                                                                                                                                                             git commit -a --verbose --allow-empty-message
                                                                                                                                                                         fi
+                                                                                                                                                                        git push origin HEAD 2>&1
                                                                                                                                                                         TOKEN_DIRECTORY=${ resources.production.secrets.token ( setup : setup ) }
                                                                                                                                                                         TOKEN="$( cat "$TOKEN_DIRECTORY/secret" )" || failure 320e0c68
                                                                                                                                                                         export NIX_CONFIG="access-tokens = github.com=$TOKEN"
                                                                                                                                                                         cd "$toplevel"
                                                                                                                                                                         nix flake update --flake "$toplevel" "$name"
-                                                                                                                                                                        git push origin HEAD 2>&1
                                                                                                                                                                     '' ;
                                                                                                                                                             } ;
                                                                                                                                                     in "${ application }/bin/mutable-snapshot" ;
