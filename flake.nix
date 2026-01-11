@@ -121,6 +121,7 @@
                                                                                     ( point.seed or { } ) //
                                                                                     {
                                                                                         path = path ;
+                                                                                        release = point.release or null ;
                                                                                     } ;
                                                                                 targets = point.targets or [ ] ;
                                                                                 transient = point.transient or false ;
@@ -456,6 +457,19 @@
                                                                         name : value : ignore :
                                                                             {
                                                                                 init = value ;
+                                                                                release =
+                                                                                    let
+                                                                                        application =
+                                                                                            pkgs.writeShellApplication
+                                                                                                {
+                                                                                                    name = "release" ;
+                                                                                                    runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                    text =
+                                                                                                        ''
+                                                                                                            env
+                                                                                                        '' ;
+                                                                                                } ;
+                                                                                        in "${ application }/bin/release" ;
                                                                                 targets = [ "envrc" ] ;
                                                                             } ;
                                                                     in builtins.mapAttrs mapper config.personal.pads ;
