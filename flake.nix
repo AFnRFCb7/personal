@@ -456,6 +456,18 @@
                                                                         name : value : ignore :
                                                                             {
                                                                                 init = value ;
+                                                                                release =
+                                                                                    let
+                                                                                        application =
+                                                                                            pkgs.writeShellApplication
+                                                                                                {
+                                                                                                    name = "release" ;
+                                                                                                    runtimeInputs = [ ] ;
+                                                                                                    text =
+                                                                                                        ''
+                                                                                                        '' ;
+                                                                                                } ;
+                                                                                        in "${ application }/bin/release" ;
                                                                                 targets = [ "envrc" ] ;
                                                                             } ;
                                                                     in builtins.mapAttrs mapper config.personal.pads ;
