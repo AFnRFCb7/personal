@@ -117,6 +117,7 @@
                                                                             {
                                                                                 follow-parent = point.follow-parent or false ;
                                                                                 init = point.init or null ;
+                                                                                release = point.release or null ;
                                                                                 seed =
                                                                                     ( point.seed or { } ) //
                                                                                     {
