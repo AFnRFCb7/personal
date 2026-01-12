@@ -2288,6 +2288,7 @@
                                                                                                                             export TEST_PASSWORD=38e38981
                                                                                                                             export FOOBAR=ead70f30
                                                                                                                             export NAME="Emory Merryman"
+                                                                                                                            # $DOT_GNUPG
                                                                                                                         '' ;
                                                                                                                     # GARBAGE =
                                                                                                                     #     ''
