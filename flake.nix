@@ -2288,6 +2288,9 @@
                                                                                                                             export TEST_PASSWORD=38e38981
                                                                                                                             export FOOBAR=ead70f30
                                                                                                                             export NAME="Emory Merryman"
+                                                                                                                        '' ;
+                                                                                                                    GARBAGE =
+                                                                                                                        ''
                                                                                                                             DOT_GNUPG=${ resources.production.dot-gnupg ( setup : setup ) }
                                                                                                                             export GNUPGHOME="$DOT_GNUPG/dot-gnupg"
                                                                                                                             DOT_SSH=${ resources.production.dot-ssh ( setup : setup ) }
