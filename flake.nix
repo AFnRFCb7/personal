@@ -53,6 +53,7 @@
                                             makeWrapper = pkgs.makeWrapper ;
                                             mkDerivation = pkgs.stdenv.mkDerivation ;
                                             nix = pkgs.nix ;
+                                            originator-pid-variable = "fc87d04166da1fe7f60dab231de2494a41bfd98c48dfbc7ffeaa169fc6de8ae31a8dfc2c1647fc5c8b404c6d85731ad3f26a840e56e3c2e4e50ee34b8026297b" ;
                                             ps = pkgs.ps ;
                                             redis = pkgs.redis ;
                                             resources = resources ;
