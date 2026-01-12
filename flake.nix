@@ -469,6 +469,7 @@
                                                                                                     text =
                                                                                                         ''
                                                                                                             : "${ builtins.concatStringsSep "" [ "$" "{" "CALLER_PID:?this release script assumes that the caller exported CALLER_PID" "}" ] }"
+                                                                                                            echo "CALLER_PID=$CALLER_PID"
                                                                                                             tail --follow --pid "$CALLER_PID"
                                                                                                         '' ;
                                                                                                 } ;
