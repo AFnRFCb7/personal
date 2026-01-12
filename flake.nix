@@ -1861,7 +1861,7 @@
                                                                                         ExecStart =
                                                                                             _resource-releaser.implementation
                                                                                                 {
-                                                                                                    channel = config. channel ;
+                                                                                                    channel = config.personal.channel ;
                                                                                                     gc-roots-directory = "/home/${ config.personal.name }/.gc-roots" ;
                                                                                                     locks-directory = "/home/${ config.personal.name }/resources/locks" ;
                                                                                                     mounts-directory = "/home/${ config.personal.name }/resources/mounts" ;
