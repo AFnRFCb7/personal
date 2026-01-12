@@ -465,13 +465,10 @@
                                                                                             pkgs.writeShellApplication
                                                                                                 {
                                                                                                     name = "release" ;
-                                                                                                    runtimeInputs = [ pkgs.coreutils pkgs.procps ] ;
+                                                                                                    runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                     text =
                                                                                                         ''
-                                                                                                            : "${ builtins.concatStringsSep "" [ "$" "{" "ORIGINATOR_PID:?this release script assumes that the caller exported ORIGINATOR_PID" "}" ] }"
-                                                                                                            CALLER_PID="$( ps -o ppid= -p "$ORIGINATOR_PID" | tr -d '[:space:]')" || failure a390dff0
-                                                                                                            echo "ORIGINATOR_PID=$ORIGINATOR_PID"
-                                                                                                            echo "CALLER_PID=$CALLER_PID"
+                                                                                                            : "${ builtins.concatStringsSep "" [ "$" "{" "CALLER_PID:?this release script assumes that the caller exported CALLER_PID" "}" ] }"
                                                                                                             tail --follow --pid "$CALLER_PID"
                                                                                                         '' ;
                                                                                                 } ;
