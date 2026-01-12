@@ -456,6 +456,18 @@
                                                                         name : value : ignore :
                                                                             {
                                                                                 init = value ;
+                                                                                release =
+                                                                                    let
+                                                                                        application =
+                                                                                            {
+                                                                                                name = "release" ;
+                                                                                                runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                text =
+                                                                                                    ''
+                                                                                                        sleep 1d
+                                                                                                    '' ;
+                                                                                            } ;
+                                                                                        in "${ application }/bin/release" ;
                                                                                 targets = [ "envrc" ] ;
                                                                             } ;
                                                                     in builtins.mapAttrs mapper config.personal.pads ;
@@ -1841,6 +1853,22 @@
                                                                                     } ;
                                                                                 wantedBy = [ "multi-user.target" ] ;
                                                                             } ;
+                                                                        resource-releaser =
+                                                                            {
+                                                                                after = [ "network.target" "redis.service" ] ;
+                                                                                serviceConfig =
+                                                                                    {
+                                                                                        ExecStart =
+                                                                                            _resource-releaser.implementation
+                                                                                                {
+                                                                                                    channel = config. channel ;
+                                                                                                    gc-roots-directory = "/home/${ config.personal.name }/.gc-roots" ;
+                                                                                                    locks-directory = "/home/${ config.personal.name }/resources/locks" ;
+                                                                                                    mounts-directory = "/home/${ config.personal.name }/resources/mounts" ;
+                                                                                                } ;
+                                                                                        User = config.personal.name ;
+                                                                                    } ;
+                                                                            } ;
                                                                         resource-reporter-personal =
                                                                             {
                                                                                 after = [ "network.target" "redis.service" ] ;
@@ -1871,6 +1899,18 @@
                                                                                         User = config.personal.name ;
                                                                                     } ;
                                                                                 wantedBy = [ "multi-user.target" ] ;
+                                                                            } ;
+                                                                    } ;
+                                                                timers =
+                                                                    {
+                                                                        pad =
+                                                                            {
+                                                                                timerConfig =
+                                                                                    {
+                                                                                        OnCalendar = "hourly" ;
+                                                                                        Persistent = true ;
+                                                                                    } ;
+                                                                                wantedBy = [ "timers.target" ] ;
                                                                             } ;
                                                                     } ;
                                                             } ;
