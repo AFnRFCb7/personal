@@ -472,6 +472,10 @@
                                                                                                         '' ;
                                                                                                 } ;
                                                                                         in "${ application }/bin/release" ;
+                                                                                seed =
+                                                                                    {
+                                                                                        release = "${ pkgs.coreutils }/bin/true" ;
+                                                                                    } ;
                                                                                 targets = [ "envrc" ] ;
                                                                             } ;
                                                                     in builtins.mapAttrs mapper config.personal.pads ;
