@@ -465,7 +465,7 @@
                                                                                             pkgs.writeShellApplication
                                                                                                 {
                                                                                                     name = "release" ;
-                                                                                                    runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                    runtimeInputs = [ pkgs.coreutils pkgs.procps ] ;
                                                                                                     text =
                                                                                                         ''
                                                                                                             : "${ builtins.concatStringsSep "" [ "$" "{" "ORIGINATOR_PID:?this release script assumes that the caller exported ORIGINATOR_PID" "}" ] }"
