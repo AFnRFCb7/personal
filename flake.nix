@@ -468,8 +468,11 @@
                                                                                                     runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                     text =
                                                                                                         ''
-                                                                                                            echo 0eb26613
-                                                                                                            env
+                                                                                                            : "${ builtins.concatStringsSep "" [ "$" "{" "ORIGINATOR_PID:?this release script assumes that the caller exported ORIGINATOR_PID" "}" ] }"
+                                                                                                            CALLER_PID="$( ps -o ppid= -p "$ORIGINATOR_PID" | tr -d '[:space:]')" || failure a390dff0
+                                                                                                            echo "ORIGINATOR_PID=$ORIGINATOR_PID"
+                                                                                                            echo "CALLER_PID=$CALLER_PID"
+                                                                                                            tail --follow --pid "$CALLER_PID"
                                                                                                         '' ;
                                                                                                 } ;
                                                                                         in "${ application }/bin/release" ;
