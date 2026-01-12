@@ -469,10 +469,7 @@
                                                                                                     runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                     text =
                                                                                                         ''
-                                                                                                            : "${ builtins.concatStringsSep "" [ "$" "{" "CALLER_PID:?this release script assumes that the caller exported CALLER_PID" "}" ] }"
-                                                                                                            echo "CALLER_PID=$CALLER_PID"
-                                                                                                            echo 3a0fca45
-                                                                                                            tail --follow --pid "$CALLER_PID"
+                                                                                                            sleep 1d
                                                                                                         '' ;
                                                                                                 } ;
                                                                                         in "${ application }/bin/release" ;
@@ -1919,6 +1916,18 @@
                                                                                         User = config.personal.name ;
                                                                                     } ;
                                                                                 wantedBy = [ "multi-user.target" ] ;
+                                                                            } ;
+                                                                    } ;
+                                                                timers =
+                                                                    {
+                                                                        pads =
+                                                                            {
+                                                                                timerConfig =
+                                                                                    {
+                                                                                        OnCalendar = "hourly" ;
+                                                                                        Persistent = true ;
+                                                                                    } ;
+                                                                                wantedBy = [ "timers.target" ] ;
                                                                             } ;
                                                                     } ;
                                                             } ;
