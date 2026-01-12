@@ -2238,6 +2238,24 @@
                                                                                                                             (
                                                                                                                                 pkgs.writeShellApplication
                                                                                                                                     {
+                                                                                                                                        name = "gpg" ;
+                                                                                                                                        runtimeInputs = [ pkgs.gnupg ] ;
+                                                                                                                                        text =
+                                                                                                                                            ''
+                                                                                                                                                DOT_GNUPG=${ resources.production.dot-gnupg }
+                                                                                                                                                export GNUPGHOME="$DOT_GNUPG/dot-gnupg"
+                                                                                                                                                if [[ -t 0 ]]
+                                                                                                                                                then
+                                                                                                                                                    gpg "$@"
+                                                                                                                                                else
+                                                                                                                                                    cat | gpg "$@"
+                                                                                                                                                fi
+                                                                                                                                            '' ;
+                                                                                                                                    }
+                                                                                                                            )
+                                                                                                                            (
+                                                                                                                                pkgs.writeShellApplication
+                                                                                                                                    {
                                                                                                                                         name = "nonce" ;
                                                                                                                                         runtimeInputs = [ pkgs.coreutils pkgs.libuuid ] ;
                                                                                                                                         text =
@@ -2288,7 +2306,6 @@
                                                                                                                             export TEST_PASSWORD=38e38981
                                                                                                                             export FOOBAR=ead70f30
                                                                                                                             export NAME="Emory Merryman"
-                                                                                                                            # $DOT_GNUPG
                                                                                                                             # $PASSWORD_STORE_REPOSITORY
                                                                                                                         '' ;
                                                                                                                     # GARBAGE =
@@ -2312,7 +2329,7 @@
                                                                                                                     runtimeInputs = [ wrap ] ;
                                                                                                                     text =
                                                                                                                         ''
-                                                                                                                            wrap ${ envrc } envrc 0400 --literal-plain DOT_GNUPG --literal-plain PASSWORD_STORE_REPOSITORY --literal-plain PATH
+                                                                                                                            wrap ${ envrc } envrc 0400 --literal-plain PASSWORD_STORE_REPOSITORY --literal-plain PATH
                                                                                                                         '' ;
                                                                                                                 } ;
                                                                                                         in "${ application }/bin/init " ;
