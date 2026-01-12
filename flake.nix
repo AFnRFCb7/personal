@@ -2289,6 +2289,7 @@
                                                                                                                             export FOOBAR=ead70f30
                                                                                                                             export NAME="Emory Merryman"
                                                                                                                             # $DOT_GNUPG
+                                                                                                                            # $PASSWORD_STORE_REPOSITORY
                                                                                                                         '' ;
                                                                                                                     # GARBAGE =
                                                                                                                     #     ''
