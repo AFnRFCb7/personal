@@ -1134,7 +1134,7 @@
                                                                                                                                                                     git commit -a --verbose
                                                                                                                                                                     git push origin HEAD >&2
                                                                                                                                                                     COMMIT="$( git rev-parse HEAD )" || failure d0633308
-                                                                                                                                                                    MUTABLE_SNAPSHOT=${ resources.production.repository.studio.snapshot ( setup : ''${ setup } "$BRANCH" "$COMMIT"'' ) }
+                                                                                                                                                                    MUTABLE_SNAPSHOT=${ resources.production.repository.studio.snapshot { fun = setup : ''"${ setup } "$BRANCH" "$COMMIT"'' ; } }
                                                                                                                                                                     root "$MUTABLE_SNAPSHOT"
                                                                                                                                                                     echo "$MUTABLE_SNAPSHOT"
                                                                                                                                                                 '' ;
