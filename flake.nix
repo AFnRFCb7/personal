@@ -2025,7 +2025,7 @@
                                                                                     runtimeInputs = [ ] ;
                                                                                     text =
                                                                                         ''
-                                                                                            FOOBAR=${ resources__.foobar.foobar ( setup : ''${ setup } "$@"'' ) }
+                                                                                            FOOBAR=${ resources__.foobar.foobar { fun = setup : ''${ setup } "$@"'' ; } }
                                                                                             echo "$FOOBAR"
                                                                                         '' ;
                                                                                 }
