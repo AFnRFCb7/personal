@@ -1840,7 +1840,7 @@
                                                                                                                                                             runtimeInputs = [ pkgs.gnupg ] ;
                                                                                                                                                             text =
                                                                                                                                                                 ''
-                                                                                                                                                                    DOT_GNUPG=${ resources.production.dot-gnupg }
+                                                                                                                                                                    DOT_GNUPG=${ resources__.production.dot-gnupg }
                                                                                                                                                                     export GNUPGHOME="$DOT_GNUPG/dot-gnupg"
                                                                                                                                                                     if [[ -t 0 ]]
                                                                                                                                                                     then
