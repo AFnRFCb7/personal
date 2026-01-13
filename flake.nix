@@ -1979,7 +1979,7 @@
                                                                                                 HAS_ARGUMENTS=false
                                                                                                 ARGUMENTS=
                                                                                             fi
-                                                                                            STUDIO=${ resources__.production.repository.studio.entry ( setup : ''${ setup } "$HAS_ARGUMENTS" "$ARGUMENTS"'' )}
+                                                                                            STUDIO=${ resources__.production.repository.studio.entry { fun = setup : ''${ setup } "$HAS_ARGUMENTS" "$ARGUMENTS"'' ; } }
                                                                                             if $HAS_ARGUMENTS
                                                                                             then
                                                                                                 echo "$STUDIO/repository"
