@@ -195,10 +195,10 @@
                                                                                                         chmod 0400 /mount/init /mount/release
                                                                                                         DOT_GNUPG="FIXME"
                                                                                                         ln --symbolic "$DOT_GNUPG/dot-gnupg" /mount
-                                                                                                        DOT_SSH=${ resources.foobar.dot-ssh ( setup : setup ) }
+                                                                                                        DOT_SSH=${ resources.foobar.dot-ssh { } }
                                                                                                         root "$DOT_SSH"
                                                                                                         ln --symbolic "$DOT_SSH/config" /mount/dot-ssh
-                                                                                                        GIT_REPOSITORY=${ resources.foobar.git-repository ( setup : setup ) }
+                                                                                                        GIT_REPOSITORY=${ resources.foobar.git-repository { } }
                                                                                                         root "$GIT_REPOSITORY"
                                                                                                         ln --symbolic "$GIT_REPOSITORY/repository" /mount
                                                                                                     '' ;
@@ -250,7 +250,7 @@
                                                                                                     runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                     text =
                                                                                                         ''
-                                                                                                            TEMPORARY=${ resources.foobar.temporary ( setup : setup ) }
+                                                                                                            TEMPORARY=${ resources.foobar.temporary { } }
                                                                                                             git config foobar.temporary "$TEMPORARY"
                                                                                                         '' ;
                                                                                                 } ;
@@ -534,7 +534,7 @@
                                                                                                         ''
                                                                                                             git config core.sshCommand "${ mount }/stage/ssh/command"
                                                                                                             wrap ${ application }/bin/ssh stage/ssh/command 0500 --literal-plain "@" --set-plain MOUNT "${ mount }" --literal-plain PATH
-                                                                                                            DOT_SSH=${ resources.production.dot-ssh ( setup : setup ) }
+                                                                                                            DOT_SSH=${ resources.production.dot-ssh { } }
                                                                                                             root "$DOT_SSH"
                                                                                                             wrap "$DOT_SSH/config" stage/ssh/config 0400
                                                                                                         '' ;
@@ -577,10 +577,10 @@
                                                                                                                                                             git config user.email "${ config.personal.chromium.home.config.email }"
                                                                                                                                                             git config user.name "${ config.personal.chromium.home.config.name }"
                                                                                                                                                             git remote add origin git@github.com:${ config.personal.chromium.home.config.organization }/${ config.personal.chromium.home.config.repository }
-                                                                                                                                                            DOT_GNUPG=${ resources.production.dot-gnupg ( setup : setup ) }
+                                                                                                                                                            DOT_GNUPG=${ resources.production.dot-gnupg { } }
                                                                                                                                                             export GNUPGHOME="$DOT_GNUPG/dot-gnupg"
                                                                                                                                                             gpg --list-keys
-                                                                                                                                                            TOKEN=${ resources.production.secrets.token ( setup : setup ) }
+                                                                                                                                                            TOKEN=${ resources.production.secrets.token { } }
                                                                                                                                                             gh auth login --with-token < "$TOKEN/secret"
                                                                                                                                                             if gh repo view ${ config.personal.chromium.home.config.organization }/${ config.personal.chromium.home.config.repository } 2>&1
                                                                                                                                                             then
@@ -634,10 +634,10 @@
                                                                                                                                                             git config user.email "${ config.personal.chromium.home.data.email }"
                                                                                                                                                             git config user.name "${ config.personal.chromium.home.data.name }"
                                                                                                                                                             git remote add origin git@github.com:${ config.personal.chromium.home.data.organization }/${ config.personal.chromium.home.data.repository }
-                                                                                                                                                            DOT_GNUPG=${ resources.production.dot-gnupg ( setup : setup ) }
+                                                                                                                                                            DOT_GNUPG=${ resources.production.dot-gnupg { } }
                                                                                                                                                             export GNUPGHOME="$DOT_GNUPG/dot-gnupg"
                                                                                                                                                             gpg --list-keys
-                                                                                                                                                            TOKEN=${ resources.production.secrets.token ( setup : setup ) }
+                                                                                                                                                            TOKEN=${ resources.production.secrets.token { } }
                                                                                                                                                             gh auth login --with-token < "$TOKEN/secret"
                                                                                                                                                             if gh repo view ${ config.personal.chromium.home.data.organization }/${ config.personal.chromium.home.data.repository } 2>&1
                                                                                                                                                             then
@@ -718,7 +718,7 @@
                                                                                                                                     ln --symbolic ${ post-commit } "/mount/repository/.git/hooks/post-commit"
                                                                                                                                     git remote add origin ${ config.personal.pass.remote }
                                                                                                                                     wrap ${ ssh } stage/ssh/command 0500 --literal-plain "@" --set-plain MOUNT "${ mount }" --literal-plain PATH
-                                                                                                                                    DOT_SSH=${ resources.production.dot-ssh ( setup : setup ) }
+                                                                                                                                    DOT_SSH=${ resources.production.dot-ssh { } }
                                                                                                                                     root "$DOT_SSH"
                                                                                                                                     wrap "$DOT_SSH/config" stage/ssh/config 0400
                                                                                                                                     git fetch origin ${ config.personal.pass.branch } 2>&1
@@ -894,20 +894,20 @@
                                                                                                                                                             ''
                                                                                                                                                                 MONIKER="$1"
                                                                                                                                                                 NOW="$( date +%Y%m%d%H%M%S )" || failure 1dc95e4b
-                                                                                                                                                                DOT_GNUPG=${ resources.production.dot-gnupg ( setup : setup ) }
+                                                                                                                                                                DOT_GNUPG=${ resources.production.dot-gnupg { } }
                                                                                                                                                                 export GNUPGHOME="$DOT_GNUPG/dot-gnupg"
                                                                                                                                                                 KEY_ID="$MONIKER $NOW"
                                                                                                                                                                 gpg --homedir "$GNUPGHOME" --quick-gen-key "$KEY_ID" ed25519 sign 1y
                                                                                                                                                                 gpg --homedir "$GNUPGHOME" --quick-add-key "$KEY_ID" cv25519 encrypt 1y
                                                                                                                                                                 mkdir --parents "$MOUNT/stage/private"
-                                                                                                                                                                SECRETS=${ resources.production.repository.studio.secrets ( setup : setup ) }
+                                                                                                                                                                SECRETS=${ resources.production.repository.studio.secrets { } }
                                                                                                                                                                 gpg --export-ownertrust --armour > "$SECRETS/repository/ownertrust.asc"
                                                                                                                                                                 gpg --export-secret-keys --armour > "$SECRETS/repository/secret-keys.asc"
                                                                                                                                                                 git -C "$SECRETS/repository" add ownertrust.asc secret-keys.asc
                                                                                                                                                                 git -C "$SECRETS/repository" commit -m "GENERATED A GNUPG KEY for $KEY_ID"
                                                                                                                                                                 git -C "$SECRETS/repository" push origin HEAD
                                                                                                                                                                 BRANCH="$( git rev-parse --abbrev-ref HEAD )" || failure 47e2654b
-                                                                                                                                                                TOKEN=${ resources.production.secrets.token ( setup : setup ) }
+                                                                                                                                                                TOKEN=${ resources.production.secrets.token { } }
                                                                                                                                                                 gh auth login --with-token < "$TOKEN/secret"
                                                                                                                                                                 gh pr create --base main --head "$BRANCH" --label "snapshot"
                                                                                                                                                                 URL="$( gh pr view --json url --jq .url )" || failure 508fe804
@@ -971,7 +971,7 @@
                                                                                                                                                             ''
                                                                                                                                                                 USER_NAME="$1"
                                                                                                                                                                 REPO_NAME="$2"
-                                                                                                                                                                TOKEN=${ resources.production.secrets.token ( setup : setup ) }
+                                                                                                                                                                TOKEN=${ resources.production.secrets.token { } }
                                                                                                                                                                 gh auth login --with-token < "$TOKEN/secret"
                                                                                                                                                                 gh repo create "$USER_NAME/$REPO_NAME" --public
                                                                                                                                                                 gh auth logout
@@ -1160,7 +1160,7 @@
                                                                                                                                                                             git rebase -i origin/main
                                                                                                                                                                             git commit -m "SNAPSHOT REBASE COMMIT" --allow-empty
                                                                                                                                                                             git push -u origin HEAD
-                                                                                                                                                                            TOKEN_DIRECTORY=${ resources.production.secrets.token ( setup : setup ) }
+                                                                                                                                                                            TOKEN_DIRECTORY=${ resources.production.secrets.token { } }
                                                                                                                                                                             TOKEN="$( cat "$TOKEN_DIRECTORY/secret" )" || failure df9bf681
                                                                                                                                                                             export NIX_CONFIG="access-tokens = github.com=$TOKEN"
                                                                                                                                                                             cd "$toplevel"
@@ -1217,7 +1217,7 @@
                                                                                                                                                                             git commit -a --verbose --allow-empty-message
                                                                                                                                                                         fi
                                                                                                                                                                         git push origin HEAD 2>&1
-                                                                                                                                                                        TOKEN_DIRECTORY=${ resources.production.secrets.token ( setup : setup ) }
+                                                                                                                                                                        TOKEN_DIRECTORY=${ resources.production.secrets.token { } }
                                                                                                                                                                         TOKEN="$( cat "$TOKEN_DIRECTORY/secret" )" || failure 320e0c68
                                                                                                                                                                         export NIX_CONFIG="access-tokens = github.com=$TOKEN"
                                                                                                                                                                         cd "$toplevel"
@@ -1298,7 +1298,7 @@
                                                                                                                                     wrap ${ mutable- "switch" } stage/alias/root/mutable-switch 0500 --literal-plain MUTABLE_SNAPSHOT --literal-plain PATH
                                                                                                                                     wrap ${ mutable- "test" } stage/alias/root/mutable-test 0500 --literal-plain MUTABLE_SNAPSHOT --literal-plain PATH
                                                                                                                                     wrap ${ ssh } stage/ssh/command 0500 --literal-plain "@" --set-plain MOUNT "${ mount }" --literal-plain PATH
-                                                                                                                                    DOT_SSH=${ resources.production.dot-ssh ( setup : setup ) }
+                                                                                                                                    DOT_SSH=${ resources.production.dot-ssh { } }
                                                                                                                                     root "$DOT_SSH"
                                                                                                                                     wrap "$DOT_SSH/config" stage/ssh/config 0400
                                                                                                                                     "${ mount }/stage/alias/root/mutable-mirror" main 2>&1
@@ -1473,7 +1473,7 @@
                                                                                                                                                                         if ! git diff origin/main --quiet || ! git diff origin/main --quiet --cached
                                                                                                                                                                         then
                                                                                                                                                                             BRANCH="$( git rev-parse --abbrev-ref HEAD )" || failure b7fb71d9
-                                                                                                                                                                            TOKEN=${ resources.production.secrets.token ( setup : setup ) }
+                                                                                                                                                                            TOKEN=${ resources.production.secrets.token { } }
                                                                                                                                                                             gh auth login --with-token < "$TOKEN/secret"
                                                                                                                                                                             if ! gh label list --json name --jq '.[].name' | grep -qx snapshot
                                                                                                                                                                             then
@@ -1484,7 +1484,7 @@
                                                                                                                                                                             gh pr merge "$URL" --rebase
                                                                                                                                                                             gh auth logout
                                                                                                                                                                             NAME="$( basename "$name" )" || failure 368e7b07
-                                                                                                                                                                            TOKEN_DIRECTORY=${ resources.production.secrets.token ( setup : setup ) }
+                                                                                                                                                                            TOKEN_DIRECTORY=${ resources.production.secrets.token { } }
                                                                                                                                                                             TOKEN="$( cat "$TOKEN_DIRECTORY/secret" )" || failure 6ad73063
                                                                                                                                                                             export NIX_CONFIG="access-tokens = github.com=$TOKEN"
                                                                                                                                                                             PARENT="$( dirname "$toplevel" )" || failure e5630d4d
@@ -1543,7 +1543,7 @@
                                                                                                                                             wrap ${ mutable-switch.submodule } stage/alias/submodule/mutable-switch 0500 --literal-plain BRANCH --literal-plain name --literal-plain NAME --literal-plain PARENT --literal-plain PATH --literal-plain TOKEN --literal-plain TOKEN_DIRECTORY --literal-plain toplevel --literal-plain URL
                                                                                                                                             wrap ${ mutable-test } stage/alias/root/mutable-test 0500 --set-plain MOUNT "${ mount }" --literal-plain PATH
                                                                                                                                             wrap ${ ssh } stage/ssh/command 0500 --literal-plain "@" --set-plain MOUNT "${ mount }" --literal-plain PATH
-                                                                                                                                            DOT_SSH=${ resources.production.dot-ssh ( setup : setup ) }
+                                                                                                                                            DOT_SSH=${ resources.production.dot-ssh { } }
                                                                                                                                             root "$DOT_SSH"
                                                                                                                                             wrap "$DOT_SSH/config" stage/ssh/config 0400
                                                                                                                                             git remote add origin "${ config.personal.repository.private.remote }"
@@ -1568,7 +1568,7 @@
                                                                     setup =
                                                                         encrypted : { mount , pkgs , resources , root , wrap } :
                                                                             ''
-                                                                                ENCRYPTED=${ resources.production.repository.secrets_ ( setup : setup ) }
+                                                                                ENCRYPTED=${ resources.production.repository.secrets_ { } }
                                                                                 IDENTITY=${ config.personal.agenix }
                                                                                 ln --symbolic "$ENCRYPTED/repository/${ encrypted }" /scratch/encrypted
                                                                                 ln --symbolic "$IDENTITY" /scratch/identity
@@ -1825,14 +1825,44 @@
                                                                                                             runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                             text =
                                                                                                                 let
-                                                                                                                    mapper =
-                                                                                                                        name : value :
-                                                                                                                            ''
-                                                                                                                                mkdir --parents "/home/${ config.personal.name }/pads/${ name }"
-                                                                                                                                ENVRC=${ resources__.production.pads."${ name }" ( setup : setup ) }
-                                                                                                                                ln --symbolic --force "$ENVRC/envrc" "/home/${ config.personal.name }/pads/${ name }/.envrc"
-                                                                                                                            '' ;
-                                                                                                                    in builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs mapper resources__.production.pads ) ) ;
+                                                                                                                    home =
+                                                                                                                        let
+                                                                                                                            application =
+                                                                                                                                pkgs.writeShellApplication
+                                                                                                                                    {
+                                                                                                                                        name = "home" ;
+                                                                                                                                        runtimeInputs =
+                                                                                                                                            [
+                                                                                                                                                (
+                                                                                                                                                    pkgs.writeShellApplication
+                                                                                                                                                        {
+                                                                                                                                                            name = "gpg" ;
+                                                                                                                                                            runtimeInputs = [ pkgs.gnupg ] ;
+                                                                                                                                                            text =
+                                                                                                                                                                ''
+                                                                                                                                                                    DOT_GNUPG=${ resources.production.dot-gnupg }
+                                                                                                                                                                    export GNUPGHOME="$DOT_GNUPG/dot-gnupg"
+                                                                                                                                                                    if [[ -t 0 ]]
+                                                                                                                                                                    then
+                                                                                                                                                                        gpg "$@"
+                                                                                                                                                                    else
+                                                                                                                                                                        cat | gpg "$@"
+                                                                                                                                                                    fi
+                                                                                                                                                                '' ;
+                                                                                                                                                        }
+                                                                                                                                                )
+                                                                                                                                            ] ;
+                                                                                                                                        text =
+                                                                                                                                            ''
+                                                                                                                                                export NAME="${ config.personal.description }"
+                                                                                                                                            '' ;
+                                                                                                                                    } ;
+                                                                                                                            in "${ application }/bin/home" ;
+                                                                                                                    in
+                                                                                                                        ''
+                                                                                                                            mkdir --parents /home/${ config.personal.name }/pads
+                                                                                                                            ln --symbolic ${ home } /home/${ config.personal.name }/pads/home
+                                                                                                                        '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/ExecStart" ;
                                                                                         User = config.personal.name ;
@@ -1881,7 +1911,7 @@
                                                                                                     organization = config.personal.repository.personal.organization ;
                                                                                                     repository = config.personal.repository.personal.repository ;
                                                                                                     resolution = "personal" ;
-                                                                                                    token = resources__.production.secrets.token ( setup : setup ) ;
+                                                                                                    token = resources__.production.secrets.token { } ;
                                                                                                 } ;
                                                                                         User = config.personal.name ;
                                                                                     } ;
@@ -2106,15 +2136,15 @@
                                                                                                                                             ] ;
                                                                                                                                         text =
                                                                                                                                             ''
-                                                                                                                                                DOT_GNUPG=${ resources__.production.dot-gnupg ( setup : setup ) }
+                                                                                                                                                DOT_GNUPG=${ resources__.production.dot-gnupg { } }
                                                                                                                                                 export GNUPGHOME="$DOT_GNUPG/dot-gnupg"
                                                                                                                                                 gpg --sign --local-user "${ config.personal.chromium.home.config.email }" --armor </dev/null >/dev/null
-                                                                                                                                                CONFIG_RESOURCE=${ resources__.production.repository.pads.home.chromium.config ( setup : setup ) }
+                                                                                                                                                CONFIG_RESOURCE=${ resources__.production.repository.pads.home.chromium.config { } }
                                                                                                                                                 export XDG_CONFIG_HOME="$CONFIG_RESOURCE/repository/secret"
                                                                                                                                                 mkdir --parents "$XDG_CONFIG_HOME"
                                                                                                                                                 echo CONFIG
                                                                                                                                                 find "$CONFIG_RESOURCE"
-                                                                                                                                                DATA_RESOURCE=${ resources__.production.repository.pads.home.chromium.data ( setup : setup ) }
+                                                                                                                                                DATA_RESOURCE=${ resources__.production.repository.pads.home.chromium.data { } }
                                                                                                                                                 export XDG_DATA_HOME="$CONFIG_RESOURCE/repository/secret"
                                                                                                                                                 mkdir --parents "$XDG_DATA_HOME"
                                                                                                                                                 echo
@@ -2161,7 +2191,7 @@
                                                                                                                                             ''
                                                                                                                                                 MONIKER="$1"
                                                                                                                                                 NOW="$( date +%Y%m%d%H%M%S )" || failure 1dc95e4b
-                                                                                                                                                DOT_GNUPG=${ resources.production.dot-gnupg ( setup : setup ) }
+                                                                                                                                                DOT_GNUPG=${ resources.production.dot-gnupg { } }
                                                                                                                                                 export GNUPGHOME="$DOT_GNUPG/dot-gnupg"
                                                                                                                                                 KEY_ID="$MONIKER $NOW <$MONIKER.$NOW@local>"
                                                                                                                                                 echo GENERATING KEY "$KEY_ID"
@@ -2183,7 +2213,7 @@
                                                                                                                                                     echo "Signing new key $FPR with old key $key"
                                                                                                                                                     gpg --homedir "$GNUPGHOME" --yes --default-key "$key" --sign-key "$FPR"
                                                                                                                                                 done
-                                                                                                                                                TEMPORARY=${ resources.production.temporary ( setup : setup ) }
+                                                                                                                                                TEMPORARY=${ resources.production.temporary { } }
                                                                                                                                                 if [[ ! -d "$TEMPORARY" ]]
                                                                                                                                                 then
                                                                                                                                                     failure 399f0b2b
@@ -2191,7 +2221,7 @@
                                                                                                                                                 gpg --export-ownertrust --armor > "$TEMPORARY/ownertrust.asc"
                                                                                                                                                 gpg --export-secret-keys --armor > "$TEMPORARY/secret-keys.asc"
                                                                                                                                                 echo "COPIED FILES TO $TEMPORARY"
-                                                                                                                                                SECRETS=${ resources.production.repository.studio.secrets ( setup : setup ) }
+                                                                                                                                                SECRETS=${ resources.production.repository.studio.secrets { } }
                                                                                                                                                 echo GENERATED SECRETS "$SECRETS"
                                                                                                                                                 BRANCH="$( git -C "$SECRETS/repository" rev-parse --abbrev-ref HEAD )" || failure 47e2654b
                                                                                                                                                 echo "BRANCH=$BRANCH"
@@ -2203,7 +2233,7 @@
                                                                                                                                                 then
                                                                                                                                                     failure 10d0002c
                                                                                                                                                 fi
-                                                                                                                                                RECIPIENT=${ resources.production.age.public ( setup : setup ) }
+                                                                                                                                                RECIPIENT=${ resources.production.age.public { } }
                                                                                                                                                 echo "GENERATED RECIPIENT $RECIPIENT"
                                                                                                                                                 if [[ ! -f "$RECIPIENT/public" ]]
                                                                                                                                                 then
@@ -2224,7 +2254,7 @@
                                                                                                                                                 git -C "$SECRETS/repository" commit -m "GENERATED A GNUPG KEY for $KEY_ID" 2>&1
                                                                                                                                                 git -C "$SECRETS/repository" push --force-with-lease origin HEAD 2>&1
                                                                                                                                                 echo "HAVE PUSHED"
-                                                                                                                                                TOKEN=${ resources.production.secrets.token ( setup : setup ) }
+                                                                                                                                                TOKEN=${ resources.production.secrets.token { } }
                                                                                                                                                 cd "$SECRETS/repository"
                                                                                                                                                 gh auth login --with-token < "$TOKEN/secret"
                                                                                                                                                 gh pr create --base main --head "$BRANCH" --label "snapshot"
@@ -2270,7 +2300,7 @@
                                                                                                                                         runtimeInputs = [ pkgs.openssh ] ;
                                                                                                                                         text =
                                                                                                                                             ''
-                                                                                                                                                DOT_SSH=${ resources.production.dot-ssh ( setup : setup ) }
+                                                                                                                                                DOT_SSH=${ resources.production.dot-ssh { } }
                                                                                                                                                 if [[ -t 0 ]]
                                                                                                                                                 then
                                                                                                                                                     ssh -F "$DOT_SSH/config" "$@"
@@ -2288,11 +2318,11 @@
                                                                                                                             export TEST_PASSWORD=38e38981
                                                                                                                             export FOOBAR=ead70f30
                                                                                                                             export NAME="Emory Merryman"
-                                                                                                                            DOT_GNUPG=${ resources.production.dot-gnupg ( setup : setup ) }
+                                                                                                                            DOT_GNUPG=${ resources.production.dot-gnupg { } }
                                                                                                                             export GNUPGHOME="$DOT_GNUPG/dot-gnupg"
-                                                                                                                            DOT_SSH=${ resources.production.dot-ssh ( setup : setup ) }
+                                                                                                                            DOT_SSH=${ resources.production.dot-ssh { } }
                                                                                                                             export DOT_SSH
-                                                                                                                            PASSWORD_STORE_REPOSITORY=${ resources.production.repository.pass ( setup : setup ) }
+                                                                                                                            PASSWORD_STORE_REPOSITORY=${ resources.production.repository.pass { } }
                                                                                                                             export PASSWORD_STORE_GPG_OPTS="--homedir $DOT_GNUPG/dot-gnupg"
                                                                                                                             export PASSWORD_STORE_DIR="$PASSWORD_STORE_REPOSITORY/repository"
                                                                                                                         '' ;
