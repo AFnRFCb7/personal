@@ -2214,9 +2214,9 @@
                                                                                                                                             ''
                                                                                                                                                 if [[ -t 0 ]]
                                                                                                                                                 then
-                                                                                                                                                    STUDIO=${ resources__.production.repository.studio.entry { setup = setup : ''${ setup } "$@'' ; } }
+                                                                                                                                                    STUDIO=${ resources__.production.repository.studio.entry { setup = setup : ''${ setup } "$@"'' ; } }
                                                                                                                                                 else
-                                                                                                                                                    STUDIO=${ resources__.production.repository.studio.entry { setup = setup : ''${ setup } "$@'' ; } }
+                                                                                                                                                    STUDIO=${ resources__.production.repository.studio.entry { setup = setup : ''${ setup } "$@"'' ; } }
                                                                                                                                                 fi
                                                                                                                                                 echo "$STUDIO"
                                                                                                                                             '' ;
