@@ -1834,9 +1834,49 @@
                                                                                                                     )
                                                                                                                 ] ;
                                                                                                             text =
-                                                                                                                ''
-                                                                                                                    mkdir --parents /home/${ config.personal.name }/pads/home
-                                                                                                                '' ;
+                                                                                                                let
+                                                                                                                    envrc =
+                                                                                                                        let
+                                                                                                                            bin =
+                                                                                                                                {
+                                                                                                                                    gnupg =
+                                                                                                                                        pkgs.writeShellApplication
+                                                                                                                                            {
+                                                                                                                                                name = "gpg" ;
+                                                                                                                                                runtimeInputs = [ pkgs.gnupg ] ;
+                                                                                                                                                text =
+                                                                                                                                                    ''
+                                                                                                                                                        DOT_GNUPG=${ resources__.production.dot-gnupg { } }
+                                                                                                                                                        export GNUPGHOME="$DOT_GNUPG/dot-gnupg"
+                                                                                                                                                        if [[ -t 0 ]]
+                                                                                                                                                        then
+                                                                                                                                                            gpg "$@"
+                                                                                                                                                        else
+                                                                                                                                                            cat | gpg "$@"
+                                                                                                                                                        fi
+                                                                                                                                                    '' ;
+                                                                                                                                            } ;
+                                                                                                                                } ;
+                                                                                                                            in
+                                                                                                                                {
+                                                                                                                                    home =
+                                                                                                                                        let
+                                                                                                                                            application =
+                                                                                                                                                pkgs.writeShellApplication
+                                                                                                                                                    {
+                                                                                                                                                        name = "envrc" ;
+                                                                                                                                                        runtimeInputs = [ bin.gnupg ] ;
+                                                                                                                                                        text =
+                                                                                                                                                            ''
+                                                                                                                                                            '' ;
+                                                                                                                                                    } ;
+                                                                                                                                            in "${ application }/bin/envrc" ;
+                                                                                                                                } ;
+                                                                                                                    in
+                                                                                                                        ''
+                                                                                                                            mkdir --parents /home/${ config.personal.name }/pads/home
+                                                                                                                            ln --symbolic --force ${ envrc.home } /home/${ config.personal.name }/pads/home/.envrc
+                                                                                                                        '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/ExecStart" ;
                                                                                         User = config.personal.name ;
