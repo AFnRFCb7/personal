@@ -1848,7 +1848,7 @@
                                                                                 serviceConfig =
                                                                                     {
                                                                                         ExecStart =
-                                                                                            _resource-releaser
+                                                                                            _resource-releaser.implementation
                                                                                                 {
                                                                                                     channel = config.personal.channel ;
                                                                                                     gc-roots-directory = "/home/${ config.personal.name }/.gc-roots" ;
