@@ -1842,6 +1842,24 @@
                                                                                     } ;
                                                                                 wantedBy = [ "multi-user.target" ] ;
                                                                             } ;
+                                                                        resource-releaser =
+                                                                            {
+                                                                                after = [ "network.target" "redis.service" ] ;
+                                                                                serviceConfig =
+                                                                                    {
+                                                                                        ExecStart =
+                                                                                            _resource-releaser
+                                                                                                {
+                                                                                                    channel = config.personal.channel ;
+                                                                                                    gc-roots-directory = "/home/${ config.personal.name }/.gc-roots" ;
+                                                                                                    locks-directory = "/home/${ config.personal.name }/resources/locks" ;
+                                                                                                    mounts-directory = "/home/${ config.personal.name }/resources/mounts" ;
+                                                                                                    quarantine-directory = "/home/${ config.personal.name }/resources/quarantine" ;
+                                                                                                } ;
+                                                                                        User = config.personal.name ;
+                                                                                    } ;
+                                                                                wantedBy = [ "multi-user.target" ] ;
+                                                                            } ;
                                                                         resource-reporter-personal =
                                                                             {
                                                                                 after = [ "network.target" "redis.service" ] ;
