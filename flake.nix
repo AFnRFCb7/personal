@@ -1205,12 +1205,12 @@
                                                                                                                                                                             git checkout -b "$BRANCH"
                                                                                                                                                                             git commit -a --verbose --allow-empty-message
                                                                                                                                                                         fi
+                                                                                                                                                                        git push origin HEAD 2>&1
                                                                                                                                                                         TOKEN_DIRECTORY=${ resources.production.secrets.token { } }
                                                                                                                                                                         TOKEN="$( cat "$TOKEN_DIRECTORY/secret" )" || failure 320e0c68
                                                                                                                                                                         export NIX_CONFIG="access-tokens = github.com=$TOKEN"
                                                                                                                                                                         cd "$toplevel"
                                                                                                                                                                         nix flake update --flake "$toplevel" "$name"
-                                                                                                                                                                        git push origin HEAD 2>&1
                                                                                                                                                                     '' ;
                                                                                                                                                             } ;
                                                                                                                                                     in "${ application }/bin/mutable-snapshot" ;
@@ -1811,17 +1811,32 @@
                                                                                                     pkgs.writeShellApplication
                                                                                                         {
                                                                                                             name = "ExecStart" ;
-                                                                                                            runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                            runtimeInputs =
+                                                                                                                [
+                                                                                                                    pkgs.coreutils
+                                                                                                                    (
+                                                                                                                        pkgs.writeShellApplication
+                                                                                                                            {
+                                                                                                                                name = "gpg" ;
+                                                                                                                                runtimeInputs = [ pkgs.gnupg ] ;
+                                                                                                                                text =
+                                                                                                                                    ''
+                                                                                                                                        DOT_GNUPG=${ resources__.production.dot-gnupg { } }
+                                                                                                                                        export GNUPGHOME="$DOT_GNUPG/dot-gnupg"
+                                                                                                                                        if [[ -t 0 ]]
+                                                                                                                                        then
+                                                                                                                                            gpg "$@"
+                                                                                                                                        else
+                                                                                                                                            cat | gpg "$@"
+                                                                                                                                        fi
+                                                                                                                                    '' ;
+                                                                                                                            }
+                                                                                                                    )
+                                                                                                                ] ;
                                                                                                             text =
-                                                                                                                let
-                                                                                                                    mapper =
-                                                                                                                        name : value :
-                                                                                                                            ''
-                                                                                                                                mkdir --parents "/home/${ config.personal.name }/pads/${ name }"
-                                                                                                                                ENVRC=${ resources__.production.pads."${ name }" { } }
-                                                                                                                                ln --symbolic --force "$ENVRC/envrc" "/home/${ config.personal.name }/pads/${ name }/.envrc"
-                                                                                                                            '' ;
-                                                                                                                    in builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs mapper resources__.production.pads ) ) ;
+                                                                                                                ''
+                                                                                                                    mkdir --parents /home/${ config.personal.name }/pads/home
+                                                                                                                '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/ExecStart" ;
                                                                                         User = config.personal.name ;
