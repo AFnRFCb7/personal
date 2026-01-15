@@ -1127,7 +1127,7 @@
                                                                                                                                                                     cd "$MOUNT/repository"
                                                                                                                                                                     git fetch origin main
                                                                                                                                                                     UUID="$( uuidgen | sha512sum )" || failure aae710e7
-                                                                                                                                                                    BRANCH="$( echo "scratch/$UUID" | cut --bytes 1-64 )" || failure f41b9d20
+                                                                                                                                                                    BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure f41b9d20
                                                                                                                                                                     git checkout -b "$BRANCH" >&2
                                                                                                                                                                     git commit -am "" --allow-empty --allow-empty-message
                                                                                                                                                                     git reset --soft origin/main
