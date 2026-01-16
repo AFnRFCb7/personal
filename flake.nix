@@ -1839,6 +1839,25 @@
                                                                                                                         let
                                                                                                                             bin =
                                                                                                                                 {
+                                                                                                                                    chromium =
+                                                                                                                                        pkgs.writeShellApplication
+                                                                                                                                            {
+                                                                                                                                                name = "chromium" ;
+                                                                                                                                                runtimeInputs = [ pkgs.chromium ] ;
+                                                                                                                                                text =
+                                                                                                                                                    ''
+                                                                                                                                                        CONFIG=${ resources__.production.pads.home.config { } }
+                                                                                                                                                        DATA=${ resources__.production.pads.home.data { } }
+                                                                                                                                                        export XDG_CONFIG_HOME="$CONFIG/repository/secret"
+                                                                                                                                                        export XDG_DATA_HOME="$DATA/repository/secret"
+                                                                                                                                                        if [[ -t 0 ]]
+                                                                                                                                                        then
+                                                                                                                                                            chromium "$@"
+                                                                                                                                                        else
+                                                                                                                                                            cat | chromium "$@"
+                                                                                                                                                        fi
+                                                                                                                                                    '' ;
+                                                                                                                                            } ;
                                                                                                                                     gnupg =
                                                                                                                                         pkgs.writeShellApplication
                                                                                                                                             {
