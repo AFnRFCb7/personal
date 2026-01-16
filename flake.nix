@@ -1871,7 +1871,7 @@
                                                                                                                                                             cat | ssh -F "$DOT_SSH/config "$@"
                                                                                                                                                         fi
                                                                                                                                                     '' ;
-                                                                                                                                            }
+                                                                                                                                            } ;
                                                                                                                                 } ;
                                                                                                                             in
                                                                                                                                 {
