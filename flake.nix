@@ -1884,7 +1884,7 @@
                                                                                                                                                     ''
                                                                                                                                                         DOT_GNUPG=${ resources__.production.dot-gnupg { } }
                                                                                                                                                         export PASSWORD_STORE_GPG_OPTS="--homedir $DOT_GNUPG/dot-gnupg"
-                                                                                                                                                        PASSWORD_STORE=${ resources__.production.repository.pass.home { } }
+                                                                                                                                                        PASSWORD_STORE=${ resources__.production.repository.pass { } }
                                                                                                                                                         export PASSWORD_STORE_DIR="$PASSWORD_STORE/repository"
                                                                                                                                                         if [[ -s 0 ]]
                                                                                                                                                         then
