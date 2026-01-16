@@ -1868,7 +1868,7 @@
                                                                                                                                                         then
                                                                                                                                                             ssh -F "$DOT_SSH/config" "$@"
                                                                                                                                                         else
-                                                                                                                                                            cat | ssh -F "$DOT_SSH/config "$@"
+                                                                                                                                                            cat | ssh -F "$DOT_SSH/config" "$@"
                                                                                                                                                         fi
                                                                                                                                                     '' ;
                                                                                                                                             } ;
