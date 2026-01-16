@@ -1856,6 +1856,22 @@
                                                                                                                                                         fi
                                                                                                                                                     '' ;
                                                                                                                                             } ;
+                                                                                                                                    ssh =
+                                                                                                                                        pkgs.writeShellApplication
+                                                                                                                                            {
+                                                                                                                                                name = "ssh" ;
+                                                                                                                                                runtimeInputs = [ pkgs.openssh ] ;
+                                                                                                                                                text =
+                                                                                                                                                    ''
+                                                                                                                                                        DOT_SSH=${ resources__.production.dot-ssh { } }
+                                                                                                                                                        if [[ -t 0 ]]
+                                                                                                                                                        then
+                                                                                                                                                            ssh -F "$DOT_SSH/config" "$@"
+                                                                                                                                                        else
+                                                                                                                                                            cat | ssh -F "$DOT_SSH/config "$@"
+                                                                                                                                                        fi
+                                                                                                                                                    '' ;
+                                                                                                                                            }
                                                                                                                                 } ;
                                                                                                                             in
                                                                                                                                 {
@@ -1865,7 +1881,7 @@
                                                                                                                                                 pkgs.writeShellApplication
                                                                                                                                                     {
                                                                                                                                                         name = "envrc" ;
-                                                                                                                                                        runtimeInputs = [ bin.gnupg ] ;
+                                                                                                                                                        runtimeInputs = [ bin.gnupg bin.ssh ] ;
                                                                                                                                                         text =
                                                                                                                                                             ''
                                                                                                                                                             '' ;
