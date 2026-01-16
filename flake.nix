@@ -1884,8 +1884,8 @@
                                                                                                                                                     ''
                                                                                                                                                         DOT_GNUPG=${ resources__.production.dot-gnupg { } }
                                                                                                                                                         export PASSWORD_STORE_GPG_OPTS="--homedir $DOT_GNUPG/dot-gnupg"
-
-                                                                                                                                                        # export PASSWORD_STORE_DIR="$PASSWORD_STORE/repository"
+                                                                                                                                                        PASSWORD_STORE=${ resources__.production.repository.pass.home { } }
+                                                                                                                                                        export PASSWORD_STORE_DIR="$PASSWORD_STORE/repository"
                                                                                                                                                         if [[ -s 0 ]]
                                                                                                                                                         then
                                                                                                                                                             pass "$@"
@@ -1919,7 +1919,7 @@
                                                                                                                                                 pkgs.writeShellApplication
                                                                                                                                                     {
                                                                                                                                                         name = "envrc" ;
-                                                                                                                                                        runtimeInputs = [ bin.gnupg bin.pass bin.ssh ] ;
+                                                                                                                                                        runtimeInputs = [ bin.chrome bin.gnupg bin.pass bin.ssh ] ;
                                                                                                                                                         text =
                                                                                                                                                             ''
                                                                                                                                                             '' ;
