@@ -1876,7 +1876,7 @@
                                                                                                                                                     '' ;
                                                                                                                                             } ;
                                                                                                                                     pass =
-                                                                                                                                        pkgs.writeShellApplicationi
+                                                                                                                                        pkgs.writeShellApplication
                                                                                                                                             {
                                                                                                                                                 name = "pass" ;
                                                                                                                                                 runtimeInputs = [ pkgs.pass ] ;
