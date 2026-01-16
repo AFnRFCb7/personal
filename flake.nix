@@ -1883,7 +1883,7 @@
                                                                                                                                                 text =
                                                                                                                                                     ''
                                                                                                                                                         DOT_GNUPG=${ resources__.production.dot-gnupg { } }
-                                                                                                                                                        export PASSWORD_STORE_GPG_OPTS="--homedir "$DOT_GNUPG/dot-gnupg"
+                                                                                                                                                        export PASSWORD_STORE_GPG_OPTS="--homedir $DOT_GNUPG/dot-gnupg"
 
                                                                                                                                                         # export PASSWORD_STORE_DIR="$PASSWORD_STORE/repository"
                                                                                                                                                         if [[ -s 0 ]]
