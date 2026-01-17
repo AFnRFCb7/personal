@@ -589,22 +589,7 @@
                                                                                         {
                                                                                             chromium =
                                                                                                 {
-                                                                                                    # FINDME
                                                                                                     config =
-                                                                                                        ignore :
-                                                                                                            {
-                                                                                                                init =
-                                                                                                                    { mount , resources , pkgs , root , wrap } :
-                                                                                                                        let
-                                                                                                                            application =
-                                                                                                                                pkgs.writeShellApplication
-                                                                                                                                    {
-                                                                                                                                        name = "init" ;
-                                                                                                                                        text = "" ;
-                                                                                                                                    } ;
-                                                                                                                            in "${ application }/bin/init" ;
-                                                                                                            } ;
-                                                                                                    config-2 =
                                                                                                         ignore :
                                                                                                             _git-repository.implementation
                                                                                                                 {
