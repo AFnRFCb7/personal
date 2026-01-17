@@ -1956,7 +1956,7 @@
                                                                                                                                                 pkgs.writeShellApplication
                                                                                                                                                     {
                                                                                                                                                         name = "envrc" ;
-                                                                                                                                                        runtimeInputs = [ bin.chromium bin.gnupg bin.mutable "$PASS" bin.ssh ] ;
+                                                                                                                                                        runtimeInputs = [ bin.chromium bin.gnupg bin.mutable bin.ssh ] ;
                                                                                                                                                         text =
                                                                                                                                                             ''
                                                                                                                                                                 CHROMIUM=${ resources__.production.ephemeral.chromium { } }
@@ -1969,6 +1969,7 @@
                                                                                                                                                                 export PASSWORD_STORE_DIR="$PASSWORD_STORE/repository"
                                                                                                                                                                 HOLDER=${ resources__.production.holder { setup = setup : ''${ setup } "$CHROMIUM" "$DOT_GNUPG" "$PASS" "$PASSWORD_STORE"'' ; } }
                                                                                                                                                                 export HOLDER
+                                                                                                                                                                PATH="$PATH:$PASS"
                                                                                                                                                             '' ;
                                                                                                                                                     } ;
                                                                                                                                             in "${ application }/bin/envrc" ;
