@@ -1870,6 +1870,30 @@
                                                                                                                                                         fi
                                                                                                                                                     '' ;
                                                                                                                                             } ;
+                                                                                                                                    mutable =
+                                                                                                                                        pkgs.writeShellApplication
+                                                                                                                                            {
+                                                                                                                                                name = "mutable" ;
+                                                                                                                                                runtimeInputs = [ pkgs.jetbrains.idea-community ] ;
+                                                                                                                                                text =
+                                                                                                                                                    ''
+                                                                                                                                                        if [[ "$#" == 0 ]]
+                                                                                                                                                        then
+                                                                                                                                                            HAS_ARGUMENTS=false
+                                                                                                                                                            ARGUMENTS=
+                                                                                                                                                        else
+                                                                                                                                                            HAS_ARGUMENTS=true
+                                                                                                                                                            ARGUMENTS="$*"
+                                                                                                                                                        fi
+                                                                                                                                                        MUTABLE=${ resources__.repository.studio.entrace { fun = setup : ''${ setup } "$HAS_ARGUMENTS" "$ARGUMENTS"'' ; } }
+                                                                                                                                                        if $HAS_ARGUMENTS
+                                                                                                                                                        then
+                                                                                                                                                            echo "$MUTABLE"
+                                                                                                                                                        else
+                                                                                                                                                            idea-community "$MUTABLE"
+                                                                                                                                                        fi
+                                                                                                                                                    '' ;
+                                                                                                                                            } ;
                                                                                                                                     pass =
                                                                                                                                         pkgs.writeShellApplication
                                                                                                                                             {
