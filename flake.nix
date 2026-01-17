@@ -1938,7 +1938,7 @@
                                                                                                                                                 pkgs.writeShellApplication
                                                                                                                                                     {
                                                                                                                                                         name = "envrc" ;
-                                                                                                                                                        runtimeInputs = [ bin.chromium bin.gnupg bin.pass bin.ssh ] ;
+                                                                                                                                                        runtimeInputs = [ bin.chromium bin.gnupg bin.mutable bin.pass bin.ssh ] ;
                                                                                                                                                         text =
                                                                                                                                                             ''
                                                                                                                                                             '' ;
