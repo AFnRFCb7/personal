@@ -1995,8 +1995,8 @@
                                                                                                                                                             ''
                                                                                                                                                                 CHROMIUM=${ resources__.production.ephemeral.chromium { } }
                                                                                                                                                                 export CHROMIUM
-                                                                                                                                                                HOLD=${ resources__.production.holder { setup = setup : ''${ setup } "$PPID" "$CHROMIUM"'' ; } }
-                                                                                                                                                                export HOLD
+                                                                                                                                                                HOLDER=${ resources__.production.holder { setup = setup : ''${ setup } "$CHROMIUM"'' ; } }
+                                                                                                                                                                export HOLDER
                                                                                                                                                             '' ;
                                                                                                                                                     } ;
                                                                                                                                             in "${ application }/bin/envrc" ;
