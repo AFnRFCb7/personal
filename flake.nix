@@ -1990,8 +1990,9 @@
                                                                                                                                                         text =
                                                                                                                                                             ''
                                                                                                                                                                 CHROMIUM=${ resources__.production.ephemeral.chromium { } }
-                                                                                                                                                                ${ resources__.production.holder { setup = setup : ''${ setup } "$PPID" "$CHROMIUM"'' ; } }
                                                                                                                                                                 export CHROMIUM
+                                                                                                                                                                HOLD=${ resources__.production.holder { setup = setup : ''${ setup } "$PPID" "$CHROMIUM"'' ; } }
+                                                                                                                                                                export HOLD
                                                                                                                                                             '' ;
                                                                                                                                                     } ;
                                                                                                                                             in "${ application }/bin/envrc" ;
