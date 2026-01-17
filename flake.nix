@@ -1881,7 +1881,7 @@
                                                                                                                                                         export PASSWORD_STORE_GPG_OPTS="--homedir $DOT_GNUPG/dot-gnupg"
                                                                                                                                                         PASSWORD_STORE=${ resources__.production.repository.pass { } }
                                                                                                                                                         export PASSWORD_STORE_DIR="$PASSWORD_STORE/repository"
-                                                                                                                                                        if [[ -s 0 ]]
+                                                                                                                                                        if [[ -t 0 ]]
                                                                                                                                                         then
                                                                                                                                                             pass "$@"
                                                                                                                                                         else
