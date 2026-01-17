@@ -474,12 +474,16 @@
                                                                                                 runtimeInputs = [ pkgs.coreutils pkgs.procps root ] ;
                                                                                                 text =
                                                                                                     ''
-                                                                                                        ORIGINATOR_PID="$1"
-                                                                                                        HELD="$2"
+                                                                                                        ORIGINATOR_PID="$( ps -o ppid= -p "$PPID" | tr -d '[:space:]')" || failure 88093287
                                                                                                         echo "$ORIGINATOR_PID" > /mount/originator-pid
-                                                                                                        chmod 0400 /mount/originator-pid
-                                                                                                        ln --symbolic "$HELD" /mount/held
-                                                                                                        root "$HELD"
+                                                                                                        mkdir --parents /mount/resources
+                                                                                                        while [[ "$#" -gt 0 ]]
+                                                                                                        do
+                                                                                                            RESOURCE="$1"
+                                                                                                            root "$RESOURCE"
+                                                                                                            ln --symbolic "$RESOURCE" /mount/resources
+                                                                                                            shift
+                                                                                                        done
                                                                                                     '' ;
                                                                                             } ;
                                                                                     in "${ application }/bin/init" ;
@@ -497,7 +501,7 @@
                                                                                                 '' ;
                                                                                         } ;
                                                                                 in "${ application }/bin/release" ;
-                                                                        targets = [ "held" "originator-pid" ] ;
+                                                                        targets = [ "originator-pid" "resources" ] ;
                                                                     } ;
                                                             pads =
                                                                 let
