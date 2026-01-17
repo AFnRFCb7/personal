@@ -1988,8 +1988,8 @@
                                                                                                                                                         runtimeInputs = [ bin.chromium bin.gnupg bin.mutable bin.pass bin.ssh ] ;
                                                                                                                                                         text =
                                                                                                                                                             ''
-                                                                                                                                                                CHROMIUM=${ resources.production.ephemeral.chromium { } }
-                                                                                                                                                                ${ resources.production.holder { setup = setup : ''${ setup } "$PPID" "$CHROMIUM"'' ; } }
+                                                                                                                                                                CHROMIUM=${ resources__.production.ephemeral.chromium { } }
+                                                                                                                                                                ${ resources__.production.holder { setup = setup : ''${ setup } "$PPID" "$CHROMIUM"'' ; } }
                                                                                                                                                                 export CHROMIUM
                                                                                                                                                             '' ;
                                                                                                                                                     } ;
