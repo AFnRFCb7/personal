@@ -10,6 +10,7 @@
                     {
                         dot-gnupg ,
                         dot-ssh ,
+                        ephemeral ,
                         failure ,
                         fixture ,
                         git-repository ,
@@ -29,6 +30,7 @@
                         let
                             _dot-gnupg = dot-gnupg.lib { } ;
                             _dot-ssh = dot-ssh.lib { failure = _failure.implementation "4e91ae89" ; visitor = _visitor.implementation ; } ;
+                            _ephemeral = ephemeral.lib { failure = _failure.implementation "1c5e38fc" ; } ;
                             _failure = failure.lib { coreutils = pkgs.coreutils ; jq = pkgs.jq ; mkDerivation = pkgs.stdenv.mkDerivation ; visitor = visitor ; writeShellApplication = pkgs.writeShellApplication ; yq-go = pkgs.yq-go ; } ;
                             _fixture = fixture.lib { age = pkgs.age ; coreutils = pkgs.coreutils ; failure = _failure.implementation "6bf7303d" ; gnupg = pkgs.gnupg ; libuuid = pkgs.libuuid ; mkDerivation = pkgs.stdenv.mkDerivation ; writeShellApplication = pkgs.writeShellApplication ; } ;
                             _git-repository = git-repository.lib { string = _string.implementation ; visitor = _visitor.implementation ; } ;
@@ -366,6 +368,13 @@
                                                                                         } ;
                                                                                 } ;
                                                                         } ;
+                                                            ephemeral =
+                                                                {
+                                                                    chromium = ignore : _ephemeral.implementation { expression = "nixpkgs#chromium" ; targets = [ ] ; } ;
+                                                                    gpg = ignore : _ephemeral.implementation { expression = "nixpkgs#gnupg" ; targets = [ ] ; } ;
+                                                                    pass = ignore : _ephemeral.implementation { expression = "nixpkgs#pass" ; targets = [ ] ; } ;
+                                                                    ssh = ignore : _ephemeral.implementation { expression = "nixpkgs#openssh" ; targets = [ ] ; } ;
+                                                                } ;
                                                             fixture =
                                                                 {
                                                                     laptop =
@@ -451,6 +460,28 @@
                                                                                 targets = [ "result" "shared" "standard-error" "standard-output" "status" ] ;
                                                                             } ;
                                                                 } ;
+                                                            holder =
+                                                                ignore :
+                                                                    {
+                                                                        init =
+                                                                            { mount , pkgs , resources , root , wrap } :
+                                                                                let
+                                                                                    application =
+                                                                                        pkgs.writeShellApplication
+                                                                                            {
+                                                                                                name = "init" ;
+                                                                                                text =
+                                                                                                    ''
+                                                                                                        ORIGINATOR_PID="$1"
+                                                                                                        HELD="$2"
+                                                                                                        echo "$ORIGINATOR_PID" > /mount/originator-pid
+                                                                                                        chmod 0400 /mount/originator-pid
+                                                                                                        root "$HELD"
+                                                                                                    '' ;
+                                                                                            } ;
+                                                                                    in "${ application }/bin/init" ;
+                                                                        targets = [ "originator-pid" ] ;
+                                                                    } ;
                                                             pads =
                                                                 let
                                                                     mapper =
