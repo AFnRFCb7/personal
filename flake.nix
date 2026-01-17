@@ -1875,7 +1875,7 @@
                                                                                                                                         pkgs.writeShellApplication
                                                                                                                                             {
                                                                                                                                                 name = "chromium" ;
-                                                                                                                                                runtimeInputs = [ pkgs.chromium ] ;
+                                                                                                                                                runtimeInputs = [ "$CHROMIUM" ] ;
                                                                                                                                                 text =
                                                                                                                                                     ''
                                                                                                                                                         CONFIG=${ resources__.production.repository.pads.home.chromium.config { } }
@@ -1931,25 +1931,6 @@
                                                                                                                                                         fi
                                                                                                                                                     '' ;
                                                                                                                                             } ;
-                                                                                                                                    pass =
-                                                                                                                                        pkgs.writeShellApplication
-                                                                                                                                            {
-                                                                                                                                                name = "pass" ;
-                                                                                                                                                runtimeInputs = [ pkgs.pass ] ;
-                                                                                                                                                text =
-                                                                                                                                                    ''
-                                                                                                                                                        DOT_GNUPG=${ resources__.production.dot-gnupg { } }
-                                                                                                                                                        export PASSWORD_STORE_GPG_OPTS="--homedir $DOT_GNUPG/dot-gnupg"
-                                                                                                                                                        PASSWORD_STORE=${ resources__.production.repository.pass { } }
-                                                                                                                                                        export PASSWORD_STORE_DIR="$PASSWORD_STORE/repository"
-                                                                                                                                                        if [[ -t 0 ]]
-                                                                                                                                                        then
-                                                                                                                                                            pass "$@"
-                                                                                                                                                        else
-                                                                                                                                                            cat | pass "$@"
-                                                                                                                                                        fi
-                                                                                                                                                    '' ;
-                                                                                                                                            } ;
                                                                                                                                     ssh =
                                                                                                                                         pkgs.writeShellApplication
                                                                                                                                             {
@@ -1975,12 +1956,18 @@
                                                                                                                                                 pkgs.writeShellApplication
                                                                                                                                                     {
                                                                                                                                                         name = "envrc" ;
-                                                                                                                                                        runtimeInputs = [ bin.chromium bin.gnupg bin.mutable bin.pass bin.ssh ] ;
+                                                                                                                                                        runtimeInputs = [ bin.chromium bin.gnupg bin.mutable "$PASS" bin.ssh ] ;
                                                                                                                                                         text =
                                                                                                                                                             ''
                                                                                                                                                                 CHROMIUM=${ resources__.production.ephemeral.chromium { } }
                                                                                                                                                                 export CHROMIUM
-                                                                                                                                                                HOLDER=${ resources__.production.holder { setup = setup : ''${ setup } "$CHROMIUM"'' ; } }
+                                                                                                                                                                PASS=${ resources__.production.ephemeral.pass { } }
+                                                                                                                                                                export PASS
+                                                                                                                                                                DOT_GNUPG=${ resources__.production.dot-gnupg { } }
+                                                                                                                                                                export PASSWORD_STORE_GPG_OPTS="--homedir $DOT_GNUPG/dot-gnupg"
+                                                                                                                                                                PASSWORD_STORE=${ resources__.production.repository.pass { } }
+                                                                                                                                                                export PASSWORD_STORE_DIR="$PASSWORD_STORE/repository"
+                                                                                                                                                                HOLDER=${ resources__.production.holder { setup = setup : ''${ setup } "$CHROMIUM" "$DOT_GNUPG" "$PASS" "$PASSWORD_STORE"'' ; } }
                                                                                                                                                                 export HOLDER
                                                                                                                                                             '' ;
                                                                                                                                                     } ;
