@@ -1814,24 +1814,6 @@
                                                                                                             runtimeInputs =
                                                                                                                 [
                                                                                                                     pkgs.coreutils
-                                                                                                                    (
-                                                                                                                        pkgs.writeShellApplication
-                                                                                                                            {
-                                                                                                                                name = "gpg" ;
-                                                                                                                                runtimeInputs = [ pkgs.gnupg ] ;
-                                                                                                                                text =
-                                                                                                                                    ''
-                                                                                                                                        DOT_GNUPG=${ resources__.production.dot-gnupg { } }
-                                                                                                                                        export GNUPGHOME="$DOT_GNUPG/dot-gnupg"
-                                                                                                                                        if [[ -t 0 ]]
-                                                                                                                                        then
-                                                                                                                                            gpg "$@"
-                                                                                                                                        else
-                                                                                                                                            cat | gpg "$@"
-                                                                                                                                        fi
-                                                                                                                                    '' ;
-                                                                                                                            }
-                                                                                                                    )
                                                                                                                 ] ;
                                                                                                             text =
                                                                                                                 let
@@ -1846,10 +1828,7 @@
                                                                                                                                                 runtimeInputs = [ pkgs.chromium ] ;
                                                                                                                                                 text =
                                                                                                                                                     ''
-                                                                                                                                                        CONFIG=${ resources__.production.pads.home.chromium.config { } }
-                                                                                                                                                        DATA=${ resources__.production.pads.home.chromium.data { } }
-                                                                                                                                                        export XDG_CONFIG_HOME="$CONFIG/repository/secret"
-                                                                                                                                                        export XDG_DATA_HOME="$DATA/repository/secret"
+
                                                                                                                                                         if [[ -t 0 ]]
                                                                                                                                                         then
                                                                                                                                                             chromium "$@"
