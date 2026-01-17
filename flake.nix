@@ -537,6 +537,7 @@
                                                                                         {
                                                                                             chromium =
                                                                                                 {
+                                                                                                    # FINDME
                                                                                                     config =
                                                                                                         ignore :
                                                                                                             {
@@ -1840,7 +1841,8 @@
                                                                                                                                                 runtimeInputs = [ pkgs.chromium ] ;
                                                                                                                                                 text =
                                                                                                                                                     ''
-                                                                                                                                                        CONFIG=${ resources__.production.pads.home.chromium.config { } }
+                                                                                                                                                        # FINDME \${ resources__.production.pads.home.chromium.config { } }
+                                                                                                                                                        CONFIG=FINDME
                                                                                                                                                         export XDG_CONFIG_HOME="$CONFIG/repository/secret"
                                                                                                                                                         if [[ -t 0 ]]
                                                                                                                                                         then
