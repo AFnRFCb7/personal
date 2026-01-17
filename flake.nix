@@ -370,7 +370,7 @@
                                                                         } ;
                                                             ephemeral =
                                                                 {
-                                                                    chromium = ignore : _ephemeral.implementation { expression = "nixpkgs#chromium" ; targets = [ ] ; } ;
+                                                                    chromium = ignore : _ephemeral.implementation { expression = "nixpkgs#chromium" ; targets = [ "bin" "share" ] ; } ;
                                                                     gpg = ignore : _ephemeral.implementation { expression = "nixpkgs#gnupg" ; targets = [ ] ; } ;
                                                                     pass = ignore : _ephemeral.implementation { expression = "nixpkgs#pass" ; targets = [ ] ; } ;
                                                                     ssh = ignore : _ephemeral.implementation { expression = "nixpkgs#openssh" ; targets = [ ] ; } ;
