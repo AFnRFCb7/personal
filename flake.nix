@@ -471,7 +471,7 @@
                                                                                         pkgs.writeShellApplication
                                                                                             {
                                                                                                 name = "init" ;
-                                                                                                runtimeInputs = [ pkgs.coreutils root ] ;
+                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.procps root ] ;
                                                                                                 text =
                                                                                                     ''
                                                                                                         ORIGINATOR_PID="$1"
