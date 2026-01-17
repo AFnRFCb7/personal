@@ -371,10 +371,10 @@
                                                             ephemeral =
                                                                 {
                                                                     chromium = ignore : _ephemeral.implementation { expression = "nixpkgs#chromium" ; targets = [ "bin" "share" ] ; } ;
-                                                                    gpg = ignore : _ephemeral.implementation { expression = "nixpkgs#gnupg" ; targets = [ ] ; } ;
-                                                                    ide = ignore : _ephemeral.implementation { expression = "nixpkgs#jetbrains.idea-community" ; targets = [ ] ; } ;
-                                                                    pass = ignore : _ephemeral.implementation { expression = "nixpkgs#pass" ; targets = [ ] ; } ;
-                                                                    ssh = ignore : _ephemeral.implementation { expression = "nixpkgs#openssh" ; targets = [ ] ; } ;
+                                                                    gpg = ignore : _ephemeral.implementation { expression = "nixpkgs#gnupg" ; targets = [ "bin" "libexec" "bin" "share" ] ; } ;
+                                                                    ide = ignore : _ephemeral.implementation { expression = "nixpkgs#jetbrains.idea-community" ; targets = [ "bin" "idea-community" "share" ] ; } ;
+                                                                    pass = ignore : _ephemeral.implementation { expression = "nixpkgs#pass" ; targets = [ "bin" "lib" "share" ] ; } ;
+                                                                    ssh = ignore : _ephemeral.implementation { expression = "nixpkgs#openssh" ; targets = [ "bin" "etc" "libexec" "share" ] ; } ;
                                                                 } ;
                                                             fixture =
                                                                 {
@@ -471,7 +471,7 @@
                                                                                         pkgs.writeShellApplication
                                                                                             {
                                                                                                 name = "init" ;
-                                                                                                runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                runtimeInputs = [ pkgs.coreutils root ] ;
                                                                                                 text =
                                                                                                     ''
                                                                                                         ORIGINATOR_PID="$1"
