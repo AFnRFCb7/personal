@@ -1828,7 +1828,8 @@
                                                                                                                                                 runtimeInputs = [ pkgs.chromium ] ;
                                                                                                                                                 text =
                                                                                                                                                     ''
-
+                                                                                                                                                        CONFIG=${ resources__.production.pads.home.chromium.config { } }
+                                                                                                                                                        export XDG_CONFIG_HOME="$CONFIG/repository/secret"
                                                                                                                                                         if [[ -t 0 ]]
                                                                                                                                                         then
                                                                                                                                                             chromium "$@"
