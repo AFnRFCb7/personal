@@ -590,7 +590,6 @@
                                                                                                                                                             '' ;
                                                                                                                                                     in
                                                                                                                                                         ''
-                                                                                                                                                            git init
                                                                                                                                                             ${ ssh mount pkgs resources root wrap }
                                                                                                                                                             git config user.email "${ config.personal.chromium.home.data.email }"
                                                                                                                                                             git config user.name "${ config.personal.chromium.home.data.name }"
