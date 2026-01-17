@@ -470,6 +470,7 @@
                                                                                         pkgs.writeShellApplication
                                                                                             {
                                                                                                 name = "init" ;
+                                                                                                runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                 text =
                                                                                                     ''
                                                                                                         ORIGINATOR_PID="$1"
@@ -481,6 +482,20 @@
                                                                                                     '' ;
                                                                                             } ;
                                                                                     in "${ application }/bin/init" ;
+                                                                        release =
+                                                                            let
+                                                                                application =
+                                                                                    pkgs.writeShellApplication
+                                                                                        {
+                                                                                            name = "release" ;
+                                                                                            runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                            text =
+                                                                                                ''
+                                                                                                    PID="$( cat /mount/originator-pid )"
+                                                                                                    tail --follow /dev/null --pid "$PID"
+                                                                                                '' ;
+                                                                                        } ;
+                                                                                in "${ application }/bin/release" ;
                                                                         targets = [ "held" "originator-pid" ] ;
                                                                     } ;
                                                             pads =
@@ -1973,6 +1988,9 @@
                                                                                                                                                         runtimeInputs = [ bin.chromium bin.gnupg bin.mutable bin.pass bin.ssh ] ;
                                                                                                                                                         text =
                                                                                                                                                             ''
+                                                                                                                                                                CHROMIUM=${ resources.production.ephemeral.chromium { } }
+                                                                                                                                                                ${ resources.production.holder { setup = setup : ''${ setup } "$PPID" "$CHROMIUM"'' ; } }
+                                                                                                                                                                export CHROMIUM
                                                                                                                                                             '' ;
                                                                                                                                                     } ;
                                                                                                                                             in "${ application }/bin/envrc" ;
