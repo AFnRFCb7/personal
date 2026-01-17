@@ -1846,8 +1846,8 @@
                                                                                                                                                 runtimeInputs = [ pkgs.chromium ] ;
                                                                                                                                                 text =
                                                                                                                                                     ''
-                                                                                                                                                        CONFIG=${ resources__.production.pads.home.config { } }
-                                                                                                                                                        DATA=${ resources__.production.pads.home.data { } }
+                                                                                                                                                        CONFIG=${ resources__.production.pads.home.chromium.config { } }
+                                                                                                                                                        DATA=${ resources__.production.pads.home.chromium.data { } }
                                                                                                                                                         export XDG_CONFIG_HOME="$CONFIG/repository/secret"
                                                                                                                                                         export XDG_DATA_HOME="$DATA/repository/secret"
                                                                                                                                                         if [[ -t 0 ]]
