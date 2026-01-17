@@ -476,11 +476,12 @@
                                                                                                         HELD="$2"
                                                                                                         echo "$ORIGINATOR_PID" > /mount/originator-pid
                                                                                                         chmod 0400 /mount/originator-pid
+                                                                                                        ln --symbolic "$HELD" /mount/held
                                                                                                         root "$HELD"
                                                                                                     '' ;
                                                                                             } ;
                                                                                     in "${ application }/bin/init" ;
-                                                                        targets = [ "originator-pid" ] ;
+                                                                        targets = [ "held" "originator-pid" ] ;
                                                                     } ;
                                                             pads =
                                                                 let
