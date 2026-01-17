@@ -1885,7 +1885,7 @@
                                                                                                                                                             HAS_ARGUMENTS=true
                                                                                                                                                             ARGUMENTS="$*"
                                                                                                                                                         fi
-                                                                                                                                                        MUTABLE=${ resources__.production.repository.studio.entrance { fun = setup : ''${ setup } "$HAS_ARGUMENTS" "$ARGUMENTS"'' ; } }
+                                                                                                                                                        MUTABLE=${ resources__.production.repository.studio.entry { fun = setup : ''${ setup } "$HAS_ARGUMENTS" "$ARGUMENTS"'' ; } }
                                                                                                                                                         if $HAS_ARGUMENTS
                                                                                                                                                         then
                                                                                                                                                             echo "$MUTABLE"
