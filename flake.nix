@@ -707,7 +707,7 @@
                                                                                                                                     ln --symbolic ${ post-commit } "/mount/repository/.git/hooks/post-commit"
                                                                                                                                     git remote add origin ${ config.personal.pass.remote }
                                                                                                                                     wrap ${ ssh } stage/ssh/command 0500 --literal-plain "@" --set-plain MOUNT "${ mount }" --literal-plain PATH
-                                                                                                                                    DOT_SSH=${ resources.production.dot-ssh { } }
+                                                                                                                                    DOT_SSH=XXXX
                                                                                                                                     root "$DOT_SSH"
                                                                                                                                     wrap "$DOT_SSH/config" stage/ssh/config 0400
                                                                                                                                     git fetch origin ${ config.personal.pass.branch } 2>&1
