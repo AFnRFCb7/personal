@@ -701,7 +701,17 @@
                                                                                                                                     in "${ application }/bin/ssh" ;
                                                                                                                             in
                                                                                                                                 ''
-
+                                                                                                                                    git config core.sshCommand "${ mount }/stage/ssh/command"
+                                                                                                                                    git config user.email ${ config.personal.pass.email }
+                                                                                                                                    git config user.name ${ config.personal.pass.name }
+                                                                                                                                    ln --symbolic ${ post-commit } "/mount/repository/.git/hooks/post-commit"
+                                                                                                                                    git remote add origin ${ config.personal.pass.remote }
+                                                                                                                                    wrap ${ ssh } stage/ssh/command 0500 --literal-plain "@" --set-plain MOUNT "${ mount }" --literal-plain PATH
+                                                                                                                                    DOT_SSH=${ resources.production.dot-ssh { } }
+                                                                                                                                    root "$DOT_SSH"
+                                                                                                                                    wrap "$DOT_SSH/config" stage/ssh/config 0400
+                                                                                                                                    git fetch origin ${ config.personal.pass.branch } 2>&1
+                                                                                                                                    git checkout ${ config.personal.pass.branch } 2>&1
                                                                                                                                 '' ;
                                                                                                                 } ;
                                                                                                         in "${ application }/bin/setup" ;
@@ -1874,7 +1884,7 @@
                                                                                                                                                     ''
                                                                                                                                                         DOT_GNUPG=${ resources__.production.dot-gnupg { } }
                                                                                                                                                         export PASSWORD_STORE_GPG_OPTS="--homedir $DOT_GNUPG/dot-gnupg"
-                                                                                                                                                        PASSWORD_STORE=${ resources__.production.repository.pass { } }
+                                                                                                                                                        PASSWORD_STORE=FIXME
                                                                                                                                                         export PASSWORD_STORE_DIR="$PASSWORD_STORE/repository"
                                                                                                                                                         if [[ -s 0 ]]
                                                                                                                                                         then
