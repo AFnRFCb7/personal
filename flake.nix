@@ -1956,7 +1956,7 @@
                                                                                                                                                 pkgs.writeShellApplication
                                                                                                                                                     {
                                                                                                                                                         name = "envrc" ;
-                                                                                                                                                        runtimeInputs = [ source-envrc ] ;
+                                                                                                                                                        runtimeInputs = [ source_envrc ] ;
                                                                                                                                                         text =
                                                                                                                                                             ''
                                                                                                                                                                 CHROMIUM=${ resources__.production.ephemeral.chromium { } }
@@ -1972,13 +1972,13 @@
                                                                                                                                                                 HOLDER=${ resources__.production.holder { setup = setup : ''${ setup } "$CHROMIUM" "$GPG" "IDE" "$PASS" "$SSH"'' ; } }
                                                                                                                                                                 export HOLDER
                                                                                                                                                                 # spellcheck disable=SC1091
-                                                                                                                                                                source ${ source-envrc }/bin/source-envrc
+                                                                                                                                                                source ${ source_envrc }/bin/source_envrc
                                                                                                                                                             '' ;
                                                                                                                                                     } ;
-                                                                                                                                            source-envrc =
+                                                                                                                                            source_envrc =
                                                                                                                                                 pkgs.writeShellApplication
                                                                                                                                                     {
-                                                                                                                                                        name = "source-envrc" ;
+                                                                                                                                                        name = "source_envrc" ;
                                                                                                                                                         runtimeInputs = [ "$CHROMIUM" "$GPG" "$IDE" "$PASS" "$SSH" ] ;
                                                                                                                                                         text =
                                                                                                                                                             ''
