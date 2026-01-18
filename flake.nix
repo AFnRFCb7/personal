@@ -1882,7 +1882,7 @@
                                                                                                                                                         SSH=${ resources__.production.ephemeral.ssh { } }
                                                                                                                                                         HOLDER=${ resources__.production.holder { setup = setup : ''${ setup } "$SSH"'' ; } }
                                                                                                                                                         export HOLDER
-                                                                                                                                                        export PATH="$SSH"
+                                                                                                                                                        export PATH="$SSH/bin"
                                                                                                                                                         # CONFIG=${ resources__.production.repository.pads.home.chromium.config { } }
                                                                                                                                                         # export XDG_CONFIG_HOME="$CONFIG/repository/secret"
                                                                                                                                                         # DATA=${ resources__.production.repository.pads.home.chromium.data { } }
