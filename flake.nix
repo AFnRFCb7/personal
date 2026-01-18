@@ -1965,7 +1965,7 @@
                                                                                                                                                                             pkgs.writeShellApplication
                                                                                                                                                                                 {
                                                                                                                                                                                     name = "envrc" ;
-                                                                                                                                                                                    runtimeInputs = [ "$CHROMIUM" "$GNUPG" "$IDE" "$PASS" "$SSH" ] ;
+                                                                                                                                                                                    runtimeInputs = [ "$CHROMIUM" "$GPG" "$IDE" "$PASS" "$SSH" ] ;
                                                                                                                                                                                     text =
                                                                                                                                                                                         ''
                                                                                                                                                                                             DOT_GNUPG=${ resources__.production.dot-gnupg { } }
@@ -1979,7 +1979,7 @@
                                                                                                                                                                     ''
                                                                                                                                                                         CHROMIUM=${ resources__.production.ephemeral.chromium { } }
                                                                                                                                                                         export CHROMIUM
-                                                                                                                                                                        GNUPG=${ resources__.production.ephemeral.gnupg { } }
+                                                                                                                                                                        GPG=${ resources__.production.ephemeral.gpg { } }
                                                                                                                                                                         export GNUPG
                                                                                                                                                                         IDE=${ resources__.production.ephemeral.ide { } }
                                                                                                                                                                         export IDE
@@ -1987,7 +1987,7 @@
                                                                                                                                                                         export PASS
                                                                                                                                                                         SSH=${ resources__.production.ephemeral.ssh { } }
                                                                                                                                                                         export SSH
-                                                                                                                                                                        HOLDER=${ resources__.production.holder { setup = setup : ''${ setup } "$CHROMIUM" "$GNUPG "IDE" "$PASS" "$SSH"'' ; } }
+                                                                                                                                                                        HOLDER=${ resources__.production.holder { setup = setup : ''${ setup } "$CHROMIUM" "$GPG" "IDE" "$PASS" "$SSH"'' ; } }
                                                                                                                                                                         source "${ envrc }"
                                                                                                                                                                     '' ;
                                                                                                                                                     } ;
