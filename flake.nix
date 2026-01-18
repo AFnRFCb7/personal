@@ -1878,10 +1878,17 @@
                                                                                                                                                 runtimeInputs = [ ] ;
                                                                                                                                                 text =
                                                                                                                                                     ''
-                                                                                                                                                        CHROMIUM=${ resources__.production.ephemeral.chromium { failure = "exit 69" ; } }
-                                                                                                                                                        HOLDER=${ resources__.production.holder { setup = setup : ''${ setup } "$CHROMIUM"'' ; failure = "exit 68" ; } }
+                                                                                                                                                        # CHROMIUM=${ resources__.production.ephemeral.chromium { } }
+                                                                                                                                                        SSH=${ resources__.production.ephemeral.ssh { } }
+                                                                                                                                                        HOLDER=${ resources__.production.holder { setup = setup : ''${ setup } "$SSH"'' ; } }
                                                                                                                                                         export HOLDER
-                                                                                                                                                        export PATH="$CHROMIUM"
+                                                                                                                                                        export PATH="$SSH"
+                                                                                                                                                        # CONFIG=${ resources__.production.repository.pads.home.chromium.config { } }
+                                                                                                                                                        # export XDG_CONFIG_HOME="$CONFIG/repository/secret"
+                                                                                                                                                        # DATA=${ resources__.production.repository.pads.home.chromium.data { } }
+                                                                                                                                                        # export XDG_DATA_HOME="$DATA/repository/secret"
+                                                                                                                                                        DOT_SSH=${ resources__.production.dot-ssh { } }
+                                                                                                                                                        export "$DOT_SSH"
                                                                                                                                                     '' ;
                                                                                                                                             } ;
                                                                                                                                     in "${ application }/bin/envrc" ;
