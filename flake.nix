@@ -476,12 +476,10 @@
                                                                                                     ''
                                                                                                         ORIGINATOR_PID="$( ps -o ppid= -p "$PPID" | tr -d '[:space:]')" || failure 88093287
                                                                                                         echo "$ORIGINATOR_PID" > /mount/originator-pid
-                                                                                                        mkdir --parents /mount/resources
                                                                                                         while [[ "$#" -gt 0 ]]
                                                                                                         do
                                                                                                             RESOURCE="$1"
                                                                                                             root "$RESOURCE"
-                                                                                                            ln --symbolic "$RESOURCE" /mount/resources
                                                                                                             shift
                                                                                                         done
                                                                                                     '' ;
@@ -501,7 +499,7 @@
                                                                                                 '' ;
                                                                                         } ;
                                                                                 in "${ application }/bin/release" ;
-                                                                        targets = [ "originator-pid" "resources" ] ;
+                                                                        targets = [ "originator-pid" ] ;
                                                                     } ;
                                                             pads =
                                                                 let
