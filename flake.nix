@@ -1961,7 +1961,6 @@
                                                                                                                                                             ''
                                                                                                                                                                 CHROMIUM=${ resources__.production.ephemeral.chromium { } }
                                                                                                                                                                 export CHROMIUM
-                                                                                                                                                                export SSH
                                                                                                                                                                 HOLDER=${ resources__.production.holder { setup = setup : ''${ setup } "$CHROMIUM"'' ; } }
                                                                                                                                                                 export HOLDER
                                                                                                                                                                 export PATH="$CHROMIUM:$IDE:$PASS:$SSH"
