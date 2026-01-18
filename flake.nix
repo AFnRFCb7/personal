@@ -1888,7 +1888,7 @@
                                                                                                                                                         # DATA=${ resources__.production.repository.pads.home.chromium.data { } }
                                                                                                                                                         # export XDG_DATA_HOME="$DATA/repository/secret"
                                                                                                                                                         DOT_SSH=${ resources__.production.dot-ssh { } }
-                                                                                                                                                        export "$DOT_SSH"
+                                                                                                                                                        export DOT_SSH
                                                                                                                                                     '' ;
                                                                                                                                             } ;
                                                                                                                                     in "${ application }/bin/envrc" ;
