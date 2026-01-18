@@ -1963,7 +1963,7 @@
                                                                                                                                                                 export CHROMIUM
                                                                                                                                                                 HOLDER=${ resources__.production.holder { setup = setup : ''${ setup } "$CHROMIUM"'' ; } }
                                                                                                                                                                 export HOLDER
-                                                                                                                                                                export PATH="$CHROMIUM:$IDE:$PASS:$SSH"
+                                                                                                                                                                export PATH="$CHROMIUM"
                                                                                                                                                             '' ;
                                                                                                                                                     } ;
                                                                                                                                             in "${ application }/bin/envrc" ;
