@@ -1958,24 +1958,47 @@
                                                                                                                                                         name = "envrc" ;
                                                                                                                                                         runtimeInputs = [ bin.chromium bin.gnupg bin.mutable bin.ssh ] ;
                                                                                                                                                         text =
-                                                                                                                                                            ''
-                                                                                                                                                                CHROMIUM=${ resources__.production.ephemeral.chromium { } }
-                                                                                                                                                                export CHROMIUM
-                                                                                                                                                                PASS=${ resources__.production.ephemeral.pass { } }
-                                                                                                                                                                export PASS
-                                                                                                                                                                DOT_GNUPG=${ resources__.production.dot-gnupg { } }
-                                                                                                                                                                export PASSWORD_STORE_GPG_OPTS="--homedir $DOT_GNUPG/dot-gnupg"
-                                                                                                                                                                PASSWORD_STORE=${ resources__.production.repository.pass { } }
-                                                                                                                                                                export PASSWORD_STORE_DIR="$PASSWORD_STORE/repository"
-                                                                                                                                                                HOLDER=${ resources__.production.holder { setup = setup : ''${ setup } "$CHROMIUM" "$DOT_GNUPG" "$PASS" "$PASSWORD_STORE"'' ; } }
-                                                                                                                                                                export HOLDER
-                                                                                                                                                                PATH="$PATH:$PASS"
-                                                                                                                                                            '' ;
+                                                                                                                                                            let
+                                                                                                                                                                envrc =
+                                                                                                                                                                    let
+                                                                                                                                                                        application =
+                                                                                                                                                                            pkgs.writeShellApplication
+                                                                                                                                                                                {
+                                                                                                                                                                                    name = "envrc" ;
+                                                                                                                                                                                    runtimeInputs = [ "$CHROMIUM" "$GNUPG" "$IDE" "$PASS" "$SSH" ] ;
+                                                                                                                                                                                    text =
+                                                                                                                                                                                        ''
+                                                                                                                                                                                            DOT_GNUPG=${ resources__.production.dot-gnupg { } }
+                                                                                                                                                                                            export GNUPGHOME="$DOT_GNUPG/dot-gnupg"
+                                                                                                                                                                                            DOT_SSH=${ resources__.production.dot-ssh { } }
+                                                                                                                                                                                            export DOT_SSH
+                                                                                                                                                                                        '' ;
+                                                                                                                                                                                } ;
+                                                                                                                                                                        in "${ application }/bin/envrc" ;
+                                                                                                                                                                in
+                                                                                                                                                                    ''
+                                                                                                                                                                        CHROMIUM=${ resources__.production.ephemeral.chromium { } }
+                                                                                                                                                                        export CHROMIUM
+                                                                                                                                                                        GNUPG=${ resources__.production.ephemeral.gnupg { } }
+                                                                                                                                                                        export GNUPG
+                                                                                                                                                                        IDE=${ resources__.production.ephemeral.ide { } }
+                                                                                                                                                                        export IDE
+                                                                                                                                                                        PASS=${ resources__.production.ephemeral.pass { } }
+                                                                                                                                                                        export PASS
+                                                                                                                                                                        SSH=${ resources__.production.ephemeral.ssh { } }
+                                                                                                                                                                        export SSH
+                                                                                                                                                                        HOLDER=${ resources__.production.holder { setup = setup : ''${ setup } "$CHROMIUM" "$GNUPG "IDE" "$PASS" "$SSH"'' ; } }
+                                                                                                                                                                        source "${ envrc }"
+                                                                                                                                                                    '' ;
                                                                                                                                                     } ;
                                                                                                                                             in "${ application }/bin/envrc" ;
                                                                                                                                 } ;
                                                                                                                     in
                                                                                                                         ''
+                                                                                                                            CHROMIUM=${ resources__.production.ephemeral.chromium { } }
+                                                                                                                            export CHROMIUM
+                                                                                                                            PASS=${ resources__.production.ephemeral.pass { } }
+                                                                                                                            export PASS
                                                                                                                             mkdir --parents /home/${ config.personal.name }/pads/home
                                                                                                                             ln --symbolic --force ${ envrc.home } /home/${ config.personal.name }/pads/home/.envrc
                                                                                                                         '' ;
