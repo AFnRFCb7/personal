@@ -1961,15 +1961,8 @@
                                                                                                                                                             ''
                                                                                                                                                                 CHROMIUM=${ resources__.production.ephemeral.chromium { } }
                                                                                                                                                                 export CHROMIUM
-                                                                                                                                                                GPG=${ resources__.production.ephemeral.gpg { } }
-                                                                                                                                                                export GNUPG
-                                                                                                                                                                IDE=${ resources__.production.ephemeral.ide { } }
-                                                                                                                                                                export IDE
-                                                                                                                                                                PASS=${ resources__.production.ephemeral.pass { } }
-                                                                                                                                                                export PASS
-                                                                                                                                                                SSH=${ resources__.production.ephemeral.ssh { } }
                                                                                                                                                                 export SSH
-                                                                                                                                                                HOLDER=${ resources__.production.holder { setup = setup : ''${ setup } "$CHROMIUM" "$GPG" "IDE" "$PASS" "$SSH"'' ; } }
+                                                                                                                                                                HOLDER=${ resources__.production.holder { setup = setup : ''${ setup } "$CHROMIUM"'' ; } }
                                                                                                                                                                 export HOLDER
                                                                                                                                                                 export PATH="$CHROMIUM:$IDE:$PASS:$SSH"
                                                                                                                                                             '' ;
