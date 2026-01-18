@@ -1888,10 +1888,6 @@
                                                                                                                         } ;
                                                                                                                     in
                                                                                                                         ''
-                                                                                                                            CHROMIUM=${ resources__.production.ephemeral.chromium { } }
-                                                                                                                            export CHROMIUM
-                                                                                                                            PASS=${ resources__.production.ephemeral.pass { } }
-                                                                                                                            export PASS
                                                                                                                             mkdir --parents /home/${ config.personal.name }/pads/home
                                                                                                                             ln --symbolic --force ${ envrc.home } /home/${ config.personal.name }/pads/home/.envrc
                                                                                                                         '' ;
