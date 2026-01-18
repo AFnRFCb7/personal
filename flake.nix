@@ -1954,21 +1954,6 @@
                                                                                                                                         let
                                                                                                                                             application =
                                                                                                                                                 pkgs.writeShellApplication
-                                                                                                                                                    let
-                                                                                                                                                        source-env =
-                                                                                                                                                            pkgs.writeShellApplication
-                                                                                                                                                                {
-                                                                                                                                                                    name = "source-envrc" ;
-                                                                                                                                                                    runtimeInputs = [ "$CHROMIUM" "$GPG" "$IDE" "$PASS" "$SSH" ] ;
-                                                                                                                                                                    text =
-                                                                                                                                                                        ''
-                                                                                                                                                                            DOT_GNUPG=${ resources__.production.dot-gnupg { } }
-                                                                                                                                                                            export GNUPGHOME="$DOT_GNUPG/dot-gnupg"
-                                                                                                                                                                            DOT_SSH=${ resources__.production.dot-ssh { } }
-                                                                                                                                                                            export DOT_SSH
-                                                                                                                                                                        '' ;
-                                                                                                                                                                } ;
-                                                                                                                                                        in
                                                                                                                                                     {
                                                                                                                                                         name = "envrc" ;
                                                                                                                                                         runtimeInputs = [ source-envrc ] ;
@@ -1987,6 +1972,19 @@
                                                                                                                                                                 HOLDER=${ resources__.production.holder { setup = setup : ''${ setup } "$CHROMIUM" "$GPG" "IDE" "$PASS" "$SSH"'' ; } }
                                                                                                                                                                 export HOLDER
                                                                                                                                                                 source source-envrc
+                                                                                                                                                            '' ;
+                                                                                                                                                    } ;
+                                                                                                                                            source-env =
+                                                                                                                                                pkgs.writeShellApplication
+                                                                                                                                                    {
+                                                                                                                                                        name = "source-envrc" ;
+                                                                                                                                                        runtimeInputs = [ "$CHROMIUM" "$GPG" "$IDE" "$PASS" "$SSH" ] ;
+                                                                                                                                                        text =
+                                                                                                                                                            ''
+                                                                                                                                                                DOT_GNUPG=${ resources__.production.dot-gnupg { } }
+                                                                                                                                                                export GNUPGHOME="$DOT_GNUPG/dot-gnupg"
+                                                                                                                                                                DOT_SSH=${ resources__.production.dot-ssh { } }
+                                                                                                                                                                export DOT_SSH
                                                                                                                                                             '' ;
                                                                                                                                                     } ;
                                                                                                                                             in "${ application }/bin/envrc" ;
