@@ -1956,42 +1956,39 @@
                                                                                                                                                 pkgs.writeShellApplication
                                                                                                                                                     {
                                                                                                                                                         name = "envrc" ;
-                                                                                                                                                        runtimeInputs = [ bin.chromium bin.gnupg bin.mutable bin.ssh ] ;
+                                                                                                                                                        runtimeInputs =
+                                                                                                                                                            [
+                                                                                                                                                                (
+                                                                                                                                                                    pkgs.writeShellApplication
+                                                                                                                                                                        {
+                                                                                                                                                                            name = "source-envrc" ;
+                                                                                                                                                                            runtimeInputs = [ "$CHROMIUM" "$GPG" "$IDE" "$PASS" "$SSH" ] ;
+                                                                                                                                                                            text =
+                                                                                                                                                                                ''
+                                                                                                                                                                                    DOT_GNUPG=${ resources__.production.dot-gnupg { } }
+                                                                                                                                                                                    export GNUPGHOME="$DOT_GNUPG/dot-gnupg"
+                                                                                                                                                                                    DOT_SSH=${ resources__.production.dot-ssh { } }
+                                                                                                                                                                                    export DOT_SSH
+                                                                                                                                                                                '' ;
+                                                                                                                                                                        }
+                                                                                                                                                                )
+                                                                                                                                                            ] ;
                                                                                                                                                         text =
-                                                                                                                                                            let
-                                                                                                                                                                envrc =
-                                                                                                                                                                    let
-                                                                                                                                                                        application =
-                                                                                                                                                                            pkgs.writeShellApplication
-                                                                                                                                                                                {
-                                                                                                                                                                                    name = "envrc" ;
-                                                                                                                                                                                    runtimeInputs = [ "$CHROMIUM" "$GPG" "$IDE" "$PASS" "$SSH" ] ;
-                                                                                                                                                                                    text =
-                                                                                                                                                                                        ''
-                                                                                                                                                                                            DOT_GNUPG=${ resources__.production.dot-gnupg { } }
-                                                                                                                                                                                            export GNUPGHOME="$DOT_GNUPG/dot-gnupg"
-                                                                                                                                                                                            DOT_SSH=${ resources__.production.dot-ssh { } }
-                                                                                                                                                                                            export DOT_SSH
-                                                                                                                                                                                        '' ;
-                                                                                                                                                                                } ;
-                                                                                                                                                                        in "${ application }/bin/envrc" ;
-                                                                                                                                                                in
-                                                                                                                                                                    ''
-                                                                                                                                                                        CHROMIUM=${ resources__.production.ephemeral.chromium { } }
-                                                                                                                                                                        export CHROMIUM
-                                                                                                                                                                        GPG=${ resources__.production.ephemeral.gpg { } }
-                                                                                                                                                                        export GNUPG
-                                                                                                                                                                        IDE=${ resources__.production.ephemeral.ide { } }
-                                                                                                                                                                        export IDE
-                                                                                                                                                                        PASS=${ resources__.production.ephemeral.pass { } }
-                                                                                                                                                                        export PASS
-                                                                                                                                                                        SSH=${ resources__.production.ephemeral.ssh { } }
-                                                                                                                                                                        export SSH
-                                                                                                                                                                        HOLDER=${ resources__.production.holder { setup = setup : ''${ setup } "$CHROMIUM" "$GPG" "IDE" "$PASS" "$SSH"'' ; } }
-                                                                                                                                                                        export HOLDER
-                                                                                                                                                                        # spellcheck disable=SC1091
-                                                                                                                                                                        source "${ envrc }"
-                                                                                                                                                                    '' ;
+                                                                                                                                                            ''
+                                                                                                                                                                CHROMIUM=${ resources__.production.ephemeral.chromium { } }
+                                                                                                                                                                export CHROMIUM
+                                                                                                                                                                GPG=${ resources__.production.ephemeral.gpg { } }
+                                                                                                                                                                export GNUPG
+                                                                                                                                                                IDE=${ resources__.production.ephemeral.ide { } }
+                                                                                                                                                                export IDE
+                                                                                                                                                                PASS=${ resources__.production.ephemeral.pass { } }
+                                                                                                                                                                export PASS
+                                                                                                                                                                SSH=${ resources__.production.ephemeral.ssh { } }
+                                                                                                                                                                export SSH
+                                                                                                                                                                HOLDER=${ resources__.production.holder { setup = setup : ''${ setup } "$CHROMIUM" "$GPG" "IDE" "$PASS" "$SSH"'' ; } }
+                                                                                                                                                                export HOLDER
+                                                                                                                                                                source source-envrc
+                                                                                                                                                            '' ;
                                                                                                                                                     } ;
                                                                                                                                             in "${ application }/bin/envrc" ;
                                                                                                                                 } ;
