@@ -1974,7 +1974,7 @@
                                                                                                                                                                 source ${ source-env }/bin/source-envrc
                                                                                                                                                             '' ;
                                                                                                                                                     } ;
-                                                                                                                                            source-env =
+                                                                                                                                            source-envrc =
                                                                                                                                                 pkgs.writeShellApplication
                                                                                                                                                     {
                                                                                                                                                         name = "source-envrc" ;
