@@ -1868,106 +1868,25 @@
                                                                                                             text =
                                                                                                                 let
                                                                                                                     envrc =
-                                                                                                                        let
-                                                                                                                            bin =
-                                                                                                                                {
-                                                                                                                                    chromium =
+                                                                                                                        {
+                                                                                                                            home =
+                                                                                                                                let
+                                                                                                                                    application =
                                                                                                                                         pkgs.writeShellApplication
                                                                                                                                             {
-                                                                                                                                                name = "chromium" ;
-                                                                                                                                                runtimeInputs = [ "$CHROMIUM" ] ;
+                                                                                                                                                name = "envrc" ;
+                                                                                                                                                runtimeInputs = [ ] ;
                                                                                                                                                 text =
                                                                                                                                                     ''
-                                                                                                                                                        CONFIG=${ resources__.production.repository.pads.home.chromium.config { } }
-                                                                                                                                                        export XDG_CONFIG_HOME="$CONFIG/repository/secret"
-                                                                                                                                                        DATA=${ resources__.production.repository.pads.home.chromium.data { } }
-                                                                                                                                                        export XDG_DATA_HOME="$DATA/repository/secret"
-                                                                                                                                                        if [[ -t 0 ]]
-                                                                                                                                                        then
-                                                                                                                                                            chromium "$@"
-                                                                                                                                                        else
-                                                                                                                                                            cat | chromium "$@"
-                                                                                                                                                        fi
+                                                                                                                                                        CHROMIUM=${ resources__.production.ephemeral.chromium { failure = "exit 69" ; } }
+                                                                                                                                                        export CHROMIUM
+                                                                                                                                                        HOLDER=${ resources__.production.holder { setup = setup : ''${ setup } "$CHROMIUM"'' ; failure = "exit 68" ; } }
+                                                                                                                                                        export HOLDER
+                                                                                                                                                        export PATH="$CHROMIUM"
                                                                                                                                                     '' ;
                                                                                                                                             } ;
-                                                                                                                                    gnupg =
-                                                                                                                                        pkgs.writeShellApplication
-                                                                                                                                            {
-                                                                                                                                                name = "gpg" ;
-                                                                                                                                                runtimeInputs = [ pkgs.gnupg ] ;
-                                                                                                                                                text =
-                                                                                                                                                    ''
-                                                                                                                                                        DOT_GNUPG=${ resources__.production.dot-gnupg { } }
-                                                                                                                                                        export GNUPGHOME="$DOT_GNUPG/dot-gnupg"
-                                                                                                                                                        if [[ -t 0 ]]
-                                                                                                                                                        then
-                                                                                                                                                            gpg "$@"
-                                                                                                                                                        else
-                                                                                                                                                            cat | gpg "$@"
-                                                                                                                                                        fi
-                                                                                                                                                    '' ;
-                                                                                                                                            } ;
-                                                                                                                                    mutable =
-                                                                                                                                        pkgs.writeShellApplication
-                                                                                                                                            {
-                                                                                                                                                name = "mutable" ;
-                                                                                                                                                runtimeInputs = [ pkgs.jetbrains.idea-community ] ;
-                                                                                                                                                text =
-                                                                                                                                                    ''
-                                                                                                                                                        if [[ "$#" == 0 ]]
-                                                                                                                                                        then
-                                                                                                                                                            HAS_ARGUMENTS=false
-                                                                                                                                                            ARGUMENTS=
-                                                                                                                                                        else
-                                                                                                                                                            HAS_ARGUMENTS=true
-                                                                                                                                                            ARGUMENTS="$*"
-                                                                                                                                                        fi
-                                                                                                                                                        MUTABLE=${ resources__.production.repository.studio.entry { setup = setup : ''${ setup } "$HAS_ARGUMENTS" "$ARGUMENTS"'' ; } }
-                                                                                                                                                        if $HAS_ARGUMENTS
-                                                                                                                                                        then
-                                                                                                                                                            echo "$MUTABLE"
-                                                                                                                                                        else
-                                                                                                                                                            idea-community "$MUTABLE"
-                                                                                                                                                        fi
-                                                                                                                                                    '' ;
-                                                                                                                                            } ;
-                                                                                                                                    ssh =
-                                                                                                                                        pkgs.writeShellApplication
-                                                                                                                                            {
-                                                                                                                                                name = "ssh" ;
-                                                                                                                                                runtimeInputs = [ pkgs.openssh ] ;
-                                                                                                                                                text =
-                                                                                                                                                    ''
-                                                                                                                                                        DOT_SSH=${ resources__.production.dot-ssh { } }
-                                                                                                                                                        if [[ -t 0 ]]
-                                                                                                                                                        then
-                                                                                                                                                            ssh -F "$DOT_SSH/config" "$@"
-                                                                                                                                                        else
-                                                                                                                                                            cat | ssh -F "$DOT_SSH/config" "$@"
-                                                                                                                                                        fi
-                                                                                                                                                    '' ;
-                                                                                                                                            } ;
-                                                                                                                                } ;
-                                                                                                                            in
-                                                                                                                                {
-                                                                                                                                    home =
-                                                                                                                                        let
-                                                                                                                                            application =
-                                                                                                                                                pkgs.writeShellApplication
-                                                                                                                                                    {
-                                                                                                                                                        name = "envrc" ;
-                                                                                                                                                        runtimeInputs = [ ] ;
-                                                                                                                                                        text =
-                                                                                                                                                            ''
-                                                                                                                                                                CHROMIUM=${ resources__.production.ephemeral.chromium { } }
-                                                                                                                                                                export CHROMIUM
-                                                                                                                                                                HOLDER=${ resources__.production.holder { setup = setup : ''${ setup } "$CHROMIUM"'' ; } }
-                                                                                                                                                                export HOLDER
-                                                                                                                                                                export PATH="$CHROMIUM"
-                                                                                                                                                            '' ;
-                                                                                                                                                    } ;
-                                                                                                                                            in "${ application }/bin/envrc" ;
-                                                                                                                                } ;
+                                                                                                                                    in "${ application }/bin/envrc" ;
+                                                                                                                        } ;
                                                                                                                     in
                                                                                                                         ''
                                                                                                                             CHROMIUM=${ resources__.production.ephemeral.chromium { } }
