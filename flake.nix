@@ -1971,7 +1971,7 @@
                                                                                                                                                                 export SSH
                                                                                                                                                                 HOLDER=${ resources__.production.holder { setup = setup : ''${ setup } "$CHROMIUM" "$GPG" "IDE" "$PASS" "$SSH"'' ; } }
                                                                                                                                                                 export HOLDER
-                                                                                                                                                                source source-envrc
+                                                                                                                                                                source ${ source-env }/bin/source-envrc
                                                                                                                                                             '' ;
                                                                                                                                                     } ;
                                                                                                                                             source-env =
