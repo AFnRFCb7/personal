@@ -1879,14 +1879,17 @@
                                                                                                                                                 text =
                                                                                                                                                     ''
                                                                                                                                                         # CHROMIUM=${ resources__.production.ephemeral.chromium { } }
+                                                                                                                                                        GPG=${ resources__.production.ephemeral.gpg { } }
                                                                                                                                                         SSH=${ resources__.production.ephemeral.ssh { } }
-                                                                                                                                                        HOLDER=${ resources__.production.holder { setup = setup : ''${ setup } "$SSH"'' ; } }
+                                                                                                                                                        HOLDER=${ resources__.production.holder { setup = setup : ''${ setup } "$GPG" "$SSH"'' ; } }
                                                                                                                                                         export HOLDER
                                                                                                                                                         export PATH="$SSH/bin"
                                                                                                                                                         # CONFIG=${ resources__.production.repository.pads.home.chromium.config { } }
                                                                                                                                                         # export XDG_CONFIG_HOME="$CONFIG/repository/secret"
                                                                                                                                                         # DATA=${ resources__.production.repository.pads.home.chromium.data { } }
                                                                                                                                                         # export XDG_DATA_HOME="$DATA/repository/secret"
+                                                                                                                                                        DOT_GNUPG=${ resources__.production.dot-gnupg { } }
+                                                                                                                                                        export GNUPGHOME="$DOT_GNUPG/dot-gnupg"
                                                                                                                                                         DOT_SSH=${ resources__.production.dot-ssh { } }
                                                                                                                                                         export DOT_SSH
                                                                                                                                                     '' ;
