@@ -1879,7 +1879,6 @@
                                                                                                                                                 text =
                                                                                                                                                     ''
                                                                                                                                                         CHROMIUM=${ resources__.production.ephemeral.chromium { failure = "exit 69" ; } }
-                                                                                                                                                        export CHROMIUM
                                                                                                                                                         HOLDER=${ resources__.production.holder { setup = setup : ''${ setup } "$CHROMIUM"'' ; failure = "exit 68" ; } }
                                                                                                                                                         export HOLDER
                                                                                                                                                         export PATH="$CHROMIUM"
