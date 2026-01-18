@@ -1881,7 +1881,7 @@
                                                                                                                                                         SSH=${ resources__.production.ephemeral.ssh { } }
                                                                                                                                                         HOLDER=${ resources__.production.holder { setup = setup : ''${ setup } "$GPG"'' ; } }
                                                                                                                                                         export HOLDER
-                                                                                                                                                        export PATH="$SSH/bin"
+                                                                                                                                                        export PATH="$GPG/bin:$SSH/bin"
                                                                                                                                                         # CONFIG=${ resources__.production.repository.pads.home.chromium.config { } }
                                                                                                                                                         # export XDG_CONFIG_HOME="$CONFIG/repository/secret"
                                                                                                                                                         # DATA=${ resources__.production.repository.pads.home.chromium.data { } }
