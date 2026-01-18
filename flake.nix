@@ -1879,7 +1879,7 @@
                                                                                                                                                         # CHROMIUM=${ resources__.production.ephemeral.chromium { } }
                                                                                                                                                         GPG=${ resources__.production.ephemeral.gpg { } }
                                                                                                                                                         SSH=${ resources__.production.ephemeral.ssh { } }
-                                                                                                                                                        HOLDER=${ resources__.production.holder { setup = setup : ''${ setup } "$GPG" "$SSH"'' ; } }
+                                                                                                                                                        HOLDER=${ resources__.production.holder { setup = setup : ''${ setup } "$GPG"'' ; } }
                                                                                                                                                         export HOLDER
                                                                                                                                                         export PATH="$SSH/bin"
                                                                                                                                                         # CONFIG=${ resources__.production.repository.pads.home.chromium.config { } }
