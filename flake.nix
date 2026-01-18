@@ -1972,7 +1972,7 @@
                                                                                                                                                                 HOLDER=${ resources__.production.holder { setup = setup : ''${ setup } "$CHROMIUM" "$GPG" "IDE" "$PASS" "$SSH"'' ; } }
                                                                                                                                                                 export HOLDER
                                                                                                                                                                 # spellcheck disable=SC1091
-                                                                                                                                                                source ${ source_envrc }/bin/source_envrc
+                                                                                                                                                                # source ${ source_envrc }/bin/source_envrc
                                                                                                                                                             '' ;
                                                                                                                                                     } ;
                                                                                                                                             source_envrc =
