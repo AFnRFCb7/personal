@@ -471,7 +471,7 @@
                                                                                         pkgs.writeShellApplication
                                                                                             {
                                                                                                 name = "init" ;
-                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.procps root ] ;
+                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.procps pid root ] ;
                                                                                                 text =
                                                                                                     ''
                                                                                                         ORIGINATOR_PID="$( ps -o ppid= -p "$PPID" | tr -d '[:space:]')" || failure 88093287
@@ -494,14 +494,11 @@
                                                                                                                     shift 2
                                                                                                                     RESOURCE="$2"
                                                                                                                     root "$RESOURCE"
+                                                                                                                    shift 2
                                                                                                                     ;;
-                                                                                                                --pid)
-                                                                                                                    PID="$2"
-                                                                                                                    while [[ "$PID" -ne 1 ]] && [[ "$PID" -ne
-                                                                                                                    do
-                                                                                                                        echo "$PID" >> /mount/pids
-                                                                                                                        PID="$( ps -o ppid= -p "$PID" | tr -d ' ' )" || failure 0d8d5f2e
-                                                                                                                    done
+                                                                                                                --pid-index)
+                                                                                                                    PID_INDEX="$2"
+                                                                                                                    pid "$PID_INDEX" stall
                                                                                                                     shift 2
                                                                                                                     ;;
                                                                                                                 *)
@@ -509,7 +506,6 @@
                                                                                                                     ;;
                                                                                                             esac
                                                                                                         done
-                                                                                                        chmod 0400 /mount/pids
                                                                                                     '' ;
                                                                                             } ;
                                                                                     in "${ application }/bin/init" ;
@@ -524,9 +520,7 @@
                                                                                                     runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                     text =
                                                                                                         ''
-                                                                                                            ORIGINATOR_PID="$( cat /mount/originator-pid )"
-                                                                                                            echo ec16d2b2 "ORIGINATOR_PID=$ORIGINATOR_PID"
-                                                                                                            tail --follow /dev/null --pid "$ORIGINATOR_PID"
+                                                                                                            /mount/stall
                                                                                                         '' ;
                                                                                                 } ;
                                                                                         in "${ application }/bin/release" ;
