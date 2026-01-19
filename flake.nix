@@ -1883,11 +1883,11 @@
                                                                                                                                                                     in "${ application }/bin/failure ${ exit }" ;
                                                                                                                                                         in
                                                                                                                                                             ''
-                                                                                                                                                                echo FIRST
                                                                                                                                                                 # CHROMIUM=${ resources__.production.ephemeral.chromium { } }
                                                                                                                                                                 GPG=${ resources__.production.ephemeral.gpg { failure = failure "e5837ce1" ; } }
                                                                                                                                                                 SSH=${ resources__.production.ephemeral.ssh { failure = failure "f202e55a" ; } }
-                                                                                                                                                                HOLDER=${ resources__.production.holder { setup = setup : ''${ setup } "$GPG" "$SSH"'' ; failure = failure "9292d02e" ; } }
+                                                                                                                                                                DOT_SSH=${ resources__.production.dot-ssh { failure = failure "9c790f17" ; } }
+                                                                                                                                                                HOLDER=${ resources__.production.holder { setup = setup : ''${ setup } "$DOT_SSH" $GPG" "$SSH"'' ; failure = failure "9292d02e" ; } }
                                                                                                                                                                 export HOLDER
                                                                                                                                                                 export PATH="$GPG/bin:$SSH/bin"
                                                                                                                                                                 # CONFIG=${ resources__.production.repository.pads.home.chromium.config { failure = failure "96c7e465" ; } }
@@ -1898,7 +1898,7 @@
                                                                                                                                                                 DOT_GNUPG=${ resources__.production.dot-gnupg { failure = failure "fab5e543" ; } }
                                                                                                                                                                 echo AFTER
                                                                                                                                                                 export GNUPGHOME="$DOT_GNUPG/dot-gnupg"
-                                                                                                                                                                DOT_SSH=${ resources__.production.dot-ssh { failure = failure "9c790f17" ; } }
+
                                                                                                                                                                 export DOT_SSH
                                                                                                                                                             '' ;
                                                                                                                                             } ;
