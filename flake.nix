@@ -475,6 +475,7 @@
                                                                                                 text =
                                                                                                     ''
                                                                                                         ORIGINATOR_PID="$( ps -o ppid= -p "$PPID" | tr -d '[:space:]')" || failure 88093287
+                                                                                                        echo a3a6b79c "ORIGINATOR_PID=$ORIGINATOR_PID"
                                                                                                         echo "$ORIGINATOR_PID" > /mount/originator-pid
                                                                                                         while [[ "$#" -gt 0 ]]
                                                                                                         do
@@ -494,8 +495,9 @@
                                                                                             runtimeInputs = [ pkgs.coreutils ] ;
                                                                                             text =
                                                                                                 ''
-                                                                                                    PID="$( cat /mount/originator-pid )"
-                                                                                                    tail --follow /dev/null --pid "$PID"
+                                                                                                    ORIGINATOR_PID="$( cat /mount/originator-pid )"
+                                                                                                    echo ec16d2b2 "ORIGINATOR_PID=$ORIGINATOR_PID"
+                                                                                                    tail --follow /dev/null --pid "$ORIGINATOR_PID"
                                                                                                 '' ;
                                                                                         } ;
                                                                                 in "${ application }/bin/release" ;
@@ -1994,7 +1996,7 @@
                                                                 packages =
                                                                     [
                                                                         pkgs.gh
-                                                                        pkgs.yq
+                                                                        pkgs.yq-go
                                                                         ( _failure.implementation "762e3818" )
                                                                         (
                                                                             pkgs.writeShellApplication
