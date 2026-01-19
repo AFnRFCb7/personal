@@ -1885,7 +1885,9 @@
                                                                                                                                                         # export XDG_CONFIG_HOME="$CONFIG/repository/secret"
                                                                                                                                                         # DATA=${ resources__.production.repository.pads.home.chromium.data { } }
                                                                                                                                                         # export XDG_DATA_HOME="$DATA/repository/secret"
+                                                                                                                                                        echo BEFORE
                                                                                                                                                         DOT_GNUPG=${ resources__.production.dot-gnupg { } }
+                                                                                                                                                        echo AFTER
                                                                                                                                                         export GNUPGHOME="$DOT_GNUPG/dot-gnupg"
                                                                                                                                                         DOT_SSH=${ resources__.production.dot-ssh { } }
                                                                                                                                                         export DOT_SSH
