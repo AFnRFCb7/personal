@@ -1898,7 +1898,6 @@
                                                                                                                                                                 DOT_GNUPG=${ resources__.production.dot-gnupg { failure = failure "fab5e543" ; } }
                                                                                                                                                                 echo AFTER
                                                                                                                                                                 export GNUPGHOME="$DOT_GNUPG/dot-gnupg"
-
                                                                                                                                                                 export DOT_SSH
                                                                                                                                                             '' ;
                                                                                                                                             } ;
