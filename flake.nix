@@ -1876,6 +1876,7 @@
                                                                                                                                                 runtimeInputs = [ ] ;
                                                                                                                                                 text =
                                                                                                                                                     ''
+                                                                                                                                                        echo FIRST
                                                                                                                                                         # CHROMIUM=${ resources__.production.ephemeral.chromium { } }
                                                                                                                                                         GPG=${ resources__.production.ephemeral.gpg { } }
                                                                                                                                                         HOLDER=${ resources__.production.holder { setup = setup : ''${ setup } "$GPG"'' ; } }
