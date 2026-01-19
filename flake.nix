@@ -1875,24 +1875,31 @@
                                                                                                                                                 name = "envrc" ;
                                                                                                                                                 runtimeInputs = [ ] ;
                                                                                                                                                 text =
-                                                                                                                                                    ''
-                                                                                                                                                        echo FIRST
-                                                                                                                                                        # CHROMIUM=${ resources__.production.ephemeral.chromium { } }
-                                                                                                                                                        GPG=${ resources__.production.ephemeral.gpg { failure = _failure.implementation "e5837ce1" ; } }
-                                                                                                                                                        HOLDER=${ resources__.production.holder { setup = setup : ''${ setup } "$GPG"'' ; failure = _failure.implementation "9292d02e" ; } }
-                                                                                                                                                        export HOLDER
-                                                                                                                                                        export PATH="$GPG/bin"
-                                                                                                                                                        # CONFIG=${ resources__.production.repository.pads.home.chromium.config { failure = _failure.implementation "96c7e465" ; } }
-                                                                                                                                                        # export XDG_CONFIG_HOME="$CONFIG/repository/secret"
-                                                                                                                                                        # DATA=${ resources__.production.repository.pads.home.chromium.data { failure = _failure.implementation "82578c84" ; } }
-                                                                                                                                                        # export XDG_DATA_HOME="$DATA/repository/secret"
-                                                                                                                                                        echo BEFORE
-                                                                                                                                                        DOT_GNUPG=${ resources__.production.dot-gnupg { failure = _failure.implementation "fab5e543" ; } }
-                                                                                                                                                        echo AFTER
-                                                                                                                                                        export GNUPGHOME="$DOT_GNUPG/dot-gnupg"
-                                                                                                                                                        DOT_SSH=${ resources__.production.dot-ssh { failure = _failure.implementation "9c790f17" ; } }
-                                                                                                                                                        export DOT_SSH
-                                                                                                                                                    '' ;
+                                                                                                                                                    let
+                                                                                                                                                        failure =
+                                                                                                                                                            exit :
+                                                                                                                                                                let
+                                                                                                                                                                    application = failure.implementation "0838bdaa" ;
+                                                                                                                                                                    in "${ application }/bin/failure ${ exit }" ;
+                                                                                                                                                        in
+                                                                                                                                                            ''
+                                                                                                                                                                echo FIRST
+                                                                                                                                                                # CHROMIUM=${ resources__.production.ephemeral.chromium { } }
+                                                                                                                                                                GPG=${ resources__.production.ephemeral.gpg { failure = failure"e5837ce1" ; } }
+                                                                                                                                                                HOLDER=${ resources__.production.holder { setup = setup : ''${ setup } "$GPG"'' ; failure = failure"9292d02e" ; } }
+                                                                                                                                                                export HOLDER
+                                                                                                                                                                export PATH="$GPG/bin"
+                                                                                                                                                                # CONFIG=${ resources__.production.repository.pads.home.chromium.config { failure = failure"96c7e465" ; } }
+                                                                                                                                                                # export XDG_CONFIG_HOME="$CONFIG/repository/secret"
+                                                                                                                                                                # DATA=${ resources__.production.repository.pads.home.chromium.data { failure = failure"82578c84" ; } }
+                                                                                                                                                                # export XDG_DATA_HOME="$DATA/repository/secret"
+                                                                                                                                                                echo BEFORE
+                                                                                                                                                                DOT_GNUPG=${ resources__.production.dot-gnupg { failure = failure"fab5e543" ; } }
+                                                                                                                                                                echo AFTER
+                                                                                                                                                                export GNUPGHOME="$DOT_GNUPG/dot-gnupg"
+                                                                                                                                                                DOT_SSH=${ resources__.production.dot-ssh { failure = failure"9c790f17" ; } }
+                                                                                                                                                                export DOT_SSH
+                                                                                                                                                            '' ;
                                                                                                                                             } ;
                                                                                                                                     in "${ application }/bin/envrc" ;
                                                                                                                         } ;
