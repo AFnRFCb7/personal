@@ -1894,9 +1894,7 @@
                                                                                                                                                                 # export XDG_CONFIG_HOME="$CONFIG/repository/secret"
                                                                                                                                                                 # DATA=${ resources__.production.repository.pads.home.chromium.data { failure = failure "82578c84" ; } }
                                                                                                                                                                 # export XDG_DATA_HOME="$DATA/repository/secret"
-                                                                                                                                                                echo BEFORE
                                                                                                                                                                 DOT_GNUPG=${ resources__.production.dot-gnupg { failure = failure "fab5e543" ; } }
-                                                                                                                                                                echo AFTER
                                                                                                                                                                 export GNUPGHOME="$DOT_GNUPG/dot-gnupg"
                                                                                                                                                                 export DOT_SSH
                                                                                                                                                             '' ;
