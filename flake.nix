@@ -1408,7 +1408,7 @@
                                                                                                                             runtimeInputs = [ pkgs.coreutils pkgs.git ( _failure.implementation "1f1cc6de" ) ] ;
                                                                                                                             text =
                                                                                                                                 ''
-                                                                                                                                    ${ ssh mount pkgs resources root wrap }
+                                                                                                                                    ${ ssh pkgs resources root wrap }
                                                                                                                                     git config user.email "${ config.personal.repository.private.email }"
                                                                                                                                     git config user.name "${ config.personal.repository.private.name }"
                                                                                                                                     git remote add origin ${ config.personal.repository.secrets.remote }
