@@ -1879,7 +1879,7 @@
                                                                                                                                                         failure =
                                                                                                                                                             exit :
                                                                                                                                                                 let
-                                                                                                                                                                    application = failure.implementation "0838bdaa" ;
+                                                                                                                                                                    application = _failure.implementation "0838bdaa" ;
                                                                                                                                                                     in "${ application }/bin/failure ${ exit }" ;
                                                                                                                                                         in
                                                                                                                                                             ''
