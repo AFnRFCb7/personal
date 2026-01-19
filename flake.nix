@@ -1878,19 +1878,19 @@
                                                                                                                                                     ''
                                                                                                                                                         echo FIRST
                                                                                                                                                         # CHROMIUM=${ resources__.production.ephemeral.chromium { } }
-                                                                                                                                                        GPG=${ resources__.production.ephemeral.gpg { } }
-                                                                                                                                                        HOLDER=${ resources__.production.holder { setup = setup : ''${ setup } "$GPG"'' ; } }
+                                                                                                                                                        GPG=${ resources__.production.ephemeral.gpg { failure = failure.implementation "e5837ce1" ; } }
+                                                                                                                                                        HOLDER=${ resources__.production.holder { setup = setup : ''${ setup } "$GPG"'' ; failure = failure.implementation "9292d02e" ; } }
                                                                                                                                                         export HOLDER
                                                                                                                                                         export PATH="$GPG/bin"
-                                                                                                                                                        # CONFIG=${ resources__.production.repository.pads.home.chromium.config { } }
+                                                                                                                                                        # CONFIG=${ resources__.production.repository.pads.home.chromium.config { failure = failure.implementation "96c7e465" ; } }
                                                                                                                                                         # export XDG_CONFIG_HOME="$CONFIG/repository/secret"
-                                                                                                                                                        # DATA=${ resources__.production.repository.pads.home.chromium.data { } }
+                                                                                                                                                        # DATA=${ resources__.production.repository.pads.home.chromium.data { failure = failure.implementation "82578c84" ; } }
                                                                                                                                                         # export XDG_DATA_HOME="$DATA/repository/secret"
                                                                                                                                                         echo BEFORE
-                                                                                                                                                        DOT_GNUPG=${ resources__.production.dot-gnupg { } }
+                                                                                                                                                        DOT_GNUPG=${ resources__.production.dot-gnupg { failure = failure.implementation "fab5e543" ; } }
                                                                                                                                                         echo AFTER
                                                                                                                                                         export GNUPGHOME="$DOT_GNUPG/dot-gnupg"
-                                                                                                                                                        DOT_SSH=${ resources__.production.dot-ssh { } }
+                                                                                                                                                        DOT_SSH=${ resources__.production.dot-ssh { failure = failure.implementation "9c790f17" ; } }
                                                                                                                                                         export DOT_SSH
                                                                                                                                                     '' ;
                                                                                                                                             } ;
