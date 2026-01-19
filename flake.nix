@@ -475,6 +475,16 @@
                                                                                                 text =
                                                                                                     ''
                                                                                                         ORIGINATOR_PID="$( ps -o ppid= -p "$PPID" | tr -d '[:space:]')" || failure 88093287
+                                                                                                        PID="$$"
+                                                                                                        while true
+                                                                                                        do
+                                                                                                            echo "PID=$PID"
+                                                                                                            if [ "$PID" -eq 1 ]
+                                                                                                            then
+                                                                                                                break
+                                                                                                            fi
+                                                                                                            PID="$( ps -o ppid= -p "$PID" | tr -d ' ' )" || failure de31f969
+                                                                                                        done
                                                                                                         echo a3a6b79c "ORIGINATOR_PID=$ORIGINATOR_PID"
                                                                                                         echo "$ORIGINATOR_PID" > /mount/originator-pid
                                                                                                         while [[ "$#" -gt 0 ]]
@@ -486,22 +496,25 @@
                                                                                                     '' ;
                                                                                             } ;
                                                                                     in "${ application }/bin/init" ;
-                                                                        release =
-                                                                            let
-                                                                                application =
-                                                                                    pkgs.writeShellApplication
-                                                                                        {
-                                                                                            name = "release" ;
-                                                                                            runtimeInputs = [ pkgs.coreutils ] ;
-                                                                                            text =
-                                                                                                ''
-                                                                                                    ORIGINATOR_PID="$( cat /mount/originator-pid )"
-                                                                                                    echo ec16d2b2 "ORIGINATOR_PID=$ORIGINATOR_PID"
-                                                                                                    tail --follow /dev/null --pid "$ORIGINATOR_PID"
-                                                                                                '' ;
-                                                                                        } ;
-                                                                                in "${ application }/bin/release" ;
-                                                                        targets = [ "originator-pid" ] ;
+                                                                        seed =
+                                                                            {
+                                                                                release =
+                                                                                    let
+                                                                                        application =
+                                                                                            pkgs.writeShellApplication
+                                                                                                {
+                                                                                                    name = "release" ;
+                                                                                                    runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                    text =
+                                                                                                        ''
+                                                                                                            ORIGINATOR_PID="$( cat /mount/originator-pid )"
+                                                                                                            echo ec16d2b2 "ORIGINATOR_PID=$ORIGINATOR_PID"
+                                                                                                            tail --follow /dev/null --pid "$ORIGINATOR_PID"
+                                                                                                        '' ;
+                                                                                                } ;
+                                                                                        in "${ application }/bin/release" ;
+                                                                                targets = [ "originator-pid" ] ;
+                                                                            } ;
                                                                     } ;
                                                             pads =
                                                                 let
