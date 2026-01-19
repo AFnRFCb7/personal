@@ -818,15 +818,15 @@
                                                                                                                             Host github.com
                                                                                                                                 User git
                                                                                                                                 HostName github.com
-                                                                                                                                IdentityFile ${ mount }/stage/ssh/identity
-                                                                                                                                UserKnownHostsFile ${ mount }/stage/ssh/known-hosts
+                                                                                                                                IdentityFile $MOUNT/stage/ssh/identity
+                                                                                                                                UserKnownHostsFile $MOUNT/stage/ssh/known-hosts
                                                                                                                                 StrictHostKeyChecking yes
                                                                                                                             EOF
                                                                                                                             cat ${ config.personal.temporary.ssh.identity } > /mount/stage/ssh/identity
                                                                                                                             cat ${ config.personal.temporary.ssh.known-hosts } > /mount/stage/ssh/known-hosts
                                                                                                                             chmod 0400 /mount/stage/ssh/config /mount/stage/ssh/identity /mount/stage/ssh/known-hosts
                                                                                                                             chmod 0700 /mount/stage/ssh
-                                                                                                                            git config core.sshCommand "${ pkgs.openssh }/bin/ssh -F ${ mount }/stage/ssh/config"
+                                                                                                                            git config core.sshCommand "${ pkgs.openssh }/bin/ssh -F $MOUNT/stage/ssh/config"
                                                                                                                             git remote add origin ${ config.personal.secrets.remote }
                                                                                                                             git fetch origin ${ config.personal.secrets.branch } 2>&1
                                                                                                                             git checkout origin/${ config.personal.secrets.branch } 2>&1
