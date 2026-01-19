@@ -1994,6 +1994,7 @@
                                                                 packages =
                                                                     [
                                                                         pkgs.gh
+                                                                        pkgs.yq
                                                                         ( _failure.implementation "762e3818" )
                                                                         (
                                                                             pkgs.writeShellApplication
