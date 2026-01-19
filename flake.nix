@@ -603,8 +603,8 @@
                                                                                                             } ;
                                                                                                     in
                                                                                                         ''
-                                                                                                            git config core.sshCommand "${ mount }/stage/ssh/command"
-                                                                                                            wrap ${ application }/bin/ssh stage/ssh/command 0500 --literal-plain "@" --set-plain MOUNT "${ mount }" --literal-plain PATH
+                                                                                                            git config core.sshCommand "$MOUNT/stage/ssh/command"
+                                                                                                            wrap ${ application }/bin/ssh stage/ssh/command 0500 --literal-plain "@" --inherit-plain MOUNT --literal-plain PATH
                                                                                                             DOT_SSH=${ resources.production.dot-ssh { } }
                                                                                                             root "$DOT_SSH"
                                                                                                             wrap "$DOT_SSH/config" stage/ssh/config 0400
@@ -626,7 +626,7 @@
                                                                                                                     follow-parent = false ;
                                                                                                                     resolutions = [ ] ;
                                                                                                                     setup =
-                                                                                                                        { mount , resources , pkgs , root , wrap } :
+                                                                                                                        { pid , pkgs , resources , root , sequential , wrap } :
                                                                                                                             let
                                                                                                                                  application =
                                                                                                                                     pkgs.writeShellApplication
