@@ -474,37 +474,11 @@
                                                                                                 runtimeInputs = [ pkgs.coreutils pkgs.procps pid root ] ;
                                                                                                 text =
                                                                                                     ''
-                                                                                                        ORIGINATOR_PID="$( ps -o ppid= -p "$PPID" | tr -d '[:space:]')" || failure 88093287
-                                                                                                        PID="$$"
-                                                                                                        while true
+                                                                                                        PID_INDEX="$1"
+                                                                                                        pid "$PID_INDEX" stall
+                                                                                                        cat | while read -r RESOURCE
                                                                                                         do
-                                                                                                            echo "a3a6b79c PID=$PID"
-                                                                                                            if [ "$PID" -eq 1 ]
-                                                                                                            then
-                                                                                                                break
-                                                                                                            fi
-                                                                                                            PID="$( ps -o ppid= -p "$PID" | tr -d ' ' )" || failure de31f969
-                                                                                                        done
-                                                                                                        echo a3a6b79c "ORIGINATOR_PID=$ORIGINATOR_PID"
-                                                                                                        echo "$ORIGINATOR_PID" > /mount/originator-pid
-                                                                                                        while [[ "$#" -gt 0 ]]
-                                                                                                        do
-                                                                                                            case "$1"
-                                                                                                                --resource)
-                                                                                                                    shift 2
-                                                                                                                    RESOURCE="$2"
-                                                                                                                    root "$RESOURCE"
-                                                                                                                    shift 2
-                                                                                                                    ;;
-                                                                                                                --pid-index)
-                                                                                                                    PID_INDEX="$2"
-                                                                                                                    pid "$PID_INDEX" stall
-                                                                                                                    shift 2
-                                                                                                                    ;;
-                                                                                                                *)
-                                                                                                                    failure a6b3529c "$*"
-                                                                                                                    ;;
-                                                                                                            esac
+                                                                                                            root "$RESOURCE"
                                                                                                         done
                                                                                                     '' ;
                                                                                             } ;
