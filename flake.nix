@@ -364,7 +364,7 @@
                                                                                     mobile =
                                                                                         {
                                                                                             identity-file = { pid , pkgs , resources , root , sequential , wrap } : resources.production.secrets.dot-ssh.mobile.identity-file { } ;
-                                                                                            user-known-hosts-file = { pkgs , resources , root , sequential , wrap } : resources.production.fixture.laptop { } ;
+                                                                                            user-known-hosts-file = { pid , pkgs , resources , root , sequential , wrap } : resources.production.fixture.laptop { } ;
                                                                                         } ;
                                                                                 } ;
                                                                         } ;
