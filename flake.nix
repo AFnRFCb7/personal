@@ -3039,7 +3039,10 @@
                             pkgs = builtins.getAttr system nixpkgs.legacyPackages ;
                             in
                                 {
-                                    gnupg = pkgs.gnupg ;
+                                    nixpkgs =
+                                        {
+                                            gnupg = pkgs.gnupg ;
+                                        } ;
                                 } ;
             } ;
 }
