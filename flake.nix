@@ -1338,7 +1338,7 @@
                                                                                                                                     DOT_SSH=${ resources.production.dot-ssh { } }
                                                                                                                                     root "$DOT_SSH"
                                                                                                                                     wrap "$DOT_SSH/config" stage/ssh/config 0400
-                                                                                                                                    /mount/stage/alias/root/mutable-mirror" main 2>&1
+                                                                                                                                    /mount/stage/alias/root/mutable-mirror main 2>&1
                                                                                                                                     echo DIFF 10
                                                                                                                                     git diff origin/main 2>&1
                                                                                                                                     echo DIFF 11
