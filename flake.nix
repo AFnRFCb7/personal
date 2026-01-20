@@ -693,7 +693,7 @@
                                                                                                                                                             '' ;
                                                                                                                                                     in
                                                                                                                                                         ''
-                                                                                                                                                            ${ ssh mount pkgs resources root wrap }
+                                                                                                                                                            ${ ssh pkgs resources root wrap }
                                                                                                                                                             git config user.email "${ config.personal.chromium.home.data.email }"
                                                                                                                                                             git config user.name "${ config.personal.chromium.home.data.name }"
                                                                                                                                                             git remote add origin git@github.com:${ config.personal.chromium.home.data.organization }/${ config.personal.chromium.home.data.repository }
