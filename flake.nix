@@ -498,7 +498,7 @@
                                                                                                         '' ;
                                                                                                 } ;
                                                                                         in "${ application }/bin/release" ;
-                                                                                targets = [ "originator-pid" ] ;
+                                                                                targets = [ "stall" ] ;
                                                                             } ;
                                                                     } ;
                                                             pads =
