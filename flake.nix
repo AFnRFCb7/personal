@@ -1897,6 +1897,8 @@
                                                                                                                                                                 export DOT_SSH
                                                                                                                                                                 export GNUPGHOME="$DOT_GNUPG/dot-gnupg"
                                                                                                                                                                 export PASSWORD_STORE_GPG_OPTS="--homedir $DOT_GNUPG/dot-gnug"
+                                                                                                                                                                PASSWORD_STORE_RESOURCE=${ resources__.production.repository.pass { failure = failure "6437cfcd" ; } }
+                                                                                                                                                                export PASSWORD_STORE_DIR="$PASSWORD_STORE_RESOURCE/repository"
                                                                                                                                                             '' ;
                                                                                                                                             } ;
                                                                                                                                     in "${ application }/bin/envrc" ;
