@@ -837,7 +837,7 @@
                                                                                                     follow-parent = true ;
                                                                                                     resolutions = [ ] ;
                                                                                                     setup =
-                                                                                                        { mount , resources , pkgs , root , wrap } :
+                                                                                                        { pid , resources , pkgs , root , sequential , wrap } :
                                                                                                             let
                                                                                                                 application =
                                                                                                                     pkgs.writeShellApplication
