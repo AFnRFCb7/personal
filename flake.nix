@@ -354,7 +354,7 @@
                                                                                     "github.com" =
                                                                                         {
                                                                                             identity-file = { pid , pkgs , resources , root , sequential , wrap } : resources.production.secrets.dot-ssh.github.identity-file { } ;
-                                                                                            user-known-hosts-file = { pid , mount , pkgs , resources , root , sequential , wrap } : resources.production.secrets.dot-ssh.github.user-known-hosts-file { } ;
+                                                                                            user-known-hosts-file = { pid , pkgs , resources , root , sequential , wrap } : resources.production.secrets.dot-ssh.github.user-known-hosts-file { } ;
                                                                                         } ;
                                                                                     laptop =
                                                                                         {
