@@ -498,8 +498,8 @@
                                                                                                         '' ;
                                                                                                 } ;
                                                                                         in "${ application }/bin/release" ;
-                                                                                targets = [ "stall" ] ;
                                                                             } ;
+                                                                        targets = [ "stall" ] ;
                                                                     } ;
                                                             pads =
                                                                 let
