@@ -1887,8 +1887,6 @@
                                                                                                                                                                 GPG=${ resources__.production.ephemeral.gpg { failure = failure "e5837ce1" ; } }
                                                                                                                                                                 SSH=${ resources__.production.ephemeral.ssh { failure = failure "f202e55a" ; } }
                                                                                                                                                                 DOT_SSH=${ resources__.production.dot-ssh { failure = failure "9c790f17" ; } }
-                                                                                                                                                                HOLDER=${ resources__.production.holder { setup = setup : ''echo -en "$DOT_SSH\n$GPG\n$SSH" | ${ setup } 8'' ; failure = failure "9292d02e" ; } }
-                                                                                                                                                                export HOLDER
                                                                                                                                                                 export PATH="$GPG/bin:$SSH/bin"
                                                                                                                                                                 # CONFIG=${ resources__.production.repository.pads.home.chromium.config { failure = failure "96c7e465" ; } }
                                                                                                                                                                 # export XDG_CONFIG_HOME="$CONFIG/repository/secret"
@@ -3034,6 +3032,14 @@
                                         {
                                             user = user ;
                                         } ;
+                                } ;
+                packages =
+                    { nixpkgs , system } :
+                        let
+                            pkgs = builtins.getAttr system nixpkgs.legacyPackages ;
+                            in
+                                {
+                                    gnupg = pkgs.gnupg ;
                                 } ;
             } ;
 }
