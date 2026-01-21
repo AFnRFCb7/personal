@@ -1879,7 +1879,7 @@
                                                                                                                                                         DOT_SSH=${ resources__.production.dot-ssh { failure = _failure.implementation "aa52e899" ; } }
                                                                                                                                                         hosts="$( awk '/^Host / {for(i=2;i<=NF;i++) print $2}' "$DOT_SSH/config" )" || _failure.implementation "288ea68f"
                                                                                                                                                         local hosts
-                                                                                                                                                        NEXT="$( compgen -W "$hosts" -- "$cur" )" || _failure.implementation "211572ca"
+                                                                                                                                                        NEXT="$( compgen -W "$hosts" -- "$cur" )" || ${ _failure.implementation "211572ca" }
                                                                                                                                                         COMPREPLY=( "$NEXT" )
                                                                                                                                                     }
                                                                                                                                                     complete -F _ssh_custom_hosts ssh
@@ -1924,13 +1924,8 @@
                                                                                                                                 } ;
                                                                                                                             in
                                                                                                                                 {
-                                                                                                                                    tiny =
-                                                                                                                                        ''
-                                                                                                                                            export PATH="${ pkgs.bash }/bin:${ pkgs.coreutils }/bin:${ pkgs.gawk }/bin:${ pkgs.gnused }/bin:${ pkgs.man-db }/bin:${ bin.ssh }"
-                                                                                                                                            export NAME="${ config.personal.description }"
-                                                                                                                                            ${ autocomplete.ssh }
-                                                                                                                                            export MANPATH="${ man.ssh }"
-                                                                                                                                        '' ;
+
+
                                                                                                                                 } ;
                                                                                                                     mapper =
                                                                                                                         name : value :
