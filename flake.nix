@@ -1872,7 +1872,7 @@
                                                                                                                                 } ;
                                                                                                                             bin =
                                                                                                                                 let
-                                                                                                                                    mapper = name : value : "${ pkgs.writeShellApplication { name = name ; text = value ; } }/bin/${ name }" ;
+                                                                                                                                    mapper = name : value : "${ pkgs.writeShellApplication { name = name ; text = value ; } }/bin" ;
                                                                                                                                     set =
                                                                                                                                         {
                                                                                                                                             ssh =
