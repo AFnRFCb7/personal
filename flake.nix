@@ -1924,8 +1924,12 @@
                                                                                                                                 } ;
                                                                                                                             in
                                                                                                                                 {
-
-
+                                                                                                                                    tiny =
+                                                                                                                                        ''
+                                                                                                                                            PATH="${ pkgs.bash }/bin:${ pkgs.coreutils }/bin:${ bin.ssh }"
+                                                                                                                                            ${ autocomplete.ssh }
+                                                                                                                                            export NAME="${ config.personal.description }"
+                                                                                                                                        '' ;
                                                                                                                                 } ;
                                                                                                                     mapper =
                                                                                                                         name : value :
