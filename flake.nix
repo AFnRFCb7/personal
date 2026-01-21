@@ -1899,7 +1899,7 @@
                                                                                                                                                     { }
                                                                                                                                                     ''
                                                                                                                                                         mkdir --parents $out/share/man/man1
-                                                                                                                                                        gunzip -c ${ originManGz } > $out/share/man/man1.ssh.1
+                                                                                                                                                        gunzip -c ${ origManGz } > $out/share/man/man1.ssh.1
                                                                                                                                                         cat >> $out/share/main/man1/ssh.1 <<EOF
                                                                                                                                                             # Custom Note
                                                                                                                                                             This wrapper automatically adds -F { the dot-ssh config resource }
