@@ -1927,7 +1927,7 @@
                                                                                                                                     tiny =
                                                                                                                                         ''
                                                                                                                                             PATH="${ pkgs.bash }/bin:${ pkgs.gawk }/bin:${ pkgs.coreutils }/bin:${ bin.ssh }"
-                                                                                                                                            ${ autocomplete.ssh }
+                                                                                                                                            source ${ pkgs.writeShellScript "autocomplete" autocomplete.ssh }
                                                                                                                                             export NAME="${ config.personal.description }"
                                                                                                                                         '' ;
                                                                                                                                 } ;
