@@ -1899,7 +1899,7 @@
                                                                                                                                                     { }
                                                                                                                                                     ''
                                                                                                                                                         mkdir --parents $out/share/man/man1
-                                                                                                                                                        gunzip -c ${ origManGz } > $out/share/man/man1.ssh.1
+                                                                                                                                                        gunzip -c ${ origManGz } > $out/share/man/man1/ssh.1
                                                                                                                                                         cat >> $out/share/man/man1/ssh.1 <<EOF
                                                                                                                                                             # Custom Note
                                                                                                                                                             This wrapper automatically adds -F { the dot-ssh config resource }
@@ -1910,7 +1910,7 @@
                                                                                                                                 {
                                                                                                                                     tiny =
                                                                                                                                         ''
-                                                                                                                                            export PATH="${ pkgs.coreutils }/bin:${ pkgs.man-db }/bin:${ bin.ssh }"
+                                                                                                                                            export PATH="${ pkgs.coreutils }/bin:${ pkgs.awk }/bin:${ pkgs.gnused }/bin:${ pkgs.man-db }/bin:${ bin.ssh }"
                                                                                                                                             export MANPATH="${ man.ssh }"
                                                                                                                                         '' ;
                                                                                                                                 } ;
