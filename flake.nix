@@ -1877,7 +1877,8 @@
                                                                                                                                                     _ssh_custom_hosts() {
                                                                                                                                                         local cur=${ builtins.concatStringsSep "" [ "$" "{" "COMP_WORDS[COMP_CWORD]" "}" ] }
                                                                                                                                                         DOT_SSH=${ resources__.production.dot-ssh { failure = _failure.implementation "aa52e899" ; } }
-                                                                                                                                                        local hosts="$( awk '/^Host / {for(i=2;i<=NF;i++) print $2}' "$DOT_SSH/config" )" || _failure.implementation "288ea68f"
+                                                                                                                                                        hosts="$( awk '/^Host / {for(i=2;i<=NF;i++) print $2}' "$DOT_SSH/config" )" || _failure.implementation "288ea68f"
+                                                                                                                                                        local hosts
                                                                                                                                                         NEXT="$( compgen -W "$hosts" -- "$cur" )" || _failure.implementation "211572ca"
                                                                                                                                                         COMPREPLY=( "$NEXT" )
                                                                                                                                                     }
