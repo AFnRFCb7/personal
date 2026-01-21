@@ -1926,6 +1926,7 @@
                                                                                                                                 {
                                                                                                                                     tiny =
                                                                                                                                         ''
+                                                                                                                                            # shellcheck disable=SC1091
                                                                                                                                             source ${ autocomplete.ssh }
                                                                                                                                             export PATH="${ pkgs.coreutils }/bin:${ pkgs.gawk }/bin:${ pkgs.gnused }/bin:${ pkgs.man-db }/bin:${ bin.ssh }"
                                                                                                                                             export MANPATH="${ man.ssh }"
