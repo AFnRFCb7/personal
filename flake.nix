@@ -1910,7 +1910,7 @@
                                                                                                                                 {
                                                                                                                                     tiny =
                                                                                                                                         ''
-                                                                                                                                            export PATH="${ pkgs.coreutils }/bin:${ pkgs.awk }/bin:${ pkgs.gnused }/bin:${ pkgs.man-db }/bin:${ bin.ssh }"
+                                                                                                                                            export PATH="${ pkgs.coreutils }/bin:${ pkgs.gawk }/bin:${ pkgs.gnused }/bin:${ pkgs.man-db }/bin:${ bin.ssh }"
                                                                                                                                             export MANPATH="${ man.ssh }"
                                                                                                                                         '' ;
                                                                                                                                 } ;
