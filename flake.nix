@@ -1916,7 +1916,7 @@
                                                                                                                                 ln --symbolic --force ${ pkgs.writeShellApplication { name = name ; text = value ; } }/bin/${ name } /home/${ config.personal.name }/pads/${ name }
                                                                                                                             '' ;
                                                                                                                     in
-                                                                                                                        builtins.mapAttrs mapper envrc ;
+                                                                                                                        builtins.concatStringsSep "" ( builtins.attrValues ( builtins.mapAttrs mapper envrc ) ) ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/ExecStart" ;
                                                                                         User = config.personal.name ;
