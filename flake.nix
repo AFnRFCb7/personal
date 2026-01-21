@@ -1916,10 +1916,10 @@
                                                                                                                         name : value :
                                                                                                                             ''
                                                                                                                                 mkdir --parents /home/${ config.personal.name }/pads/${ name }
-                                                                                                                                ln --symbolic --force ${ pkgs.writeShellApplication { name = name ; text = value ; }/bin/${ name } /home/${ config.personal.name }/pads/${ name }
+                                                                                                                                ln --symbolic --force ${ pkgs.writeShellApplication { name = name ; text = value ; } }/bin/${ name } /home/${ config.personal.name }/pads/${ name }
                                                                                                                             '' ;
                                                                                                                     in
-                                                                                                                        builtins.map mapper envrc ;
+                                                                                                                        builtins.mapAttrs mapper envrc ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/ExecStart" ;
                                                                                         User = config.personal.name ;
