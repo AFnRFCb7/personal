@@ -1918,7 +1918,7 @@
                                                                                                                         name : value :
                                                                                                                             ''
                                                                                                                                 mkdir --parents /home/${ config.personal.name }/pads/${ name }
-                                                                                                                                ln --symbolic --force ${ pkgs.writeShellApplication { name = name ; text = value ; } }/bin/${ name } /home/${ config.personal.name }/pads/${ name }
+                                                                                                                                ln --symbolic --force ${ pkgs.writeShellApplication { name = name ; text = value ; } }/bin/${ name } /home/${ config.personal.name }/pads/${ name }/.envrc
                                                                                                                             '' ;
                                                                                                                     in
                                                                                                                         builtins.concatStringsSep "" ( builtins.attrValues ( builtins.mapAttrs mapper envrc ) ) ;
