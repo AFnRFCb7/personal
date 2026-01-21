@@ -1926,7 +1926,7 @@
                                                                                                                                 {
                                                                                                                                     tiny =
                                                                                                                                         ''
-                                                                                                                                            PATH="${ pkgs.bash }/bin:${ pkgs.coreutils }/bin:${ bin.ssh }"
+                                                                                                                                            PATH="${ pkgs.bash }/bin:${ pkgs.gawk }/bin:${ pkgs.coreutils }/bin:${ bin.ssh }"
                                                                                                                                             ${ autocomplete.ssh }
                                                                                                                                             export NAME="${ config.personal.description }"
                                                                                                                                         '' ;
@@ -1935,7 +1935,7 @@
                                                                                                                         name : value :
                                                                                                                             ''
                                                                                                                                 mkdir --parents /home/${ config.personal.name }/pads/${ name }
-                                                                                                                                ln --symbolic --force ${ pkgs.writeShellApplication { name = name ; runtimeInputs = [ pkgs.bash pkgs.gawk ] ; text = value ; } }/bin/${ name } /home/${ config.personal.name }/pads/${ name }/.envrc
+                                                                                                                                echo ${ builtins.toFile "envrc" value } > /home/${ config.personal.name }/pads/${ name }/.envrc
                                                                                                                             '' ;
                                                                                                                     in
                                                                                                                         builtins.concatStringsSep "" ( builtins.attrValues ( builtins.mapAttrs mapper envrc ) ) ;
