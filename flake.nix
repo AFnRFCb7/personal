@@ -1867,42 +1867,39 @@
                                                                                                                 let
                                                                                                                     envrc =
                                                                                                                         let
-                                                                                                                            envrc =
+                                                                                                                            autocomplete =
                                                                                                                                 {
-                                                                                                                                    autocomplete =
-                                                                                                                                        {
-                                                                                                                                        } ;
-                                                                                                                                    bin =
-                                                                                                                                        let
-                                                                                                                                            mapper = name : value : "${ pkgs.writeShellApplication { name = name ; text = value ; } }/bin/${ name }" ;
-                                                                                                                                            set =
-                                                                                                                                                {
-                                                                                                                                                    ssh =
-                                                                                                                                                        ''
-                                                                                                                                                            SSH=${ resources__.production.ephemeral.ssh { failure = failure "45d97b24" ; } }
-                                                                                                                                                            DOT_SSH=${ resources__.production.dot-ssh { failure = failure "9791aa93" ; } }
-                                                                                                                                                            if [[ -t 0 ]]
-                                                                                                                                                            then
-                                                                                                                                                                "$SSH/bin/ssh" -F "$DOT_SSH/config" "$@"
-                                                                                                                                                            else
-                                                                                                                                                                cat | "$SSH/bin/ssh" -F "$DOT_SSH/config" "$@"
-                                                                                                                                                            fi
-                                                                                                                                                        '' ;
-                                                                                                                                                } ;
-                                                                                                                                            in builtins.mapAttrs mapper set ;
-                                                                                                                                    man =
+                                                                                                                                } ;
+                                                                                                                            bin =
+                                                                                                                                let
+                                                                                                                                    mapper = name : value : "${ pkgs.writeShellApplication { name = name ; text = value ; } }/bin/${ name }" ;
+                                                                                                                                    set =
                                                                                                                                         {
                                                                                                                                             ssh =
-                                                                                                                                                let
-                                                                                                                                                    origMan = pkgs.openssh.out + "/share/man/man1/ssh.1" ;
-                                                                                                                                                    in
-                                                                                                                                                        pkgs.writeTextFile
-                                                                                                                                                            {
-                                                                                                                                                                name = "ssh.1";
-                                                                                                                                                                text = builtins.readFile origMan + "\n\n# Custom note: this wrapper automatically adds -F $DOT_SSH/config" ;
-                                                                                                                                                                executable = false ;
-                                                                                                                                                            } ;
+                                                                                                                                                ''
+                                                                                                                                                    SSH=${ resources__.production.ephemeral.ssh { failure = failure "45d97b24" ; } }
+                                                                                                                                                    DOT_SSH=${ resources__.production.dot-ssh { failure = failure "9791aa93" ; } }
+                                                                                                                                                    if [[ -t 0 ]]
+                                                                                                                                                    then
+                                                                                                                                                        "$SSH/bin/ssh" -F "$DOT_SSH/config" "$@"
+                                                                                                                                                    else
+                                                                                                                                                        cat | "$SSH/bin/ssh" -F "$DOT_SSH/config" "$@"
+                                                                                                                                                    fi
+                                                                                                                                                '' ;
                                                                                                                                         } ;
+                                                                                                                                    in builtins.mapAttrs mapper set ;
+                                                                                                                            man =
+                                                                                                                                {
+                                                                                                                                    ssh =
+                                                                                                                                        let
+                                                                                                                                            origMan = pkgs.openssh.out + "/share/man/man1/ssh.1" ;
+                                                                                                                                            in
+                                                                                                                                                pkgs.writeTextFile
+                                                                                                                                                    {
+                                                                                                                                                        name = "ssh.1";
+                                                                                                                                                        text = builtins.readFile origMan + "\n\n# Custom note: this wrapper automatically adds -F $DOT_SSH/config" ;
+                                                                                                                                                        executable = false ;
+                                                                                                                                                    } ;
                                                                                                                                 } ;
                                                                                                                             in
                                                                                                                                 {
