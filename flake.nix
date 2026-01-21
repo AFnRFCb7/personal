@@ -1892,14 +1892,19 @@
                                                                                                                                 {
                                                                                                                                     ssh =
                                                                                                                                         let
-                                                                                                                                            origMan = pkgs.openssh.out + "/share/man/man1/ssh.1" ;
+                                                                                                                                            origManGz = pkgs.openssh.out + "/share/man/man1/ssh.1.gz" ;
                                                                                                                                             in
-                                                                                                                                                pkgs.writeTextFile
-                                                                                                                                                    {
-                                                                                                                                                        name = "ssh.1";
-                                                                                                                                                        text = builtins.readFile origMan + "\n\n# Custom note: this wrapper automatically adds -F $DOT_SSH/config" ;
-                                                                                                                                                        executable = false ;
-                                                                                                                                                    } ;
+                                                                                                                                                pkgs.runCommand
+                                                                                                                                                    "ssh.1"
+                                                                                                                                                    { }
+                                                                                                                                                    ''
+                                                                                                                                                        mkdir --parents $out/share/man/man1
+                                                                                                                                                        gunzip -c ${ originManGz } > $out/share/man/man1.ssh.1
+                                                                                                                                                        cat >> $out/share/main/man1/ssh.1 <<EOF
+                                                                                                                                                            # Custom Note
+                                                                                                                                                            This wrapper automatically adds -F { the dot-ssh config resource }
+                                                                                                                                                        EOF
+                                                                                                                                                    '' ;
                                                                                                                                 } ;
                                                                                                                             in
                                                                                                                                 {
