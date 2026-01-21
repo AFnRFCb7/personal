@@ -1868,8 +1868,23 @@
                                                                                                                     envrc =
                                                                                                                         let
                                                                                                                             autocomplete =
-                                                                                                                                {
-                                                                                                                                } ;
+                                                                                                                                let
+                                                                                                                                    mapper = name : value : "${ pkgs.writeShellApplication { name = name ; runtimeInputs = [ pkgs.gawk ] ; text = value ; } }/bin/${ name }" ;
+                                                                                                                                    set =
+                                                                                                                                        {
+                                                                                                                                            ssh =
+                                                                                                                                                ''
+                                                                                                                                                    _ssh_custom_hosts() {
+                                                                                                                                                        local cur=${ builtins.concatStringsSep "" [ "$" "{" "COMP_WORDS[COMP_CWORD]" "}" ] }
+                                                                                                                                                        DOT_SSH=${ resources__.production.dot-ssh { failure = _failure.implementation "aa52e899" ; } }
+                                                                                                                                                        local hosts="$( awk '/^Host / {for(i=2;i<=NF;i++) print $2}' "$DOT_SSH/config" )" || _failure.implementation "288ea68f"
+                                                                                                                                                        NEXT="$( compgen -W "$hosts" -- "$cur" )" || _failure.implementation "211572ca"
+                                                                                                                                                        COMPREPLY=( "$NEXT" )
+                                                                                                                                                    }
+                                                                                                                                                    complete -F _ssh_custom_hosts ssh
+                                                                                                                                                '' ;
+                                                                                                                                        } ;
+                                                                                                                                    in builtins.mapAttrs mapper set ;
                                                                                                                             bin =
                                                                                                                                 let
                                                                                                                                     mapper = name : value : "${ pkgs.writeShellApplication { name = name ; text = value ; } }/bin" ;
@@ -1910,6 +1925,7 @@
                                                                                                                                 {
                                                                                                                                     tiny =
                                                                                                                                         ''
+                                                                                                                                            source ${ autocomplete.ssh }
                                                                                                                                             export PATH="${ pkgs.coreutils }/bin:${ pkgs.gawk }/bin:${ pkgs.gnused }/bin:${ pkgs.man-db }/bin:${ bin.ssh }"
                                                                                                                                             export MANPATH="${ man.ssh }"
                                                                                                                                         '' ;
