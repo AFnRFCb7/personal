@@ -1869,7 +1869,7 @@
                                                                                                                         let
                                                                                                                             autocomplete =
                                                                                                                                 let
-                                                                                                                                    mapper = name : value : "${ pkgs.writeShellApplication { name = name ; runtimeInputs = [ pkgs.gawk ] ; text = value ; } }/bin/${ name }" ;
+                                                                                                                                    mapper = name : value : value ;
                                                                                                                                     set =
                                                                                                                                         {
                                                                                                                                             ssh =
@@ -1936,7 +1936,7 @@
                                                                                                                         name : value :
                                                                                                                             ''
                                                                                                                                 mkdir --parents /home/${ config.personal.name }/pads/${ name }
-                                                                                                                                ln --symbolic --force ${ pkgs.writeShellApplication { name = name ; text = value ; } }/bin/${ name } /home/${ config.personal.name }/pads/${ name }/.envrc
+                                                                                                                                ln --symbolic --force ${ pkgs.writeShellApplication { name = name ; runtimeInputs = [ pkgs.bash pkgs.gawk ] ; text = value ; } }/bin/${ name } /home/${ config.personal.name }/pads/${ name }/.envrc
                                                                                                                             '' ;
                                                                                                                     in
                                                                                                                         builtins.concatStringsSep "" ( builtins.attrValues ( builtins.mapAttrs mapper envrc ) ) ;
