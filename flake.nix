@@ -709,7 +709,7 @@
                                                                                             follow-parent = false ;
                                                                                             resolutions = [ ] ;
                                                                                             setup =
-                                                                                                { mount , resources , pkgs , root , wrap } :
+                                                                                                { pid , pkgs , resources , root , sequential , wrap } :
                                                                                                     let
                                                                                                         application =
                                                                                                             pkgs.writeShellApplication
@@ -1866,48 +1866,60 @@
                                                                                                             text =
                                                                                                                 let
                                                                                                                     envrc =
-                                                                                                                        {
-                                                                                                                            home =
-                                                                                                                                let
-                                                                                                                                    application =
-                                                                                                                                        pkgs.writeShellApplication
-                                                                                                                                            {
-                                                                                                                                                name = "envrc" ;
-                                                                                                                                                runtimeInputs = [ ] ;
-                                                                                                                                                text =
-                                                                                                                                                    let
-                                                                                                                                                        failure =
-                                                                                                                                                            exit :
-                                                                                                                                                                let
-                                                                                                                                                                    application = _failure.implementation "0838bdaa" ;
-                                                                                                                                                                    in "${ application }/bin/failure ${ exit }" ;
-                                                                                                                                                        in
-                                                                                                                                                            ''
-                                                                                                                                                                # CHROMIUM=${ resources__.production.ephemeral.chromium { } }
-                                                                                                                                                                GPG=${ resources__.production.ephemeral.gpg { failure = failure "e5837ce1" ; } }
-                                                                                                                                                                PASS=${ resources__.production.ephemeral.pass { failure = failure "4c351dde" ; } }
-                                                                                                                                                                SSH=${ resources__.production.ephemeral.ssh { failure = failure "f202e55a" ; } }
-                                                                                                                                                                DOT_SSH=${ resources__.production.dot-ssh { failure = failure "9c790f17" ; } }
-                                                                                                                                                                export PATH="$GPG/bin:$PASS/bin:$SSH/bin"
-                                                                                                                                                                # CONFIG=${ resources__.production.repository.pads.home.chromium.config { failure = failure "96c7e465" ; } }
-                                                                                                                                                                # export XDG_CONFIG_HOME="$CONFIG/repository/secret"
-                                                                                                                                                                # DATA=${ resources__.production.repository.pads.home.chromium.data { failure = failure "82578c84" ; } }
-                                                                                                                                                                # export XDG_DATA_HOME="$DATA/repository/secret"
-                                                                                                                                                                DOT_GNUPG=${ resources__.production.dot-gnupg { failure = failure "fab5e543" ; } }
-                                                                                                                                                                export DOT_SSH
-                                                                                                                                                                export GNUPGHOME="$DOT_GNUPG/dot-gnupg"
-                                                                                                                                                                export PASSWORD_STORE_GPG_OPTS="--homedir $DOT_GNUPG/dot-gnug"
-                                                                                                                                                                PASSWORD_STORE_RESOURCE=${ resources__.production.repository.pass { failure = failure "6437cfcd" ; } }
-                                                                                                                                                                export PASSWORD_STORE_DIR="$PASSWORD_STORE_RESOURCE/repository"
-                                                                                                                                                            '' ;
-                                                                                                                                            } ;
-                                                                                                                                    in "${ application }/bin/envrc" ;
-                                                                                                                        } ;
+                                                                                                                        let
+                                                                                                                            envrc =
+                                                                                                                                {
+                                                                                                                                    autocomplete =
+                                                                                                                                        {
+                                                                                                                                        } ;
+                                                                                                                                    bin =
+                                                                                                                                        let
+                                                                                                                                            mapper = name : value : "${ pkgs.writeShellApplication { name = name ; text = value ; } }/bin/${ name }" ;
+                                                                                                                                            set =
+                                                                                                                                                {
+                                                                                                                                                    ssh =
+                                                                                                                                                        ''
+                                                                                                                                                            SSH=${ resources__.production.ephemeral.ssh { failure = failure "45d97b24" ; } }
+                                                                                                                                                            DOT_SSH=${ resources__.production.dot-ssh { failure = failure "9791aa93" ; } }
+                                                                                                                                                            if [[ -t 0 ]]
+                                                                                                                                                            then
+                                                                                                                                                                "$SSH/bin/ssh" -F "$DOT_SSH/config" "$@"
+                                                                                                                                                            else
+                                                                                                                                                                cat | "$SSH/bin/ssh" -F "$DOT_SSH/config" "$@"
+                                                                                                                                                            fi
+                                                                                                                                                        '' ;
+                                                                                                                                                } ;
+                                                                                                                                            in builtins.mapAttrs mapper set ;
+                                                                                                                                    man =
+                                                                                                                                        {
+                                                                                                                                            ssh =
+                                                                                                                                                let
+                                                                                                                                                    origMan = pkgs.openssh.out + "/share/man/man1/ssh.1" ;
+                                                                                                                                                    in
+                                                                                                                                                        pkgs.writeTextFile
+                                                                                                                                                            {
+                                                                                                                                                                name = "ssh.1";
+                                                                                                                                                                text = builtins.readFile origMan + "\n\n# Custom note: this wrapper automatically adds -F $DOT_SSH/config" ;
+                                                                                                                                                                executable = false ;
+                                                                                                                                                            } ;
+                                                                                                                                        } ;
+                                                                                                                                } ;
+                                                                                                                            in
+                                                                                                                                {
+                                                                                                                                    tiny =
+                                                                                                                                        ''
+                                                                                                                                            export PATH="${ bin.ssh }"
+                                                                                                                                            export MANPATH="${ man.ssh }"
+                                                                                                                                        '' ;
+                                                                                                                                } ;
+                                                                                                                    mapper =
+                                                                                                                        name : value :
+                                                                                                                            ''
+                                                                                                                                mkdir --parents /home/${ config.personal.name }/pads/${ name }
+                                                                                                                                ln --symbolic --force ${ pkgs.writeShellApplication { name = name ; text = value ; }/bin/${ name } /home/${ config.personal.name }/pads/${ name }
+                                                                                                                            '' ;
                                                                                                                     in
-                                                                                                                        ''
-                                                                                                                            mkdir --parents /home/${ config.personal.name }/pads/home
-                                                                                                                            ln --symbolic --force ${ envrc.home } /home/${ config.personal.name }/pads/home/.envrc
-                                                                                                                        '' ;
+                                                                                                                        builtins.map mapper envrc ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/ExecStart" ;
                                                                                         User = config.personal.name ;
