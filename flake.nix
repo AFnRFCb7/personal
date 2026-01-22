@@ -1958,6 +1958,7 @@
                                                                                                                                 mkdir --parents /home/${ config.personal.name }/pads/${ name }/man
                                                                                                                                 ln --symbolic ${ pkgs.writeTextFile { name = "envrc" ; text = envrc ; } } /home/${ config.personal.name }/pads/${ name }/.envrc
                                                                                                                                 ln --symbolic ${ pkgs.writeTextFile { name = "autocomplete" ; text = autocomplete ; } } /home/${ config.personal.name }/pads/${ name }/autocomplete
+                                                                                                                                ${ man }
                                                                                                                             '' ;
                                                                                                                     in
                                                                                                                         builtins.concatStringsSep "" ( builtins.attrValues ( builtins.mapAttrs mapper envrc ) ) ;
