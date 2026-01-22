@@ -1725,23 +1725,6 @@
                                                                         interactiveShellInit =
                                                                             ''
                                                                                 eval "$( ${ pkgs.direnv }/bin/direnv hook bash )"
-
-                                                                                  __project_autocomplete_apply() {
-                                                                                    # remove old completion
-                                                                                    if [[ -n "$__PROJECT_AUTOCOMPLETE_ACTIVE" ]]; then
-                                                                                      complete -r ssh 2>/dev/null || true
-                                                                                    fi
-
-                                                                                    # install new completion
-                                                                                    if [[ -n "$PROJECT_AUTOCOMPLETE" && -f "$PROJECT_AUTOCOMPLETE" ]]; then
-                                                                                      source "$PROJECT_AUTOCOMPLETE"
-                                                                                      __PROJECT_AUTOCOMPLETE_ACTIVE="$PROJECT_AUTOCOMPLETE_ID"
-                                                                                    else
-                                                                                      unset __PROJECT_AUTOCOMPLETE_ACTIVE
-                                                                                    fi
-                                                                                  }
-
-                                                                                  PROMPT_COMMAND="__project_autocomplete_apply;$PROMPT_COMMAND"
                                                                             '' ;
                                                                     } ;
                                                                 dconf.enable = true ;
@@ -1961,12 +1944,7 @@
                                                                                                                                             envrc =
                                                                                                                                                 ''
                                                                                                                                                     PATH="${ pkgs.bash }/bin:${ pkgs.gawk }/bin:${ pkgs.coreutils }/bin:${ bin.ssh }"
-                                                                                                                                                    export PROJECT_AUTOCOMPLETE="$PWD/autocomplete"
-                                                                                                                                                    export PROJECT_AUTOCOMPLETE_ID=1
-                                                                                                                                                    if [[ -f "$PROJECT_AUTOCOMPLETE" ]] && [[ -n "$BASH" && $- == *i* ]] && [[ $- == *i* ]]
-                                                                                                                                                    then
-                                                                                                                                                        source "$PROJECT_AUTOCOMPLETE"
-                                                                                                                                                    fi
+                                                                                                                                                    alias load_autocomplete='source ./autocomplete'
                                                                                                                                                     export NAME="${ config.personal.description }"
                                                                                                                                                 '' ;
                                                                                                                                         } ;
