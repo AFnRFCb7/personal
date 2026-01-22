@@ -1722,7 +1722,14 @@
                                                                 bash =
                                                                     {
                                                                         enableCompletion = true ;
-                                                                        interactiveShellInit = ''eval "$( ${ pkgs.direnv }/bin/direnv hook bash )"'' ;
+                                                                        interactiveShellInit =
+                                                                            ''
+                                                                                eval "$( ${ pkgs.direnv }/bin/direnv hook bash )"
+                                                                                if [[ -n ./autocomplete ]] && [[ -f ./autocomplete ]]
+                                                                                then
+                                                                                    source ./autocomplete
+                                                                                fi
+                                                                            '' ;
                                                                     } ;
                                                                 dconf.enable = true ;
                                                                 direnv =
