@@ -1979,7 +1979,7 @@
                                                                                                                                             man =
                                                                                                                                                 ''
                                                                                                                                                     mkdir --parents "/home/${ config.personal.name }/pads/tiny/man/man1"
-                                                                                                                                                    ln --symbolic ${ man.gnupg } "/home/${ config.personal.name }/pads/tiny/man/man1/gpg.1"
+                                                                                                                                                    ln --symbolic ${ man.gnupg } "$MANDIR/man1/gpg.1"
                                                                                                                                                     ln --symbolic ${ man.ssh } "/home/${ config.personal.name }/pads/tiny/man/man1/ssh.1"
                                                                                                                                                 '' ;
                                                                                                                                         } ;
@@ -1990,6 +1990,7 @@
                                                                                                                                 mkdir --parents /home/${ config.personal.name }/pads/${ name }/man
                                                                                                                                 ln --symbolic ${ pkgs.writeTextFile { name = "envrc" ; text = envrc ; } } /home/${ config.personal.name }/pads/${ name }/.envrc
                                                                                                                                 ln --symbolic ${ pkgs.writeTextFile { name = "autocomplete" ; text = autocomplete ; } } /home/${ config.personal.name }/pads/${ name }/autocomplete
+                                                                                                                                export MANDIR=/home/${ config.personal.name }/pads/${ name }/man
                                                                                                                                 ${ man }
                                                                                                                             '' ;
                                                                                                                     in
