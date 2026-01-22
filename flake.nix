@@ -1893,8 +1893,8 @@
                                                                                                                                         {
                                                                                                                                             ssh =
                                                                                                                                                 ''
-                                                                                                                                                    SSH=${ resources__.production.ephemeral.ssh { failure = _failure.implementation "45d97b24" ; } }
-                                                                                                                                                    DOT_SSH=${ resources__.production.dot-ssh { failure = _failure.implementation "9791aa93" ; } }
+                                                                                                                                                    SSH=${ resources__.production.ephemeral.ssh { failure = "${ _failure.implementation "45d97b24" }/bin/failure a90ee60c" ; } }
+                                                                                                                                                    DOT_SSH=${ resources__.production.dot-ssh { failure = "${ _failure.implementation "9791aa93" }/bin/failure ca84283a" ; } }
                                                                                                                                                     if [[ -t 0 ]]
                                                                                                                                                     then
                                                                                                                                                         "$SSH/bin/ssh" -F "$DOT_SSH/config" "$@"
