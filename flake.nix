@@ -1887,7 +1887,7 @@
                                                                                                                                                             [[ "$host" == "$cur"* ]] && COMPREPLY+=( "$host" )
                                                                                                                                                         done <<< "$hosts"
                                                                                                                                                     }
-                                                                                                                                                    if [[ $- == *i* ]]
+                                                                                                                                                    if [[ -n "$BASH" && $- == *i* ]]
                                                                                                                                                     then
                                                                                                                                                         complete -F _ssh_custom_hosts ssh
                                                                                                                                                     fi
@@ -1935,7 +1935,10 @@
                                                                                                                                     tiny =
                                                                                                                                         ''
                                                                                                                                             PATH="${ pkgs.bash }/bin:${ pkgs.gawk }/bin:${ pkgs.coreutils }/bin:${ bin.ssh }"
-                                                                                                                                            source ${ pkgs.writeTextFile { name = "autocomplete" ; text = autocomplete.ssh ; } }
+                                                                                                                                            if [[ -n "$BASH" && $- == *i* ]]
+                                                                                                                                            then
+                                                                                                                                                source ${ pkgs.writeTextFile { name = "autocomplete" ; text = autocomplete.ssh ; } }
+                                                                                                                                            fi
                                                                                                                                             export NAME="${ config.personal.description }"
                                                                                                                                         '' ;
                                                                                                                                 } ;
