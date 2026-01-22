@@ -1875,6 +1875,9 @@
                                                                                                                                     mapper = name : value : value ;
                                                                                                                                     set =
                                                                                                                                         {
+                                                                                                                                            gnupg =
+                                                                                                                                                ''
+                                                                                                                                                '' ;
                                                                                                                                             ssh =
                                                                                                                                                 ''
                                                                                                                                                     _ssh_custom_hosts() {
@@ -1902,6 +1905,18 @@
                                                                                                                                     mapper = name : value : "${ pkgs.writeShellApplication { name = name ; text = value ; } }/bin" ;
                                                                                                                                     set =
                                                                                                                                         {
+                                                                                                                                            gnupg =
+                                                                                                                                                ''
+                                                                                                                                                    DOT_GNUPG=${ resources__.production.dot-gnupg { failure = "${ _failure.implementation "865c0b02" }/bin/failure 669fe5bf" ; } }
+                                                                                                                                                    GPG=${ resources__.production.ephemeral.gpg { failure = "${ failure.implementation "0fc9af5a" }/bin/failure 37072a99" ; } }
+                                                                                                                                                    export GNUPGHOME="$DOT_GNUPG/dot-gnupg"
+                                                                                                                                                    if [[ -t 0 ]]
+                                                                                                                                                    then
+                                                                                                                                                        "$GPG/bin/gpg" "$@"
+                                                                                                                                                    else
+                                                                                                                                                        cat | "$GPG/bin/gpg" "$@"
+                                                                                                                                                    fi
+                                                                                                                                                '' ;
                                                                                                                                             ssh =
                                                                                                                                                 ''
                                                                                                                                                     SSH=${ resources__.production.ephemeral.ssh { failure = "${ _failure.implementation "45d97b24" }/bin/failure a90ee60c" ; } }
@@ -1917,6 +1932,20 @@
                                                                                                                                     in builtins.mapAttrs mapper set ;
                                                                                                                             man =
                                                                                                                                 {
+                                                                                                                                    gnupg =
+                                                                                                                                        let
+                                                                                                                                            origManGz = pkgs.gnupg.out + "/share/man/man1/gpg.1.gz" ;
+                                                                                                                                            in
+                                                                                                                                                pkgs.runCommand
+                                                                                                                                                    "gpg.1"
+                                                                                                                                                    { }
+                                                                                                                                                    ''
+                                                                                                                                                        gunzip -c ${ origManGz }
+                                                                                                                                                        cat >> $out <<EOF
+                                                                                                                                                            # Custom Note
+                                                                                                                                                            This wrapper sets GNUPGHOME
+                                                                                                                                                        EOF
+                                                                                                                                                    '' ;
                                                                                                                                     ssh =
                                                                                                                                         let
                                                                                                                                             origManGz = pkgs.openssh.out + "/share/man/man1/ssh.1.gz" ;
@@ -1938,17 +1967,19 @@
                                                                                                                                         {
                                                                                                                                             autocomplete =
                                                                                                                                                 ''
+                                                                                                                                                    ${ autocomplete.gnupg }
                                                                                                                                                     ${ autocomplete.ssh }
                                                                                                                                                 '' ;
                                                                                                                                             envrc =
                                                                                                                                                 ''
                                                                                                                                                     export MANPATH="$PWD/man"
-                                                                                                                                                    export PATH="${ pkgs.bash }/bin:${ pkgs.coreutils }/bin:${ pkgs.gawk }/bin:${ pkgs.less }/bin:${ pkgs.man-db }/bin:${ bin.ssh }"
+                                                                                                                                                    export PATH="${ pkgs.bash }/bin:${ pkgs.coreutils }/bin:${ pkgs.gawk }/bin:${ pkgs.less }/bin:${ pkgs.man-db }/bin:${ bin.gnupg }:${ bin.ssh }"
                                                                                                                                                     export NAME="${ config.personal.description }"
                                                                                                                                                 '' ;
                                                                                                                                             man =
                                                                                                                                                 ''
                                                                                                                                                     mkdir --parents "/home/${ config.personal.name }/pads/tiny/man/man1"
+                                                                                                                                                    ln --symbolic ${ man.gnupg } "/home/${ config.personal.name }/pads/tiny/man/man1/gpg.1"
                                                                                                                                                     ln --symbolic ${ man.ssh } "/home/${ config.personal.name }/pads/tiny/man/man1/ssh.1"
                                                                                                                                                 '' ;
                                                                                                                                         } ;
