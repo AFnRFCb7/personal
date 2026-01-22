@@ -1878,10 +1878,14 @@
                                                                                                                                                         local cur
                                                                                                                                                         cur="${ builtins.concatStringsSep "" [ "$" "{" "COMP_WORDS[COMP_CWORD]" "}" ] }"
                                                                                                                                                         DOT_SSH=${ resources__.production.dot-ssh { failure = "${ _failure.implementation "aa52e899" }/bin/failure ca9b12f3" ; } }
-                                                                                                                                                        hosts="$( awk '/^Host / {for(i=2;i<=NF;i++) print $2}' "$DOT_SSH/config" )" || ${ _failure.implementation "288ea68f" }/bin/failure 636f42f2
                                                                                                                                                         local hosts
+                                                                                                                                                        hosts="$( awk '/^Host / {for(i=2;i<=NF;i++) print $i}' "$DOT_SSH/config" )" || ${ _failure.implementation "288ea68f" }/bin/failure 636f42f2
                                                                                                                                                         NEXT="$( compgen -W "$hosts" -- "$cur" )" || ${ _failure.implementation "211572ca" }/bin/failure c128ba1e
-                                                                                                                                                        COMPREPLY=( "$NEXT" )
+                                                                                                                                                        COMPREPLY=()
+                                                                                                                                                        while read -r host
+                                                                                                                                                        do
+                                                                                                                                                            [[ "$host" == "$cur"* ]] && COMPREPLY+=( "$host" )
+                                                                                                                                                        done <<< "$hosts
                                                                                                                                                     }
                                                                                                                                                     complete -F _ssh_custom_hosts ssh
                                                                                                                                                 '' ;
