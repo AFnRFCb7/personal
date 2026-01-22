@@ -1887,7 +1887,10 @@
                                                                                                                                                             [[ "$host" == "$cur"* ]] && COMPREPLY+=( "$host" )
                                                                                                                                                         done <<< "$hosts"
                                                                                                                                                     }
-                                                                                                                                                    complete -F _ssh_custom_hosts ssh
+                                                                                                                                                    if [[ $- == *i* ]]
+                                                                                                                                                    then
+                                                                                                                                                        complete -F _ssh_custom_hosts ssh
+                                                                                                                                                    fi
                                                                                                                                                 '' ;
                                                                                                                                         } ;
                                                                                                                                     in builtins.mapAttrs mapper set ;
