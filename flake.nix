@@ -1885,7 +1885,7 @@
                                                                                                                                                         while read -r host
                                                                                                                                                         do
                                                                                                                                                             [[ "$host" == "$cur"* ]] && COMPREPLY+=( "$host" )
-                                                                                                                                                        done <<< "$hosts
+                                                                                                                                                        done <<< "$hosts"
                                                                                                                                                     }
                                                                                                                                                     complete -F _ssh_custom_hosts ssh
                                                                                                                                                 '' ;
