@@ -1948,8 +1948,8 @@
                                                                                                                                                 '' ;
                                                                                                                                             man =
                                                                                                                                                 ''
-                                                                                                                                                    mkdir --parents "/home/${ config.personal.name }/pads/${ name }/man/man1"
-                                                                                                                                                    ln --symbolic ${ man.ssh } "/home/${ config.personal.name }/pads/${ name }/man/man1/ssh.1"
+                                                                                                                                                    mkdir --parents "/home/${ config.personal.name }/pads/tiny/man/man1"
+                                                                                                                                                    ln --symbolic ${ man.ssh } "/home/${ config.personal.name }/pads/tiny/man/man1/ssh.1"
                                                                                                                                                 '' ;
                                                                                                                                         } ;
                                                                                                                                 } ;
