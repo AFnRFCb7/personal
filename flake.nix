@@ -1943,7 +1943,7 @@
                                                                                                                                             envrc =
                                                                                                                                                 ''
                                                                                                                                                     export MANPATH="$PWD/man"
-                                                                                                                                                    export PATH="${ pkgs.bash }/bin:${ pkgs.coreutils }/bin:${ pkgs.gawk }/bin:${ pkgs.mandb }/bin:${ bin.ssh }"
+                                                                                                                                                    export PATH="${ pkgs.bash }/bin:${ pkgs.coreutils }/bin:${ pkgs.gawk }/bin:${ pkgs.man-db }/bin:${ bin.ssh }"
                                                                                                                                                     export NAME="${ config.personal.description }"
                                                                                                                                                 '' ;
                                                                                                                                             man =
