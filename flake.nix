@@ -1943,12 +1943,13 @@
                                                                                                                                             envrc =
                                                                                                                                                 ''
                                                                                                                                                     export MANPATH="$PWD/man"
-                                                                                                                                                    export PATH="${ pkgs.bash }/bin:${ pkgs.coreutils }/bin:${ pkgs.gawk }/bin:${ pkgs.man-db }/bin:${ bin.ssh }"
+                                                                                                                                                    export PATH="${ pkgs.bash }/bin:${ pkgs.coreutils }/bin:${ pkgs.gawk }/bin:${ pkgs.less }/bin:${ pkgs.man-db }/bin:${ bin.ssh }"
                                                                                                                                                     export NAME="${ config.personal.description }"
                                                                                                                                                 '' ;
                                                                                                                                             man =
                                                                                                                                                 ''
-                                                                                                                                                    ln --symbolic ${ man.ssh } "$PWD/man/ssh.1"
+                                                                                                                                                    mkdir --parents "/home/${ config.personal.name }/pads/${ name }/man/man1"
+                                                                                                                                                    ln --symbolic ${ man.ssh } "/home/${ config.personal.name }/pads/${ name }/man/man1/ssh.1"
                                                                                                                                                 '' ;
                                                                                                                                         } ;
                                                                                                                                 } ;
