@@ -1953,7 +1953,7 @@
                                                                                                                                         } ;
                                                                                                                                 } ;
                                                                                                                     mapper =
-                                                                                                                        name : { autocomplete , envrc } :
+                                                                                                                        name : { autocomplete , envrc , man } :
                                                                                                                             ''
                                                                                                                                 mkdir --parents /home/${ config.personal.name }/pads/${ name }/man
                                                                                                                                 ln --symbolic ${ pkgs.writeTextFile { name = "envrc" ; text = envrc ; } } /home/${ config.personal.name }/pads/${ name }/.envrc
