@@ -1927,7 +1927,7 @@
                                                                                                                                     tiny =
                                                                                                                                         ''
                                                                                                                                             PATH="${ pkgs.bash }/bin:${ pkgs.gawk }/bin:${ pkgs.coreutils }/bin:${ bin.ssh }"
-                                                                                                                                            source ${ builtins.toFile "autocomplete" autocomplete.ssh }
+                                                                                                                                            source ${ pkgs.writeTextFile "autocomplete" autocomplete.ssh }
                                                                                                                                             export NAME="${ config.personal.description }"
                                                                                                                                         '' ;
                                                                                                                                 } ;
@@ -1935,7 +1935,7 @@
                                                                                                                         name : value :
                                                                                                                             ''
                                                                                                                                 mkdir --parents /home/${ config.personal.name }/pads/${ name }
-                                                                                                                                ln --symbolic ${ builtins.toFile "autocomplete" value } /home/${ config.personal.name }/pads/${ name }/.envrc
+                                                                                                                                ln --symbolic ${ pkgs.writeTextFile "autocomplete" value } /home/${ config.personal.name }/pads/${ name }/.envrc
                                                                                                                             '' ;
                                                                                                                     in
                                                                                                                         builtins.concatStringsSep "" ( builtins.attrValues ( builtins.mapAttrs mapper envrc ) ) ;
