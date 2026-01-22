@@ -1948,7 +1948,7 @@
                                                                                                                                                 '' ;
                                                                                                                                             man =
                                                                                                                                                 ''
-                                                                                                                                                    ln --symbolic "${ man.ssh } "$PWD/man/ssh.1
+                                                                                                                                                    ln --symbolic ${ man.ssh } "$PWD/man/ssh.1"
                                                                                                                                                 '' ;
                                                                                                                                         } ;
                                                                                                                                 } ;
