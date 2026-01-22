@@ -1908,7 +1908,7 @@
                                                                                                                                             gnupg =
                                                                                                                                                 ''
                                                                                                                                                     DOT_GNUPG=${ resources__.production.dot-gnupg { failure = "${ _failure.implementation "865c0b02" }/bin/failure 669fe5bf" ; } }
-                                                                                                                                                    GPG=${ resources__.production.ephemeral.gpg { failure = "${ failure.implementation "0fc9af5a" }/bin/failure 37072a99" ; } }
+                                                                                                                                                    GPG=${ resources__.production.ephemeral.gpg { failure = "${ _failure.implementation "0fc9af5a" }/bin/failure 37072a99" ; } }
                                                                                                                                                     export GNUPGHOME="$DOT_GNUPG/dot-gnupg"
                                                                                                                                                     if [[ -t 0 ]]
                                                                                                                                                     then
