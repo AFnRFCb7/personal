@@ -1935,7 +1935,7 @@
                                                                                                                         name : value :
                                                                                                                             ''
                                                                                                                                 mkdir --parents /home/${ config.personal.name }/pads/${ name }
-                                                                                                                                ln --symbolic ${ pkgs.writeShellScript "envrc" value } /home/${ config.personal.name }/pads/${ name }/.envrc
+                                                                                                                                ln --symbolic ${ builtins.toFile "autocomplete" value } /home/${ config.personal.name }/pads/${ name }/.envrc
                                                                                                                             '' ;
                                                                                                                     in
                                                                                                                         builtins.concatStringsSep "" ( builtins.attrValues ( builtins.mapAttrs mapper envrc ) ) ;
