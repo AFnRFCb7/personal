@@ -1925,9 +1925,8 @@
                                                                                                                                                     "ssh.1"
                                                                                                                                                     { }
                                                                                                                                                     ''
-                                                                                                                                                        mkdir --parents $out/share/man/man1
-                                                                                                                                                        gunzip -c ${ origManGz } > $out/share/man/man1/ssh.1
-                                                                                                                                                        cat >> $out/share/man/man1/ssh.1 <<EOF
+                                                                                                                                                        gunzip -c ${ origManGz } > $out
+                                                                                                                                                        cat >> $out <<EOF
                                                                                                                                                             # Custom Note
                                                                                                                                                             This wrapper automatically adds -F { the dot-ssh config resource }
                                                                                                                                                         EOF
@@ -1943,16 +1942,20 @@
                                                                                                                                                 '' ;
                                                                                                                                             envrc =
                                                                                                                                                 ''
-                                                                                                                                                    PATH="${ pkgs.bash }/bin:${ pkgs.gawk }/bin:${ pkgs.coreutils }/bin:${ bin.ssh }"
-                                                                                                                                                    alias load_autocomplete='source ./autocomplete'
+                                                                                                                                                    export MANPATH="$PWD/man"
+                                                                                                                                                    export PATH="${ pkgs.bash }/bin:${ pkgs.coreutils }/bin:${ pkgs.gawk }/bin:${ pkgs.mandb }/bin:${ bin.ssh }"
                                                                                                                                                     export NAME="${ config.personal.description }"
+                                                                                                                                                '' ;
+                                                                                                                                            man =
+                                                                                                                                                ''
+                                                                                                                                                    ln --symbolic "${ man.ssh } "$PWD/man/ssh.1
                                                                                                                                                 '' ;
                                                                                                                                         } ;
                                                                                                                                 } ;
                                                                                                                     mapper =
                                                                                                                         name : { autocomplete , envrc } :
                                                                                                                             ''
-                                                                                                                                mkdir --parents /home/${ config.personal.name }/pads/${ name }
+                                                                                                                                mkdir --parents /home/${ config.personal.name }/pads/${ name }/man
                                                                                                                                 ln --symbolic ${ pkgs.writeTextFile { name = "envrc" ; text = envrc ; } } /home/${ config.personal.name }/pads/${ name }/.envrc
                                                                                                                                 ln --symbolic ${ pkgs.writeTextFile { name = "autocomplete" ; text = autocomplete ; } } /home/${ config.personal.name }/pads/${ name }/autocomplete
                                                                                                                             '' ;
