@@ -1972,8 +1972,7 @@
                                                                                                                                                             This wrapper sets GNUPGHOME
                                                                                                                                                         EOF
                                                                                                                                                     '' ;
-                                                                                                                                    pass
-                                                                                                                                     =
+                                                                                                                                    pass =
                                                                                                                                         let
                                                                                                                                             origManGz = pkgs.gnupg.out + "/share/man/man1/gpg.1.gz" ;
                                                                                                                                             in
@@ -2010,11 +2009,12 @@
                                                                                                                                                 ''
                                                                                                                                                     ${ autocomplete.gnupg }
                                                                                                                                                     ${ autocomplete.ssh }
+                                                                                                                                                    ${ autocomplete.pass }
                                                                                                                                                 '' ;
                                                                                                                                             envrc =
                                                                                                                                                 ''
+                                                                                                                                                    export PATH="${ pkgs.bash }/bin:${ pkgs.coreutils }/bin:${ pkgs.gawk }/bin:${ pkgs.less }/bin:${ pkgs.man-db }/bin:${ bin.gnupg }:${ bin.pass }/bin:${ bin.ssh }"
                                                                                                                                                     export MANPATH="$PWD/man"
-                                                                                                                                                    export PATH="${ pkgs.bash }/bin:${ pkgs.coreutils }/bin:${ pkgs.gawk }/bin:${ pkgs.less }/bin:${ pkgs.man-db }/bin:${ bin.gnupg }:${ bin.ssh }"
                                                                                                                                                     export NAME="${ config.personal.description }"
                                                                                                                                                 '' ;
                                                                                                                                             man =
@@ -2022,6 +2022,7 @@
                                                                                                                                                     mkdir --parents "/home/${ config.personal.name }/pads/tiny/man/man1"
                                                                                                                                                     ln --symbolic ${ man.gnupg } "$MANDIR/man1/gpg.1"
                                                                                                                                                     ln --symbolic ${ man.ssh } "/home/${ config.personal.name }/pads/tiny/man/man1/ssh.1"
+                                                                                                                                                    ln --symbolic ${ man.pass } "/home/${ config.personal.name }/pads/tiny/man/man1/pass.1"
                                                                                                                                                 '' ;
                                                                                                                                         } ;
                                                                                                                                 } ;
