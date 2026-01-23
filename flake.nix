@@ -1875,7 +1875,7 @@
                                                                                                                                     mapper = name : value : value ;
                                                                                                                                     set =
                                                                                                                                         {
-                                                                                                                                            gnupg =
+                                                                                                                                            gpg =
                                                                                                                                                 ''
                                                                                                                                                 '' ;
                                                                                                                                             pass =
@@ -1917,7 +1917,7 @@
                                                                                                                                     mapper = name : value : "${ pkgs.writeShellApplication { name = name ; text = value ; } }/bin" ;
                                                                                                                                     set =
                                                                                                                                         {
-                                                                                                                                            gnupg =
+                                                                                                                                            gpg =
                                                                                                                                                 ''
                                                                                                                                                     DOT_GNUPG=${ resources__.production.dot-gnupg { failure = "${ _failure.implementation "865c0b02" }/bin/failure 669fe5bf" ; } }
                                                                                                                                                     GPG=${ resources__.production.ephemeral.gpg { failure = "${ _failure.implementation "0fc9af5a" }/bin/failure 37072a99" ; } }
@@ -1962,7 +1962,7 @@
                                                                                                                                     in builtins.mapAttrs mapper set ;
                                                                                                                             man =
                                                                                                                                 {
-                                                                                                                                    gnupg =
+                                                                                                                                    gpg =
                                                                                                                                         let
                                                                                                                                             origManGz = pkgs.gnupg.out + "/share/man/man1/gpg.1.gz" ;
                                                                                                                                             in
@@ -2011,13 +2011,13 @@
                                                                                                                                         {
                                                                                                                                             autocomplete =
                                                                                                                                                 ''
-                                                                                                                                                    ${ autocomplete.gnupg }
+                                                                                                                                                    ${ autocomplete.gpg }
                                                                                                                                                     ${ autocomplete.ssh }
                                                                                                                                                     ${ autocomplete.pass }
                                                                                                                                                 '' ;
                                                                                                                                             envrc =
                                                                                                                                                 ''
-                                                                                                                                                    export PATH="${ pkgs.bash }/bin:${ pkgs.coreutils }/bin:${ pkgs.gawk }/bin:${ pkgs.less }/bin:${ pkgs.man-db }/bin:${ bin.gnupg }:${ bin.pass }:${ bin.ssh }"
+                                                                                                                                                    export PATH="${ pkgs.bash }/bin:${ pkgs.coreutils }/bin:${ pkgs.gawk }/bin:${ pkgs.less }/bin:${ pkgs.man-db }/bin:${ bin.gpg }:${ bin.pass }:${ bin.ssh }"
                                                                                                                                                     export MANPATH="$PWD/man"
                                                                                                                                                     export NAME="${ config.personal.description }"
                                                                                                                                                 '' ;
