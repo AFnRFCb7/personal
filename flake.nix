@@ -1929,6 +1929,10 @@
                                                                                                                                                         cat | "$GPG/bin/gpg" "$@"
                                                                                                                                                     fi
                                                                                                                                                 '' ;
+                                                                                                                                            mutable =
+                                                                                                                                                ''
+                                                                                                                                                    STUDIO=${ resources__.production.studio.entry { failure = "${ _failure.implementation "1153f34b" }/bin/failure f3acd0ff" ; } }
+                                                                                                                                                '' ;
                                                                                                                                             pass =
                                                                                                                                                 ''
                                                                                                                                                     DOT_GNUPG=${ resources__.production.dot-gnupg { failure = "${ _failure.implementation "63d15d15" }/bin/failure a3f79994" ; } }
