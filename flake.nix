@@ -1878,6 +1878,18 @@
                                                                                                                                             gnupg =
                                                                                                                                                 ''
                                                                                                                                                 '' ;
+                                                                                                                                            pass =
+                                                                                                                                                ''
+                                                                                                                                                    PASS=${ resources__.production.ephemeral.pass { failure = "${ _failure.implementation "87249247" }/bin/failure 9e3f4c54" ; } }
+                                                                                                                                                    source $PASS/share/bash-completion/completions/pass
+                                                                                                                                                    _pass_complete_entries_2 ( ) {
+                                                                                                                                                        DOT_GNUPG=${ resources__.production.dot-gnupg { failure = "${ _failure.implementation "63d15d15" }/bin/failure a3f79994" ; } }
+                                                                                                                                                        PASSWORD_RESOURCE=${ resources__.production.repository.pass { failure = "${ _failure.implementation "5625cf13" }/bin/failure 371bf96b" ; } }
+                                                                                                                                                        export PASSWORD_STORE_GPG_OPTS="--homedir $DOT_GNUPG/dot-gnupg"
+                                                                                                                                                        export PASSWORD_STORE_DIR="$PASSWORD_STORE_RESOURCE/repository"
+                                                                                                                                                        _pass_complete_entries
+                                                                                                                                                    }
+                                                                                                                                                '' ;
                                                                                                                                             ssh =
                                                                                                                                                 ''
                                                                                                                                                     _ssh_custom_hosts() {
@@ -1917,6 +1929,20 @@
                                                                                                                                                         cat | "$GPG/bin/gpg" "$@"
                                                                                                                                                     fi
                                                                                                                                                 '' ;
+                                                                                                                                            pass =
+                                                                                                                                                ''
+                                                                                                                                                    DOT_GNUPG=${ resources__.production.dot-gnupg { failure = "${ _failure.implementation "63d15d15" }/bin/failure a3f79994" ; } }
+                                                                                                                                                    PASSWORD_RESOURCE=${ resources__.production.repository.pass { failure = "${ _failure.implementation "5625cf13" }/bin/failure 371bf96b" ; } }
+                                                                                                                                                    export PASSWORD_STORE_GPG_OPTS="--homedir $DOT_GNUPG/dot-gnupg"
+                                                                                                                                                    export PASSWORD_STORE_DIR="$PASSWORD_STORE_RESOURCE/repository"
+                                                                                                                                                    PASS=${ resources__.production.ephemeral.pass { failure = "${ _failure.implementation "b3ab732e" }/bin/failure f13b091b" ; } }
+                                                                                                                                                    if [[ -t 0 ]]
+                                                                                                                                                    then
+                                                                                                                                                        "$PASS" "$@"
+                                                                                                                                                    else
+                                                                                                                                                        cat | "$PASS" "$@"
+                                                                                                                                                    fi
+                                                                                                                                                '' ;
                                                                                                                                             ssh =
                                                                                                                                                 ''
                                                                                                                                                     SSH=${ resources__.production.ephemeral.ssh { failure = "${ _failure.implementation "45d97b24" }/bin/failure a90ee60c" ; } }
@@ -1933,6 +1959,21 @@
                                                                                                                             man =
                                                                                                                                 {
                                                                                                                                     gnupg =
+                                                                                                                                        let
+                                                                                                                                            origManGz = pkgs.gnupg.out + "/share/man/man1/gpg.1.gz" ;
+                                                                                                                                            in
+                                                                                                                                                pkgs.runCommand
+                                                                                                                                                    "gpg.1"
+                                                                                                                                                    { }
+                                                                                                                                                    ''
+                                                                                                                                                        gunzip -c ${ origManGz }
+                                                                                                                                                        cat >> $out <<EOF
+                                                                                                                                                            # Custom Note
+                                                                                                                                                            This wrapper sets GNUPGHOME
+                                                                                                                                                        EOF
+                                                                                                                                                    '' ;
+                                                                                                                                    pass
+                                                                                                                                     =
                                                                                                                                         let
                                                                                                                                             origManGz = pkgs.gnupg.out + "/share/man/man1/gpg.1.gz" ;
                                                                                                                                             in
