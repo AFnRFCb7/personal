@@ -2017,7 +2017,7 @@
                                                                                                                                                 '' ;
                                                                                                                                             envrc =
                                                                                                                                                 ''
-                                                                                                                                                    export PATH="${ pkgs.bash }/bin:${ pkgs.coreutils }/bin:${ pkgs.gawk }/bin:${ pkgs.less }/bin:${ pkgs.man-db }/bin:${ bin.gnupg }:${ bin.pass }/bin:${ bin.ssh }"
+                                                                                                                                                    export PATH="${ pkgs.bash }/bin:${ pkgs.coreutils }/bin:${ pkgs.gawk }/bin:${ pkgs.less }/bin:${ pkgs.man-db }/bin:${ bin.gnupg }:${ bin.pass }:${ bin.ssh }"
                                                                                                                                                     export MANPATH="$PWD/man"
                                                                                                                                                     export NAME="${ config.personal.description }"
                                                                                                                                                 '' ;
