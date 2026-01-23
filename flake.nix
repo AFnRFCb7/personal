@@ -2024,7 +2024,7 @@
                                                                                                                                             man =
                                                                                                                                                 ''
                                                                                                                                                     mkdir --parents "/home/${ config.personal.name }/pads/tiny/man/man1"
-                                                                                                                                                    ln --symbolic ${ man.gnupg } "$MANDIR/man1/gpg.1"
+                                                                                                                                                    ln --symbolic ${ man.gpg } "$MANDIR/man1/gpg.1"
                                                                                                                                                     ln --symbolic ${ man.ssh } "/home/${ config.personal.name }/pads/tiny/man/man1/ssh.1"
                                                                                                                                                     ln --symbolic ${ man.pass } "/home/${ config.personal.name }/pads/tiny/man/man1/pass.1"
                                                                                                                                                 '' ;
