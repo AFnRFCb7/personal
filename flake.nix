@@ -2445,7 +2445,6 @@
                                                             } ;
                                                     } ;
                                                 expected = "/nix/store/05f5bx3jmjp8l85paq330klvrh912236-init/bin/init" ;
-                                                mount = "271a376c" ;
                                                 pkgs = pkgs ;
                                                 implementation-resources =
                                                     {
