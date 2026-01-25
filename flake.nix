@@ -133,8 +133,8 @@
                                                                 ignore :
                                                                     _dot-gnupg.implementation
                                                                         {
-                                                                            ownertrust = { mount , pkgs , resources , root , wrap } : ignore : "${ _fixture.implementation }/gnupg/dot-gnupg/ownertrust.asc" ;
-                                                                            secret-keys = { mount , pkgs , resources , root , wrap } : ignore : "${ _fixture.implementation }/gnupg/dot-gnupg/secret-keys.asc" ;
+                                                                            ownertrust = { pid , pkgs , resources , root , sequential , wrap } : ignore : "${ _fixture.implementation }/gnupg/dot-gnupg/ownertrust.asc" ;
+                                                                            secret-keys = { pid , pkgs , resources , root , sequential , wrap } : ignore : "${ _fixture.implementation }/gnupg/dot-gnupg/secret-keys.asc" ;
                                                                             setup =
                                                                                 ''
                                                                                     wrap "$1" stage/secret-keys.asc
@@ -164,7 +164,7 @@
                                                                 ignore :
                                                                     {
                                                                         init =
-                                                                            { mount , pkgs , resources , root , wrap } :
+                                                                            { pid , pkgs , resources , root , sequential , wrap } :
                                                                                 let
                                                                                     application =
                                                                                         pkgs.writeShellApplication
@@ -239,7 +239,7 @@
                                                                         {
                                                                             resolutions = [ ] ;
                                                                             setup =
-                                                                                { mount , pkgs , resources , root , wrap } :
+                                                                                { pid , pkgs , resources , root , sequential , wrap } :
                                                                                     let
                                                                                         application =
                                                                                             pkgs.writeShellApplication
@@ -257,7 +257,7 @@
                                                             temporary =
                                                                 ignore :
                                                                     {
-                                                                        init = { mount , pkgs , resources , root , wrap } : "" ;
+                                                                        init = { pid , pkgs , resources , root , sequential , wrap } : "" ;
                                                                         transient = true ;
                                                                     } ;
                                                         } ;
@@ -269,7 +269,7 @@
                                                                         ignore :
                                                                             {
                                                                                 init =
-                                                                                    { mount , pkgs , resources , root , wrap } :
+                                                                                    { pid , pkgs , resources , root , sequential , wrap } :
                                                                                         let
                                                                                             application =
                                                                                                 pkgs.writeShellApplication
@@ -290,7 +290,7 @@
                                                                 ignore :
                                                                     {
                                                                         init =
-                                                                            { mount , pkgs , resources , root , wrap } :
+                                                                            { pid , pkgs , resources , root , sequential , wrap } :
                                                                                 let
                                                                                     application =
                                                                                         pkgs.writeShellApplication
@@ -309,9 +309,9 @@
                                                                 ignore :
                                                                     _dot-gnupg.implementation
                                                                         {
-                                                                            ownertrust = { mount , pkgs , resources , root , wrap } : resources.production.secrets.ownertrust ;
+                                                                            ownertrust = { pid , pkgs , resources , root , sequential , wrap } : resources.production.secrets.ownertrust ;
                                                                             ownertrust-file = ''echo "$1/secret"'' ;
-                                                                            secret-keys = { mount , pkgs , resources , root , wrap } : resources.production.secrets.secret-keys ;
+                                                                            secret-keys = { pid , pkgs , resources , root , sequential , wrap } : resources.production.secrets.secret-keys ;
                                                                             secret-keys-file = ''echo "$1/secret"'' ;
                                                                         } ;
                                                             dot-ssh =
@@ -348,18 +348,18 @@
                                                                                 {
                                                                                     "github.com" =
                                                                                         {
-                                                                                            identity-file = { mount , pkgs , resources , root , wrap } : resources.production.secrets.dot-ssh.github.identity-file ( setup : "echo | ${ setup }" ) ;
-                                                                                            user-known-hosts-file = { mount , pkgs , resources , root , wrap } : resources.production.secrets.dot-ssh.github.user-known-hosts-file ( setup : "echo | ${ setup }" ) ;
+                                                                                            identity-file = { pid , pkgs , resources , root , sequential , wrap } : resources.production.secrets.dot-ssh.github.identity-file ( setup : "echo | ${ setup }" ) ;
+                                                                                            user-known-hosts-file = { pid , pkgs , resources , root , sequential , wrap } : resources.production.secrets.dot-ssh.github.user-known-hosts-file ( setup : "echo | ${ setup }" ) ;
                                                                                         } ;
                                                                                     laptop =
                                                                                         {
-                                                                                            identity-file = { mount , pkgs , resources , root , wrap } : resources.production.fixture.laptop ( setup : "echo | ${ setup }" ) ;
-                                                                                            user-known-hosts-file = { mount , pkgs , resources , root , wrap } : resources.production.fixture.laptop ( setup : "echo | ${ setup }" ) ;
+                                                                                            identity-file = { pid , pkgs , resources , root , sequential , wrap } : resources.production.fixture.laptop ( setup : "echo | ${ setup }" ) ;
+                                                                                            user-known-hosts-file = { pid , pkgs , resources , root , sequential , wrap } : resources.production.fixture.laptop ( setup : "echo | ${ setup }" ) ;
                                                                                         } ;
                                                                                     mobile =
                                                                                         {
-                                                                                            identity-file = { mount , pkgs , resources , root , wrap } : resources.production.secrets.dot-ssh.mobile.identity-file ( setup : "echo | ${ setup }" ) ;
-                                                                                            user-known-hosts-file = { mount , pkgs , resources , root , wrap } : resources.production.fixture.laptop ( setup : "echo | ${ setup }" ) ;
+                                                                                            identity-file = { pid , pkgs , resources , root , sequential , wrap } : resources.production.secrets.dot-ssh.mobile.identity-file ( setup : "echo | ${ setup }" ) ;
+                                                                                            user-known-hosts-file = { pid , pkgs , resources , root , sequential , wrap } : resources.production.fixture.laptop ( setup : "echo | ${ setup }" ) ;
                                                                                         } ;
                                                                                 } ;
                                                                         } ;
@@ -369,7 +369,7 @@
                                                                             ignore :
                                                                                 {
                                                                                     init =
-                                                                                        { mount , pkgs , resources , root , wrap } :
+                                                                                        { pid , pkgs , resources , root , sequential , wrap } :
                                                                                             let
                                                                                                 application =
                                                                                                     pkgs.writeShellApplication
@@ -395,7 +395,7 @@
                                                                         ignore :
                                                                             {
                                                                                 init =
-                                                                                    { mount , pkgs , resources , root , wrap } :
+                                                                                    { pid , pkgs , resources , root , sequential , wrap } :
                                                                                         let
                                                                                             application =
                                                                                                 pkgs.writeShellApplication
@@ -423,7 +423,7 @@
                                                                         ignore :
                                                                             {
                                                                                 init =
-                                                                                    { mount , pkgs , resources , root , wrap } :
+                                                                                    { pid , pkgs , resources , root , sequential , wrap } :
                                                                                         let
                                                                                             application =
                                                                                                 pkgs.writeShellApplication
@@ -717,7 +717,7 @@
                                                                                         {
                                                                                             resolutions = [ ] ;
                                                                                             setup =
-                                                                                                { mount , pkgs , resources , root , wrap } :
+                                                                                                { pid , pkgs , resources , root , sequential , wrap } :
                                                                                                     let
                                                                                                         application =
                                                                                                             pkgs.writeShellApplication
@@ -1310,7 +1310,7 @@
                                                                                                 {
                                                                                                     resolutions = [ ] ;
                                                                                                     setup =
-                                                                                                        { mount , pkgs , resources , root , wrap } :
+                                                                                                        { pid , pkgs , resources , root , sequential , wrap } :
                                                                                                             let
                                                                                                                 application =
                                                                                                                     pkgs.writeShellApplication
@@ -1338,7 +1338,7 @@
                                                                                                 {
                                                                                                     resolutions = [ ] ;
                                                                                                     setup =
-                                                                                                        { mount , pkgs , resources , root , wrap } :
+                                                                                                        { pid , pkgs , resources , root , sequential , wrap } :
                                                                                                             let
                                                                                                                 application =
                                                                                                                     pkgs.writeShellApplication
@@ -1545,7 +1545,7 @@
                                                             secrets =
                                                                 let
                                                                     setup =
-                                                                        encrypted : { mount , pkgs , resources , root , wrap } :
+                                                                        encrypted : { pid , pkgs , resources , root , sequential , wrap } :
                                                                             ''
                                                                                 ENCRYPTED=${ resources.production.repository.secrets_ ( setup : setup ) }
                                                                                 IDENTITY=${ config.personal.agenix }
@@ -1574,7 +1574,7 @@
                                                                     temporary =
                                                                         ignore :
                                                                             {
-                                                                                init = { mount , pkgs , resources , root , wrap } : "" ;
+                                                                                init = { pid , pkgs , resources , root , sequential , wrap } : "" ;
                                                                                 transient = true ;
                                                                             } ;
                                                                 } ;
@@ -2034,7 +2034,7 @@
                                                                             default =
                                                                                 {
                                                                                     home =
-                                                                                        { mount , pkgs , resources , root , wrap } :
+                                                                                        { pid , pkgs , resources , root , sequential , wrap } :
                                                                                             let
                                                                                                 envrc =
                                                                                                     let
@@ -2415,10 +2415,10 @@
                                             {
                                                 expected = "/nix/store/rxf0885ih1ws3x75xwdiq3rf2yz3ircg-init/bin/init" ;
                                                 failure = _failure.implementation "dff7788e" ;
-                                                ownertrust = { mount , pkgs , resources , root , wrap } : ignore : "${ fixture }/gnupg" ;
+                                                ownertrust = { pid , pkgs , resources , root , sequential , wrap } : ignore : "${ fixture }/gnupg" ;
                                                 ownertrust-file = ''echo "$1/ownertrust.asc"'';
                                                 pkgs = pkgs ;
-                                                secret-keys = { mount , pkgs , resources , root , wrap } : ignore : "${ fixture }/gnupg" ;
+                                                secret-keys = { pid , pkgs , resources , root , sequential , wrap } : ignore : "${ fixture }/gnupg" ;
                                                 secret-keys-file = ''echo "$1/secret-keys.asc"'';
                                             } ;
                                     dot-ssh =
@@ -2451,16 +2451,16 @@
                                                     {
                                                         cb8e09cf =
                                                             {
-                                                                user-known-hosts-file = { mount , pkgs , resources , root , wrap } : builtins.toString pkgs.coreutils ;
+                                                                user-known-hosts-file = { pid , pkgs , resources , root , sequential , wrap } : builtins.toString pkgs.coreutils ;
                                                             } ;
                                                         f5d69296 =
                                                             {
-                                                                user-known-hosts-file = { mount , pkgs , resources , root , wrap } : builtins.toString pkgs.coreutils ;
+                                                                user-known-hosts-file = { pid , pkgs , resources , root , sequential , wrap } : builtins.toString pkgs.coreutils ;
                                                             } ;
                                                         b8b6ddc8 =
                                                             {
-                                                                strict-host-key-checking = { mount , pkgs , resources , root , wrap } : builtins.toString pkgs.coreutils ;
-                                                                user-known-hosts-file = { mount , pkgs , resources , root , wrap } : builtins.toString pkgs.coreutils ;
+                                                                strict-host-key-checking = { pid , pkgs , resources , root , sequential , wrap } : builtins.toString pkgs.coreutils ;
+                                                                user-known-hosts-file = { pid , pkgs , resources , root , sequential , wrap } : builtins.toString pkgs.coreutils ;
                                                             } ;
                                                     } ;
                                             } ;
@@ -2551,7 +2551,7 @@
                                                         expected-transient = -1 ;
                                                         expected-type = "valid" ;
                                                         init =
-                                                            { mount , pkgs , resources , root , wrap } :
+                                                            { pid , pkgs , resources , root , sequential , wrap } :
                                                                 let
                                                                     application =
                                                                         pkgs.writeShellApplication
@@ -2644,7 +2644,7 @@
                                                      expected-transient = -1 ;
                                                      expected-type = "invalid" ;
                                                      init =
-                                                         { mount , pkgs , resources , root , wrap } :
+                                                         { pid , pkgs , resources , root , sequential , wrap } :
                                                              let
                                                                  application =
                                                                      pkgs.writeShellApplication
@@ -2703,7 +2703,7 @@
                                                     expected = "/nix/store/x21jg50mlmqmi59m5j26a4wjh0bx72ls-init/bin/init" ;
                                                     # identity = ignore : "${ fixture }/age/identity/private" ;
                                                     failure = _failure.implementation "a720a5e7" ;
-                                                    setup = { mount , pkgs , resources , root , wrap } : ''ln --symbolic ${ fixture }/age/encrypted/known-hosts.asc /scratch/encrypted && ln --symbolic ${ fixture }/age/identity/private /scratch/identity'' ;
+                                                    setup = { pid , pkgs , resources , root , sequential , wrap } : ''ln --symbolic ${ fixture }/age/encrypted/known-hosts.asc /scratch/encrypted && ln --symbolic ${ fixture }/age/identity/private /scratch/identity'' ;
                                                     pkgs = pkgs ;
                                                } ;
                                         visitor-happy =
