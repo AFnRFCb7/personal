@@ -909,7 +909,6 @@
                                                                                                                                                                 text =
                                                                                                                                                                     ''
                                                                                                                                                                         OLD_BRANCH="$1"
-                                                                                                                                                                        : "${ builtins.concatStringsSep "" [ "$" "{"  "MOUNT:?must be exported" "}"]}"
                                                                                                                                                                         export GIT_SSH_COMMAND="$MOUNT/stage/ssh/command"
                                                                                                                                                                         git fetch origin "$OLD_BRANCH"
                                                                                                                                                                         git checkout "origin/$OLD_BRANCH"
