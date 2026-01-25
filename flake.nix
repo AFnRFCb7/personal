@@ -1296,7 +1296,7 @@
                                                                                                                                     git diff origin/main 2>&1
                                                                                                                                     echo DIFF 21
                                                                                                                                     git diff 2>&1
-                                                                                                                                    wrap ${ root }/bin/root stage/bin/root 0500 --literal-plain DIRECTORY --inherit-plain INDEX --inherit-plain PATH --inherit-plain TARGET
+                                                                                                                                    wrap ${ root }/bin/root stage/bin/root 0500 --literal-plain DIRECTORY --inherit-plain INDEX --literal-plain PATH --literal-plain TARGET
                                                                                                                                     echo DIFF 30
                                                                                                                                     git diff origin/main 2>&1
                                                                                                                                     echo DIFF 31
