@@ -53,6 +53,7 @@
                                             makeWrapper = pkgs.makeWrapper ;
                                             mkDerivation = pkgs.stdenv.mkDerivation ;
                                             nix = pkgs.nix ;
+                                            originator-pid-variable = "c8f5d41a0628fd3c396fe940332263f7cd53f0caa6b656e12466dfdcb4173a6c0537736ab0bc1a37344a748febdd1eab5cc65c20493218afb606dc4c74b4e38d" ;
                                             ps = pkgs.ps ;
                                             redis = pkgs.redis ;
                                             resources = resources ;
@@ -115,7 +116,6 @@
                                                                     in
                                                                         r.implementation
                                                                             {
-                                                                                follow-parent = point.follow-parent or false ;
                                                                                 init = point.init or null ;
                                                                                 seed =
                                                                                     ( point.seed or { } ) //
@@ -133,8 +133,8 @@
                                                                 ignore :
                                                                     _dot-gnupg.implementation
                                                                         {
-                                                                            ownertrust = { mount , pkgs , resources , root , wrap } : ignore : "${ _fixture.implementation }/gnupg/dot-gnupg/ownertrust.asc" ;
-                                                                            secret-keys = { mount , pkgs , resources , root , wrap } : ignore : "${ _fixture.implementation }/gnupg/dot-gnupg/secret-keys.asc" ;
+                                                                            ownertrust = { pid , pkgs , resources , root , sequential , wrap } : ignore : "${ _fixture.implementation }/gnupg/dot-gnupg/ownertrust.asc" ;
+                                                                            secret-keys = { pid , pkgs , resources , root , sequential , wrap } : ignore : "${ _fixture.implementation }/gnupg/dot-gnupg/secret-keys.asc" ;
                                                                             setup =
                                                                                 ''
                                                                                     wrap "$1" stage/secret-keys.asc
@@ -164,7 +164,7 @@
                                                                 ignore :
                                                                     {
                                                                         init =
-                                                                            { mount , pkgs , resources , root , wrap } :
+                                                                            { pid , pkgs , resources , root , sequential , wrap } :
                                                                                 let
                                                                                     application =
                                                                                         pkgs.writeShellApplication
@@ -204,7 +204,6 @@
                                                                                                     '' ;
                                                                                             } ;
                                                                                     in "${ application }/bin/init" ;
-                                                                        follow-parent = true ;
                                                                         release =
                                                                             let
                                                                                 application =
@@ -238,10 +237,9 @@
                                                                 ignore :
                                                                     _git-repository.implementation
                                                                         {
-                                                                            follow-parent = false ;
                                                                             resolutions = [ ] ;
                                                                             setup =
-                                                                                { mount , pkgs , resources , root , wrap } :
+                                                                                { pid , pkgs , resources , root , sequential , wrap } :
                                                                                     let
                                                                                         application =
                                                                                             pkgs.writeShellApplication
@@ -259,7 +257,7 @@
                                                             temporary =
                                                                 ignore :
                                                                     {
-                                                                        init = { mount , pkgs , resources , root , wrap } : "" ;
+                                                                        init = { pid , pkgs , resources , root , sequential , wrap } : "" ;
                                                                         transient = true ;
                                                                     } ;
                                                         } ;
@@ -271,7 +269,7 @@
                                                                         ignore :
                                                                             {
                                                                                 init =
-                                                                                    { mount , pkgs , resources , root , wrap } :
+                                                                                    { pid , pkgs , resources , root , sequential , wrap } :
                                                                                         let
                                                                                             application =
                                                                                                 pkgs.writeShellApplication
@@ -292,7 +290,7 @@
                                                                 ignore :
                                                                     {
                                                                         init =
-                                                                            { mount , pkgs , resources , root , wrap } :
+                                                                            { pid , pkgs , resources , root , sequential , wrap } :
                                                                                 let
                                                                                     application =
                                                                                         pkgs.writeShellApplication
@@ -311,9 +309,9 @@
                                                                 ignore :
                                                                     _dot-gnupg.implementation
                                                                         {
-                                                                            ownertrust = { mount , pkgs , resources , root , wrap } : resources.production.secrets.ownertrust ;
+                                                                            ownertrust = { pid , pkgs , resources , root , sequential , wrap } : resources.production.secrets.ownertrust ;
                                                                             ownertrust-file = ''echo "$1/secret"'' ;
-                                                                            secret-keys = { mount , pkgs , resources , root , wrap } : resources.production.secrets.secret-keys ;
+                                                                            secret-keys = { pid , pkgs , resources , root , sequential , wrap } : resources.production.secrets.secret-keys ;
                                                                             secret-keys-file = ''echo "$1/secret"'' ;
                                                                         } ;
                                                             dot-ssh =
@@ -350,18 +348,18 @@
                                                                                 {
                                                                                     "github.com" =
                                                                                         {
-                                                                                            identity-file = { mount , pkgs , resources , root , wrap } : resources.production.secrets.dot-ssh.github.identity-file ( setup : "echo | ${ setup }" ) ;
-                                                                                            user-known-hosts-file = { mount , pkgs , resources , root , wrap } : resources.production.secrets.dot-ssh.github.user-known-hosts-file ( setup : "echo | ${ setup }" ) ;
+                                                                                            identity-file = { pid , pkgs , resources , root , sequential , wrap } : resources.production.secrets.dot-ssh.github.identity-file ( setup : "echo | ${ setup }" ) ;
+                                                                                            user-known-hosts-file = { pid , pkgs , resources , root , sequential , wrap } : resources.production.secrets.dot-ssh.github.user-known-hosts-file ( setup : "echo | ${ setup }" ) ;
                                                                                         } ;
                                                                                     laptop =
                                                                                         {
-                                                                                            identity-file = { mount , pkgs , resources , root , wrap } : resources.production.fixture.laptop ( setup : "echo | ${ setup }" ) ;
-                                                                                            user-known-hosts-file = { mount , pkgs , resources , root , wrap } : resources.production.fixture.laptop ( setup : "echo | ${ setup }" ) ;
+                                                                                            identity-file = { pid , pkgs , resources , root , sequential , wrap } : resources.production.fixture.laptop ( setup : "echo | ${ setup }" ) ;
+                                                                                            user-known-hosts-file = { pid , pkgs , resources , root , sequential , wrap } : resources.production.fixture.laptop ( setup : "echo | ${ setup }" ) ;
                                                                                         } ;
                                                                                     mobile =
                                                                                         {
-                                                                                            identity-file = { mount , pkgs , resources , root , wrap } : resources.production.secrets.dot-ssh.mobile.identity-file ( setup : "echo | ${ setup }" ) ;
-                                                                                            user-known-hosts-file = { mount , pkgs , resources , root , wrap } : resources.production.fixture.laptop ( setup : "echo | ${ setup }" ) ;
+                                                                                            identity-file = { pid , pkgs , resources , root , sequential , wrap } : resources.production.secrets.dot-ssh.mobile.identity-file ( setup : "echo | ${ setup }" ) ;
+                                                                                            user-known-hosts-file = { pid , pkgs , resources , root , sequential , wrap } : resources.production.fixture.laptop ( setup : "echo | ${ setup }" ) ;
                                                                                         } ;
                                                                                 } ;
                                                                         } ;
@@ -371,7 +369,7 @@
                                                                             ignore :
                                                                                 {
                                                                                     init =
-                                                                                        { mount , pkgs , resources , root , wrap } :
+                                                                                        { pid , pkgs , resources , root , sequential , wrap } :
                                                                                             let
                                                                                                 application =
                                                                                                     pkgs.writeShellApplication
@@ -397,7 +395,7 @@
                                                                         ignore :
                                                                             {
                                                                                 init =
-                                                                                    { mount , pkgs , resources , root , wrap } :
+                                                                                    { pid , pkgs , resources , root , sequential , wrap } :
                                                                                         let
                                                                                             application =
                                                                                                 pkgs.writeShellApplication
@@ -425,7 +423,7 @@
                                                                         ignore :
                                                                             {
                                                                                 init =
-                                                                                    { mount , pkgs , resources , root , wrap } :
+                                                                                    { pid , pkgs , resources , root , sequential , wrap } :
                                                                                         let
                                                                                             application =
                                                                                                 pkgs.writeShellApplication
@@ -494,7 +492,7 @@
                                                                                         } ;
                                                                                 in "${ application }/bin/post-commit" ;
                                                                     ssh =
-                                                                        mount : pkgs : resources : root : wrap :
+                                                                        pkgs : resources : root : wrap :
                                                                             let
                                                                                 application =
                                                                                     pkgs.writeShellApplication
@@ -520,8 +518,8 @@
                                                                                                             } ;
                                                                                                     in
                                                                                                         ''
-                                                                                                            git config core.sshCommand "${ mount }/stage/ssh/command"
-                                                                                                            wrap ${ application }/bin/ssh stage/ssh/command 0500 --literal-plain "@" --set-plain MOUNT "${ mount }" --literal-plain PATH
+                                                                                                            git config core.sshCommand "$MOUNT/stage/ssh/command"
+                                                                                                            wrap ${ application }/bin/ssh stage/ssh/command 0500 --literal-plain "@" --inherit-plain MOUNT --literal-plain PATH
                                                                                                             DOT_SSH=${ resources.production.dot-ssh ( setup : setup ) }
                                                                                                             root "$DOT_SSH"
                                                                                                             wrap "$DOT_SSH/config" stage/ssh/config 0400
@@ -540,10 +538,9 @@
                                                                                                         ignore :
                                                                                                             _git-repository.implementation
                                                                                                                 {
-                                                                                                                    follow-parent = false ;
                                                                                                                     resolutions = [ ] ;
                                                                                                                     setup =
-                                                                                                                        { mount , resources , pkgs , root , wrap } :
+                                                                                                                        { pid , resources , pkgs , root , sequential , wrap } :
                                                                                                                             let
                                                                                                                                 application =
                                                                                                                                     pkgs.writeShellApplication
@@ -561,7 +558,7 @@
                                                                                                                                                     in
                                                                                                                                                         ''
                                                                                                                                                             git init
-                                                                                                                                                            ${ ssh mount pkgs resources root wrap }
+                                                                                                                                                            ${ ssh pkgs resources root wrap }
                                                                                                                                                             git config user.email "${ config.personal.chromium.home.config.email }"
                                                                                                                                                             git config user.name "${ config.personal.chromium.home.config.name }"
                                                                                                                                                             git remote add origin git@github.com:${ config.personal.chromium.home.config.organization }/${ config.personal.chromium.home.config.repository }
@@ -597,10 +594,9 @@
                                                                                                         ignore :
                                                                                                             _git-repository.implementation
                                                                                                                 {
-                                                                                                                    follow-parent = false ;
                                                                                                                     resolutions = [ ] ;
                                                                                                                     setup =
-                                                                                                                        { mount , resources , pkgs , root , wrap } :
+                                                                                                                        { pid , resources , pkgs , root , sequential , wrap } :
                                                                                                                             let
                                                                                                                                 application =
                                                                                                                                     pkgs.writeShellApplication
@@ -618,7 +614,7 @@
                                                                                                                                                     in
                                                                                                                                                         ''
                                                                                                                                                             git init
-                                                                                                                                                            ${ ssh mount pkgs resources root wrap }
+                                                                                                                                                            ${ ssh pkgs resources root wrap }
                                                                                                                                                             git config user.email "${ config.personal.chromium.home.data.email }"
                                                                                                                                                             git config user.name "${ config.personal.chromium.home.data.name }"
                                                                                                                                                             git remote add origin git@github.com:${ config.personal.chromium.home.data.organization }/${ config.personal.chromium.home.data.repository }
@@ -657,10 +653,9 @@
                                                                                 ignore :
                                                                                     _git-repository.implementation
                                                                                         {
-                                                                                            follow-parent = false ;
                                                                                             resolutions = [ ] ;
                                                                                             setup =
-                                                                                                { mount , resources , pkgs , root , wrap } :
+                                                                                                { pid , resources , pkgs , root , sequential , wrap } :
                                                                                                     let
                                                                                                         application =
                                                                                                             pkgs.writeShellApplication
@@ -700,12 +695,12 @@
                                                                                                                                     in "${ application }/bin/ssh" ;
                                                                                                                             in
                                                                                                                                 ''
-                                                                                                                                    git config core.sshCommand "${ mount }/stage/ssh/command"
+                                                                                                                                    git config core.sshCommand "$MOUNT/stage/ssh/command"
                                                                                                                                     git config user.email ${ config.personal.pass.email }
                                                                                                                                     git config user.name ${ config.personal.pass.name }
                                                                                                                                     ln --symbolic ${ post-commit } "/mount/repository/.git/hooks/post-commit"
                                                                                                                                     git remote add origin ${ config.personal.pass.remote }
-                                                                                                                                    wrap ${ ssh } stage/ssh/command 0500 --literal-plain "@" --set-plain MOUNT "${ mount }" --literal-plain PATH
+                                                                                                                                    wrap ${ ssh } stage/ssh/command 0500 --literal-plain "@" --inherit-plain MOUNT --literal-plain PATH
                                                                                                                                     DOT_SSH=${ resources.production.dot-ssh ( setup : setup ) }
                                                                                                                                     root "$DOT_SSH"
                                                                                                                                     wrap "$DOT_SSH/config" stage/ssh/config 0400
@@ -720,10 +715,9 @@
                                                                                 ignore :
                                                                                     _git-repository.implementation
                                                                                         {
-                                                                                            follow-parent = false ;
                                                                                             resolutions = [ ] ;
                                                                                             setup =
-                                                                                                { mount , pkgs , resources , root , wrap } :
+                                                                                                { pid , pkgs , resources , root , sequential , wrap } :
                                                                                                     let
                                                                                                         application =
                                                                                                             pkgs.writeShellApplication
@@ -737,15 +731,15 @@
                                                                                                                             Host github.com
                                                                                                                                 User git
                                                                                                                                 HostName github.com
-                                                                                                                                IdentityFile ${ mount }/stage/ssh/identity
-                                                                                                                                UserKnownHostsFile ${ mount }/stage/ssh/known-hosts
+                                                                                                                                IdentityFile $MOUNT/stage/ssh/identity
+                                                                                                                                UserKnownHostsFile $MOUNT/stage/ssh/known-hosts
                                                                                                                                 StrictHostKeyChecking yes
                                                                                                                             EOF
                                                                                                                             cat ${ config.personal.temporary.ssh.identity } > /mount/stage/ssh/identity
                                                                                                                             cat ${ config.personal.temporary.ssh.known-hosts } > /mount/stage/ssh/known-hosts
                                                                                                                             chmod 0400 /mount/stage/ssh/config /mount/stage/ssh/identity /mount/stage/ssh/known-hosts
                                                                                                                             chmod 0700 /mount/stage/ssh
-                                                                                                                            git config core.sshCommand "${ pkgs.openssh }/bin/ssh -F ${ mount }/stage/ssh/config"
+                                                                                                                            git config core.sshCommand "${ pkgs.openssh }/bin/ssh -F $MOUNT/stage/ssh/config"
                                                                                                                             git remote add origin ${ config.personal.secrets.remote }
                                                                                                                             git fetch origin ${ config.personal.secrets.branch } 2>&1
                                                                                                                             git checkout origin/${ config.personal.secrets.branch } 2>&1
@@ -759,10 +753,9 @@
                                                                                         ignore :
                                                                                             _git-repository.implementation
                                                                                                 {
-                                                                                                    follow-parent = true ;
                                                                                                     resolutions = [ ] ;
                                                                                                     setup =
-                                                                                                        { mount , resources , pkgs , root , wrap } :
+                                                                                                        { pid , resources , pkgs , root , sequential , wrap } :
                                                                                                             let
                                                                                                                 application =
                                                                                                                     pkgs.writeShellApplication
@@ -788,17 +781,17 @@
                                                                                                                                                         : "${ builtins.concatStringsSep "" [ "$" "{" "name:?this script must be run via git submodule foreach which will export name" "}" ] }"
                                                                                                                                                         cd "$toplevel/$name"
                                                                                                                                                         git config foobar.alpha "$toplevel/$name"
-                                                                                                                                                        git config alias.mutable-audit "!${ mount }/stage/alias/submodule/mutable-audit"
-                                                                                                                                                        git config alias.mutable-mirror "!${ mount }/stage/alias/submodule/mutable-mirror"
-                                                                                                                                                        git config alias.mutable-snapshot "!${ mount }/stage/alias/submodule/mutable-snapshot"
-                                                                                                                                                        git config alias.mutable-squash "!${ mount }/stage/alias/submodule/mutable-squash"
+                                                                                                                                                        git config alias.mutable-audit "!$MOUNT/stage/alias/submodule/mutable-audit"
+                                                                                                                                                        git config alias.mutable-mirror "!$MOUNT/stage/alias/submodule/mutable-mirror"
+                                                                                                                                                        git config alias.mutable-snapshot "!$MOUNT/stage/alias/submodule/mutable-snapshot"
+                                                                                                                                                        git config alias.mutable-squash "!$MOUNT/stage/alias/submodule/mutable-squash"
                                                                                                                                                         git config user.email "${ config.personal.repository.private.email }"
                                                                                                                                                         git config user.name "${ config.personal.repository.private.name }"
-                                                                                                                                                        git config core.sshCommand "${ mount }/stage/ssh/command"
+                                                                                                                                                        git config core.sshCommand "$MOUNT/stage/ssh/command"
                                                                                                                                                         UUID="$( uuidgen | sha512sum )" || failure 48cb787a
                                                                                                                                                         BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 348ef190
                                                                                                                                                         git checkout -b "$BRANCH"
-                                                                                                                                                        export GIT_SSH_COMMAND="${ mount }/stage/ssh/command"
+                                                                                                                                                        export GIT_SSH_COMMAND="$MOUNT/stage/ssh/command"
                                                                                                                                                         git push origin HEAD
                                                                                                                                                         cd "$toplevel"
                                                                                                                                                         nix flake update --flake "$toplevel" "$name"
@@ -1204,12 +1197,12 @@
                                                                                                                                                                             git checkout -b "$BRANCH"
                                                                                                                                                                             git commit -a --verbose --allow-empty-message
                                                                                                                                                                         fi
+                                                                                                                                                                        git push origin HEAD 2>&1
                                                                                                                                                                         TOKEN_DIRECTORY=${ resources.production.secrets.token ( setup : setup ) }
                                                                                                                                                                         TOKEN="$( cat "$TOKEN_DIRECTORY/secret" )" || failure 320e0c68
                                                                                                                                                                         export NIX_CONFIG="access-tokens = github.com=$TOKEN"
                                                                                                                                                                         cd "$toplevel"
                                                                                                                                                                         nix flake update --flake "$toplevel" "$name"
-                                                                                                                                                                        git push origin HEAD 2>&1
                                                                                                                                                                     '' ;
                                                                                                                                                             } ;
                                                                                                                                                     in "${ application }/bin/mutable-snapshot" ;
@@ -1253,19 +1246,19 @@
                                                                                                                                             in "${ application }/bin/ssh" ;
                                                                                                                                     in
                                                                                                                                 ''
-                                                                                                                                    git config alias.mutable-audit "!${ mount }/stage/alias/root/mutable-audit"
-                                                                                                                                    git config alias.mutable-build-vm "!${ mount }/stage/alias/root/mutable-build-vm"
-                                                                                                                                    git config alias.mutable-build-vm-with-bootloader "!${ mount }/stage/alias/root/mutable-build-vm-with-bootloader"
-                                                                                                                                    git config alias.mutable-check "!${ mount }/stage/alias/root/mutable-check"
-                                                                                                                                    # git config alias.mutable-generate-gnupg-key "!${ mount }/stage/alias/mutable-generate-gnupg-key"
-                                                                                                                                    git config alias.mutable-mirror "!${ mount }/stage/alias/root/mutable-mirror"
-                                                                                                                                    git config alias.mutable-nurse "!${ mount }/stage/alias/root/mutable-nurse"
-                                                                                                                                    git config alias.mutable-promote "!${ mount }/stage/alias/root/mutable-promote"
-                                                                                                                                    git config alias.mutable-rebase "!${ mount }/stage/alias/root/mutable-rebase"
-                                                                                                                                    git config alias.mutable-snapshot "!${ mount }/stage/alias/root/mutable-snapshot"
-                                                                                                                                    git config alias.mutable-switch "!${ mount }/stage/alias/root/mutable-switch"
-                                                                                                                                    git config alias.mutable-test "!${ mount }/stage/alias/root/mutable-test"
-                                                                                                                                    git config core.sshCommand "${ mount }/stage/ssh/command"
+                                                                                                                                    git config alias.mutable-audit "!$MOUNT/stage/alias/root/mutable-audit"
+                                                                                                                                    git config alias.mutable-build-vm "!$MOUNT/stage/alias/root/mutable-build-vm"
+                                                                                                                                    git config alias.mutable-build-vm-with-bootloader "!$MOUNT/stage/alias/root/mutable-build-vm-with-bootloader"
+                                                                                                                                    git config alias.mutable-check "!$MOUNT/stage/alias/root/mutable-check"
+                                                                                                                                    # git config alias.mutable-generate-gnupg-key "!$MOUNT/stage/alias/mutable-generate-gnupg-key"
+                                                                                                                                    git config alias.mutable-mirror "!$MOUNT/stage/alias/root/mutable-mirror"
+                                                                                                                                    git config alias.mutable-nurse "!$MOUNT/stage/alias/root/mutable-nurse"
+                                                                                                                                    git config alias.mutable-promote "!$MOUNT/stage/alias/root/mutable-promote"
+                                                                                                                                    git config alias.mutable-rebase "!$MOUNT/stage/alias/root/mutable-rebase"
+                                                                                                                                    git config alias.mutable-snapshot "!$MOUNT/stage/alias/root/mutable-snapshot"
+                                                                                                                                    git config alias.mutable-switch "!$MOUNT/stage/alias/root/mutable-switch"
+                                                                                                                                    git config alias.mutable-test "!$MOUNT/stage/alias/root/mutable-test"
+                                                                                                                                    git config core.sshCommand "$MOUNT/stage/ssh/command"
                                                                                                                                     git config user.email "${ config.personal.repository.private.email }"
                                                                                                                                     git config user.name "${ config.personal.repository.private.name }"
                                                                                                                                     git remote add origin "${ config.personal.repository.private.remote }"
@@ -1274,22 +1267,22 @@
                                                                                                                                     wrap ${ mutable- "check" } stage/alias/root/mutable-check 0500 --literal-plain MUTABLE_SNAPSHOT --literal-plain PATH
                                                                                                                                     ## ALPHA
                                                                                                                                     # wrap ${ mutable-generate-gnupg-key } stage/alias/root/mutable-generate-gnupg-key 0500 --literal-plain 1 --literal-plain BRANCH --literal DOT_GNUPG --literal GNUPGHOME --literal-plain KEYID --literal-plain MONIKER --literal-plain NOW --literal-plain SECRETS --literal-plain TOKEN --literal-plain URL --literal-plain UUID --literal-plain PATH
-                                                                                                                                    wrap ${ mutable-mirror.root } stage/alias/root/mutable-mirror 0500 --set-plain MOUNT "${ mount }" --literal-plain NEW_BRANCH --literal-plain OLD_BRANCH --literal-plain PATH --literal-plain UUID
+                                                                                                                                    wrap ${ mutable-mirror.root } stage/alias/root/mutable-mirror 0500 --inherit-plain MOUNT --literal-plain NEW_BRANCH --literal-plain OLD_BRANCH --literal-plain PATH --literal-plain UUID
                                                                                                                                     wrap ${ mutable-mirror.submodule } stage/alias/submodule/mutable-mirror 0500 --literal-plain BRANCH --literal-plain name --literal-plain PATH --literal-plain toplevel --literal-plain UUID
-                                                                                                                                    wrap ${ mutable-nurse } stage/alias/root/mutable-nurse 0500 --literal-plain 1 --literal-plain 2 --set-plain MOUNT "${ mount }" --literal-plain REPO_NAME --literal-plain TOKEN --literal-plain USER_NAME
-                                                                                                                                    wrap ${ mutable-promote } stage/alias/root/mutable-promote 0500 --literal-plain BIN_1 --literal-plain BIN_2 --literal-plain BRANCH --set-plain MOUNT "${ mount }" --literal-plain PARENT_1 --literal-plain PARENT_2 --literal-plain PATH --literal-plain STUDIO_1 --literal-plain STUDIO_2 --literal-plain UUID
-                                                                                                                                    wrap ${ mutable-rebase.root } stage/alias/root/mutable-rebase 0500 --literal-plain BRANCH --literal-plain COMMIT --set-plain INDEX "$INDEX" --set-plain MOUNT "${ mount }" --literal-plain MUTABLE_SNAPSHOT --literal-plain PATH --literal-plain UUID
+                                                                                                                                    wrap ${ mutable-nurse } stage/alias/root/mutable-nurse 0500 --literal-plain 1 --literal-plain 2 --inherit-plain MOUNT --literal-plain REPO_NAME --literal-plain TOKEN --literal-plain USER_NAME
+                                                                                                                                    wrap ${ mutable-promote } stage/alias/root/mutable-promote 0500 --literal-plain BIN_1 --literal-plain BIN_2 --literal-plain BRANCH --inherit-plain MOUNT --literal-plain PARENT_1 --literal-plain PARENT_2 --literal-plain PATH --literal-plain STUDIO_1 --literal-plain STUDIO_2 --literal-plain UUID
+                                                                                                                                    wrap ${ mutable-rebase.root } stage/alias/root/mutable-rebase 0500 --literal-plain BRANCH --literal-plain COMMIT --set-plain INDEX "$INDEX" --inherit-plain MOUNT --literal-plain MUTABLE_SNAPSHOT --literal-plain PATH --literal-plain UUID
                                                                                                                                     wrap ${ mutable-rebase.submodule } stage/alias/submodule/mutable-rebase 0500 --literal-plain BRANCH --literal-plain name --literal-plain PATH --literal-plain TOKEN --literal-plain TOKEN_DIRECTORY --literal-plain toplevel --literal-plain UUID
-                                                                                                                                    wrap ${ mutable-snapshot.root } stage/alias/root/mutable-snapshot 0500 --literal-plain BRANCH --literal-plain COMMIT --set-plain MOUNT "${ mount }" --literal-plain MUTABLE_SNAPSHOT --literal-plain PATH
+                                                                                                                                    wrap ${ mutable-snapshot.root } stage/alias/root/mutable-snapshot 0500 --literal-plain BRANCH --literal-plain COMMIT --inherit-plain MOUNT --literal-plain MUTABLE_SNAPSHOT --literal-plain PATH
                                                                                                                                     wrap ${ mutable-snapshot.submodule } stage/alias/submodule/mutable-snapshot 0500 --literal-plain BRANCH --literal-plain name --literal-plain PATH --literal-plain TOKEN --literal-plain TOKEN_DIRECTORY --literal-plain toplevel --literal-plain UUID
-                                                                                                                                    wrap ${ mutable-squash } stage/alias/submodule/mutable-squash 0500 --literal-plain BRANCH --literal-plain name --set-plain MOUNT "${ mount }" --literal-plain name --literal-plain PATH --literal-plain toplevel --literal-plain UUID
+                                                                                                                                    wrap ${ mutable-squash } stage/alias/submodule/mutable-squash 0500 --literal-plain BRANCH --literal-plain name --inherit-plain MOUNT --literal-plain name --literal-plain PATH --literal-plain toplevel --literal-plain UUID
                                                                                                                                     wrap ${ mutable- "switch" } stage/alias/root/mutable-switch 0500 --literal-plain MUTABLE_SNAPSHOT --literal-plain PATH
                                                                                                                                     wrap ${ mutable- "test" } stage/alias/root/mutable-test 0500 --literal-plain MUTABLE_SNAPSHOT --literal-plain PATH
-                                                                                                                                    wrap ${ ssh } stage/ssh/command 0500 --literal-plain "@" --set-plain MOUNT "${ mount }" --literal-plain PATH
+                                                                                                                                    wrap ${ ssh } stage/ssh/command 0500 --literal-plain "@" --inherit-plain MOUNT --literal-plain PATH
                                                                                                                                     DOT_SSH=${ resources.production.dot-ssh ( setup : setup ) }
                                                                                                                                     root "$DOT_SSH"
                                                                                                                                     wrap "$DOT_SSH/config" stage/ssh/config 0400
-                                                                                                                                    "${ mount }/stage/alias/root/mutable-mirror" main 2>&1
+                                                                                                                                    "$MOUNT/stage/alias/root/mutable-mirror" main 2>&1
                                                                                                                                     echo DIFF 10
                                                                                                                                     git diff origin/main 2>&1
                                                                                                                                     echo DIFF 11
@@ -1302,7 +1295,7 @@
                                                                                                                                     git diff origin/main 2>&1
                                                                                                                                     echo DIFF 21
                                                                                                                                     git diff 2>&1
-                                                                                                                                    wrap ${ root }/bin/root stage/bin/root 0500 --literal-plain DIRECTORY --inherit-plain INDEX --inherit-plain PATH --inherit-plain TARGET
+                                                                                                                                    wrap ${ root }/bin/root stage/bin/root 0500 --literal-plain DIRECTORY --inherit-plain INDEX --literal-plain PATH --literal-plain TARGET
                                                                                                                                     echo DIFF 30
                                                                                                                                     git diff origin/main 2>&1
                                                                                                                                     echo DIFF 31
@@ -1315,10 +1308,9 @@
                                                                                         ignore :
                                                                                             _git-repository.implementation
                                                                                                 {
-                                                                                                    follow-parent = false ;
                                                                                                     resolutions = [ ] ;
                                                                                                     setup =
-                                                                                                        { mount , pkgs , resources , root , wrap } :
+                                                                                                        { pid , pkgs , resources , root , sequential , wrap } :
                                                                                                             let
                                                                                                                 application =
                                                                                                                     pkgs.writeShellApplication
@@ -1327,7 +1319,7 @@
                                                                                                                             runtimeInputs = [ pkgs.coreutils pkgs.git ( _failure.implementation "1f1cc6de" ) ] ;
                                                                                                                             text =
                                                                                                                                 ''
-                                                                                                                                    ${ ssh mount pkgs resources root wrap }
+                                                                                                                                    ${ ssh pkgs resources root wrap }
                                                                                                                                     git config user.email "${ config.personal.repository.private.email }"
                                                                                                                                     git config user.name "${ config.personal.repository.private.name }"
                                                                                                                                     git remote add origin ${ config.personal.repository.secrets.remote }
@@ -1344,10 +1336,9 @@
                                                                                         ignore :
                                                                                             _git-repository.implementation
                                                                                                 {
-                                                                                                    follow-parent = false ;
                                                                                                     resolutions = [ ] ;
                                                                                                     setup =
-                                                                                                        { mount , pkgs , resources , root , wrap } :
+                                                                                                        { pid , pkgs , resources , root , sequential , wrap } :
                                                                                                             let
                                                                                                                 application =
                                                                                                                     pkgs.writeShellApplication
@@ -1516,21 +1507,21 @@
                                                                                                                                         ''
                                                                                                                                             OLD_BRANCH="$1"
                                                                                                                                             COMMIT="$2"
-                                                                                                                                            git config alias.mutable-build-vm "!${ mount }/stage/alias/root/mutable-build-vm"
-                                                                                                                                            git config alias.mutable-build-vm-with-bootloader "!${ mount }/stage/alias/root/mutable-build-vm-with-bootloader"
-                                                                                                                                            git config alias.mutable-check "!${ mount }/stage/alias/root/mutable-check"
-                                                                                                                                            git config alias.mutable-switch "!${ mount }/stage/alias/root/mutable-switch"
-                                                                                                                                            git config alias.mutable-test "!${ mount }/stage/alias/root/mutable-test"
+                                                                                                                                            git config alias.mutable-build-vm "!$MOUNT/stage/alias/root/mutable-build-vm"
+                                                                                                                                            git config alias.mutable-build-vm-with-bootloader "!$MOUNT/stage/alias/root/mutable-build-vm-with-bootloader"
+                                                                                                                                            git config alias.mutable-check "!$MOUNT/stage/alias/root/mutable-check"
+                                                                                                                                            git config alias.mutable-switch "!$MOUNT/stage/alias/root/mutable-switch"
+                                                                                                                                            git config alias.mutable-test "!$MOUNT/stage/alias/root/mutable-test"
                                                                                                                                             git config user.email "${ config.personal.repository.private.email }"
                                                                                                                                             git config user.name "${ config.personal.repository.private.name }"
-                                                                                                                                            git config core.sshCommand "${ mount }/stage/ssh/command"
-                                                                                                                                            wrap ${ mutable-build-vm "build-vm" } stage/alias/root/mutable-build-vm 0500 --set-plain MOUNT "${ mount }" --literal-plain PATH
-                                                                                                                                            wrap ${ mutable-build-vm "build-vm-with-bootloader" } stage/alias/root/mutable-build-vm-with-bootloader 0500 --set-plain MOUNT "${ mount }" --literal-plain PATH
-                                                                                                                                            wrap ${ mutable-check } stage/alias/root/mutable-check 0500 --set-plain MOUNT "${ mount }" --literal-plain PATH
-                                                                                                                                            wrap ${ mutable-switch.root } stage/alias/root/mutable-switch 0500 --literal-plain BRANCH --set-plain MOUNT "${ mount }" --literal-plain PATH --literal-plain UUID
+                                                                                                                                            git config core.sshCommand "$MOUNT/stage/ssh/command"
+                                                                                                                                            wrap ${ mutable-build-vm "build-vm" } stage/alias/root/mutable-build-vm 0500 --inherit-plain MOUNT --literal-plain PATH
+                                                                                                                                            wrap ${ mutable-build-vm "build-vm-with-bootloader" } stage/alias/root/mutable-build-vm-with-bootloader 0500 --inherit-plain MOUNT --literal-plain PATH
+                                                                                                                                            wrap ${ mutable-check } stage/alias/root/mutable-check 0500 --inherit-plain MOUNT --literal-plain PATH
+                                                                                                                                            wrap ${ mutable-switch.root } stage/alias/root/mutable-switch 0500 --literal-plain BRANCH --inherit-plain MOUNT --literal-plain PATH --literal-plain UUID
                                                                                                                                             wrap ${ mutable-switch.submodule } stage/alias/submodule/mutable-switch 0500 --literal-plain BRANCH --literal-plain name --literal-plain NAME --literal-plain PARENT --literal-plain PATH --literal-plain TOKEN --literal-plain TOKEN_DIRECTORY --literal-plain toplevel --literal-plain URL
-                                                                                                                                            wrap ${ mutable-test } stage/alias/root/mutable-test 0500 --set-plain MOUNT "${ mount }" --literal-plain PATH
-                                                                                                                                            wrap ${ ssh } stage/ssh/command 0500 --literal-plain "@" --set-plain MOUNT "${ mount }" --literal-plain PATH
+                                                                                                                                            wrap ${ mutable-test } stage/alias/root/mutable-test 0500 --inherit-plain MOUNT --literal-plain PATH
+                                                                                                                                            wrap ${ ssh } stage/ssh/command 0500 --literal-plain "@" --inherit-plain MOUNT --literal-plain PATH
                                                                                                                                             DOT_SSH=${ resources.production.dot-ssh ( setup : setup ) }
                                                                                                                                             root "$DOT_SSH"
                                                                                                                                             wrap "$DOT_SSH/config" stage/ssh/config 0400
@@ -1554,7 +1545,7 @@
                                                             secrets =
                                                                 let
                                                                     setup =
-                                                                        encrypted : { mount , pkgs , resources , root , wrap } :
+                                                                        encrypted : { pid , pkgs , resources , root , sequential , wrap } :
                                                                             ''
                                                                                 ENCRYPTED=${ resources.production.repository.secrets_ ( setup : setup ) }
                                                                                 IDENTITY=${ config.personal.agenix }
@@ -1583,7 +1574,7 @@
                                                                     temporary =
                                                                         ignore :
                                                                             {
-                                                                                init = { mount , pkgs , resources , root , wrap } : "" ;
+                                                                                init = { pid , pkgs , resources , root , sequential , wrap } : "" ;
                                                                                 transient = true ;
                                                                             } ;
                                                                 } ;
@@ -2043,7 +2034,7 @@
                                                                             default =
                                                                                 {
                                                                                     home =
-                                                                                        { mount , pkgs , resources , root , wrap } :
+                                                                                        { pid , pkgs , resources , root , sequential , wrap } :
                                                                                             let
                                                                                                 envrc =
                                                                                                     let
@@ -2424,10 +2415,10 @@
                                             {
                                                 expected = "/nix/store/rxf0885ih1ws3x75xwdiq3rf2yz3ircg-init/bin/init" ;
                                                 failure = _failure.implementation "dff7788e" ;
-                                                ownertrust = { mount , pkgs , resources , root , wrap } : ignore : "${ fixture }/gnupg" ;
+                                                ownertrust = { pid , pkgs , resources , root , sequential , wrap } : ignore : "${ fixture }/gnupg" ;
                                                 ownertrust-file = ''echo "$1/ownertrust.asc"'';
                                                 pkgs = pkgs ;
-                                                secret-keys = { mount , pkgs , resources , root , wrap } : ignore : "${ fixture }/gnupg" ;
+                                                secret-keys = { pid , pkgs , resources , root , sequential , wrap } : ignore : "${ fixture }/gnupg" ;
                                                 secret-keys-file = ''echo "$1/secret-keys.asc"'';
                                             } ;
                                     dot-ssh =
@@ -2454,22 +2445,21 @@
                                                             } ;
                                                     } ;
                                                 expected = "/nix/store/05f5bx3jmjp8l85paq330klvrh912236-init/bin/init" ;
-                                                mount = "271a376c" ;
                                                 pkgs = pkgs ;
                                                 implementation-resources =
                                                     {
                                                         cb8e09cf =
                                                             {
-                                                                user-known-hosts-file = { mount , pkgs , resources , root , wrap } : builtins.toString pkgs.coreutils ;
+                                                                user-known-hosts-file = { pid , pkgs , resources , root , sequential , wrap } : builtins.toString pkgs.coreutils ;
                                                             } ;
                                                         f5d69296 =
                                                             {
-                                                                user-known-hosts-file = { mount , pkgs , resources , root , wrap } : builtins.toString pkgs.coreutils ;
+                                                                user-known-hosts-file = { pid , pkgs , resources , root , sequential , wrap } : builtins.toString pkgs.coreutils ;
                                                             } ;
                                                         b8b6ddc8 =
                                                             {
-                                                                strict-host-key-checking = { mount , pkgs , resources , root , wrap } : builtins.toString pkgs.coreutils ;
-                                                                user-known-hosts-file = { mount , pkgs , resources , root , wrap } : builtins.toString pkgs.coreutils ;
+                                                                strict-host-key-checking = { pid , pkgs , resources , root , sequential , wrap } : builtins.toString pkgs.coreutils ;
+                                                                user-known-hosts-file = { pid , pkgs , resources , root , sequential , wrap } : builtins.toString pkgs.coreutils ;
                                                             } ;
                                                     } ;
                                             } ;
@@ -2560,7 +2550,7 @@
                                                         expected-transient = -1 ;
                                                         expected-type = "valid" ;
                                                         init =
-                                                            { mount , pkgs , resources , root , wrap } :
+                                                            { pid , pkgs , resources , root , sequential , wrap } :
                                                                 let
                                                                     application =
                                                                         pkgs.writeShellApplication
@@ -2571,7 +2561,7 @@
                                                                                     ''
                                                                                         cowsay f83f1836809a4c2148e7c4d4b3dc543d2d368085d786a49366fd8b36cd730d93502da258b69d1694f2a437efa86666cf44a72e2c574a4520440621e8dc2a9fc8
                                                                                         ${ resources.d154b4d928d4df6e2f281414a142e96351ca55b7487330ce64fa596d0f64fb5147fc9acc7617a58701542c934b50466c6fe97805d01e357bcaae550862bd6266 }
-                                                                                        echo "mount = ${ mount }"
+                                                                                        echo "mount = $MOUNT"
                                                                                         echo 67db2c662c09536dece7b873915f72c7746539be90c282d1dfd0a00c08bed5070bc9fbe2bb5289bcf10563f9e5421edc5ff3323f87a5bed8a525ff96a13be13d > /mount/e070e8bd478692185ce2719cc2710a19cb7a8155f15f8df7cc3f7dfa0545c2e0054ed82f9ca817198fea290d4438a7445a739e7d280bcf1b55693d8629768ba4
                                                                                         echo 99757ea5f69970ca7258207b42b7e76e09821b228db8906609699f0ed08191f606d6bdde022f8f158b9ecb7b4d70fdc8f520728867f5af35d1e189955d990a64 > /scratch/a127c8975e5203fd4d7ca6f7996aa4497b02fe90236d6aa830ca3add382084b24a3aeefb553874086c904196751b4e9fe17cfa51817e5ca441ef196738f698b5
                                                                                         root ${ resources.d154b4d928d4df6e2f281414a142e96351ca55b7487330ce64fa596d0f64fb5147fc9acc7617a58701542c934b50466c6fe97805d01e357bcaae550862bd6266 }
@@ -2653,7 +2643,7 @@
                                                      expected-transient = -1 ;
                                                      expected-type = "invalid" ;
                                                      init =
-                                                         { mount , pkgs , resources , root , wrap } :
+                                                         { pid , pkgs , resources , root , sequential , wrap } :
                                                              let
                                                                  application =
                                                                      pkgs.writeShellApplication
@@ -2664,7 +2654,7 @@
                                                                                  ''
                                                                                      cowsay cfb1a86984144d2e4c03594b4299585aa6ec2f503a7b39b1385a5338c9fc314fd87bd904d01188b301b3cf641c4158b28852778515eba52ad7e4b148f216d1d5
                                                                                      ${ resources.fd8e39c7a8bb3055daa71667bb0f21120642956a6ea043d0fb28c48cddba6ed8acac09c4e130da9a5e638ea8553b6fa2f45bcdef92fe62c40b70d257cc19a379 }
-                                                                                     echo "mount = ${ mount }"
+                                                                                     echo "mount = $MOUNT"
                                                                                      echo ae7afb90a11109a5cb07209ec48fa2d376ca0338c14c9c505f465c7cb658091549ae5344378e229674606ff46fcaf3db24b2d2b0870587d67bcad79b358ec2b9 >&2
                                                                                      echo 97d4fec983cd3fd46ce371f0cff6f660f066924c8bd57704e2382fb0df84eb7c03e667cfb6837c2c3638dd6b5aea4f4b1c8e4fd8944de89c458313f31afa2d5b > /mount/3e30e86404135fc6036abb77e19e8cf73bb32074c07b3273a45e1262bb308f68d420d3549624ee2a44030ba23147465ed85b2c320d0661b1835627aeec050289
                                                                                      echo 8393b1c1c760a903ea3a17d3c5831b1ed7b16bbb6ff6d9ccb751406e1fbe7c416a39fc440baf1b4a660dd928e1c060c0c05220cae8028ffde038dba033d25046 > /scratch/ea7c5d3879f282c8d3a0a2c85c464d129bc9a034d2fc9287b6588a96d1659c46a04f0e5e23f4bddd67425cee44043e421420eed8ba7cf7d2d3ecb9d8efab9f37
@@ -2689,7 +2679,7 @@
                                                                   value: f135add3
                                                                 run-time-arguments:
                                                                   - b06fc102
-                                                                  - /nix/store/dpz7lc96zvnb3jk8lfdc23qfkxwvx9nz-setup/bin/setup
+                                                                  - /nix/store/xkvifdkqdxph9gcbzm1rnc1i8x5rblmh-setup/bin/setup
                                                                   - ceb405a144a10b8efca63d9d950ce2b92bb2997ab44a9588ca740b3540a9a532a6b959a0d990dd469a63b16eb7600991bb7a1ef2b79d697b43e17134cbccec6c
                                                                   - cdca67397f32d23a379284468e099b96c5b53d62659faf4d48dfc650bea444d6bc450b7eefee9b273c12672b9008fa6a077b15efb676b35f9912de977f54724d
                                                          '' ;
@@ -2712,7 +2702,7 @@
                                                     expected = "/nix/store/x21jg50mlmqmi59m5j26a4wjh0bx72ls-init/bin/init" ;
                                                     # identity = ignore : "${ fixture }/age/identity/private" ;
                                                     failure = _failure.implementation "a720a5e7" ;
-                                                    setup = { mount , pkgs , resources , root , wrap } : ''ln --symbolic ${ fixture }/age/encrypted/known-hosts.asc /scratch/encrypted && ln --symbolic ${ fixture }/age/identity/private /scratch/identity'' ;
+                                                    setup = { pid , pkgs , resources , root , sequential , wrap } : ''ln --symbolic ${ fixture }/age/encrypted/known-hosts.asc /scratch/encrypted && ln --symbolic ${ fixture }/age/identity/private /scratch/identity'' ;
                                                     pkgs = pkgs ;
                                                } ;
                                         visitor-happy =
