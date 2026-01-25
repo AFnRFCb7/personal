@@ -2679,7 +2679,7 @@
                                                                   value: f135add3
                                                                 run-time-arguments:
                                                                   - b06fc102
-                                                                  - /nix/store/dpz7lc96zvnb3jk8lfdc23qfkxwvx9nz-setup/bin/setup
+                                                                  - /nix/store/xkvifdkqdxph9gcbzm1rnc1i8x5rblmh-setup/bin/setup
                                                                   - ceb405a144a10b8efca63d9d950ce2b92bb2997ab44a9588ca740b3540a9a532a6b959a0d990dd469a63b16eb7600991bb7a1ef2b79d697b43e17134cbccec6c
                                                                   - cdca67397f32d23a379284468e099b96c5b53d62659faf4d48dfc650bea444d6bc450b7eefee9b273c12672b9008fa6a077b15efb676b35f9912de977f54724d
                                                          '' ;
