@@ -1338,7 +1338,7 @@
                                                                                                 {
                                                                                                     resolutions = [ ] ;
                                                                                                     setup =
-                                                                                                         :
+                                                                                                        { mount , pkgs , resources , root , wrap } :
                                                                                                             let
                                                                                                                 application =
                                                                                                                     pkgs.writeShellApplication
