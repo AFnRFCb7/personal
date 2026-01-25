@@ -116,7 +116,6 @@
                                                                     in
                                                                         r.implementation
                                                                             {
-                                                                                follow-parent = point.follow-parent or false ;
                                                                                 init = point.init or null ;
                                                                                 seed =
                                                                                     ( point.seed or { } ) //
@@ -205,7 +204,6 @@
                                                                                                     '' ;
                                                                                             } ;
                                                                                     in "${ application }/bin/init" ;
-                                                                        follow-parent = true ;
                                                                         release =
                                                                             let
                                                                                 application =
@@ -239,7 +237,6 @@
                                                                 ignore :
                                                                     _git-repository.implementation
                                                                         {
-                                                                            follow-parent = false ;
                                                                             resolutions = [ ] ;
                                                                             setup =
                                                                                 { mount , pkgs , resources , root , wrap } :
@@ -541,7 +538,6 @@
                                                                                                         ignore :
                                                                                                             _git-repository.implementation
                                                                                                                 {
-                                                                                                                    follow-parent = false ;
                                                                                                                     resolutions = [ ] ;
                                                                                                                     setup =
                                                                                                                         { mount , resources , pkgs , root , wrap } :
@@ -598,7 +594,6 @@
                                                                                                         ignore :
                                                                                                             _git-repository.implementation
                                                                                                                 {
-                                                                                                                    follow-parent = false ;
                                                                                                                     resolutions = [ ] ;
                                                                                                                     setup =
                                                                                                                         { mount , resources , pkgs , root , wrap } :
@@ -658,7 +653,6 @@
                                                                                 ignore :
                                                                                     _git-repository.implementation
                                                                                         {
-                                                                                            follow-parent = false ;
                                                                                             resolutions = [ ] ;
                                                                                             setup =
                                                                                                 { mount , resources , pkgs , root , wrap } :
@@ -721,7 +715,6 @@
                                                                                 ignore :
                                                                                     _git-repository.implementation
                                                                                         {
-                                                                                            follow-parent = false ;
                                                                                             resolutions = [ ] ;
                                                                                             setup =
                                                                                                 { mount , pkgs , resources , root , wrap } :
@@ -760,7 +753,6 @@
                                                                                         ignore :
                                                                                             _git-repository.implementation
                                                                                                 {
-                                                                                                    follow-parent = true ;
                                                                                                     resolutions = [ ] ;
                                                                                                     setup =
                                                                                                         { mount , resources , pkgs , root , wrap } :
@@ -1316,7 +1308,6 @@
                                                                                         ignore :
                                                                                             _git-repository.implementation
                                                                                                 {
-                                                                                                    follow-parent = false ;
                                                                                                     resolutions = [ ] ;
                                                                                                     setup =
                                                                                                         { mount , pkgs , resources , root , wrap } :
@@ -1345,7 +1336,6 @@
                                                                                         ignore :
                                                                                             _git-repository.implementation
                                                                                                 {
-                                                                                                    follow-parent = false ;
                                                                                                     resolutions = [ ] ;
                                                                                                     setup =
                                                                                                         { mount , pkgs , resources , root , wrap } :
