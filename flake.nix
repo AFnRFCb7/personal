@@ -471,9 +471,9 @@
                                                                                                         echo "$STAMP" > /mount/stamp
                                                                                                         ssh-keygen -f /mount/identity -C "STAMP" -P ""
                                                                                                         TOKEN=${ resources.production.secrets.token { } }
-                                                                                                        gh auth login --with-token < "$TOKEN/secret"
-                                                                                                        gh ssh-key add /mount/identity.pub --title "$STAMP"
-                                                                                                        gh auth logout
+                                                                                                        gh auth login --with-token < "$TOKEN/secret" 2>&1
+                                                                                                        gh ssh-key add /mount/identity.pub --title "$STAMP" 2>&1
+                                                                                                        gh auth logout 2>&1
                                                                                                         pid 100 stall
                                                                                                     '' ;
                                                                                             } ;
