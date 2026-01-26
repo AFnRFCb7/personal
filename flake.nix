@@ -491,6 +491,7 @@
                                                                                                     runtimeInputs = [ pkgs.coreutils pkgs.gh ( _failure.implementation "a4655410" ) ] ;
                                                                                                     text =
                                                                                                         ''
+
                                                                                                             /mount/stall
                                                                                                             STAMP="$( cat /mount/stamp )" || failure a5e9abc6
                                                                                                             TOKEN=${ resources.production.secrets.token { } }
