@@ -782,23 +782,15 @@
                                                                                                                     runtimeInputs = [ pkgs.git ] ;
                                                                                                                     text =
                                                                                                                         ''
-                                                                                                                            mkdir --parents /mount/stage/ssh
-                                                                                                                            cat >> /mount/stage/ssh/config <<EOF
-                                                                                                                            Host github.com
-                                                                                                                                User git
-                                                                                                                                HostName github.com
-                                                                                                                                IdentityFile $MOUNT/stage/ssh/identity
-                                                                                                                                UserKnownHostsFile $MOUNT/stage/ssh/known-hosts
-                                                                                                                                StrictHostKeyChecking yes
-                                                                                                                            EOF
-                                                                                                                            cat ${ config.personal.temporary.ssh.identity } > /mount/stage/ssh/identity
-                                                                                                                            cat ${ config.personal.temporary.ssh.known-hosts } > /mount/stage/ssh/known-hosts
-                                                                                                                            chmod 0400 /mount/stage/ssh/config /mount/stage/ssh/identity /mount/stage/ssh/known-hosts
-                                                                                                                            chmod 0700 /mount/stage/ssh
-                                                                                                                            git config core.sshCommand "${ pkgs.openssh }/bin/ssh -F $MOUNT/stage/ssh/config"
+                                                                                                                            echo 66972a21
+                                                                                                                            ${ ssh pkgs resources root wrap }
+                                                                                                                            echo ba450dc8
                                                                                                                             git remote add origin ${ config.personal.secrets.remote }
+                                                                                                                            echo 786dcd65
                                                                                                                             git fetch origin ${ config.personal.secrets.branch } 2>&1
+                                                                                                                            echo bf79fad2
                                                                                                                             git checkout origin/${ config.personal.secrets.branch } 2>&1
+                                                                                                                            echo 7b092b12
                                                                                                                         '' ;
                                                                                                                 } ;
                                                                                                         in "${ application }/bin/setup" ;
