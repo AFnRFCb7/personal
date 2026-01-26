@@ -1833,7 +1833,7 @@
                                                                                                             text =
                                                                                                                 ''
                                                                                                                     TOKEN=${ resources__.production.secrets.token { failure = "failure e75bdc6a" ; } }
-                                                                                                                    SECRETS=${ resources__.production.studio.secrets { failure = "failure 64cc381d" ; } }
+                                                                                                                    SECRETS=${ resources__.production.repository.studio.secrets { failure = "failure 64cc381d" ; } }
                                                                                                                     cd "$SECRETS/repository"
                                                                                                                     STAMP="$( date +%s )" ||
                                                                                                                     gh auth login --with-token < "$TOKEN/secret"
