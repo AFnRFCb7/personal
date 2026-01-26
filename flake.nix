@@ -1019,16 +1019,6 @@
                                                                                                                                                                 PARENT_1="$MOUNT"
                                                                                                                                                                 STUDIO_1="$PARENT_1/repository"
                                                                                                                                                                 BIN_1="$PARENT_1/stage/bin"
-                                                                                                                                                                git -C "$STUDIO_1" mutable-snapshot
-                                                                                                                                                                if git -C "$STUDIO_1" mutable-check
-                                                                                                                                                                then
-                                                                                                                                                                    echo "✅ the zeroth checks passed"
-                                                                                                                                                                else
-                                                                                                                                                                    failure 352cc13a "❌ the zeroth checks failed"
-                                                                                                                                                                fi
-                                                                                                                                                                git -C "$STUDIO_1" mutable-snapshot
-                                                                                                                                                                git -C "$STUDIO_1" mutable-rebase
-                                                                                                                                                                git -C "$STUDIO_1" mutable-snapshot
                                                                                                                                                                 if git -C "$STUDIO_1" mutable-check
                                                                                                                                                                 then
                                                                                                                                                                     echo "✅ the first checks passed"
@@ -1045,6 +1035,7 @@
                                                                                                                                                                 PARENT_2="$( dirname "$STUDIO_2" )" || failure 0db898ea
                                                                                                                                                                 BIN_2="$PARENT_2/stage/bin"
                                                                                                                                                                 git -C "$STUDIO_2" mutable-mirror "$BRANCH"
+                                                                                                                                                                git -C "$STUDIO_2" mutable-reset
                                                                                                                                                                 if diff --recursive --exclude .git --exclude .idea "$STUDIO_1" "$STUDIO_2"
                                                                                                                                                                 then
                                                                                                                                                                     echo "✅ studio repositories are identical"
@@ -1407,6 +1398,54 @@
                                                                                                                                                             '' ;
                                                                                                                                                     } ;
                                                                                                                                             in "${ application }/bin/mutable-check" ;
+                                                                                                                                    mutable-reset =
+                                                                                                                                        {
+                                                                                                                                            root =
+                                                                                                                                                let
+                                                                                                                                                    application =
+                                                                                                                                                        pkgs.writeShellApplication
+                                                                                                                                                            {
+                                                                                                                                                                name = "mutable-reset" ;
+                                                                                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.libuuid ( _failure.implementation "e0d03f16" ) ] ;
+                                                                                                                                                                text =
+                                                                                                                                                                    ''
+                                                                                                                                                                        git submodule foreach '$MOUNT/stage/alias/submodule'
+                                                                                                                                                                        git fetch origin main
+                                                                                                                                                                        UUID="$( uuidgen | sha512sum )" || failure a731cc03
+                                                                                                                                                                        BRANCH="$( echo scratch/$UUID | cut --characters 1-64 )" || failure ca9d8217
+                                                                                                                                                                        git checkout -b "$BRANCH"
+                                                                                                                                                                        git fetch origin main
+                                                                                                                                                                        git reset --soft origin/main
+                                                                                                                                                                        git commit -a --verbose
+                                                                                                                                                                        git push origin HEAD
+                                                                                                                                                                    '' ;
+                                                                                                                                                            } ;
+                                                                                                                                                    in "${ application }/bin/mutable-reset" ;
+                                                                                                                                            submodule =
+                                                                                                                                                let
+                                                                                                                                                    application =
+                                                                                                                                                        pkgs.writeShellApplication
+                                                                                                                                                            {
+                                                                                                                                                                name = "mutable-reset" ;
+                                                                                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.libuuid pkgs.nix ( _failure.implementation "846bd5fd" )] ;
+                                                                                                                                                                text =
+                                                                                                                                                                    ''
+                                                                                                                                                                        : "${ builtins.concatStringsSep "" [ "$" "{" "toplevel:? 4252d404 this script must be run via git submodule foreach which will export toplevel" "}" ] }"
+                                                                                                                                                                        : "${ builtins.concatStringsSep "" [ "$" "{" "name:? 4a3b510c this script must be run via git submodule foreach which will export name" "}" ] }"
+                                                                                                                                                                        cd "$toplevel/$name"
+                                                                                                                                                                        git fetch origin main
+                                                                                                                                                                        UUID="$( uuidgen )" || failure 0f292839
+                                                                                                                                                                        BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 57402bed
+                                                                                                                                                                        git checkout -b "$BRANCH"
+                                                                                                                                                                        git reset --soft origin/main
+                                                                                                                                                                        git commit -a --verbose
+                                                                                                                                                                        git push origin HEAD
+                                                                                                                                                                        cd "$toplevel"
+                                                                                                                                                                        nix flake update --flake "$toplevel" "$name"
+                                                                                                                                                                        nix flake update --flake "$toplevel" "$name"pr
+                                                                                                                                                                    '' ;
+                                                                                                                                                            } ;
+                                                                                                                                                    in "${ application }/bin/mutable-reset" ;                                                                                                                                        } ;
                                                                                                                                     mutable-switch =
                                                                                                                                         {
                                                                                                                                             root =
