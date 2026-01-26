@@ -1832,7 +1832,7 @@
                                                                                                             runtimeInputs = [ pkgs.age pkgs.coreutils pkgs.git pkgs.jq ( _failure.implementation "89d3de61" ) ] ;
                                                                                                             text =
                                                                                                                 ''
-                                                                                                                    TOKEN=${ resources.production.secrets.token { failure = "failure e75bdc6a" ; } }
+                                                                                                                    TOKEN=${ resources__.production.secrets.token { failure = "failure e75bdc6a" ; } }
                                                                                                                     SECRETS=${ resources__.production.studio.secrets { failure = "failure 64cc381d" ; } }
                                                                                                                     cd "$SECRETS/repository"
                                                                                                                     STAMP="$( date +%s )" ||
