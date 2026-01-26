@@ -323,7 +323,7 @@
                                                                                     "github.com" =
                                                                                         {
                                                                                             host-name = "github.com" ;
-                                                                                            identity-file = ignore : "secret" ;
+                                                                                            identity-file = ignore : "identity" ;
                                                                                             strict-host-key-checking = true ;
                                                                                             user-known-hosts-file = ignore : "secret" ;
                                                                                             user = "git" ;
@@ -348,7 +348,8 @@
                                                                                 {
                                                                                     "github.com" =
                                                                                         {
-                                                                                            identity-file = { pid , pkgs , resources , root , sequential , wrap } : resources.production.secrets.dot-ssh.github.identity-file { } ;
+                                                                                            identity-file = { pid , pkgs , resources , root , sequential , wrap } : resources.production.gh { failure = "${ failure.implementation "1117252f" }/bin/failure 38d24375" ; } ;
+                                                                                            # identity-file = { pid , pkgs , resources , root , sequential , wrap } : resources.production.secrets.dot-ssh.github.identity-file { } ;
                                                                                             user-known-hosts-file = { pid , pkgs , resources , root , sequential , wrap } : resources.production.secrets.dot-ssh.github.user-known-hosts-file { } ;
                                                                                         } ;
                                                                                     laptop =
@@ -448,6 +449,53 @@
                                                                                 targets = [ "result" "shared" "standard-error" "standard-output" "status" ] ;
                                                                             } ;
                                                                 } ;
+                                                            gh =
+                                                                ignore :
+                                                                    {
+                                                                        init =
+                                                                            { pid , pkgs , resources , root , sequential , wrap } :
+                                                                                let
+                                                                                    application =
+                                                                                        pkgs.writeShellApplication
+                                                                                            {
+                                                                                                name = "init" ;
+                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.gh pkgs.openssh ( _failure.implementation "afb5ff0a" ) ] ;
+                                                                                                text =
+                                                                                                    ''
+                                                                                                        STAMP="$( date +%s )" || failure 6c79144c
+                                                                                                        echo "$STAMP" > /mount/stamp
+                                                                                                        ssh-keygen -f /mount/identity -C "STAMP" -P ""
+                                                                                                        TOKEN=${ resources.production.secrets.token { } }
+                                                                                                        gh auth login --with-token < "$TOKEN/secret"
+                                                                                                        gh ssh-key add /mount/identity.pub --title "$STAMP"
+                                                                                                        gh auth logout
+                                                                                                        pid 100 stall
+                                                                                                    '' ;
+                                                                                            } ;
+                                                                                    in "${ application }/bin/init" ;
+                                                                        salt =
+                                                                            {
+                                                                                release =
+                                                                                    let
+                                                                                        application =
+                                                                                            pkgs.writeShellApplicatioin
+                                                                                                {
+                                                                                                    name = "release" ;
+                                                                                                    runtimeInputs = [ pkgs.coreutils pkgs.gh ( _failure.implementation "a4655410" ) ] ;
+                                                                                                    text =
+                                                                                                        ''
+                                                                                                            /mount/stall
+                                                                                                            STAMP="$( cat /mount/stamp )" || failure a5e9abc6
+                                                                                                            TOKEN=${ resources.production.secrets.token { } }
+                                                                                                            gh auth login --with-token < "$TOKEN/secret"
+                                                                                                            gh ssh-key delete "$STAMP"
+                                                                                                            gh auth logout
+                                                                                                        '' ;
+                                                                                                } ;
+                                                                                        in "${ application }/bin/release" ;
+                                                                            } ;
+                                                                        targets = [ "id-rsa" "identity.pub" "stall" "stamp" ] ;
+                                                                    } ;
                                                             pads =
                                                                 let
                                                                     mapper =
