@@ -13,7 +13,6 @@
                         failure ,
                         fixture ,
                         git-repository ,
-                        git-repository ,
                         nixpkgs ,
                         private ,
                         private-reporter ,
