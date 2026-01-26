@@ -2716,15 +2716,21 @@
                                                     standard-input = "5433bd8482be1f2e1c1db4fa9268ed6e7bb02285083decb86a6166eea2df77f7e2d7524541549a3ee73d03ae955d8ec0714a959944962e8fe18f343fe108ff9f" ;
                                                      standard-error =
                                                          ''
-                                                                compile-time-arguments:
-                                                                  path: []
-                                                                  type: string
-                                                                  value: f135add3
-                                                                run-time-arguments:
-                                                                  - b06fc102
-                                                                  - /nix/store/xkvifdkqdxph9gcbzm1rnc1i8x5rblmh-setup/bin/setup
-                                                                  - ceb405a144a10b8efca63d9d950ce2b92bb2997ab44a9588ca740b3540a9a532a6b959a0d990dd469a63b16eb7600991bb7a1ef2b79d697b43e17134cbccec6c
-                                                                  - cdca67397f32d23a379284468e099b96c5b53d62659faf4d48dfc650bea444d6bc450b7eefee9b273c12672b9008fa6a077b15efb676b35f9912de977f54724d
+                                                            compile-time-arguments:
+                                                              path: []
+                                                              type: string
+                                                              value: f135add3
+                                                            run-time-arguments:
+                                                              - a05ad0c3
+                                                              - ae7afb90a11109a5cb07209ec48fa2d376ca0338c14c9c505f465c7cb658091549ae5344378e229674606ff46fcaf3db24b2d2b0870587d67bcad79b358ec2b9
+                                                              - "70"
+                                                              - '['
+                                                              - '  "ceb405a144a10b8efca63d9d950ce2b92bb2997ab44a9588ca740b3540a9a532a6b959a0d990dd469a63b16eb7600991bb7a1ef2b79d697b43e17134cbccec6c",'
+                                                              - '  "cdca67397f32d23a379284468e099b96c5b53d62659faf4d48dfc650bea444d6bc450b7eefee9b273c12672b9008fa6a077b15efb676b35f9912de977f54724d"'
+                                                              - ']'
+                                                              - '['
+                                                              - '  "3e30e86404135fc6036abb77e19e8cf73bb32074c07b3273a45e1262bb308f68d420d3549624ee2a44030ba23147465ed85b2c320d0661b1835627aeec050289"'
+                                                              - ']'
                                                          '' ;
                                                      standard-output = "" ;
                                                      status = 64 ;
