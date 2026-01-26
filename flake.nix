@@ -476,7 +476,7 @@
                                                                                                         gh auth logout 2>&1
                                                                                                         echo 5cdb6c12
                                                                                                         pid 2 stall
-                                                                                                        echo 9d006d00
+                                                                                                        echo 597fe590
                                                                                                     '' ;
                                                                                             } ;
                                                                                     in "${ application }/bin/init" ;
