@@ -475,7 +475,7 @@
                                                                                                         gh ssh-key add /mount/identity.pub --title "$STAMP" 2>&1
                                                                                                         gh auth logout 2>&1
                                                                                                         echo 5cdb6c12
-                                                                                                        pid 100 stall
+                                                                                                        pid 2 stall
                                                                                                         echo 9d006d00
                                                                                                     '' ;
                                                                                             } ;
