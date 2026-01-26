@@ -474,7 +474,9 @@
                                                                                                         gh auth login --with-token < "$TOKEN/secret" 2>&1
                                                                                                         gh ssh-key add /mount/identity.pub --title "$STAMP" 2>&1
                                                                                                         gh auth logout 2>&1
+                                                                                                        echo 5cdb6c12
                                                                                                         pid 100 stall
+                                                                                                        echo 9d006d00
                                                                                                     '' ;
                                                                                             } ;
                                                                                     in "${ application }/bin/init" ;
@@ -499,7 +501,7 @@
                                                                                                 } ;
                                                                                         in "${ application }/bin/release" ;
                                                                             } ;
-                                                                        targets = [ "id-rsa" "identity.pub" "stall" "stamp" ] ;
+                                                                        targets = [ "identity" "identity.pub" "stall" "stamp" ] ;
                                                                     } ;
                                                             pads =
                                                                 let
