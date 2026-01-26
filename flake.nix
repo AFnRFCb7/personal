@@ -2250,7 +2250,7 @@
                                                                                                                                                 then
                                                                                                                                                     STUDIO=${ resources__.production.repository.studio.entry { setup = setup : ''${ setup } "$@"'' ; } }
                                                                                                                                                 else
-                                                                                                                                                    STUDIO=${ resources__.production.repository.studio.entry { setup = setup : ''cat | ${ setup } "$@"'' ; }
+                                                                                                                                                    STUDIO=${ resources__.production.repository.studio.entry { setup = setup : ''cat | ${ setup } "$@"'' ; } }
                                                                                                                                                 fi
                                                                                                                                                 echo "$STUDIO"
                                                                                                                                             '' ;
