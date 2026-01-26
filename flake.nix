@@ -13,6 +13,7 @@
                         failure ,
                         fixture ,
                         git-repository ,
+                        git-repository ,
                         nixpkgs ,
                         private ,
                         private-reporter ,
@@ -98,7 +99,7 @@
                             user =
                                 { config , lib , pkgs , ... } :
                                     let
-                                        resources__ =
+                                        resources =
                                             _visitor.implementation
                                                 {
                                                     lambda =
@@ -109,7 +110,7 @@
                                                                     _resource
                                                                         {
                                                                             channel = config.personal.channel ;
-                                                                            resources = resources__ ;
+                                                                            resources = resources ;
                                                                             resources-directory = "/home/${ config.personal.name }/resources" ;
                                                                             store-garbage-collection-root = "/home/${ config.personal.name }/.gc-roots" ;
                                                                         } ;
@@ -1847,10 +1848,10 @@
                                                                                                                         name : value :
                                                                                                                             ''
                                                                                                                                 mkdir --parents "/home/${ config.personal.name }/pads/${ name }"
-                                                                                                                                ENVRC=${ resources__.production.pads."${ name }" { } }
+                                                                                                                                ENVRC=${ resources.production.pads."${ name }" { } }
                                                                                                                                 ln --symbolic --force "$ENVRC/envrc" "/home/${ config.personal.name }/pads/${ name }/.envrc"
                                                                                                                             '' ;
-                                                                                                                    in builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs mapper resources__.production.pads ) ) ;
+                                                                                                                    in builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs mapper resources.production.pads ) ) ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/ExecStart" ;
                                                                                         User = config.personal.name ;
@@ -1871,15 +1872,15 @@
                                                                                                             runtimeInputs = [ pkgs.age pkgs.coreutils pkgs.git pkgs.jq ( _failure.implementation "89d3de61" ) ] ;
                                                                                                             text =
                                                                                                                 ''
-                                                                                                                    TOKEN=${ resources__.production.secrets.token { failure = "failure e75bdc6a" ; } }
-                                                                                                                    SECRETS=${ resources__.production.repository.studio.secrets { failure = "failure 64cc381d" ; } }
+                                                                                                                    TOKEN=${ resources.production.secrets.token { failure = "failure e75bdc6a" ; } }
+                                                                                                                    SECRETS=${ resources.production.repository.studio.secrets { failure = "failure 64cc381d" ; } }
                                                                                                                     cd "$SECRETS/repository"
                                                                                                                     STAMP="$( date +%s )" ||
                                                                                                                     gh auth login --with-token < "$TOKEN/secret"
                                                                                                                     gh api /authorizations --method POST -f scopes="repo,workflow,admin:repo_hook" -f expiration="30 days" > ../stage/secret
                                                                                                                     gh auth logout
                                                                                                                     jq --raw-output ".token" ../stage/secret > ../stage/github-token.asc
-                                                                                                                    RECIPIENT=${ resources__.production.age.public { failure = "failure d279d2f8" ; } }
+                                                                                                                    RECIPIENT=${ resources.production.age.public { failure = "failure d279d2f8" ; } }
                                                                                                                     git fetch origin main
                                                                                                                     git checkout main
                                                                                                                     age --recipient "$RECIPIENT" --encrypt --output github-token.asc.age ../stage/github-token.asc
@@ -1918,7 +1919,7 @@
                                                                                                     organization = config.personal.repository.personal.organization ;
                                                                                                     repository = config.personal.repository.personal.repository ;
                                                                                                     resolution = "personal" ;
-                                                                                                    token = resources__.production.secrets.token { } ;
+                                                                                                    token = resources.production.secrets.token { } ;
                                                                                                 } ;
                                                                                         User = config.personal.name ;
                                                                                     } ;
@@ -1980,7 +1981,7 @@
                                                                                                 HAS_ARGUMENTS=false
                                                                                                 ARGUMENTS=
                                                                                             fi
-                                                                                            STUDIO=${ resources__.production.repository.studio.entry { setup = setup : ''${ setup } "$HAS_ARGUMENTS" "$ARGUMENTS"'' ; } }
+                                                                                            STUDIO=${ resources.production.repository.studio.entry { setup = setup : ''${ setup } "$HAS_ARGUMENTS" "$ARGUMENTS"'' ; } }
                                                                                             if $HAS_ARGUMENTS
                                                                                             then
                                                                                                 echo "$STUDIO/repository"
@@ -2026,7 +2027,7 @@
                                                                                     runtimeInputs = [ ] ;
                                                                                     text =
                                                                                         ''
-                                                                                            FOOBAR=${ resources__.foobar.foobar { setup = setup : ''${ setup } "$@"'' ; failure = "failure 175470c8" ; } }
+                                                                                            FOOBAR=${ resources.foobar.foobar { setup = setup : ''${ setup } "$@"'' ; failure = "failure 175470c8" ; } }
                                                                                             echo "$FOOBAR"
                                                                                         '' ;
                                                                                 }
@@ -2138,15 +2139,15 @@
                                                                                                                                             ] ;
                                                                                                                                         text =
                                                                                                                                             ''
-                                                                                                                                                DOT_GNUPG=${ resources__.production.dot-gnupg { } }
+                                                                                                                                                DOT_GNUPG=${ resources.production.dot-gnupg { } }
                                                                                                                                                 export GNUPGHOME="$DOT_GNUPG/dot-gnupg"
                                                                                                                                                 gpg --sign --local-user "${ config.personal.chromium.home.config.email }" --armor </dev/null >/dev/null
-                                                                                                                                                CONFIG_RESOURCE=${ resources__.production.repository.pads.home.chromium.config { } }
+                                                                                                                                                CONFIG_RESOURCE=${ resources.production.repository.pads.home.chromium.config { } }
                                                                                                                                                 export XDG_CONFIG_HOME="$CONFIG_RESOURCE/repository/secret"
                                                                                                                                                 mkdir --parents "$XDG_CONFIG_HOME"
                                                                                                                                                 echo CONFIG
                                                                                                                                                 find "$CONFIG_RESOURCE"
-                                                                                                                                                DATA_RESOURCE=${ resources__.production.repository.pads.home.chromium.data { } }
+                                                                                                                                                DATA_RESOURCE=${ resources.production.repository.pads.home.chromium.data { } }
                                                                                                                                                 export XDG_DATA_HOME="$CONFIG_RESOURCE/repository/secret"
                                                                                                                                                 mkdir --parents "$XDG_DATA_HOME"
                                                                                                                                                 echo
@@ -2287,9 +2288,9 @@
                                                                                                                                             ''
                                                                                                                                                 if [[ -t 0 ]]
                                                                                                                                                 then
-                                                                                                                                                    STUDIO=${ resources__.production.repository.studio.entry { setup = setup : ''${ setup } "$@"'' ; } }
+                                                                                                                                                    STUDIO=${ resources.production.repository.studio.entry { setup = setup : ''${ setup } "$@"'' ; } }
                                                                                                                                                 else
-                                                                                                                                                    STUDIO=${ resources__.production.repository.studio.entry { setup = setup : ''cat | ${ setup } "$@"'' ; } }
+                                                                                                                                                    STUDIO=${ resources.production.repository.studio.entry { setup = setup : ''cat | ${ setup } "$@"'' ; } }
                                                                                                                                                 fi
                                                                                                                                                 echo "$STUDIO"
                                                                                                                                             '' ;
