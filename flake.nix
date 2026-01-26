@@ -576,6 +576,7 @@
                                                                                                         ''
                                                                                                             git config core.sshCommand "$MOUNT/stage/ssh/command"
                                                                                                             wrap ${ application }/bin/ssh stage/ssh/command 0500 --literal-plain "@" --inherit-plain MOUNT --literal-plain PATH
+                                                                                                            echo
                                                                                                             DOT_SSH=${ resources.production.dot-ssh { } }
                                                                                                             root "$DOT_SSH"
                                                                                                             wrap "$DOT_SSH/config" stage/ssh/config 0400
@@ -783,6 +784,7 @@
                                                                                                                     text =
                                                                                                                         ''
                                                                                                                             echo 66972a21
+                                                                                                                            ${ ssh pkgs resources sequential wrap }
                                                                                                                             echo ba450dc8
                                                                                                                             git remote add origin ${ config.personal.secrets.remote }
                                                                                                                             echo 786dcd65
