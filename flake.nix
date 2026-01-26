@@ -464,7 +464,7 @@
                                                                                         pkgs.writeShellApplication
                                                                                             {
                                                                                                 name = "init" ;
-                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.gh pkgs.openssh ( _failure.implementation "afb5ff0a" ) ] ;
+                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.gh pkgs.openssh pid ( _failure.implementation "afb5ff0a" ) ] ;
                                                                                                 text =
                                                                                                     ''
                                                                                                         STAMP="$( date +%s )" || failure 6c79144c
