@@ -783,7 +783,6 @@
                                                                                                                     text =
                                                                                                                         ''
                                                                                                                             echo 66972a21
-                                                                                                                            ${ ssh pkgs resources root wrap }
                                                                                                                             echo ba450dc8
                                                                                                                             git remote add origin ${ config.personal.secrets.remote }
                                                                                                                             echo 786dcd65
