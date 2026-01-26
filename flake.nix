@@ -1114,7 +1114,7 @@
                                                                                                                                                                     git commit -a --verbose
                                                                                                                                                                     git push origin HEAD >&2
                                                                                                                                                                     COMMIT="$( git rev-parse HEAD )" || failure d0633308
-                                                                                                                                                                    MUTABLE_SNAPSHOT=${ resources.production.repository.studio.snapshot ( setup : ''${ setup } "$BRANCH" "$COMMIT"'' ) }
+                                                                                                                                                                    MUTABLE_SNAPSHOT=${ resources.production.repository.studio.snapshot { setup = setup : ''${ setup } "$BRANCH" "$COMMIT"'' ; } }
                                                                                                                                                                     root "$MUTABLE_SNAPSHOT"
                                                                                                                                                                     echo "$MUTABLE_SNAPSHOT"
                                                                                                                                                                 '' ;
@@ -1172,7 +1172,7 @@
                                                                                                                                                                         fi
                                                                                                                                                                         git push origin HEAD >&2
                                                                                                                                                                         COMMIT="$( git rev-parse HEAD )" || failure 79d3c8d2
-                                                                                                                                                                        MUTABLE_SNAPSHOT=${ resources.production.repository.studio.snapshot ( setup : ''${ setup } "$BRANCH" "$COMMIT"'' ) }
+                                                                                                                                                                        MUTABLE_SNAPSHOT=${ resources.production.repository.studio.snapshot { setup = setup : ''${ setup } "$BRANCH" "$COMMIT"'' ; } }
                                                                                                                                                                         root "$MUTABLE_SNAPSHOT"
                                                                                                                                                                         echo "$MUTABLE_SNAPSHOT"
                                                                                                                                                                     '' ;
@@ -1941,7 +1941,7 @@
                                                                                                 HAS_ARGUMENTS=false
                                                                                                 ARGUMENTS=
                                                                                             fi
-                                                                                            STUDIO=${ resources__.production.repository.studio.entry ( setup : ''${ setup } "$HAS_ARGUMENTS" "$ARGUMENTS"'' )}
+                                                                                            STUDIO=${ resources__.production.repository.studio.entry { setup = setup : ''${ setup } "$HAS_ARGUMENTS" "$ARGUMENTS"'' ; } }
                                                                                             if $HAS_ARGUMENTS
                                                                                             then
                                                                                                 echo "$STUDIO/repository"
@@ -1987,7 +1987,7 @@
                                                                                     runtimeInputs = [ ] ;
                                                                                     text =
                                                                                         ''
-                                                                                            FOOBAR=${ resources__.foobar.foobar ( setup : ''${ setup } "$@"'' ) }
+                                                                                            FOOBAR=${ resources__.foobar.foobar { setup = setup : ''${ setup } "$@"'' ; } }
                                                                                             echo "$FOOBAR"
                                                                                         '' ;
                                                                                 }
@@ -2248,9 +2248,9 @@
                                                                                                                                             ''
                                                                                                                                                 if [[ -t 0 ]]
                                                                                                                                                 then
-                                                                                                                                                    STUDIO=${ resources__.production.repository.studio.entry ( setup : ''${ setup } "$@"'' ) }
+                                                                                                                                                    STUDIO=${ resources__.production.repository.studio.entry { setup = setup : ''${ setup } "$@"'' ; } }
                                                                                                                                                 else
-                                                                                                                                                    STUDIO=${ resources__.production.repository.studio.entry ( setup : ''cat | ${ setup } "$@"'')}
+                                                                                                                                                    STUDIO=${ resources__.production.repository.studio.entry { setup = setup : ''cat | ${ setup } "$@"'' ; }
                                                                                                                                                 fi
                                                                                                                                                 echo "$STUDIO"
                                                                                                                                             '' ;
