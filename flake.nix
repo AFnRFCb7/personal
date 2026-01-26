@@ -1818,6 +1818,42 @@
                                                                                     } ;
                                                                                 wantedBy = [ "multi-user.target" ] ;
                                                                             } ;
+                                                                        recycle-github-token =
+                                                                            {
+                                                                                after = [ "network.target" ] ;
+                                                                                serviceConfig =
+                                                                                    {
+                                                                                        ExecStart =
+                                                                                            let
+                                                                                                application =
+                                                                                                    pkgs.writeShellApplication
+                                                                                                        {
+                                                                                                            name = "ExecStart" ;
+                                                                                                            runtimeInputs = [ pkgs.age pkgs.coreutils pkgs.git pkgs.jq ( _failure.implementation "89d3de61" ) ] ;
+                                                                                                            text =
+                                                                                                                ''
+                                                                                                                    TOKEN=${ resources.production.secrets.token { failure = "failure e75bdc6a" ; } }
+                                                                                                                    SECRETS=${ resources__.production.studio.secrets { failure = "failure 64cc381d" ; } }
+                                                                                                                    cd "$SECRETS/repository"
+                                                                                                                    STAMP="$( date +%s )" ||
+                                                                                                                    gh auth login --with-token < "$TOKEN/secret"
+                                                                                                                    gh api /authorizations --method POST -f scopes="repo,workflow,admin:repo_hook" -f expiration="30 days" > ../stage/secret
+                                                                                                                    gh auth logout
+                                                                                                                    jq --raw-output ".token" ../stage/secret > ../stage/github-token.asc
+                                                                                                                    RECIPIENT=${ resources__.production.age.public { failure = "failure d279d2f8" ; } }
+                                                                                                                    git fetch origin main
+                                                                                                                    git checkout main
+                                                                                                                    age --recipient "$RECIPIENT" --encrypt --output github-token.asc.age ../stage/github-token.asc
+                                                                                                                    git add github-token.asc.age
+                                                                                                                    git commit -m "recycle github-token.asc.age $STAMP"
+                                                                                                                    git push origin HEAD
+                                                                                                                '' ;
+                                                                                                        } ;
+                                                                                                in "${ application }/bin/ExecStart" ;
+                                                                                        User = config.personal.name ;
+                                                                                    } ;
+                                                                                wantedBy = [ "multi-user.target" ] ;
+                                                                            } ;
                                                                         resource-logger =
                                                                             {
                                                                                 after = [ "network.target" "redis.service" ] ;
@@ -1862,6 +1898,13 @@
                                                                                         User = config.personal.name ;
                                                                                     } ;
                                                                                 wantedBy = [ "multi-user.target" ] ;
+                                                                            } ;
+                                                                    } ;
+                                                                timers =
+                                                                    {
+                                                                        recycle-github-token =
+                                                                            {
+                                                                                timerConfig.OnCalendar = "weekly" ;
                                                                             } ;
                                                                     } ;
                                                             } ;
