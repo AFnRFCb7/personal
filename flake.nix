@@ -1911,7 +1911,7 @@
                                                                                                                                 mkdir --parents "/home/${ config.personal.name }/pads/${ name }"
                                                                                                                                 ln --symbolic ${ value } "/home/${ config.personal.name }/pads/${ name }/.envrc"
                                                                                                                             '' ;
-                                                                                                                    in builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs mapper config.personal.pads ) ) ;
+                                                                                                                    in builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs mapper ( config.personal.pads resources__ ) ) ) ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/ExecStart" ;
                                                                                         User = config.personal.name ;
@@ -2137,39 +2137,40 @@
                                                                 pads =
                                                                     lib.mkOption
                                                                         {
-                                                                            type = lib.types.attrsOf lib.types.str ;
+                                                                            type = lib.types.funcTo ( lib.types.attrsOf lib.types.str ) ;
                                                                             default =
-                                                                                let
-                                                                                    secrets-read-only =
-                                                                                        let
-                                                                                            application =
-                                                                                                pkgs.writeShellApplication
-                                                                                                    {
-                                                                                                        name = "secrets-read-only" ;
-                                                                                                        runtimeInputs = [ pkgs.coreutils __failure ] ;
-                                                                                                        text =
-                                                                                                            ''
-                                                                                                                SECRETS_READ_ONLY=${ resources__.production.repository.secrets2.read-only { } }
-                                                                                                                echo "$SECRETS_READ_ONLY/repository"
-                                                                                                            '' ;
-                                                                                                    } ;
-                                                                                            in "${ application }/bin/secrets-read-only" ;
-                                                                                    in
-                                                                                        {
-                                                                                            home =
-                                                                                                let
-                                                                                                    application =
-                                                                                                        pkgs.writeShellApplication
-                                                                                                            {
-                                                                                                                name = "home" ;
-                                                                                                                runtimeInputs = [ secrets-read-only ] ;
-                                                                                                                text =
-                                                                                                                    ''
-                                                                                                                        export NAME="Emory Merryman"
-                                                                                                                    '' ;
-                                                                                                            } ;
-                                                                                                    in "${ application }/bin/home" ;
-                                                                                        } ;
+                                                                                resources :
+                                                                                    let
+                                                                                        secrets-read-only =
+                                                                                            let
+                                                                                                application =
+                                                                                                    pkgs.writeShellApplication
+                                                                                                        {
+                                                                                                            name = "secrets-read-only" ;
+                                                                                                            runtimeInputs = [ pkgs.coreutils __failure ] ;
+                                                                                                            text =
+                                                                                                                ''
+                                                                                                                    SECRETS_READ_ONLY=${ resources.production.repository.secrets2.read-only { } }
+                                                                                                                    echo "$SECRETS_READ_ONLY/repository"
+                                                                                                                '' ;
+                                                                                                        } ;
+                                                                                                in "${ application }/bin/secrets-read-only" ;
+                                                                                        in
+                                                                                            {
+                                                                                                home =
+                                                                                                    let
+                                                                                                        application =
+                                                                                                            pkgs.writeShellApplication
+                                                                                                                {
+                                                                                                                    name = "home" ;
+                                                                                                                    runtimeInputs = [ secrets-read-only ] ;
+                                                                                                                    text =
+                                                                                                                        ''
+                                                                                                                            export NAME="Emory Merryman"
+                                                                                                                        '' ;
+                                                                                                                } ;
+                                                                                                        in "${ application }/bin/home" ;
+                                                                                            } ;
                                                                         } ;
                                                                 password = lib.mkOption { type = lib.types.str ; } ;
                                                                 repository =
