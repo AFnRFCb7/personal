@@ -2471,7 +2471,7 @@
                                                                                                                     runtimeInputs = [ wrap ] ;
                                                                                                                     text =
                                                                                                                         ''
-                                                                                                                            wrap ${ envrc } envrc 0400 --literal-plain DOT_GNUPG --literal-plain PASSWORD_STORE_REPOSITORY --literal-plain PATH
+                                                                                                                            wrap ${ envrc } envrc 0400 --literal-plain PATH
                                                                                                                         '' ;
                                                                                                                 } ;
                                                                                                         in "${ application }/bin/init " ;
