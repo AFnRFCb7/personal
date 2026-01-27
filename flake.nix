@@ -1911,7 +1911,7 @@
                                                                                                                                 mkdir --parents "/home/${ config.personal.name }/pads/${ name }"
                                                                                                                                 ${ builtins.trace ( builtins.typeOf value ) "#" }
                                                                                                                             '' ;
-                                                                                                                    in builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs mapper resources__.production.pads ) ) ;
+                                                                                                                    in builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs mapper config.personal.pads ) ) ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/ExecStart" ;
                                                                                         User = config.personal.name ;
