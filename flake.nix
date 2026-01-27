@@ -2455,9 +2455,7 @@
                                                                                                                         ] ;
                                                                                                                     text =
                                                                                                                         ''
-                                                                                                                            export TEST_USER=1abfeaf8
-                                                                                                                            export TEST_PASSWORD=38e38981
-                                                                                                                            export FOOBAR=ead70f30
+                                                                                                                            export FOOBAR=79f3976f
                                                                                                                             export NAME="Emory Merryman"
                                                                                                                         '' ;
                                                                                                                 } ;
