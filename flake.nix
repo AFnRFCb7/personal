@@ -30,6 +30,7 @@
                             _dot-gnupg = dot-gnupg.lib { } ;
                             _dot-ssh = dot-ssh.lib { failure = _failure.implementation "4e91ae89" ; visitor = _visitor.implementation ; } ;
                             _failure = failure.lib { coreutils = pkgs.coreutils ; jq = pkgs.jq ; mkDerivation = pkgs.stdenv.mkDerivation ; visitor = visitor ; writeShellApplication = pkgs.writeShellApplication ; yq-go = pkgs.yq-go ; } ;
+                            __failure = "${ _failure.implementation "7fef1fe4" }/bin" ;
                             _fixture = fixture.lib { age = pkgs.age ; coreutils = pkgs.coreutils ; failure = _failure.implementation "6bf7303d" ; gnupg = pkgs.gnupg ; libuuid = pkgs.libuuid ; mkDerivation = pkgs.stdenv.mkDerivation ; writeShellApplication = pkgs.writeShellApplication ; } ;
                             _git-repository = git-repository.lib { string = _string.implementation ; visitor = _visitor.implementation ; } ;
                             _private-reporter = private-reporter.lib { failure = _failure.implementation "8e2eb1d7" ; pkgs = pkgs ; } ;
@@ -714,6 +715,107 @@
                                                                             secrets2 =
                                                                                 {
                                                                                     read-only =
+                                                                                        ignore :
+                                                                                            _git-repository.implementation
+                                                                                                {
+                                                                                                    resolutions = [ ] ;
+                                                                                                    setup =
+                                                                                                        { pid , pkgs , resources , root , sequential , wrap } :
+                                                                                                            let
+                                                                                                                application =
+                                                                                                                    pkgs.writeShellApplication
+                                                                                                                        {
+                                                                                                                            name = "setup" ;
+                                                                                                                            runtimeInputs = [ ] ;
+                                                                                                                            text =
+                                                                                                                                let
+                                                                                                                                    aliases =
+                                                                                                                                        let
+                                                                                                                                            decrypt =
+                                                                                                                                                secret :
+                                                                                                                                                    let
+                                                                                                                                                        application =
+                                                                                                                                                            pkgs.writeShellApplication
+                                                                                                                                                                {
+                                                                                                                                                                    name = "decrypt" ;
+                                                                                                                                                                    runtimeInputs = [ pkgs.age __failure ] ;
+                                                                                                                                                                    text =
+                                                                                                                                                                        ''
+                                                                                                                                                                            git fetch origin ${ config.personal.secrets2.branch }
+                                                                                                                                                                            git checkout origin/${ config.personal.secrets2.branch }
+                                                                                                                                                                            RECIPIENT=${ resources.production.age.public { failure = "failure 79891ad3" ; } }
+                                                                                                                                                                            RECIPIENT_="$( cat "$RECIPIENT" )" || failure d9417fe5
+                                                                                                                                                                            age --decrypt --identity "$RECIPIENT_" "$MOUNT/repository/${ secret }
+                                                                                                                                                                        '' ;
+                                                                                                                                                                } ;
+                                                                                                                                                    in "${ application }/bin/decrypt" ;
+                                                                                                                                            in
+                                                                                                                                                {
+                                                                                                                                                    github-identity = decrypt "github-identity" ;
+                                                                                                                                                    github-known-hosts = decrypt "github-known-hosts" ;
+                                                                                                                                                    github-token = decrypt "github-token" ;
+                                                                                                                                                    gnupg-ownertrust = decrypt "gnupg-ownertrust" ;
+                                                                                                                                                    gnupg-secret-keys = decrypt "gnupg-secret-keys" ;
+                                                                                                                                                    mobile-identity = decrypt "mobile-identity" ;
+                                                                                                                                                    mobile-known-hosts = decrypt "mobile-known-hosts" ;
+                                                                                                                                                } ;
+                                                                                                                                    hooks =
+                                                                                                                                        {
+                                                                                                                                            post-commit =
+                                                                                                                                                let
+                                                                                                                                                    application =
+                                                                                                                                                        pkgs.writeShellApplication
+                                                                                                                                                            {
+                                                                                                                                                                name = "post-commit" ;
+                                                                                                                                                                runtimeInputs = [ __failure ] ;
+                                                                                                                                                                text =
+                                                                                                                                                                    ''
+                                                                                                                                                                        failure 43db78ab
+                                                                                                                                                                    '' ;
+                                                                                                                                                            } ;
+                                                                                                                                                    in "${ application }/bin/pre-commit" ;
+                                                                                                                                            pre-commit =
+                                                                                                                                                let
+                                                                                                                                                    application =
+                                                                                                                                                        pkgs.writeShellApplication
+                                                                                                                                                            {
+                                                                                                                                                                name = "pre-commit" ;
+                                                                                                                                                                runtimeInputs = [ __failure ] ;
+                                                                                                                                                                text =
+                                                                                                                                                                    ''
+                                                                                                                                                                        failure bee33d60
+                                                                                                                                                                    '' ;
+                                                                                                                                                            } ;
+                                                                                                                                                    in "${ application }/bin/pre-commit" ;
+                                                                                                                                        } ;
+                                                                                                                                    in
+                                                                                                                                        ''
+                                                                                                                                            git config alias.github-identity "$MOUNT/stage/aliases/github-identity"
+                                                                                                                                            git config alias.github-known-hosts "$MOUNT/stage/aliases/github-known-hosts"
+                                                                                                                                            git config alias.github-token "$MOUNT/stage/aliases/github-token"
+                                                                                                                                            git config alias.gnupg-ownertrust "$MOUNT/stage/aliases/gnupg-ownertrust"
+                                                                                                                                            git config alias.gnupg-secret-keys "$MOUNT/stage/aliases/gnupg-secret-keys"
+                                                                                                                                            git config alias.mobile-identity "$MOUNT/stage/aliases/mobile-identity"
+                                                                                                                                            git config alias.mobile-known-hosts "$MOUNT/stage/aliases/mobile-known-hosts"
+                                                                                                                                            git config user.email "no-commit@no-commit"
+                                                                                                                                            git config user.name "no commits"
+                                                                                                                                            wrap ${ aliases.github-identity } "$MOUNT/stage/aliases/github-identity" 0500 --literal-plain PATH
+                                                                                                                                            wrap ${ aliases.github-known-hosts } "$MOUNT/stage/aliases/github-known-hosts" 0500 --literal-plain PATH
+                                                                                                                                            wrap ${ aliases.github-token } "$MOUNT/stage/aliases/github-token" 0500 --literal-plain PATH
+                                                                                                                                            wrap ${ aliases.gnupg-ownertrust } "$MOUNT/stage/aliases/gnupg-ownertrust" 0500 --literal-plain PATH
+                                                                                                                                            wrap ${ aliases.gnupg-secret-keys } "$MOUNT/stage/aliases/gnupg-secret-keys" 0500 --literal-plain PATH
+                                                                                                                                            wrap ${ aliases.mobile-identity } "$MOUNT/stage/aliases/mobile-identity" 0500 --literal-plain PATH
+                                                                                                                                            wrap ${ aliases.mobile-known-hosts } "$MOUNT/stage/aliases/mobile-known-hosts" 0500 --literal-plain PATH
+                                                                                                                                            wrap ${ hooks.post-commit } repository/.git/hooks/post-commit 0500 --literal-plain PATH
+                                                                                                                                            wrap ${ hooks.pre-commit } repository/.git/hooks/pre-commit 0500 --literal-plain PATH
+                                                                                                                                            git remote add origin git@github.com:${ config.personal.secrets2.organization }/${ config.personal.secrets2.repository }"
+                                                                                                                                            git fetch origin ${ config.personal.secrets2.branch }
+                                                                                                                                            git checkout origin/${ config.personal.secrets2.branch }
+                                                                                                                                        '' ;
+                                                                                                                        } ;
+                                                                                                                in "${ application }/bin/setup" ;
+                                                                                                } ;
+                                                                                    read-write =
                                                                                         ignore :
                                                                                             _git-repository.implementation
                                                                                                 {
@@ -2151,6 +2253,18 @@
                                                                                                                     name = "envrc" ;
                                                                                                                     runtimeInputs =
                                                                                                                         [
+                                                                                                                            (
+                                                                                                                                pkgs.writeShellApplication
+                                                                                                                                    {
+                                                                                                                                        name = "secrets-read-only" ;
+                                                                                                                                        runtimeInputs = [ __failure ] ;
+                                                                                                                                        text =
+                                                                                                                                            ''
+                                                                                                                                                SECRETS=${ resources__.production.repository.secrets.read-only { failure = "failure 2dea84fd" ; } }
+                                                                                                                                                echo "$SECRETS/repository"
+                                                                                                                                            '' ;
+                                                                                                                                    }
+                                                                                                                            )
                                                                                                                             (
                                                                                                                                 pkgs.writeShellApplication
                                                                                                                                     {
