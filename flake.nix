@@ -711,6 +711,31 @@
                                                                                                         in "${ application }/bin/setup" ;
 
                                                                                         } ;
+                                                                            secrets2 =
+                                                                                {
+                                                                                    read-only =
+                                                                                        _git-repository.implementation
+                                                                                            {
+                                                                                                resolutions = [ ] ;
+                                                                                                setup =
+                                                                                                    { pid , pkgs , resources , root , sequential , wrap } :
+                                                                                                        let
+                                                                                                            application =
+                                                                                                                pkgs.writeShellApplication
+                                                                                                                    {
+                                                                                                                        name = "setup" ;
+                                                                                                                        runtimeInputs = [ ] ;
+                                                                                                                        text =
+                                                                                                                            ''
+                                                                                                                                git remote add origin git@github.com:${ config.personal.secrets2.organization }/${ config.personal.secrets2.repository }"
+                                                                                                                                git fetch origin ${ config.personal.secrets2.branch }
+                                                                                                                                git checkout origin/${ config.personal.secrets2.branch }
+                                                                                                                            '' ;
+                                                                                                                    } ;
+                                                                                                            in "${ application }/bin/setup" ;
+                                                                                            } ;
+                                                                                    read-write = null ;
+                                                                                } ;
                                                                             secrets_ =
                                                                                 ignore :
                                                                                     _git-repository.implementation
@@ -2455,6 +2480,12 @@
                                                                                 organization = lib.mkOption { default = "AFnRFCb7" ; type = lib.types.str ; } ;
                                                                                 repository = lib.mkOption { default = "visitor" ; type = lib.types.str ; } ;
                                                                            } ;
+                                                                    } ;
+                                                                secrets2 =
+                                                                    {
+                                                                        organization = lib.mkOption { default = "AFnRFCb7" ; type = lib.types.str ; } ;
+                                                                        repository = lib.mkOption { default = "ffb2640fef67ab61875e9121b6ad153a78e910ef620ef9c01c5c9afe3321976f." ; type = lib.types.str ; } ;
+                                                                        branch = lib.mkOption { default = "10bb77a4dab7a7a52f3d179124a0db8eb228e4f1c6951b9d1b0e5d629162bc3b" ; type = lib.types.str ; } ;
                                                                     } ;
                                                                 secrets =
                                                                     {
