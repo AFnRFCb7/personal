@@ -990,40 +990,6 @@
                                                                                                                                                             } ;
                                                                                                                                                     in "${ application }/bin/mutable-audit" ;
                                                                                                                                         } ;
-                                                                                                                                        ## ALPHA
-                                                                                                                                    mutable-generate-gnupg-key =
-                                                                                                                                        let
-                                                                                                                                            application =
-                                                                                                                                                pkgs.writeShellApplication
-                                                                                                                                                    {
-                                                                                                                                                        name = "mutable-generate-gnupg-key" ;
-                                                                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.gnupg failure ] ;
-                                                                                                                                                        text =
-                                                                                                                                                            ''
-                                                                                                                                                                MONIKER="$1"
-                                                                                                                                                                NOW="$( date +%Y%m%d%H%M%S )" || failure 1dc95e4b
-                                                                                                                                                                DOT_GNUPG=${ resources.production.dot-gnupg { } }
-                                                                                                                                                                export GNUPGHOME="$DOT_GNUPG/dot-gnupg"
-                                                                                                                                                                KEY_ID="$MONIKER $NOW"
-                                                                                                                                                                gpg --homedir "$GNUPGHOME" --quick-gen-key "$KEY_ID" ed25519 sign 1y
-                                                                                                                                                                gpg --homedir "$GNUPGHOME" --quick-add-key "$KEY_ID" cv25519 encrypt 1y
-                                                                                                                                                                mkdir --parents "$MOUNT/stage/private"
-                                                                                                                                                                SECRETS=${ resources.production.repository.studio.secrets { } }
-                                                                                                                                                                gpg --export-ownertrust --armour > "$SECRETS/repository/ownertrust.asc"
-                                                                                                                                                                gpg --export-secret-keys --armour > "$SECRETS/repository/secret-keys.asc"
-                                                                                                                                                                git -C "$SECRETS/repository" add ownertrust.asc secret-keys.asc
-                                                                                                                                                                git -C "$SECRETS/repository" commit -m "GENERATED A GNUPG KEY for $KEY_ID"
-                                                                                                                                                                git -C "$SECRETS/repository" push origin HEAD
-                                                                                                                                                                BRANCH="$( git rev-parse --abbrev-ref HEAD )" || failure 47e2654b
-                                                                                                                                                                TOKEN=${ resources.production.secrets.token { } }
-                                                                                                                                                                gh auth login --with-token < "$TOKEN/secret"
-                                                                                                                                                                gh pr create --base main --head "$BRANCH" --label "snapshot"
-                                                                                                                                                                URL="$( gh pr view --json url --jq .url )" || failure 508fe804
-                                                                                                                                                                gh pr merge "$URL" --rebase
-                                                                                                                                                                gh auth logout
-                                                                                                                                                            '' ;
-                                                                                                                                                    } ;
-                                                                                                                                            in "${ application }/bin/mutable-generate-key" ;
                                                                                                                                     mutable-mirror =
                                                                                                                                         {
                                                                                                                                             root =
@@ -1368,7 +1334,6 @@
                                                                                                                                     git config alias.mutable-build-vm "!$MOUNT/stage/alias/root/mutable-build-vm"
                                                                                                                                     git config alias.mutable-build-vm-with-bootloader "!$MOUNT/stage/alias/root/mutable-build-vm-with-bootloader"
                                                                                                                                     git config alias.mutable-check "!$MOUNT/stage/alias/root/mutable-check"
-                                                                                                                                    # git config alias.mutable-generate-gnupg-key "!$MOUNT/stage/alias/mutable-generate-gnupg-key"
                                                                                                                                     git config alias.mutable-mirror "!$MOUNT/stage/alias/root/mutable-mirror"
                                                                                                                                     git config alias.mutable-nurse "!$MOUNT/stage/alias/root/mutable-nurse"
                                                                                                                                     git config alias.mutable-promote "!$MOUNT/stage/alias/root/mutable-promote"
@@ -1383,8 +1348,6 @@
                                                                                                                                     wrap ${ mutable- "build-vm" } stage/alias/root/mutable-build-vm 0500 --literal-plain MUTABLE_SNAPSHOT --literal-plain PATH
                                                                                                                                     wrap ${ mutable- "build-vm-with-bootloader" } stage/alias/root/mutable-build-vm-with-bootloader 0500 --literal-plain MUTABLE_SNAPSHOT --literal-plain PATH
                                                                                                                                     wrap ${ mutable- "check" } stage/alias/root/mutable-check 0500 --literal-plain MUTABLE_SNAPSHOT --literal-plain PATH
-                                                                                                                                    ## ALPHA
-                                                                                                                                    # wrap ${ mutable-generate-gnupg-key } stage/alias/root/mutable-generate-gnupg-key 0500 --literal-plain 1 --literal-plain BRANCH --literal DOT_GNUPG --literal GNUPGHOME --literal-plain KEYID --literal-plain MONIKER --literal-plain NOW --literal-plain SECRETS --literal-plain TOKEN --literal-plain URL --literal-plain UUID --literal-plain PATH
                                                                                                                                     wrap ${ mutable-mirror.root } stage/alias/root/mutable-mirror 0500 --inherit-plain MOUNT --literal-plain NEW_BRANCH --literal-plain OLD_BRANCH --literal-plain PATH --literal-plain UUID
                                                                                                                                     wrap ${ mutable-mirror.submodule } stage/alias/submodule/mutable-mirror 0500 --literal-plain BRANCH --literal-plain name --literal-plain PATH --literal-plain toplevel --literal-plain UUID
                                                                                                                                     wrap ${ mutable-nurse } stage/alias/root/mutable-nurse 0500 --literal-plain 1 --literal-plain 2 --inherit-plain MOUNT --literal-plain REPO_NAME --literal-plain TOKEN --literal-plain USER_NAME
@@ -1418,34 +1381,6 @@
                                                                                                                                     git diff origin/main 2>&1
                                                                                                                                     echo DIFF 31
                                                                                                                                     git diff 2>&1
-                                                                                                                                '' ;
-                                                                                                                        } ;
-                                                                                                                in "${ application }/bin/setup" ;
-                                                                                                } ;
-                                                                                    secrets =
-                                                                                        ignore :
-                                                                                            _git-repository.implementation
-                                                                                                {
-                                                                                                    resolutions = [ ] ;
-                                                                                                    setup =
-                                                                                                        { pid , pkgs , resources , root , sequential , wrap } :
-                                                                                                            let
-                                                                                                                application =
-                                                                                                                    pkgs.writeShellApplication
-                                                                                                                        {
-                                                                                                                            name = "setup" ;
-                                                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.git ( _failure.implementation "1f1cc6de" ) ] ;
-                                                                                                                            text =
-                                                                                                                                ''
-                                                                                                                                    ${ ssh pkgs resources root wrap }
-                                                                                                                                    git config user.email "${ config.personal.repository.private.email }"
-                                                                                                                                    git config user.name "${ config.personal.repository.private.name }"
-                                                                                                                                    git remote add origin ${ config.personal.repository.secrets.remote }
-                                                                                                                                    git fetch origin main 2>&1
-                                                                                                                                    git checkout origin/main 2>&1
-                                                                                                                                    UUID="$( uuidgen | sha512sum )" || failure e22efcd4
-                                                                                                                                    BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure c80f0375
-                                                                                                                                    git checkout -b "$BRANCH" 2>&1
                                                                                                                                 '' ;
                                                                                                                         } ;
                                                                                                                 in "${ application }/bin/setup" ;
@@ -1983,42 +1918,6 @@
                                                                                     } ;
                                                                                 wantedBy = [ "multi-user.target" ] ;
                                                                             } ;
-                                                                        recycle-github-token =
-                                                                            {
-                                                                                after = [ "network.target" ] ;
-                                                                                serviceConfig =
-                                                                                    {
-                                                                                        ExecStart =
-                                                                                            let
-                                                                                                application =
-                                                                                                    pkgs.writeShellApplication
-                                                                                                        {
-                                                                                                            name = "ExecStart" ;
-                                                                                                            runtimeInputs = [ pkgs.age pkgs.coreutils pkgs.git pkgs.jq ( _failure.implementation "89d3de61" ) ] ;
-                                                                                                            text =
-                                                                                                                ''
-                                                                                                                    TOKEN=${ resources__.production.secrets.token { failure = "failure e75bdc6a" ; } }
-                                                                                                                    SECRETS=${ resources__.production.repository.studio.secrets { failure = "failure 64cc381d" ; } }
-                                                                                                                    cd "$SECRETS/repository"
-                                                                                                                    STAMP="$( date +%s )" ||
-                                                                                                                    gh auth login --with-token < "$TOKEN/secret"
-                                                                                                                    gh api /authorizations --method POST -f scopes="repo,workflow,admin:repo_hook" -f expiration="30 days" > ../stage/secret
-                                                                                                                    gh auth logout
-                                                                                                                    jq --raw-output ".token" ../stage/secret > ../stage/github-token.asc
-                                                                                                                    RECIPIENT=${ resources__.production.age.public { failure = "failure d279d2f8" ; } }
-                                                                                                                    git fetch origin main
-                                                                                                                    git checkout main
-                                                                                                                    age --recipient "$RECIPIENT" --encrypt --output github-token.asc.age ../stage/github-token.asc
-                                                                                                                    git add github-token.asc.age
-                                                                                                                    git commit -m "recycle github-token.asc.age $STAMP"
-                                                                                                                    git push origin HEAD
-                                                                                                                '' ;
-                                                                                                        } ;
-                                                                                                in "${ application }/bin/ExecStart" ;
-                                                                                        User = config.personal.name ;
-                                                                                    } ;
-                                                                                wantedBy = [ "multi-user.target" ] ;
-                                                                            } ;
                                                                         resource-logger =
                                                                             {
                                                                                 after = [ "network.target" "redis.service" ] ;
@@ -2319,89 +2218,6 @@
                                                                                                                                                 gpg --delete-secret-keys "$KEY"
                                                                                                                                                 gpg --delete-keys "$KEY"
                                                                                                                                                 gpg --list-keys
-                                                                                                                                            '' ;
-                                                                                                                                    }
-                                                                                                                            )
-                                                                                                                            (
-                                                                                                                                pkgs.writeShellApplication
-                                                                                                                                    {
-                                                                                                                                        name = "generate-gnupg-key" ;
-                                                                                                                                        runtimeInputs = [ pkgs.age pkgs.coreutils pkgs.gawk pkgs.gnupg failure ] ;
-                                                                                                                                        text =
-                                                                                                                                            ''
-                                                                                                                                                MONIKER="$1"
-                                                                                                                                                NOW="$( date +%Y%m%d%H%M%S )" || failure 1dc95e4b
-                                                                                                                                                DOT_GNUPG=${ resources.production.dot-gnupg { } }
-                                                                                                                                                export GNUPGHOME="$DOT_GNUPG/dot-gnupg"
-                                                                                                                                                KEY_ID="$MONIKER $NOW <$MONIKER.$NOW@local>"
-                                                                                                                                                echo GENERATING KEY "$KEY_ID"
-                                                                                                                                                gpg --homedir "$GNUPGHOME" --quick-gen-key "$KEY_ID" ed25519 sign 1y
-                                                                                                                                                echo "EXTRACTING FINGERPRINT"
-                                                                                                                                                FPR="$(
-                                                                                                                                                  gpg --homedir "$GNUPGHOME" --with-colons --list-keys 2>/dev/null \
-                                                                                                                                                  | awk -F: -v uid="$MONIKER.$NOW@local" '
-                                                                                                                                                      $1=="fpr" { fpr=$10 }
-                                                                                                                                                      $1=="uid" && index($10, uid) { print fpr; exit }
-                                                                                                                                                    '
-                                                                                                                                                )" || failure 5bc4778d
-                                                                                                                                                gpg --homedir "$GNUPGHOME" --quick-add-key "$FPR" cv25519 encrypt 1y
-                                                                                                                                                OLD_KEYS="$(
-                                                                                                                                                  gpg --homedir "$GNUPGHOME" --with-colons --list-keys \
-                                                                                                                                                  | awk -F: -v new="$FPR" '$1=="fpr" && $10!=new { print $10 }'
-                                                                                                                                                )"
-                                                                                                                                                for key in $OLD_KEYS; do
-                                                                                                                                                    echo "Signing new key $FPR with old key $key"
-                                                                                                                                                    gpg --homedir "$GNUPGHOME" --yes --default-key "$key" --sign-key "$FPR"
-                                                                                                                                                done
-                                                                                                                                                TEMPORARY=${ resources.production.temporary { } }
-                                                                                                                                                if [[ ! -d "$TEMPORARY" ]]
-                                                                                                                                                then
-                                                                                                                                                    failure 399f0b2b
-                                                                                                                                                fi
-                                                                                                                                                gpg --export-ownertrust --armor > "$TEMPORARY/ownertrust.asc"
-                                                                                                                                                gpg --export-secret-keys --armor > "$TEMPORARY/secret-keys.asc"
-                                                                                                                                                echo "COPIED FILES TO $TEMPORARY"
-                                                                                                                                                SECRETS=${ resources.production.repository.studio.secrets { } }
-                                                                                                                                                echo GENERATED SECRETS "$SECRETS"
-                                                                                                                                                BRANCH="$( git -C "$SECRETS/repository" rev-parse --abbrev-ref HEAD )" || failure 47e2654b
-                                                                                                                                                echo "BRANCH=$BRANCH"
-                                                                                                                                                if [[ ! -d "$SECRETS/repository" ]]
-                                                                                                                                                then
-                                                                                                                                                    failure fee1c8e6
-                                                                                                                                                fi
-                                                                                                                                                if [[ ! -d "$SECRETS/repository/.git" ]]
-                                                                                                                                                then
-                                                                                                                                                    failure 10d0002c
-                                                                                                                                                fi
-                                                                                                                                                RECIPIENT=${ resources.production.age.public { } }
-                                                                                                                                                echo "GENERATED RECIPIENT $RECIPIENT"
-                                                                                                                                                if [[ ! -f "$RECIPIENT/public" ]]
-                                                                                                                                                then
-                                                                                                                                                    failure 047ed19d "$RECIPIENT/public"
-                                                                                                                                                fi
-                                                                                                                                                RECIPIENT_="$( cat "$RECIPIENT/public" )" || failure fba2f13f
-                                                                                                                                                # if grep -q $'\n' <<< "$RECIPIENT_"
-                                                                                                                                                # then
-                                                                                                                                                #     failure 367f1591
-                                                                                                                                                # fi
-                                                                                                                                                git -C "$SECRETS/repository" fetch origin main 2>&1
-                                                                                                                                                git -C "$SECRETS/repository" rebase origin/main 2>&1
-                                                                                                                                                echo "ABOUT TO ENCRYPT"
-                                                                                                                                                age --recipient "$RECIPIENT_" < "$TEMPORARY/ownertrust.asc" > "$SECRETS/repository/ownertrust.asc.age"
-                                                                                                                                                age --recipient "$RECIPIENT_" < "$TEMPORARY/secret-keys.asc" > "$SECRETS/repository/secret-keys.asc.age"
-                                                                                                                                                git -C "$SECRETS/repository" add ownertrust.asc.age secret-keys.asc.age
-                                                                                                                                                echo "ABOUT TO COMMIT"
-                                                                                                                                                git -C "$SECRETS/repository" commit -m "GENERATED A GNUPG KEY for $KEY_ID" 2>&1
-                                                                                                                                                git -C "$SECRETS/repository" push --force-with-lease origin HEAD 2>&1
-                                                                                                                                                echo "HAVE PUSHED"
-                                                                                                                                                TOKEN=${ resources.production.secrets.token { } }
-                                                                                                                                                cd "$SECRETS/repository"
-                                                                                                                                                gh auth login --with-token < "$TOKEN/secret"
-                                                                                                                                                gh pr create --base main --head "$BRANCH" --label "snapshot"
-                                                                                                                                                URL="$( gh pr view --json url --jq .url )" || failure 508fe804
-                                                                                                                                                gh pr merge "$URL" --rebase
-                                                                                                                                                gh auth logout
-                                                                                                                                                echo SUCCESS
                                                                                                                                             '' ;
                                                                                                                                     }
                                                                                                                             )
