@@ -2140,6 +2140,20 @@
                                                                             type = lib.types.attrsOf lib.types.str ;
                                                                             default =
                                                                                 let
+                                                                                    secrets-read-only =
+                                                                                        let
+                                                                                            application =
+                                                                                                pkgs.writeShellApplication
+                                                                                                    {
+                                                                                                        name = "secrets-read-only" ;
+                                                                                                        runtimeInputs = [ pkgs.coreutils __failure ] ;
+                                                                                                        text =
+                                                                                                            ''
+                                                                                                                SECRETS_READ_ONLY=${ resources__.production.repository.secrets.read-only { failure = "failure ff743e4a" ; } }
+                                                                                                                echo "$SECRETS_READ_ONLY/repository"
+                                                                                                            '' ;
+                                                                                                    } ;
+                                                                                            in "${ application }/bin/secrets-read-only" ;
                                                                                     in
                                                                                         {
                                                                                             home =
@@ -2147,14 +2161,14 @@
                                                                                                     application =
                                                                                                         pkgs.writeShellApplication
                                                                                                             {
-                                                                                                                name = "envrc" ;
-                                                                                                                runtimeInputs = [ ] ;
+                                                                                                                name = "home" ;
+                                                                                                                runtimeInputs = [ secrets-read-only ] ;
                                                                                                                 text =
                                                                                                                     ''
                                                                                                                         export NAME="Emory Merryman"
                                                                                                                     '' ;
                                                                                                             } ;
-                                                                                                    in "${ application }/bin/envrc" ;
+                                                                                                    in "${ application }/bin/home" ;
                                                                                         } ;
                                                                         } ;
                                                                 password = lib.mkOption { type = lib.types.str ; } ;
