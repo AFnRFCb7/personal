@@ -2137,7 +2137,8 @@
                                                                 pads =
                                                                     lib.mkOption
                                                                         {
-                                                                            type = lib.types.functionTo ( lib.types.attrsOf lib.types.str ) ;
+                                                                            type = lib.types.any ;
+                                                                            # type = lib.types.functionTo ( lib.types.attrsOf lib.types.str ) ;
                                                                             default =
                                                                                 resources :
                                                                                     let
@@ -2163,7 +2164,10 @@
                                                                                                             pkgs.writeShellApplication
                                                                                                                 {
                                                                                                                     name = "home" ;
-                                                                                                                    runtimeInputs = [ secrets-read-only ] ;
+                                                                                                                    runtimeInputs =
+                                                                                                                        [
+                                                                                                                            secrets-read-only
+                                                                                                                        ] ;
                                                                                                                     text =
                                                                                                                         ''
                                                                                                                             export NAME="Emory Merryman"
