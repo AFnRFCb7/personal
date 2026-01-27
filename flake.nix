@@ -1974,8 +1974,7 @@
                                                                                                                         name : value :
                                                                                                                             ''
                                                                                                                                 mkdir --parents "/home/${ config.personal.name }/pads/${ name }"
-                                                                                                                                ENVRC=${ resources__.production.pads."${ name }" { } }
-                                                                                                                                ln --symbolic --force "$ENVRC/envrc" "/home/${ config.personal.name }/pads/${ name }/.envrc"
+
                                                                                                                             '' ;
                                                                                                                     in builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs mapper resources__.production.pads ) ) ;
                                                                                                         } ;
