@@ -1909,7 +1909,7 @@
                                                                                                                         name : value :
                                                                                                                             ''
                                                                                                                                 mkdir --parents "/home/${ config.personal.name }/pads/${ name }"
-                                                                                                                                ${ builtins.trace ( builtins.typeOf value ) "#" }
+                                                                                                                                ln --symbolic ${ value } "/home/${ config.personal.name }/pads/${ name }/.envrc"
                                                                                                                             '' ;
                                                                                                                     in builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs mapper config.personal.pads ) ) ;
                                                                                                         } ;
