@@ -773,7 +773,7 @@
                                                                                                                                                                         failure 43db78ab
                                                                                                                                                                     '' ;
                                                                                                                                                             } ;
-                                                                                                                                                    in "${ application }/bin/pre-commit" ;
+                                                                                                                                                    in "${ application }/bin/post-commit" ;
                                                                                                                                             pre-commit =
                                                                                                                                                 let
                                                                                                                                                     application =
