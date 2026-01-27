@@ -726,7 +726,7 @@
                                                                                                                     pkgs.writeShellApplication
                                                                                                                         {
                                                                                                                             name = "setup" ;
-                                                                                                                            runtimeInputs = [ ] ;
+                                                                                                                            runtimeInputs = [ pkgs.git wrap ] ;
                                                                                                                             text =
                                                                                                                                 let
                                                                                                                                     aliases =
