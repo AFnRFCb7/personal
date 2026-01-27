@@ -2149,7 +2149,7 @@
                                                                                                         runtimeInputs = [ pkgs.coreutils __failure ] ;
                                                                                                         text =
                                                                                                             ''
-                                                                                                                SECRETS_READ_ONLY=${ resources__.production.repository.secrets2.read-only { failure = "failure ff743e4a" ; } }
+                                                                                                                SECRETS_READ_ONLY=${ resources__.production.repository.secrets2.read-only { } }
                                                                                                                 echo "$SECRETS_READ_ONLY/repository"
                                                                                                             '' ;
                                                                                                     } ;
