@@ -2137,7 +2137,7 @@
                                                                 pads =
                                                                     lib.mkOption
                                                                         {
-                                                                            type = lib.types.funcTo ( lib.types.attrsOf lib.types.str ) ;
+                                                                            type = lib.types.funTo ( lib.types.attrsOf lib.types.str ) ;
                                                                             default =
                                                                                 resources :
                                                                                     let
