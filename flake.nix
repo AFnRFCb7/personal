@@ -735,7 +735,6 @@
                                                                                                                         } ;
                                                                                                                 in "${ application }/bin/setup" ;
                                                                                                 } ;
-                                                                                    read-write = null ;
                                                                                 } ;
                                                                             secrets_ =
                                                                                 ignore :
