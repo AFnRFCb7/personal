@@ -714,26 +714,27 @@
                                                                             secrets2 =
                                                                                 {
                                                                                     read-only =
-                                                                                        _git-repository.implementation
-                                                                                            {
-                                                                                                resolutions = [ ] ;
-                                                                                                setup =
-                                                                                                    { pid , pkgs , resources , root , sequential , wrap } :
-                                                                                                        let
-                                                                                                            application =
-                                                                                                                pkgs.writeShellApplication
-                                                                                                                    {
-                                                                                                                        name = "setup" ;
-                                                                                                                        runtimeInputs = [ ] ;
-                                                                                                                        text =
-                                                                                                                            ''
-                                                                                                                                git remote add origin git@github.com:${ config.personal.secrets2.organization }/${ config.personal.secrets2.repository }"
-                                                                                                                                git fetch origin ${ config.personal.secrets2.branch }
-                                                                                                                                git checkout origin/${ config.personal.secrets2.branch }
-                                                                                                                            '' ;
-                                                                                                                    } ;
-                                                                                                            in "${ application }/bin/setup" ;
-                                                                                            } ;
+                                                                                        ignore :
+                                                                                            _git-repository.implementation
+                                                                                                {
+                                                                                                    resolutions = [ ] ;
+                                                                                                    setup =
+                                                                                                        { pid , pkgs , resources , root , sequential , wrap } :
+                                                                                                            let
+                                                                                                                application =
+                                                                                                                    pkgs.writeShellApplication
+                                                                                                                        {
+                                                                                                                            name = "setup" ;
+                                                                                                                            runtimeInputs = [ ] ;
+                                                                                                                            text =
+                                                                                                                                ''
+                                                                                                                                    git remote add origin git@github.com:${ config.personal.secrets2.organization }/${ config.personal.secrets2.repository }"
+                                                                                                                                    git fetch origin ${ config.personal.secrets2.branch }
+                                                                                                                                    git checkout origin/${ config.personal.secrets2.branch }
+                                                                                                                                '' ;
+                                                                                                                        } ;
+                                                                                                                in "${ application }/bin/setup" ;
+                                                                                                } ;
                                                                                     read-write = null ;
                                                                                 } ;
                                                                             secrets_ =
