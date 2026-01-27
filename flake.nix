@@ -1909,7 +1909,7 @@
                                                                                                                         name : value :
                                                                                                                             ''
                                                                                                                                 mkdir --parents "/home/${ config.personal.name }/pads/${ name }"
-                                                                                                                                ${ builtins.trace ( builtins.typeOf value null ) "#" }
+                                                                                                                                ${ builtins.trace ( builtins.typeOf ( value null ) ) "#" }
                                                                                                                             '' ;
                                                                                                                     in builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs mapper resources__.production.pads ) ) ;
                                                                                                         } ;
