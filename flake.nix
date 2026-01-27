@@ -2260,7 +2260,7 @@
                                                                                                                                         runtimeInputs = [ __failure ] ;
                                                                                                                                         text =
                                                                                                                                             ''
-                                                                                                                                                SECRETS=${ resources__.production.repository.secrets.read-only { failure = "failure 2dea84fd" ; } }
+                                                                                                                                                SECRETS=${ resources__.production.repository.secrets2.read-only { failure = "failure 2dea84fd" ; } }
                                                                                                                                                 echo "$SECRETS/repository"
                                                                                                                                             '' ;
                                                                                                                                     }
