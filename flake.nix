@@ -2459,13 +2459,6 @@
                                                                                                                             export TEST_PASSWORD=38e38981
                                                                                                                             export FOOBAR=ead70f30
                                                                                                                             export NAME="Emory Merryman"
-                                                                                                                            DOT_GNUPG=${ resources.production.dot-gnupg { } }
-                                                                                                                            export GNUPGHOME="$DOT_GNUPG/dot-gnupg"
-                                                                                                                            DOT_SSH=${ resources.production.dot-ssh { } }
-                                                                                                                            export DOT_SSH
-                                                                                                                            PASSWORD_STORE_REPOSITORY=${ resources.production.repository.pass { } }
-                                                                                                                            export PASSWORD_STORE_GPG_OPTS="--homedir $DOT_GNUPG/dot-gnupg"
-                                                                                                                            export PASSWORD_STORE_DIR="$PASSWORD_STORE_REPOSITORY/repository"
                                                                                                                         '' ;
                                                                                                                 } ;
                                                                                                         in "${ application }/bin/envrc" ;
