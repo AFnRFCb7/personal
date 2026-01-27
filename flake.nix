@@ -2137,158 +2137,25 @@
                                                                 pads =
                                                                     lib.mkOption
                                                                         {
-                                                                            type = lib.types.attrsOf ( lib.types.functionTo lib.types.str ) ;
+                                                                            type = lib.types.attrsOf lib.types.str ;
                                                                             default =
-                                                                                {
-                                                                                    home =
-                                                                                        { pid , pkgs , resources , root , sequential , wrap } :
-                                                                                            let
-                                                                                                envrc =
-                                                                                                    let
-                                                                                                        application =
-                                                                                                            pkgs.writeShellApplication
-                                                                                                                {
-                                                                                                                    name = "envrc" ;
-                                                                                                                    runtimeInputs =
-                                                                                                                        [
-                                                                                                                            (
-                                                                                                                                pkgs.writeShellApplication
-                                                                                                                                    {
-                                                                                                                                        name = "secrets-read-only" ;
-                                                                                                                                        runtimeInputs = [ __failure ] ;
-                                                                                                                                        text =
-                                                                                                                                            ''
-                                                                                                                                                SECRETS=${ resources__.production.repository.secrets2.read-only { failure = "failure 2dea84fd" ; } }
-                                                                                                                                                echo "$SECRETS/repository"
-                                                                                                                                            '' ;
-                                                                                                                                    }
-                                                                                                                            )
-                                                                                                                            (
-                                                                                                                                pkgs.writeShellApplication
-                                                                                                                                    {
-                                                                                                                                        name = "chromium" ;
-                                                                                                                                        runtimeInputs =
-                                                                                                                                            [
-                                                                                                                                                pkgs.coreutils
-                                                                                                                                                pkgs.chromium
-                                                                                                                                                pkgs.gnupg
-                                                                                                                                            ] ;
-                                                                                                                                        text =
-                                                                                                                                            ''
-                                                                                                                                                DOT_GNUPG=${ resources__.production.dot-gnupg { } }
-                                                                                                                                                export GNUPGHOME="$DOT_GNUPG/dot-gnupg"
-                                                                                                                                                gpg --sign --local-user "${ config.personal.chromium.home.config.email }" --armor </dev/null >/dev/null
-                                                                                                                                                CONFIG_RESOURCE=${ resources__.production.repository.pads.home.chromium.config { } }
-                                                                                                                                                export XDG_CONFIG_HOME="$CONFIG_RESOURCE/repository/secret"
-                                                                                                                                                mkdir --parents "$XDG_CONFIG_HOME"
-                                                                                                                                                echo CONFIG
-                                                                                                                                                find "$CONFIG_RESOURCE"
-                                                                                                                                                DATA_RESOURCE=${ resources__.production.repository.pads.home.chromium.data { } }
-                                                                                                                                                export XDG_DATA_HOME="$CONFIG_RESOURCE/repository/secret"
-                                                                                                                                                mkdir --parents "$XDG_DATA_HOME"
-                                                                                                                                                echo
-                                                                                                                                                echo DATA
-                                                                                                                                                find "$DATA_RESOURCE"
-                                                                                                                                                if [[ -t 0 ]]
-                                                                                                                                                then
-                                                                                                                                                    chromium "$@"
-                                                                                                                                                else
-                                                                                                                                                    cat | chromium "$@"
-                                                                                                                                                fi
-                                                                                                                                                sleep 1s
-                                                                                                                                                echo "CONFIG_RESOURCE=$CONFIG_RESOURCE"
-                                                                                                                                                git -C "$CONFIG_RESOURCE/repository" add secret/**
-                                                                                                                                                git -C "$CONFIG_RESOURCE/repository" commit -am "" --allow-empty-message
-                                                                                                                                                git -C "$CONFIG_RESOURCE/repository" push origin HEAD
-                                                                                                                                                echo "DATA_RESOURCE=$DATA_RESOURCE"
-                                                                                                                                                git -C "$DATA_RESOURCE/repository" add secret/**
-                                                                                                                                                git -C "$DATA_RESOURCE/repository" commit -am "" --allow-empty-message
-                                                                                                                                                git -C "$DATA_RESOURCE/repository" push origin HEAD
-                                                                                                                                            '' ;
-                                                                                                                                    }
-                                                                                                                            )
-                                                                                                                            (
-                                                                                                                                pkgs.writeShellApplication
-                                                                                                                                    {
-                                                                                                                                        name = "delete-gnupgkey" ;
-                                                                                                                                        runtimeInputs = [ pkgs.gnupg ] ;
-                                                                                                                                        text =
-                                                                                                                                            ''
-                                                                                                                                                KEY="$1"
-                                                                                                                                                gpg --delete-secret-keys "$KEY"
-                                                                                                                                                gpg --delete-keys "$KEY"
-                                                                                                                                                gpg --list-keys
-                                                                                                                                            '' ;
-                                                                                                                                    }
-                                                                                                                            )
-                                                                                                                            (
-                                                                                                                                pkgs.writeShellApplication
-                                                                                                                                    {
-                                                                                                                                        name = "nonce" ;
-                                                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.libuuid ] ;
-                                                                                                                                        text =
-                                                                                                                                            ''
-                                                                                                                                                uuidgen | sha512sum | cut --characters 1-8
-                                                                                                                                            '' ;
-                                                                                                                                    }
-                                                                                                                            )
-                                                                                                                            (
-                                                                                                                                pkgs.writeShellApplication
-                                                                                                                                    {
-                                                                                                                                        name = "studio" ;
-                                                                                                                                        runtimeInputs = [ pkgs.coreutils ] ;
-                                                                                                                                        text =
-                                                                                                                                            ''
-                                                                                                                                                if [[ -t 0 ]]
-                                                                                                                                                then
-                                                                                                                                                    STUDIO=${ resources__.production.repository.studio.entry { setup = setup : ''${ setup } "$@"'' ; } }
-                                                                                                                                                else
-                                                                                                                                                    STUDIO=${ resources__.production.repository.studio.entry { setup = setup : ''cat | ${ setup } "$@"'' ; } }
-                                                                                                                                                fi
-                                                                                                                                                echo "$STUDIO"
-                                                                                                                                            '' ;
-                                                                                                                                    }
-                                                                                                                            )
-                                                                                                                            (
-                                                                                                                                pkgs.writeShellApplication
-                                                                                                                                    {
-                                                                                                                                        name = "ssh" ;
-                                                                                                                                        runtimeInputs = [ pkgs.openssh ] ;
-                                                                                                                                        text =
-                                                                                                                                            ''
-                                                                                                                                                DOT_SSH=${ resources.production.dot-ssh { } }
-                                                                                                                                                if [[ -t 0 ]]
-                                                                                                                                                then
-                                                                                                                                                    ssh -F "$DOT_SSH/config" "$@"
-                                                                                                                                                else
-                                                                                                                                                    cat | ssh -F "$DOT_SSH/config" "$@"
-                                                                                                                                                fi
-                                                                                                                                            '' ;
-                                                                                                                                    }
-                                                                                                                            )
-                                                                                                                            pkgs.pass
-                                                                                                                        ] ;
-                                                                                                                    text =
-                                                                                                                        ''
-                                                                                                                            export FOOBAR=79f3976f
-                                                                                                                            export NAME="Emory Merryman"
-                                                                                                                        '' ;
-                                                                                                                } ;
-                                                                                                        in "${ application }/bin/envrc" ;
-                                                                                                in
-                                                                                                    let
-                                                                                                        application =
-                                                                                                            pkgs.writeShellApplication
-                                                                                                                {
-                                                                                                                    name = "init" ;
-                                                                                                                    runtimeInputs = [ wrap ] ;
-                                                                                                                    text =
-                                                                                                                        ''
-                                                                                                                            wrap ${ envrc } envrc 0400 --literal-plain PATH
-                                                                                                                        '' ;
-                                                                                                                } ;
-                                                                                                        in "${ application }/bin/init " ;
-                                                                                } ;
+                                                                                let
+                                                                                    in
+                                                                                        {
+                                                                                            home =
+                                                                                                let
+                                                                                                    application =
+                                                                                                        pkgs.writeShellApplication
+                                                                                                            {
+                                                                                                                name = "envrc" ;
+                                                                                                                runtimeInputs = [ ] ;
+                                                                                                                text =
+                                                                                                                    ''
+                                                                                                                        export NAME="Emory Merryman"
+                                                                                                                    '' ;
+                                                                                                            } ;
+                                                                                                    in "${ application }/bin/envrc" ;
+                                                                                        } ;
                                                                         } ;
                                                                 password = lib.mkOption { type = lib.types.str ; } ;
                                                                 repository =
