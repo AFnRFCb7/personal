@@ -736,7 +736,7 @@
                                                                                                                                     git checkout origin/${ config.personal.secrets2.branch } 2>&1
                                                                                                                                     RECIPIENT=${ resources.production.age.public { failure = "failure ef4547ff" ; } }
                                                                                                                                     RECIPIENT_="$( cat "$RECIPIENT/public" )" || failure ec9d8e5c
-                                                                                                                                    find /mount/repository ! -path "/mount/repository/.git/*" -mindepth 1 -maxdepth 1 -type f -name "*.age" | while read -r CIPHERTEXT_FILE
+                                                                                                                                    find /mount/repository -mindepth 1 -type f -name "*.age" ! -path "/mount/repository/.git/*" | while read -r CIPHERTEXT_FILE
                                                                                                                                     do
                                                                                                                                         RELATIVE_PATH="${ builtins.concatStringsSep "" [ "$" "{" "CIPHERTEXT_FILE#/mount/repository/" "}" ] }"
                                                                                                                                         RELATIVE_DIRECTORY="$( dirname "$RELATIVE_PATH" )" || failure af52a03a
