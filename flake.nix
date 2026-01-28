@@ -1909,7 +1909,7 @@
                                                                                                                     mkdir --parents /home/${ config.personal.name }/pad
                                                                                                                     cat <<EOF > /home/${ config.personal.name }/pad/.envrc
                                                                                                                     ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''export ${ name }="${ value }"'' ) config.personal.pads.environment ) ) }
-                                                                                                                    export PATH=${ builtins.concatStringsSep ":" ( builtins.map ( value : "${ value }/bin" ) config.personal.pads.bin ) }
+                                                                                                                    export PATH="${ builtins.concatStringsSep ":" ( builtins.map ( value : "${ value }/bin" ) config.personal.pads.bin ) }"
                                                                                                                     EOF
                                                                                                                     chmod 0400 /home/${ config.personal.name }/pad/.envrc
                                                                                                                 '' ;
@@ -2145,7 +2145,7 @@
                                                                                         options =
                                                                                             {
                                                                                                 autocomplete = lib.mkOption { default = null ; type = lib.types.nullOr lib.types.str ; } ;
-                                                                                                bin = lib.mkOption { default = null ; type = lib.types.nullOr ( lib.types.listOf lib.types.str ) ; } ;
+                                                                                                bin = lib.mkOption { default = null ; type = lib.types.nullOr ( lib.types.listOf lib.types.path ) ; } ;
                                                                                                 environment = lib.mkOption { default = null ; type = lib.types.nullOr ( lib.types.attrsOf lib.types.str ) ; } ;
                                                                                                 man = lib.mkOption { default = null ; type = lib.types.nullOr lib.types.str ; } ;
                                                                                             } ;
