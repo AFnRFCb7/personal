@@ -1906,7 +1906,10 @@
                                                                                                             text =
                                                                                                                 ''
                                                                                                                     mkdir --parents /home/${ config.personal.name }/pad
-                                                                                                                    touch /home/${ config.personal.name }/pad/.envrc
+                                                                                                                    cat <<EOF > /home/${ config.personal.name }/pad/.envrc
+                                                                                                                    ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''export ${ name }="${ value }"'' ) config.personal.pad.environment ) ) }
+                                                                                                                    EOF
+                                                                                                                    chmod 0400 /home/${ config.personal.name }/pad/.envrc
                                                                                                                 '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/ExecStart" ;
@@ -2131,7 +2134,7 @@
                                                                         remote = lib.mkOption { default = "git@github.com:nextmoose/secrets.git" ; type = lib.types.str ; } ;
                                                                     } ;
                                                                 pads =
-                                                                    # FIND ME
+                                                                    # FINDME
                                                                     lib.mkOption
                                                                         {
                                                                             type =
@@ -2141,13 +2144,16 @@
                                                                                             {
                                                                                                 autocomplete = lib.mkOption { default = null ; type = lib.types.nullOr lib.types.str ; } ;
                                                                                                 bin = lib.mkOption { default = null ; type = lib.types.nullOr lib.types.str ; } ;
-                                                                                                environment = lib.mkOption { default = null ; type = lib.types.nullOr lib.types.str ; } ;
+                                                                                                environment = lib.mkOption { default = null ; type = lib.types.nullOr ( lib.types.attrsOf lib.types.str ) ; } ;
                                                                                                 man = lib.mkOption { default = null ; type = lib.types.nullOr lib.types.str ; } ;
                                                                                             } ;
                                                                                     } ;
                                                                             default =
                                                                                 {
-
+                                                                                    environment =
+                                                                                        {
+                                                                                            NAME = "FOOBAR" ;
+                                                                                        } ;
                                                                                 } ;
                                                                         } ;
                                                                 password = lib.mkOption { type = lib.types.str ; } ;
