@@ -1319,6 +1319,29 @@
                                                                                                                         } ;
                                                                                                                 in "${ application }/bin/setup" ;
                                                                                                 } ;
+                                                                                    secrets =
+                                                                                        ignore :
+                                                                                            _git-repository.implementation
+                                                                                                {
+                                                                                                    resolutions = [ ] ;
+                                                                                                    setup =
+                                                                                                        { pid , pkgs , resources , root , sequential , wrap } :
+                                                                                                            let
+                                                                                                                application =
+                                                                                                                    pkgs.writeShellApplication
+                                                                                                                        {
+                                                                                                                            name = "setup" ;
+                                                                                                                            runtimeInputs = [ pkgs.git ] ;
+                                                                                                                            text =
+                                                                                                                                ''
+                                                                                                                                    # FINDME
+                                                                                                                                    git remote add origin https://github.com/${ config.personal.secrets.organization }/${ config.personal.secrets.repository }
+                                                                                                                                    git fetch origin ${ config.personal.secrets.branch }
+                                                                                                                                    git checkout origin/${ config.personal.secrets.branch }
+                                                                                                                                '' ;
+                                                                                                                        } ;
+                                                                                                                in "${ application }/bin/setup" ;
+                                                                                                } ;
                                                                                     snapshot =
                                                                                         ignore :
                                                                                             _git-repository.implementation
