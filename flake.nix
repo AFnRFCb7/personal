@@ -1904,14 +1904,9 @@
                                                                                                             name = "ExecStart" ;
                                                                                                             runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                             text =
-                                                                                                                let
-                                                                                                                    mapper =
-                                                                                                                        name : value :
-                                                                                                                            ''
-                                                                                                                                mkdir --parents "/home/${ config.personal.name }/pads/${ name }"
-                                                                                                                                ln --symbolic ${ value } "/home/${ config.personal.name }/pads/${ name }/.envrc"
-                                                                                                                            '' ;
-                                                                                                                    in builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs mapper ( config.personal.pads resources__ ) ) ) ;
+                                                                                                                ''
+                                                                                                                    mkdir --parents /home/${ config.personal.name }/pad
+                                                                                                                '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/ExecStart" ;
                                                                                         User = config.personal.name ;
@@ -2135,46 +2130,24 @@
                                                                         remote = lib.mkOption { default = "git@github.com:nextmoose/secrets.git" ; type = lib.types.str ; } ;
                                                                     } ;
                                                                 pads =
+                                                                    # FIND ME
                                                                     lib.mkOption
                                                                         {
-                                                                            # type = lib.types.any ;
-                                                                            # type = lib.types.functionTo ( lib.types.attrsOf lib.types.str ) ;
-                                                                            default =
-                                                                                resources :
-                                                                                    let
-                                                                                        secrets-read-only =
-                                                                                            let
-                                                                                                application =
-                                                                                                    pkgs.writeShellApplication
-                                                                                                        {
-                                                                                                            name = "secrets-read-only" ;
-                                                                                                            runtimeInputs = [ pkgs.coreutils __failure ] ;
-                                                                                                            text =
-                                                                                                                ''
-                                                                                                                    SECRETS_READ_ONLY=${ resources.production.repository.secrets2.read-only { } }
-                                                                                                                    echo "$SECRETS_READ_ONLY/repository"
-                                                                                                                '' ;
-                                                                                                        } ;
-                                                                                                in "${ application }/bin/secrets-read-only" ;
-                                                                                        in
+                                                                            type =
+                                                                                lib.types.submodule
+                                                                                    {
+                                                                                        options =
                                                                                             {
-                                                                                                home =
-                                                                                                    let
-                                                                                                        application =
-                                                                                                            pkgs.writeShellApplication
-                                                                                                                {
-                                                                                                                    name = "home" ;
-                                                                                                                    runtimeInputs =
-                                                                                                                        [
-                                                                                                                            secrets-read-only
-                                                                                                                        ] ;
-                                                                                                                    text =
-                                                                                                                        ''
-                                                                                                                            export NAME="Emory Merryman"
-                                                                                                                        '' ;
-                                                                                                                } ;
-                                                                                                        in "${ application }/bin/home" ;
+                                                                                                autocomplete = lib.mkOption { default = null ; type = lib.types.nullOr lib.types.str ; } ;
+                                                                                                bin = lib.mkOption { default = null ; type = lib.types.nullOr lib.types.str ; } ;
+                                                                                                environment = lib.mkOption { default = null ; type = lib.types.nullOr lib.types.str ; } ;
+                                                                                                man = lib.mkOption { default = null ; type = lib.types.nullOr lib.types.str ; } ;
                                                                                             } ;
+                                                                                    } ;
+                                                                            default =
+                                                                                {
+
+                                                                                } ;
                                                                         } ;
                                                                 password = lib.mkOption { type = lib.types.str ; } ;
                                                                 repository =
