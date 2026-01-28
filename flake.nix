@@ -1906,6 +1906,7 @@
                                                                                                             text =
                                                                                                                 ''
                                                                                                                     mkdir --parents /home/${ config.personal.name }/pad
+                                                                                                                    touch /home/${ config.personal.name }/pad/.envrc
                                                                                                                 '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/ExecStart" ;
