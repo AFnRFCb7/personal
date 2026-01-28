@@ -2280,7 +2280,7 @@
                                                                 secrets2 =
                                                                     {
                                                                         organization = lib.mkOption { default = "AFnRFCb7" ; type = lib.types.str ; } ;
-                                                                        repository = lib.mkOption { default = "ffb2640fef67ab61875e9121b6ad153a78e910ef620ef9c01c5c9afe3321976f." ; type = lib.types.str ; } ;
+                                                                        repository = lib.mkOption { default = "ffb2640fef67ab61875e9121b6ad153a78e910ef620ef9c01c5c9afe3321976f" ; type = lib.types.str ; } ;
                                                                         branch = lib.mkOption { default = "10bb77a4dab7a7a52f3d179124a0db8eb228e4f1c6951b9d1b0e5d629162bc3b" ; type = lib.types.str ; } ;
                                                                     } ;
                                                                 secrets =
