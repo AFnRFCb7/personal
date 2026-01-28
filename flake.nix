@@ -735,15 +735,14 @@
                                                                                                                                     git fetch origin ${ config.personal.secrets2.branch } 2>&1
                                                                                                                                     git checkout origin/${ config.personal.secrets2.branch } 2>&1
                                                                                                                                     RECIPIENT=${ resources.production.age.public { failure = "failure ef4547ff" ; } }
-                                                                                                                                    # RECIPIENT_="$( cat "$RECIPIENT" )" || failure ec9d8e5c
-                                                                                                                                    # find /mount -mindepth 1 -maxdepth 1 -type f | while read -r CIPHERTEXT_FILE
-                                                                                                                                    # do
-                                                                                                                                    #     BASE="$( basename "CIPHERTEXT_FILE" )" || failure 4676ccce
-                                                                                                                                    #     PLAINTEXT_FILE="/mount/stage/$BASE"
-                                                                                                                                    #     age --decrypt --identity "$RECIPIENT_" --output "$PLAINTEXT_FILE" "$CIPHERTEXT_FILE"
-                                                                                                                                    #     chmod 0400 "$PLAINTEXT_FILE"
-                                                                                                                                    # done
-                                                                                                                                    export RECIPIENT
+                                                                                                                                    RECIPIENT_="$( cat "$RECIPIENT/public" )" || failure ec9d8e5c
+                                                                                                                                    find /mount -mindepth 1 -maxdepth 1 -type f | while read -r CIPHERTEXT_FILE
+                                                                                                                                    do
+                                                                                                                                        BASE="$( basename "CIPHERTEXT_FILE" )" || failure 4676ccce
+                                                                                                                                        PLAINTEXT_FILE="/mount/stage/$BASE"
+                                                                                                                                        age --decrypt --identity "$RECIPIENT_" --output "$PLAINTEXT_FILE" "$CIPHERTEXT_FILE"
+                                                                                                                                        chmod 0400 "$PLAINTEXT_FILE"
+                                                                                                                                    done
                                                                                                                                 '' ;
                                                                                                                         } ;
                                                                                                                 in "${ application }/bin/setup" ;
