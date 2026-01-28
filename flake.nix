@@ -2092,10 +2092,19 @@
                                                                                                 pkgs.writeShellApplication
                                                                                                     {
                                                                                                         name = "secrets" ;
-                                                                                                        runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                        runtimeInputs = [ pkgs.coreutils __failure ] ;
                                                                                                         text =
                                                                                                             ''
-                                                                                                                SECRETS=${ resources__.production.repository.secrets2.read-only { } }
+                                                                                                                COMMAND="$1"
+                                                                                                                if [[ "$COMMAND" == "read-only" ]]
+                                                                                                                then
+                                                                                                                    SECRETS=${ resources__.production.repository.secrets2.read-only { failure = "failure ac87264d" ; } }
+                                                                                                                elif [[ "$COMMAND" == "archaic" ]]
+                                                                                                                then
+                                                                                                                    SECRETS=${ resources__.production.repository.studio.secrets { failure = "failure cdafc416" ; } }
+                                                                                                                else
+                                                                                                                    failure 8c74dc80
+                                                                                                                fi
                                                                                                                 echo "$SECRETS"
                                                                                                             '' ;
                                                                                                     }
