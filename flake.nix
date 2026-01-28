@@ -1907,7 +1907,7 @@
                                                                                                                 ''
                                                                                                                     mkdir --parents /home/${ config.personal.name }/pad
                                                                                                                     cat <<EOF > /home/${ config.personal.name }/pad/.envrc
-                                                                                                                    ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''export ${ name }="${ value }"'' ) config.personal.pad.environment ) ) }
+                                                                                                                    ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''export ${ name }="${ value }"'' ) config.personal.pads.environment ) ) }
                                                                                                                     EOF
                                                                                                                     chmod 0400 /home/${ config.personal.name }/pad/.envrc
                                                                                                                 '' ;
