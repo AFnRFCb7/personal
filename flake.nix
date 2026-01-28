@@ -728,83 +728,22 @@
                                                                                                                             name = "setup" ;
                                                                                                                             runtimeInputs = [ pkgs.git wrap ] ;
                                                                                                                             text =
-                                                                                                                                let
-                                                                                                                                    aliases =
-                                                                                                                                        let
-                                                                                                                                            decrypt =
-                                                                                                                                                secret :
-                                                                                                                                                    let
-                                                                                                                                                        application =
-                                                                                                                                                            pkgs.writeShellApplication
-                                                                                                                                                                {
-                                                                                                                                                                    name = "decrypt" ;
-                                                                                                                                                                    runtimeInputs = [ pkgs.age __failure ] ;
-                                                                                                                                                                    text =
-                                                                                                                                                                        ''
-                                                                                                                                                                            git fetch origin ${ config.personal.secrets2.branch }
-                                                                                                                                                                            git checkout origin/${ config.personal.secrets2.branch }
-                                                                                                                                                                            RECIPIENT=${ resources.production.age.public { failure = "failure 79891ad3" ; } }
-                                                                                                                                                                            RECIPIENT_="$( cat "$RECIPIENT" )" || failure d9417fe5
-                                                                                                                                                                            age --decrypt --identity "$RECIPIENT_" "$MOUNT/repository/${ secret }"
-                                                                                                                                                                        '' ;
-                                                                                                                                                                } ;
-                                                                                                                                                    in "${ application }/bin/decrypt" ;
-                                                                                                                                            in
-                                                                                                                                                {
-                                                                                                                                                    github-identity = decrypt "github-identity" ;
-                                                                                                                                                    github-known-hosts = decrypt "github-known-hosts" ;
-                                                                                                                                                    github-token = decrypt "github-token" ;
-                                                                                                                                                    gnupg-ownertrust = decrypt "gnupg-ownertrust" ;
-                                                                                                                                                    gnupg-secret-keys = decrypt "gnupg-secret-keys" ;
-                                                                                                                                                    mobile-identity = decrypt "mobile-identity" ;
-                                                                                                                                                    mobile-known-hosts = decrypt "mobile-known-hosts" ;
-                                                                                                                                                } ;
-                                                                                                                                    hooks =
-                                                                                                                                        {
-                                                                                                                                            post-commit =
-                                                                                                                                                let
-                                                                                                                                                    application =
-                                                                                                                                                        pkgs.writeShellApplication
-                                                                                                                                                            {
-                                                                                                                                                                name = "post-commit" ;
-                                                                                                                                                                runtimeInputs = [ __failure ] ;
-                                                                                                                                                                text =
-                                                                                                                                                                    ''
-                                                                                                                                                                        failure 43db78ab
-                                                                                                                                                                    '' ;
-                                                                                                                                                            } ;
-                                                                                                                                                    in "${ application }/bin/post-commit" ;
-                                                                                                                                            pre-commit =
-                                                                                                                                                let
-                                                                                                                                                    application =
-                                                                                                                                                        pkgs.writeShellApplication
-                                                                                                                                                            {
-                                                                                                                                                                name = "pre-commit" ;
-                                                                                                                                                                runtimeInputs = [ __failure ] ;
-                                                                                                                                                                text =
-                                                                                                                                                                    ''
-                                                                                                                                                                        failure bee33d60
-                                                                                                                                                                    '' ;
-                                                                                                                                                            } ;
-                                                                                                                                                    in "${ application }/bin/pre-commit" ;
-                                                                                                                                        } ;
-                                                                                                                                    in
-                                                                                                                                        ''
-                                                                                                                                            git config user.email "no-commit@no-commit"
-                                                                                                                                            git config user.name "no commits"
-                                                                                                                                            git remote add origin https://github.com/${ config.personal.secrets2.organization }/${ config.personal.secrets2.repository }
-                                                                                                                                            git fetch origin ${ config.personal.secrets2.branch }
-                                                                                                                                            git checkout origin/${ config.personal.secrets2.branch }
-                                                                                                                                            RECIPIENT=${ resources.production.age.public { failure = "failure ef4547ff" ; } }
-                                                                                                                                            RECIPIENT_="$( cat "$RECIPIENT" )" || failure ec9d8e5c
-                                                                                                                                            find /mount -mindepth 1 -maxdepth 1 -type f | while read -r CIPHERTEXT_FILE
-                                                                                                                                            do
-                                                                                                                                                BASE="$( basename "CIPHERTEXT_FILE" )" || failure 4676ccce
-                                                                                                                                                PLAINTEXT_FILE="/mount/stage/$BASE"
-                                                                                                                                                age --decrypt --identity "$RECIPIENT_" --output "$PLAINTEXT_FILE" "$CIPHERTEXT_FILE"
-                                                                                                                                                chmod 0400 "$PLAINTEXT_FILE"
-                                                                                                                                            done
-                                                                                                                                        '' ;
+                                                                                                                                ''
+                                                                                                                                    git config user.email "no-commit@no-commit"
+                                                                                                                                    git config user.name "no commits"
+                                                                                                                                    git remote add origin https://github.com/${ config.personal.secrets2.organization }/${ config.personal.secrets2.repository }
+                                                                                                                                    git fetch origin ${ config.personal.secrets2.branch } 2>&1
+                                                                                                                                    git checkout origin/${ config.personal.secrets2.branch } 2>&1
+                                                                                                                                    RECIPIENT=${ resources.production.age.public { failure = "failure ef4547ff" ; } }
+                                                                                                                                    RECIPIENT_="$( cat "$RECIPIENT" )" || failure ec9d8e5c
+                                                                                                                                    find /mount -mindepth 1 -maxdepth 1 -type f | while read -r CIPHERTEXT_FILE
+                                                                                                                                    do
+                                                                                                                                        BASE="$( basename "CIPHERTEXT_FILE" )" || failure 4676ccce
+                                                                                                                                        PLAINTEXT_FILE="/mount/stage/$BASE"
+                                                                                                                                        age --decrypt --identity "$RECIPIENT_" --output "$PLAINTEXT_FILE" "$CIPHERTEXT_FILE"
+                                                                                                                                        chmod 0400 "$PLAINTEXT_FILE"
+                                                                                                                                    done
+                                                                                                                                '' ;
                                                                                                                         } ;
                                                                                                                 in "${ application }/bin/setup" ;
                                                                                                 } ;
