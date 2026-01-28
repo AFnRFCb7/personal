@@ -726,7 +726,7 @@
                                                                                                                     pkgs.writeShellApplication
                                                                                                                         {
                                                                                                                             name = "setup" ;
-                                                                                                                            runtimeInputs = [ pkgs.git wrap ] ;
+                                                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.git wrap ] ;
                                                                                                                             text =
                                                                                                                                 ''
                                                                                                                                     git config user.email "no-commit@no-commit"
@@ -736,10 +736,12 @@
                                                                                                                                     git checkout origin/${ config.personal.secrets2.branch } 2>&1
                                                                                                                                     RECIPIENT=${ resources.production.age.public { failure = "failure ef4547ff" ; } }
                                                                                                                                     RECIPIENT_="$( cat "$RECIPIENT/public" )" || failure ec9d8e5c
-                                                                                                                                    find /mount -mindepth 1 -maxdepth 1 -type f | while read -r CIPHERTEXT_FILE
+                                                                                                                                    find /mount/repository ! -path "/mount/repository/.git/*" -mindepth 1 -maxdepth 1 -type f -name "*.age" | while read -r CIPHERTEXT_FILE
                                                                                                                                     do
-                                                                                                                                        BASE="$( basename "CIPHERTEXT_FILE" )" || failure 4676ccce
-                                                                                                                                        PLAINTEXT_FILE="/mount/stage/$BASE"
+                                                                                                                                        RELATIVE_PATH="${ builtins.concatStringsSep "" [ "$" "{" "CIPHERTEXT_FILE#/mount/repository/" "}" ] }"
+                                                                                                                                        RELATIVE_DIRECTORY="$( dirname "$RELATIVE_PATH" )" || failure af52a03a
+                                                                                                                                        mkdir --parents "$RELATIVE_DIRECTORY"
+                                                                                                                                        PLAINTEXT_FILE="${ builtins.concatStringsSep "" [ "$" "{" "DEST_FILE%.age" "}" ] }"
                                                                                                                                         age --decrypt --identity "$RECIPIENT_" --output "$PLAINTEXT_FILE" "$CIPHERTEXT_FILE"
                                                                                                                                         chmod 0400 "$PLAINTEXT_FILE"
                                                                                                                                     done
