@@ -2152,10 +2152,23 @@
                                                                                     } ;
                                                                             default =
                                                                                 {
-                                                                                    bin = [ "$COWSAY" ] ;
+                                                                                    bin =
+                                                                                        [
+                                                                                            (
+                                                                                                pkgs.writeShellApplication
+                                                                                                    {
+                                                                                                        name = "secrets" ;
+                                                                                                        runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                        text =
+                                                                                                            ''
+                                                                                                                SECRETS=${ resources__.production.repository.secrets { failure = __failure "ff049e84" ; } }
+                                                                                                                echo "$SECRETS"
+                                                                                                            '' ;
+                                                                                                    }
+                                                                                            )
+                                                                                        ] ;
                                                                                     environment =
                                                                                         {
-                                                                                            COWSAY = resources__.production.ephemeral.cowsay { } ;
                                                                                             NAME = "FOOBAR" ;
                                                                                         } ;
                                                                                 } ;
