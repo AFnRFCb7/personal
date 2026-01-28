@@ -792,7 +792,7 @@
                                                                                                                                         ''
                                                                                                                                             git config user.email "no-commit@no-commit"
                                                                                                                                             git config user.name "no commits"
-                                                                                                                                            git remote add origin git@github.com:${ config.personal.secrets2.organization }/${ config.personal.secrets2.repository }
+                                                                                                                                            git remote add origin https://github.com/${ config.personal.secrets2.organization }/${ config.personal.secrets2.repository }
                                                                                                                                             git fetch origin ${ config.personal.secrets2.branch }
                                                                                                                                             git checkout origin/${ config.personal.secrets2.branch }
                                                                                                                                             RECIPIENT=${ resources.production.age.public { failure = "failure ef4547ff" ; } }
