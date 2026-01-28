@@ -2161,7 +2161,7 @@
                                                                                                         runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                         text =
                                                                                                             ''
-                                                                                                                SECRETS=${ resources__.production.repository.secrets { failure = __failure "ff049e84" ; } }
+                                                                                                                SECRETS=${ resources__.production.repository.secrets2 { failure = __failure "ff049e84" ; } }
                                                                                                                 echo "$SECRETS"
                                                                                                             '' ;
                                                                                                     }
