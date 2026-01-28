@@ -2152,9 +2152,10 @@
                                                                                     } ;
                                                                             default =
                                                                                 {
-                                                                                    bin = [ pkgs.cowsay ] ;
+                                                                                    bin = [ "$COWSAY" ] ;
                                                                                     environment =
                                                                                         {
+                                                                                            COWSAY = resources__.production.ephemeral.cowsay { } ;
                                                                                             NAME = "FOOBAR" ;
                                                                                         } ;
                                                                                 } ;
