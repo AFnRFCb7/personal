@@ -2050,7 +2050,7 @@
                                                                                                             runtimeInputs = [ pkgs.git __failure ] ;
                                                                                                             text =
                                                                                                                 ''
-                                                                                                                    SECRETS=${ resources__.production.repository.secrets.read-write { failure = "failure a4112012" ; } }
+                                                                                                                    SECRETS=${ resources__.production.repository.secrets2.read-write { failure = "failure a4112012" ; } }
                                                                                                                     cd "$SECRETS/repository"
                                                                                                                     git github-identitiy
                                                                                                                 '' ;
