@@ -1738,19 +1738,18 @@
                                                                                             local cur dir
                                                                                             cur="${ builtins.concatStringsSep "" [ "$" "{" "COMP_WORDS[COMP_CWORD]" "}" ] }"
                                                                                             dir="$(pwd)" || "${ __failure }/bin/failure 5e9268bf"
-                                                                                            case "$dir" in
-                                                                                                /home/${ config.personal.name }/pad)
-                                                                                                    if [[ $COMP_CWORD -eq 2 ]]
-                                                                                                    then
-                                                                                                        NEXT="$( compgen -W "production.repository.secrets.read-only archaic" -- "$cur" ) || failure 6bb37017
-                                                                                                        COMPREPLY=( "$NEXT"" )
-                                                                                                    fi
-                                                                                                *)
-                                                                                                    COMPREPLY=()
-                                                                                                    ;;
-                                                                                            esac
+                                                                                            if [[ "$dir" == "/home/${ config.personal.name }/pad" ]]
+                                                                                            then
+                                                                                                if [[ $COMP_CWORD -eq 2 ]]
+                                                                                                then
+                                                                                                    NEXT="$( compgen -W "production.repository.secrets.read-only archaic" -- "$cur" ) || failure 6bb37017
+                                                                                                    COMPREPLY=( "$NEXT"" )
+                                                                                                fi
+                                                                                            else
+                                                                                                COMPREPLY=()
+                                                                                            fi
                                                                                         }
-                                                                                        complete -F _myscript_completions myscript
+                                                                                        complete -F _myscript_completions resource
                                                                                     '' ;
                                                                     } ;
                                                                 dconf.enable = true ;
