@@ -1866,7 +1866,7 @@
                                                                                                                     mkdir --parents /home/${ config.personal.name }/pad
                                                                                                                     cat <<EOF > /home/${ config.personal.name }/pad/.envrc
                                                                                                                     ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''export ${ name }="${ value }"'' ) config.personal.pads.environment ) ) }
-                                                                                                                    export PATH="${ builtins.concatStringsSep ":" ( builtins.map ( value : "${ value }/bin" ) config.personal.pads.bin ) }"
+                                                                                                                    export PATH="${ builtins.concatStringsSep ":" ( builtins.map ( value : "${ value }/bin" ) ( builtins.concatLists [ config.personal.pads.bin [ pkgs.man-db ] ] ) ) }"
                                                                                                                     EOF
                                                                                                                     chmod 0400 /home/${ config.personal.name }/pad/.envrc
                                                                                                                 '' ;
