@@ -350,9 +350,9 @@
                                                                                 {
                                                                                     "github.com" =
                                                                                         {
-                                                                                            identity-file = { pid , pkgs , resources , root , sequential , wrap } : resources.production.repository.secrets.read-only { failure = ___failure "f30c68a9" ; } ;
+                                                                                            identity-file = { pid , pkgs , resources , root , sequential , wrap } : resources.production.repository.secrets2.read-only { failure = ___failure "f30c68a9" ; } ;
 
-                                                                                            user-known-hosts-file = { pid , pkgs , resources , root , sequential , wrap } : resources.production.repository.secrets.read-only { failure = ___failure "67293bbd" ; } ;
+                                                                                            user-known-hosts-file = { pid , pkgs , resources , root , sequential , wrap } : resources.production.repository.secrets2.read-only { failure = ___failure "67293bbd" ; } ;
                                                                                         } ;
                                                                                     laptop =
                                                                                         {
@@ -361,8 +361,8 @@
                                                                                         } ;
                                                                                     mobile =
                                                                                         {
-                                                                                            identity-file = { pid , pkgs , resources , root , sequential , wrap } : resources.production.repository.secrets.read-only { failure = ___failure "8379287c" ; } ;
-                                                                                            user-known-hosts-file = { pid , pkgs , resources , root , sequential , wrap } : resources.production.repository.secrets.read-only { failure = ___failure "df046088" ; } ;
+                                                                                            identity-file = { pid , pkgs , resources , root , sequential , wrap } : resources.production.repository.secrets2.read-only { failure = ___failure "8379287c" ; } ;
+                                                                                            user-known-hosts-file = { pid , pkgs , resources , root , sequential , wrap } : resources.production.repository.secrets2.read-only { failure = ___failure "df046088" ; } ;
                                                                                         } ;
                                                                                 } ;
                                                                         } ;
