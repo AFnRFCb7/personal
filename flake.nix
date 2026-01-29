@@ -2001,6 +2001,7 @@
                                                                     } ;
                                                                 packages =
                                                                     [
+                                                                        pkgs.age
                                                                         pkgs.gh
                                                                         ( _failure.implementation "762e3818" )
                                                                         (
