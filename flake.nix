@@ -859,7 +859,9 @@
                                                                                                                                             in "${ application }/bin/mobile-known-hosts" ;
                                                                                                                                     in
                                                                                                                                         ''
+                                                                                                                                            git config alias.github-identity "!$MOUNT/stage/alias/github-identity"
                                                                                                                                             git config alias.github-known-hosts "!$MOUNT/stage/alias/github-known-hosts"
+                                                                                                                                            git config alias.mobile-identity "!$MOUNT/stage/alias/mobile-identity"
                                                                                                                                             git config alias.mobile-known-hosts "!$MOUNT/stage/alias/mobile-known-hosts"
                                                                                                                                             git config core.sshCommand "$MOUNT/stage/ssh/command"
                                                                                                                                             git config user.email "${ config.personal.secrets2.email }"
