@@ -789,7 +789,7 @@
                                                                                                                                             in "${ application }/bin/github-known-hosts" ;
                                                                                                                                     in
                                                                                                                                         ''
-                                                                                                                                            git config alias.github-known-hosts "$MOUNT/stage/alias/github-known-hosts"
+                                                                                                                                            git config alias.github-known-hosts "!$MOUNT/stage/alias/github-known-hosts"
                                                                                                                                             git config core.sshCommand "$MOUNT/stage/ssh/command"
                                                                                                                                             git config user.email "${ config.personal.secrets2.email }"
                                                                                                                                             git config user.name "${ config.personal.secrets2.name }"
@@ -2200,6 +2200,7 @@
                                                                                 {
                                                                                     bin =
                                                                                         [
+                                                                                            pkgs.coreutils
                                                                                             (
                                                                                                 pkgs.writeShellApplication
                                                                                                     {
