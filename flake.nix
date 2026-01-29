@@ -1861,15 +1861,42 @@
                                                                                                             name = "ExecStart" ;
                                                                                                             runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                             text =
-                                                                                                                ''
-                                                                                                                    # FINDME
-                                                                                                                    mkdir --parents /home/${ config.personal.name }/pad
-                                                                                                                    cat <<EOF > /home/${ config.personal.name }/pad/.envrc
-                                                                                                                    ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''export ${ name }="${ value }"'' ) config.personal.pads.environment ) ) }
-                                                                                                                    export PATH="${ builtins.concatStringsSep ":" ( builtins.map ( value : "${ value }/bin" ) ( builtins.concatLists [ config.personal.pads.bin [ pkgs.man-db ] ] ) ) }"
-                                                                                                                    EOF
-                                                                                                                    chmod 0400 /home/${ config.personal.name }/pad/.envrc
-                                                                                                                '' ;
+                                                                                                                let
+                                                                                                                    mapper =
+                                                                                                                        value :
+                                                                                                                            pkgs.stdenv.mkDerivation
+                                                                                                                                {
+                                                                                                                                    installPhase = ''execute-install-phase "$out"'' ;
+                                                                                                                                    name = "man" ;
+                                                                                                                                    nativeBuildInputs =
+                                                                                                                                        [
+                                                                                                                                            (
+                                                                                                                                                pkgs.writeShellApplication
+                                                                                                                                                    {
+                                                                                                                                                        name = "execute-install-phase" ;
+                                                                                                                                                        runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                                                                        text =
+                                                                                                                                                            ''
+                                                                                                                                                                OUT="$1"
+                                                                                                                                                                mkdir --parents "$OUT/share/man/man1"
+                                                                                                                                                                ln --symbolic ${ builtins.toFile "man" value } "$OUT/share/man/man1/${ name }.1"
+                                                                                                                                                            '' ;
+                                                                                                                                                    }
+                                                                                                                                            )
+                                                                                                                                        ] ;
+                                                                                                                                    src = ./. ;
+                                                                                                                                } ;
+                                                                                                                    in
+                                                                                                                        ''
+                                                                                                                            # FINDME
+                                                                                                                            mkdir --parents /home/${ config.personal.name }/pad
+                                                                                                                            cat <<EOF > /home/${ config.personal.name }/pad/.envrc
+                                                                                                                            ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''export ${ name }="${ value }"'' ) config.personal.pads.environment ) ) }
+                                                                                                                            export MANPATH="${ builtins.concatStringsSep ":" ( builtins.map mapper config.personal.pads.man ) }"
+                                                                                                                            export PATH="${ builtins.concatStringsSep ":" ( builtins.map ( value : "${ value }/bin" ) ( builtins.concatLists [ config.personal.pads.bin [ pkgs.man-db ] ] ) ) }"
+                                                                                                                            EOF
+                                                                                                                            chmod 0400 /home/${ config.personal.name }/pad/.envrc
+                                                                                                                        '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/ExecStart" ;
                                                                                         User = config.personal.name ;
