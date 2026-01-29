@@ -2131,7 +2131,7 @@
                                                                                                 autocomplete = lib.mkOption { default = null ; type = lib.types.nullOr lib.types.str ; } ;
                                                                                                 bin = lib.mkOption { default = null ; type = lib.types.nullOr ( lib.types.listOf lib.types.path ) ; } ;
                                                                                                 environment = lib.mkOption { default = null ; type = lib.types.nullOr ( lib.types.attrsOf lib.types.str ) ; } ;
-                                                                                                man = lib.mkOption { default = null ; type = lib.types.nullOr lib.types.str ; } ;
+                                                                                                man = lib.mkOption { default = null ; type = lib.types.nullOr ( lib.types.attrsOf lib.types.str ) ; } ;
                                                                                             } ;
                                                                                     } ;
                                                                             default =
