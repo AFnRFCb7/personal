@@ -735,13 +735,15 @@
                                                                                                                                     git fetch origin ${ config.personal.secrets2.branch } 2>&1
                                                                                                                                     git checkout origin/${ config.personal.secrets2.branch } 2>&1
                                                                                                                                     RECIPIENT=${ resources.production.age.public { failure = "failure ef4547ff" ; } }
+                                                                                                                                    RECIPIENT_="$( cat "$RECIPIENT/public" )" || failure 06ca8543
                                                                                                                                     find /mount/repository -mindepth 1 -type f -name "*.age" ! -path "/mount/repository/.git/*" | while read -r CIPHERTEXT_FILE
                                                                                                                                     do
                                                                                                                                         RELATIVE_PATH="${ builtins.concatStringsSep "" [ "$" "{" "CIPHERTEXT_FILE#/mount/repository/" "}" ] }"
                                                                                                                                         RELATIVE_DIRECTORY="$( dirname "$RELATIVE_PATH" )" || failure af52a03a
                                                                                                                                         mkdir --parents "$RELATIVE_DIRECTORY"
                                                                                                                                         PLAINTEXT_FILE="/mount/stage/$RELATIVE_DIRECTORY/${ builtins.concatStringsSep "" [ "$" "{" "CIPHERTEXT_FILE%.age" "}" ] }"
-                                                                                                                                        age --decrypt --identity "$RECIPIENT/public" --output "$PLAINTEXT_FILE" "$CIPHERTEXT_FILE"
+                                                                                                                                        echo age --decrypt --identity "$RECIPIENT_" --output "$PLAINTEXT_FILE" "$CIPHERTEXT_FILE" >&2
+                                                                                                                                        age --decrypt --identity "$RECIPIENT_" --output "$PLAINTEXT_FILE" "$CIPHERTEXT_FILE"
                                                                                                                                         chmod 0400 "$PLAINTEXT_FILE"
                                                                                                                                     done
                                                                                                                                 '' ;
