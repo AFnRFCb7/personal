@@ -763,6 +763,38 @@
                                                                                                                             runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.libuuid wrap ] ;
                                                                                                                             text =
                                                                                                                                 let
+                                                                                                                                    github-identity =
+                                                                                                                                        let
+                                                                                                                                            application =
+                                                                                                                                                pkgs.writeShellApplication
+                                                                                                                                                    {
+                                                                                                                                                        name = "github-identity" ;
+                                                                                                                                                        runtimeInputs = [ pkgs.age pkgs.coreutils pkgs.libuuid pkgs.openssh __failure ] ;
+                                                                                                                                                        text =
+                                                                                                                                                            ''
+                                                                                                                                                                cd "$MOUNT/repository"
+                                                                                                                                                                git fetch origin ${ config.personal.secrets2.branch }
+                                                                                                                                                                git checkout origin/${ config.personal.secrets2.branch }
+                                                                                                                                                                mkdir --parents "$MOUNT/stage/dot-ssh/github"
+                                                                                                                                                                ssh-keygen -f "$MOUNT/stage/dot-ssh/github/identity.asc" -C "generated" -P ""
+                                                                                                                                                                RECIPIENT=${ resources.production.age { failure = "failure a4114343" ; } }
+                                                                                                                                                                RECIPIENT_="$( cat "$RECIPIENT/public" )" || failure 259d4017
+                                                                                                                                                                age --encrypt --recipient "$RECIPIENT_" --output "$MOUNT/repository/dot-ssh/github/identity.asc.age" "$MOUNT/stage/dot-ssh/github/identity.asc"
+                                                                                                                                                                UUID="$( uuidgen | sha512sum )" || failure b9131928
+                                                                                                                                                                BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 22724f93
+                                                                                                                                                                git checkout -b "$BRANCH"
+                                                                                                                                                                git commit -am "recycled github known identity"
+                                                                                                                                                                git push origin "$BRANCH"
+                                                                                                                                                                SECRETS=${ resources.production.repository.secrets2.read-only { failure = "failure 64ef3c7e" ; } }
+                                                                                                                                                                gh auth login --with-token < "$SECRETS/stage/github/token.asc"
+                                                                                                                                                                gh pr create --base ${ config.personal.secrets2.branch } --head "$BRANCH" --title "update github identity" --body ""
+                                                                                                                                                                URL="$( gh pr view --json url --jq .url )" || failure 864bc6e6
+                                                                                                                                                                gh pr merge "$URL" --rebase
+                                                                                                                                                                gh ssh-key add "$MOUNT/stage/dot-ssh/github/identity.asc.pub"
+                                                                                                                                                                gh auth logout
+                                                                                                                                                            '' ;
+                                                                                                                                                    } ;
+                                                                                                                                            in "${ application }/bin/github-known-hosts" ;
                                                                                                                                     github-known-hosts =
                                                                                                                                         let
                                                                                                                                             application =
@@ -806,19 +838,19 @@
                                                                                                                                                                 cd "$MOUNT/repository"
                                                                                                                                                                 git fetch origin ${ config.personal.secrets2.branch }
                                                                                                                                                                 git checkout origin/${ config.personal.secrets2.branch }
-                                                                                                                                                                mkdir --parents "$MOUNT/stage/dot-ssh/github"
-                                                                                                                                                                cat > "$MOUNT/stage/dot-ssh/github/known-hosts.asc"
+                                                                                                                                                                mkdir --parents "$MOUNT/stage/dot-ssh/mobile"
+                                                                                                                                                                cat > "$MOUNT/stage/dot-ssh/mobile/known-hosts.asc"
                                                                                                                                                                 RECIPIENT=${ resources.production.age { failure = "failure a4114343" ; } }
                                                                                                                                                                 RECIPIENT_="$( cat "$RECIPIENT/public" )" || failure 259d4017
-                                                                                                                                                                age --encrypt --recipient "$RECIPIENT_" --output "$MOUNT/repository/dot-ssh/github/known-hosts.asc.age" "$MOUNT/stage/dot-ssh/github/known-hosts.asc"
+                                                                                                                                                                age --encrypt --recipient "$RECIPIENT_" --output "$MOUNT/repository/dot-ssh/mobile/known-hosts.asc.age" "$MOUNT/stage/dot-ssh/mobile/known-hosts.asc"
                                                                                                                                                                 UUID="$( uuidgen | sha512sum )" || failure b9131928
                                                                                                                                                                 BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 22724f93
                                                                                                                                                                 git checkout -b "$BRANCH"
-                                                                                                                                                                git commit -am "recycled github known hosts"
+                                                                                                                                                                git commit -am "recycled mobile known hosts"
                                                                                                                                                                 git push origin "$BRANCH"
                                                                                                                                                                 SECRETS=${ resources.production.repository.secrets2.read-only { failure = "failure 64ef3c7e" ; } }
-                                                                                                                                                                gh auth login --with-token < "$SECRETS/stage/github/token.asc"
-                                                                                                                                                                gh pr create --base ${ config.personal.secrets2.branch } --head "$BRANCH" --title "update github known-hosts" --body ""
+                                                                                                                                                                gh auth login --with-token < "$SECRETS/stage/mobile/token.asc"
+                                                                                                                                                                gh pr create --base ${ config.personal.secrets2.branch } --head "$BRANCH" --title "update mobile known-hosts" --body ""
                                                                                                                                                                 URL="$( gh pr view --json url --jq .url )" || failure 864bc6e6
                                                                                                                                                                 gh pr merge "$URL" --rebase
                                                                                                                                                                 gh auth logout
@@ -2004,6 +2036,30 @@
                                                                                     } ;
                                                                                 wantedBy = [ "multi-user.target" ] ;
                                                                             } ;
+                                                                        recycle-github-identity =
+                                                                            {
+                                                                                after = [ "network.target" ] ;
+                                                                                serviceConfig =
+                                                                                    {
+                                                                                        ExecStart =
+                                                                                            let
+                                                                                                application =
+                                                                                                    pkgs.writeShellApplication
+                                                                                                        {
+                                                                                                            name = "ExecStart" ;
+                                                                                                            runtimeInputs = [ pkgs.git __failure ] ;
+                                                                                                            text =
+                                                                                                                ''
+                                                                                                                    SECRETS=${ resources.production.repository.secrets.read-write { failure = "failure a4112012" ; } }
+                                                                                                                    cd "$SECRETS/repository"
+                                                                                                                    git github-identitiy
+                                                                                                                '' ;
+                                                                                                        } ;
+                                                                                                in "${ application }/bin/ExecStart" ;
+                                                                                        User = config.personal.name ;
+                                                                                    } ;
+                                                                                wantedBy = [ "multi-user.target" ] ;
+                                                                            } ;
                                                                         resource-logger =
                                                                             {
                                                                                 after = [ "network.target" "redis.service" ] ;
@@ -2052,6 +2108,10 @@
                                                                     } ;
                                                                 timers =
                                                                     {
+                                                                        recycle-github-identity =
+                                                                            {
+                                                                                timerConfig.OnCalendar = "daily" ;
+                                                                            } ;
                                                                         recycle-github-token =
                                                                             {
                                                                                 timerConfig.OnCalendar = "weekly" ;
