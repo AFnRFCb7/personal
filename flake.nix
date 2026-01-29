@@ -795,7 +795,7 @@
                                                                                                                                             git config user.name "${ config.personal.secrets2.name }"
                                                                                                                                             git remote add origin git@github.com:${ config.personal.secrets2.organization }/${ config.personal.secrets2.repository }
                                                                                                                                             ${ ssh pkgs resources root wrap }
-                                                                                                                                            wrap github-known-hosts stage/alias/github-known-hosts 0400 --literal-plain PATH
+                                                                                                                                            wrap ${ github-known-hosts } stage/alias/github-known-hosts 0400 --literal-plain PATH
                                                                                                                                             git fetch origin ${ config.personal.secrets2.branch }
                                                                                                                                             git checkout origin/${ config.personal.secrets2.branch }
                                                                                                                                             UUID="$( uuidgen | sha512sum )" || failure c0d47742
