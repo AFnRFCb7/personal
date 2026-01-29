@@ -31,6 +31,7 @@
                             _dot-ssh = dot-ssh.lib { failure = _failure.implementation "4e91ae89" ; visitor = _visitor.implementation ; } ;
                             _failure = failure.lib { coreutils = pkgs.coreutils ; jq = pkgs.jq ; mkDerivation = pkgs.stdenv.mkDerivation ; visitor = visitor ; writeShellApplication = pkgs.writeShellApplication ; yq-go = pkgs.yq-go ; } ;
                             __failure = _failure.implementation "7fef1fe4" ;
+                            ___failure = uuid : "${ __failure }/bin/failure ${ uuid }" ;
                             _fixture = fixture.lib { age = pkgs.age ; coreutils = pkgs.coreutils ; failure = _failure.implementation "6bf7303d" ; gnupg = pkgs.gnupg ; libuuid = pkgs.libuuid ; mkDerivation = pkgs.stdenv.mkDerivation ; writeShellApplication = pkgs.writeShellApplication ; } ;
                             _git-repository = git-repository.lib { string = _string.implementation ; visitor = _visitor.implementation ; } ;
                             _private-reporter = private-reporter.lib { failure = _failure.implementation "8e2eb1d7" ; pkgs = pkgs ; } ;
@@ -324,9 +325,9 @@
                                                                                     "github.com" =
                                                                                         {
                                                                                             host-name = "github.com" ;
-                                                                                            identity-file = ignore : "secret" ;
+                                                                                            identity-file = ignore : "stage/dot-ssh/github/identity.asc" ;
                                                                                             strict-host-key-checking = true ;
-                                                                                            user-known-hosts-file = ignore : "secret" ;
+                                                                                            user-known-hosts-file = ignore : "stage/dot-ssh/github/known-hosts.asc" ;
                                                                                             user = "git" ;
                                                                                         } ;
                                                                                     laptop =
@@ -339,18 +340,19 @@
                                                                                     mobile =
                                                                                         {
                                                                                             host-name = config.personal.mobile ;
-                                                                                            identity-file = ignore : "secret" ;
+                                                                                            identity-file = ignore : "stage/dot-ssh/mobile/identity.asc" ;
                                                                                             port = 8022 ;
                                                                                             strict-host-key-checking = false ;
-                                                                                            user-known-hosts-file = ignore : "known-hosts" ;
+                                                                                            user-known-hosts-file = ignore : "stage/dot-ssh/mobile/known-hosts.asc" ;
                                                                                         } ;
                                                                                 } ;
                                                                             resources =
                                                                                 {
                                                                                     "github.com" =
                                                                                         {
-                                                                                            identity-file = { pid , pkgs , resources , root , sequential , wrap } : resources.production.secrets.dot-ssh.github.identity-file { } ;
-                                                                                            user-known-hosts-file = { pid , pkgs , resources , root , sequential , wrap } : resources.production.secrets.dot-ssh.github.user-known-hosts-file { } ;
+                                                                                            identity-file = { pid , pkgs , resources , root , sequential , wrap } : resources.production.repository.secrets.read-only { failure = ___failure "f30c68a9" ; } ;
+
+                                                                                            user-known-hosts-file = { pid , pkgs , resources , root , sequential , wrap } : resources.production.repository.secrets.read-only { failure = ___failure "67293bbd" ; } ;
                                                                                         } ;
                                                                                     laptop =
                                                                                         {
@@ -359,8 +361,8 @@
                                                                                         } ;
                                                                                     mobile =
                                                                                         {
-                                                                                            identity-file = { pid , pkgs , resources , root , sequential , wrap } : resources.production.secrets.dot-ssh.mobile.identity-file { } ;
-                                                                                            user-known-hosts-file = { pid , pkgs , resources , root , sequential , wrap } : resources.production.fixture.laptop { } ;
+                                                                                            identity-file = { pid , pkgs , resources , root , sequential , wrap } : resources.production.repository.secrets.read-only { failure = ___failure "8379287c" ; } ;
+                                                                                            user-known-hosts-file = { pid , pkgs , resources , root , sequential , wrap } : resources.production.repository.secrets.read-only { failure = ___failure "df046088" ; } ;
                                                                                         } ;
                                                                                 } ;
                                                                         } ;
@@ -2175,6 +2177,9 @@
                                                                                                             ''
                                                                                                                 RESOURCE="$1"
                                                                                                                 case "$RESOURCE" in
+                                                                                                                    production.dot-ssh)
+                                                                                                                        SECRETS=${ resources__.production.dot-ssh { failure = "failure 2809b0cd" ; } }
+                                                                                                                        ;;
                                                                                                                     production.repository.secrets.read-only)
                                                                                                                         SECRETS=${ resources__.production.repository.secrets2.read-only { failure = "failure ac87264d" ; } }
                                                                                                                         ;;
