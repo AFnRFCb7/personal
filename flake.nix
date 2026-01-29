@@ -734,8 +734,6 @@
                                                                                                                                     git remote add origin https://github.com/${ config.personal.secrets2.organization }/${ config.personal.secrets2.repository }
                                                                                                                                     git fetch origin ${ config.personal.secrets2.branch } 2>&1
                                                                                                                                     git checkout origin/${ config.personal.secrets2.branch } 2>&1
-                                                                                                                                    RECIPIENT=${ resources.production.age.public { failure = "failure ef4547ff" ; } }
-                                                                                                                                    RECIPIENT_="$( cat "$RECIPIENT/public" )" || failure 06ca8543
                                                                                                                                     find /mount/repository -mindepth 1 -type f -name "*.age" ! -path "/mount/repository/.git/*" | while read -r CIPHERTEXT_FILE
                                                                                                                                     do
                                                                                                                                         RELATIVE_PATH="${ builtins.concatStringsSep "" [ "$" "{" "CIPHERTEXT_FILE#/mount/repository/" "}" ] }"
