@@ -741,7 +741,7 @@
                                                                                                                                         RELATIVE_PATH="${ builtins.concatStringsSep "" [ "$" "{" "CIPHERTEXT_FILE#/mount/repository/" "}" ] }"
                                                                                                                                         RELATIVE_DIRECTORY="$( dirname "$RELATIVE_PATH" )" || failure af52a03a
                                                                                                                                         mkdir --parents "$RELATIVE_DIRECTORY"
-                                                                                                                                        PLAINTEXT_FILE="${ builtins.concatStringsSep "" [ "$" "{" "DEST_FILE%.age" "}" ] }"
+                                                                                                                                        PLAINTEXT_FILE="${ builtins.concatStringsSep "" [ "$" "{" "CIPHERTEXT_FILE%.age" "}" ] }"
                                                                                                                                         age --decrypt --identity "$RECIPIENT_" --output "$PLAINTEXT_FILE" "$CIPHERTEXT_FILE"
                                                                                                                                         chmod 0400 "$PLAINTEXT_FILE"
                                                                                                                                     done
