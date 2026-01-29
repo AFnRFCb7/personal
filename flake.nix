@@ -1336,8 +1336,8 @@
                                                                                                                                 ''
                                                                                                                                     # FINDME
                                                                                                                                     git remote add origin https://github.com/${ config.personal.secrets.organization }/${ config.personal.secrets.repository }
-                                                                                                                                    git fetch origin ${ config.personal.secrets.branch }
-                                                                                                                                    git checkout origin/${ config.personal.secrets.branch }
+                                                                                                                                    git fetch origin ${ config.personal.secrets.branch } 2>&1
+                                                                                                                                    git checkout origin/${ config.personal.secrets.branch } 2>&1
                                                                                                                                 '' ;
                                                                                                                         } ;
                                                                                                                 in "${ application }/bin/setup" ;
