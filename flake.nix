@@ -742,7 +742,6 @@
                                                                                                                                         PLAINTEXT_FILE="/mount/stage/$RELATIVE_DIRECTORY/${ builtins.concatStringsSep "" [ "$" "{" "CIPHERTEXT_FILE_%.age" "}" ] }"
                                                                                                                                         PLAINTEXT_FILE_="$( dirname "$PLAINTEXT_FILE" )" || failure 92381511
                                                                                                                                         mkdir --parents "$PLAINTEXT_FILE_"
-                                                                                                                                        echo age --decrypt --identity ${ config.personal.agenix } --output "$PLAINTEXT_FILE" "$CIPHERTEXT_FILE" >&2
                                                                                                                                         age --decrypt --identity ${ config.personal.agenix } --output "$PLAINTEXT_FILE" "$CIPHERTEXT_FILE"
                                                                                                                                         chmod 0400 "$PLAINTEXT_FILE"
                                                                                                                                     done
