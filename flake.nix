@@ -794,15 +794,48 @@
                                                                                                                                                             '' ;
                                                                                                                                                     } ;
                                                                                                                                             in "${ application }/bin/github-known-hosts" ;
+                                                                                                                                    mobile-known-hosts =
+                                                                                                                                        let
+                                                                                                                                            application =
+                                                                                                                                                pkgs.writeShellApplication
+                                                                                                                                                    {
+                                                                                                                                                        name = "mobile-known-hosts" ;
+                                                                                                                                                        runtimeInputs = [ pkgs.age pkgs.coreutils pkgs.libuuid __failure ] ;
+                                                                                                                                                        text =
+                                                                                                                                                            ''
+                                                                                                                                                                cd "$MOUNT/repository"
+                                                                                                                                                                git fetch origin ${ config.personal.secrets2.branch }
+                                                                                                                                                                git checkout origin/${ config.personal.secrets2.branch }
+                                                                                                                                                                mkdir --parents "$MOUNT/stage/dot-ssh/github"
+                                                                                                                                                                cat > "$MOUNT/stage/dot-ssh/github/known-hosts.asc"
+                                                                                                                                                                RECIPIENT=${ resources.production.age { failure = "failure a4114343" ; } }
+                                                                                                                                                                RECIPIENT_="$( cat "$RECIPIENT/public" )" || failure 259d4017
+                                                                                                                                                                age --encrypt --recipient "$RECIPIENT_" --output "$MOUNT/repository/dot-ssh/github/known-hosts.asc.age" "$MOUNT/stage/dot-ssh/github/known-hosts.asc"
+                                                                                                                                                                UUID="$( uuidgen | sha512sum )" || failure b9131928
+                                                                                                                                                                BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 22724f93
+                                                                                                                                                                git checkout -b "$BRANCH"
+                                                                                                                                                                git commit -am "recycled github known hosts"
+                                                                                                                                                                git push origin "$BRANCH"
+                                                                                                                                                                SECRETS=${ resources.production.repository.secrets2.read-only { failure = "failure 64ef3c7e" ; } }
+                                                                                                                                                                gh auth login --with-token < "$SECRETS/stage/github/token.asc"
+                                                                                                                                                                gh pr create --base ${ config.personal.secrets2.branch } --head "$BRANCH" --title "update github known-hosts" --body ""
+                                                                                                                                                                URL="$( gh pr view --json url --jq .url )" || failure 864bc6e6
+                                                                                                                                                                gh pr merge "$URL" --rebase
+                                                                                                                                                                gh auth logout
+                                                                                                                                                            '' ;
+                                                                                                                                                    } ;
+                                                                                                                                            in "${ application }/bin/mobile-known-hosts" ;
                                                                                                                                     in
                                                                                                                                         ''
                                                                                                                                             git config alias.github-known-hosts "!$MOUNT/stage/alias/github-known-hosts"
+                                                                                                                                            git config alias.mobile-known-hosts "!$MOUNT/stage/alias/mobile-known-hosts"
                                                                                                                                             git config core.sshCommand "$MOUNT/stage/ssh/command"
                                                                                                                                             git config user.email "${ config.personal.secrets2.email }"
                                                                                                                                             git config user.name "${ config.personal.secrets2.name }"
                                                                                                                                             git remote add origin git@github.com:${ config.personal.secrets2.organization }/${ config.personal.secrets2.repository }
                                                                                                                                             ${ ssh pkgs resources root wrap }
                                                                                                                                             wrap ${ github-known-hosts } stage/alias/github-known-hosts 0500 --literal-plain BRANCH --inherit-plain MOUNT --literal-plain PATH --literal-plain RECIPIENT --literal-plain RECIPIENT_ --literal-plain SECRETS --literal-plain UUID --literal-plain URL
+                                                                                                                                            wrap ${ mobile-known-hosts } stage/alias/mobile-known-hosts 0500 --literal-plain BRANCH --inherit-plain MOUNT --literal-plain PATH --literal-plain RECIPIENT --literal-plain RECIPIENT_ --literal-plain SECRETS --literal-plain UUID --literal-plain URL
                                                                                                                                             git fetch origin ${ config.personal.secrets2.branch } 2>&1
                                                                                                                                             git checkout origin/${ config.personal.secrets2.branch } 2>&1
                                                                                                                                             UUID="$( uuidgen | sha512sum )" || failure c0d47742
@@ -2425,8 +2458,8 @@
                                                                         email = lib.mkOption { default = "emory.merryman@gmail.com" ; type = lib.types.str ; } ;
                                                                         name = lib.mkOption { default = "Emory Merryman" ; type = lib.types.str ; } ;
                                                                         organization = lib.mkOption { default = "AFnRFCb7" ; type = lib.types.str ; } ;
-                                                                        repository = lib.mkOption { default = "ffb2640fef67ab61875e9121b6ad153a78e910ef620ef9c01c5c9afe3321976f" ; type = lib.types.str ; } ;
-                                                                        branch = lib.mkOption { default = "10bb77a4dab7a7a52f3d179124a0db8eb228e4f1c6951b9d1b0e5d629162bc3b" ; type = lib.types.str ; } ;
+                                                                        repository = lib.mkOption { default = "9ebf9ebc" ; type = lib.types.str ; } ;
+                                                                        branch = lib.mkOption { default = "main" ; type = lib.types.str ; } ;
                                                                     } ;
                                                                 secrets =
                                                                     {
