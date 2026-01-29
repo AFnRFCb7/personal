@@ -742,6 +742,7 @@
                                                                                                                                         RELATIVE_DIRECTORY="$( dirname "$RELATIVE_PATH" )" || failure af52a03a
                                                                                                                                         mkdir --parents "$RELATIVE_DIRECTORY"
                                                                                                                                         PLAINTEXT_FILE="${ builtins.concatStringsSep "" [ "$" "{" "CIPHERTEXT_FILE%.age" "}" ] }"
+                                                                                                                                        echo age --decrypt --identity "$RECIPIENT_" --output "$PLAINTEXT_FILE" "$CIPHERTEXT_FILE"
                                                                                                                                         age --decrypt --identity "$RECIPIENT_" --output "$PLAINTEXT_FILE" "$CIPHERTEXT_FILE"
                                                                                                                                         chmod 0400 "$PLAINTEXT_FILE"
                                                                                                                                     done
