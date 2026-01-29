@@ -726,7 +726,7 @@
                                                                                                                     pkgs.writeShellApplication
                                                                                                                         {
                                                                                                                             name = "setup" ;
-                                                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.git wrap ] ;
+                                                                                                                            runtimeInputs = [ pkgs.age pkgs.coreutils pkgs.git wrap ] ;
                                                                                                                             text =
                                                                                                                                 ''
                                                                                                                                     git config user.email "no-commit@no-commit"
