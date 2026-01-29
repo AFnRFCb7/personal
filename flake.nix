@@ -775,7 +775,7 @@
                                                                                                                                                                 cd "$MOUNT/repository"
                                                                                                                                                                 mkdir --parents "$MOUNT/stage/dot-ssh/github"
                                                                                                                                                                 cat > "$MOUNT/stage/dot-ssh/github/known-hosts.asc"
-                                                                                                                                                                git fetch origin ${ config.personal.secret2.branch }
+                                                                                                                                                                git fetch origin ${ config.personal.secrets2.branch }
                                                                                                                                                                 git checkout -b origin/${ config.personal.secret2.branch }
                                                                                                                                                                 RECIPIENT=${ resources.production.age { failure = "failure a4114343" ; } }
                                                                                                                                                                 RECIPIENT_="$( cat "$RECIPIENT/public" )" || failure 259d4017
