@@ -2114,20 +2114,22 @@
                                                                                             (
                                                                                                 pkgs.writeShellApplication
                                                                                                     {
-                                                                                                        name = "secrets" ;
+                                                                                                        name = "resource" ;
                                                                                                         runtimeInputs = [ pkgs.coreutils __failure ] ;
                                                                                                         text =
                                                                                                             ''
-                                                                                                                COMMAND="$1"
-                                                                                                                if [[ "$COMMAND" == "read-only" ]]
-                                                                                                                then
-                                                                                                                    SECRETS=${ resources__.production.repository.secrets2.read-only { failure = "failure ac87264d" ; } }
-                                                                                                                elif [[ "$COMMAND" == "archaic" ]]
-                                                                                                                then
-                                                                                                                    SECRETS=${ resources__.production.repository.studio.secrets { failure = "failure cdafc416" ; } }
-                                                                                                                else
-                                                                                                                    failure 8c74dc80
-                                                                                                                fi
+                                                                                                                RESOURCE="$1"
+                                                                                                                switch "$RESOURCE" in
+                                                                                                                    production.repository.secrets.read-only)
+                                                                                                                        SECRETS=${ resources__.production.repository.secrets2.read-only { failure = "failure ac87264d" ; } }
+                                                                                                                        ;;
+                                                                                                                    archaic)
+                                                                                                                        SECRETS=${ resources__.production.repository.studio.secrets { failure = "failure cdafc416" ; } }
+                                                                                                                        ;;
+                                                                                                                    *)
+                                                                                                                        failure 8c74dc80
+                                                                                                                        ;;
+                                                                                                                esac
                                                                                                                 echo "$SECRETS"
                                                                                                             '' ;
                                                                                                     }
