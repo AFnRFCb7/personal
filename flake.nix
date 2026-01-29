@@ -773,10 +773,10 @@
                                                                                                                                                         text =
                                                                                                                                                             ''
                                                                                                                                                                 cd "$MOUNT/repository"
-                                                                                                                                                                mkdir --parents "$MOUNT/stage/dot-ssh/github"
-                                                                                                                                                                cat > "$MOUNT/stage/dot-ssh/github/known-hosts.asc"
                                                                                                                                                                 git fetch origin ${ config.personal.secrets2.branch }
                                                                                                                                                                 git checkout -b origin/${ config.personal.secrets2.branch }
+                                                                                                                                                                mkdir --parents "$MOUNT/stage/dot-ssh/github"
+                                                                                                                                                                cat > "$MOUNT/stage/dot-ssh/github/known-hosts.asc"
                                                                                                                                                                 RECIPIENT=${ resources.production.age { failure = "failure a4114343" ; } }
                                                                                                                                                                 RECIPIENT_="$( cat "$RECIPIENT/public" )" || failure 259d4017
                                                                                                                                                                 age --encrypt --recipient "$RECIPIENT_" --output "$MOUNT/repository/dot-ssh/github/known-hosts.asc.age" "$MOUNT/stage/dot-ssh/github/known-hosts.asc"
