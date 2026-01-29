@@ -266,28 +266,25 @@
                                                     production =
                                                         {
                                                             age =
-                                                                {
-                                                                    public =
-                                                                        ignore :
-                                                                            {
-                                                                                init =
-                                                                                    { pid , pkgs , resources , root , sequential , wrap } :
-                                                                                        let
-                                                                                            application =
-                                                                                                pkgs.writeShellApplication
-                                                                                                    {
-                                                                                                        name = "init" ;
-                                                                                                        runtimeInputs = [ pkgs.age pkgs.coreutils ] ;
-                                                                                                        text =
-                                                                                                            ''
-                                                                                                                age-keygen -y ${ config.personal.agenix } | tr -d '\n' > /mount/public
-                                                                                                                chmod 0400 /mount/public
-                                                                                                            '' ;
-                                                                                                    } ;
-                                                                                            in "${ application }/bin/init" ;
-                                                                                targets = [ "public" ] ;
-                                                                            } ;
-                                                                } ;
+                                                                ignore :
+                                                                    {
+                                                                        init =
+                                                                            { pid , pkgs , resources , root , sequential , wrap } :
+                                                                                let
+                                                                                    application =
+                                                                                        pkgs.writeShellApplication
+                                                                                            {
+                                                                                                name = "init" ;
+                                                                                                runtimeInputs = [ pkgs.age pkgs.coreutils ] ;
+                                                                                                text =
+                                                                                                    ''
+                                                                                                        age-keygen -y ${ config.personal.agenix } | tr -d '\n' > /mount/public
+                                                                                                        chmod 0400 /mount/public
+                                                                                                    '' ;
+                                                                                            } ;
+                                                                                    in "${ application }/bin/init" ;
+                                                                        targets = [ "public" ] ;
+                                                                    } ;
                                                             alpha =
                                                                 ignore :
                                                                     {
@@ -763,13 +760,48 @@
                                                                                                                     pkgs.writeShellApplication
                                                                                                                         {
                                                                                                                             name = "setup" ;
-                                                                                                                            runtimeInputs = [ ] ;
+                                                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.libuuid wrap ] ;
                                                                                                                             text =
-                                                                                                                                ''
-                                                                                                                                    git remote add origin git@github.com:${ config.personal.secrets2.organization }/${ config.personal.secrets2.repository }"
-                                                                                                                                    git fetch origin ${ config.personal.secrets2.branch }
-                                                                                                                                    git checkout origin/${ config.personal.secrets2.branch }
-                                                                                                                                '' ;
+                                                                                                                                let
+                                                                                                                                    github-known-hosts =
+                                                                                                                                        let
+                                                                                                                                            application =
+                                                                                                                                                pkgs.writeShellApplication
+                                                                                                                                                    {
+                                                                                                                                                        name = "github-known-hosts" ;
+                                                                                                                                                        runtimeInputs = [ pkgs.age __failure ] ;
+                                                                                                                                                        text =
+                                                                                                                                                            ''
+                                                                                                                                                                mkdir --parents "$MOUNT/stage/dot-ssh/github"
+                                                                                                                                                                cat > "$MOUNT/stage/dot-ssh/github/known-hosts.asc"
+                                                                                                                                                                RECIPIENT=${ resources.production.age { failure = "failure a4114343" ; } }
+                                                                                                                                                                RECIPIENT_="$( cat "$RECIPIENT/public" )" || failure 259d4017
+                                                                                                                                                                age --encrypt --recipient "$RECIPIENT_" --output "$MOUNT/repository/dot-ssh/github/known-hosts.asc.age" "$MOUNT/stage/dot-ssh/github/known-hosts.asc"
+                                                                                                                                                                git commit -am "recycled github known hosts"
+                                                                                                                                                                SECRETS=${ resources.production.repository.secrets.read-only { failure = "failure 64ef3c7e" ; } }
+                                                                                                                                                                gh auth login --with-token < "$SECRETS/stage/github/token"
+                                                                                                                                                                gh pr create --base main --head "$BRANCH" --title "update github known-hosts" --body ""
+                                                                                                                                                                URL="$( gh pr view --json url --jq .url )" || failure 864bc6e6
+                                                                                                                                                                gh pr merge "$URL" --rebase
+                                                                                                                                                                gh auth logout
+                                                                                                                                                            '' ;
+                                                                                                                                                    } ;
+                                                                                                                                            in "${ application }/bin/github-known-hosts" ;
+                                                                                                                                    in
+                                                                                                                                        ''
+                                                                                                                                            git config alias.github-known-hosts "$MOUNT/stage/alias/github-known-hosts"
+                                                                                                                                            git config core.sshCommand "$MOUNT/stage/ssh/command"
+                                                                                                                                            git config user.email "${ config.personal.secrets2.email }"
+                                                                                                                                            git config user.name "${ config.personal.secrets2.name }"
+                                                                                                                                            git remote add origin git@github.com:${ config.personal.secrets2.organization }/${ config.personal.secrets2.repository }"
+                                                                                                                                            ${ ssh pkgs resources root wrap }
+                                                                                                                                            wrap github-known-hosts stage/alias/github-known-hosts 0400 --literal-plain PATH
+                                                                                                                                            git fetch origin ${ config.personal.secrets2.branch }
+                                                                                                                                            git checkout origin/${ config.personal.secrets2.branch }
+                                                                                                                                            UUID="$( uuidgen | sha512sum )" || failure c0d47742
+                                                                                                                                            BRANCH="$( echo scratch/$UUID | cut --characters 1-64 )" || failure 4b4d1f65
+                                                                                                                                            git checkout -b "$BRANCH"
+                                                                                                                                        '' ;
                                                                                                                         } ;
                                                                                                                 in "${ application }/bin/setup" ;
                                                                                                 } ;
@@ -1744,7 +1776,7 @@
                                                                                             then
                                                                                                 if [[ $COMP_CWORD -eq 1 ]]
                                                                                                 then
-                                                                                                    NEXT="$( compgen -W "production.repository.secrets.read-only production.dot-ssh archaic" -- "$cur" )" || failure 6bb37017
+                                                                                                    NEXT="$( compgen -W "production.repository.secrets.read-only production.repository.secrets.read-write production.dot-ssh archaic" -- "$cur" )" || failure 6bb37017
                                                                                                     COMPREPLY=( $NEXT )
                                                                                                 fi
                                                                                             else
@@ -2177,11 +2209,17 @@
                                                                                                             ''
                                                                                                                 RESOURCE="$1"
                                                                                                                 case "$RESOURCE" in
+                                                                                                                    production.age)
+                                                                                                                        SECRETS=${ resources__.production.age { failure = "failure 621b540a" ; } }
+                                                                                                                        ;;
                                                                                                                     production.dot-ssh)
                                                                                                                         SECRETS=${ resources__.production.dot-ssh { failure = "failure 2809b0cd" ; } }
                                                                                                                         ;;
                                                                                                                     production.repository.secrets.read-only)
                                                                                                                         SECRETS=${ resources__.production.repository.secrets2.read-only { failure = "failure ac87264d" ; } }
+                                                                                                                        ;;
+                                                                                                                    production.repository.secrets.read-write)
+                                                                                                                        SECRETS=${ resources__.production.repository.secrets2.read-write { failure = "failure 54981699" ; } }
                                                                                                                         ;;
                                                                                                                     archaic)
                                                                                                                         SECRETS=${ resources__.production.repository.studio.secrets { failure = "failure cdafc416" ; } }
