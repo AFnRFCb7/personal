@@ -2120,10 +2120,10 @@
                                                                                                             ''
                                                                                                                 RESOURCE="$1"
                                                                                                                 switch "$RESOURCE" in
-                                                                                                                    production.repository.secrets.read-only)
+                                                                                                                    --production.repository.secrets.read-only)
                                                                                                                         SECRETS=${ resources__.production.repository.secrets2.read-only { failure = "failure ac87264d" ; } }
                                                                                                                         ;;
-                                                                                                                    archaic)
+                                                                                                                    --archaic)
                                                                                                                         SECRETS=${ resources__.production.repository.studio.secrets { failure = "failure cdafc416" ; } }
                                                                                                                         ;;
                                                                                                                     *)
