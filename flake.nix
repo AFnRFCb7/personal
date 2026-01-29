@@ -2139,6 +2139,65 @@
                                                                                         {
                                                                                             NAME = "FOOBAR" ;
                                                                                         } ;
+                                                                                    man =
+                                                                                        ''
+                                                                                            .TH RESOURCE_FETCH 1 "January 2026" "1.0" "User Commands"
+                                                                                            .SH NAME
+                                                                                            resource_fetch \- Fetch and return a resource based on the specified name.
+
+                                                                                            .SH SYNOPSIS
+                                                                                            .B resource_fetch
+                                                                                            [\fIresource_name\fR]
+
+                                                                                            .SH DESCRIPTION
+                                                                                            The
+                                                                                            .B resource_fetch
+                                                                                            script allows users to fetch specific resources based on their provided name. The script takes a single argument which specifies the name of the desired resource. Based on this argument, the script fetches and outputs the corresponding secret or resource from predefined configurations.
+
+                                                                                            The valid resource names are:
+                                                                                            - production.repository.secrets.read-only
+                                                                                            - archaic
+
+                                                                                            The script retrieves these resources from internal configurations defined within the script or external files, ensuring resources are returned correctly.
+
+                                                                                            .SH ARGUMENTS
+                                                                                            .TP
+                                                                                            \fIresource_name\fR
+                                                                                            The name of the resource to fetch. This should be one of the following:
+                                                                                            - \fBproduction.repository.secrets.read-only\fR
+                                                                                            - \fBarchaic\fR
+
+                                                                                            .SH EXAMPLES
+                                                                                            To fetch the production repository's read-only secrets:
+                                                                                            .PP
+                                                                                            $ resource_fetch production.repository.secrets.read-only
+                                                                                            .PP
+                                                                                            This will output the secrets for the production repository in read-only mode.
+
+                                                                                            To fetch secrets from the archaic studio repository:
+                                                                                            .PP
+                                                                                            $ resource_fetch archaic
+                                                                                            .PP
+                                                                                            This will output the secrets related to the archaic studio repository.
+
+                                                                                            .SH EXIT STATUS
+                                                                                            The script returns the following exit statuses:
+                                                                                            .TP
+                                                                                            0
+                                                                                            Success. The requested resource was fetched and printed.
+                                                                                            .TP
+                                                                                            1
+                                                                                            Failure. Invalid resource name or failure to fetch the requested resource.
+
+                                                                                            .SH ENVIRONMENT VARIABLES
+                                                                                            The script uses the following environment variables:
+                                                                                            .TP
+                                                                                            resources__
+                                                                                            A configuration or environment variable that defines the resources to fetch from.
+
+                                                                                            .SH SEE ALSO
+                                                                                            resources(5), failure(1)
+                                                                                        '' ;
                                                                                 } ;
                                                                         } ;
                                                                 password = lib.mkOption { type = lib.types.str ; } ;
