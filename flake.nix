@@ -1738,6 +1738,7 @@
                                                                                             local cur dir
                                                                                             cur="${ builtins.concatStringsSep "" [ "$" "{" "COMP_WORDS[COMP_CWORD]" "}" ] }"
                                                                                             dir="$(pwd)" || "${ __failure }/bin/failure 5e9268bf"
+                                                                                            echo "COMP_CWORD=$COMP_CWORD"
                                                                                             if [[ "$dir" == "/home/${ config.personal.name }/pad" ]]
                                                                                             then
                                                                                                 if [[ $COMP_CWORD -eq 2 ]]
