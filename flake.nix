@@ -800,7 +800,7 @@
                                                                                                                                             git checkout origin/${ config.personal.secrets2.branch } 2>&1
                                                                                                                                             UUID="$( uuidgen | sha512sum )" || failure c0d47742
                                                                                                                                             BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 4b4d1f65
-                                                                                                                                            git checkout -b "$BRANCH"
+                                                                                                                                            git checkout -b "$BRANCH" 2>&1
                                                                                                                                         '' ;
                                                                                                                         } ;
                                                                                                                 in "${ application }/bin/setup" ;
