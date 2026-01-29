@@ -1893,7 +1893,7 @@
                                                                                                                             cat <<EOF > /home/${ config.personal.name }/pad/.envrc
                                                                                                                             ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''export ${ name }="${ value }"'' ) config.personal.pads.environment ) ) }
                                                                                                                             export MANPATH="${ builtins.concatStringsSep ":" ( builtins.attrValues ( builtins.mapAttrs mapper config.personal.pads.man ) ) }"
-                                                                                                                            export PATH="${ builtins.concatStringsSep ":" ( builtins.map ( value : "${ value }/bin" ) ( builtins.concatLists [ config.personal.pads.bin [ pkgs.man-db ] ] ) ) }"
+                                                                                                                            export PATH="${ builtins.concatStringsSep ":" ( builtins.map ( value : "${ value }/bin" ) ( builtins.concatLists [ config.personal.pads.bin [ pkgs.less pkgs.man-db ] ] ) ) }"
                                                                                                                             EOF
                                                                                                                             chmod 0400 /home/${ config.personal.name }/pad/.envrc
                                                                                                                         '' ;
