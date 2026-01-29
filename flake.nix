@@ -1742,7 +1742,7 @@
                                                                                             then
                                                                                                 if [[ $COMP_CWORD -eq 2 ]]
                                                                                                 then
-                                                                                                    NEXT="$( compgen -W "production.repository.secrets.read-only archaic" -- "$cur" ) || failure 6bb37017
+                                                                                                    NEXT="$( compgen -W "production.repository.secrets.read-only archaic" -- "$cur" )" || failure 6bb37017
                                                                                                     COMPREPLY=( $NEXT )
                                                                                                 fi
                                                                                             else
