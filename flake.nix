@@ -1878,8 +1878,8 @@
                                                                                                                                                         text =
                                                                                                                                                             ''
                                                                                                                                                                 OUT="$1"
-                                                                                                                                                                mkdir --parents "$OUT/share/man/man1"
-                                                                                                                                                                ln --symbolic ${ builtins.toFile "man" value } "$OUT/share/man/man1/${ name }.1"
+                                                                                                                                                                mkdir --parents "$OUT/man1"
+                                                                                                                                                                ln --symbolic ${ builtins.toFile "man" value } "$OUT/man1/${ name }.1"
                                                                                                                                                             '' ;
                                                                                                                                                     }
                                                                                                                                             )
