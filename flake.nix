@@ -1722,7 +1722,36 @@
                                                                 bash =
                                                                     {
                                                                         enableCompletion = true ;
-                                                                        interactiveShellInit = ''eval "$( ${ pkgs.direnv }/bin/direnv hook bash )"'' ;
+                                                                        interactiveShellInit =
+                                                                            let
+                                                                                mapper =
+                                                                                    name : value :
+                                                                                        ''
+                                                                                            /home/${ config.personal.name }/pad/${ name })
+                                                                                                ;;
+                                                                                        '' ;
+                                                                                in
+                                                                                    ''
+                                                                                        eval "$( ${ pkgs.direnv }/bin/direnv hook bash )"
+
+                                                                                        _myscript_completions() {
+                                                                                            local cur dir
+                                                                                            cur="${ builtins.concatStringsSep "" [ "$" "{" "COMP_WORDS[COMP_CWORD]" "}" ] }"
+                                                                                            dir="$(pwd)" || "${ __failure }/bin/failure 5e9268bf"
+                                                                                            case "$dir" in
+                                                                                                /home/${ config.personal.name }/pad)
+                                                                                                    if [[ $COMP_CWORD -eq 2 ]]
+                                                                                                    then
+                                                                                                        NEXT="$( compgen -W "production.repository.secrets.read-only archaic" -- "$cur" ) || failure 6bb37017
+                                                                                                        COMPREPLY=( "$NEXT"" )
+                                                                                                    fi
+                                                                                                *)
+                                                                                                    COMPREPLY=()
+                                                                                                    ;;
+                                                                                            esac
+                                                                                        }
+                                                                                        complete -F _myscript_completions myscript
+                                                                                    '' ;
                                                                     } ;
                                                                 dconf.enable = true ;
                                                                 direnv =
