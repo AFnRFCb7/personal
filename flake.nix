@@ -799,7 +799,7 @@
                                                                                                                                             git fetch origin ${ config.personal.secrets2.branch }
                                                                                                                                             git checkout origin/${ config.personal.secrets2.branch }
                                                                                                                                             UUID="$( uuidgen | sha512sum )" || failure c0d47742
-                                                                                                                                            BRANCH="$( echo scratch/$UUID | cut --characters 1-64 )" || failure 4b4d1f65
+                                                                                                                                            BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 4b4d1f65
                                                                                                                                             git checkout -b "$BRANCH"
                                                                                                                                         '' ;
                                                                                                                         } ;
@@ -1776,7 +1776,7 @@
                                                                                             then
                                                                                                 if [[ $COMP_CWORD -eq 1 ]]
                                                                                                 then
-                                                                                                    NEXT="$( compgen -W "production.repository.secrets.read-only production.repository.secrets.read-write production.dot-ssh archaic" -- "$cur" )" || failure 6bb37017
+                                                                                                    NEXT="$( compgen -W "production.age production.repository.secrets.read-only production.repository.secrets.read-write production.dot-ssh archaic" -- "$cur" )" || failure 6bb37017
                                                                                                     COMPREPLY=( $NEXT )
                                                                                                 fi
                                                                                             else
