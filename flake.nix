@@ -1977,7 +1977,7 @@
                                                                                             then
                                                                                                 if [[ $COMP_CWORD -eq 1 ]]
                                                                                                 then
-                                                                                                    NEXT="$( compgen -W "production.age production.repository.secrets.read-only production.repository.secrets.read-write production.dot-ssh archaic" -- "$cur" )" || failure 6bb37017
+                                                                                                    NEXT="$( compgen -W "production.age production.repository.secrets.read-only production.repository.secrets.read-write production.dot-gnupg production.dot-ssh archaic" -- "$cur" )" || failure 6bb37017
                                                                                                     COMPREPLY=( $NEXT )
                                                                                                 fi
                                                                                             else
