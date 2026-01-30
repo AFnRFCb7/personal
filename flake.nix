@@ -774,20 +774,21 @@
                                                                                                                                                             ''
                                                                                                                                                                 exec 201> "$MOUNT/lock"
                                                                                                                                                                 flock 201
+                                                                                                                                                                sleep 10
                                                                                                                                                                 cd "$MOUNT/repository"
+                                                                                                                                                                UUID="$( uuidgen | sha512sum )" || failure b9131928
+                                                                                                                                                                BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 22724f93
+                                                                                                                                                                SECRETS=${ resources.production.repository.secrets2.read-only { setup = setup : ''${ setup } "$UUID'' ; failure = "failure 64ef3c7e" ; } }
                                                                                                                                                                 git fetch origin ${ config.personal.secrets2.branch }
                                                                                                                                                                 git checkout origin/${ config.personal.secrets2.branch }
                                                                                                                                                                 mkdir --parents "$MOUNT/stage/dot-ssh/github"
-                                                                                                                                                                ssh-keygen -f "$MOUNT/stage/dot-ssh/github/identity.asc" -C "generated" -P ""
+                                                                                                                                                                ssh-keygen -f "$MOUNT/stage/plain-text/dot-ssh/github/identity.asc" -C "generated" -P ""
                                                                                                                                                                 RECIPIENT=${ resources.production.age { failure = "failure a4114343" ; } }
                                                                                                                                                                 RECIPIENT_="$( cat "$RECIPIENT/public" )" || failure 259d4017
-                                                                                                                                                                age --encrypt --recipient "$RECIPIENT_" --output "$MOUNT/repository/dot-ssh/github/identity.asc.age" "$MOUNT/stage/dot-ssh/github/identity.asc"
-                                                                                                                                                                UUID="$( uuidgen | sha512sum )" || failure b9131928
-                                                                                                                                                                BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 22724f93
+                                                                                                                                                                age --encrypt --recipient "$RECIPIENT_" --output "$MOUNT/repository/dot-ssh/github/identity.asc.age" "$MOUNT/stage/plain-text/dot-ssh/github/identity.asc"
                                                                                                                                                                 git checkout -b "$BRANCH"
-                                                                                                                                                                git commit -am "recycled github known identity"
+                                                                                                                                                                git commit -am "recycled github identity"
                                                                                                                                                                 git push origin "$BRANCH"
-                                                                                                                                                                SECRETS=${ resources.production.repository.secrets2.read-only { failure = "failure 64ef3c7e" ; } }
                                                                                                                                                                 gh auth login --with-token < "$SECRETS/stage/github/token.asc"
                                                                                                                                                                 gh pr create --base ${ config.personal.secrets2.branch } --head "$BRANCH" --title "update github identity" --body ""
                                                                                                                                                                 URL="$( gh pr view --json url --jq .url )" || failure 864bc6e6
@@ -812,6 +813,7 @@
                                                                                                                                                             ''
                                                                                                                                                                 exec 201> "$MOUNT/lock"
                                                                                                                                                                 flock 201
+                                                                                                                                                                sleep 20
                                                                                                                                                                 cd "$MOUNT/repository"
                                                                                                                                                                 git fetch origin ${ config.personal.secrets2.branch }
                                                                                                                                                                 git checkout origin/${ config.personal.secrets2.branch }
@@ -845,6 +847,7 @@
                                                                                                                                                             ''
                                                                                                                                                                 exec 201> "$MOUNT/lock"
                                                                                                                                                                 flock 201
+                                                                                                                                                                sleep 30
                                                                                                                                                                 cd "$MOUNT/repository"
                                                                                                                                                                 git fetch origin ${ config.personal.secrets2.branch }
                                                                                                                                                                 git checkout origin/${ config.personal.secrets2.branch }
@@ -878,6 +881,7 @@
                                                                                                                                                             ''
                                                                                                                                                                 exec 201> "$MOUNT/lock"
                                                                                                                                                                 flock 201
+                                                                                                                                                                sleep 40
                                                                                                                                                                 cd "$MOUNT/repository"
                                                                                                                                                                 git fetch origin ${ config.personal.secrets2.branch }
                                                                                                                                                                 git checkout origin/${ config.personal.secrets2.branch }
@@ -911,7 +915,10 @@
                                                                                                                                                             ''
                                                                                                                                                                 exec 201> "$MOUNT/lock"
                                                                                                                                                                 flock 201
-                                                                                                                                                                SECRETS=${ resources.production.repository.secrets2.read-only { failure = "failure bcfd4baf" ; } }
+                                                                                                                                                                sleep 50
+                                                                                                                                                                UUID="$( uuidgen | sha512sum )" || failure fa87d816
+                                                                                                                                                                BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 7f9ffef5
+                                                                                                                                                                SECRETS=${ resources.production.repository.secrets2.read-only { setup = setup : ''${ setup } "$UUID'' ; failure = "failure bcfd4baf" ; } }
                                                                                                                                                                 cd "$MOUNT/repository"
                                                                                                                                                                 DOT_SSH=${ resources.production.dot-ssh { failure = "failure 9335cc7a" ; } }
                                                                                                                                                                 git fetch origin ${ config.personal.secrets2.branch }
@@ -921,8 +928,6 @@
                                                                                                                                                                 RECIPIENT=${ resources.production.age { failure = "failure 1994c57a" ; } }
                                                                                                                                                                 RECIPIENT_="$( cat "$RECIPIENT/public" )" || failure 57606f23
                                                                                                                                                                 age --encrypt --recipient "$RECIPIENT_" --output "$MOUNT/repository/dot-ssh/mobile/identity.asc.age" "$MOUNT/stage/plain-text/dot-ssh/mobile/identity.asc"
-                                                                                                                                                                UUID="$( uuidgen | sha512sum )" || failure fa87d816
-                                                                                                                                                                BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 7f9ffef5
                                                                                                                                                                 git checkout -b "$BRANCH"
                                                                                                                                                                 git commit -am "recycled mobile identity"
                                                                                                                                                                 git push origin "$BRANCH"
@@ -2437,6 +2442,18 @@
                                                                                                                         ;;
                                                                                                                 esac
                                                                                                                 echo "$SECRETS"
+                                                                                                            '' ;
+                                                                                                    }
+                                                                                            )
+                                                                                            (
+                                                                                                pkgs.writeShellScript
+                                                                                                    {
+                                                                                                        name = "validate" ;
+                                                                                                        runtimeInputs = [ pkgs.systemd ] ;
+                                                                                                        text =
+                                                                                                            ''
+                                                                                                                systemctl status recycle-github-identity
+                                                                                                                systemctl status recycle-mobile-identity
                                                                                                             '' ;
                                                                                                     }
                                                                                             )
