@@ -932,7 +932,7 @@
                                                                                                                                                                 gh pr merge "$URL" --rebase
                                                                                                                                                                 gh auth logout
                                                                                                                                                                 # ssh -F "$DOT_SSH/config" mobile "rm ~/.authorized_keys"
-                                                                                                                                                                ssh -F "$DOT_SSH/config" mobile "tee --append ~/.ssh/authorized_keys" < "$MOUNT/repository/plain-text/dot-ssh/mobile/identity.asc.age"
+                                                                                                                                                                ssh -F "$DOT_SSH/config" mobile "tee --append ~/.ssh/authorized_keys" < "$MOUNT/stage/plain-text/dot-ssh/mobile/identity.asc.pub"
                                                                                                                                                             '' ;
                                                                                                                                                     } ;
                                                                                                                                             in "${ application }/bin/mobile-identity" ;
