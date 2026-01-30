@@ -1977,7 +1977,7 @@
                                                                                             then
                                                                                                 if [[ $COMP_CWORD -eq 1 ]]
                                                                                                 then
-                                                                                                    NEXT="$( compgen -W "production.age production.repository.secrets.read-only production.repository.secrets.read-write production.dot-gnupg production.dot-ssh archaic" -- "$cur" )" || failure 6bb37017
+                                                                                                    NEXT="$( compgen -W "production.age production.repository.pass production.repository.secrets.read-only production.repository.secrets.read-write production.dot-gnupg production.dot-ssh archaic" -- "$cur" )" || failure 6bb37017
                                                                                                     COMPREPLY=( $NEXT )
                                                                                                 fi
                                                                                             else
@@ -2473,6 +2473,26 @@
                                                                                             (
                                                                                                 pkgs.writeShellApplication
                                                                                                     {
+                                                                                                        name = "pass" ;
+                                                                                                        runtimeInputs = [ pkgs.pass __ failure ] ;
+                                                                                                        text =
+                                                                                                            ''
+                                                                                                                DOT_GNUPG=${ resources__.production.dot-gnupg { failure = "failure 769a9015" ; } }
+                                                                                                                export PASSWORD_STORE_GPG_OPTS="--homedir $DOT_GNUPG/dot-gnupg"
+                                                                                                                PASSWORD_STORE_RESOURCE=${ resources__.production.repository.pass { failure = "failure 32dbc840" ; } }
+                                                                                                                export PASSWORD_STORE_DIR="$PASSWORD_STORE_RESOURCE/repository"
+                                                                                                                if [[ -t 0 ]]
+                                                                                                                then
+                                                                                                                    pass "$@"
+                                                                                                                else
+                                                                                                                    cat | pass "$@"
+                                                                                                                fi
+                                                                                                            '' ;
+                                                                                                    }
+                                                                                            )
+                                                                                            (
+                                                                                                pkgs.writeShellApplication
+                                                                                                    {
                                                                                                         name = "resource" ;
                                                                                                         runtimeInputs = [ pkgs.coreutils __failure ] ;
                                                                                                         text =
@@ -2487,6 +2507,9 @@
                                                                                                                         ;;
                                                                                                                     production.dot-ssh)
                                                                                                                         SECRETS=${ resources__.production.dot-ssh { failure = "failure 2809b0cd" ; } }
+                                                                                                                        ;;
+                                                                                                                    production.repository.pass)
+                                                                                                                        SECRETS=${ resources__.production.repository.pass { failure = "failure 1b0cb804" ; } }
                                                                                                                         ;;
                                                                                                                     production.repository.secrets.read-only)
                                                                                                                         SECRETS=${ resources__.production.repository.secrets2.read-only { failure = "failure ac87264d" ; } }
