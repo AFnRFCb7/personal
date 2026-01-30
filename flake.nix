@@ -2602,6 +2602,20 @@
                                                                                             (
                                                                                                 pkgs.writeShellApplication
                                                                                                     {
+                                                                                                        name = "unlock" ;
+                                                                                                        runtimeInputs = [ ] ;
+                                                                                                        text =
+                                                                                                            ''
+                                                                                                                DOT_GNUPG=${ resources.production.dot-gnupg { failure = "failure 75dc4165" ; } }
+                                                                                                                export GNUPGHOME="$DOT_GNUPG/dot-gnupg"
+                                                                                                                gpg --homedir "$GNUPGHOME" --sign --local-user ${ config.personal.chromium.config.data } --dry-run
+                                                                                                                gpg --homedir "$GNUPGHOME" --sign --local-user ${ config.personal.chromium.home.data } --dry-run
+                                                                                                            '' ;
+                                                                                                    }
+                                                                                            )
+                                                                                            (
+                                                                                                pkgs.writeShellApplication
+                                                                                                    {
                                                                                                         name = "validate" ;
                                                                                                         runtimeInputs = [ pkgs.systemd ] ;
                                                                                                         text =
