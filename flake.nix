@@ -313,6 +313,27 @@
                                                                                                             '' ;
                                                                                                     } ;
                                                                                             in "${ application }/bin/init" ;
+                                                                                targets = [ "bin" "etc" ] ;
+                                                                            } ;
+                                                                    mutable =
+                                                                        ignore :
+                                                                            {
+                                                                                init =
+                                                                                    { pid , pkgs , resources , root , sequential , wrap } :
+                                                                                        let
+                                                                                            application =
+                                                                                                pkgs.writeShellApplication
+                                                                                                    {
+                                                                                                        name = "init" ;
+                                                                                                        runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                        text =
+                                                                                                            ''
+                                                                                                                mkdir --parents /mount/bin
+                                                                                                                mkdir --parents /mount/etc
+                                                                                                            '' ;
+                                                                                                    } ;
+                                                                                            in "${ application }/bin/init" ;
+                                                                                targets = [ "bin" "etc" ] ;
                                                                             } ;
                                                                 } ;
                                                             alpha =
@@ -2550,7 +2571,7 @@
                                                                                                                         SECRETS=${ resources__.production.age { failure = "failure 621b540a" ; } }
                                                                                                                         ;;
                                                                                                                     production.application.chromium)
-                                                                                                                        SECRETS=${ resources__.application.chromium { failure = "failure 4a6891d6" ; } }
+                                                                                                                        SECRETS=${ resources__.production.application.chromium { failure = "failure 4a6891d6" ; } }
                                                                                                                         ;;
                                                                                                                     production.dot-gnupg)
                                                                                                                         SECRETS=${ resources__.production.dot-gnupg { failure = "failure f9c7275c" ; } }
