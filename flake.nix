@@ -875,7 +875,7 @@
                                                                                                                                             application =
                                                                                                                                                 pkgs.writeShellApplication
                                                                                                                                                     {
-                                                                                                                                                        name = "runScript" ;
+                                                                                                                                                        name = "gnupg" ;
                                                                                                                                                         runtimeInputs = [ pkgs.bash pkgs.flock pkgs.gnupg ] ;
                                                                                                                                                         text =
                                                                                                                                                             ''
@@ -2463,6 +2463,9 @@
                                                                                                                 case "$RESOURCE" in
                                                                                                                     production.age)
                                                                                                                         SECRETS=${ resources__.production.age { failure = "failure 621b540a" ; } }
+                                                                                                                        ;;
+                                                                                                                    production.dot-gnupg)
+                                                                                                                        SECRETS=${ resources__.production.dot-gnupg { failure = "failure f9c7275c" ; } }
                                                                                                                         ;;
                                                                                                                     production.dot-ssh)
                                                                                                                         SECRETS=${ resources__.production.dot-ssh { failure = "failure 2809b0cd" ; } }
