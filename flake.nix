@@ -769,7 +769,7 @@
                                                                                                                                                 pkgs.writeShellApplication
                                                                                                                                                     {
                                                                                                                                                         name = "github-identity" ;
-                                                                                                                                                        runtimeInputs = [ pkgs.age pkgs.coreutils pkgs.libuuid pkgs.openssh __failure ] ;
+                                                                                                                                                        runtimeInputs = [ pkgs.age pkgs.coreutils pkgs.gh pkgs.libuuid pkgs.openssh __failure ] ;
                                                                                                                                                         text =
                                                                                                                                                             ''
                                                                                                                                                                 cd "$MOUNT/repository"
@@ -805,7 +805,7 @@
                                                                                                                                                 pkgs.writeShellApplication
                                                                                                                                                     {
                                                                                                                                                         name = "github-known-hosts" ;
-                                                                                                                                                        runtimeInputs = [ pkgs.age pkgs.coreutils pkgs.libuuid __failure ] ;
+                                                                                                                                                        runtimeInputs = [ pkgs.age pkgs.coreutils pkgs.gh pkgs.libuuid __failure ] ;
                                                                                                                                                         text =
                                                                                                                                                             ''
                                                                                                                                                                 cd "$MOUNT/repository"
@@ -836,7 +836,7 @@
                                                                                                                                                 pkgs.writeShellApplication
                                                                                                                                                     {
                                                                                                                                                         name = "mobile-known-hosts" ;
-                                                                                                                                                        runtimeInputs = [ pkgs.age pkgs.coreutils pkgs.libuuid __failure ] ;
+                                                                                                                                                        runtimeInputs = [ pkgs.age pkgs.coreutils pkgs.gh pkgs.libuuid __failure ] ;
                                                                                                                                                         text =
                                                                                                                                                             ''
                                                                                                                                                                 cd "$MOUNT/repository"
@@ -867,7 +867,7 @@
                                                                                                                                                 pkgs.writeShellApplication
                                                                                                                                                     {
                                                                                                                                                         name = "mobile-identity" ;
-                                                                                                                                                        runtimeInputs = [ pkgs.age pkgs.coreutils pkgs.libuuid pkgs.openssh __failure ] ;
+                                                                                                                                                        runtimeInputs = [ pkgs.age pkgs.coreutils pkgs.gh pkgs.libuuid pkgs.openssh __failure ] ;
                                                                                                                                                         text =
                                                                                                                                                             ''
                                                                                                                                                                 cd "$MOUNT/repository"
