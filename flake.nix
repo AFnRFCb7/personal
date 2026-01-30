@@ -285,6 +285,36 @@
                                                                                     in "${ application }/bin/init" ;
                                                                         targets = [ "public" ] ;
                                                                     } ;
+                                                            application =
+                                                                {
+                                                                    chromium =
+                                                                        ignore :
+                                                                            {
+                                                                                init =
+                                                                                    { pid , pkgs , resources , root , sequential , wrap } :
+                                                                                        let
+                                                                                            application =
+                                                                                                pkgs.writeShellApplication
+                                                                                                    {
+                                                                                                        name = "init" ;
+                                                                                                        runtimeInputs = [ root __failure ] ;
+                                                                                                        text =
+                                                                                                            ''
+                                                                                                                CONFIG=${ resources.production.repository.chromium.home.data { failure = "failure 0c755ed8" } ; }
+                                                                                                                root "$CONFIG"
+                                                                                                                mkdir --parents /mount/etc
+                                                                                                                ln --symbolic "$CONFIG/repository/secret" /mount/etc/config
+                                                                                                                mkdir --parents /mount/bin
+                                                                                                                DATA=${ resources.production.repositiory.chromium.home.config { failure = "fdcf6e38" ; } }
+                                                                                                                root "$DATA"
+                                                                                                                ln --symbolic "$DATA/repository/secret" /mount/etc/data
+                                                                                                                root ${ pkgs.chromium }
+                                                                                                                ln --symbolic ${ pkgs.chromium }/bin/chromium /mount/bin/chromium
+                                                                                                            '' ;
+                                                                                                    } ;
+                                                                                            in "${ application }/bin/init" ;
+                                                                            } ;
+                                                                } ;
                                                             alpha =
                                                                 ignore :
                                                                     {
@@ -2455,6 +2485,23 @@
                                                                                             (
                                                                                                 pkgs.writeShellApplication
                                                                                                     {
+                                                                                                        name = "chromium" ;
+                                                                                                        runtimeInputs = [ __failure ] ;
+                                                                                                        text =
+                                                                                                            ''
+                                                                                                                RESOURCE=${ resources__.production.application.chromium { failure = "failure 9a104a53" ; } }
+                                                                                                                if [[ -t 0 ]]
+                                                                                                                then
+                                                                                                                    "$RESOURCE/bin/chromium" "$@"
+                                                                                                                else
+                                                                                                                    cat | "$RESOURCE/bin/chromium" "$@"
+                                                                                                                fi
+                                                                                                            '' ;
+                                                                                                    }
+                                                                                            )
+                                                                                            (
+                                                                                                pkgs.writeShellApplication
+                                                                                                    {
                                                                                                         name = "gpg" ;
                                                                                                         runtimeInputs = [ pkgs.gnupg __failure ] ;
                                                                                                         text =
@@ -2501,6 +2548,9 @@
                                                                                                                 case "$RESOURCE" in
                                                                                                                     production.age)
                                                                                                                         SECRETS=${ resources__.production.age { failure = "failure 621b540a" ; } }
+                                                                                                                        ;;
+                                                                                                                    production.application.chromium)
+                                                                                                                        SECRETS=${ resources__.application.chromium { failure = "failure 4a6891d6" ; } }
                                                                                                                         ;;
                                                                                                                     production.dot-gnupg)
                                                                                                                         SECRETS=${ resources__.production.dot-gnupg { failure = "failure f9c7275c" ; } }
