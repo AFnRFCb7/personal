@@ -891,8 +891,7 @@
                                                                                                                                                                 gh auth logout
                                                                                                                                                                 DOT_SSH=${ resources.production.dot-ssh { failure = "failure 9335cc7a" ; } }
                                                                                                                                                                 # ssh -F "$DOT_SSH/config" mobile "rm ~/.authorized_keys"
-                                                                                                                                                                cat "$MOUNT/stage/dot-ssh/mobile/identitiy.asc.pub" | ssh -F "$DOT_SSH/config" mobile "tee --append ~/.ssh/authorized_hosts"
-                                                                                                                                                                gh auth logout
+                                                                                                                                                                ssh -F "$DOT_SSH/config" mobile "tee --append ~/.ssh/authorized_hosts" < "$MOUNT/stage/dot-ssh/mobile/identity.asc.pub"
                                                                                                                                                             '' ;
                                                                                                                                                     } ;
                                                                                                                                             in "${ application }/bin/mobile-identity" ;
