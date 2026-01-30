@@ -873,26 +873,25 @@
                                                                                                                                                                 cd "$MOUNT/repository"
                                                                                                                                                                 git fetch origin ${ config.personal.secrets2.branch }
                                                                                                                                                                 git checkout origin/${ config.personal.secrets2.branch }
-                                                                                                                                                                mkdir --parents "$MOUNT/stage/dot-ssh/github"
-                                                                                                                                                                ssh-keygen -f "$MOUNT/stage/dot-ssh/github/identity.asc" -C "generated" -P ""
-                                                                                                                                                                RECIPIENT=${ resources.production.age { failure = "failure a4114343" ; } }
-                                                                                                                                                                RECIPIENT_="$( cat "$RECIPIENT/public" )" || failure 259d4017
-                                                                                                                                                                age --encrypt --recipient "$RECIPIENT_" --output "$MOUNT/repository/dot-ssh/github/identity.asc.age" "$MOUNT/stage/dot-ssh/github/identity.asc"
-                                                                                                                                                                UUID="$( uuidgen | sha512sum )" || failure b9131928
-                                                                                                                                                                BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 22724f93
+                                                                                                                                                                mkdir --parents "$MOUNT/stage/dot-ssh/mobile"
+                                                                                                                                                                ssh-keygen -f "$MOUNT/stage/dot-ssh/mobile/identity.asc" -C "generated" -P ""
+                                                                                                                                                                RECIPIENT=${ resources.production.age { failure = "failure 1994c57a" ; } }
+                                                                                                                                                                RECIPIENT_="$( cat "$RECIPIENT/public" )" || failure 57606f23
+                                                                                                                                                                age --encrypt --recipient "$RECIPIENT_" --output "$MOUNT/repository/dot-ssh/mobile/identity.asc.age" "$MOUNT/stage/dot-ssh/mobile/identity.asc"
+                                                                                                                                                                UUID="$( uuidgen | sha512sum )" || failure fa87d816
+                                                                                                                                                                BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 7f9ffef5
                                                                                                                                                                 git checkout -b "$BRANCH"
-                                                                                                                                                                git commit -am "recycled github known identity"
+                                                                                                                                                                git commit -am "recycled mobile identity"
                                                                                                                                                                 git push origin "$BRANCH"
-                                                                                                                                                                SECRETS=${ resources.production.repository.secrets2.read-only { failure = "failure 64ef3c7e" ; } }
+                                                                                                                                                                SECRETS=${ resources.production.repository.secrets2.read-only { failure = "failure bcfd4baf" ; } }
                                                                                                                                                                 gh auth login --with-token < "$SECRETS/stage/github/token.asc"
                                                                                                                                                                 gh pr create --base ${ config.personal.secrets2.branch } --head "$BRANCH" --title "update github identity" --body ""
-                                                                                                                                                                URL="$( gh pr view --json url --jq .url )" || failure 864bc6e6
+                                                                                                                                                                URL="$( gh pr view --json url --jq .url )" || failure f5fdf2e4
                                                                                                                                                                 gh pr merge "$URL" --rebase
-                                                                                                                                                                # gh ssh-key list --json id | jq -r '.[].id' | while read -r key_id
-                                                                                                                                                                # do
-                                                                                                                                                                #     gh ssh-key delete "$key_id" --confirm
-                                                                                                                                                                # done
-                                                                                                                                                                gh ssh-key add "$MOUNT/stage/dot-ssh/github/identity.asc.pub"
+                                                                                                                                                                gh auth logout
+                                                                                                                                                                DOT_SSH=${ resources.production.dot-ssh { failure = "failure 9335cc7a" ; } }
+                                                                                                                                                                # ssh -F "$DOT_SSH/config" mobile "rm ~/.authorized_keys"
+                                                                                                                                                                cat "$MOUNT/stage/dot-ssh/mobile/identitiy.asc.pub" | ssh -F "$DOT_SSH/config" mobile "tee --append ~/.ssh/authorized_hosts"
                                                                                                                                                                 gh auth logout
                                                                                                                                                             '' ;
                                                                                                                                                     } ;
@@ -911,6 +910,7 @@
                                                                                                                                             wrap ${ github-identity } stage/alias/github-identity 0500 --literal-plain BRANCH --literal-plain key_id --inherit-plain MOUNT --literal-plain PATH --literal-plain RECIPIENT --literal-plain RECIPIENT_ --literal-plain SECRETS --literal-plain UUID --literal-plain URL
                                                                                                                                             wrap ${ github-known-hosts } stage/alias/github-known-hosts 0500 --literal-plain BRANCH --inherit-plain MOUNT --literal-plain PATH --literal-plain RECIPIENT --literal-plain RECIPIENT_ --literal-plain SECRETS --literal-plain UUID --literal-plain URL
                                                                                                                                             wrap ${ mobile-known-hosts } stage/alias/mobile-known-hosts 0500 --literal-plain BRANCH --inherit-plain MOUNT --literal-plain PATH --literal-plain RECIPIENT --literal-plain RECIPIENT_ --literal-plain SECRETS --literal-plain UUID --literal-plain URL
+                                                                                                                                            wrap ${ github-identity } stage/alias/github-identity 0500 --literal-plain BRANCH --literal-plain DOT_SSH --inherit-plain MOUNT --literal-plain PATH --literal-plain RECIPIENT --literal-plain RECIPIENT_ --literal-plain SECRETS --literal-plain UUID --literal-plain URL
                                                                                                                                             git fetch origin ${ config.personal.secrets2.branch } 2>&1
                                                                                                                                             git checkout origin/${ config.personal.secrets2.branch } 2>&1
                                                                                                                                             UUID="$( uuidgen | sha512sum )" || failure c0d47742
@@ -2095,6 +2095,29 @@
                                                                                                                 ''
                                                                                                                     SECRETS=${ resources__.production.repository.secrets2.read-write { failure = "failure a4112012" ; } }
                                                                                                                     "$SECRETS/stage/alias/github-identity"
+                                                                                                                '' ;
+                                                                                                        } ;
+                                                                                                in "${ application }/bin/ExecStart" ;
+                                                                                        User = config.personal.name ;
+                                                                                    } ;
+                                                                                wantedBy = [ "multi-user.target" ] ;
+                                                                            } ;
+                                                                        recycle-mobile-identity =
+                                                                            {
+                                                                                after = [ "network-online.target" ] ;
+                                                                                serviceConfig =
+                                                                                    {
+                                                                                        ExecStart =
+                                                                                            let
+                                                                                                application =
+                                                                                                    pkgs.writeShellApplication
+                                                                                                        {
+                                                                                                            name = "ExecStart" ;
+                                                                                                            runtimeInputs = [ pkgs.git __failure ] ;
+                                                                                                            text =
+                                                                                                                ''
+                                                                                                                    SECRETS=${ resources__.production.repository.secrets2.read-write { failure = "failure a4112012" ; } }
+                                                                                                                    "$SECRETS/stage/alias/mobile-identity"
                                                                                                                 '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/ExecStart" ;
