@@ -790,6 +790,10 @@
                                                                                                                                                                 gh pr create --base ${ config.personal.secrets2.branch } --head "$BRANCH" --title "update github identity" --body ""
                                                                                                                                                                 URL="$( gh pr view --json url --jq .url )" || failure 864bc6e6
                                                                                                                                                                 gh pr merge "$URL" --rebase
+                                                                                                                                                                # gh ssh-key list --json id | jq -r '.[].id' | while read -r key_id
+                                                                                                                                                                # do
+                                                                                                                                                                #     gh ssh-key delete "$key_id" --confirm
+                                                                                                                                                                # done
                                                                                                                                                                 gh ssh-key add "$MOUNT/stage/dot-ssh/github/identity.asc.pub"
                                                                                                                                                                 gh auth logout
                                                                                                                                                             '' ;
