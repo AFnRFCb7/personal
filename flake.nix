@@ -2053,8 +2053,7 @@
                                                                                                             text =
                                                                                                                 ''
                                                                                                                     SECRETS=${ resources__.production.repository.secrets2.read-write { failure = "failure a4112012" ; } }
-                                                                                                                    cd "$SECRETS/repository"
-                                                                                                                    git github-identitiy
+                                                                                                                    "$SECRETS/stage/alias/github-identity"
                                                                                                                 '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/ExecStart" ;
