@@ -769,9 +769,11 @@
                                                                                                                                                 pkgs.writeShellApplication
                                                                                                                                                     {
                                                                                                                                                         name = "github-identity" ;
-                                                                                                                                                        runtimeInputs = [ pkgs.age pkgs.coreutils pkgs.gh pkgs.libuuid pkgs.openssh __failure ] ;
+                                                                                                                                                        runtimeInputs = [ pkgs.age pkgs.coreutils pkgs.flock pkgs.gh pkgs.libuuid pkgs.openssh __failure ] ;
                                                                                                                                                         text =
                                                                                                                                                             ''
+                                                                                                                                                                exec 201> "$MOUNT/lock"
+                                                                                                                                                                flock 201
                                                                                                                                                                 cd "$MOUNT/repository"
                                                                                                                                                                 git fetch origin ${ config.personal.secrets2.branch }
                                                                                                                                                                 git checkout origin/${ config.personal.secrets2.branch }
@@ -805,9 +807,11 @@
                                                                                                                                                 pkgs.writeShellApplication
                                                                                                                                                     {
                                                                                                                                                         name = "github-token" ;
-                                                                                                                                                        runtimeInputs = [ pkgs.age pkgs.coreutils pkgs.gh pkgs.libuuid pkgs.openssh __failure ] ;
+                                                                                                                                                        runtimeInputs = [ pkgs.age pkgs.coreutils pkgs.flock pkgs.gh pkgs.libuuid pkgs.openssh __failure ] ;
                                                                                                                                                         text =
                                                                                                                                                             ''
+                                                                                                                                                                exec 201> "$MOUNT/lock"
+                                                                                                                                                                flock 201
                                                                                                                                                                 cd "$MOUNT/repository"
                                                                                                                                                                 git fetch origin ${ config.personal.secrets2.branch }
                                                                                                                                                                 git checkout origin/${ config.personal.secrets2.branch }
@@ -836,9 +840,11 @@
                                                                                                                                                 pkgs.writeShellApplication
                                                                                                                                                     {
                                                                                                                                                         name = "github-known-hosts" ;
-                                                                                                                                                        runtimeInputs = [ pkgs.age pkgs.coreutils pkgs.gh pkgs.libuuid __failure ] ;
+                                                                                                                                                        runtimeInputs = [ pkgs.age pkgs.coreutils pkgs.flock pkgs.gh pkgs.libuuid __failure ] ;
                                                                                                                                                         text =
                                                                                                                                                             ''
+                                                                                                                                                                exec 201> "$MOUNT/lock"
+                                                                                                                                                                flock 201
                                                                                                                                                                 cd "$MOUNT/repository"
                                                                                                                                                                 git fetch origin ${ config.personal.secrets2.branch }
                                                                                                                                                                 git checkout origin/${ config.personal.secrets2.branch }
@@ -867,9 +873,11 @@
                                                                                                                                                 pkgs.writeShellApplication
                                                                                                                                                     {
                                                                                                                                                         name = "mobile-known-hosts" ;
-                                                                                                                                                        runtimeInputs = [ pkgs.age pkgs.coreutils pkgs.gh pkgs.libuuid __failure ] ;
+                                                                                                                                                        runtimeInputs = [ pkgs.age pkgs.coreutils pkgs.flock pkgs.gh pkgs.libuuid __failure ] ;
                                                                                                                                                         text =
                                                                                                                                                             ''
+                                                                                                                                                                exec 201> "$MOUNT/lock"
+                                                                                                                                                                flock 201
                                                                                                                                                                 cd "$MOUNT/repository"
                                                                                                                                                                 git fetch origin ${ config.personal.secrets2.branch }
                                                                                                                                                                 git checkout origin/${ config.personal.secrets2.branch }
@@ -898,9 +906,11 @@
                                                                                                                                                 pkgs.writeShellApplication
                                                                                                                                                     {
                                                                                                                                                         name = "mobile-identity" ;
-                                                                                                                                                        runtimeInputs = [ pkgs.age pkgs.coreutils pkgs.gh pkgs.libuuid pkgs.openssh __failure ] ;
+                                                                                                                                                        runtimeInputs = [ pkgs.age pkgs.coreutils pkgs.flock pkgs.gh pkgs.libuuid pkgs.openssh __failure ] ;
                                                                                                                                                         text =
                                                                                                                                                             ''
+                                                                                                                                                                exec 201> "$MOUNT/lock"
+                                                                                                                                                                flock 201
                                                                                                                                                                 cd "$MOUNT/repository"
                                                                                                                                                                 DOT_SSH=${ resources.production.dot-ssh { failure = "failure 9335cc7a" ; } }
                                                                                                                                                                 git fetch origin ${ config.personal.secrets2.branch }
