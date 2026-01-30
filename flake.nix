@@ -798,7 +798,7 @@
                                                                                                                                                                 gh auth logout
                                                                                                                                                             '' ;
                                                                                                                                                     } ;
-                                                                                                                                            in "${ application }/bin/github-known-hosts" ;
+                                                                                                                                            in "${ application }/bin/github-identity" ;
                                                                                                                                     github-known-hosts =
                                                                                                                                         let
                                                                                                                                             application =
