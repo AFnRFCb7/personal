@@ -300,12 +300,12 @@
                                                                                                         runtimeInputs = [ root __failure ] ;
                                                                                                         text =
                                                                                                             ''
-                                                                                                                CONFIG=${ resources.production.repository.chromium.home.data { failure = "failure 0c755ed8" ; } }
+                                                                                                                CONFIG=${ resources.production.pads.home.chromium.data { failure = "failure 0c755ed8" ; } }
                                                                                                                 root "$CONFIG"
                                                                                                                 mkdir --parents /mount/etc
                                                                                                                 ln --symbolic "$CONFIG/repository/secret" /mount/etc/config
                                                                                                                 mkdir --parents /mount/bin
-                                                                                                                DATA=${ resources.production.repositiory.chromium.home.config { failure = "fdcf6e38" ; } }
+                                                                                                                DATA=${ resources.production.pads.home.chromium.data { failure = "fdcf6e38" ; } }
                                                                                                                 root "$DATA"
                                                                                                                 ln --symbolic "$DATA/repository/secret" /mount/etc/data
                                                                                                                 root ${ pkgs.chromium }
