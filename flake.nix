@@ -871,6 +871,7 @@
                                                                                                                                                         text =
                                                                                                                                                             ''
                                                                                                                                                                 cd "$MOUNT/repository"
+                                                                                                                                                                DOT_SSH=${ resources.production.dot-ssh { failure = "failure 9335cc7a" ; } }
                                                                                                                                                                 git fetch origin ${ config.personal.secrets2.branch }
                                                                                                                                                                 git checkout origin/${ config.personal.secrets2.branch }
                                                                                                                                                                 mkdir --parents "$MOUNT/stage/dot-ssh/mobile"
@@ -889,9 +890,8 @@
                                                                                                                                                                 URL="$( gh pr view --json url --jq .url )" || failure f5fdf2e4
                                                                                                                                                                 gh pr merge "$URL" --rebase
                                                                                                                                                                 gh auth logout
-                                                                                                                                                                DOT_SSH=${ resources.production.dot-ssh { failure = "failure 9335cc7a" ; } }
                                                                                                                                                                 # ssh -F "$DOT_SSH/config" mobile "rm ~/.authorized_keys"
-                                                                                                                                                                ssh -F "$DOT_SSH/config" mobile "tee --append ~/.ssh/authorized_hosts" < "$MOUNT/stage/dot-ssh/mobile/identity.asc.pub"
+                                                                                                                                                                ssh -F "$DOT_SSH/config" mobile "tee --append ~/.ssh/authorized_kets" < "$MOUNT/stage/dot-ssh/mobile/identity.asc.pub"
                                                                                                                                                             '' ;
                                                                                                                                                     } ;
                                                                                                                                             in "${ application }/bin/mobile-identity" ;
