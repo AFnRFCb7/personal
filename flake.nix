@@ -2474,7 +2474,7 @@
                                                                                                 pkgs.writeShellApplication
                                                                                                     {
                                                                                                         name = "pass" ;
-                                                                                                        runtimeInputs = [ pkgs.pass __ failure ] ;
+                                                                                                        runtimeInputs = [ pkgs.pass __failure ] ;
                                                                                                         text =
                                                                                                             ''
                                                                                                                 DOT_GNUPG=${ resources__.production.dot-gnupg { failure = "failure 769a9015" ; } }
