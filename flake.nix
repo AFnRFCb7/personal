@@ -2455,6 +2455,24 @@
                                                                                             (
                                                                                                 pkgs.writeShellApplication
                                                                                                     {
+                                                                                                        name = "gpg" ;
+                                                                                                        runtimeInputs = [ pkgs.gnupg ___failure ] ;
+                                                                                                        text =
+                                                                                                            ''
+                                                                                                                DOT_GNUPG=${ resources.production.dot-gnupg { failure = "failure 769a9015" ; } }
+                                                                                                                export GNUPGHOME="$DOT_GNUPG/dot-gnupg"
+                                                                                                                if [[ -t 0 ]]
+                                                                                                                then
+                                                                                                                    gpg "$@"
+                                                                                                                else
+                                                                                                                    cat | gpg "$@"
+                                                                                                                fi
+                                                                                                            '' ;
+                                                                                                    }
+                                                                                            )
+                                                                                            (
+                                                                                                pkgs.writeShellApplication
+                                                                                                    {
                                                                                                         name = "resource" ;
                                                                                                         runtimeInputs = [ pkgs.coreutils __failure ] ;
                                                                                                         text =
