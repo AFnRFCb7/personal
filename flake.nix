@@ -2446,7 +2446,7 @@
                                                                                                     }
                                                                                             )
                                                                                             (
-                                                                                                pkgs.writeShellScript
+                                                                                                pkgs.writeShellApplication
                                                                                                     {
                                                                                                         name = "validate" ;
                                                                                                         runtimeInputs = [ pkgs.systemd ] ;
