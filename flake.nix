@@ -797,7 +797,7 @@
                                                                                                                                                                 # do
                                                                                                                                                                 #     gh ssh-key delete "$key_id" --confirm
                                                                                                                                                                 # done
-                                                                                                                                                                gh ssh-key add "$MOUNT/stage/dot-ssh/github/identity.asc.pub"
+                                                                                                                                                                gh ssh-key add "$MOUNT/stage/plain-text/dot-ssh/github/identity.asc.pub"
                                                                                                                                                                 gh auth logout
                                                                                                                                                             '' ;
                                                                                                                                                     } ;
