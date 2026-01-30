@@ -300,7 +300,7 @@
                                                                                                         runtimeInputs = [ root __failure ] ;
                                                                                                         text =
                                                                                                             ''
-                                                                                                                CONFIG=${ resources.production.repository.chromium.home.data { failure = "failure 0c755ed8" } ; }
+                                                                                                                CONFIG=${ resources.production.repository.chromium.home.data { failure = "failure 0c755ed8" ; } }
                                                                                                                 root "$CONFIG"
                                                                                                                 mkdir --parents /mount/etc
                                                                                                                 ln --symbolic "$CONFIG/repository/secret" /mount/etc/config
