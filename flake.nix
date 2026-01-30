@@ -911,6 +911,7 @@
                                                                                                                                                             ''
                                                                                                                                                                 exec 201> "$MOUNT/lock"
                                                                                                                                                                 flock 201
+                                                                                                                                                                SECRETS=${ resources.production.repository.secrets2.read-only { failure = "failure bcfd4baf" ; } }
                                                                                                                                                                 cd "$MOUNT/repository"
                                                                                                                                                                 DOT_SSH=${ resources.production.dot-ssh { failure = "failure 9335cc7a" ; } }
                                                                                                                                                                 git fetch origin ${ config.personal.secrets2.branch }
@@ -925,7 +926,6 @@
                                                                                                                                                                 git checkout -b "$BRANCH"
                                                                                                                                                                 git commit -am "recycled mobile identity"
                                                                                                                                                                 git push origin "$BRANCH"
-                                                                                                                                                                SECRETS=${ resources.production.repository.secrets2.read-only { failure = "failure bcfd4baf" ; } }
                                                                                                                                                                 gh auth login --with-token < "$SECRETS/stage/github/token.asc"
                                                                                                                                                                 gh pr create --base ${ config.personal.secrets2.branch } --head "$BRANCH" --title "update mobile identity" --body ""
                                                                                                                                                                 URL="$( gh pr view --json url --jq .url )" || failure f5fdf2e4
