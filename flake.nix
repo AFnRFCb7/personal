@@ -358,7 +358,7 @@
                                                                                                                                         ''
                                                                                                                                             DOT_GNUPG=${ resources__.production.dot-gnupg { failure = "failure 75dc4165" ; } }
                                                                                                                                             export GNUPGHOME="$DOT_GNUPG/dot-gnupg"
-                                                                                                                                            gpg --homedir "$GNUPGHOME" --sign --local-user ${ config.personal.chromium.home.data } --dry-run
+                                                                                                                                            gpg --homedir "$GNUPGHOME" --sign --local-user ${ config.personal.chromium.home.data.email } --dry-run
                                                                                                                                         '' ;
                                                                                                                                 } ;
                                                                                                                         in "${ application }/bin/unlock" ;
