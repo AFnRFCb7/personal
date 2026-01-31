@@ -285,6 +285,7 @@
                                                                                     in "${ application }/bin/init" ;
                                                                         targets = [ "public" ] ;
                                                                     } ;
+                                                            autocomplete = { } ;
                                                             application =
                                                                 {
                                                                     chromium =
@@ -391,6 +392,43 @@
                                                                                         in "${ application }/bin/init" ;
                                                                         targets = [ "secret" ] ;
                                                                     } ;
+                                                            bin =
+                                                                let
+                                                                    bin =
+                                                                        name : runtimeInputs : text : ignore :
+                                                                            {
+                                                                                init =
+                                                                                    { pid , pkgs , resources , root , sequential , wrap } :
+                                                                                        let
+                                                                                            application =
+                                                                                                pkgs.writeShellApplication
+                                                                                                    {
+                                                                                                        name = "init" ;
+                                                                                                        runtimeInputs = [ wrap ] ;
+                                                                                                        text =
+                                                                                                            let
+                                                                                                                bin =
+                                                                                                                    let
+                                                                                                                        application =
+                                                                                                                            pkgs.writeShellApplication
+                                                                                                                                {
+                                                                                                                                    name = name ;
+                                                                                                                                    runtimeInputs = runtimeInputs ;
+                                                                                                                                    text = text ;
+                                                                                                                                } ;
+                                                                                                                        in "${ application }/bin/${ name }" ;
+                                                                                                                in
+                                                                                                                    ''
+                                                                                                                        wrap ${ bin } ${ name } 0500 --literal-plain PATH
+                                                                                                                    '' ;
+                                                                                                    } ;
+                                                                                            in "${ application }/bin/init" ;
+                                                                                targets = [ name ] ;
+                                                                            } ;
+                                                                    in
+                                                                        {
+                                                                            chromium = bin "chromium" [ pkgs.chromium ] ''"chromiumb "$@"''
+                                                                        } ;
                                                             dot-gnupg =
                                                                 ignore :
                                                                     _dot-gnupg.implementation
@@ -535,6 +573,7 @@
                                                                                 targets = [ "result" "shared" "standard-error" "standard-output" "status" ] ;
                                                                             } ;
                                                                 } ;
+                                                            man = { } ;
                                                             pads =
                                                                 let
                                                                     mapper =
