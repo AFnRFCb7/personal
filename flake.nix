@@ -345,6 +345,7 @@
                                                                                                 pkgs.writeShellApplication
                                                                                                     {
                                                                                                         name = "init" ;
+                                                                                                        runtimeInputs = [ wrap ] ;
                                                                                                         text =
                                                                                                             let
                                                                                                                 unlock =
