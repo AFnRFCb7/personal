@@ -365,7 +365,7 @@
                                                                                                                         in "${ application }/bin/unlock" ;
                                                                                                                 in
                                                                                                                     ''
-                                                                                                                        wrap ${ unlock } bin/unlock --literal-path DOT_GNUPG 0500 --literal-path PATH
+                                                                                                                        wrap ${ unlock } bin/unlock 0500 --literal-path DOT_GNUPG --literal-path PATH
                                                                                                                     '' ;
                                                                                                     } ;
                                                                                                 in "${ application }/bin/init" ;
