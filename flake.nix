@@ -335,6 +335,41 @@
                                                                                             in "${ application }/bin/init" ;
                                                                                 targets = [ "bin" "etc" ] ;
                                                                             } ;
+                                                                    unlock =
+                                                                        ignore :
+                                                                            {
+                                                                                init =
+                                                                                    { pid , pkgs , resources , root , sequential , wrap } :
+                                                                                        let
+                                                                                            application =
+                                                                                                pkgs.writeShellApplication
+                                                                                                    {
+                                                                                                        name = "init" ;
+                                                                                                        text =
+                                                                                                            let
+                                                                                                                unlock =
+                                                                                                                    let
+                                                                                                                        application =
+                                                                                                                            pkgs.writeShellApplication
+                                                                                                                                {
+                                                                                                                                    name = "unlock" ;
+                                                                                                                                    runtimeInputs = [ pkgs.gnupg ] ;
+                                                                                                                                    text =
+                                                                                                                                        ''
+                                                                                                                                            DOT_GNUPG=${ resources__.production.dot-gnupg { failure = "failure 75dc4165" ; } }
+                                                                                                                                            export GNUPGHOME="$DOT_GNUPG/dot-gnupg"
+                                                                                                                                            gpg --homedir "$GNUPGHOME" --sign --local-user ${ config.personal.chromium.config.data } --dry-run
+                                                                                                                                            gpg --homedir "$GNUPGHOME" --sign --local-user ${ config.personal.chromium.home.data } --dry-run
+                                                                                                                                        '' ;
+                                                                                                                                } ;
+                                                                                                                        in "${ application }/bin/unlock" ;
+                                                                                                                in
+                                                                                                                    ''
+                                                                                                                    '' ;
+                                                                                                    } ;
+                                                                                                in "${ application }/bin/init" ;
+                                                                                targets = [ "bin" ] ;
+                                                                            } ;
                                                                 } ;
                                                             alpha =
                                                                 ignore :
@@ -2205,8 +2240,8 @@
                                                                                                                             mkdir --parents /home/${ config.personal.name }/pad
                                                                                                                             cat <<EOF > /home/${ config.personal.name }/pad/.envrc
                                                                                                                             ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''export ${ name }="${ value }"'' ) config.personal.pads.environment ) ) }
-                                                                                                                            export MANPATH="${ builtins.concatStringsSep ":" ( builtins.attrValues ( builtins.mapAttrs mapper ( config.personal.pads.man { config = config ; } ) ) }"
-                                                                                                                            export PATH="${ builtins.concatStringsSep ":" ( builtins.map ( value : "${ value }/bin" ) ( builtins.concatLists [ config.personal.pads { config = config ; }.bin [ pkgs.less pkgs.man-db ] ] ) ) }"
+                                                                                                                            export MANPATH="${ builtins.concatStringsSep ":" ( builtins.attrValues ( builtins.mapAttrs mapper config.personal.pads.man ) ) }"
+                                                                                                                            export PATH="${ builtins.concatStringsSep ":" ( builtins.map ( value : "${ value }/bin" ) ( builtins.concatLists [ config.personal.pads.bin [ pkgs.less pkgs.man-db ] ] ) ) }"
                                                                                                                             EOF
                                                                                                                             chmod 0400 /home/${ config.personal.name }/pad/.envrc
                                                                                                                         '' ;
@@ -2488,215 +2523,208 @@
                                                                     lib.mkOption
                                                                         {
                                                                             type =
-                                                                                let
-                                                                                    type =
-                                                                                        lib.types.submodule
-                                                                                            {
-                                                                                                options =
-                                                                                                    {
-                                                                                                        autocomplete = lib.mkOption { default = null ; type = lib.types.nullOr lib.types.str ; } ;
-                                                                                                        bin = lib.mkOption { default = null ; type = lib.types.nullOr ( lib.types.listOf lib.types.path ) ; } ;
-                                                                                                        environment = lib.mkOption { default = null ; type = lib.types.nullOr ( lib.types.attrsOf lib.types.str ) ; } ;
-                                                                                                        man = lib.mkOption { default = null ; type = lib.types.nullOr ( lib.types.attrsOf lib.types.str ) ; } ;
-                                                                                                    } ;
-                                                                                            } ;
-                                                                                    in lib.types.functionTo type ;
-                                                                            default =
-                                                                                { config } :
+                                                                                lib.types.submodule
                                                                                     {
-                                                                                        bin =
-                                                                                            [
-                                                                                                pkgs.coreutils
-                                                                                                (
-                                                                                                    pkgs.writeShellApplication
-                                                                                                        {
-                                                                                                            name = "chromium" ;
-                                                                                                            runtimeInputs = [ __failure ] ;
-                                                                                                            text =
-                                                                                                                ''
-                                                                                                                    RESOURCE=${ resources__.production.application.chromium { failure = "failure 9a104a53" ; } }
-                                                                                                                    if [[ -t 0 ]]
-                                                                                                                    then
-                                                                                                                        "$RESOURCE/bin/chromium" "$@"
-                                                                                                                    else
-                                                                                                                        cat | "$RESOURCE/bin/chromium" "$@"
-                                                                                                                    fi
-                                                                                                                '' ;
-                                                                                                        }
-                                                                                                )
-                                                                                                (
-                                                                                                    pkgs.writeShellApplication
-                                                                                                        {
-                                                                                                            name = "gpg" ;
-                                                                                                            runtimeInputs = [ pkgs.gnupg __failure ] ;
-                                                                                                            text =
-                                                                                                                ''
-                                                                                                                    DOT_GNUPG=${ resources__.production.dot-gnupg { failure = "failure 769a9015" ; } }
-                                                                                                                    export GNUPGHOME="$DOT_GNUPG/dot-gnupg"
-                                                                                                                    if [[ -t 0 ]]
-                                                                                                                    then
-                                                                                                                        gpg "$@"
-                                                                                                                    else
-                                                                                                                        cat | gpg "$@"
-                                                                                                                    fi
-                                                                                                                '' ;
-                                                                                                        }
-                                                                                                )
-                                                                                                (
-                                                                                                    pkgs.writeShellApplication
-                                                                                                        {
-                                                                                                            name = "pass" ;
-                                                                                                            runtimeInputs = [ pkgs.pass __failure ] ;
-                                                                                                            text =
-                                                                                                                ''
-                                                                                                                    DOT_GNUPG=${ resources__.production.dot-gnupg { failure = "failure 769a9015" ; } }
-                                                                                                                    export PASSWORD_STORE_GPG_OPTS="--homedir $DOT_GNUPG/dot-gnupg"
-                                                                                                                    PASSWORD_STORE_RESOURCE=${ resources__.production.repository.pass { failure = "failure 32dbc840" ; } }
-                                                                                                                    export PASSWORD_STORE_DIR="$PASSWORD_STORE_RESOURCE/repository"
-                                                                                                                    if [[ -t 0 ]]
-                                                                                                                    then
-                                                                                                                        pass "$@"
-                                                                                                                    else
-                                                                                                                        cat | pass "$@"
-                                                                                                                    fi
-                                                                                                                '' ;
-                                                                                                        }
-                                                                                                )
-                                                                                                (
-                                                                                                    pkgs.writeShellApplication
-                                                                                                        {
-                                                                                                            name = "resource" ;
-                                                                                                            runtimeInputs = [ pkgs.coreutils __failure ] ;
-                                                                                                            text =
-                                                                                                                ''
-                                                                                                                    RESOURCE="$1"
-                                                                                                                    case "$RESOURCE" in
-                                                                                                                        production.age)
-                                                                                                                            SECRETS=${ resources__.production.age { failure = "failure 621b540a" ; } }
-                                                                                                                            ;;
-                                                                                                                        production.application.chromium)
-                                                                                                                            SECRETS=${ resources__.production.application.chromium { failure = "failure 4a6891d6" ; } }
-                                                                                                                            ;;
-                                                                                                                        production.dot-gnupg)
-                                                                                                                            SECRETS=${ resources__.production.dot-gnupg { failure = "failure f9c7275c" ; } }
-                                                                                                                            ;;
-                                                                                                                        production.dot-ssh)
-                                                                                                                            SECRETS=${ resources__.production.dot-ssh { failure = "failure 2809b0cd" ; } }
-                                                                                                                            ;;
-                                                                                                                        production.repository.pass)
-                                                                                                                            SECRETS=${ resources__.production.repository.pass { failure = "failure 1b0cb804" ; } }
-                                                                                                                            ;;
-                                                                                                                        production.repository.secrets.read-only)
-                                                                                                                            SECRETS=${ resources__.production.repository.secrets2.read-only { failure = "failure ac87264d" ; } }
-                                                                                                                            ;;
-                                                                                                                        production.repository.secrets.read-write)
-                                                                                                                            SECRETS=${ resources__.production.repository.secrets2.read-write { failure = "failure 54981699" ; } }
-                                                                                                                            ;;
-                                                                                                                        archaic)
-                                                                                                                            SECRETS=${ resources__.production.repository.studio.secrets { failure = "failure cdafc416" ; } }
-                                                                                                                            ;;
-                                                                                                                        *)
-                                                                                                                            failure 8c74dc80
-                                                                                                                            ;;
-                                                                                                                    esac
-                                                                                                                    echo "$SECRETS"
-                                                                                                                '' ;
-                                                                                                        }
-                                                                                                )
-                                                                                                (
-                                                                                                    pkgs.writeShellApplication
-                                                                                                        {
-                                                                                                            name = "unlock" ;
-                                                                                                            runtimeInputs = [ ] ;
-                                                                                                            text =
-                                                                                                                ''
-                                                                                                                    DOT_GNUPG=${ resources__.production.dot-gnupg { failure = "failure 75dc4165" ; } }
-                                                                                                                    export GNUPGHOME="$DOT_GNUPG/dot-gnupg"
-                                                                                                                    gpg --homedir "$GNUPGHOME" --sign --local-user ${ config.personal.chromium.config.data } --dry-run
-                                                                                                                    gpg --homedir "$GNUPGHOME" --sign --local-user ${ config.personal.chromium.home.data } --dry-run
-                                                                                                                '' ;
-                                                                                                        }
-                                                                                                )
-                                                                                                (
-                                                                                                    pkgs.writeShellApplication
-                                                                                                        {
-                                                                                                            name = "validate" ;
-                                                                                                            runtimeInputs = [ pkgs.systemd ] ;
-                                                                                                            text =
-                                                                                                                ''
-                                                                                                                    systemctl status recycle-github-identity
-                                                                                                                    systemctl status recycle-mobile-identity
-                                                                                                                '' ;
-                                                                                                        }
-                                                                                                )
-                                                                                            ] ;
-                                                                                        environment =
+                                                                                        options =
                                                                                             {
-                                                                                                NAME = "FOOBAR" ;
-                                                                                            } ;
-                                                                                        man =
-                                                                                            {
-                                                                                                resource =
-                                                                                                    ''
-                                                                                                        .TH RESOURCE_FETCH 1 "January 2026" "1.0" "User Commands"
-                                                                                                        .SH NAME
-                                                                                                        resource_fetch \- Fetch and return a resource based on the specified name.
-
-                                                                                                        .SH SYNOPSIS
-                                                                                                        .B resource_fetch
-                                                                                                        [\fIresource_name\fR]
-
-                                                                                                        .SH DESCRIPTION
-                                                                                                        The
-                                                                                                        .B resource_fetch
-                                                                                                        script allows users to fetch specific resources based on their provided name. The script takes a single argument which specifies the name of the desired resource. Based on this argument, the script fetches and outputs the corresponding secret or resource from predefined configurations.
-
-                                                                                                        The valid resource names are:
-                                                                                                        - production.repository.secrets.read-only
-                                                                                                        - archaic
-
-                                                                                                        The script retrieves these resources from internal configurations defined within the script or external files, ensuring resources are returned correctly.
-
-                                                                                                        .SH ARGUMENTS
-                                                                                                        .TP
-                                                                                                        \fIresource_name\fR
-                                                                                                        The name of the resource to fetch. This should be one of the following:
-                                                                                                        - \fBproduction.repository.secrets.read-only\fR
-                                                                                                        - \fBarchaic\fR
-
-                                                                                                        .SH EXAMPLES
-                                                                                                        To fetch the production repository's read-only secrets:
-                                                                                                        .PP
-                                                                                                        $ resource_fetch production.repository.secrets.read-only
-                                                                                                        .PP
-                                                                                                        This will output the secrets for the production repository in read-only mode.
-
-                                                                                                        To fetch secrets from the archaic studio repository:
-                                                                                                        .PP
-                                                                                                        $ resource_fetch archaic
-                                                                                                        .PP
-                                                                                                        This will output the secrets related to the archaic studio repository.
-
-                                                                                                        .SH EXIT STATUS
-                                                                                                        The script returns the following exit statuses:
-                                                                                                        .TP
-                                                                                                        0
-                                                                                                        Success. The requested resource was fetched and printed.
-                                                                                                        .TP
-                                                                                                        1
-                                                                                                        Failure. Invalid resource name or failure to fetch the requested resource.
-
-                                                                                                        .SH ENVIRONMENT VARIABLES
-                                                                                                        The script uses the following environment variables:
-                                                                                                        .TP
-                                                                                                        resources__
-                                                                                                        A configuration or environment variable that defines the resources to fetch from.
-
-                                                                                                        .SH SEE ALSO
-                                                                                                        resources(5), failure(1)
-                                                                                                    '' ;
+                                                                                                autocomplete = lib.mkOption { default = null ; type = lib.types.nullOr lib.types.str ; } ;
+                                                                                                bin = lib.mkOption { default = null ; type = lib.types.nullOr ( lib.types.listOf lib.types.path ) ; } ;
+                                                                                                environment = lib.mkOption { default = null ; type = lib.types.nullOr ( lib.types.attrsOf lib.types.str ) ; } ;
+                                                                                                man = lib.mkOption { default = null ; type = lib.types.nullOr ( lib.types.attrsOf lib.types.str ) ; } ;
                                                                                             } ;
                                                                                     } ;
+                                                                            default =
+                                                                                {
+                                                                                    bin =
+                                                                                        [
+                                                                                            pkgs.coreutils
+                                                                                            (
+                                                                                                pkgs.writeShellApplication
+                                                                                                    {
+                                                                                                        name = "chromium" ;
+                                                                                                        runtimeInputs = [ __failure ] ;
+                                                                                                        text =
+                                                                                                            ''
+                                                                                                                RESOURCE=${ resources__.production.application.chromium { failure = "failure 9a104a53" ; } }
+                                                                                                                if [[ -t 0 ]]
+                                                                                                                then
+                                                                                                                    "$RESOURCE/bin/chromium" "$@"
+                                                                                                                else
+                                                                                                                    cat | "$RESOURCE/bin/chromium" "$@"
+                                                                                                                fi
+                                                                                                            '' ;
+                                                                                                    }
+                                                                                            )
+                                                                                            (
+                                                                                                pkgs.writeShellApplication
+                                                                                                    {
+                                                                                                        name = "gpg" ;
+                                                                                                        runtimeInputs = [ pkgs.gnupg __failure ] ;
+                                                                                                        text =
+                                                                                                            ''
+                                                                                                                DOT_GNUPG=${ resources__.production.dot-gnupg { failure = "failure 769a9015" ; } }
+                                                                                                                export GNUPGHOME="$DOT_GNUPG/dot-gnupg"
+                                                                                                                if [[ -t 0 ]]
+                                                                                                                then
+                                                                                                                    gpg "$@"
+                                                                                                                else
+                                                                                                                    cat | gpg "$@"
+                                                                                                                fi
+                                                                                                            '' ;
+                                                                                                    }
+                                                                                            )
+                                                                                            (
+                                                                                                pkgs.writeShellApplication
+                                                                                                    {
+                                                                                                        name = "pass" ;
+                                                                                                        runtimeInputs = [ pkgs.pass __failure ] ;
+                                                                                                        text =
+                                                                                                            ''
+                                                                                                                DOT_GNUPG=${ resources__.production.dot-gnupg { failure = "failure 769a9015" ; } }
+                                                                                                                export PASSWORD_STORE_GPG_OPTS="--homedir $DOT_GNUPG/dot-gnupg"
+                                                                                                                PASSWORD_STORE_RESOURCE=${ resources__.production.repository.pass { failure = "failure 32dbc840" ; } }
+                                                                                                                export PASSWORD_STORE_DIR="$PASSWORD_STORE_RESOURCE/repository"
+                                                                                                                if [[ -t 0 ]]
+                                                                                                                then
+                                                                                                                    pass "$@"
+                                                                                                                else
+                                                                                                                    cat | pass "$@"
+                                                                                                                fi
+                                                                                                            '' ;
+                                                                                                    }
+                                                                                            )
+                                                                                            (
+                                                                                                pkgs.writeShellApplication
+                                                                                                    {
+                                                                                                        name = "resource" ;
+                                                                                                        runtimeInputs = [ pkgs.coreutils __failure ] ;
+                                                                                                        text =
+                                                                                                            ''
+                                                                                                                RESOURCE="$1"
+                                                                                                                case "$RESOURCE" in
+                                                                                                                    production.age)
+                                                                                                                        SECRETS=${ resources__.production.age { failure = "failure 621b540a" ; } }
+                                                                                                                        ;;
+                                                                                                                    production.application.chromium)
+                                                                                                                        SECRETS=${ resources__.production.application.chromium { failure = "failure 4a6891d6" ; } }
+                                                                                                                        ;;
+                                                                                                                    production.dot-gnupg)
+                                                                                                                        SECRETS=${ resources__.production.dot-gnupg { failure = "failure f9c7275c" ; } }
+                                                                                                                        ;;
+                                                                                                                    production.dot-ssh)
+                                                                                                                        SECRETS=${ resources__.production.dot-ssh { failure = "failure 2809b0cd" ; } }
+                                                                                                                        ;;
+                                                                                                                    production.repository.pass)
+                                                                                                                        SECRETS=${ resources__.production.repository.pass { failure = "failure 1b0cb804" ; } }
+                                                                                                                        ;;
+                                                                                                                    production.repository.secrets.read-only)
+                                                                                                                        SECRETS=${ resources__.production.repository.secrets2.read-only { failure = "failure ac87264d" ; } }
+                                                                                                                        ;;
+                                                                                                                    production.repository.secrets.read-write)
+                                                                                                                        SECRETS=${ resources__.production.repository.secrets2.read-write { failure = "failure 54981699" ; } }
+                                                                                                                        ;;
+                                                                                                                    archaic)
+                                                                                                                        SECRETS=${ resources__.production.repository.studio.secrets { failure = "failure cdafc416" ; } }
+                                                                                                                        ;;
+                                                                                                                    *)
+                                                                                                                        failure 8c74dc80
+                                                                                                                        ;;
+                                                                                                                esac
+                                                                                                                echo "$SECRETS"
+                                                                                                            '' ;
+                                                                                                    }
+                                                                                            )
+                                                                                            (
+                                                                                                pkgs.writeShellApplication
+                                                                                                    {
+                                                                                                        name = "unlock" ;
+                                                                                                        runtimeInputs = [ ] ;
+                                                                                                        text =
+                                                                                                            ''
+
+                                                                                                            '' ;
+                                                                                                    }
+                                                                                            )
+                                                                                            (
+                                                                                                pkgs.writeShellApplication
+                                                                                                    {
+                                                                                                        name = "validate" ;
+                                                                                                        runtimeInputs = [ pkgs.systemd ] ;
+                                                                                                        text =
+                                                                                                            ''
+                                                                                                                systemctl status recycle-github-identity
+                                                                                                                systemctl status recycle-mobile-identity
+                                                                                                            '' ;
+                                                                                                    }
+                                                                                            )
+                                                                                        ] ;
+                                                                                    environment =
+                                                                                        {
+                                                                                            NAME = "FOOBAR" ;
+                                                                                        } ;
+                                                                                    man =
+                                                                                        {
+                                                                                            resource =
+                                                                                                ''
+                                                                                                    .TH RESOURCE_FETCH 1 "January 2026" "1.0" "User Commands"
+                                                                                                    .SH NAME
+                                                                                                    resource_fetch \- Fetch and return a resource based on the specified name.
+
+                                                                                                    .SH SYNOPSIS
+                                                                                                    .B resource_fetch
+                                                                                                    [\fIresource_name\fR]
+
+                                                                                                    .SH DESCRIPTION
+                                                                                                    The
+                                                                                                    .B resource_fetch
+                                                                                                    script allows users to fetch specific resources based on their provided name. The script takes a single argument which specifies the name of the desired resource. Based on this argument, the script fetches and outputs the corresponding secret or resource from predefined configurations.
+
+                                                                                                    The valid resource names are:
+                                                                                                    - production.repository.secrets.read-only
+                                                                                                    - archaic
+
+                                                                                                    The script retrieves these resources from internal configurations defined within the script or external files, ensuring resources are returned correctly.
+
+                                                                                                    .SH ARGUMENTS
+                                                                                                    .TP
+                                                                                                    \fIresource_name\fR
+                                                                                                    The name of the resource to fetch. This should be one of the following:
+                                                                                                    - \fBproduction.repository.secrets.read-only\fR
+                                                                                                    - \fBarchaic\fR
+
+                                                                                                    .SH EXAMPLES
+                                                                                                    To fetch the production repository's read-only secrets:
+                                                                                                    .PP
+                                                                                                    $ resource_fetch production.repository.secrets.read-only
+                                                                                                    .PP
+                                                                                                    This will output the secrets for the production repository in read-only mode.
+
+                                                                                                    To fetch secrets from the archaic studio repository:
+                                                                                                    .PP
+                                                                                                    $ resource_fetch archaic
+                                                                                                    .PP
+                                                                                                    This will output the secrets related to the archaic studio repository.
+
+                                                                                                    .SH EXIT STATUS
+                                                                                                    The script returns the following exit statuses:
+                                                                                                    .TP
+                                                                                                    0
+                                                                                                    Success. The requested resource was fetched and printed.
+                                                                                                    .TP
+                                                                                                    1
+                                                                                                    Failure. Invalid resource name or failure to fetch the requested resource.
+
+                                                                                                    .SH ENVIRONMENT VARIABLES
+                                                                                                    The script uses the following environment variables:
+                                                                                                    .TP
+                                                                                                    resources__
+                                                                                                    A configuration or environment variable that defines the resources to fetch from.
+
+                                                                                                    .SH SEE ALSO
+                                                                                                    resources(5), failure(1)
+                                                                                                '' ;
+                                                                                        } ;
+                                                                                } ;
                                                                         } ;
                                                                 password = lib.mkOption { type = lib.types.str ; } ;
                                                                 repository =
