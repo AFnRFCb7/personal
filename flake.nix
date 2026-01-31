@@ -2642,7 +2642,7 @@
                                                                                                         runtimeInputs = [ ] ;
                                                                                                         text =
                                                                                                             ''
-                                                                                                                RESOURCE=${ resources__.production.applications.unlock { } }
+                                                                                                                RESOURCE=${ resources__.production.application.unlock { } }
                                                                                                                 "$RESOURCE/bin/unlock"
                                                                                                             '' ;
                                                                                                     }
