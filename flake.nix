@@ -395,7 +395,7 @@
                                                             bin =
                                                                 let
                                                                     bin =
-                                                                        name : runtimeInputs : text : ignore :
+                                                                        { name , environment , runtimeInputs , script } : ignore :
                                                                             {
                                                                                 init =
                                                                                     { pid , pkgs , resources , root , sequential , wrap } :
@@ -414,7 +414,16 @@
                                                                                                                                 {
                                                                                                                                     name = name ;
                                                                                                                                     runtimeInputs = runtimeInputs ;
-                                                                                                                                    text = text ;
+                                                                                                                                    text =
+                                                                                                                                        ''
+                                                                                                                                            ${ builtins.concatStringsSep "" ( builtins.mapAttrs ( name : value : ''export ${ name }=${ value }'' ) )}
+                                                                                                                                            if [[ -t 0 ]]
+                                                                                                                                            then
+                                                                                                                                                ${ script }
+                                                                                                                                            else
+                                                                                                                                                ${ pkgs.coreutils }/bin/cat | ${ script }
+                                                                                                                                            fi
+                                                                                                                                        '' ;
                                                                                                                                 } ;
                                                                                                                         in "${ application }/bin/${ name }" ;
                                                                                                                 in
@@ -427,7 +436,20 @@
                                                                             } ;
                                                                     in
                                                                         {
-                                                                            chromium = bin "chromium" [ pkgs.chromium ] ''"chromiumb "$@"''
+                                                                            chromium =
+                                                                                bin
+                                                                                    {
+                                                                                        environment =
+                                                                                            {
+                                                                                                XDG_CONFIG_HOME_RESOURCE = resources.production.repository.pads.chromium.home.config ;
+                                                                                                XDG_CONFIG_HOME = "$XDG_CONFIG_HOME_RESOURCE/repository/secret" ;
+                                                                                                XDG_DATA_HOME_RESOURCE = resources.production.repository.pads.chromium.home.data ;
+                                                                                                XDG_DATA_HOME = "$XDG_DATA_HOME/repository/secret" ;
+                                                                                            } ;
+                                                                                        name ="chromium" ;
+                                                                                        runtimeInputs = [ pkgs.chromium ] ;
+                                                                                        script = ''"chromium "$@"'' ;
+                                                                                    } ;
                                                                         } ;
                                                             dot-gnupg =
                                                                 ignore :
