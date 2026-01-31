@@ -365,6 +365,7 @@
                                                                                                                         in "${ application }/bin/unlock" ;
                                                                                                                 in
                                                                                                                     ''
+                                                                                                                        wrap ${ unlock } bin/unlock --literal-path DOT_GNUPG --literal-path PATH
                                                                                                                     '' ;
                                                                                                     } ;
                                                                                                 in "${ application }/bin/init" ;
@@ -2641,7 +2642,8 @@
                                                                                                         runtimeInputs = [ ] ;
                                                                                                         text =
                                                                                                             ''
-
+                                                                                                                RESOURCE=${ resources__.production.applications.unlock { } }
+                                                                                                                "$RESOURCE/bin/unlock"
                                                                                                             '' ;
                                                                                                     }
                                                                                             )
