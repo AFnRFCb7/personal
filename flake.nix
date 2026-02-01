@@ -476,10 +476,10 @@
                                                                                 bin
                                                                                     {
                                                                                         environment =
-                                                                                            {
-                                                                                                PASSWORD_STORE_GPG_OPTS = "$DOT_GNUPG/dot-gnupg" ;
-                                                                                                PASSWORD_STORE_DIR = "$RESOURCE/repository " ;
-                                                                                            } ;
+                                                                                            [
+                                                                                                "PASSWORD_STORE_GPG_OPTS"
+                                                                                                "PASSWORD_STORE_DIR"
+                                                                                            ] ;
                                                                                         name = "pass" ;
                                                                                         runtimeInputs = pkgs : [ pkgs.pass ] ;
                                                                                         script = ''pass "$@"'' ;
@@ -487,6 +487,8 @@
                                                                                             {
                                                                                                 DOT_GNUPG = resources : resources.production.dot-gnupg { failure = ___failure "f68dcf20" ; } ;
                                                                                                 RESOURCE = resources : resources.production.repository.pass { failure = ___failure "cf87710c" ; } ;
+                                                                                                PASSWORD_STORE_GPG_OPTS = resources : "$DOT_GNUPG/dot-gnupg" ;
+                                                                                                PASSWORD_STORE_DIR = resources : "$RESOURCE/repository " ;
                                                                                             } ;
                                                                                     } ;
                                                                             ssh =
