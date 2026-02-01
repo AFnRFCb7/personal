@@ -1082,6 +1082,7 @@
                                                                                                                                                                 # done
                                                                                                                                                                 gh ssh-key add "$MOUNT/stage/plain-text/dot-ssh/github/identity.asc.pub"
                                                                                                                                                                 gh auth logout
+                                                                                                                                                                echo 24d3677d
                                                                                                                                                             '' ;
                                                                                                                                                     } ;
                                                                                                                                             in "${ application }/bin/github-identity" ;
@@ -2556,10 +2557,6 @@
                                                                         recycle-github-identity =
                                                                             {
                                                                                 timerConfig.OnCalendar = "daily" ;
-                                                                            } ;
-                                                                        recycle-github-token =
-                                                                            {
-                                                                                timerConfig.OnCalendar = "weekly" ;
                                                                             } ;
                                                                     } ;
                                                             } ;
