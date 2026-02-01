@@ -437,7 +437,7 @@
                                                                                                                                                                                 value = value ;
                                                                                                                                                                             } ;
                                                                                                                                                             } ;
-                                                                                                                                                    in builtins.mapAttrs mapper variables ;
+                                                                                                                                                    in builtins.attrValues ( builtins.mapAttrs mapper variables ) ;
                                                                                                                                             sorted =
                                                                                                                                                 let
                                                                                                                                                     comparator = a : b : a.oid < b.oid || ( a.oid == b.oid && a.value < b.value ) ;
