@@ -425,6 +425,7 @@
                                                                                                                                                                 in
                                                                                                                                                                     {
                                                                                                                                                                         name = name ;
+                                                                                                                                                                        string = string ;
                                                                                                                                                                     } ;
                                                                                                                                                     in builtins.attrValues ( builtins.mapAttrs mapper variables ) ;
                                                                                                                                             in
