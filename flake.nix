@@ -443,7 +443,7 @@
                                                                                         environment =
                                                                                             {
                                                                                                 XDG_CONFIG_HOME = "$XDG_CONFIG_HOME_RESOURCE/repository/secret" ;
-                                                                                                XDG_DATA_HOME = "$XDG_DATA_HOME/repository/secret" ;
+                                                                                                XDG_DATA_HOME = "$XDG_DATA_HOME_RESOURCE/repository/secret" ;
                                                                                             } ;
                                                                                         name = "chromium" ;
                                                                                         runtimeInputs = pkgs : [ pkgs.chromium ] ;
@@ -632,7 +632,20 @@
                                                                                 targets = [ "result" "shared" "standard-error" "standard-output" "status" ] ;
                                                                             } ;
                                                                 } ;
-                                                            man = { } ;
+                                                            man =
+                                                                let
+                                                                    man =
+                                                                        {
+                                                                            user ? null ,
+                                                                            system ? null ,
+                                                                            library ? null ,
+                                                                            special ? null ,
+                                                                            format ? null ,
+                                                                            games ? null ,
+                                                                            miscellaneous ? null ,
+                                                                            administration ? null
+                                                                        } : null ;
+                                                                    in { } ;
                                                             pads =
                                                                 let
                                                                     mapper =
