@@ -472,6 +472,15 @@
                                                                                                 GNUPGHOME = resources : "$DOT_GNUPG/dot-gnupg" ;
                                                                                             } ;
                                                                                     } ;
+                                                                            idea-community =
+                                                                                bin
+                                                                                    {
+                                                                                        environment = [ ] ;
+                                                                                        name = "idea-community" ;
+                                                                                        runtimeInputs = pkgs : pkgs.jetbrains.idea-community ;
+                                                                                        script = ''idea-community "$@"'' ;
+                                                                                        variables = { } ;
+                                                                                    } ;
                                                                             pass =
                                                                                 bin
                                                                                     {
