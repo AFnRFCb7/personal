@@ -667,7 +667,7 @@
                                                                                                             '' ;
                                                                                                     } ;
                                                                                             in "${ application }/bin/init" ;
-                                                                                targets = [ "man1" "man2" "man3" "man4" "man5" "man6" "man7" "man8" ]
+                                                                                targets = [ "man1" "man2" "man3" "man4" "man5" "man6" "man7" "man8" ] ;
                                                                             } ;
                                                                     in { } ;
                                                             pads =
