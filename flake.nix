@@ -1055,34 +1055,57 @@
                                                                                                                                                         runtimeInputs = [ pkgs.age pkgs.coreutils pkgs.flock pkgs.gh pkgs.libuuid pkgs.openssh __failure ] ;
                                                                                                                                                         text =
                                                                                                                                                             ''
+                                                                                                                                                                echo 24d3677d
                                                                                                                                                                 exec 201> "$MOUNT/lock"
                                                                                                                                                                 flock 201
+                                                                                                                                                                echo 24d3677d
                                                                                                                                                                 sleep 10
+                                                                                                                                                                echo 24d3677d
                                                                                                                                                                 cd "$MOUNT/repository"
+                                                                                                                                                                echo 24d3677d
                                                                                                                                                                 UUID="$( uuidgen | sha512sum )" || failure b9131928
+                                                                                                                                                                echo 24d3677d
                                                                                                                                                                 BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 22724f93
+                                                                                                                                                                echo 24d3677d
                                                                                                                                                                 SECRETS=${ resources.production.repository.secrets2.read-only { setup = setup : ''${ setup } "$UUID"'' ; failure = "failure 64ef3c7e" ; } }
+                                                                                                                                                                echo 24d3677d 250ac697
                                                                                                                                                                 git fetch origin ${ config.personal.secrets2.branch }
+                                                                                                                                                                echo 24d3677d e302e18e
                                                                                                                                                                 git checkout origin/${ config.personal.secrets2.branch }
+                                                                                                                                                                echo 24d3677d
                                                                                                                                                                 mkdir --parents "$MOUNT/stage/plain-text/dot-ssh/github"
+                                                                                                                                                                echo 24d3677d
                                                                                                                                                                 ssh-keygen -f "$MOUNT/stage/plain-text/dot-ssh/github/identity.asc" -C "generated" -P ""
+                                                                                                                                                                echo 24d3677d
                                                                                                                                                                 RECIPIENT=${ resources.production.age { failure = "failure a4114343" ; } }
+                                                                                                                                                                echo 24d3677d
                                                                                                                                                                 RECIPIENT_="$( cat "$RECIPIENT/public" )" || failure 259d4017
+                                                                                                                                                                echo 24d3677d
                                                                                                                                                                 age --encrypt --recipient "$RECIPIENT_" --output "$MOUNT/repository/dot-ssh/github/identity.asc.age" "$MOUNT/stage/plain-text/dot-ssh/github/identity.asc"
+                                                                                                                                                                echo 24d3677d
                                                                                                                                                                 git checkout -b "$BRANCH"
+                                                                                                                                                                echo 24d3677d
                                                                                                                                                                 git commit -am "recycled github identity"
+                                                                                                                                                                echo 24d3677d
                                                                                                                                                                 git push origin "$BRANCH"
+                                                                                                                                                                echo 24d3677d
                                                                                                                                                                 gh auth login --with-token < "$SECRETS/stage/github/token.asc"
+                                                                                                                                                                echo 24d3677d
                                                                                                                                                                 gh pr create --base ${ config.personal.secrets2.branch } --head "$BRANCH" --title "update github identity" --body ""
+                                                                                                                                                                echo 24d3677d
                                                                                                                                                                 URL="$( gh pr view --json url --jq .url )" || failure 864bc6e6
+                                                                                                                                                                echo 24d3677d
                                                                                                                                                                 gh pr merge "$URL" --rebase
+                                                                                                                                                                echo 24d3677d
                                                                                                                                                                 # gh ssh-key list --json id | jq -r '.[].id' | while read -r key_id
                                                                                                                                                                 # do
                                                                                                                                                                 #     gh ssh-key delete "$key_id" --confirm
                                                                                                                                                                 # done
+                                                                                                                                                                echo 24d3677d 1ce1651f
                                                                                                                                                                 gh ssh-key add "$MOUNT/stage/plain-text/dot-ssh/github/identity.asc.pub"
+                                                                                                                                                                echo 24d3677d 079de5f7
                                                                                                                                                                 gh auth logout
-                                                                                                                                                                echo 24d3677d
+                                                                                                                                                                echo 24d3677d 84e05491
                                                                                                                                                             '' ;
                                                                                                                                                     } ;
                                                                                                                                             in "${ application }/bin/github-identity" ;
