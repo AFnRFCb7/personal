@@ -644,7 +644,31 @@
                                                                             games ? null ,
                                                                             miscellaneous ? null ,
                                                                             administration ? null
-                                                                        } : null ;
+                                                                        } : ignore :
+                                                                            {
+                                                                                init =
+                                                                                    { pid , pkgs , resources , root , sequential , wrap } :
+                                                                                        let
+                                                                                            application =
+                                                                                                pkgs.writeShellApplication
+                                                                                                    {
+                                                                                                        name = "init" ;
+                                                                                                        runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                        text =
+                                                                                                            ''
+                                                                                                                mkdir --parents /mount/man1
+                                                                                                                mkdir --parents /mount/man2
+                                                                                                                mkdir --parents /mount/man3
+                                                                                                                mkdir --parents /mount/man4
+                                                                                                                mkdir --parents /mount/man5
+                                                                                                                mkdir --parents /mount/man6
+                                                                                                                mkdir --parents /mount/man7
+                                                                                                                mkdir --parents /mount/man8
+                                                                                                            '' ;
+                                                                                                    } ;
+                                                                                            in "${ application }/bin/init" ;
+                                                                                targets = [ "man1" "man2" "man3" "man4" "man5" "man6" "man7" "man8" ]
+                                                                            } ;
                                                                     in { } ;
                                                             pads =
                                                                 let
@@ -2347,16 +2371,25 @@
                                                                                                                                     src = ./. ;
                                                                                                                                 } ;
                                                                                                                     in
-                                                                                                                        ''
-                                                                                                                            mkdir --parents /home/${ config.personal.name }/pad
-                                                                                                                            cat <<EOF > /home/${ config.personal.name }/pad/.envrc
-                                                                                                                            ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''export ${ name }="${ value }"'' ) config.personal.pads.environment ) ) }
-                                                                                                                            export MANPATH="${ builtins.concatStringsSep ":" ( builtins.attrValues ( builtins.mapAttrs mapper config.personal.pads.man ) ) }"
-                                                                                                                            ${ builtins.concatStringsSep "\n" ( builtins.map ( value : "B${ builtins.hashString "sha512" value }=${ value }" ) config.personal.pads.bin ) }
-                                                                                                                            export PATH="${ builtins.concatStringsSep ":" ( builtins.map ( value : "$B${ builtins.hashString "sha512" value }" ) config.personal.pads.bin ) }
-                                                                                                                            EOF
-                                                                                                                            chmod 0400 /home/${ config.personal.name }/pad/.envrc
-                                                                                                                        '' ;
+                                                                                                                        let
+                                                                                                                            envrc =
+                                                                                                                                let
+                                                                                                                                    application =
+                                                                                                                                        pkgs.writeShellApplication
+                                                                                                                                            {
+                                                                                                                                                name = "envrc" ;
+                                                                                                                                                text =
+                                                                                                                                                    ''
+                                                                                                                                                        ${ builtins.concatStringsSep "\n" ( builtins.map ( value : "B${ builtins.hashString "sha512" value }=${ value }" ) config.personal.pads.bin ) }
+                                                                                                                                                        export PATH="${ builtins.concatStringsSep ":" ( builtins.map ( value : "$B${ builtins.hashString "sha512" value }" ) config.personal.pads.bin ) }
+                                                                                                                                                    '' ;
+                                                                                                                                            } ;
+                                                                                                                                    in "${ application }/bin/envrc" ;
+                                                                                                                            in
+                                                                                                                                ''
+                                                                                                                                    mkdir --parents /home/${ config.personal.name }/pad
+                                                                                                                                    ln --symbolic --force ${ envrc } /home/${ config.personal.name }/pad/.envrc
+                                                                                                                                '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/ExecStart" ;
                                                                                         User = config.personal.name ;
