@@ -2636,7 +2636,7 @@
                                                                                     bin =
                                                                                         [
                                                                                             ( resources__.production.bin.chromium { failure = ___failure "1954d2c7" ; } )
-                                                                                            ( resources__.production.bin.gnupg { failure = ___failure "7386330c" ; } )
+                                                                                            ( resources__.production.bin.gpg { failure = ___failure "7386330c" ; } )
                                                                                             ( resources__.production.bin.pass { failure = ___failure "c055f2a0" ; } )
                                                                                         ] ;
                                                                                     environment =
