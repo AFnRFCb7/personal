@@ -421,12 +421,16 @@
                                                                                                                                                     mapper =
                                                                                                                                                         name : value :
                                                                                                                                                             let
+                                                                                                                                                                length-a = builtins.stringLength string ;
+                                                                                                                                                                length-b = builtins.stringLength stripped ;
+                                                                                                                                                                oid = length-a - length-b ;
                                                                                                                                                                 string = value resources ;
                                                                                                                                                                 stripped = builtins.replaceStrings ( builtins.attrValues variables ) ( builtins.map ( value : "" ) ( builtins.attrValues variables ) ) string ;
                                                                                                                                                                 in
                                                                                                                                                                     {
                                                                                                                                                                         name = name ;
                                                                                                                                                                         string = string ;
+                                                                                                                                                                        stripped = stripped ;
                                                                                                                                                                     } ;
                                                                                                                                                     in builtins.attrValues ( builtins.mapAttrs mapper variables ) ;
                                                                                                                                             in
