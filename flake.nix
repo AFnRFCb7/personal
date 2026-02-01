@@ -2486,7 +2486,6 @@
                                                                         recycle-github-identity =
                                                                             {
                                                                                 after = [ "network-online.target" ] ;
-                                                                                enable = false ;
                                                                                 serviceConfig =
                                                                                     {
                                                                                         ExecStart =
@@ -2510,7 +2509,6 @@
                                                                         recycle-mobile-identity =
                                                                             {
                                                                                 after = [ "network-online.target" ] ;
-                                                                                enable = false ;
                                                                                 serviceConfig =
                                                                                     {
                                                                                         ExecStart =
@@ -2581,11 +2579,13 @@
                                                                     {
                                                                         recycle-github-identity =
                                                                             {
-                                                                                timerConfig.OnCalendar = "daily" ;
+                                                                                # timerConfig.OnCalendar = "315360000" ; # "daily" ;
+                                                                                timerConfig.TimerSec = "315360000" ;
                                                                             } ;
                                                                         recycle-mobile-identity =
                                                                             {
-                                                                                timerConfig.OnCalendar = "daily" ;
+                                                                                # timerConfig.OnCalendar = "315360000" ; # "daily" ;
+                                                                                timerConfig.TimerSec = "315360000" ;
                                                                             } ;
                                                                     } ;
                                                             } ;
