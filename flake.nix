@@ -2486,6 +2486,7 @@
                                                                         recycle-github-identity =
                                                                             {
                                                                                 after = [ "network-online.target" ] ;
+                                                                                enable = false ;
                                                                                 serviceConfig =
                                                                                     {
                                                                                         ExecStart =
@@ -2509,6 +2510,7 @@
                                                                         recycle-mobile-identity =
                                                                             {
                                                                                 after = [ "network-online.target" ] ;
+                                                                                enable = false ;
                                                                                 serviceConfig =
                                                                                     {
                                                                                         ExecStart =
@@ -2525,8 +2527,6 @@
                                                                                                                 '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/ExecStart" ;
-                                                                                        StandardError = "journal" ;
-                                                                                        StandardOutput = "journal" ;
                                                                                         User = config.personal.name ;
                                                                                     } ;
                                                                                 wantedBy = [ "multi-user.target" ] ;
