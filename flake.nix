@@ -415,16 +415,44 @@
                                                                                                                                     name = name ;
                                                                                                                                     runtimeInputs = runtimeInputs pkgs ;
                                                                                                                                     text =
-                                                                                                                                        ''
-                                                                                                                                            ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''${ name }=${ value resources }'' ) variables ) ) }
-                                                                                                                                            ${ builtins.concatStringsSep "\n" ( builtins.map ( name : ''export ${ name }="${ builtins.concatStringsSep "" [ "$" name ] }"'' ) environment ) }
-                                                                                                                                            if [[ -t 0 ]]
-                                                                                                                                            then
-                                                                                                                                                ${ script }
-                                                                                                                                            else
-                                                                                                                                                ${ pkgs.coreutils }/bin/cat | ${ script }
-                                                                                                                                            fi
-                                                                                                                                        '' ;
+                                                                                                                                        let
+                                                                                                                                            list =
+                                                                                                                                                let
+                                                                                                                                                    mapper =
+                                                                                                                                                        name : value :
+                                                                                                                                                            {
+                                                                                                                                                                name = name ;
+                                                                                                                                                                value =
+                                                                                                                                                                    let
+                                                                                                                                                                        length-a = builtins.stringLength value ;
+                                                                                                                                                                        length-b = builtins.stringLength stripped ;
+                                                                                                                                                                        oid = length-a - length-b ;
+                                                                                                                                                                        stripped = builtins.replaceStrings ( builtins.attrNames variables ) ( builtins.map ( value : "" ) ( builtins.attrNames variables ) ) value ;
+                                                                                                                                                                        in
+                                                                                                                                                                            {
+                                                                                                                                                                                length-a = length-a ;
+                                                                                                                                                                                length-b = length-b ;
+                                                                                                                                                                                oid = oid ;
+                                                                                                                                                                                stripped = stripped ;
+                                                                                                                                                                                value = value ;
+                                                                                                                                                                            } ;
+                                                                                                                                                            } ;
+                                                                                                                                                    in builtins.mapAttrs mapper variables ;
+                                                                                                                                            sorted =
+                                                                                                                                                let
+                                                                                                                                                    comparator = a : b : a.oid < b.oid || ( a.oid == b.oid && a.value < b.value ) ;
+                                                                                                                                                    in builtins.sort comparator list ;
+                                                                                                                                            in
+                                                                                                                                                ''
+                                                                                                                                                    ${ builtins.concatStringsSep "\n" ( builtins.map ( name : value : ''${ value.name }=${ value.value.value }'' ) sorted ) }
+                                                                                                                                                    ${ builtins.concatStringsSep "\n" ( builtins.map ( name : ''export ${ name }="${ builtins.concatStringsSep "" [ "$" name ] }"'' ) environment ) }
+                                                                                                                                                    if [[ -t 0 ]]
+                                                                                                                                                    then
+                                                                                                                                                        ${ script }
+                                                                                                                                                    else
+                                                                                                                                                        ${ pkgs.coreutils }/bin/cat | ${ script }
+                                                                                                                                                    fi
+                                                                                                                                                '' ;
                                                                                                                                 } ;
                                                                                                                         in "${ application }/bin/${ name }" ;
                                                                                                                 in
