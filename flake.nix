@@ -657,6 +657,7 @@
                                                                                                         text =
                                                                                                             ''
                                                                                                                 mkdir --parents /mount/man1
+                                                                                                                ${ if builtins.typeOf user == "string" then "ln --symbolic ${ builtins.toFile "man" user } /mount/man1/man1" else "#" }
                                                                                                                 mkdir --parents /mount/man2
                                                                                                                 mkdir --parents /mount/man3
                                                                                                                 mkdir --parents /mount/man4
@@ -2381,7 +2382,7 @@
                                                                                                                                                 text =
                                                                                                                                                     ''
                                                                                                                                                         ${ builtins.concatStringsSep "\n" ( builtins.map ( value : "B${ builtins.hashString "sha512" value }=${ value }" ) config.personal.pads.bin ) }
-                                                                                                                                                        export PATH="${ builtins.concatStringsSep ":" ( builtins.map ( value : "$B${ builtins.hashString "sha512" value }" ) config.personal.pads.bin ) }
+                                                                                                                                                        export PATH="${ builtins.concatStringsSep ":" ( builtins.map ( value : "$B${ builtins.hashString "sha512" value }" ) config.personal.pads.bin ) }"
                                                                                                                                                     '' ;
                                                                                                                                             } ;
                                                                                                                                     in "${ application }/bin/envrc" ;
