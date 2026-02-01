@@ -450,8 +450,8 @@
                                                                                         script = ''"chromium "$@"'' ;
                                                                                         variables =
                                                                                             {
-                                                                                                XDG_CONFIG_HOME_RESOURCE = resources : builtins.trace ( builtins.concatStringsSep ";" ( builtins.attrNames resources ) ) ( resources.production.repository.pads.chromium.home.config { failure = ___failure "a9192261" ; } ) ;
-                                                                                                XDG_DATA_HOME_RESOURCE = resources : resources.production.repository.pads.chromium.home.data { failure = ___failure "e55856e2" ; } ;
+                                                                                                XDG_CONFIG_HOME_RESOURCE = resources : resources.production.repository.pads.home.chromium.config { failure = ___failure "a9192261" ; } ;
+                                                                                                XDG_DATA_HOME_RESOURCE = resources : resources.production.repository.pads.home.chromium.data { failure = ___failure "e55856e2" ; } ;
                                                                                             } ;
                                                                                     } ;
                                                                             gpg =
