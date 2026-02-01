@@ -417,7 +417,7 @@
                                                                                                                                     text =
                                                                                                                                         ''
                                                                                                                                             ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''${ name }=${ value resources }'' ) variables ) ) }
-                                                                                                                                            ${ builtins.concatStringsSep "\n" ( builtins.map ( name : ''export ${ name }'' ) environment ) }
+                                                                                                                                            ${ builtins.concatStringsSep "\n" ( builtins.map ( name : ''export ${ name }="${ builtins.concatStringsSep "" [ "$" name ] }'' ) environment ) }
                                                                                                                                             if [[ -t 0 ]]
                                                                                                                                             then
                                                                                                                                                 ${ script }
@@ -2710,6 +2710,7 @@
                                                                                             ( resources__.production.bin.chromium { failure = ___failure "1954d2c7" ; } )
                                                                                             ( resources__.production.bin.gpg { failure = ___failure "7386330c" ; } )
                                                                                             ( resources__.production.bin.pass { failure = ___failure "c055f2a0" ; } )
+                                                                                            ( resources__.production.bin.ssh { failure = ___failure "c055f2a0" ; } )
                                                                                         ] ;
                                                                                     environment =
                                                                                         {
