@@ -447,7 +447,7 @@
                                                                                             } ;
                                                                                         name = "chromium" ;
                                                                                         runtimeInputs = pkgs : [ pkgs.chromium ] ;
-                                                                                        script = ''"chromium "$@"'' ;
+                                                                                        script = ''chromium "$@"'' ;
                                                                                         variables =
                                                                                             {
                                                                                                 XDG_CONFIG_HOME_RESOURCE = resources : resources.production.repository.pads.home.chromium.config { failure = ___failure "a9192261" ; } ;
