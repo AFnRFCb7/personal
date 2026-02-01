@@ -420,32 +420,17 @@
                                                                                                                                                 let
                                                                                                                                                     mapper =
                                                                                                                                                         name : value :
-                                                                                                                                                            {
-                                                                                                                                                                name = name ;
-                                                                                                                                                                value =
-                                                                                                                                                                    let
-                                                                                                                                                                        length-a = builtins.stringLength value ;
-                                                                                                                                                                        length-b = builtins.stringLength stripped ;
-                                                                                                                                                                        oid = length-a - length-b ;
-                                                                                                                                                                        string = value { } ;
-                                                                                                                                                                        stripped = builtins.replaceStrings ( builtins.attrNames variables ) ( builtins.map ( value : "" ) ( builtins.attrNames variables ) ) string ;
-                                                                                                                                                                        in
-                                                                                                                                                                            {
-                                                                                                                                                                                length-a = length-a ;
-                                                                                                                                                                                length-b = length-b ;
-                                                                                                                                                                                oid = oid ;
-                                                                                                                                                                                stripped = stripped ;
-                                                                                                                                                                                string = string ;
-                                                                                                                                                                            } ;
-                                                                                                                                                            } ;
+                                                                                                                                                            let
+                                                                                                                                                                string = value resources ;
+                                                                                                                                                                in
+                                                                                                                                                                    {
+                                                                                                                                                                        name = name ;
+                                                                                                                                                                    } ;
                                                                                                                                                     in builtins.attrValues ( builtins.mapAttrs mapper variables ) ;
-                                                                                                                                            sorted =
-                                                                                                                                                let
-                                                                                                                                                    comparator = a : b : a.value.oid < b.value.oid || ( a.value.oid == b.value.oid && a.value.string < b.value.string ) ;
-                                                                                                                                                    in builtins.sort comparator list ;
                                                                                                                                             in
                                                                                                                                                 ''
-                                                                                                                                                    ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : "${ name }=${ value resources }" ) variables ) ) }
+                                                                                                                                                    ${ builtins.concatStringsSep "\n" ( builtins.map ( value : "${ value.name }=${ value.string }" ) list ) }
+                                                                                                                                                    # ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : "${ name }=${ value resources }" ) variables ) ) }
                                                                                                                                                     ${ builtins.concatStringsSep "\n" ( builtins.map ( name : ''export ${ name }="${ builtins.concatStringsSep "" [ "$" name ] }"'' ) environment ) }
                                                                                                                                                     if [[ -t 0 ]]
                                                                                                                                                     then
