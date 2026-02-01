@@ -429,7 +429,7 @@
                                                                                                                         in "${ application }/bin/${ name }" ;
                                                                                                                 in
                                                                                                                     ''
-                                                                                                                        wrap ${ bin } ${ name } 0500 --literal-plain PATH ${ builtins.concatStringsSep "" ( builtins.map ( value : "--literal-plain ${ value }" ) ( builtins.attrNames variables ) ) }
+                                                                                                                        wrap ${ bin } ${ name } 0500 --literal-plain PATH ${ builtins.concatStringsSep "" ( builtins.map ( value : " --literal-plain ${ value }" ) ( builtins.attrNames variables ) ) }
                                                                                                                     '' ;
                                                                                                     } ;
                                                                                             in "${ application }/bin/init" ;
