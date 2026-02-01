@@ -417,7 +417,7 @@
                                                                                                                                     text =
                                                                                                                                         ''
                                                                                                                                             ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''${ name }=${ value resources }'' ) variables ) ) }
-                                                                                                                                            ${ builtins.concatStringsSep "\n" ( builtins.mapAttrs ( name : ''export ${ name }'' ) environment ) }
+                                                                                                                                            ${ builtins.concatStringsSep "\n" ( builtins.map ( name : ''export ${ name }'' ) environment ) }
                                                                                                                                             if [[ -t 0 ]]
                                                                                                                                             then
                                                                                                                                                 ${ script }
@@ -487,6 +487,18 @@
                                                                                             {
                                                                                                 DOT_GNUPG = resources : resources.production.dot-gnupg { failure = ___failure "f68dcf20" ; } ;
                                                                                                 RESOURCE = resources : resources.production.repository.pass { failure = ___failure "cf87710c" ; } ;
+                                                                                            } ;
+                                                                                    } ;
+                                                                            ssh =
+                                                                                bin
+                                                                                    {
+                                                                                        environment = [ ] ;
+                                                                                        name = "ssh" ;
+                                                                                        runtimeInputs = pkgs : [ pkgs.openssh ] ;
+                                                                                        script = ''ssh -F "$DOT_SSH/config" "$@"'' ;
+                                                                                        variables =
+                                                                                            {
+                                                                                                DOT_SSH = resources : resources.production.dot-ssh { failure = ___failure "73be674b" ; } ;
                                                                                             } ;
                                                                                     } ;
                                                                         } ;
