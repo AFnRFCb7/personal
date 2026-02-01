@@ -416,8 +416,8 @@
                                                                                                                                     runtimeInputs = runtimeInputs pkgs ;
                                                                                                                                     text =
                                                                                                                                         ''
-                                                                                                                                            ${ builtins.concatStringsSep "" ( builtins.mapAttrs ( name : value : ''${ name }="${ value variables }'' ) variables ) }
-                                                                                                                                            ${ builtins.concatStringsSep "" ( builtins.mapAttrs ( name : value : ''export ${ name }=${ value }'' ) environment ) }
+                                                                                                                                            ${ builtins.concatStringsSep "" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''${ name }="${ value variables }'' ) variables ) ) }
+                                                                                                                                            ${ builtins.concatStringsSep "" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''export ${ name }=${ value }'' ) environment ) ) }
                                                                                                                                             if [[ -t 0 ]]
                                                                                                                                             then
                                                                                                                                                 ${ script }
