@@ -417,7 +417,7 @@
                                                                                                                                     text =
                                                                                                                                         ''
                                                                                                                                             ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''${ name }=${ value resources }'' ) variables ) ) }
-                                                                                                                                            ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''export ${ name }=${ value }'' ) environment ) ) }
+                                                                                                                                            ${ builtins.concatStringsSep "\n" ( builtins.mapAttrs ( name : ''export ${ name }'' ) environment ) }
                                                                                                                                             if [[ -t 0 ]]
                                                                                                                                             then
                                                                                                                                                 ${ script }
@@ -441,10 +441,10 @@
                                                                                 bin
                                                                                     {
                                                                                         environment =
-                                                                                            {
-                                                                                                XDG_CONFIG_HOME = "$XDG_CONFIG_HOME_RESOURCE/repository/secret" ;
-                                                                                                XDG_DATA_HOME = "$XDG_DATA_HOME_RESOURCE/repository/secret" ;
-                                                                                            } ;
+                                                                                            [
+                                                                                                "XDG_CONFIG_HOME"
+                                                                                                "XDG_DATA_HOME"
+                                                                                            ] ;
                                                                                         name = "chromium" ;
                                                                                         runtimeInputs = pkgs : [ pkgs.chromium ] ;
                                                                                         script = ''chromium "$@"'' ;
@@ -452,21 +452,24 @@
                                                                                             {
                                                                                                 XDG_CONFIG_HOME_RESOURCE = resources : resources.production.repository.pads.home.chromium.config { failure = ___failure "a9192261" ; } ;
                                                                                                 XDG_DATA_HOME_RESOURCE = resources : resources.production.repository.pads.home.chromium.data { failure = ___failure "e55856e2" ; } ;
+                                                                                                XDG_CONFIG_HOME = resources : "$XDG_CONFIG_HOME_RESOURCE/repository/secret" ;
+                                                                                                XDG_DATA_HOME = resources : "$XDG_DATA_HOME_RESOURCE/repository/secret" ;
                                                                                             } ;
                                                                                     } ;
                                                                             gpg =
                                                                                 bin
                                                                                     {
                                                                                         environment =
-                                                                                            {
-                                                                                                GNUPGHOME = "$DOT_GNUPG/dot-gnupg" ;
-                                                                                            } ;
+                                                                                            [
+                                                                                                "GNUPGHOME"
+                                                                                            ] ;
                                                                                         name = "gpg" ;
                                                                                         runtimeInputs = pkgs : [ pkgs.gnupg ] ;
                                                                                         script = ''gpg --homedir "$GNUPGHOME" "$@"'' ;
                                                                                         variables =
                                                                                             {
                                                                                                 DOT_GNUPG = resources : resources.production.dot-gnupg { failure = ___failure "44eb225c" ; } ;
+                                                                                                GNUPGHOME = resources : "$DOT_GNUPG/dot-gnupg" ;
                                                                                             } ;
                                                                                     } ;
                                                                             pass =
