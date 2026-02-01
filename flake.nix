@@ -422,6 +422,7 @@
                                                                                                                                                         name : value :
                                                                                                                                                             let
                                                                                                                                                                 string = value resources ;
+                                                                                                                                                                stripped = builtins.replaceStrings ( builtins.attrValues variables ) ( builtins.map ( value : "" ) ( builtins.attrValues variables ) ) string ;
                                                                                                                                                                 in
                                                                                                                                                                     {
                                                                                                                                                                         name = name ;
@@ -430,7 +431,7 @@
                                                                                                                                                     in builtins.attrValues ( builtins.mapAttrs mapper variables ) ;
                                                                                                                                             in
                                                                                                                                                 ''
-                                                                                                                                                    ${ builtins.concatStringsSep "\n" ( builtins.map ( value : "${ value.name }=${ value.string }" ) list ) }
+                                                                                                                                                    ${ builtins.concatStringsSep "\n" ( builtins.map ( value : "${ value.name }=${ value.string } # ${ value.stripped }" ) list ) }
                                                                                                                                                     # ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : "${ name }=${ value resources }" ) variables ) ) }
                                                                                                                                                     ${ builtins.concatStringsSep "\n" ( builtins.map ( name : ''export ${ name }="${ builtins.concatStringsSep "" [ "$" name ] }"'' ) environment ) }
                                                                                                                                                     if [[ -t 0 ]]
