@@ -659,10 +659,12 @@
                                                                                                                 mkdir --parents /mount/man1
                                                                                                                 ${ if builtins.typeOf user == "string" then "ln --symbolic ${ builtins.toFile "man" user } /mount/man1/man1" else "#" }
                                                                                                                 mkdir --parents /mount/man2
+                                                                                                                ${ if builtins.typeOf system == "string" then "ln --symbolic ${ builtins.toFile "man" system } /mount/man2/man1" else "#" }
                                                                                                                 mkdir --parents /mount/man3
+                                                                                                                ${ if builtins.typeOf library == "string" then "ln --symbolic ${ builtins.toFile "man" library } /mount/man3/man1" else "#" }
                                                                                                                 mkdir --parents /mount/man4
                                                                                                                 mkdir --parents /mount/man5
-                                                                                                                mkdir --parents /mount/man6
+                                                                                                                mkdir --parentfs /mount/man6
                                                                                                                 mkdir --parents /mount/man7
                                                                                                                 mkdir --parents /mount/man8
                                                                                                             '' ;
@@ -2382,7 +2384,9 @@
                                                                                                                                                 text =
                                                                                                                                                     ''
                                                                                                                                                         ${ builtins.concatStringsSep "\n" ( builtins.map ( value : "B${ builtins.hashString "sha512" value }=${ value }" ) config.personal.pads.bin ) }
+                                                                                                                                                        #
                                                                                                                                                         export PATH="${ builtins.concatStringsSep ":" ( builtins.map ( value : "$B${ builtins.hashString "sha512" value }" ) config.personal.pads.bin ) }"
+                                                                                                                                                        #
                                                                                                                                                     '' ;
                                                                                                                                             } ;
                                                                                                                                     in "${ application }/bin/envrc" ;
