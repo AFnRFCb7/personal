@@ -428,7 +428,7 @@
                                                                                                                                                                         length-b = builtins.stringLength stripped ;
                                                                                                                                                                         oid = length-a - length-b ;
                                                                                                                                                                         stripped = builtins.replaceStrings ( builtins.attrNames variables ) ( builtins.map ( value : "" ) ( builtins.attrNames variables ) ) value ;
-                                                                                                                                                                        value = value resources ;
+                                                                                                                                                                        value = value { } ;
                                                                                                                                                                         in
                                                                                                                                                                             {
                                                                                                                                                                                 length-a = length-a ;
