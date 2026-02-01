@@ -429,7 +429,7 @@
                                                                                                                         in "${ application }/bin/${ name }" ;
                                                                                                                 in
                                                                                                                     ''
-                                                                                                                        wrap ${ bin } ${ name } 0500 --literal-plain PATH
+                                                                                                                        wrap ${ bin } ${ name } 0500 --literal-plain PATH ${ builtins.concatStringsSep "" ( builtins.map ( value : "--literal-plain ${ value }" ) ( builtins.attrNames variables ) ) }
                                                                                                                     '' ;
                                                                                                     } ;
                                                                                             in "${ application }/bin/init" ;
@@ -635,6 +635,7 @@
                                                             man =
                                                                 let
                                                                     man =
+                                                                        name :
                                                                         {
                                                                             user ? null ,
                                                                             system ? null ,
@@ -657,14 +658,17 @@
                                                                                                         text =
                                                                                                             ''
                                                                                                                 mkdir --parents /mount/man1
-                                                                                                                ${ if builtins.typeOf user == "string" then "ln --symbolic ${ builtins.toFile "man" user } /mount/man1/man1" else "#" }
+                                                                                                                ${ if builtins.typeOf user == "string" then "ln --symbolic ${ builtins.toFile "man" user } /mount/man1/${ name }.1" else "#" }
                                                                                                                 mkdir --parents /mount/man2
-                                                                                                                ${ if builtins.typeOf system == "string" then "ln --symbolic ${ builtins.toFile "man" system } /mount/man2/man1" else "#" }
+                                                                                                                ${ if builtins.typeOf system == "string" then "ln --symbolic ${ builtins.toFile "man" system } /mount/man2/${ name }.2" else "#" }
                                                                                                                 mkdir --parents /mount/man3
-                                                                                                                ${ if builtins.typeOf library == "string" then "ln --symbolic ${ builtins.toFile "man" library } /mount/man3/man1" else "#" }
+                                                                                                                ${ if builtins.typeOf library == "string" then "ln --symbolic ${ builtins.toFile "man" library } /mount/man3/${ name }.3" else "#" }
                                                                                                                 mkdir --parents /mount/man4
+                                                                                                                ${ if builtins.typeOf special == "string" then "ln --symbolic ${ builtins.toFile "man" special } /mount/man4/${ name }.4" else "#" }
                                                                                                                 mkdir --parents /mount/man5
+                                                                                                                ${ if builtins.typeOf format == "string" then "ln --symbolic ${ builtins.toFile "man" format } /mount/man5/${ name }.5" else "#" }
                                                                                                                 mkdir --parentfs /mount/man6
+                                                                                                                ${ if builtins.typeOf games == "string" then "ln --symbolic ${ builtins.toFile "man" games } /mount/man6/${ name }.6" else "#" }
                                                                                                                 mkdir --parents /mount/man7
                                                                                                                 mkdir --parents /mount/man8
                                                                                                             '' ;
