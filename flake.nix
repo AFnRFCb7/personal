@@ -2558,6 +2558,10 @@
                                                                             {
                                                                                 timerConfig.OnCalendar = "daily" ;
                                                                             } ;
+                                                                        recycle-mobile-identity =
+                                                                            {
+                                                                                timerConfig.OnCalendar = "daily" ;
+                                                                            } ;
                                                                     } ;
                                                             } ;
                                                         time.timeZone = "America/New_York" ;
