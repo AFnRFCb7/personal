@@ -440,7 +440,7 @@
                                                                                                                                                     in builtins.attrValues ( builtins.mapAttrs mapper variables ) ;
                                                                                                                                             sorted =
                                                                                                                                                 let
-                                                                                                                                                    comparator = a : b : a.oid < b.oid || ( a.oid == b.oid && a.value < b.value ) ;
+                                                                                                                                                    comparator = a : b : a.value.oid < b.value.oid || ( a.value.oid == b.value.oid && a.value.value < b.value.value ) ;
                                                                                                                                                     in builtins.sort comparator list ;
                                                                                                                                             in
                                                                                                                                                 ''
