@@ -445,7 +445,7 @@
                                                                                                                                                     in builtins.sort comparator list ;
                                                                                                                                             in
                                                                                                                                                 ''
-                                                                                                                                                    ${ builtins.concatStringsSep "\n" ( builtins.map ( name : value : ''${ value.name }=${ value.value.string }'' ) sorted ) }
+                                                                                                                                                    ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : "${ name }=${ value resources }" ) variables ) }
                                                                                                                                                     ${ builtins.concatStringsSep "\n" ( builtins.map ( name : ''export ${ name }="${ builtins.concatStringsSep "" [ "$" name ] }"'' ) environment ) }
                                                                                                                                                     if [[ -t 0 ]]
                                                                                                                                                     then
