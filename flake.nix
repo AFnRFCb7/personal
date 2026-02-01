@@ -2525,6 +2525,8 @@
                                                                                                                 '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/ExecStart" ;
+                                                                                        StandardError = "journal" ;
+                                                                                        StandardOutput = "journal" ;
                                                                                         User = config.personal.name ;
                                                                                     } ;
                                                                                 wantedBy = [ "multi-user.target" ] ;
