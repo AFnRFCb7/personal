@@ -1036,13 +1036,307 @@
                                                                                 man
                                                                                     "pass"
                                                                                     {
+                                                                                        user =
+                                                                                            ''
+                                                                                                .TH PASS 1 "February 2026" "1.0" "Password Manager"
+                                                                                                .SH NAME
+                                                                                                pass \- A simple, Unix-based password manager using GPG
+                                                                                                .SH SYNOPSIS
+                                                                                                .B pass
+                                                                                                [\fIoptions\fR] \fIcommand\fR [arguments]
+                                                                                                .SH DESCRIPTION
+                                                                                                pass is a simple, yet powerful password manager that stores passwords securely in GPG-encrypted files. The tool uses standard Unix utilities and provides a simple, effective way to manage and retrieve passwords.
 
+                                                                                                The passwords are stored in a directory of files (the password store) that is encrypted with GPG. You can access your passwords and other secrets using a simple command-line interface.
+
+                                                                                                .SH COMMANDS
+                                                                                                The following commands are supported by **pass**:
+
+                                                                                                .TP
+                                                                                                .B init [gpg-id]
+                                                                                                Initialize a new password store, using the specified GPG key ID for encryption. This is typically the first step after installing pass.
+                                                                                                .TP
+                                                                                                .B show [name]
+                                                                                                Show the password for the specified entry in the password store.
+                                                                                                .TP
+                                                                                                .B insert [name]
+                                                                                                Insert a new password entry into the password store. After executing, you will be prompted to enter the password.
+                                                                                                .TP
+                                                                                                .B edit [name]
+                                                                                                Edit an existing password entry. This opens the password in your default editor.
+                                                                                                .TP
+                                                                                                .B generate [name]
+                                                                                                Generate a random password for the specified entry. You can optionally specify the length and complexity of the generated password.
+                                                                                                .TP
+                                                                                                .B rm [name]
+                                                                                                Remove a password entry from the password store.
+                                                                                                .TP
+                                                                                                .B ls
+                                                                                                List all password entries in the password store.
+                                                                                                .TP
+                                                                                                .B find [name]
+                                                                                                Search for a password entry by name (supports fuzzy matching).
+                                                                                                .TP
+                                                                                                .B sync
+                                                                                                Synchronize the password store with a remote repository (typically a git remote).
+                                                                                                .TP
+                                                                                                .B help
+                                                                                                Display help information.
+
+                                                                                                .SH OPTIONS
+                                                                                                The following options can be used to modify the behavior of **pass**:
+
+                                                                                                .TP
+                                                                                                .B \-h, \-\-help
+                                                                                                Display help information about **pass**.
+                                                                                                .TP
+                                                                                                .B \-v, \-\-version
+                                                                                                Show the version of the **pass** tool.
+                                                                                                .TP
+                                                                                                .B \-e, \-\-editor=[editor]
+                                                                                                Specify the text editor to use for editing password entries. If not set, the `EDITOR` environment variable is used.
+                                                                                                .TP
+                                                                                                .B \-p, \-\-password-store=[dir]
+                                                                                                Specify a custom password store directory. By default, **pass** uses `~/.password-store`.
+                                                                                                .TP
+                                                                                                .B \-r, \-\-recipient=[email]
+                                                                                                Specify a GPG key to use for encryption/decryption, overriding the default key.
+                                                                                                .TP
+                                                                                                .B \-a, \-\-armor
+                                                                                                Generate ASCII-armored output (for copy-pasting passwords easily).
+                                                                                                .TP
+                                                                                                .B \-d, \-\-decrypt
+                                                                                                Decrypt the password store. This allows you to view the encrypted files in plaintext.
+
+                                                                                                .SH EXAMPLES
+                                                                                                Here are some examples of how to use **pass**:
+
+                                                                                                .TP
+                                                                                                Initialize a password store:
+                                                                                                .nf
+                                                                                                  $ pass init your-email@example.com
+                                                                                                .fi
+
+                                                                                                .TP
+                                                                                                Insert a new password for "example.com":
+                                                                                                .nf
+                                                                                                  $ pass insert example.com
+                                                                                                  # Enter the password when prompted
+                                                                                                .fi
+
+                                                                                                .TP
+                                                                                                Show the password for "example.com":
+                                                                                                .nf
+                                                                                                  $ pass show example.com
+                                                                                                .fi
+
+                                                                                                .TP
+                                                                                                Edit an existing password for "example.com":
+                                                                                                .nf
+                                                                                                  $ pass edit example.com
+                                                                                                .fi
+
+                                                                                                .TP
+                                                                                                Generate a random password for "example.com":
+                                                                                                .nf
+                                                                                                  $ pass generate example.com
+                                                                                                  # You can specify the length and complexity as arguments, e.g.:
+                                                                                                  $ pass generate example.com 20
+                                                                                                .fi
+
+                                                                                                .TP
+                                                                                                List all passwords stored:
+                                                                                                .nf
+                                                                                                  $ pass ls
+                                                                                                .fi
+
+                                                                                                .TP
+                                                                                                Remove an entry from the store:
+                                                                                                .nf
+                                                                                                  $ pass rm example.com
+                                                                                                .fi
+
+                                                                                                .TP
+                                                                                                Sync your password store with a remote repository:
+                                                                                                .nf
+                                                                                                  $ pass sync
+                                                                                                .fi
+
+                                                                                                .TP
+                                                                                                Find a password entry by name (fuzzy match):
+                                                                                                .nf
+                                                                                                  $ pass find example
+                                                                                                .fi
+
+                                                                                                .SH FILES
+                                                                                                By default, **pass** stores passwords and other secrets in the following directory:
+
+                                                                                                .TP
+                                                                                                .B ~/.password-store/
+                                                                                                This is where the encrypted password files are stored. The passwords are stored as individual GPG-encrypted files, with each file corresponding to a password entry.
+
+                                                                                                .SH SEE ALSO
+                                                                                                For more information, refer to the official documentation and the **pass** GitHub repository:
+                                                                                                .B https://git.zx2c4.com/password-store/
+
+                                                                                                .SH AUTHOR
+                                                                                                Written by Jason A. Donenfeld and contributors to the **pass** project.
+                                                                                            '' ;
                                                                                     } ;
                                                                             ssh =
                                                                                 man
                                                                                     "ssh"
                                                                                     {
+                                                                                        user =
+                                                                                            ''
+                                                                                                .TH SSH 1 "February 2026" "1.0" "SSH Client"
+                                                                                                .SH NAME
+                                                                                                ssh \- OpenSSH client for remote connections
+                                                                                                .SH SYNOPSIS
+                                                                                                .B ssh [\fIoptions\fR] \fIuser@hostname\fR
+                                                                                                .SH DESCRIPTION
+                                                                                                SSH (Secure Shell) is a protocol for securely accessing remote systems over an unsecured network. The **ssh** command is used to connect to remote systems, execute commands on those systems, and transfer files.
 
+                                                                                                It uses encryption to secure communication, ensuring confidentiality and integrity of data exchanged between the client and the server. The `ssh` command is widely used for remote administration, file transfers (with `scp` and `sftp`), and tunneling.
+
+                                                                                                .SH OPTIONS
+                                                                                                .TP
+                                                                                                .B \-h, \-\-help
+                                                                                                Display help message and exit.
+                                                                                                .TP
+                                                                                                .B \-v, \-\-version
+                                                                                                Show the version of SSH and exit.
+                                                                                                .TP
+                                                                                                .B \-p, \-\-port=[port]
+                                                                                                Specify the port number to connect to on the remote host. The default SSH port is 22.
+                                                                                                .TP
+                                                                                                .B \-i, \-\-identity-file=[file]
+                                                                                                Use the specified private key file for authentication instead of the default (`~/.ssh/id_rsa`).
+                                                                                                .TP
+                                                                                                .B \-X, \-\-X11-forwarding
+                                                                                                Enable X11 forwarding. This allows graphical applications to be displayed on the local machine.
+                                                                                                .TP
+                                                                                                .B \-A, \-\-agent-forwarding
+                                                                                                Enable SSH agent forwarding, which allows you to use your local SSH keys on the remote server.
+                                                                                                .TP
+                                                                                                .B \-L, \-\-local-port-forwarding=[local-port:remote-host:remote-port]
+                                                                                                Establish a local port forwarding. This forwards connections on the specified local port to the remote host and port.
+                                                                                                .TP
+                                                                                                .B \-R, \-\-remote-port-forwarding=[remote-port:local-host:local-port]
+                                                                                                Establish a remote port forwarding. This forwards connections on the specified remote port to the local host and port.
+                                                                                                .TP
+                                                                                                .B \-C, \-\-compression
+                                                                                                Enable compression. This can reduce the amount of data transmitted, but may increase CPU usage.
+                                                                                                .TP
+                                                                                                .B \-q, \-\-quiet
+                                                                                                Suppress most warning and diagnostic messages.
+                                                                                                .TP
+                                                                                                .B \-o, \-\-option=[option]
+                                                                                                Set a specific SSH configuration option, like `User`, `Port`, or `IdentityFile`. This is the same as specifying options in the `~/.ssh/config` file.
+                                                                                                .TP
+                                                                                                .B \-f, \-\-fork
+                                                                                                Run in the background before executing the command. This is useful for tunneling or when you want to connect without an interactive session.
+                                                                                                .TP
+                                                                                                .B \-T, \-\-no-pty
+                                                                                                Disables the allocation of a pseudo-terminal. This is often used when running remote commands.
+                                                                                                .TP
+                                                                                                .B \-N
+                                                                                                Do not execute any commands; this is used for setting up port forwarding only.
+                                                                                                .TP
+                                                                                                .B \-M
+                                                                                                Enable master mode for connection sharing. This allows multiple `ssh` sessions to share a single network connection, reducing latency for multiple connections.
+
+                                                                                                .SH EXAMPLES
+                                                                                                Below are several common examples of how to use the `ssh` command:
+
+                                                                                                .TP
+                                                                                                Connect to a remote host:
+                                                                                                .nf
+                                                                                                  $ ssh user@example.com
+                                                                                                .fi
+
+                                                                                                .TP
+                                                                                                Connect to a remote host on a non-default port:
+                                                                                                .nf
+                                                                                                  $ ssh -p 2222 user@example.com
+                                                                                                .fi
+
+                                                                                                .TP
+                                                                                                Use a specific private key for authentication:
+                                                                                                .nf
+                                                                                                  $ ssh -i ~/.ssh/id_rsa user@example.com
+                                                                                                .fi
+
+                                                                                                .TP
+                                                                                                Enable X11 forwarding to run graphical applications remotely:
+                                                                                                .nf
+                                                                                                  $ ssh -X user@example.com
+                                                                                                .fi
+
+                                                                                                .TP
+                                                                                                Enable SSH agent forwarding:
+                                                                                                .nf
+                                                                                                  $ ssh -A user@example.com
+                                                                                                .fi
+
+                                                                                                .TP
+                                                                                                Create a local port forwarding:
+                                                                                                .nf
+                                                                                                  $ ssh -L 8080:localhost:80 user@example.com
+                                                                                                .fi
+
+                                                                                                .TP
+                                                                                                Create a remote port forwarding:
+                                                                                                .nf
+                                                                                                  $ ssh -R 8080:localhost:80 user@example.com
+                                                                                                .fi
+
+                                                                                                .TP
+                                                                                                Run a command on a remote host without opening an interactive session:
+                                                                                                .nf
+                                                                                                  $ ssh user@example.com 'ls -l'
+                                                                                                .fi
+
+                                                                                                .TP
+                                                                                                Connect in the background for use with port forwarding:
+                                                                                                .nf
+                                                                                                  $ ssh -f -L 8080:localhost:80 user@example.com sleep 60
+                                                                                                .fi
+
+                                                                                                .TP
+                                                                                                Establish an SSH connection and set an option, like the `User`:
+                                                                                                .nf
+                                                                                                  $ ssh -o User=myuser example.com
+                                                                                                .fi
+
+                                                                                                .SH FILES
+                                                                                                The following files are typically used by SSH:
+
+                                                                                                .TP
+                                                                                                .B ~/.ssh/config
+                                                                                                The SSH client configuration file, where you can define default options for SSH connections (e.g., `User`, `Port`, `IdentityFile`).
+                                                                                                .TP
+                                                                                                .B ~/.ssh/id_rsa
+                                                                                                The default private key used for authentication.
+                                                                                                .TP
+                                                                                                .B ~/.ssh/id_rsa.pub
+                                                                                                The default public key associated with the private key.
+                                                                                                .TP
+                                                                                                .B ~/.ssh/known_hosts
+                                                                                                A file that stores the public keys of previously connected servers to verify their identity in future connections.
+
+                                                                                                .SH SEE ALSO
+                                                                                                For more information, refer to the OpenSSH documentation:
+                                                                                                .B https://www.openssh.com/manual.html
+
+                                                                                                .SH AUTHOR
+                                                                                                Written by the OpenSSH team and contributors.
+
+                                                                                                .SH BUGS
+                                                                                                To report bugs, refer to the OpenSSH project's bug tracker:
+                                                                                                .B https://bugs.openbsd.org/bugzilla/
+
+                                                                                            '' ;
                                                                                     } ;
                                                                         } ;
                                                             pads =
