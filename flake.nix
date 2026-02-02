@@ -943,10 +943,11 @@
                                                                                             '' ;
                                                                                     } ;
                                                                             idea-community =
-                                                                                "idea-community"
-                                                                                {
+                                                                                man
+                                                                                    "idea-community"
+                                                                                    {
 
-                                                                                } ;
+                                                                                    } ;
                                                                         } ;
                                                             pads =
                                                                 let
