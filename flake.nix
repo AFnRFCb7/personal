@@ -3092,10 +3092,10 @@
                                                                                     man =
                                                                                         [
                                                                                             ( resources__.production.man.chromium { failure = ___failure "967ea0e1" ; } )
-                                                                                            ( resources__.production.bin.gpg { failure = ___failure "aa1f5c38" ; } )
-                                                                                            ( resources__.production.bin.idea-community { failure = ___failure "f5992d47" ; } )
-                                                                                            ( resources__.production.bin.pass { failure = ___failure "4a4c361e" ; } )
-                                                                                            ( resources__.production.bin.ssh { failure = ___failure "6d01304d" ; } )
+                                                                                            ( resources__.production.man.gpg { failure = ___failure "aa1f5c38" ; } )
+                                                                                            ( resources__.production.man.idea-community { failure = ___failure "f5992d47" ; } )
+                                                                                            ( resources__.production.man.pass { failure = ___failure "4a4c361e" ; } )
+                                                                                            ( resources__.production.man.ssh { failure = ___failure "6d01304d" ; } )
                                                                                         ] ;
                                                                                 } ;
                                                                         } ;
