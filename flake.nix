@@ -2381,11 +2381,14 @@
                                                                                                                                                                         git fetch origin main
                                                                                                                                                                         UUID="$( uuidgen | sha512sum )" || failure a731cc03
                                                                                                                                                                         BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure ca9d8217
-                                                                                                                                                                        git checkout -b "$BRANCH"
-                                                                                                                                                                        git fetch origin main
-                                                                                                                                                                        git reset --soft origin/main
-                                                                                                                                                                        git commit -a --verbose
-                                                                                                                                                                        git push origin HEAD
+                                                                                                                                                                        if ! git diff --quiet origin/main || ! git diff --quiet --cached origin/main
+                                                                                                                                                                        then
+                                                                                                                                                                            git checkout -b "$BRANCH"
+                                                                                                                                                                            git fetch origin main
+                                                                                                                                                                            git reset --soft origin/main
+                                                                                                                                                                            git commit -a --verbose
+                                                                                                                                                                            git push origin HEAD
+                                                                                                                                                                        fi
                                                                                                                                                                     '' ;
                                                                                                                                                             } ;
                                                                                                                                                     in "${ application }/bin/mutable-reset" ;
@@ -2404,13 +2407,16 @@
                                                                                                                                                                         git fetch origin main
                                                                                                                                                                         UUID="$( uuidgen )" || failure 0f292839
                                                                                                                                                                         BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 57402bed
-                                                                                                                                                                        git checkout -b "$BRANCH"
-                                                                                                                                                                        git reset --soft origin/main
-                                                                                                                                                                        git commit -a --verbose
-                                                                                                                                                                        git push origin HEAD
-                                                                                                                                                                        cd "$toplevel"
-                                                                                                                                                                        nix flake update --flake "$toplevel" "$name"
-                                                                                                                                                                        nix flake update --flake "$toplevel" "$name"pr
+                                                                                                                                                                        if ! git diff --quiet origin/main || ! git diff --quiet --cached origin/main
+                                                                                                                                                                        then
+                                                                                                                                                                            git checkout -b "$BRANCH"
+                                                                                                                                                                            git reset --soft origin/main
+                                                                                                                                                                            git commit -a --verbose
+                                                                                                                                                                            git push origin HEAD
+                                                                                                                                                                            cd "$toplevel"
+                                                                                                                                                                            nix flake update --flake "$toplevel" "$name"
+                                                                                                                                                                            nix flake update --flake "$toplevel" "$name"
+                                                                                                                                                                        fi
                                                                                                                                                                     '' ;
                                                                                                                                                             } ;
                                                                                                                                                     in "${ application }/bin/mutable-reset" ;
