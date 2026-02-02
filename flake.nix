@@ -2376,6 +2376,7 @@
                                                                                                                                                                 runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.libuuid ( _failure.implementation "e0d03f16" ) ] ;
                                                                                                                                                                 text =
                                                                                                                                                                     ''
+                                                                                                                                                                        # shellcheck disable=SC2016
                                                                                                                                                                         git submodule foreach '$MOUNT/stage/alias/submodule'
                                                                                                                                                                         git fetch origin main
                                                                                                                                                                         UUID="$( uuidgen | sha512sum )" || failure a731cc03
