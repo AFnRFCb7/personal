@@ -2763,6 +2763,7 @@
                                                                                                                                             git config alias.mutable-build-vm "!$MOUNT/stage/alias/root/mutable-build-vm"
                                                                                                                                             git config alias.mutable-build-vm-with-bootloader "!$MOUNT/stage/alias/root/mutable-build-vm-with-bootloader"
                                                                                                                                             git config alias.mutable-check "!$MOUNT/stage/alias/root/mutable-check"
+                                                                                                                                            git config alias.mutable-reset "!$MOUNT/stage/alias/root/mutable-reset"
                                                                                                                                             git config alias.mutable-switch "!$MOUNT/stage/alias/root/mutable-switch"
                                                                                                                                             git config alias.mutable-test "!$MOUNT/stage/alias/root/mutable-test"
                                                                                                                                             git config user.email "${ config.personal.repository.private.email }"
