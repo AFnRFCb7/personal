@@ -3065,6 +3065,7 @@
                                                                                                                                 } ;
                                                                                                                     in
                                                                                                                         let
+                                                                                                                            double-quotes = builtins.concatStringsSep "" [ "'" "'" ] ;
                                                                                                                             envrc =
                                                                                                                                 let
                                                                                                                                     application =
@@ -3089,9 +3090,9 @@
                                                                                                                                             pkgs.mkShell
                                                                                                                                                 {
                                                                                                                                                     shellHook =
-                                                                                                                                                        \''
+                                                                                                                                                        ${ double-quotes }
                                                                                                                                                             source /home/${ config.personal.name }/pad/.envrc"
-                                                                                                                                                        \'' ;
+                                                                                                                                                        ${ double-quotes } ;
                                                                                                                                                 }
                                                                                                                                     EOF
                                                                                                                                     mkdir --parents /home/${ config.personal.name }/pad
