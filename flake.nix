@@ -285,7 +285,6 @@
                                                                                     in "${ application }/bin/init" ;
                                                                         targets = [ "public" ] ;
                                                                     } ;
-
                                                             application =
                                                                 {
                                                                     chromium =
@@ -3082,7 +3081,7 @@
                                                                                                                                                                 '' ;
                                                                                                                                                         in
                                                                                                                                                             ''
-                                                                                                                                                                ${ builtins.concatStringsSep "\n" ( builtins.map mapper ) config.personal.pads.autocomplete }
+                                                                                                                                                                ${ builtins.concatStringsSep "\n" ( builtins.map mapper config.personal.pads.autocomplete ) }
                                                                                                                                                             '' ;
                                                                                                                                             } ;
                                                                                                                                     in "${ application }/bin/envrc" ;
