@@ -3447,7 +3447,7 @@
                                                                                     {
                                                                                         options =
                                                                                             {
-                                                                                                autocomplete = lib.mkOption { default = { } ; type = lib.types.attrsOf lib.types.str ; } ;
+                                                                                                autocomplete = lib.mkOption { default = { } ; type = lib.types.listOf lib.types.str ; } ;
                                                                                                 bin = lib.mkOption { default = [ ] ; type = lib.types.listOf lib.types.str ; } ;
                                                                                                 man = lib.mkOption { default = [ ] ; type = lib.types.listOf lib.types.str ; } ;
                                                                                             } ;
