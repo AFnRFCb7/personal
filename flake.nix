@@ -2379,7 +2379,7 @@
                                                                                                                                                                         git submodule foreach '$MOUNT/stage/alias/submodule'
                                                                                                                                                                         git fetch origin main
                                                                                                                                                                         UUID="$( uuidgen | sha512sum )" || failure a731cc03
-                                                                                                                                                                        BRANCH="$( echo scratch/$UUID | cut --characters 1-64 )" || failure ca9d8217
+                                                                                                                                                                        BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure ca9d8217
                                                                                                                                                                         git checkout -b "$BRANCH"
                                                                                                                                                                         git fetch origin main
                                                                                                                                                                         git reset --soft origin/main
