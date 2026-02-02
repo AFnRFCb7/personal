@@ -3083,6 +3083,17 @@
                                                                                                                                     in "${ application }/bin/envrc" ;
                                                                                                                             in
                                                                                                                                 ''
+                                                                                                                                    mkdir --parents /home/${ config.personal.name }/shell
+                                                                                                                                    cat > /home/${ config.personal.name }/shell.nix <<EOF
+                                                                                                                                        { pkgs ? import <nixpkgs> {} } :
+                                                                                                                                            pkgs.mkShell
+                                                                                                                                                {
+                                                                                                                                                    shellHook = "source /home/${ config.personal.name }/pad/.envrc" ;
+                                                                                                                                                }
+                                                                                                                                          '';
+                                                                                                                                        }
+
+                                                                                                                                    EOF
                                                                                                                                     mkdir --parents /home/${ config.personal.name }/pad
                                                                                                                                     ln --symbolic --force ${ envrc } /home/${ config.personal.name }/pad/.envrc
                                                                                                                                 '' ;
