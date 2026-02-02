@@ -434,7 +434,7 @@
                                                                                  autocomplete
                                                                                      "silly"
                                                                                     ''
-                                                                                         COMPREPLY=( $( compgen -W "alpha beta" -- "${ builtins.concatStringsSep "" [ "$" "{" "COMP_WORDS[1]" "}" ] } ) )
+                                                                                         COMPREPLY=( $( compgen -W "alpha beta" -- "${ builtins.concatStringsSep "" [ "$" "{" "COMP_WORDS[1]" "}" ] }" ) )
                                                                                     '' ;
                                                                          } ;
                                                             bin =
