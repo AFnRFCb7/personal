@@ -946,6 +946,102 @@
                                                                                 man
                                                                                     "idea-community"
                                                                                     {
+                                                                                        user =
+                                                                                            ''
+                                                                                                .TH IDEA-COMMUNITY 1 "February 2026" "1.0" "IntelliJ IDEA Community Edition"
+                                                                                                .SH NAME
+                                                                                                idea-community \- Integrated Development Environment (IDE) for Java and JVM languages
+                                                                                                .SH SYNOPSIS
+                                                                                                .B idea-community
+                                                                                                [\fIoptions\fR]
+                                                                                                .SH DESCRIPTION
+                                                                                                IntelliJ IDEA Community Edition is a free and open-source Integrated Development Environment (IDE) for Java, Kotlin, Groovy, and other JVM-based languages. It provides support for a wide range of programming languages, modern frameworks, and tools.
+
+                                                                                                You can use IntelliJ IDEA for Java development, Android development (using Kotlin), web development, and more. It comes with advanced code completion, debugging, and integration with various build systems like Gradle and Maven.
+
+                                                                                                .SH OPTIONS
+                                                                                                .TP
+                                                                                                .B \-h, \-\-help
+                                                                                                Display help message with available options.
+                                                                                                .TP
+                                                                                                .B \-v, \-\-version
+                                                                                                Show the version of IntelliJ IDEA Community Edition.
+                                                                                                .TP
+                                                                                                .B \-d, \-\-disable-plugins
+                                                                                                Launch IDEA without loading any plugins.
+                                                                                                .TP
+                                                                                                .B \-p, \-\-project=[path]
+                                                                                                Open a specific project located at the given path.
+                                                                                                .TP
+                                                                                                .B \-n, \-\-new-project
+                                                                                                Create a new project in the IDE.
+                                                                                                .TP
+                                                                                                .B \-r, \-\-recent
+                                                                                                Open a recently used project.
+                                                                                                .TP
+                                                                                                .B \-j, \-\-jdk=[path]
+                                                                                                Specify a custom Java JDK to use with IDEA.
+                                                                                                .TP
+                                                                                                .B \-m, \-\-maximize
+                                                                                                Launch IDEA in a maximized window.
+                                                                                                .TP
+                                                                                                .B \-l, \-\-localize
+                                                                                                Set the language for the user interface. For example: \-l en, \-l de.
+                                                                                                .TP
+                                                                                                .B \-c, \-\-clear-cache
+                                                                                                Clear the IDE cache and restart the application.
+                                                                                                .TP
+                                                                                                .B \-i, \-\-install
+                                                                                                Install necessary IDE components if missing (e.g., Java SDKs, plugins).
+
+                                                                                                .SH EXAMPLES
+                                                                                                Here are some common examples of how to use IntelliJ IDEA from the command line:
+
+                                                                                                .TP
+                                                                                                Launch IDEA with a specific project:
+                                                                                                .nf
+                                                                                                  $ idea-community --project /path/to/project
+                                                                                                .fi
+
+                                                                                                .TP
+                                                                                                Open IDEA with the most recent project:
+                                                                                                .nf
+                                                                                                  $ idea-community --recent
+                                                                                                .fi
+
+                                                                                                .TP
+                                                                                                Create a new project:
+                                                                                                .nf
+                                                                                                  $ idea-community --new-project
+                                                                                                .fi
+
+                                                                                                .TP
+                                                                                                Launch IDEA with a specific JDK:
+                                                                                                .nf
+                                                                                                  $ idea-community --jdk /path/to/jdk
+                                                                                                .fi
+
+                                                                                                .TP
+                                                                                                Start IDEA with plugins disabled:
+                                                                                                .nf
+                                                                                                  $ idea-community --disable-plugins
+                                                                                                .fi
+
+                                                                                                .TP
+                                                                                                Show IDEA version:
+                                                                                                .nf
+                                                                                            '' ;
+                                                                                    } ;
+                                                                            pass =
+                                                                                man
+                                                                                    "pass"
+                                                                                    {
+
+                                                                                    } ;
+                                                                            ssh =
+                                                                                man
+                                                                                    "ssh"
+                                                                                    {
 
                                                                                     } ;
                                                                         } ;
@@ -2686,7 +2782,8 @@
                                                                                                                                                         ${ builtins.concatStringsSep "\n" ( builtins.map ( value : "M${ builtins.hashString "sha512" value }=${ value }" ) config.personal.pads.man ) }
                                                                                                                                                         export MANPATH="${ builtins.concatStringsSep ":" ( builtins.map ( value : "$M${ builtins.hashString "sha512" value }" ) config.personal.pads.man ) }"
                                                                                                                                                         ${ builtins.concatStringsSep "\n" ( builtins.map ( value : "B${ builtins.hashString "sha512" value }=${ value }" ) config.personal.pads.bin ) }
-                                                                                                                                                        export PATH="${ builtins.concatStringsSep ":" ( builtins.map ( value : "$B${ builtins.hashString "sha512" value }" ) config.personal.pads.bin ) }"
+                                                                                                                                                        PATH="${ builtins.concatStringsSep ":" ( builtins.map ( value : "$B${ builtins.hashString "sha512" value }" ) config.personal.pads.bin ) }"
+                                                                                                                                                        export PATH="$PATH:${ pkgs.less }/bin:${ pkgs.man-db }/bin"
                                                                                                                                                     '' ;
                                                                                                                                             } ;
                                                                                                                                     in "${ application }/bin/envrc" ;
@@ -2997,8 +3094,8 @@
                                                                                             ( resources__.production.man.chromium { failure = ___failure "967ea0e1" ; } )
                                                                                             ( resources__.production.bin.gpg { failure = ___failure "aa1f5c38" ; } )
                                                                                             ( resources__.production.bin.idea-community { failure = ___failure "f5992d47" ; } )
-                                                                                            # ( resources__.production.bin.pass { failure = ___failure "4a4c361e" ; } )
-                                                                                            # ( resources__.production.bin.ssh { failure = ___failure "6d01304d" ; } )
+                                                                                            ( resources__.production.bin.pass { failure = ___failure "4a4c361e" ; } )
+                                                                                            ( resources__.production.bin.ssh { failure = ___failure "6d01304d" ; } )
                                                                                         ] ;
                                                                                 } ;
                                                                         } ;
