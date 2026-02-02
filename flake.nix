@@ -2468,6 +2468,7 @@
                                                                                                                                     git config alias.mutable-nurse "!$MOUNT/stage/alias/root/mutable-nurse"
                                                                                                                                     git config alias.mutable-promote "!$MOUNT/stage/alias/root/mutable-promote"
                                                                                                                                     git config alias.mutable-rebase "!$MOUNT/stage/alias/root/mutable-rebase"
+                                                                                                                                    git config alias.mutable-reset = "!$MOUNT/stage/alias/root/mutable-reset"
                                                                                                                                     git config alias.mutable-snapshot "!$MOUNT/stage/alias/root/mutable-snapshot"
                                                                                                                                     git config alias.mutable-switch "!$MOUNT/stage/alias/root/mutable-switch"
                                                                                                                                     git config alias.mutable-test "!$MOUNT/stage/alias/root/mutable-test"
