@@ -1066,7 +1066,7 @@
                                                                                                                                                                 UUID="$( uuidgen | sha512sum )" || failure b9131928
                                                                                                                                                                 echo 24d3677d
                                                                                                                                                                 BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 22724f93
-                                                                                                                                                                echo 24d3677d
+                                                                                                                                                                echo 24d3677d 3fbea38b
                                                                                                                                                                 SECRETS=${ resources.production.repository.secrets2.read-only { failure = "failure 64ef3c7e" ; } }
                                                                                                                                                                 echo 24d3677d 250ac697
                                                                                                                                                                 git fetch origin ${ config.personal.secrets2.branch }
@@ -1088,15 +1088,15 @@
                                                                                                                                                                 git commit -am "recycled github identity"
                                                                                                                                                                 echo 24d3677d
                                                                                                                                                                 git push origin "$BRANCH"
-                                                                                                                                                                echo 24d3677d
+                                                                                                                                                                echo 24d3677d a7577b41
                                                                                                                                                                 gh auth login --with-token < "$SECRETS/stage/github/token.asc"
-                                                                                                                                                                echo 24d3677d
+                                                                                                                                                                echo 24d3677d acbf7b41
                                                                                                                                                                 gh pr create --base ${ config.personal.secrets2.branch } --head "$BRANCH" --title "update github identity" --body ""
-                                                                                                                                                                echo 24d3677d
+                                                                                                                                                                echo 24d3677d 21b2cf3d
                                                                                                                                                                 URL="$( gh pr view --json url --jq .url )" || failure 864bc6e6
-                                                                                                                                                                echo 24d3677d
+                                                                                                                                                                echo 24d3677d ef9d97c0
                                                                                                                                                                 gh pr merge "$URL" --rebase
-                                                                                                                                                                echo 24d3677d
+                                                                                                                                                                echo 24d3677d 739b0be5
                                                                                                                                                                 # gh ssh-key list --json id | jq -r '.[].id' | while read -r key_id
                                                                                                                                                                 # do
                                                                                                                                                                 #     gh ssh-key delete "$key_id" --confirm
