@@ -424,6 +424,8 @@
                                                                                                                              ''
                                                                                                                                  ln --symbolic ${ autocomplete } /mount/autocomplete.sh
                                                                                                                              '' ;
+                                                                                                             } ;
+                                                                                                        in "${ application }/bin/autocomplete" ;
                                                                                          targets = [ "autocomplete.sh" ] ;
                                                                                      } ;
                                                                      in
