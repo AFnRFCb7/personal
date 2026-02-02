@@ -3089,9 +3089,9 @@
                                                                                                                                             pkgs.mkShell
                                                                                                                                                 {
                                                                                                                                                     shellHook =
-                                                                                                                                                        \'\'
+                                                                                                                                                        \''
                                                                                                                                                             source /home/${ config.personal.name }/pad/.envrc"
-                                                                                                                                                        \'\' ;
+                                                                                                                                                        \'' ;
                                                                                                                                                 }
                                                                                                                                     EOF
                                                                                                                                     mkdir --parents /home/${ config.personal.name }/pad
@@ -3379,7 +3379,7 @@
                                                                                     {
                                                                                         options =
                                                                                             {
-                                                                                                autocomplete = lib.mkOption { default = null ; type = lib.types.nullOr lib.types.str ; } ;
+                                                                                                autocomplete = lib.mkOption { default = { } ; type = lib.types.attrsOf lib.types.str ; } ;
                                                                                                 bin = lib.mkOption { default = [ ] ; type = lib.types.listOf lib.types.str ; } ;
                                                                                                 man = lib.mkOption { default = [ ] ; type = lib.types.listOf lib.types.str ; } ;
                                                                                             } ;
