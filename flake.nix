@@ -3090,9 +3090,6 @@
                                                                                                                                                 {
                                                                                                                                                     shellHook = "source /home/${ config.personal.name }/pad/.envrc" ;
                                                                                                                                                 }
-                                                                                                                                          '';
-                                                                                                                                        }
-
                                                                                                                                     EOF
                                                                                                                                     mkdir --parents /home/${ config.personal.name }/pad
                                                                                                                                     ln --symbolic --force ${ envrc } /home/${ config.personal.name }/pad/.envrc
