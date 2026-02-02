@@ -733,7 +733,47 @@
                                                                                             in "${ application }/bin/init" ;
                                                                                 targets = [ "man1" "man2" "man3" "man4" "man5" "man6" "man7" "man8" ] ;
                                                                             } ;
-                                                                    in { } ;
+                                                                    in
+                                                                        {
+                                                                            chromium =
+                                                                                man
+                                                                                    {
+                                                                                        user =
+                                                                                            ''
+                                                                                                .TH CHROMIUM 1 "February 2026" "1.0" "Chromium Browser"
+                                                                                                .SH NAME
+                                                                                                chromium \- Open-source web browser
+                                                                                                .SH SYNOPSIS
+                                                                                                .B chromium
+                                                                                                [\fIoptions\fR]
+                                                                                                .SH DESCRIPTION
+                                                                                                Chromium is a free and open-source web browser developed by the Chromium Project. It serves as the base for Google Chrome and is designed to be fast, secure, and minimal.
+
+                                                                                                .SH OPTIONS
+                                                                                                .TP
+                                                                                                .B \-h, \-\-help
+                                                                                                Display help message.
+                                                                                                .TP
+                                                                                                .B \-v, \-\-version
+                                                                                                Display the version of Chromium.
+                                                                                                .TP
+                                                                                                .B \-incognito
+                                                                                                Open a new window in incognito mode.
+                                                                                                .TP
+                                                                                                .B \-disable-extensions
+                                                                                                Launch Chromium with extensions disabled.
+                                                                                                .TP
+                                                                                                .B \-proxy-server=[address]
+                                                                                                Specify a proxy server.
+                                                                                                .TP
+                                                                                                .B \-user-data-dir=[directory]
+                                                                                                Use a specified directory for user data.
+
+                                                                                                .SH AUTHOR
+                                                                                                Written by the Chromium Project developers.
+                                                                                            '' ;
+                                                                                    } ;
+                                                                        } ;
                                                             pads =
                                                                 let
                                                                     mapper =
@@ -2468,6 +2508,8 @@
                                                                                                                                                 name = "envrc" ;
                                                                                                                                                 text =
                                                                                                                                                     ''
+                                                                                                                                                        ${ builtins.concatStringsSep "\n" ( builtins.map ( value : "M${ builtins.hashString "sha512" value }=${ value }" ) config.personal.pads.man ) }
+                                                                                                                                                        export MANPATH="${ builtins.concatStringsSep ":" ( builtins.map ( value : "$M${ builtins.hashString "sha512" value }" ) config.personal.pads.man ) }"
                                                                                                                                                         ${ builtins.concatStringsSep "\n" ( builtins.map ( value : "B${ builtins.hashString "sha512" value }=${ value }" ) config.personal.pads.bin ) }
                                                                                                                                                         export PATH="${ builtins.concatStringsSep ":" ( builtins.map ( value : "$B${ builtins.hashString "sha512" value }" ) config.personal.pads.bin ) }"
                                                                                                                                                     '' ;
@@ -2762,8 +2804,7 @@
                                                                                             {
                                                                                                 autocomplete = lib.mkOption { default = null ; type = lib.types.nullOr lib.types.str ; } ;
                                                                                                 bin = lib.mkOption { default = [ ] ; type = lib.types.listOf lib.types.str ; } ;
-                                                                                                environment = lib.mkOption { default = null ; type = lib.types.nullOr ( lib.types.attrsOf lib.types.str ) ; } ;
-                                                                                                man = lib.mkOption { default = null ; type = lib.types.nullOr ( lib.types.attrsOf lib.types.str ) ; } ;
+                                                                                                man = lib.mkOption { default = [ ] ; type = lib.types.listOf lib.types.str ; } ;
                                                                                             } ;
                                                                                     } ;
                                                                             default =
@@ -2776,71 +2817,9 @@
                                                                                             ( resources__.production.bin.pass { failure = ___failure "c055f2a0" ; } )
                                                                                             ( resources__.production.bin.ssh { failure = ___failure "c055f2a0" ; } )
                                                                                         ] ;
-                                                                                    environment =
-                                                                                        {
-                                                                                            NAME = "FOOBAR" ;
-                                                                                        } ;
                                                                                     man =
                                                                                         {
-                                                                                            resource =
-                                                                                                ''
-                                                                                                    .TH RESOURCE_FETCH 1 "January 2026" "1.0" "User Commands"
-                                                                                                    .SH NAME
-                                                                                                    resource_fetch \- Fetch and return a resource based on the specified name.
-
-                                                                                                    .SH SYNOPSIS
-                                                                                                    .B resource_fetch
-                                                                                                    [\fIresource_name\fR]
-
-                                                                                                    .SH DESCRIPTION
-                                                                                                    The
-                                                                                                    .B resource_fetch
-                                                                                                    script allows users to fetch specific resources based on their provided name. The script takes a single argument which specifies the name of the desired resource. Based on this argument, the script fetches and outputs the corresponding secret or resource from predefined configurations.
-
-                                                                                                    The valid resource names are:
-                                                                                                    - production.repository.secrets.read-only
-                                                                                                    - archaic
-
-                                                                                                    The script retrieves these resources from internal configurations defined within the script or external files, ensuring resources are returned correctly.
-
-                                                                                                    .SH ARGUMENTS
-                                                                                                    .TP
-                                                                                                    \fIresource_name\fR
-                                                                                                    The name of the resource to fetch. This should be one of the following:
-                                                                                                    - \fBproduction.repository.secrets.read-only\fR
-                                                                                                    - \fBarchaic\fR
-
-                                                                                                    .SH EXAMPLES
-                                                                                                    To fetch the production repository's read-only secrets:
-                                                                                                    .PP
-                                                                                                    $ resource_fetch production.repository.secrets.read-only
-                                                                                                    .PP
-                                                                                                    This will output the secrets for the production repository in read-only mode.
-
-                                                                                                    To fetch secrets from the archaic studio repository:
-                                                                                                    .PP
-                                                                                                    $ resource_fetch archaic
-                                                                                                    .PP
-                                                                                                    This will output the secrets related to the archaic studio repository.
-
-                                                                                                    .SH EXIT STATUS
-                                                                                                    The script returns the following exit statuses:
-                                                                                                    .TP
-                                                                                                    0
-                                                                                                    Success. The requested resource was fetched and printed.
-                                                                                                    .TP
-                                                                                                    1
-                                                                                                    Failure. Invalid resource name or failure to fetch the requested resource.
-
-                                                                                                    .SH ENVIRONMENT VARIABLES
-                                                                                                    The script uses the following environment variables:
-                                                                                                    .TP
-                                                                                                    resources__
-                                                                                                    A configuration or environment variable that defines the resources to fetch from.
-
-                                                                                                    .SH SEE ALSO
-                                                                                                    resources(5), failure(1)
-                                                                                                '' ;
+                                                                                            ( resources__.production.man.chromium { failure = ___failure "967ea0e1" ; } )
                                                                                         } ;
                                                                                 } ;
                                                                         } ;
