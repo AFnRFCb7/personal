@@ -1,4 +1,4 @@
-# e3e7dc55
+# ae66b4ce
 {
     inputs =
         {
@@ -30,6 +30,8 @@
                             _dot-gnupg = dot-gnupg.lib { } ;
                             _dot-ssh = dot-ssh.lib { failure = _failure.implementation "4e91ae89" ; visitor = _visitor.implementation ; } ;
                             _failure = failure.lib { coreutils = pkgs.coreutils ; jq = pkgs.jq ; mkDerivation = pkgs.stdenv.mkDerivation ; visitor = visitor ; writeShellApplication = pkgs.writeShellApplication ; yq-go = pkgs.yq-go ; } ;
+                            __failure = _failure.implementation "7fef1fe4" ;
+                            ___failure = uuid : "${ __failure }/bin/failure ${ uuid }" ;
                             _fixture = fixture.lib { age = pkgs.age ; coreutils = pkgs.coreutils ; failure = _failure.implementation "6bf7303d" ; gnupg = pkgs.gnupg ; libuuid = pkgs.libuuid ; mkDerivation = pkgs.stdenv.mkDerivation ; writeShellApplication = pkgs.writeShellApplication ; } ;
                             _git-repository = git-repository.lib { string = _string.implementation ; visitor = _visitor.implementation ; } ;
                             _private-reporter = private-reporter.lib { failure = _failure.implementation "8e2eb1d7" ; pkgs = pkgs ; } ;
@@ -264,8 +266,28 @@
                                                     production =
                                                         {
                                                             age =
+                                                                ignore :
+                                                                    {
+                                                                        init =
+                                                                            { pid , pkgs , resources , root , sequential , wrap } :
+                                                                                let
+                                                                                    application =
+                                                                                        pkgs.writeShellApplication
+                                                                                            {
+                                                                                                name = "init" ;
+                                                                                                runtimeInputs = [ pkgs.age pkgs.coreutils ] ;
+                                                                                                text =
+                                                                                                    ''
+                                                                                                        age-keygen -y ${ config.personal.agenix } | tr -d '\n' > /mount/public
+                                                                                                        chmod 0400 /mount/public
+                                                                                                    '' ;
+                                                                                            } ;
+                                                                                    in "${ application }/bin/init" ;
+                                                                        targets = [ "public" ] ;
+                                                                    } ;
+                                                            application =
                                                                 {
-                                                                    public =
+                                                                    chromium =
                                                                         ignore :
                                                                             {
                                                                                 init =
@@ -275,15 +297,79 @@
                                                                                                 pkgs.writeShellApplication
                                                                                                     {
                                                                                                         name = "init" ;
-                                                                                                        runtimeInputs = [ pkgs.age pkgs.coreutils ] ;
+                                                                                                        runtimeInputs = [ root __failure ] ;
                                                                                                         text =
                                                                                                             ''
-                                                                                                                age-keygen -y ${ config.personal.agenix } | tr -d '\n' > /mount/public
-                                                                                                                chmod 0400 /mount/public
+                                                                                                                CONFIG=${ resources.production.repository.pads.home.chromium.data { failure = "failure 0c755ed8" ; } }
+                                                                                                                root "$CONFIG"
+                                                                                                                mkdir --parents /mount/etc
+                                                                                                                ln --symbolic "$CONFIG/repository/secret" /mount/etc/config
+                                                                                                                mkdir --parents /mount/bin
+                                                                                                                DATA=${ resources.production.repository.pads.home.chromium.data { failure = "fdcf6e38" ; } }
+                                                                                                                root "$DATA"
+                                                                                                                ln --symbolic "$DATA/repository/secret" /mount/etc/data
+                                                                                                                root ${ pkgs.chromium }
+                                                                                                                ln --symbolic ${ pkgs.chromium }/bin/chromium /mount/bin/chromium
                                                                                                             '' ;
                                                                                                     } ;
                                                                                             in "${ application }/bin/init" ;
-                                                                                targets = [ "public" ] ;
+                                                                                targets = [ "bin" "etc" ] ;
+                                                                            } ;
+                                                                    mutable =
+                                                                        ignore :
+                                                                            {
+                                                                                init =
+                                                                                    { pid , pkgs , resources , root , sequential , wrap } :
+                                                                                        let
+                                                                                            application =
+                                                                                                pkgs.writeShellApplication
+                                                                                                    {
+                                                                                                        name = "init" ;
+                                                                                                        runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                        text =
+                                                                                                            ''
+                                                                                                                mkdir --parents /mount/bin
+                                                                                                                mkdir --parents /mount/etc
+                                                                                                            '' ;
+                                                                                                    } ;
+                                                                                            in "${ application }/bin/init" ;
+                                                                                targets = [ "bin" "etc" ] ;
+                                                                            } ;
+                                                                    unlock =
+                                                                        ignore :
+                                                                            {
+                                                                                init =
+                                                                                    { pid , pkgs , resources , root , sequential , wrap } :
+                                                                                        let
+                                                                                            application =
+                                                                                                pkgs.writeShellApplication
+                                                                                                    {
+                                                                                                        name = "init" ;
+                                                                                                        runtimeInputs = [ wrap ] ;
+                                                                                                        text =
+                                                                                                            let
+                                                                                                                unlock =
+                                                                                                                    let
+                                                                                                                        application =
+                                                                                                                            pkgs.writeShellApplication
+                                                                                                                                {
+                                                                                                                                    name = "unlock" ;
+                                                                                                                                    runtimeInputs = [ pkgs.gnupg ] ;
+                                                                                                                                    text =
+                                                                                                                                        ''
+                                                                                                                                            DOT_GNUPG=${ resources__.production.dot-gnupg { failure = "failure 75dc4165" ; } }
+                                                                                                                                            export GNUPGHOME="$DOT_GNUPG/dot-gnupg"
+                                                                                                                                            gpg --homedir "$GNUPGHOME" --sign --local-user ${ config.personal.chromium.home.data.email } --dry-run
+                                                                                                                                        '' ;
+                                                                                                                                } ;
+                                                                                                                        in "${ application }/bin/unlock" ;
+                                                                                                                in
+                                                                                                                    ''
+                                                                                                                        wrap ${ unlock } bin/unlock 0500 --literal-plain DOT_GNUPG --literal-plain GNUPGHOME --literal-plain DOT_GNUPG --literal-plain PATH
+                                                                                                                    '' ;
+                                                                                                    } ;
+                                                                                                in "${ application }/bin/init" ;
+                                                                                targets = [ "bin" ] ;
                                                                             } ;
                                                                 } ;
                                                             alpha =
@@ -305,6 +391,206 @@
                                                                                         in "${ application }/bin/init" ;
                                                                         targets = [ "secret" ] ;
                                                                     } ;
+                                                             autocomplete =
+                                                                let
+                                                                     autocomplete =
+                                                                         name : value : ignore :
+                                                                             let
+                                                                                 hash = builtins.hashString "sha512" "${ name }${ value }" ;
+                                                                                 in
+                                                                                     {
+                                                                                         init =
+                                                                                             { pid , pkgs , resources , root , sequential , wrap } :
+                                                                                                 let
+                                                                                                     application =
+                                                                                                         pkgs.writeShellApplication
+                                                                                                             {
+                                                                                                                 name = "init" ;
+                                                                                                                 text =
+                                                                                                                     let
+                                                                                                                         autocomplete =
+                                                                                                                             pkgs.writeShellApplication
+                                                                                                                                 {
+                                                                                                                                     name = "autocomplete" ;
+                                                                                                                                     text =
+                                                                                                                                         ''
+                                                                                                                                             A${ hash } ( ) {
+                                                                                                                                                ${ value }
+                                                                                                                                             }
+                                                                                                                                             complete -F A${ hash } ${ name }
+                                                                                                                                         '' ;
+                                                                                                                                 } ;
+                                                                                                                         in
+                                                                                                                             ''
+                                                                                                                                 ln --symbolic ${ autocomplete } /mount/autocomplete.sh
+                                                                                                                             '' ;
+                                                                                                             } ;
+                                                                                                        in "${ application }/bin/autocomplete" ;
+                                                                                         targets = [ "autocomplete.sh" ] ;
+                                                                                     } ;
+                                                                     in
+                                                                         {
+                                                                             silly =
+                                                                                 autocomplete
+                                                                                     "silly"
+                                                                                    ''
+                                                                                        # shellcheck disable=SC2207
+                                                                                        COMPREPLY=( $( compgen -W "alpha beta" -- "${ builtins.concatStringsSep "" [ "$" "{" "COMP_WORDS[1]" "}" ] }" ) )
+                                                                                    '' ;
+                                                                         } ;
+                                                            bin =
+                                                                let
+                                                                    bin =
+                                                                        { name , environment , runtimeInputs , script , variables } : ignore :
+                                                                            {
+                                                                                init =
+                                                                                    { pid , pkgs , resources , root , sequential , wrap } :
+                                                                                        let
+                                                                                            application =
+                                                                                                pkgs.writeShellApplication
+                                                                                                    {
+                                                                                                        name = "init" ;
+                                                                                                        runtimeInputs = [ wrap ] ;
+                                                                                                        text =
+                                                                                                            let
+                                                                                                                bin =
+                                                                                                                    let
+                                                                                                                        application =
+                                                                                                                            pkgs.writeShellApplication
+                                                                                                                                {
+                                                                                                                                    name = name ;
+                                                                                                                                    runtimeInputs = runtimeInputs pkgs ;
+                                                                                                                                    text =
+                                                                                                                                        let
+                                                                                                                                            list =
+                                                                                                                                                let
+                                                                                                                                                    mapper =
+                                                                                                                                                        name : value :
+                                                                                                                                                            let
+                                                                                                                                                                length-a = builtins.stringLength string ;
+                                                                                                                                                                length-b = builtins.stringLength stripped ;
+                                                                                                                                                                oid = length-a - length-b ;
+                                                                                                                                                                string = value resources ;
+                                                                                                                                                                stripped = builtins.replaceStrings ( builtins.attrNames variables ) ( builtins.map ( value : "" ) ( builtins.attrNames variables ) ) string ;
+                                                                                                                                                                in
+                                                                                                                                                                    {
+                                                                                                                                                                        length-a = length-a ;
+                                                                                                                                                                        length-b = length-b ;
+                                                                                                                                                                        oid = oid ;
+                                                                                                                                                                        name = name ;
+                                                                                                                                                                        string = string ;
+                                                                                                                                                                        stripped = stripped ;
+                                                                                                                                                                    } ;
+                                                                                                                                                    in builtins.attrValues ( builtins.mapAttrs mapper variables ) ;
+                                                                                                                                            sorted =
+                                                                                                                                                let
+                                                                                                                                                    comparator = a : b : ( a.oid < b.oid ) || ( a.oid == b.oid && a.name < b.name ) ;
+                                                                                                                                                    in builtins.sort comparator list ;
+                                                                                                                                            in
+                                                                                                                                                ''
+                                                                                                                                                    ${ builtins.concatStringsSep "\n" ( builtins.map ( value : "${ value.name }=${ value.string } # ${ builtins.toString value.oid }" ) sorted ) }
+                                                                                                                                                    # ${ builtins.concatStringsSep "\n" ( builtins.map ( value : "${ value.name }=${ value.string } # ${ builtins.toString value.oid }" ) list ) }
+                                                                                                                                                    # ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : "${ name }=${ value resources }" ) variables ) ) }
+                                                                                                                                                    ${ builtins.concatStringsSep "\n" ( builtins.map ( name : ''export ${ name }="${ builtins.concatStringsSep "" [ "$" name ] }"'' ) environment ) }
+                                                                                                                                                    if [[ -t 0 ]]
+                                                                                                                                                    then
+                                                                                                                                                        ${ script }
+                                                                                                                                                    else
+                                                                                                                                                        ${ pkgs.coreutils }/bin/cat | ${ script }
+                                                                                                                                                    fi
+                                                                                                                                                '' ;
+                                                                                                                                } ;
+                                                                                                                        in "${ application }/bin/${ name }" ;
+                                                                                                                in
+                                                                                                                    ''
+                                                                                                                        wrap ${ bin } ${ name } 0500 --literal-plain PATH ${ builtins.concatStringsSep "" ( builtins.map ( value : " --literal-plain ${ value }" ) ( builtins.attrNames variables ) ) }
+                                                                                                                    '' ;
+                                                                                                    } ;
+                                                                                            in "${ application }/bin/init" ;
+                                                                                targets = [ name ] ;
+                                                                            } ;
+                                                                    in
+                                                                        {
+                                                                            chromium =
+                                                                                bin
+                                                                                    {
+                                                                                        environment =
+                                                                                            [
+                                                                                                "XDG_CONFIG_HOME"
+                                                                                                "XDG_DATA_HOME"
+                                                                                            ] ;
+                                                                                        name = "chromium" ;
+                                                                                        runtimeInputs = pkgs : [ pkgs.chromium ] ;
+                                                                                        script = ''chromium "$@"'' ;
+                                                                                        variables =
+                                                                                            {
+                                                                                                XDG_CONFIG_HOME_RESOURCE = resources : resources.production.repository.pads.home.chromium.config { failure = ___failure "a9192261" ; } ;
+                                                                                                XDG_DATA_HOME_RESOURCE = resources : resources.production.repository.pads.home.chromium.data { failure = ___failure "e55856e2" ; } ;
+                                                                                                XDG_CONFIG_HOME = resources : "$XDG_CONFIG_HOME_RESOURCE/repository/secret" ;
+                                                                                                XDG_DATA_HOME = resources : "$XDG_DATA_HOME_RESOURCE/repository/secret" ;
+                                                                                            } ;
+                                                                                    } ;
+                                                                            gpg =
+                                                                                bin
+                                                                                    {
+                                                                                        environment =
+                                                                                            [
+                                                                                                "GNUPGHOME"
+                                                                                            ] ;
+                                                                                        name = "gpg" ;
+                                                                                        runtimeInputs = pkgs : [ pkgs.gnupg ] ;
+                                                                                        script = ''gpg --homedir "$GNUPGHOME" "$@"'' ;
+                                                                                        variables =
+                                                                                            {
+                                                                                                DOT_GNUPG = resources : resources.production.dot-gnupg { failure = ___failure "44eb225c" ; } ;
+                                                                                                GNUPGHOME = resources : "$DOT_GNUPG/dot-gnupg" ;
+                                                                                            } ;
+                                                                                    } ;
+                                                                            idea-community =
+                                                                                bin
+                                                                                    {
+                                                                                        environment = [ ] ;
+                                                                                        name = "idea-community" ;
+                                                                                        runtimeInputs = pkgs : [ pkgs.jetbrains.idea-community ] ;
+                                                                                        script = ''idea-community "$RESOURCE/repository" "$@"'' ;
+                                                                                        variables =
+                                                                                            {
+                                                                                                RESOURCE = resources : resources.production.repository.studio.entry { failure = ___failure "560f61b9" ; } ;
+                                                                                            } ;
+                                                                                    } ;
+                                                                            pass =
+                                                                                bin
+                                                                                    {
+                                                                                        environment =
+                                                                                            [
+                                                                                                "PASSWORD_STORE_GPG_OPTS"
+                                                                                                "PASSWORD_STORE_DIR"
+                                                                                            ] ;
+                                                                                        name = "pass" ;
+                                                                                        runtimeInputs = pkgs : [ pkgs.pass ] ;
+                                                                                        script = ''pass "$@"'' ;
+                                                                                        variables =
+                                                                                            {
+                                                                                                DOT_GNUPG = resources : resources.production.dot-gnupg { failure = ___failure "f68dcf20" ; } ;
+                                                                                                RESOURCE = resources : resources.production.repository.pass { failure = ___failure "cf87710c" ; } ;
+                                                                                                PASSWORD_STORE_GPG_OPTS = resources : ''"--homedir $DOT_GNUPG/dot-gnupg"'' ;
+                                                                                                PASSWORD_STORE_DIR = resources : "$RESOURCE/repository " ;
+                                                                                            } ;
+                                                                                    } ;
+                                                                            ssh =
+                                                                                bin
+                                                                                    {
+                                                                                        environment = [ ] ;
+                                                                                        name = "ssh" ;
+                                                                                        runtimeInputs = pkgs : [ pkgs.openssh ] ;
+                                                                                        script = ''ssh -F "$DOT_SSH/config" "$@"'' ;
+                                                                                        variables =
+                                                                                            {
+                                                                                                DOT_SSH = resources : resources.production.dot-ssh { failure = ___failure "73be674b" ; } ;
+                                                                                            } ;
+                                                                                    } ;
+                                                                        } ;
+                                                                        # FINDME
                                                             dot-gnupg =
                                                                 ignore :
                                                                     _dot-gnupg.implementation
@@ -323,9 +609,9 @@
                                                                                     "github.com" =
                                                                                         {
                                                                                             host-name = "github.com" ;
-                                                                                            identity-file = ignore : "secret" ;
+                                                                                            identity-file = ignore : "stage/dot-ssh/github/identity.asc" ;
                                                                                             strict-host-key-checking = true ;
-                                                                                            user-known-hosts-file = ignore : "secret" ;
+                                                                                            user-known-hosts-file = ignore : "stage/dot-ssh/github/known-hosts.asc" ;
                                                                                             user = "git" ;
                                                                                         } ;
                                                                                     laptop =
@@ -338,18 +624,19 @@
                                                                                     mobile =
                                                                                         {
                                                                                             host-name = config.personal.mobile ;
-                                                                                            identity-file = ignore : "secret" ;
+                                                                                            identity-file = ignore : "stage/dot-ssh/mobile/identity.asc" ;
                                                                                             port = 8022 ;
                                                                                             strict-host-key-checking = false ;
-                                                                                            user-known-hosts-file = ignore : "known-hosts" ;
+                                                                                            user-known-hosts-file = ignore : "stage/dot-ssh/mobile/known-hosts.asc" ;
                                                                                         } ;
                                                                                 } ;
                                                                             resources =
                                                                                 {
                                                                                     "github.com" =
                                                                                         {
-                                                                                            identity-file = { pid , pkgs , resources , root , sequential , wrap } : resources.production.secrets.dot-ssh.github.identity-file { } ;
-                                                                                            user-known-hosts-file = { pid , pkgs , resources , root , sequential , wrap } : resources.production.secrets.dot-ssh.github.user-known-hosts-file { } ;
+                                                                                            identity-file = { pid , pkgs , resources , root , sequential , wrap } : resources.production.repository.secrets2.read-only { failure = ___failure "f30c68a9" ; } ;
+
+                                                                                            user-known-hosts-file = { pid , pkgs , resources , root , sequential , wrap } : resources.production.repository.secrets2.read-only { failure = ___failure "67293bbd" ; } ;
                                                                                         } ;
                                                                                     laptop =
                                                                                         {
@@ -358,8 +645,8 @@
                                                                                         } ;
                                                                                     mobile =
                                                                                         {
-                                                                                            identity-file = { pid , pkgs , resources , root , sequential , wrap } : resources.production.secrets.dot-ssh.mobile.identity-file { } ;
-                                                                                            user-known-hosts-file = { pid , pkgs , resources , root , sequential , wrap } : resources.production.fixture.laptop { } ;
+                                                                                            identity-file = { pid , pkgs , resources , root , sequential , wrap } : resources.production.repository.secrets2.read-only { failure = ___failure "8379287c" ; } ;
+                                                                                            user-known-hosts-file = { pid , pkgs , resources , root , sequential , wrap } : resources.production.repository.secrets2.read-only { failure = ___failure "df046088" ; } ;
                                                                                         } ;
                                                                                 } ;
                                                                         } ;
@@ -448,6 +735,656 @@
                                                                                 targets = [ "result" "shared" "standard-error" "standard-output" "status" ] ;
                                                                             } ;
                                                                 } ;
+                                                            man =
+                                                                let
+                                                                    man =
+                                                                        name :
+                                                                        {
+                                                                            user ? null ,
+                                                                            system ? null ,
+                                                                            library ? null ,
+                                                                            special ? null ,
+                                                                            format ? null ,
+                                                                            games ? null ,
+                                                                            miscellaneous ? null ,
+                                                                            administration ? null
+                                                                        } : ignore :
+                                                                            {
+                                                                                init =
+                                                                                    { pid , pkgs , resources , root , sequential , wrap } :
+                                                                                        let
+                                                                                            application =
+                                                                                                pkgs.writeShellApplication
+                                                                                                    {
+                                                                                                        name = "init" ;
+                                                                                                        runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                        text =
+                                                                                                            ''
+                                                                                                                mkdir --parents /mount/man1
+                                                                                                                ${ if builtins.typeOf user == "string" then "ln --symbolic ${ builtins.toFile "man" user } /mount/man1/${ name }.1" else "#" }
+                                                                                                                mkdir --parents /mount/man2
+                                                                                                                ${ if builtins.typeOf system == "string" then "ln --symbolic ${ builtins.toFile "man" system } /mount/man2/${ name }.2" else "#" }
+                                                                                                                mkdir --parents /mount/man3
+                                                                                                                ${ if builtins.typeOf library == "string" then "ln --symbolic ${ builtins.toFile "man" library } /mount/man3/${ name }.3" else "#" }
+                                                                                                                mkdir --parents /mount/man4
+                                                                                                                ${ if builtins.typeOf special == "string" then "ln --symbolic ${ builtins.toFile "man" special } /mount/man4/${ name }.4" else "#" }
+                                                                                                                mkdir --parents /mount/man5
+                                                                                                                ${ if builtins.typeOf format == "string" then "ln --symbolic ${ builtins.toFile "man" format } /mount/man5/${ name }.5" else "#" }
+                                                                                                                mkdir --parents /mount/man6
+                                                                                                                ${ if builtins.typeOf games == "string" then "ln --symbolic ${ builtins.toFile "man" games } /mount/man6/${ name }.6" else "#" }
+                                                                                                                mkdir --parents /mount/man7
+                                                                                                                mkdir --parents /mount/man8
+                                                                                                            '' ;
+                                                                                                    } ;
+                                                                                            in "${ application }/bin/init" ;
+                                                                                targets = [ "man1" "man2" "man3" "man4" "man5" "man6" "man7" "man8" ] ;
+                                                                            } ;
+                                                                    in
+                                                                        {
+                                                                            chromium =
+                                                                                man
+                                                                                    "chromium"
+                                                                                    {
+                                                                                        user =
+                                                                                            ''
+                                                                                                .TH CHROMIUM 1 "February 2026" "1.0" "Chromium Browser"
+                                                                                                .SH NAME
+                                                                                                chromium \- Open-source web browser
+                                                                                                .SH SYNOPSIS
+                                                                                                .B chromium
+                                                                                                [\fIoptions\fR]
+                                                                                                .SH DESCRIPTION
+                                                                                                Chromium is a free and open-source web browser developed by the Chromium Project. It serves as the base for Google Chrome and is designed to be fast, secure, and minimal.
+
+                                                                                                .SH OPTIONS
+                                                                                                .TP
+                                                                                                .B \-h, \-\-help
+                                                                                                Display help message.
+                                                                                                .TP
+                                                                                                .B \-v, \-\-version
+                                                                                                Display the version of Chromium.
+                                                                                                .TP
+                                                                                                .B \-incognito
+                                                                                                Open a new window in incognito mode.
+                                                                                                .TP
+                                                                                                .B \-disable-extensions
+                                                                                                Launch Chromium with extensions disabled.
+                                                                                                .TP
+                                                                                                .B \-proxy-server=[address]
+                                                                                                Specify a proxy server.
+                                                                                                .TP
+                                                                                                .B \-user-data-dir=[directory]
+                                                                                                Use a specified directory for user data.
+
+                                                                                                .SH AUTHOR
+                                                                                                Written by the Chromium Project developers.
+                                                                                            '' ;
+                                                                                    } ;
+                                                                            gpg =
+                                                                                man
+                                                                                    "gpg"
+                                                                                    {
+                                                                                        user =
+                                                                                            ''
+                                                                                                .TH GPG 1 "February 2026" "2.0" "GNU Privacy Guard"
+                                                                                                .SH NAME
+                                                                                                gpg \- GNU Privacy Guard encryption and signing tool
+                                                                                                .SH SYNOPSIS
+                                                                                                .B gpg
+                                                                                                [\fIoptions\fR] \fIcommand\fR [arguments]
+                                                                                                .SH DESCRIPTION
+                                                                                                GPG (GNU Privacy Guard) is a free implementation of the OpenPGP standard for encrypting and signing data and communications. It is commonly used to protect emails, files, and ensure data integrity by cryptographically verifying messages and files.
+
+                                                                                                You can use GPG to:
+                                                                                                - Encrypt and decrypt files
+                                                                                                - Sign messages and verify signatures
+                                                                                                - Manage public and private keys
+
+                                                                                                .SH COMMANDS
+                                                                                                These are the basic commands available in GPG:
+                                                                                                .TP
+                                                                                                .B init [gpg-id]
+                                                                                                Initialize a new keyring with a specified GPG key.
+                                                                                                .TP
+                                                                                                .B generate
+                                                                                                Generate a new GPG keypair (public and private keys).
+                                                                                                .TP
+                                                                                                .B sign
+                                                                                                Sign a file or message with your private key to verify its authenticity.
+                                                                                                .TP
+                                                                                                .B encrypt
+                                                                                                Encrypt a file or message for a specified recipient.
+                                                                                                .TP
+                                                                                                .B decrypt
+                                                                                                Decrypt a previously encrypted file or message.
+                                                                                                .TP
+                                                                                                .B verify
+                                                                                                Verify the signature on a file or message.
+                                                                                                .TP
+                                                                                                .B list-keys
+                                                                                                List all keys in your keyring.
+                                                                                                .TP
+                                                                                                .B export
+                                                                                                Export a public key to a file or other location.
+                                                                                                .TP
+                                                                                                .B import
+                                                                                                Import a public or private key into your keyring.
+                                                                                                .TP
+                                                                                                .B revoke
+                                                                                                Revoke a public key.
+                                                                                                .TP
+                                                                                                .B delete-keys
+                                                                                                Remove a key from your keyring.
+
+                                                                                                .SH OPTIONS
+                                                                                                These are the most commonly used options in **gpg**:
+
+                                                                                                .TP
+                                                                                                .B \-h, \-\-help
+                                                                                                Display help information for GPG.
+                                                                                                .TP
+                                                                                                .B \-v, \-\-version
+                                                                                                Show the version of GPG.
+                                                                                                .TP
+                                                                                                .B \-r, \-\-recipient=[email]
+                                                                                                Specify the recipient for encryption, using their email or key ID.
+                                                                                                .TP
+                                                                                                .B \-e, \-\-encrypt
+                                                                                                Encrypt the file or message for the specified recipient.
+                                                                                                .TP
+                                                                                                .B \-d, \-\-decrypt
+                                                                                                Decrypt the specified file or message.
+                                                                                                .TP
+                                                                                                .B \-s, \-\-sign
+                                                                                                Sign a file or message with your private key.
+                                                                                                .TP
+                                                                                                .B \-a, \-\-armor
+                                                                                                Create ASCII-armored output (so the result can be safely copied to text-based media).
+                                                                                                .TP
+                                                                                                .B \-k, \-\-list-keys
+                                                                                                List all public keys in the keyring.
+                                                                                                .TP
+                                                                                                .B \-K, \-\-list-secret-keys
+                                                                                                List all secret keys in the keyring.
+                                                                                                .TP
+                                                                                                .B \-f, \-\-fingerprint
+                                                                                                Show the fingerprint of a specified key.
+                                                                                                .TP
+                                                                                                .B \-a, \-\-armor
+                                                                                                Generate ASCII armored output (text format) instead of binary.
+                                                                                                .TP
+                                                                                                .B \-l, \-\-list-signatures
+                                                                                                List the signatures on a given key.
+
+                                                                                                .SH EXAMPLES
+                                                                                                Here are a few common examples of GPG usage:
+
+                                                                                                .TP
+                                                                                                Sign a file:
+                                                                                                .nf
+                                                                                                  $ gpg --sign myfile.txt
+                                                                                                .fi
+
+                                                                                                .TP
+                                                                                                Encrypt a file for a specific recipient:
+                                                                                                .nf
+                                                                                                  $ gpg --encrypt --recipient example@example.com myfile.txt
+                                                                                                .fi
+
+                                                                                                .TP
+                                                                                                Decrypt a file:
+                                                                                                .nf
+                                                                                                  $ gpg --decrypt myfile.txt.gpg
+                                                                                                .fi
+
+                                                                                                .TP
+                                                                                                Verify a signature on a file:
+                                                                                                .nf
+                                                                                                  $ gpg --verify myfile.txt.sig myfile.txt
+                                                                                                .fi
+
+                                                                                                .TP
+                                                                                                Generate a new keypair:
+                                                                                                .nf
+                                                                                                  $ gpg --full-generate-key
+                                                                                                .fi
+
+                                                                                                .TP
+                                                                                                Export a public key:
+                                                                                                .nf
+                                                                                                  $ gpg --export --armor example@example.com > public-key.asc
+                                                                                                .fi
+
+                                                                                                .TP
+                                                                                                List all keys in your keyring:
+                                                                                                .nf
+                                                                                                  $ gpg --list-keys
+                                                                                                .fi
+
+                                                                                                .TP
+                                                                                                Delete a key from your keyring:
+                                                                                                .nf
+                                                                                                  $ gpg --delete-keys example@example.com
+                                                                                                .fi
+
+                                                                                                .TP
+                                                                                                Revoke a key:
+                                                                                                .nf
+                                                                                                  $ gpg --gen-revoke example@example.com
+                                                                                                .fi
+
+                                                                                                .SH FILES
+                                                                                                By default, GPG stores its keys in the following locations:
+
+                                                                                                .TP
+                                                                                                .B ~/.gnupg/
+                                                                                                Contains all the GPG configuration files and keyrings (both public and private).
+
+                                                                                                .SH SEE ALSO
+                                                                                                The official GPG documentation can be found at:
+                                                                                                .B https://gnupg.org/documentation/
+
+                                                                                                .SH AUTHOR
+                                                                                                Written by the GPG team and contributors.
+                                                                                            '' ;
+                                                                                    } ;
+                                                                            idea-community =
+                                                                                man
+                                                                                    "idea-community"
+                                                                                    {
+                                                                                        user =
+                                                                                            ''
+                                                                                                .TH IDEA-COMMUNITY 1 "February 2026" "1.0" "IntelliJ IDEA Community Edition"
+                                                                                                .SH NAME
+                                                                                                idea-community \- Integrated Development Environment (IDE) for Java and JVM languages
+                                                                                                .SH SYNOPSIS
+                                                                                                .B idea-community
+                                                                                                [\fIoptions\fR]
+                                                                                                .SH DESCRIPTION
+                                                                                                IntelliJ IDEA Community Edition is a free and open-source Integrated Development Environment (IDE) for Java, Kotlin, Groovy, and other JVM-based languages. It provides support for a wide range of programming languages, modern frameworks, and tools.
+
+                                                                                                You can use IntelliJ IDEA for Java development, Android development (using Kotlin), web development, and more. It comes with advanced code completion, debugging, and integration with various build systems like Gradle and Maven.
+
+                                                                                                .SH OPTIONS
+                                                                                                .TP
+                                                                                                .B \-h, \-\-help
+                                                                                                Display help message with available options.
+                                                                                                .TP
+                                                                                                .B \-v, \-\-version
+                                                                                                Show the version of IntelliJ IDEA Community Edition.
+                                                                                                .TP
+                                                                                                .B \-d, \-\-disable-plugins
+                                                                                                Launch IDEA without loading any plugins.
+                                                                                                .TP
+                                                                                                .B \-p, \-\-project=[path]
+                                                                                                Open a specific project located at the given path.
+                                                                                                .TP
+                                                                                                .B \-n, \-\-new-project
+                                                                                                Create a new project in the IDE.
+                                                                                                .TP
+                                                                                                .B \-r, \-\-recent
+                                                                                                Open a recently used project.
+                                                                                                .TP
+                                                                                                .B \-j, \-\-jdk=[path]
+                                                                                                Specify a custom Java JDK to use with IDEA.
+                                                                                                .TP
+                                                                                                .B \-m, \-\-maximize
+                                                                                                Launch IDEA in a maximized window.
+                                                                                                .TP
+                                                                                                .B \-l, \-\-localize
+                                                                                                Set the language for the user interface. For example: \-l en, \-l de.
+                                                                                                .TP
+                                                                                                .B \-c, \-\-clear-cache
+                                                                                                Clear the IDE cache and restart the application.
+                                                                                                .TP
+                                                                                                .B \-i, \-\-install
+                                                                                                Install necessary IDE components if missing (e.g., Java SDKs, plugins).
+
+                                                                                                .SH EXAMPLES
+                                                                                                Here are some common examples of how to use IntelliJ IDEA from the command line:
+
+                                                                                                .TP
+                                                                                                Launch IDEA with a specific project:
+                                                                                                .nf
+                                                                                                  $ idea-community --project /path/to/project
+                                                                                                .fi
+
+                                                                                                .TP
+                                                                                                Open IDEA with the most recent project:
+                                                                                                .nf
+                                                                                                  $ idea-community --recent
+                                                                                                .fi
+
+                                                                                                .TP
+                                                                                                Create a new project:
+                                                                                                .nf
+                                                                                                  $ idea-community --new-project
+                                                                                                .fi
+
+                                                                                                .TP
+                                                                                                Launch IDEA with a specific JDK:
+                                                                                                .nf
+                                                                                                  $ idea-community --jdk /path/to/jdk
+                                                                                                .fi
+
+                                                                                                .TP
+                                                                                                Start IDEA with plugins disabled:
+                                                                                                .nf
+                                                                                                  $ idea-community --disable-plugins
+                                                                                                .fi
+
+                                                                                                .TP
+                                                                                                Show IDEA version:
+                                                                                                .nf
+                                                                                            '' ;
+                                                                                    } ;
+                                                                            pass =
+                                                                                man
+                                                                                    "pass"
+                                                                                    {
+                                                                                        user =
+                                                                                            ''
+                                                                                                .TH PASS 1 "February 2026" "1.0" "Password Manager"
+                                                                                                .SH NAME
+                                                                                                pass \- A simple, Unix-based password manager using GPG
+                                                                                                .SH SYNOPSIS
+                                                                                                .B pass
+                                                                                                [\fIoptions\fR] \fIcommand\fR [arguments]
+                                                                                                .SH DESCRIPTION
+                                                                                                pass is a simple, yet powerful password manager that stores passwords securely in GPG-encrypted files. The tool uses standard Unix utilities and provides a simple, effective way to manage and retrieve passwords.
+
+                                                                                                The passwords are stored in a directory of files (the password store) that is encrypted with GPG. You can access your passwords and other secrets using a simple command-line interface.
+
+                                                                                                .SH COMMANDS
+                                                                                                The following commands are supported by **pass**:
+
+                                                                                                .TP
+                                                                                                .B init [gpg-id]
+                                                                                                Initialize a new password store, using the specified GPG key ID for encryption. This is typically the first step after installing pass.
+                                                                                                .TP
+                                                                                                .B show [name]
+                                                                                                Show the password for the specified entry in the password store.
+                                                                                                .TP
+                                                                                                .B insert [name]
+                                                                                                Insert a new password entry into the password store. After executing, you will be prompted to enter the password.
+                                                                                                .TP
+                                                                                                .B edit [name]
+                                                                                                Edit an existing password entry. This opens the password in your default editor.
+                                                                                                .TP
+                                                                                                .B generate [name]
+                                                                                                Generate a random password for the specified entry. You can optionally specify the length and complexity of the generated password.
+                                                                                                .TP
+                                                                                                .B rm [name]
+                                                                                                Remove a password entry from the password store.
+                                                                                                .TP
+                                                                                                .B ls
+                                                                                                List all password entries in the password store.
+                                                                                                .TP
+                                                                                                .B find [name]
+                                                                                                Search for a password entry by name (supports fuzzy matching).
+                                                                                                .TP
+                                                                                                .B sync
+                                                                                                Synchronize the password store with a remote repository (typically a git remote).
+                                                                                                .TP
+                                                                                                .B help
+                                                                                                Display help information.
+
+                                                                                                .SH OPTIONS
+                                                                                                The following options can be used to modify the behavior of **pass**:
+
+                                                                                                .TP
+                                                                                                .B \-h, \-\-help
+                                                                                                Display help information about **pass**.
+                                                                                                .TP
+                                                                                                .B \-v, \-\-version
+                                                                                                Show the version of the **pass** tool.
+                                                                                                .TP
+                                                                                                .B \-e, \-\-editor=[editor]
+                                                                                                Specify the text editor to use for editing password entries. If not set, the `EDITOR` environment variable is used.
+                                                                                                .TP
+                                                                                                .B \-p, \-\-password-store=[dir]
+                                                                                                Specify a custom password store directory. By default, **pass** uses `~/.password-store`.
+                                                                                                .TP
+                                                                                                .B \-r, \-\-recipient=[email]
+                                                                                                Specify a GPG key to use for encryption/decryption, overriding the default key.
+                                                                                                .TP
+                                                                                                .B \-a, \-\-armor
+                                                                                                Generate ASCII-armored output (for copy-pasting passwords easily).
+                                                                                                .TP
+                                                                                                .B \-d, \-\-decrypt
+                                                                                                Decrypt the password store. This allows you to view the encrypted files in plaintext.
+
+                                                                                                .SH EXAMPLES
+                                                                                                Here are some examples of how to use **pass**:
+
+                                                                                                .TP
+                                                                                                Initialize a password store:
+                                                                                                .nf
+                                                                                                  $ pass init your-email@example.com
+                                                                                                .fi
+
+                                                                                                .TP
+                                                                                                Insert a new password for "example.com":
+                                                                                                .nf
+                                                                                                  $ pass insert example.com
+                                                                                                  # Enter the password when prompted
+                                                                                                .fi
+
+                                                                                                .TP
+                                                                                                Show the password for "example.com":
+                                                                                                .nf
+                                                                                                  $ pass show example.com
+                                                                                                .fi
+
+                                                                                                .TP
+                                                                                                Edit an existing password for "example.com":
+                                                                                                .nf
+                                                                                                  $ pass edit example.com
+                                                                                                .fi
+
+                                                                                                .TP
+                                                                                                Generate a random password for "example.com":
+                                                                                                .nf
+                                                                                                  $ pass generate example.com
+                                                                                                  # You can specify the length and complexity as arguments, e.g.:
+                                                                                                  $ pass generate example.com 20
+                                                                                                .fi
+
+                                                                                                .TP
+                                                                                                List all passwords stored:
+                                                                                                .nf
+                                                                                                  $ pass ls
+                                                                                                .fi
+
+                                                                                                .TP
+                                                                                                Remove an entry from the store:
+                                                                                                .nf
+                                                                                                  $ pass rm example.com
+                                                                                                .fi
+
+                                                                                                .TP
+                                                                                                Sync your password store with a remote repository:
+                                                                                                .nf
+                                                                                                  $ pass sync
+                                                                                                .fi
+
+                                                                                                .TP
+                                                                                                Find a password entry by name (fuzzy match):
+                                                                                                .nf
+                                                                                                  $ pass find example
+                                                                                                .fi
+
+                                                                                                .SH FILES
+                                                                                                By default, **pass** stores passwords and other secrets in the following directory:
+
+                                                                                                .TP
+                                                                                                .B ~/.password-store/
+                                                                                                This is where the encrypted password files are stored. The passwords are stored as individual GPG-encrypted files, with each file corresponding to a password entry.
+
+                                                                                                .SH SEE ALSO
+                                                                                                For more information, refer to the official documentation and the **pass** GitHub repository:
+                                                                                                .B https://git.zx2c4.com/password-store/
+
+                                                                                                .SH AUTHOR
+                                                                                                Written by Jason A. Donenfeld and contributors to the **pass** project.
+                                                                                            '' ;
+                                                                                    } ;
+                                                                            ssh =
+                                                                                man
+                                                                                    "ssh"
+                                                                                    {
+                                                                                        user =
+                                                                                            ''
+                                                                                                .TH SSH 1 "February 2026" "1.0" "SSH Client"
+                                                                                                .SH NAME
+                                                                                                ssh \- OpenSSH client for remote connections
+                                                                                                .SH SYNOPSIS
+                                                                                                .B ssh [\fIoptions\fR] \fIuser@hostname\fR
+                                                                                                .SH DESCRIPTION
+                                                                                                SSH (Secure Shell) is a protocol for securely accessing remote systems over an unsecured network. The **ssh** command is used to connect to remote systems, execute commands on those systems, and transfer files.
+
+                                                                                                It uses encryption to secure communication, ensuring confidentiality and integrity of data exchanged between the client and the server. The `ssh` command is widely used for remote administration, file transfers (with `scp` and `sftp`), and tunneling.
+
+                                                                                                .SH OPTIONS
+                                                                                                .TP
+                                                                                                .B \-h, \-\-help
+                                                                                                Display help message and exit.
+                                                                                                .TP
+                                                                                                .B \-v, \-\-version
+                                                                                                Show the version of SSH and exit.
+                                                                                                .TP
+                                                                                                .B \-p, \-\-port=[port]
+                                                                                                Specify the port number to connect to on the remote host. The default SSH port is 22.
+                                                                                                .TP
+                                                                                                .B \-i, \-\-identity-file=[file]
+                                                                                                Use the specified private key file for authentication instead of the default (`~/.ssh/id_rsa`).
+                                                                                                .TP
+                                                                                                .B \-X, \-\-X11-forwarding
+                                                                                                Enable X11 forwarding. This allows graphical applications to be displayed on the local machine.
+                                                                                                .TP
+                                                                                                .B \-A, \-\-agent-forwarding
+                                                                                                Enable SSH agent forwarding, which allows you to use your local SSH keys on the remote server.
+                                                                                                .TP
+                                                                                                .B \-L, \-\-local-port-forwarding=[local-port:remote-host:remote-port]
+                                                                                                Establish a local port forwarding. This forwards connections on the specified local port to the remote host and port.
+                                                                                                .TP
+                                                                                                .B \-R, \-\-remote-port-forwarding=[remote-port:local-host:local-port]
+                                                                                                Establish a remote port forwarding. This forwards connections on the specified remote port to the local host and port.
+                                                                                                .TP
+                                                                                                .B \-C, \-\-compression
+                                                                                                Enable compression. This can reduce the amount of data transmitted, but may increase CPU usage.
+                                                                                                .TP
+                                                                                                .B \-q, \-\-quiet
+                                                                                                Suppress most warning and diagnostic messages.
+                                                                                                .TP
+                                                                                                .B \-o, \-\-option=[option]
+                                                                                                Set a specific SSH configuration option, like `User`, `Port`, or `IdentityFile`. This is the same as specifying options in the `~/.ssh/config` file.
+                                                                                                .TP
+                                                                                                .B \-f, \-\-fork
+                                                                                                Run in the background before executing the command. This is useful for tunneling or when you want to connect without an interactive session.
+                                                                                                .TP
+                                                                                                .B \-T, \-\-no-pty
+                                                                                                Disables the allocation of a pseudo-terminal. This is often used when running remote commands.
+                                                                                                .TP
+                                                                                                .B \-N
+                                                                                                Do not execute any commands; this is used for setting up port forwarding only.
+                                                                                                .TP
+                                                                                                .B \-M
+                                                                                                Enable master mode for connection sharing. This allows multiple `ssh` sessions to share a single network connection, reducing latency for multiple connections.
+
+                                                                                                .SH EXAMPLES
+                                                                                                Below are several common examples of how to use the `ssh` command:
+
+                                                                                                .TP
+                                                                                                Connect to a remote host:
+                                                                                                .nf
+                                                                                                  $ ssh user@example.com
+                                                                                                .fi
+
+                                                                                                .TP
+                                                                                                Connect to a remote host on a non-default port:
+                                                                                                .nf
+                                                                                                  $ ssh -p 2222 user@example.com
+                                                                                                .fi
+
+                                                                                                .TP
+                                                                                                Use a specific private key for authentication:
+                                                                                                .nf
+                                                                                                  $ ssh -i ~/.ssh/id_rsa user@example.com
+                                                                                                .fi
+
+                                                                                                .TP
+                                                                                                Enable X11 forwarding to run graphical applications remotely:
+                                                                                                .nf
+                                                                                                  $ ssh -X user@example.com
+                                                                                                .fi
+
+                                                                                                .TP
+                                                                                                Enable SSH agent forwarding:
+                                                                                                .nf
+                                                                                                  $ ssh -A user@example.com
+                                                                                                .fi
+
+                                                                                                .TP
+                                                                                                Create a local port forwarding:
+                                                                                                .nf
+                                                                                                  $ ssh -L 8080:localhost:80 user@example.com
+                                                                                                .fi
+
+                                                                                                .TP
+                                                                                                Create a remote port forwarding:
+                                                                                                .nf
+                                                                                                  $ ssh -R 8080:localhost:80 user@example.com
+                                                                                                .fi
+
+                                                                                                .TP
+                                                                                                Run a command on a remote host without opening an interactive session:
+                                                                                                .nf
+                                                                                                  $ ssh user@example.com 'ls -l'
+                                                                                                .fi
+
+                                                                                                .TP
+                                                                                                Connect in the background for use with port forwarding:
+                                                                                                .nf
+                                                                                                  $ ssh -f -L 8080:localhost:80 user@example.com sleep 60
+                                                                                                .fi
+
+                                                                                                .TP
+                                                                                                Establish an SSH connection and set an option, like the `User`:
+                                                                                                .nf
+                                                                                                  $ ssh -o User=myuser example.com
+                                                                                                .fi
+
+                                                                                                .SH FILES
+                                                                                                The following files are typically used by SSH:
+
+                                                                                                .TP
+                                                                                                .B ~/.ssh/config
+                                                                                                The SSH client configuration file, where you can define default options for SSH connections (e.g., `User`, `Port`, `IdentityFile`).
+                                                                                                .TP
+                                                                                                .B ~/.ssh/id_rsa
+                                                                                                The default private key used for authentication.
+                                                                                                .TP
+                                                                                                .B ~/.ssh/id_rsa.pub
+                                                                                                The default public key associated with the private key.
+                                                                                                .TP
+                                                                                                .B ~/.ssh/known_hosts
+                                                                                                A file that stores the public keys of previously connected servers to verify their identity in future connections.
+
+                                                                                                .SH SEE ALSO
+                                                                                                For more information, refer to the OpenSSH documentation:
+                                                                                                .B https://www.openssh.com/manual.html
+
+                                                                                                .SH AUTHOR
+                                                                                                Written by the OpenSSH team and contributors.
+
+                                                                                                .SH BUGS
+                                                                                                To report bugs, refer to the OpenSSH project's bug tracker:
+                                                                                                .B https://bugs.openbsd.org/bugzilla/
+
+                                                                                            '' ;
+                                                                                    } ;
+                                                                        } ;
                                                             pads =
                                                                 let
                                                                     mapper =
@@ -711,6 +1648,326 @@
                                                                                                         in "${ application }/bin/setup" ;
 
                                                                                         } ;
+                                                                            secrets2 =
+                                                                                {
+                                                                                    read-only =
+                                                                                        ignore :
+                                                                                            _git-repository.implementation
+                                                                                                {
+                                                                                                    resolutions = [ ] ;
+                                                                                                    setup =
+                                                                                                        { pid , pkgs , resources , root , sequential , wrap } :
+                                                                                                            let
+                                                                                                                application =
+                                                                                                                    pkgs.writeShellApplication
+                                                                                                                        {
+                                                                                                                            name = "setup" ;
+                                                                                                                            runtimeInputs = [ pkgs.age pkgs.coreutils pkgs.git wrap ] ;
+                                                                                                                            text =
+                                                                                                                                ''
+                                                                                                                                    git config user.email "no-commit@no-commit"
+                                                                                                                                    git config user.name "no commits"
+                                                                                                                                    git remote add origin https://github.com/${ config.personal.secrets2.organization }/${ config.personal.secrets2.repository }
+                                                                                                                                    git fetch origin ${ config.personal.secrets2.branch } 2>&1
+                                                                                                                                    git checkout origin/${ config.personal.secrets2.branch } 2>&1
+                                                                                                                                    find /mount/repository -mindepth 1 -type f -name "*.age" ! -path "/mount/repository/.git/*" | while read -r CIPHERTEXT_FILE
+                                                                                                                                    do
+                                                                                                                                        RELATIVE_PATH="${ builtins.concatStringsSep "" [ "$" "{" "CIPHERTEXT_FILE#/mount/repository/" "}" ] }"
+                                                                                                                                        RELATIVE_DIRECTORY="$( dirname "$RELATIVE_PATH" )" || failure af52a03a
+                                                                                                                                        CIPHERTEXT_FILE_="$( basename "$CIPHERTEXT_FILE" )" || failure b0e65b58
+                                                                                                                                        PLAINTEXT_FILE="/mount/stage/$RELATIVE_DIRECTORY/${ builtins.concatStringsSep "" [ "$" "{" "CIPHERTEXT_FILE_%.age" "}" ] }"
+                                                                                                                                        PLAINTEXT_FILE_="$( dirname "$PLAINTEXT_FILE" )" || failure 92381511
+                                                                                                                                        mkdir --parents "$PLAINTEXT_FILE_"
+                                                                                                                                        age --decrypt --identity ${ config.personal.agenix } --output "$PLAINTEXT_FILE" "$CIPHERTEXT_FILE"
+                                                                                                                                        chmod 0400 "$PLAINTEXT_FILE"
+                                                                                                                                    done
+                                                                                                                                '' ;
+                                                                                                                        } ;
+                                                                                                                in "${ application }/bin/setup" ;
+                                                                                                } ;
+                                                                                    read-write =
+                                                                                        ignore :
+                                                                                            _git-repository.implementation
+                                                                                                {
+                                                                                                    resolutions = [ ] ;
+                                                                                                    setup =
+                                                                                                        { pid , pkgs , resources , root , sequential , wrap } :
+                                                                                                            let
+                                                                                                                application =
+                                                                                                                    pkgs.writeShellApplication
+                                                                                                                        {
+                                                                                                                            name = "setup" ;
+                                                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.libuuid wrap ] ;
+                                                                                                                            text =
+                                                                                                                                let
+                                                                                                                                    github-identity =
+                                                                                                                                        let
+                                                                                                                                            application =
+                                                                                                                                                pkgs.writeShellApplication
+                                                                                                                                                    {
+                                                                                                                                                        name = "github-identity" ;
+                                                                                                                                                        runtimeInputs = [ pkgs.age pkgs.coreutils pkgs.flock pkgs.gh pkgs.libuuid pkgs.openssh __failure ] ;
+                                                                                                                                                        text =
+                                                                                                                                                            ''
+                                                                                                                                                                echo 68d9ad41
+                                                                                                                                                                exec 201> "$MOUNT/lock"
+                                                                                                                                                                flock 201
+                                                                                                                                                                echo 24d3677d
+                                                                                                                                                                sleep 10
+                                                                                                                                                                echo 24d3677d
+                                                                                                                                                                cd "$MOUNT/repository"
+                                                                                                                                                                echo 24d3677d
+                                                                                                                                                                UUID="$( uuidgen | sha512sum )" || failure b9131928
+                                                                                                                                                                echo 24d3677d
+                                                                                                                                                                BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 22724f93
+                                                                                                                                                                echo 24d3677d 3fbea38b
+                                                                                                                                                                SECRETS=${ resources.production.repository.secrets2.read-only { failure = "failure 64ef3c7e" ; } }
+                                                                                                                                                                echo 24d3677d 250ac697
+                                                                                                                                                                git fetch origin ${ config.personal.secrets2.branch }
+                                                                                                                                                                echo 24d3677d e302e18e
+                                                                                                                                                                git checkout origin/${ config.personal.secrets2.branch }
+                                                                                                                                                                echo 24d3677d
+                                                                                                                                                                mkdir --parents "$MOUNT/stage/plain-text/dot-ssh/github"
+                                                                                                                                                                echo 24d3677d
+                                                                                                                                                                ssh-keygen -f "$MOUNT/stage/plain-text/dot-ssh/github/identity.asc" -C "generated" -P ""
+                                                                                                                                                                echo 24d3677d
+                                                                                                                                                                RECIPIENT=${ resources.production.age { failure = "failure a4114343" ; } }
+                                                                                                                                                                echo 24d3677d
+                                                                                                                                                                RECIPIENT_="$( cat "$RECIPIENT/public" )" || failure 259d4017
+                                                                                                                                                                echo 24d3677d
+                                                                                                                                                                age --encrypt --recipient "$RECIPIENT_" --output "$MOUNT/repository/dot-ssh/github/identity.asc.age" "$MOUNT/stage/plain-text/dot-ssh/github/identity.asc"
+                                                                                                                                                                echo 24d3677d
+                                                                                                                                                                git checkout -b "$BRANCH"
+                                                                                                                                                                echo 24d3677d
+                                                                                                                                                                git commit -am "recycled github identity"
+                                                                                                                                                                echo 24d3677d
+                                                                                                                                                                git push origin "$BRANCH"
+                                                                                                                                                                echo 24d3677d a7577b41
+                                                                                                                                                                gh auth login --with-token < "$SECRETS/stage/github/token.asc"
+                                                                                                                                                                echo 24d3677d acbf7b41
+                                                                                                                                                                gh pr create --base ${ config.personal.secrets2.branch } --head "$BRANCH" --title "update github identity" --body ""
+                                                                                                                                                                echo 24d3677d 21b2cf3d
+                                                                                                                                                                URL="$( gh pr view --json url --jq .url )" || failure 864bc6e6
+                                                                                                                                                                echo 24d3677d ef9d97c0
+                                                                                                                                                                gh pr merge "$URL" --rebase
+                                                                                                                                                                echo 24d3677d 739b0be5
+                                                                                                                                                                # gh ssh-key list --json id | jq -r '.[].id' | while read -r key_id
+                                                                                                                                                                # do
+                                                                                                                                                                #     gh ssh-key delete "$key_id" --confirm
+                                                                                                                                                                # done
+                                                                                                                                                                echo 24d3677d 1ce1651f
+                                                                                                                                                                gh ssh-key add "$MOUNT/stage/plain-text/dot-ssh/github/identity.asc.pub"
+                                                                                                                                                                echo 24d3677d 079de5f7
+                                                                                                                                                                gh auth logout
+                                                                                                                                                                echo 24d3677d 84e05491
+                                                                                                                                                            '' ;
+                                                                                                                                                    } ;
+                                                                                                                                            in "${ application }/bin/github-identity" ;
+                                                                                                                                    github-token =
+                                                                                                                                        let
+                                                                                                                                            application =
+                                                                                                                                                pkgs.writeShellApplication
+                                                                                                                                                    {
+                                                                                                                                                        name = "github-token" ;
+                                                                                                                                                        runtimeInputs = [ pkgs.age pkgs.coreutils pkgs.flock pkgs.gh pkgs.libuuid pkgs.openssh __failure ] ;
+                                                                                                                                                        text =
+                                                                                                                                                            ''
+                                                                                                                                                                exec 201> "$MOUNT/lock"
+                                                                                                                                                                flock 201
+                                                                                                                                                                sleep 20
+                                                                                                                                                                cd "$MOUNT/repository"
+                                                                                                                                                                git fetch origin ${ config.personal.secrets2.branch }
+                                                                                                                                                                git checkout origin/${ config.personal.secrets2.branch }
+                                                                                                                                                                mkdir --parents "$MOUNT/stage/github"
+                                                                                                                                                                cat > "$MOUNT/stage/github/token.asc"
+                                                                                                                                                                RECIPIENT=${ resources.production.age { failure = "failure a4114343" ; } }
+                                                                                                                                                                RECIPIENT_="$( cat "$RECIPIENT/public" )" || failure 259d4017
+                                                                                                                                                                age --encrypt --recipient "$RECIPIENT_" --output "$MOUNT/repository/github/token.asc.age" "$MOUNT/stage/github/token.asc"
+                                                                                                                                                                UUID="$( uuidgen | sha512sum )" || failure b9131928
+                                                                                                                                                                BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 22724f93
+                                                                                                                                                                git checkout -b "$BRANCH"
+                                                                                                                                                                git commit -am "recycled github token"
+                                                                                                                                                                git push origin "$BRANCH"
+                                                                                                                                                                SECRETS=${ resources.production.repository.secrets2.read-only { failure = "failure 64ef3c7e" ; } }
+                                                                                                                                                                gh auth login --with-token < "$SECRETS/stage/github/token.asc"
+                                                                                                                                                                gh pr create --base ${ config.personal.secrets2.branch } --head "$BRANCH" --title "update github token" --body ""
+                                                                                                                                                                URL="$( gh pr view --json url --jq .url )" || failure 864bc6e6
+                                                                                                                                                                gh pr merge "$URL" --rebase
+                                                                                                                                                                gh auth logout
+                                                                                                                                                            '' ;
+                                                                                                                                                    } ;
+                                                                                                                                            in "${ application }/bin/github-token" ;
+                                                                                                                                    github-known-hosts =
+                                                                                                                                        let
+                                                                                                                                            application =
+                                                                                                                                                pkgs.writeShellApplication
+                                                                                                                                                    {
+                                                                                                                                                        name = "github-known-hosts" ;
+                                                                                                                                                        runtimeInputs = [ pkgs.age pkgs.coreutils pkgs.flock pkgs.gh pkgs.libuuid __failure ] ;
+                                                                                                                                                        text =
+                                                                                                                                                            ''
+                                                                                                                                                                exec 201> "$MOUNT/lock"
+                                                                                                                                                                flock 201
+                                                                                                                                                                sleep 30
+                                                                                                                                                                cd "$MOUNT/repository"
+                                                                                                                                                                git fetch origin ${ config.personal.secrets2.branch }
+                                                                                                                                                                git checkout origin/${ config.personal.secrets2.branch }
+                                                                                                                                                                mkdir --parents "$MOUNT/stage/dot-ssh/github"
+                                                                                                                                                                cat > "$MOUNT/stage/dot-ssh/github/known-hosts.asc"
+                                                                                                                                                                RECIPIENT=${ resources.production.age { failure = "failure a4114343" ; } }
+                                                                                                                                                                RECIPIENT_="$( cat "$RECIPIENT/public" )" || failure 259d4017
+                                                                                                                                                                age --encrypt --recipient "$RECIPIENT_" --output "$MOUNT/repository/dot-ssh/github/known-hosts.asc.age" "$MOUNT/stage/dot-ssh/github/known-hosts.asc"
+                                                                                                                                                                UUID="$( uuidgen | sha512sum )" || failure b9131928
+                                                                                                                                                                BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 22724f93
+                                                                                                                                                                git checkout -b "$BRANCH"
+                                                                                                                                                                git commit -am "recycled github known hosts"
+                                                                                                                                                                git push origin "$BRANCH"
+                                                                                                                                                                SECRETS=${ resources.production.repository.secrets2.read-only { failure = "failure 64ef3c7e" ; } }
+                                                                                                                                                                gh auth login --with-token < "$SECRETS/stage/github/token.asc"
+                                                                                                                                                                gh pr create --base ${ config.personal.secrets2.branch } --head "$BRANCH" --title "update github known-hosts" --body ""
+                                                                                                                                                                URL="$( gh pr view --json url --jq .url )" || failure 864bc6e6
+                                                                                                                                                                gh pr merge "$URL" --rebase
+                                                                                                                                                                gh auth logout
+                                                                                                                                                            '' ;
+                                                                                                                                                    } ;
+                                                                                                                                            in "${ application }/bin/github-known-hosts" ;
+                                                                                                                                    gnupg =
+                                                                                                                                        let
+                                                                                                                                            application =
+                                                                                                                                                pkgs.writeShellApplication
+                                                                                                                                                    {
+                                                                                                                                                        name = "gnupg" ;
+                                                                                                                                                        runtimeInputs = [ pkgs.bash pkgs.flock pkgs.gnupg ] ;
+                                                                                                                                                        text =
+                                                                                                                                                            ''
+                                                                                                                                                                exec 201> "$MOUNT/lock"
+                                                                                                                                                                flock 201
+                                                                                                                                                                DOT_GNUPG=${ resources.production.dot-gnupg { failure = "b80cddcf" ; } }
+                                                                                                                                                                export GNUPGHOME="$DOT_GNUPG/dot-gnupg"
+                                                                                                                                                                bash
+                                                                                                                                                                mkdir --parents "$MOUNT/stage/plain-text/dot-gnupg"
+                                                                                                                                                                gpg --export-ownertrust --armor --output "$MOUNT/stage/plain-text/dot-gnupg/ownertrust.asc"
+                                                                                                                                                                gpg --export-secret-keys --armor --output "$MOUNT/stage/plain-text/dot-gnupg/secret-keys.asc"
+                                                                                                                                                                UUID="$( uuidgen | sha512sum )" || failure ae3da5c1
+                                                                                                                                                                BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 96713a9a
+                                                                                                                                                                SECRETS=${ resources.production.repository.secrets2.read-only { setup = setup : ''${ setup } "$UUID"'' ; failure = "failure 75fe42d1" ; } }
+                                                                                                                                                                git fetch origin ${ config.personal.secrets2.branch }
+                                                                                                                                                                git checkout origin/${ config.personal.secrets2.branch }
+                                                                                                                                                                RECIPIENT=${ resources.production.age { failure = "failure a4114343" ; } }
+                                                                                                                                                                RECIPIENT_="$( cat "$RECIPIENT/public" )" || failure 259d4017
+                                                                                                                                                                age --encrypt --recipient "$RECIPIENT_" --output "$MOUNT/repository/plain-text/dot-gnupg/ownertrust.asc.age" "$MOUNT/stage/plain-text/dot-gnupg/ownertrust.asc"
+                                                                                                                                                                age --encrypt --recipient "$RECIPIENT_" --output "$MOUNT/repository/plain-text/dot-gnupg/secret-keys.asc.age" "$MOUNT/stage/plain-text/dot-gnupg/secret-keys.asc"
+                                                                                                                                                                git checkout -b "$BRANCH"
+                                                                                                                                                                git commit -am "recycled dot-gnupg"
+                                                                                                                                                                git push origin "$BRANCH"
+                                                                                                                                                                gh auth login --with-token < "$SECRETS/stage/github/token.asc"
+                                                                                                                                                                gh pr create --base ${ config.personal.secrets2.branch } --head "$BRANCH" --title "update dot-gnupg" --body ""
+                                                                                                                                                                URL="$( gh pr view --json url --jq .url )" || failure e9f4b560
+                                                                                                                                                                gh pr merge "$URL" --rebase
+                                                                                                                                                                gh auth logout
+                                                                                                                                                            '' ;
+                                                                                                                                                    } ;
+                                                                                                                                            in "${ application }/bin/gnupg" ;
+                                                                                                                                    mobile-known-hosts =
+                                                                                                                                        let
+                                                                                                                                            application =
+                                                                                                                                                pkgs.writeShellApplication
+                                                                                                                                                    {
+                                                                                                                                                        name = "mobile-known-hosts" ;
+                                                                                                                                                        runtimeInputs = [ pkgs.age pkgs.coreutils pkgs.flock pkgs.gh pkgs.libuuid __failure ] ;
+                                                                                                                                                        text =
+                                                                                                                                                            ''
+                                                                                                                                                                exec 201> "$MOUNT/lock"
+                                                                                                                                                                flock 201
+                                                                                                                                                                sleep 40
+                                                                                                                                                                cd "$MOUNT/repository"
+                                                                                                                                                                git fetch origin ${ config.personal.secrets2.branch }
+                                                                                                                                                                git checkout origin/${ config.personal.secrets2.branch }
+                                                                                                                                                                mkdir --parents "$MOUNT/stage/dot-ssh/mobile"
+                                                                                                                                                                cat > "$MOUNT/stage/dot-ssh/mobile/known-hosts.asc"
+                                                                                                                                                                RECIPIENT=${ resources.production.age { failure = "failure a4114343" ; } }
+                                                                                                                                                                RECIPIENT_="$( cat "$RECIPIENT/public" )" || failure 259d4017
+                                                                                                                                                                age --encrypt --recipient "$RECIPIENT_" --output "$MOUNT/repository/dot-ssh/mobile/known-hosts.asc.age" "$MOUNT/stage/dot-ssh/mobile/known-hosts.asc"
+                                                                                                                                                                UUID="$( uuidgen | sha512sum )" || failure b9131928
+                                                                                                                                                                BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 22724f93
+                                                                                                                                                                git checkout -b "$BRANCH"
+                                                                                                                                                                git commit -am "recycled mobile known hosts"
+                                                                                                                                                                git push origin "$BRANCH"
+                                                                                                                                                                SECRETS=${ resources.production.repository.secrets2.read-only { failure = "failure 64ef3c7e" ; } }
+                                                                                                                                                                gh auth login --with-token < "$SECRETS/stage/mobile/token.asc"
+                                                                                                                                                                gh pr create --base ${ config.personal.secrets2.branch } --head "$BRANCH" --title "update mobile known-hosts" --body ""
+                                                                                                                                                                URL="$( gh pr view --json url --jq .url )" || failure 864bc6e6
+                                                                                                                                                                gh pr merge "$URL" --rebase
+                                                                                                                                                                gh auth logout
+                                                                                                                                                            '' ;
+                                                                                                                                                    } ;
+                                                                                                                                            in "${ application }/bin/mobile-known-hosts" ;
+                                                                                                                                    mobile-identity =
+                                                                                                                                        let
+                                                                                                                                            application =
+                                                                                                                                                pkgs.writeShellApplication
+                                                                                                                                                    {
+                                                                                                                                                        name = "mobile-identity" ;
+                                                                                                                                                        runtimeInputs = [ pkgs.age pkgs.coreutils pkgs.flock pkgs.gh pkgs.libuuid pkgs.openssh __failure ] ;
+                                                                                                                                                        text =
+                                                                                                                                                            ''
+                                                                                                                                                                exec 201> "$MOUNT/lock"
+                                                                                                                                                                flock 201
+                                                                                                                                                                sleep 50
+                                                                                                                                                                UUID="$( uuidgen | sha512sum )" || failure fa87d816
+                                                                                                                                                                BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 7f9ffef5
+                                                                                                                                                                SECRETS=${ resources.production.repository.secrets2.read-only { setup = setup : ''${ setup } "$UUID"'' ; failure = "failure bcfd4baf" ; } }
+                                                                                                                                                                cd "$MOUNT/repository"
+                                                                                                                                                                DOT_SSH=${ resources.production.dot-ssh { failure = "failure 9335cc7a" ; } }
+                                                                                                                                                                git fetch origin ${ config.personal.secrets2.branch }
+                                                                                                                                                                git checkout origin/${ config.personal.secrets2.branch }
+                                                                                                                                                                mkdir --parents "$MOUNT/stage/plain-text/dot-ssh/mobile"
+                                                                                                                                                                ssh-keygen -f "$MOUNT/stage/plain-text/dot-ssh/mobile/identity.asc" -C "generated" -P ""
+                                                                                                                                                                RECIPIENT=${ resources.production.age { failure = "failure 1994c57a" ; } }
+                                                                                                                                                                RECIPIENT_="$( cat "$RECIPIENT/public" )" || failure 57606f23
+                                                                                                                                                                age --encrypt --recipient "$RECIPIENT_" --output "$MOUNT/repository/dot-ssh/mobile/identity.asc.age" "$MOUNT/stage/plain-text/dot-ssh/mobile/identity.asc"
+                                                                                                                                                                git checkout -b "$BRANCH"
+                                                                                                                                                                git commit -am "recycled mobile identity"
+                                                                                                                                                                git push origin "$BRANCH"
+                                                                                                                                                                gh auth login --with-token < "$SECRETS/stage/github/token.asc"
+                                                                                                                                                                gh pr create --base ${ config.personal.secrets2.branch } --head "$BRANCH" --title "update mobile identity" --body ""
+                                                                                                                                                                URL="$( gh pr view --json url --jq .url )" || failure f5fdf2e4
+                                                                                                                                                                gh pr merge "$URL" --rebase
+                                                                                                                                                                gh auth logout
+                                                                                                                                                                # ssh -F "$DOT_SSH/config" mobile "rm ~/.authorized_keys"
+                                                                                                                                                                ssh -F "$DOT_SSH/config" mobile "tee --append ~/.ssh/authorized_keys" < "$MOUNT/stage/plain-text/dot-ssh/mobile/identity.asc.pub"
+                                                                                                                                                            '' ;
+                                                                                                                                                    } ;
+                                                                                                                                            in "${ application }/bin/mobile-identity" ;
+                                                                                                                                    in
+                                                                                                                                        ''
+                                                                                                                                            git config alias.github-identity "!$MOUNT/stage/alias/github-identity"
+                                                                                                                                            git config alias.github-known-hosts "!$MOUNT/stage/alias/github-known-hosts"
+                                                                                                                                            git config alias.github-token "!$MOUNT/stage/alias/github-token"
+                                                                                                                                            git config alias.gnupg "!$MOUNT/stage/alias/gnupg"
+                                                                                                                                            git config alias.mobile-identity "!$MOUNT/stage/alias/mobile-identity"
+                                                                                                                                            git config alias.mobile-known-hosts "!$MOUNT/stage/alias/mobile-known-hosts"
+                                                                                                                                            git config core.sshCommand "$MOUNT/stage/ssh/command"
+                                                                                                                                            git config user.email "${ config.personal.secrets2.email }"
+                                                                                                                                            git config user.name "${ config.personal.secrets2.name }"
+                                                                                                                                            git remote add origin git@github.com:${ config.personal.secrets2.organization }/${ config.personal.secrets2.repository }
+                                                                                                                                            ${ ssh pkgs resources root wrap }
+                                                                                                                                            wrap ${ github-identity } stage/alias/github-identity 0500 --literal-plain BRANCH --literal-plain key_id --inherit-plain MOUNT --literal-plain PATH --literal-plain RECIPIENT --literal-plain RECIPIENT_ --literal-plain SECRETS --literal-plain UUID --literal-plain URL
+                                                                                                                                            wrap ${ github-known-hosts } stage/alias/github-known-hosts 0500 --literal-plain BRANCH --inherit-plain MOUNT --literal-plain PATH --literal-plain RECIPIENT --literal-plain RECIPIENT_ --literal-plain SECRETS --literal-plain UUID --literal-plain URL
+                                                                                                                                            wrap ${ github-token } stage/alias/github-token 0500 --literal-plain BRANCH --inherit-plain MOUNT --literal-plain PATH --literal-plain RECIPIENT --literal-plain RECIPIENT_ --literal-plain SECRETS --literal-plain UUID --literal-plain URL
+                                                                                                                                            wrap ${ gnupg } stage/alias/gnupg 0500 --literal-plain BRANCH --literal-plain DOT_GNUPG --inherit-plain MOUNT --literal-plain PATH --literal-plain RECIPIENT --literal-plain RECIPIENT_ --literal-plain SECRETS --literal-plain URL --literal-plain UUID
+                                                                                                                                            wrap ${ mobile-known-hosts } stage/alias/mobile-known-hosts 0500 --literal-plain BRANCH --inherit-plain MOUNT --literal-plain PATH --literal-plain RECIPIENT --literal-plain RECIPIENT_ --literal-plain SECRETS --literal-plain UUID --literal-plain URL
+                                                                                                                                            wrap ${ mobile-identity } stage/alias/mobile-identity 0500 --literal-plain BRANCH --literal-plain DOT_SSH --inherit-plain MOUNT --literal-plain PATH --literal-plain RECIPIENT --literal-plain RECIPIENT_ --literal-plain SECRETS --literal-plain UUID --literal-plain URL
+                                                                                                                                            git fetch origin ${ config.personal.secrets2.branch } 2>&1
+                                                                                                                                            git checkout origin/${ config.personal.secrets2.branch } 2>&1
+                                                                                                                                            UUID="$( uuidgen | sha512sum )" || failure c0d47742
+                                                                                                                                            BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 4b4d1f65
+                                                                                                                                            git checkout -b "$BRANCH" 2>&1
+                                                                                                                                        '' ;
+                                                                                                                        } ;
+                                                                                                                in "${ application }/bin/setup" ;
+                                                                                                } ;
+                                                                                } ;
                                                                             secrets_ =
                                                                                 ignore :
                                                                                     _git-repository.implementation
@@ -863,40 +2120,6 @@
                                                                                                                                                             } ;
                                                                                                                                                     in "${ application }/bin/mutable-audit" ;
                                                                                                                                         } ;
-                                                                                                                                        ## ALPHA
-                                                                                                                                    mutable-generate-gnupg-key =
-                                                                                                                                        let
-                                                                                                                                            application =
-                                                                                                                                                pkgs.writeShellApplication
-                                                                                                                                                    {
-                                                                                                                                                        name = "mutable-generate-gnupg-key" ;
-                                                                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.gnupg failure ] ;
-                                                                                                                                                        text =
-                                                                                                                                                            ''
-                                                                                                                                                                MONIKER="$1"
-                                                                                                                                                                NOW="$( date +%Y%m%d%H%M%S )" || failure 1dc95e4b
-                                                                                                                                                                DOT_GNUPG=${ resources.production.dot-gnupg { } }
-                                                                                                                                                                export GNUPGHOME="$DOT_GNUPG/dot-gnupg"
-                                                                                                                                                                KEY_ID="$MONIKER $NOW"
-                                                                                                                                                                gpg --homedir "$GNUPGHOME" --quick-gen-key "$KEY_ID" ed25519 sign 1y
-                                                                                                                                                                gpg --homedir "$GNUPGHOME" --quick-add-key "$KEY_ID" cv25519 encrypt 1y
-                                                                                                                                                                mkdir --parents "$MOUNT/stage/private"
-                                                                                                                                                                SECRETS=${ resources.production.repository.studio.secrets { } }
-                                                                                                                                                                gpg --export-ownertrust --armour > "$SECRETS/repository/ownertrust.asc"
-                                                                                                                                                                gpg --export-secret-keys --armour > "$SECRETS/repository/secret-keys.asc"
-                                                                                                                                                                git -C "$SECRETS/repository" add ownertrust.asc secret-keys.asc
-                                                                                                                                                                git -C "$SECRETS/repository" commit -m "GENERATED A GNUPG KEY for $KEY_ID"
-                                                                                                                                                                git -C "$SECRETS/repository" push origin HEAD
-                                                                                                                                                                BRANCH="$( git rev-parse --abbrev-ref HEAD )" || failure 47e2654b
-                                                                                                                                                                TOKEN=${ resources.production.secrets.token { } }
-                                                                                                                                                                gh auth login --with-token < "$TOKEN/secret"
-                                                                                                                                                                gh pr create --base main --head "$BRANCH" --label "snapshot"
-                                                                                                                                                                URL="$( gh pr view --json url --jq .url )" || failure 508fe804
-                                                                                                                                                                gh pr merge "$URL" --rebase
-                                                                                                                                                                gh auth logout
-                                                                                                                                                            '' ;
-                                                                                                                                                    } ;
-                                                                                                                                            in "${ application }/bin/mutable-generate-key" ;
                                                                                                                                     mutable-mirror =
                                                                                                                                         {
                                                                                                                                             root =
@@ -1142,6 +2365,62 @@
                                                                                                                                                             } ;
                                                                                                                                                     in "${ application }/bin/mutable-rebase" ;
                                                                                                                                         } ;
+                                                                                                                                    mutable-reset =
+                                                                                                                                        {
+                                                                                                                                            root =
+                                                                                                                                                let
+                                                                                                                                                    application =
+                                                                                                                                                        pkgs.writeShellApplication
+                                                                                                                                                            {
+                                                                                                                                                                name = "mutable-reset" ;
+                                                                                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.libuuid ( _failure.implementation "e0d03f16" ) ] ;
+                                                                                                                                                                text =
+                                                                                                                                                                    ''
+                                                                                                                                                                        # shellcheck disable=SC2016
+                                                                                                                                                                        git submodule foreach '$MOUNT/stage/alias/submodule/mutable-reset'
+                                                                                                                                                                        git fetch origin main
+                                                                                                                                                                        UUID="$( uuidgen | sha512sum )" || failure a731cc03
+                                                                                                                                                                        BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure ca9d8217
+                                                                                                                                                                        if ! git diff --quiet origin/main || ! git diff --quiet --cached origin/main
+                                                                                                                                                                        then
+                                                                                                                                                                            git checkout -b "$BRANCH"
+                                                                                                                                                                            git fetch origin main
+                                                                                                                                                                            git reset --soft origin/main
+                                                                                                                                                                            git commit -a --verbose
+                                                                                                                                                                            git push origin HEAD
+                                                                                                                                                                        fi
+                                                                                                                                                                    '' ;
+                                                                                                                                                            } ;
+                                                                                                                                                    in "${ application }/bin/mutable-reset" ;
+                                                                                                                                            submodule =
+                                                                                                                                                let
+                                                                                                                                                    application =
+                                                                                                                                                        pkgs.writeShellApplication
+                                                                                                                                                            {
+                                                                                                                                                                name = "mutable-reset" ;
+                                                                                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.libuuid pkgs.nix ( _failure.implementation "846bd5fd" )] ;
+                                                                                                                                                                text =
+                                                                                                                                                                    ''
+                                                                                                                                                                        : "${ builtins.concatStringsSep "" [ "$" "{" "toplevel:? 4252d404 this script must be run via git submodule foreach which will export toplevel" "}" ] }"
+                                                                                                                                                                        : "${ builtins.concatStringsSep "" [ "$" "{" "name:? 4a3b510c this script must be run via git submodule foreach which will export name" "}" ] }"
+                                                                                                                                                                        cd "$toplevel/$name"
+                                                                                                                                                                        git fetch origin main
+                                                                                                                                                                        UUID="$( uuidgen )" || failure 0f292839
+                                                                                                                                                                        BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 57402bed
+                                                                                                                                                                        if ! git diff --quiet origin/main || ! git diff --quiet --cached origin/main
+                                                                                                                                                                        then
+                                                                                                                                                                            git checkout -b "$BRANCH"
+                                                                                                                                                                            git reset --soft origin/main
+                                                                                                                                                                            git commit -a --verbose
+                                                                                                                                                                            git push origin HEAD
+                                                                                                                                                                            cd "$toplevel"
+                                                                                                                                                                            nix flake update --flake "$toplevel" "$name"
+                                                                                                                                                                            nix flake update --flake "$toplevel" "$name"
+                                                                                                                                                                        fi
+                                                                                                                                                                    '' ;
+                                                                                                                                                            } ;
+                                                                                                                                                    in "${ application }/bin/mutable-reset" ;
+                                                                                                                                        } ;
                                                                                                                                     mutable-snapshot =
                                                                                                                                         {
                                                                                                                                             root =
@@ -1241,11 +2520,11 @@
                                                                                                                                     git config alias.mutable-build-vm "!$MOUNT/stage/alias/root/mutable-build-vm"
                                                                                                                                     git config alias.mutable-build-vm-with-bootloader "!$MOUNT/stage/alias/root/mutable-build-vm-with-bootloader"
                                                                                                                                     git config alias.mutable-check "!$MOUNT/stage/alias/root/mutable-check"
-                                                                                                                                    # git config alias.mutable-generate-gnupg-key "!$MOUNT/stage/alias/mutable-generate-gnupg-key"
                                                                                                                                     git config alias.mutable-mirror "!$MOUNT/stage/alias/root/mutable-mirror"
                                                                                                                                     git config alias.mutable-nurse "!$MOUNT/stage/alias/root/mutable-nurse"
                                                                                                                                     git config alias.mutable-promote "!$MOUNT/stage/alias/root/mutable-promote"
                                                                                                                                     git config alias.mutable-rebase "!$MOUNT/stage/alias/root/mutable-rebase"
+                                                                                                                                    git config alias.mutable-reset "!$MOUNT/stage/alias/root/mutable-reset"
                                                                                                                                     git config alias.mutable-snapshot "!$MOUNT/stage/alias/root/mutable-snapshot"
                                                                                                                                     git config alias.mutable-switch "!$MOUNT/stage/alias/root/mutable-switch"
                                                                                                                                     git config alias.mutable-test "!$MOUNT/stage/alias/root/mutable-test"
@@ -1256,14 +2535,14 @@
                                                                                                                                     wrap ${ mutable- "build-vm" } stage/alias/root/mutable-build-vm 0500 --literal-plain MUTABLE_SNAPSHOT --literal-plain PATH
                                                                                                                                     wrap ${ mutable- "build-vm-with-bootloader" } stage/alias/root/mutable-build-vm-with-bootloader 0500 --literal-plain MUTABLE_SNAPSHOT --literal-plain PATH
                                                                                                                                     wrap ${ mutable- "check" } stage/alias/root/mutable-check 0500 --literal-plain MUTABLE_SNAPSHOT --literal-plain PATH
-                                                                                                                                    ## ALPHA
-                                                                                                                                    # wrap ${ mutable-generate-gnupg-key } stage/alias/root/mutable-generate-gnupg-key 0500 --literal-plain 1 --literal-plain BRANCH --literal DOT_GNUPG --literal GNUPGHOME --literal-plain KEYID --literal-plain MONIKER --literal-plain NOW --literal-plain SECRETS --literal-plain TOKEN --literal-plain URL --literal-plain UUID --literal-plain PATH
                                                                                                                                     wrap ${ mutable-mirror.root } stage/alias/root/mutable-mirror 0500 --inherit-plain MOUNT --literal-plain NEW_BRANCH --literal-plain OLD_BRANCH --literal-plain PATH --literal-plain UUID
                                                                                                                                     wrap ${ mutable-mirror.submodule } stage/alias/submodule/mutable-mirror 0500 --literal-plain BRANCH --literal-plain name --literal-plain PATH --literal-plain toplevel --literal-plain UUID
                                                                                                                                     wrap ${ mutable-nurse } stage/alias/root/mutable-nurse 0500 --literal-plain 1 --literal-plain 2 --inherit-plain MOUNT --literal-plain REPO_NAME --literal-plain TOKEN --literal-plain USER_NAME
                                                                                                                                     wrap ${ mutable-promote } stage/alias/root/mutable-promote 0500 --literal-plain BIN_1 --literal-plain BIN_2 --literal-plain BRANCH --inherit-plain MOUNT --literal-plain PARENT_1 --literal-plain PARENT_2 --literal-plain PATH --literal-plain STUDIO_1 --literal-plain STUDIO_2 --literal-plain UUID
                                                                                                                                     wrap ${ mutable-rebase.root } stage/alias/root/mutable-rebase 0500 --literal-plain BRANCH --literal-plain COMMIT --set-plain INDEX "$INDEX" --inherit-plain MOUNT --literal-plain MUTABLE_SNAPSHOT --literal-plain PATH --literal-plain UUID
                                                                                                                                     wrap ${ mutable-rebase.submodule } stage/alias/submodule/mutable-rebase 0500 --literal-plain BRANCH --literal-plain name --literal-plain PATH --literal-plain TOKEN --literal-plain TOKEN_DIRECTORY --literal-plain toplevel --literal-plain UUID
+                                                                                                                                    wrap ${ mutable-reset.root } stage/alias/root/mutable-reset 0500 --literal-plain BRANCH --inherit-plain MOUNT --literal-plain PATH --literal-plain UUID
+                                                                                                                                    wrap ${ mutable-reset.submodule } stage/alias/submodule/mutable-reset 0500 --literal-plain BRANCH --literal-plain name --literal-plain PATH --literal-plain toplevel --literal-plain UUID
                                                                                                                                     wrap ${ mutable-snapshot.root } stage/alias/root/mutable-snapshot 0500 --literal-plain BRANCH --literal-plain COMMIT --inherit-plain MOUNT --literal-plain MUTABLE_SNAPSHOT --literal-plain PATH
                                                                                                                                     wrap ${ mutable-snapshot.submodule } stage/alias/submodule/mutable-snapshot 0500 --literal-plain BRANCH --literal-plain name --literal-plain PATH --literal-plain TOKEN --literal-plain TOKEN_DIRECTORY --literal-plain toplevel --literal-plain UUID
                                                                                                                                     wrap ${ mutable-squash } stage/alias/submodule/mutable-squash 0500 --literal-plain BRANCH --literal-plain name --inherit-plain MOUNT --literal-plain name --literal-plain PATH --literal-plain toplevel --literal-plain UUID
@@ -1307,18 +2586,12 @@
                                                                                                                     pkgs.writeShellApplication
                                                                                                                         {
                                                                                                                             name = "setup" ;
-                                                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.git ( _failure.implementation "1f1cc6de" ) ] ;
+                                                                                                                            runtimeInputs = [ pkgs.git ] ;
                                                                                                                             text =
                                                                                                                                 ''
-                                                                                                                                    ${ ssh pkgs resources root wrap }
-                                                                                                                                    git config user.email "${ config.personal.repository.private.email }"
-                                                                                                                                    git config user.name "${ config.personal.repository.private.name }"
-                                                                                                                                    git remote add origin ${ config.personal.repository.secrets.remote }
-                                                                                                                                    git fetch origin main 2>&1
-                                                                                                                                    git checkout origin/main 2>&1
-                                                                                                                                    UUID="$( uuidgen | sha512sum )" || failure e22efcd4
-                                                                                                                                    BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure c80f0375
-                                                                                                                                    git checkout -b "$BRANCH" 2>&1
+                                                                                                                                    git remote add origin https://github.com/${ config.personal.secrets.organization }/${ config.personal.secrets.repository }
+                                                                                                                                    git fetch origin ${ config.personal.secrets.branch } 2>&1
+                                                                                                                                    git checkout origin/${ config.personal.secrets.branch } 2>&1
                                                                                                                                 '' ;
                                                                                                                         } ;
                                                                                                                 in "${ application }/bin/setup" ;
@@ -1398,54 +2671,6 @@
                                                                                                                                                             '' ;
                                                                                                                                                     } ;
                                                                                                                                             in "${ application }/bin/mutable-check" ;
-                                                                                                                                    mutable-reset =
-                                                                                                                                        {
-                                                                                                                                            root =
-                                                                                                                                                let
-                                                                                                                                                    application =
-                                                                                                                                                        pkgs.writeShellApplication
-                                                                                                                                                            {
-                                                                                                                                                                name = "mutable-reset" ;
-                                                                                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.libuuid ( _failure.implementation "e0d03f16" ) ] ;
-                                                                                                                                                                text =
-                                                                                                                                                                    ''
-                                                                                                                                                                        git submodule foreach '$MOUNT/stage/alias/submodule'
-                                                                                                                                                                        git fetch origin main
-                                                                                                                                                                        UUID="$( uuidgen | sha512sum )" || failure a731cc03
-                                                                                                                                                                        BRANCH="$( echo scratch/$UUID | cut --characters 1-64 )" || failure ca9d8217
-                                                                                                                                                                        git checkout -b "$BRANCH"
-                                                                                                                                                                        git fetch origin main
-                                                                                                                                                                        git reset --soft origin/main
-                                                                                                                                                                        git commit -a --verbose
-                                                                                                                                                                        git push origin HEAD
-                                                                                                                                                                    '' ;
-                                                                                                                                                            } ;
-                                                                                                                                                    in "${ application }/bin/mutable-reset" ;
-                                                                                                                                            submodule =
-                                                                                                                                                let
-                                                                                                                                                    application =
-                                                                                                                                                        pkgs.writeShellApplication
-                                                                                                                                                            {
-                                                                                                                                                                name = "mutable-reset" ;
-                                                                                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.libuuid pkgs.nix ( _failure.implementation "846bd5fd" )] ;
-                                                                                                                                                                text =
-                                                                                                                                                                    ''
-                                                                                                                                                                        : "${ builtins.concatStringsSep "" [ "$" "{" "toplevel:? 4252d404 this script must be run via git submodule foreach which will export toplevel" "}" ] }"
-                                                                                                                                                                        : "${ builtins.concatStringsSep "" [ "$" "{" "name:? 4a3b510c this script must be run via git submodule foreach which will export name" "}" ] }"
-                                                                                                                                                                        cd "$toplevel/$name"
-                                                                                                                                                                        git fetch origin main
-                                                                                                                                                                        UUID="$( uuidgen )" || failure 0f292839
-                                                                                                                                                                        BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 57402bed
-                                                                                                                                                                        git checkout -b "$BRANCH"
-                                                                                                                                                                        git reset --soft origin/main
-                                                                                                                                                                        git commit -a --verbose
-                                                                                                                                                                        git push origin HEAD
-                                                                                                                                                                        cd "$toplevel"
-                                                                                                                                                                        nix flake update --flake "$toplevel" "$name"
-                                                                                                                                                                        nix flake update --flake "$toplevel" "$name"pr
-                                                                                                                                                                    '' ;
-                                                                                                                                                            } ;
-                                                                                                                                                    in "${ application }/bin/mutable-reset" ;                                                                                                                                        } ;
                                                                                                                                     mutable-switch =
                                                                                                                                         {
                                                                                                                                             root =
@@ -1703,7 +2928,35 @@
                                                                 bash =
                                                                     {
                                                                         enableCompletion = true ;
-                                                                        interactiveShellInit = ''eval "$( ${ pkgs.direnv }/bin/direnv hook bash )"'' ;
+                                                                        interactiveShellInit =
+                                                                            let
+                                                                                mapper =
+                                                                                    name : value :
+                                                                                        ''
+                                                                                            /home/${ config.personal.name }/pad/${ name })
+                                                                                                ;;
+                                                                                        '' ;
+                                                                                in
+                                                                                    ''
+                                                                                        eval "$( ${ pkgs.direnv }/bin/direnv hook bash )"
+
+                                                                                        _myscript_completions() {
+                                                                                            local cur dir
+                                                                                            cur="${ builtins.concatStringsSep "" [ "$" "{" "COMP_WORDS[COMP_CWORD]" "}" ] }"
+                                                                                            dir="$(pwd)" || "${ __failure }/bin/failure 5e9268bf"
+                                                                                            if [[ "$dir" == "/home/${ config.personal.name }/pad" ]]
+                                                                                            then
+                                                                                                if [[ $COMP_CWORD -eq 1 ]]
+                                                                                                then
+                                                                                                    NEXT="$( compgen -W "production.age production.application.chromium production.application.mutable production.repository.pass production.repository.secrets.read-only production.repository.secrets.read-write production.dot-gnupg production.dot-ssh archaic" -- "$cur" )" || failure 6bb37017
+                                                                                                    COMPREPLY=( $NEXT )
+                                                                                                fi
+                                                                                            else
+                                                                                                COMPREPLY=()
+                                                                                            fi
+                                                                                        }
+                                                                                        complete -F _myscript_completions resource
+                                                                                    '' ;
                                                                     } ;
                                                                 dconf.enable = true ;
                                                                 direnv =
@@ -1845,21 +3098,94 @@
                                                                                                                 let
                                                                                                                     mapper =
                                                                                                                         name : value :
-                                                                                                                            ''
-                                                                                                                                mkdir --parents "/home/${ config.personal.name }/pads/${ name }"
-                                                                                                                                ENVRC=${ resources__.production.pads."${ name }" { } }
-                                                                                                                                ln --symbolic --force "$ENVRC/envrc" "/home/${ config.personal.name }/pads/${ name }/.envrc"
-                                                                                                                            '' ;
-                                                                                                                    in builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs mapper resources__.production.pads ) ) ;
+                                                                                                                            pkgs.stdenv.mkDerivation
+                                                                                                                                {
+                                                                                                                                    installPhase = ''execute-install-phase "$out"'' ;
+                                                                                                                                    name = "man" ;
+                                                                                                                                    nativeBuildInputs =
+                                                                                                                                        [
+                                                                                                                                            (
+                                                                                                                                                pkgs.writeShellApplication
+                                                                                                                                                    {
+                                                                                                                                                        name = "execute-install-phase" ;
+                                                                                                                                                        runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                                                                        text =
+                                                                                                                                                            ''
+                                                                                                                                                                OUT="$1"
+                                                                                                                                                                mkdir --parents "$OUT/man1"
+                                                                                                                                                                ln --symbolic ${ builtins.toFile "man" value } "$OUT/man1/${ name }.1"
+                                                                                                                                                            '' ;
+                                                                                                                                                    }
+                                                                                                                                            )
+                                                                                                                                        ] ;
+                                                                                                                                    src = ./. ;
+                                                                                                                                } ;
+                                                                                                                    in
+                                                                                                                        let
+                                                                                                                            autocomplete =
+                                                                                                                                let
+                                                                                                                                    application =
+                                                                                                                                        pkgs.writeShellApplication
+                                                                                                                                            {
+                                                                                                                                                name = "autocomplete" ;
+                                                                                                                                                runtimeInputs = [ pkgs.findutils ] ;
+                                                                                                                                                text =
+                                                                                                                                                    let
+                                                                                                                                                        mapper =
+                                                                                                                                                            value :
+                                                                                                                                                                ''
+                                                                                                                                                                    RESOURCE=${ value }
+                                                                                                                                                                    find "$RESOURCE" -type f -exec source {} \;
+                                                                                                                                                                '' ;
+                                                                                                                                                        in
+                                                                                                                                                            ''
+                                                                                                                                                                ${ builtins.concatStringsSep "\n" ( builtins.map mapper config.personal.pads.autocomplete ) }
+                                                                                                                                                            '' ;
+                                                                                                                                            } ;
+                                                                                                                                    in "${ application }/bin/envrc" ;
+                                                                                                                            double-quotes = builtins.concatStringsSep "" [ "'" "'" ] ;
+                                                                                                                            envrc =
+                                                                                                                                let
+                                                                                                                                    application =
+                                                                                                                                        pkgs.writeShellApplication
+                                                                                                                                            {
+                                                                                                                                                name = "envrc" ;
+                                                                                                                                                text =
+                                                                                                                                                    ''
+                                                                                                                                                        ${ builtins.concatStringsSep "\n" ( builtins.map ( value : "M${ builtins.hashString "sha512" value }=${ value }" ) config.personal.pads.man ) }
+                                                                                                                                                        export MANPATH="${ builtins.concatStringsSep ":" ( builtins.map ( value : "$M${ builtins.hashString "sha512" value }" ) config.personal.pads.man ) }"
+                                                                                                                                                        ${ builtins.concatStringsSep "\n" ( builtins.map ( value : "B${ builtins.hashString "sha512" value }=${ value }" ) config.personal.pads.bin ) }
+                                                                                                                                                        PATH="${ builtins.concatStringsSep ":" ( builtins.map ( value : "$B${ builtins.hashString "sha512" value }" ) config.personal.pads.bin ) }"
+                                                                                                                                                        export PATH="$PATH:${ pkgs.less }/bin:${ pkgs.man-db }/bin"
+                                                                                                                                                    '' ;
+                                                                                                                                            } ;
+                                                                                                                                    in "${ application }/bin/envrc" ;
+                                                                                                                            in
+                                                                                                                                ''
+                                                                                                                                    mkdir --parents /home/${ config.personal.name }/shell
+                                                                                                                                    cat > /home/${ config.personal.name }/shell/shell.nix <<EOF
+                                                                                                                                        { pkgs ? import <nixpkgs> {} } :
+                                                                                                                                            pkgs.mkShell
+                                                                                                                                                {
+                                                                                                                                                    shellHook =
+                                                                                                                                                        ${ double-quotes }
+                                                                                                                                                            source /home/${ config.personal.name }/pad/.envrc"
+                                                                                                                                                            source ${ autocomplete }
+                                                                                                                                                        ${ double-quotes } ;
+                                                                                                                                                }
+                                                                                                                                    EOF
+                                                                                                                                    mkdir --parents /home/${ config.personal.name }/pad
+                                                                                                                                    ln --symbolic --force ${ envrc } /home/${ config.personal.name }/pad/.envrc
+                                                                                                                                '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/ExecStart" ;
                                                                                         User = config.personal.name ;
                                                                                     } ;
                                                                                 wantedBy = [ "multi-user.target" ] ;
                                                                             } ;
-                                                                        recycle-github-token =
+                                                                        recycle-github-identity =
                                                                             {
-                                                                                after = [ "network.target" ] ;
+                                                                                after = [ "network-online.target" ] ;
                                                                                 serviceConfig =
                                                                                     {
                                                                                         ExecStart =
@@ -1868,24 +3194,35 @@
                                                                                                     pkgs.writeShellApplication
                                                                                                         {
                                                                                                             name = "ExecStart" ;
-                                                                                                            runtimeInputs = [ pkgs.age pkgs.coreutils pkgs.git pkgs.jq ( _failure.implementation "89d3de61" ) ] ;
+                                                                                                            runtimeInputs = [ pkgs.git __failure ] ;
                                                                                                             text =
                                                                                                                 ''
-                                                                                                                    TOKEN=${ resources__.production.secrets.token { failure = "failure e75bdc6a" ; } }
-                                                                                                                    SECRETS=${ resources__.production.repository.studio.secrets { failure = "failure 64cc381d" ; } }
-                                                                                                                    cd "$SECRETS/repository"
-                                                                                                                    STAMP="$( date +%s )" ||
-                                                                                                                    gh auth login --with-token < "$TOKEN/secret"
-                                                                                                                    gh api /authorizations --method POST -f scopes="repo,workflow,admin:repo_hook" -f expiration="30 days" > ../stage/secret
-                                                                                                                    gh auth logout
-                                                                                                                    jq --raw-output ".token" ../stage/secret > ../stage/github-token.asc
-                                                                                                                    RECIPIENT=${ resources__.production.age.public { failure = "failure d279d2f8" ; } }
-                                                                                                                    git fetch origin main
-                                                                                                                    git checkout main
-                                                                                                                    age --recipient "$RECIPIENT" --encrypt --output github-token.asc.age ../stage/github-token.asc
-                                                                                                                    git add github-token.asc.age
-                                                                                                                    git commit -m "recycle github-token.asc.age $STAMP"
-                                                                                                                    git push origin HEAD
+                                                                                                                    SECRETS=${ resources__.production.repository.secrets2.read-write { failure = "failure a4112012" ; } }
+                                                                                                                    "$SECRETS/stage/alias/github-identity"
+                                                                                                                '' ;
+                                                                                                        } ;
+                                                                                                in "${ application }/bin/ExecStart" ;
+                                                                                        User = config.personal.name ;
+                                                                                    } ;
+                                                                                wantedBy = [ ] ;
+                                                                            } ;
+                                                                        recycle-mobile-identity =
+                                                                            {
+                                                                                after = [ "network-online.target" ] ;
+                                                                                enable = false ;
+                                                                                serviceConfig =
+                                                                                    {
+                                                                                        ExecStart =
+                                                                                            let
+                                                                                                application =
+                                                                                                    pkgs.writeShellApplication
+                                                                                                        {
+                                                                                                            name = "ExecStart" ;
+                                                                                                            runtimeInputs = [ pkgs.git __failure ] ;
+                                                                                                            text =
+                                                                                                                ''
+                                                                                                                    SECRETS=${ resources__.production.repository.secrets2.read-write { failure = "failure a4112012" ; } }
+                                                                                                                    "$SECRETS/stage/alias/mobile-identity"
                                                                                                                 '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/ExecStart" ;
@@ -1941,9 +3278,13 @@
                                                                     } ;
                                                                 timers =
                                                                     {
-                                                                        recycle-github-token =
+                                                                        recycle-github-identity =
                                                                             {
-                                                                                timerConfig.OnCalendar = "weekly" ;
+                                                                                timerConfig.OnCalendar = "daily" ;
+                                                                            } ;
+                                                                        recycle-mobile-identity =
+                                                                            {
+                                                                                timerConfig.OnCalendar = "daily" ;
                                                                             } ;
                                                                     } ;
                                                             } ;
@@ -1963,6 +3304,7 @@
                                                                     } ;
                                                                 packages =
                                                                     [
+                                                                        pkgs.age
                                                                         pkgs.gh
                                                                         ( _failure.implementation "762e3818" )
                                                                         (
@@ -2112,237 +3454,38 @@
                                                                 pads =
                                                                     lib.mkOption
                                                                         {
-                                                                            type = lib.types.attrsOf ( lib.types.functionTo lib.types.str ) ;
+                                                                            type =
+                                                                                lib.types.submodule
+                                                                                    {
+                                                                                        options =
+                                                                                            {
+                                                                                                autocomplete = lib.mkOption { default = { } ; type = lib.types.listOf lib.types.str ; } ;
+                                                                                                bin = lib.mkOption { default = [ ] ; type = lib.types.listOf lib.types.str ; } ;
+                                                                                                man = lib.mkOption { default = [ ] ; type = lib.types.listOf lib.types.str ; } ;
+                                                                                            } ;
+                                                                                    } ;
                                                                             default =
                                                                                 {
-                                                                                    home =
-                                                                                        { pid , pkgs , resources , root , sequential , wrap } :
-                                                                                            let
-                                                                                                envrc =
-                                                                                                    let
-                                                                                                        application =
-                                                                                                            pkgs.writeShellApplication
-                                                                                                                {
-                                                                                                                    name = "envrc" ;
-                                                                                                                    runtimeInputs =
-                                                                                                                        [
-                                                                                                                            (
-                                                                                                                                pkgs.writeShellApplication
-                                                                                                                                    {
-                                                                                                                                        name = "chromium" ;
-                                                                                                                                        runtimeInputs =
-                                                                                                                                            [
-                                                                                                                                                pkgs.coreutils
-                                                                                                                                                pkgs.chromium
-                                                                                                                                                pkgs.gnupg
-                                                                                                                                            ] ;
-                                                                                                                                        text =
-                                                                                                                                            ''
-                                                                                                                                                DOT_GNUPG=${ resources__.production.dot-gnupg { } }
-                                                                                                                                                export GNUPGHOME="$DOT_GNUPG/dot-gnupg"
-                                                                                                                                                gpg --sign --local-user "${ config.personal.chromium.home.config.email }" --armor </dev/null >/dev/null
-                                                                                                                                                CONFIG_RESOURCE=${ resources__.production.repository.pads.home.chromium.config { } }
-                                                                                                                                                export XDG_CONFIG_HOME="$CONFIG_RESOURCE/repository/secret"
-                                                                                                                                                mkdir --parents "$XDG_CONFIG_HOME"
-                                                                                                                                                echo CONFIG
-                                                                                                                                                find "$CONFIG_RESOURCE"
-                                                                                                                                                DATA_RESOURCE=${ resources__.production.repository.pads.home.chromium.data { } }
-                                                                                                                                                export XDG_DATA_HOME="$CONFIG_RESOURCE/repository/secret"
-                                                                                                                                                mkdir --parents "$XDG_DATA_HOME"
-                                                                                                                                                echo
-                                                                                                                                                echo DATA
-                                                                                                                                                find "$DATA_RESOURCE"
-                                                                                                                                                if [[ -t 0 ]]
-                                                                                                                                                then
-                                                                                                                                                    chromium "$@"
-                                                                                                                                                else
-                                                                                                                                                    cat | chromium "$@"
-                                                                                                                                                fi
-                                                                                                                                                sleep 1s
-                                                                                                                                                echo "CONFIG_RESOURCE=$CONFIG_RESOURCE"
-                                                                                                                                                git -C "$CONFIG_RESOURCE/repository" add secret/**
-                                                                                                                                                git -C "$CONFIG_RESOURCE/repository" commit -am "" --allow-empty-message
-                                                                                                                                                git -C "$CONFIG_RESOURCE/repository" push origin HEAD
-                                                                                                                                                echo "DATA_RESOURCE=$DATA_RESOURCE"
-                                                                                                                                                git -C "$DATA_RESOURCE/repository" add secret/**
-                                                                                                                                                git -C "$DATA_RESOURCE/repository" commit -am "" --allow-empty-message
-                                                                                                                                                git -C "$DATA_RESOURCE/repository" push origin HEAD
-                                                                                                                                            '' ;
-                                                                                                                                    }
-                                                                                                                            )
-                                                                                                                            (
-                                                                                                                                pkgs.writeShellApplication
-                                                                                                                                    {
-                                                                                                                                        name = "delete-gnupgkey" ;
-                                                                                                                                        runtimeInputs = [ pkgs.gnupg ] ;
-                                                                                                                                        text =
-                                                                                                                                            ''
-                                                                                                                                                KEY="$1"
-                                                                                                                                                gpg --delete-secret-keys "$KEY"
-                                                                                                                                                gpg --delete-keys "$KEY"
-                                                                                                                                                gpg --list-keys
-                                                                                                                                            '' ;
-                                                                                                                                    }
-                                                                                                                            )
-                                                                                                                            (
-                                                                                                                                pkgs.writeShellApplication
-                                                                                                                                    {
-                                                                                                                                        name = "generate-gnupg-key" ;
-                                                                                                                                        runtimeInputs = [ pkgs.age pkgs.coreutils pkgs.gawk pkgs.gnupg failure ] ;
-                                                                                                                                        text =
-                                                                                                                                            ''
-                                                                                                                                                MONIKER="$1"
-                                                                                                                                                NOW="$( date +%Y%m%d%H%M%S )" || failure 1dc95e4b
-                                                                                                                                                DOT_GNUPG=${ resources.production.dot-gnupg { } }
-                                                                                                                                                export GNUPGHOME="$DOT_GNUPG/dot-gnupg"
-                                                                                                                                                KEY_ID="$MONIKER $NOW <$MONIKER.$NOW@local>"
-                                                                                                                                                echo GENERATING KEY "$KEY_ID"
-                                                                                                                                                gpg --homedir "$GNUPGHOME" --quick-gen-key "$KEY_ID" ed25519 sign 1y
-                                                                                                                                                echo "EXTRACTING FINGERPRINT"
-                                                                                                                                                FPR="$(
-                                                                                                                                                  gpg --homedir "$GNUPGHOME" --with-colons --list-keys 2>/dev/null \
-                                                                                                                                                  | awk -F: -v uid="$MONIKER.$NOW@local" '
-                                                                                                                                                      $1=="fpr" { fpr=$10 }
-                                                                                                                                                      $1=="uid" && index($10, uid) { print fpr; exit }
-                                                                                                                                                    '
-                                                                                                                                                )" || failure 5bc4778d
-                                                                                                                                                gpg --homedir "$GNUPGHOME" --quick-add-key "$FPR" cv25519 encrypt 1y
-                                                                                                                                                OLD_KEYS="$(
-                                                                                                                                                  gpg --homedir "$GNUPGHOME" --with-colons --list-keys \
-                                                                                                                                                  | awk -F: -v new="$FPR" '$1=="fpr" && $10!=new { print $10 }'
-                                                                                                                                                )"
-                                                                                                                                                for key in $OLD_KEYS; do
-                                                                                                                                                    echo "Signing new key $FPR with old key $key"
-                                                                                                                                                    gpg --homedir "$GNUPGHOME" --yes --default-key "$key" --sign-key "$FPR"
-                                                                                                                                                done
-                                                                                                                                                TEMPORARY=${ resources.production.temporary { } }
-                                                                                                                                                if [[ ! -d "$TEMPORARY" ]]
-                                                                                                                                                then
-                                                                                                                                                    failure 399f0b2b
-                                                                                                                                                fi
-                                                                                                                                                gpg --export-ownertrust --armor > "$TEMPORARY/ownertrust.asc"
-                                                                                                                                                gpg --export-secret-keys --armor > "$TEMPORARY/secret-keys.asc"
-                                                                                                                                                echo "COPIED FILES TO $TEMPORARY"
-                                                                                                                                                SECRETS=${ resources.production.repository.studio.secrets { } }
-                                                                                                                                                echo GENERATED SECRETS "$SECRETS"
-                                                                                                                                                BRANCH="$( git -C "$SECRETS/repository" rev-parse --abbrev-ref HEAD )" || failure 47e2654b
-                                                                                                                                                echo "BRANCH=$BRANCH"
-                                                                                                                                                if [[ ! -d "$SECRETS/repository" ]]
-                                                                                                                                                then
-                                                                                                                                                    failure fee1c8e6
-                                                                                                                                                fi
-                                                                                                                                                if [[ ! -d "$SECRETS/repository/.git" ]]
-                                                                                                                                                then
-                                                                                                                                                    failure 10d0002c
-                                                                                                                                                fi
-                                                                                                                                                RECIPIENT=${ resources.production.age.public { } }
-                                                                                                                                                echo "GENERATED RECIPIENT $RECIPIENT"
-                                                                                                                                                if [[ ! -f "$RECIPIENT/public" ]]
-                                                                                                                                                then
-                                                                                                                                                    failure 047ed19d "$RECIPIENT/public"
-                                                                                                                                                fi
-                                                                                                                                                RECIPIENT_="$( cat "$RECIPIENT/public" )" || failure fba2f13f
-                                                                                                                                                # if grep -q $'\n' <<< "$RECIPIENT_"
-                                                                                                                                                # then
-                                                                                                                                                #     failure 367f1591
-                                                                                                                                                # fi
-                                                                                                                                                git -C "$SECRETS/repository" fetch origin main 2>&1
-                                                                                                                                                git -C "$SECRETS/repository" rebase origin/main 2>&1
-                                                                                                                                                echo "ABOUT TO ENCRYPT"
-                                                                                                                                                age --recipient "$RECIPIENT_" < "$TEMPORARY/ownertrust.asc" > "$SECRETS/repository/ownertrust.asc.age"
-                                                                                                                                                age --recipient "$RECIPIENT_" < "$TEMPORARY/secret-keys.asc" > "$SECRETS/repository/secret-keys.asc.age"
-                                                                                                                                                git -C "$SECRETS/repository" add ownertrust.asc.age secret-keys.asc.age
-                                                                                                                                                echo "ABOUT TO COMMIT"
-                                                                                                                                                git -C "$SECRETS/repository" commit -m "GENERATED A GNUPG KEY for $KEY_ID" 2>&1
-                                                                                                                                                git -C "$SECRETS/repository" push --force-with-lease origin HEAD 2>&1
-                                                                                                                                                echo "HAVE PUSHED"
-                                                                                                                                                TOKEN=${ resources.production.secrets.token { } }
-                                                                                                                                                cd "$SECRETS/repository"
-                                                                                                                                                gh auth login --with-token < "$TOKEN/secret"
-                                                                                                                                                gh pr create --base main --head "$BRANCH" --label "snapshot"
-                                                                                                                                                URL="$( gh pr view --json url --jq .url )" || failure 508fe804
-                                                                                                                                                gh pr merge "$URL" --rebase
-                                                                                                                                                gh auth logout
-                                                                                                                                                echo SUCCESS
-                                                                                                                                            '' ;
-                                                                                                                                    }
-                                                                                                                            )
-                                                                                                                            (
-                                                                                                                                pkgs.writeShellApplication
-                                                                                                                                    {
-                                                                                                                                        name = "nonce" ;
-                                                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.libuuid ] ;
-                                                                                                                                        text =
-                                                                                                                                            ''
-                                                                                                                                                uuidgen | sha512sum | cut --characters 1-8
-                                                                                                                                            '' ;
-                                                                                                                                    }
-                                                                                                                            )
-                                                                                                                            (
-                                                                                                                                pkgs.writeShellApplication
-                                                                                                                                    {
-                                                                                                                                        name = "studio" ;
-                                                                                                                                        runtimeInputs = [ pkgs.coreutils ] ;
-                                                                                                                                        text =
-                                                                                                                                            ''
-                                                                                                                                                if [[ -t 0 ]]
-                                                                                                                                                then
-                                                                                                                                                    STUDIO=${ resources__.production.repository.studio.entry { setup = setup : ''${ setup } "$@"'' ; } }
-                                                                                                                                                else
-                                                                                                                                                    STUDIO=${ resources__.production.repository.studio.entry { setup = setup : ''cat | ${ setup } "$@"'' ; } }
-                                                                                                                                                fi
-                                                                                                                                                echo "$STUDIO"
-                                                                                                                                            '' ;
-                                                                                                                                    }
-                                                                                                                            )
-                                                                                                                            (
-                                                                                                                                pkgs.writeShellApplication
-                                                                                                                                    {
-                                                                                                                                        name = "ssh" ;
-                                                                                                                                        runtimeInputs = [ pkgs.openssh ] ;
-                                                                                                                                        text =
-                                                                                                                                            ''
-                                                                                                                                                DOT_SSH=${ resources.production.dot-ssh { } }
-                                                                                                                                                if [[ -t 0 ]]
-                                                                                                                                                then
-                                                                                                                                                    ssh -F "$DOT_SSH/config" "$@"
-                                                                                                                                                else
-                                                                                                                                                    cat | ssh -F "$DOT_SSH/config" "$@"
-                                                                                                                                                fi
-                                                                                                                                            '' ;
-                                                                                                                                    }
-                                                                                                                            )
-                                                                                                                            pkgs.pass
-                                                                                                                        ] ;
-                                                                                                                    text =
-                                                                                                                        ''
-                                                                                                                            export TEST_USER=1abfeaf8
-                                                                                                                            export TEST_PASSWORD=38e38981
-                                                                                                                            export FOOBAR=ead70f30
-                                                                                                                            export NAME="Emory Merryman"
-                                                                                                                            DOT_GNUPG=${ resources.production.dot-gnupg { } }
-                                                                                                                            export GNUPGHOME="$DOT_GNUPG/dot-gnupg"
-                                                                                                                            DOT_SSH=${ resources.production.dot-ssh { } }
-                                                                                                                            export DOT_SSH
-                                                                                                                            PASSWORD_STORE_REPOSITORY=${ resources.production.repository.pass { } }
-                                                                                                                            export PASSWORD_STORE_GPG_OPTS="--homedir $DOT_GNUPG/dot-gnupg"
-                                                                                                                            export PASSWORD_STORE_DIR="$PASSWORD_STORE_REPOSITORY/repository"
-                                                                                                                        '' ;
-                                                                                                                } ;
-                                                                                                        in "${ application }/bin/envrc" ;
-                                                                                                in
-                                                                                                    let
-                                                                                                        application =
-                                                                                                            pkgs.writeShellApplication
-                                                                                                                {
-                                                                                                                    name = "init" ;
-                                                                                                                    runtimeInputs = [ wrap ] ;
-                                                                                                                    text =
-                                                                                                                        ''
-                                                                                                                            wrap ${ envrc } envrc 0400 --literal-plain DOT_GNUPG --literal-plain PASSWORD_STORE_REPOSITORY --literal-plain PATH
-                                                                                                                        '' ;
-                                                                                                                } ;
-                                                                                                        in "${ application }/bin/init " ;
+                                                                                    autocomplete =
+                                                                                        [
+                                                                                            ( resources__.production.autocomplete.silly { failure = ___failure "f15371a4" ; } )
+                                                                                        ] ;
+                                                                                    bin =
+                                                                                        [
+                                                                                            ( resources__.production.bin.chromium { failure = ___failure "1954d2c7" ; } )
+                                                                                            ( resources__.production.bin.gpg { failure = ___failure "7386330c" ; } )
+                                                                                            ( resources__.production.bin.idea-community { failure = ___failure "7eba8454" ; } )
+                                                                                            ( resources__.production.bin.pass { failure = ___failure "c055f2a0" ; } )
+                                                                                            ( resources__.production.bin.ssh { failure = ___failure "c055f2a0" ; } )
+                                                                                        ] ;
+                                                                                    man =
+                                                                                        [
+                                                                                            ( resources__.production.man.chromium { failure = ___failure "967ea0e1" ; } )
+                                                                                            ( resources__.production.man.gpg { failure = ___failure "aa1f5c38" ; } )
+                                                                                            ( resources__.production.man.idea-community { failure = ___failure "f5992d47" ; } )
+                                                                                            ( resources__.production.man.pass { failure = ___failure "4a4c361e" ; } )
+                                                                                            ( resources__.production.man.ssh { failure = ___failure "6d01304d" ; } )
+                                                                                        ] ;
                                                                                 } ;
                                                                         } ;
                                                                 password = lib.mkOption { type = lib.types.str ; } ;
@@ -2456,9 +3599,19 @@
                                                                                 repository = lib.mkOption { default = "visitor" ; type = lib.types.str ; } ;
                                                                            } ;
                                                                     } ;
+                                                                secrets2 =
+                                                                    {
+                                                                        email = lib.mkOption { default = "emory.merryman@gmail.com" ; type = lib.types.str ; } ;
+                                                                        name = lib.mkOption { default = "Emory Merryman" ; type = lib.types.str ; } ;
+                                                                        organization = lib.mkOption { default = "AFnRFCb7" ; type = lib.types.str ; } ;
+                                                                        repository = lib.mkOption { default = "9ebf9ebc" ; type = lib.types.str ; } ;
+                                                                        branch = lib.mkOption { default = "main" ; type = lib.types.str ; } ;
+                                                                    } ;
                                                                 secrets =
                                                                     {
                                                                         remote = lib.mkOption { default = "git@github.com:AFnRFCb7/12e5389b-8894-4de5-9cd2-7dab0678d22b" ; type = lib.types.str ; } ;
+                                                                        organization = lib.mkOption { default = "AFnRFCb7" ; type = lib.types.str ; } ;
+                                                                        repository = lib.mkOption { default = "12e5389b-8894-4de5-9cd2-7dab0678d22b" ; type = lib.types.str ; } ;
                                                                         branch = lib.mkOption { default = "main" ; type = lib.types.str ; } ;
                                                                     } ;
                                                                 temporary =
