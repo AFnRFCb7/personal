@@ -724,7 +724,7 @@
                                                                                                                 ${ if builtins.typeOf special == "string" then "ln --symbolic ${ builtins.toFile "man" special } /mount/man4/${ name }.4" else "#" }
                                                                                                                 mkdir --parents /mount/man5
                                                                                                                 ${ if builtins.typeOf format == "string" then "ln --symbolic ${ builtins.toFile "man" format } /mount/man5/${ name }.5" else "#" }
-                                                                                                                mkdir --parentfs /mount/man6
+                                                                                                                mkdir --parents /mount/man6
                                                                                                                 ${ if builtins.typeOf games == "string" then "ln --symbolic ${ builtins.toFile "man" games } /mount/man6/${ name }.6" else "#" }
                                                                                                                 mkdir --parents /mount/man7
                                                                                                                 mkdir --parents /mount/man8
