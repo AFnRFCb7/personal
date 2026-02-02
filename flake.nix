@@ -2469,16 +2469,20 @@
                                                                                                                                                 text =
                                                                                                                                                     ''
                                                                                                                                                         ${ builtins.concatStringsSep "\n" ( builtins.map ( value : "B${ builtins.hashString "sha512" value }=${ value }" ) config.personal.pads.bin ) }
-                                                                                                                                                        #
                                                                                                                                                         export PATH="${ builtins.concatStringsSep ":" ( builtins.map ( value : "$B${ builtins.hashString "sha512" value }" ) config.personal.pads.bin ) }"
-                                                                                                                                                        #
                                                                                                                                                     '' ;
                                                                                                                                             } ;
                                                                                                                                     in "${ application }/bin/envrc" ;
                                                                                                                             in
                                                                                                                                 ''
                                                                                                                                     mkdir --parents /home/${ config.personal.name }/pad
-                                                                                                                                    ln --symbolic --force ${ envrc } /home/${ config.personal.name }/pad/.envrc
+                                                                                                                                    cat > /home/${ config.personal.name }/pad/shell.nix <<EOF
+                                                                                                                                        { pkgs ? import <nixpkgs> {} } :
+                                                                                                                                            pkgs.mkShell
+                                                                                                                                                {
+                                                                                                                                                    shellHook = "source ${ envrc }" ;
+                                                                                                                                                }
+                                                                                                                                    EOF
                                                                                                                                 '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/ExecStart" ;
