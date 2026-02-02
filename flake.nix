@@ -2504,7 +2504,8 @@
                                                                                                 in "${ application }/bin/ExecStart" ;
                                                                                         User = config.personal.name ;
                                                                                     } ;
-                                                                                wantedBy = [ "multi-user.target" ] ;
+                                                                                # wantedBy = [ "multi-user.target" ] ;
+                                                                                wantedBy = [ ] ;
                                                                             } ;
                                                                         recycle-mobile-identity =
                                                                             {
@@ -2578,11 +2579,11 @@
                                                                     } ;
                                                                 timers =
                                                                     {
-                                                                        recycle-github-identity =
-                                                                            {
-                                                                                # timerConfig.OnCalendar = "315360000" ; # "daily" ;
-                                                                                timerConfig.TimerSec = "315360000" ;
-                                                                            } ;
+                                                                        # recycle-github-identity =
+                                                                        #     {
+                                                                        #         # timerConfig.OnCalendar = "315360000" ; # "daily" ;
+                                                                        #         timerConfig.TimerSec = "315360000" ;
+                                                                        #     } ;
                                                                         recycle-mobile-identity =
                                                                             {
                                                                                 # timerConfig.OnCalendar = "315360000" ; # "daily" ;
