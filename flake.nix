@@ -3125,7 +3125,7 @@
                                                                                                                                                                 '' ;
                                                                                                                                                         in
                                                                                                                                                             ''
-                                                                                                                                                                ${ builtins.concatStringsSep "\n" ( builtins.map mapper ) }
+                                                                                                                                                                ${ builtins.concatStringsSep "\n" ( builtins.map mapper ) config.personal.pads.autocomplete }
                                                                                                                                                             '' ;
                                                                                                                                             } ;
                                                                                                                                     in "${ application }/bin/envrc" ;
@@ -3453,9 +3453,9 @@
                                                                             default =
                                                                                 {
                                                                                     autocomplete =
-                                                                                        {
-                                                                                            silly = resources__.production.autocomplete.silly { failure = ___failure "f15371a4" ; } ;
-                                                                                        } ;
+                                                                                        [
+                                                                                            ( resources__.production.autocomplete.silly { failure = ___failure "f15371a4" ; } )
+                                                                                        ] ;
                                                                                     bin =
                                                                                         [
                                                                                             ( resources__.production.bin.chromium { failure = ___failure "1954d2c7" ; } )
