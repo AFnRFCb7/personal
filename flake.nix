@@ -737,6 +737,7 @@
                                                                         {
                                                                             chromium =
                                                                                 man
+                                                                                    "chromium"
                                                                                     {
                                                                                         user =
                                                                                             ''
@@ -771,6 +772,174 @@
 
                                                                                                 .SH AUTHOR
                                                                                                 Written by the Chromium Project developers.
+                                                                                            '' ;
+                                                                                    } ;
+                                                                            gpg =
+                                                                                man
+                                                                                    "gpg"
+                                                                                    {
+                                                                                        user =
+                                                                                            ''
+                                                                                                .TH GPG 1 "February 2026" "2.0" "GNU Privacy Guard"
+                                                                                                .SH NAME
+                                                                                                gpg \- GNU Privacy Guard encryption and signing tool
+                                                                                                .SH SYNOPSIS
+                                                                                                .B gpg
+                                                                                                [\fIoptions\fR] \fIcommand\fR [arguments]
+                                                                                                .SH DESCRIPTION
+                                                                                                GPG (GNU Privacy Guard) is a free implementation of the OpenPGP standard for encrypting and signing data and communications. It is commonly used to protect emails, files, and ensure data integrity by cryptographically verifying messages and files.
+
+                                                                                                You can use GPG to:
+                                                                                                - Encrypt and decrypt files
+                                                                                                - Sign messages and verify signatures
+                                                                                                - Manage public and private keys
+
+                                                                                                .SH COMMANDS
+                                                                                                These are the basic commands available in GPG:
+                                                                                                .TP
+                                                                                                .B init [gpg-id]
+                                                                                                Initialize a new keyring with a specified GPG key.
+                                                                                                .TP
+                                                                                                .B generate
+                                                                                                Generate a new GPG keypair (public and private keys).
+                                                                                                .TP
+                                                                                                .B sign
+                                                                                                Sign a file or message with your private key to verify its authenticity.
+                                                                                                .TP
+                                                                                                .B encrypt
+                                                                                                Encrypt a file or message for a specified recipient.
+                                                                                                .TP
+                                                                                                .B decrypt
+                                                                                                Decrypt a previously encrypted file or message.
+                                                                                                .TP
+                                                                                                .B verify
+                                                                                                Verify the signature on a file or message.
+                                                                                                .TP
+                                                                                                .B list-keys
+                                                                                                List all keys in your keyring.
+                                                                                                .TP
+                                                                                                .B export
+                                                                                                Export a public key to a file or other location.
+                                                                                                .TP
+                                                                                                .B import
+                                                                                                Import a public or private key into your keyring.
+                                                                                                .TP
+                                                                                                .B revoke
+                                                                                                Revoke a public key.
+                                                                                                .TP
+                                                                                                .B delete-keys
+                                                                                                Remove a key from your keyring.
+
+                                                                                                .SH OPTIONS
+                                                                                                These are the most commonly used options in **gpg**:
+
+                                                                                                .TP
+                                                                                                .B \-h, \-\-help
+                                                                                                Display help information for GPG.
+                                                                                                .TP
+                                                                                                .B \-v, \-\-version
+                                                                                                Show the version of GPG.
+                                                                                                .TP
+                                                                                                .B \-r, \-\-recipient=[email]
+                                                                                                Specify the recipient for encryption, using their email or key ID.
+                                                                                                .TP
+                                                                                                .B \-e, \-\-encrypt
+                                                                                                Encrypt the file or message for the specified recipient.
+                                                                                                .TP
+                                                                                                .B \-d, \-\-decrypt
+                                                                                                Decrypt the specified file or message.
+                                                                                                .TP
+                                                                                                .B \-s, \-\-sign
+                                                                                                Sign a file or message with your private key.
+                                                                                                .TP
+                                                                                                .B \-a, \-\-armor
+                                                                                                Create ASCII-armored output (so the result can be safely copied to text-based media).
+                                                                                                .TP
+                                                                                                .B \-k, \-\-list-keys
+                                                                                                List all public keys in the keyring.
+                                                                                                .TP
+                                                                                                .B \-K, \-\-list-secret-keys
+                                                                                                List all secret keys in the keyring.
+                                                                                                .TP
+                                                                                                .B \-f, \-\-fingerprint
+                                                                                                Show the fingerprint of a specified key.
+                                                                                                .TP
+                                                                                                .B \-a, \-\-armor
+                                                                                                Generate ASCII armored output (text format) instead of binary.
+                                                                                                .TP
+                                                                                                .B \-l, \-\-list-signatures
+                                                                                                List the signatures on a given key.
+
+                                                                                                .SH EXAMPLES
+                                                                                                Here are a few common examples of GPG usage:
+
+                                                                                                .TP
+                                                                                                Sign a file:
+                                                                                                .nf
+                                                                                                  $ gpg --sign myfile.txt
+                                                                                                .fi
+
+                                                                                                .TP
+                                                                                                Encrypt a file for a specific recipient:
+                                                                                                .nf
+                                                                                                  $ gpg --encrypt --recipient example@example.com myfile.txt
+                                                                                                .fi
+
+                                                                                                .TP
+                                                                                                Decrypt a file:
+                                                                                                .nf
+                                                                                                  $ gpg --decrypt myfile.txt.gpg
+                                                                                                .fi
+
+                                                                                                .TP
+                                                                                                Verify a signature on a file:
+                                                                                                .nf
+                                                                                                  $ gpg --verify myfile.txt.sig myfile.txt
+                                                                                                .fi
+
+                                                                                                .TP
+                                                                                                Generate a new keypair:
+                                                                                                .nf
+                                                                                                  $ gpg --full-generate-key
+                                                                                                .fi
+
+                                                                                                .TP
+                                                                                                Export a public key:
+                                                                                                .nf
+                                                                                                  $ gpg --export --armor example@example.com > public-key.asc
+                                                                                                .fi
+
+                                                                                                .TP
+                                                                                                List all keys in your keyring:
+                                                                                                .nf
+                                                                                                  $ gpg --list-keys
+                                                                                                .fi
+
+                                                                                                .TP
+                                                                                                Delete a key from your keyring:
+                                                                                                .nf
+                                                                                                  $ gpg --delete-keys example@example.com
+                                                                                                .fi
+
+                                                                                                .TP
+                                                                                                Revoke a key:
+                                                                                                .nf
+                                                                                                  $ gpg --gen-revoke example@example.com
+                                                                                                .fi
+
+                                                                                                .SH FILES
+                                                                                                By default, GPG stores its keys in the following locations:
+
+                                                                                                .TP
+                                                                                                .B ~/.gnupg/
+                                                                                                Contains all the GPG configuration files and keyrings (both public and private).
+
+                                                                                                .SH SEE ALSO
+                                                                                                The official GPG documentation can be found at:
+                                                                                                .B https://gnupg.org/documentation/
+
+                                                                                                .SH AUTHOR
+                                                                                                Written by the GPG team and contributors.
                                                                                             '' ;
                                                                                     } ;
                                                                         } ;
