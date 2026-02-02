@@ -509,7 +509,7 @@
                                                                                         script = ''idea-community "$RESOURCE/repository" "$@"'' ;
                                                                                         variables =
                                                                                             {
-                                                                                                RESOURCE = resources.production.studio.entry { failure = ___failure "560f61b9" ; } ;
+                                                                                                RESOURCE = resources : resources.production.studio.entry { failure = ___failure "560f61b9" ; } ;
                                                                                             } ;
                                                                                     } ;
                                                                             pass =
