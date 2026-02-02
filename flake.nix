@@ -1055,7 +1055,7 @@
                                                                                                                                                         runtimeInputs = [ pkgs.age pkgs.coreutils pkgs.flock pkgs.gh pkgs.libuuid pkgs.openssh __failure ] ;
                                                                                                                                                         text =
                                                                                                                                                             ''
-                                                                                                                                                                echo 24d3677d
+                                                                                                                                                                echo 1e2b7869
                                                                                                                                                                 exec 201> "$MOUNT/lock"
                                                                                                                                                                 flock 201
                                                                                                                                                                 echo 24d3677d
@@ -1067,7 +1067,7 @@
                                                                                                                                                                 echo 24d3677d
                                                                                                                                                                 BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 22724f93
                                                                                                                                                                 echo 24d3677d
-                                                                                                                                                                SECRETS=${ resources.production.repository.secrets2.read-only { setup = setup : ''${ setup } "$UUID"'' ; failure = "failure 64ef3c7e" ; } }
+                                                                                                                                                                SECRETS=${ resources.production.repository.secrets2.read-only { failure = "failure 64ef3c7e" ; } }
                                                                                                                                                                 echo 24d3677d 250ac697
                                                                                                                                                                 git fetch origin ${ config.personal.secrets2.branch }
                                                                                                                                                                 echo 24d3677d e302e18e
