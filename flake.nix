@@ -524,7 +524,7 @@
                                                                                             {
                                                                                                 DOT_GNUPG = resources : resources.production.dot-gnupg { failure = ___failure "f68dcf20" ; } ;
                                                                                                 RESOURCE = resources : resources.production.repository.pass { failure = ___failure "cf87710c" ; } ;
-                                                                                                PASSWORD_STORE_GPG_OPTS = resources : "$DOT_GNUPG/dot-gnupg" ;
+                                                                                                PASSWORD_STORE_GPG_OPTS = resources : "--homedir $DOT_GNUPG/dot-gnupg" ;
                                                                                                 PASSWORD_STORE_DIR = resources : "$RESOURCE/repository " ;
                                                                                             } ;
                                                                                     } ;
