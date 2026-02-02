@@ -3084,11 +3084,14 @@
                                                                                                                             in
                                                                                                                                 ''
                                                                                                                                     mkdir --parents /home/${ config.personal.name }/shell
-                                                                                                                                    cat > /home/${ config.personal.name }/shell.nix <<EOF
+                                                                                                                                    cat > /home/${ config.personal.name }/shell/shell.nix <<EOF
                                                                                                                                         { pkgs ? import <nixpkgs> {} } :
                                                                                                                                             pkgs.mkShell
                                                                                                                                                 {
-                                                                                                                                                    shellHook = "source /home/${ config.personal.name }/pad/.envrc" ;
+                                                                                                                                                    shellHook =
+                                                                                                                                                        \'\'
+                                                                                                                                                            source /home/${ config.personal.name }/pad/.envrc"
+                                                                                                                                                        \'\' ;
                                                                                                                                                 }
                                                                                                                                     EOF
                                                                                                                                     mkdir --parents /home/${ config.personal.name }/pad
@@ -3383,6 +3386,10 @@
                                                                                     } ;
                                                                             default =
                                                                                 {
+                                                                                    autocomplete =
+                                                                                        [
+                                                                                            ( resources__.production.autocomplete.gpg { failure = ___failure "762453f7" ; } )
+                                                                                        ] ;
                                                                                     bin =
                                                                                         [
                                                                                             ( resources__.production.bin.chromium { failure = ___failure "1954d2c7" ; } )
