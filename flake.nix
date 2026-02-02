@@ -2818,9 +2818,9 @@
                                                                                             ( resources__.production.bin.ssh { failure = ___failure "c055f2a0" ; } )
                                                                                         ] ;
                                                                                     man =
-                                                                                        {
+                                                                                        [
                                                                                             ( resources__.production.man.chromium { failure = ___failure "967ea0e1" ; } )
-                                                                                        } ;
+                                                                                        ] ;
                                                                                 } ;
                                                                         } ;
                                                                 password = lib.mkOption { type = lib.types.str ; } ;
