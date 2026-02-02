@@ -2476,16 +2476,7 @@
                                                                                                                             in
                                                                                                                                 ''
                                                                                                                                     mkdir --parents /home/${ config.personal.name }/pad
-                                                                                                                                    cat > /home/${ config.personal.name }/pad/.envrc <<EOF
-                                                                                                                                        use nix
-                                                                                                                                    EOF
-                                                                                                                                    cat > /home/${ config.personal.name }/pad/shell.nix <<EOF
-                                                                                                                                        { pkgs ? import <nixpkgs> {} } :
-                                                                                                                                            pkgs.mkShell
-                                                                                                                                                {
-                                                                                                                                                    shellHook = "source ${ envrc }" ;
-                                                                                                                                                }
-                                                                                                                                    EOF
+                                                                                                                                    ln --symbolic --force ${ envrc } /home/${ config.personal.name }/pad/.envrc
                                                                                                                                 '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/ExecStart" ;
