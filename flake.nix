@@ -2476,6 +2476,9 @@
                                                                                                                             in
                                                                                                                                 ''
                                                                                                                                     mkdir --parents /home/${ config.personal.name }/pad
+                                                                                                                                    cat > /home/${ config.personal.name }/pad/.envrc <<EOF
+                                                                                                                                        use nix
+                                                                                                                                    EOF
                                                                                                                                     cat > /home/${ config.personal.name }/pad/shell.nix <<EOF
                                                                                                                                         { pkgs ? import <nixpkgs> {} } :
                                                                                                                                             pkgs.mkShell
