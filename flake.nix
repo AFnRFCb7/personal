@@ -285,50 +285,7 @@
                                                                                     in "${ application }/bin/init" ;
                                                                         targets = [ "public" ] ;
                                                                     } ;
-                                                             autocomplete =
-                                                                let
-                                                                     autocomplete =
-                                                                         name : value : ignore :
-                                                                             let
-                                                                                 hash = builtins.hashString "sha512" "${ name }${ value }" ;
-                                                                                 in
-                                                                                     {
-                                                                                         init =
-                                                                                             { pid , pkgs , resources , root , wrap } :
-                                                                                                 let
-                                                                                                     application =
-                                                                                                         pkgs.writeShellApplication
-                                                                                                             {
-                                                                                                                 name = "init" ;
-                                                                                                                 text =
-                                                                                                                     let
-                                                                                                                         autocomplete =
-                                                                                                                             pkgs.writeShellApplication
-                                                                                                                                 {
-                                                                                                                                     name = "autocomplete" ;
-                                                                                                                                     text =
-                                                                                                                                         ''
-                                                                                                                                             A${ hash } ( ) {
-                                                                                                                                                ${ value }
-                                                                                                                                             }
-                                                                                                                                             complete -F A${ hash } ${ name }
-                                                                                                                                         '' ;
-                                                                                                                                 } ;
-                                                                                                                         in
-                                                                                                                             ''
-                                                                                                                                 ln --symbolic ${ autocomplete } /mount/autocomplete.sh
-                                                                                                                             '' ;
-                                                                                         targets = [ "autocomplete.sh" ] ;
-                                                                                     } ;
-                                                                     in
-                                                                         {
-                                                                             silly =
-                                                                                 autocomplete
-                                                                                     "silly"
-                                                                                    ''
-                                                                                         COMPREPLY=( $( compgen -W "alpha beta" -- "${ builtins.concatStringsSep "" [ "$" "{" "COMP_WORDS[1]" "}" ] } ) )
-                                                                                    '' ;
-                                                                         } ;
+
                                                             application =
                                                                 {
                                                                     chromium =
