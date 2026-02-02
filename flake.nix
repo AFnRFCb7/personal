@@ -3123,9 +3123,10 @@
                                                                                                                                                                     RESOURCE=${ value }
                                                                                                                                                                     find "$RESOURCE" -type f -exec source {} \;
                                                                                                                                                                 '' ;
-                                                                                                                                                    ''
-                                                                                                                                                        ${ builtins.concatStringsSep "\n" ( builtins.map mapper ) }
-                                                                                                                                                    '' ;
+                                                                                                                                                        in
+                                                                                                                                                            ''
+                                                                                                                                                                ${ builtins.concatStringsSep "\n" ( builtins.map mapper ) }
+                                                                                                                                                            '' ;
                                                                                                                                             } ;
                                                                                                                                     in "${ application }/bin/envrc" ;
                                                                                                                             double-quotes = builtins.concatStringsSep "" [ "'" "'" ] ;
