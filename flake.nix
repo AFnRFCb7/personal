@@ -400,7 +400,7 @@
                                                                                  in
                                                                                      {
                                                                                          init =
-                                                                                             { pid , pkgs , resources , root , wrap } :
+                                                                                             { pid , pkgs , resources , root , sequential , wrap } :
                                                                                                  let
                                                                                                      application =
                                                                                                          pkgs.writeShellApplication
