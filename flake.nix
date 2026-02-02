@@ -434,7 +434,8 @@
                                                                                  autocomplete
                                                                                      "silly"
                                                                                     ''
-                                                                                         COMPREPLY=( $( compgen -W "alpha beta" -- "${ builtins.concatStringsSep "" [ "$" "{" "COMP_WORDS[1]" "}" ] }" ) )
+                                                                                        # shellcheck disable=SC2207
+                                                                                        COMPREPLY=( $( compgen -W "alpha beta" -- "${ builtins.concatStringsSep "" [ "$" "{" "COMP_WORDS[1]" "}" ] }" ) )
                                                                                     '' ;
                                                                          } ;
                                                             bin =
