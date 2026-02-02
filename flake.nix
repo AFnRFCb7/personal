@@ -506,8 +506,11 @@
                                                                                         environment = [ ] ;
                                                                                         name = "idea-community" ;
                                                                                         runtimeInputs = pkgs : pkgs.jetbrains.idea-community ;
-                                                                                        script = ''idea-community "$@"'' ;
-                                                                                        variables = { } ;
+                                                                                        script = ''idea-community "$RESOURCE/repository" "$@"'' ;
+                                                                                        variables =
+                                                                                            {
+                                                                                                RESOURCE = resources.production.studio.entry { failure = ___failure "560f61b9" ; } ;
+                                                                                            } ;
                                                                                     } ;
                                                                             pass =
                                                                                 bin
@@ -2771,6 +2774,7 @@
                                                                                         [
                                                                                             ( resources__.production.bin.chromium { failure = ___failure "1954d2c7" ; } )
                                                                                             ( resources__.production.bin.gpg { failure = ___failure "7386330c" ; } )
+                                                                                            ( resources__.production.bin.idea-community { failure = ___failure "7eba8454" ; } )
                                                                                             ( resources__.production.bin.pass { failure = ___failure "c055f2a0" ; } )
                                                                                             ( resources__.production.bin.ssh { failure = ___failure "c055f2a0" ; } )
                                                                                         ] ;
