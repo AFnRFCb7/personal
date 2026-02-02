@@ -505,10 +505,11 @@
                                                                                     {
                                                                                         environment = [ ] ;
                                                                                         name = "idea-community" ;
-                                                                                        runtimeInputs = pkgs : pkgs.jetbrains.idea-community ;
+                                                                                        runtimeInputs = pkgs : [ pkgs.jetbrains.idea-community ] ;
                                                                                         script = ''idea-community "$RESOURCE/repository" "$@"'' ;
                                                                                         variables =
                                                                                             {
+                                                                                                RESOURCE = resources : resources.production.repository.studio.entry { failure = ___failure "560f61b9" ; } ;
                                                                                             } ;
                                                                                     } ;
                                                                             pass =
