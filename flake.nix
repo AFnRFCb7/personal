@@ -433,7 +433,15 @@
                                                                                      } ;
                                                                      in
                                                                          {
-                                                                             silly =
+                                                                            chromium =
+                                                                                autocomplete
+                                                                                    "pass"
+                                                                                    ''
+                                                                                        RESOURCE=${ resources__.production.repository.pass { } }
+                                                                                        export PASSWORD_STORE_DIR="$RESOURCE/repository"
+                                                                                        source ${ pkgs.pass }/share/bash-completion/completions/pass
+                                                                                    '' ;
+                                                                            silly =
                                                                                  autocomplete
                                                                                      "silly"
                                                                                     ''
@@ -3523,6 +3531,7 @@
                                                                                 {
                                                                                     autocomplete =
                                                                                         [
+                                                                                            ( resources__.production.autocomplete.pass { failure = ___failure "28ecf633" ; } )
                                                                                             ( resources__.production.autocomplete.silly { failure = ___failure "f15371a4" ; } )
                                                                                         ] ;
                                                                                     bin =
