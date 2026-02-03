@@ -3281,6 +3281,7 @@
                                                                                                     gc-roots-directory = "/home/${ config.personal.name }/.gc-roots" ;
                                                                                                     locks-directory = "/home/${ config.personal.name }/resources/locks" ;
                                                                                                     mounts-directory = "/home/${ config.personal.name }/resources/mounts" ;
+                                                                                                    quarantine-directory = "/home/${ config.personal.name }/resources/quarantine" ;
                                                                                                 } ;
                                                                                             User = config.personal.name ;
                                                                                     } ;
