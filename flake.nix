@@ -3169,6 +3169,7 @@
                                                                                                                                                                         failure 54c327ad
                                                                                                                                                                     fi | while IFS= read -r f
                                                                                                                                                                     do
+                                                                                                                                                                        # shellcheck disable=SC1090
                                                                                                                                                                         source "$f"
                                                                                                                                                                     done
                                                                                                                                                                 '' ;
