@@ -2259,7 +2259,7 @@
                                                                                                                                                                 BIN_2="$PARENT_2/stage/bin"
                                                                                                                                                                 git -C "$STUDIO_2" mutable-mirror "$BRANCH"
                                                                                                                                                                 git -C "$STUDIO_2" mutable-reset
-                                                                                                                                                                if diff --recursive --exclude .git --exclude .idea "$STUDIO_1" "$STUDIO_2"
+                                                                                                                                                                if diff --recursive --exclude .git --exclude .idea flake.lock "$STUDIO_1" "$STUDIO_2"
                                                                                                                                                                 then
                                                                                                                                                                     echo "✅ studio repositories are identical"
                                                                                                                                                                 else
@@ -2501,6 +2501,20 @@
                                                                                                                                                             '' ;
                                                                                                                                                     } ;
                                                                                                                                             in "${ application }/bin/mutable-squash" ;
+                                                                                                                                    mutable-studio =
+                                                                                                                                        let
+                                                                                                                                            application =
+                                                                                                                                                pkgs.writeShellApplication
+                                                                                                                                                    {
+                                                                                                                                                        name = "mutable-studio" ;
+                                                                                                                                                        runtimeInputs = [ sequential failure ] ;
+                                                                                                                                                        text =
+                                                                                                                                                            ''
+                                                                                                                                                                SEQUENCE="$( sequential )" || failure af81a475
+                                                                                                                                                                STUDIO=${ resources.production.repository.studio.entrance { setup = setup : ''${ setup } "$SEQUENCE"'' ; failure = "failure 1f1246a8" ; } }
+                                                                                                                                                                echo "$STUDIO/repository
+                                                                                                                                                            '' ;
+                                                                                                                                                    } ;
                                                                                                                                     ssh =
                                                                                                                                         let
                                                                                                                                             application =
