@@ -433,13 +433,14 @@
                                                                                      } ;
                                                                      in
                                                                          {
-                                                                            chromium =
+                                                                            pass =
                                                                                 autocomplete
                                                                                     "pass"
                                                                                     ''
                                                                                         RESOURCE=${ resources__.production.repository.pass { } }
                                                                                         export PASSWORD_STORE_DIR="$RESOURCE/repository"
                                                                                         source ${ pkgs.pass }/share/bash-completion/completions/pass
+                                                                                        _pass "$@"
                                                                                     '' ;
                                                                             silly =
                                                                                  autocomplete
