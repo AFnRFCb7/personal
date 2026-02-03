@@ -3125,96 +3125,76 @@
                                                                                                             name = "ExecStart" ;
                                                                                                             runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                             text =
-                                                                                                                let
-                                                                                                                    mapper =
-                                                                                                                        name : value :
-                                                                                                                            pkgs.stdenv.mkDerivation
-                                                                                                                                {
-                                                                                                                                    installPhase = ''execute-install-phase "$out"'' ;
-                                                                                                                                    name = "man" ;
-                                                                                                                                    nativeBuildInputs =
-                                                                                                                                        [
-                                                                                                                                            (
+                                                                                                                _visitor
+                                                                                                                    {
+                                                                                                                        lambda =
+                                                                                                                            path : value :
+                                                                                                                                let
+                                                                                                                                    autocomplete =
+                                                                                                                                        let
+                                                                                                                                            application =
                                                                                                                                                 pkgs.writeShellApplication
                                                                                                                                                     {
-                                                                                                                                                        name = "execute-install-phase" ;
-                                                                                                                                                        runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                                                                        name = "autocomplete" ;
+                                                                                                                                                        runtimeInputs = [ pkgs.findutils ( ___failure "973bcfd8" ) ] ;
+                                                                                                                                                        text =
+                                                                                                                                                            let
+                                                                                                                                                                mapper =
+                                                                                                                                                                    value :
+                                                                                                                                                                        let
+                                                                                                                                                                            double-quote = builtins.concatStringsSep "" [ "'" "'" ] ;
+                                                                                                                                                                            in
+                                                                                                                                                                                ''
+                                                                                                                                                                                    RESOURCE=${ value }
+                                                                                                                                                                                    while IFS= read -r -d ${ double-quote } f
+                                                                                                                                                                                    do
+                                                                                                                                                                                        # shellcheck disable=SC1090
+                                                                                                                                                                                        source "$f"
+                                                                                                                                                                                    done < <(find "$RESOURCE" \( -type f -o -type l \) -print0 )
+                                                                                                                                                                                '' ;
+                                                                                                                                                                in
+                                                                                                                                                                    ''
+                                                                                                                                                                        ${ builtins.concatStringsSep "\n" ( builtins.map mapper node.autocomplete ) }
+                                                                                                                                                                    '' ;
+                                                                                                                                                    } ;
+                                                                                                                                            in "${ application }/bin/autocomplete" ;
+                                                                                                                                    double-quotes = builtins.concatStringsSep "" [ "'" "'" ] ;
+                                                                                                                                    envrc =
+                                                                                                                                        let
+                                                                                                                                            application =
+                                                                                                                                                pkgs.writeShellApplication
+                                                                                                                                                    {
+                                                                                                                                                        name = "envrc" ;
                                                                                                                                                         text =
                                                                                                                                                             ''
-                                                                                                                                                                OUT="$1"
-                                                                                                                                                                mkdir --parents "$OUT/man1"
-                                                                                                                                                                ln --symbolic ${ builtins.toFile "man" value } "$OUT/man1/${ name }.1"
+                                                                                                                                                                ${ builtins.concatStringsSep "\n" ( builtins.map ( value : "M${ builtins.hashString "sha512" value }=${ value }" ) node.man ) }
+                                                                                                                                                                export MANPATH="${ builtins.concatStringsSep ":" ( builtins.map ( value : "$M${ builtins.hashString "sha512" value }" ) node.man ) }"
+                                                                                                                                                                ${ builtins.concatStringsSep "\n" ( builtins.map ( value : "B${ builtins.hashString "sha512" value }=${ value }" ) node.bin ) }
+                                                                                                                                                                PATH="${ builtins.concatStringsSep ":" ( builtins.map ( value : "$B${ builtins.hashString "sha512" value }" ) node.bin ) }"
+                                                                                                                                                                export PATH="$PATH:${ pkgs.less }/bin:${ pkgs.man-db }/bin"
                                                                                                                                                             '' ;
-                                                                                                                                                    }
-                                                                                                                                            )
-                                                                                                                                        ] ;
-                                                                                                                                    src = ./. ;
-                                                                                                                                } ;
-                                                                                                                    in
-                                                                                                                        let
-                                                                                                                            autocomplete =
-                                                                                                                                let
-                                                                                                                                    application =
-                                                                                                                                        pkgs.writeShellApplication
-                                                                                                                                            {
-                                                                                                                                                name = "autocomplete" ;
-                                                                                                                                                runtimeInputs = [ pkgs.findutils ( ___failure "973bcfd8" ) ] ;
-                                                                                                                                                text =
-                                                                                                                                                    let
-                                                                                                                                                        mapper =
-                                                                                                                                                            value :
-                                                                                                                                                                let
-                                                                                                                                                                    double-quote = builtins.concatStringsSep "" [ "'" "'" ] ;
-                                                                                                                                                                    in
-                                                                                                                                                                        ''
-                                                                                                                                                                            RESOURCE=${ value }
-                                                                                                                                                                            while IFS= read -r -d ${ double-quote } f
-                                                                                                                                                                            do
-                                                                                                                                                                                # shellcheck disable=SC1090
-                                                                                                                                                                                source "$f"
-                                                                                                                                                                            done < <(find "$RESOURCE" \( -type f -o -type l \) -print0 )
-                                                                                                                                                                        '' ;
-                                                                                                                                                        in
-                                                                                                                                                            ''
-                                                                                                                                                                ${ builtins.concatStringsSep "\n" ( builtins.map mapper node.autocomplete ) }
-                                                                                                                                                            '' ;
-                                                                                                                                            } ;
-                                                                                                                                    in "${ application }/bin/autocomplete" ;
-                                                                                                                            double-quotes = builtins.concatStringsSep "" [ "'" "'" ] ;
-                                                                                                                            envrc =
-                                                                                                                                let
-                                                                                                                                    application =
-                                                                                                                                        pkgs.writeShellApplication
-                                                                                                                                            {
-                                                                                                                                                name = "envrc" ;
-                                                                                                                                                text =
-                                                                                                                                                    ''
-                                                                                                                                                        ${ builtins.concatStringsSep "\n" ( builtins.map ( value : "M${ builtins.hashString "sha512" value }=${ value }" ) node.man ) }
-                                                                                                                                                        export MANPATH="${ builtins.concatStringsSep ":" ( builtins.map ( value : "$M${ builtins.hashString "sha512" value }" ) node.man ) }"
-                                                                                                                                                        ${ builtins.concatStringsSep "\n" ( builtins.map ( value : "B${ builtins.hashString "sha512" value }=${ value }" ) node.bin ) }
-                                                                                                                                                        PATH="${ builtins.concatStringsSep ":" ( builtins.map ( value : "$B${ builtins.hashString "sha512" value }" ) node.bin ) }"
-                                                                                                                                                        export PATH="$PATH:${ pkgs.less }/bin:${ pkgs.man-db }/bin"
-                                                                                                                                                    '' ;
-                                                                                                                                            } ;
-                                                                                                                                    in "${ application }/bin/envrc" ;
-                                                                                                                            node = config.personal.pads null ;
-                                                                                                                            in
-                                                                                                                                ''
-                                                                                                                                    mkdir --parents /home/${ config.personal.name }/shell
-                                                                                                                                    cat > /home/${ config.personal.name }/shell/shell.nix <<EOF
-                                                                                                                                        { pkgs ? import <nixpkgs> {} } :
-                                                                                                                                            pkgs.mkShell
-                                                                                                                                                {
-                                                                                                                                                    shellHook =
-                                                                                                                                                        ${ double-quotes }
-                                                                                                                                                            source /home/${ config.personal.name }/pad/.envrc
-                                                                                                                                                            source ${ autocomplete }
-                                                                                                                                                        ${ double-quotes } ;
-                                                                                                                                                }
-                                                                                                                                    EOF
-                                                                                                                                    mkdir --parents /home/${ config.personal.name }/pad
-                                                                                                                                    ln --symbolic --force ${ envrc } /home/${ config.personal.name }/pad/.envrc
-                                                                                                                                '' ;
+                                                                                                                                                    } ;
+                                                                                                                                            in "${ application }/bin/envrc" ;
+                                                                                                                                    node = value null ;
+                                                                                                                                    in
+                                                                                                                                        ''
+                                                                                                                                            mkdir --parents /home/${ config.personal.name }/shell
+                                                                                                                                            cat > /home/${ config.personal.name }/shell/shell.nix <<EOF
+                                                                                                                                                { pkgs ? import <nixpkgs> {} } :
+                                                                                                                                                    pkgs.mkShell
+                                                                                                                                                        {
+                                                                                                                                                            shellHook =
+                                                                                                                                                                ${ double-quotes }
+                                                                                                                                                                    source /home/${ config.personal.name }/pad/.envrc
+                                                                                                                                                                    source ${ autocomplete }
+                                                                                                                                                                ${ double-quotes } ;
+                                                                                                                                                        }
+                                                                                                                                            EOF
+                                                                                                                                            mkdir --parents /home/${ config.personal.name }/pad
+                                                                                                                                            ln --symbolic --force ${ envrc } /home/${ config.personal.name }/pad/.envrc
+                                                                                                                                        '' ;
+                                                                                                                    }
+                                                                                                                    config.personal.pads ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/ExecStart" ;
                                                                                         User = config.personal.name ;
