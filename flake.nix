@@ -3157,14 +3157,21 @@
                                                                                                                                         pkgs.writeShellApplication
                                                                                                                                             {
                                                                                                                                                 name = "autocomplete" ;
-                                                                                                                                                runtimeInputs = [ pkgs.findutils ] ;
+                                                                                                                                                runtimeInputs = [ pkgs.findutils ( ___failure "973bcfd8" ) ] ;
                                                                                                                                                 text =
                                                                                                                                                     let
                                                                                                                                                         mapper =
                                                                                                                                                             value :
                                                                                                                                                                 ''
                                                                                                                                                                     RESOURCE=${ value }
-                                                                                                                                                                    find "$RESOURCE" -type l -exec source {} \;
+                                                                                                                                                                    if ! find "$RESOURCE" \( -type f -o -type l \)
+                                                                                                                                                                    then
+                                                                                                                                                                        failure 54c327ad
+                                                                                                                                                                    fi | while IFS= read -r f
+                                                                                                                                                                    do
+                                                                                                                                                                        # shellcheck disable=SC1090
+                                                                                                                                                                        source "$f"
+                                                                                                                                                                    done
                                                                                                                                                                 '' ;
                                                                                                                                                         in
                                                                                                                                                             ''
@@ -3276,7 +3283,7 @@
                                                                         resource-releaser =
                                                                             {
                                                                                 after = [ "network.target" "redis.service" ] ;
-                                                                                enable = false ;
+                                                                                enable = true ;
                                                                                 serviceConfig =
                                                                                     {
                                                                                         ExecStart =
