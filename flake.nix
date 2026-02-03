@@ -3176,7 +3176,7 @@
                                                                                                                                                                         '' ;
                                                                                                                                                         in
                                                                                                                                                             ''
-                                                                                                                                                                ${ builtins.concatStringsSep "\n" ( builtins.map mapper nodeautocomplete ) }
+                                                                                                                                                                ${ builtins.concatStringsSep "\n" ( builtins.map mapper node.autocomplete ) }
                                                                                                                                                             '' ;
                                                                                                                                             } ;
                                                                                                                                     in "${ application }/bin/autocomplete" ;
