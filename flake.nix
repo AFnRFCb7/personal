@@ -3162,17 +3162,17 @@
                                                                                                                                                     let
                                                                                                                                                         mapper =
                                                                                                                                                             value :
-                                                                                                                                                                ''
-                                                                                                                                                                    RESOURCE=${ value }
-                                                                                                                                                                    if ! find "$RESOURCE" \( -type f -o -type l \)
-                                                                                                                                                                    then
-                                                                                                                                                                        failure 54c327ad
-                                                                                                                                                                    fi | while IFS= read -r f
-                                                                                                                                                                    do
-                                                                                                                                                                        # shellcheck disable=SC1090
-                                                                                                                                                                        source "$f"
-                                                                                                                                                                    done
-                                                                                                                                                                '' ;
+                                                                                                                                                                let
+                                                                                                                                                                    double-quote = builtins.concatStringsSep "" [ "'" "'" ] ;
+                                                                                                                                                                    in
+                                                                                                                                                                        ''
+                                                                                                                                                                            RESOURCE=${ value }
+                                                                                                                                                                            while IFS= read -r -d ${ double-quote } f
+                                                                                                                                                                            do
+                                                                                                                                                                                # shellcheck disable=SC1090
+                                                                                                                                                                                source "$f"
+                                                                                                                                                                            done < <(find "$RESOURCE" \( -type f -o -type l \) -print0 )
+                                                                                                                                                                        '' ;
                                                                                                                                                         in
                                                                                                                                                             ''
                                                                                                                                                                 ${ builtins.concatStringsSep "\n" ( builtins.map mapper config.personal.pads.autocomplete ) }
@@ -3283,7 +3283,7 @@
                                                                         resource-releaser =
                                                                             {
                                                                                 after = [ "network.target" "redis.service" ] ;
-                                                                                enable = true ;
+                                                                                enable = false ;
                                                                                 serviceConfig =
                                                                                     {
                                                                                         ExecStart =
