@@ -3197,6 +3197,8 @@
                                                                                                                                                         ln --symbolic --force ${ envrc } /home/${ config.personal.name }/pad/.envrc
                                                                                                                                                     ''
                                                                                                                                                 ] ;
+                                                                                                                                list = path : list : builtins.concatLists list ;
+                                                                                                                                set = path : set : builtins.concatLists ( builtins.attrValues set ) ;
                                                                                                                             }
                                                                                                                             config.personal.pads ;
                                                                                                                     in builtins.concatStringsSep "\n" list ;
