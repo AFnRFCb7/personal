@@ -439,6 +439,7 @@
                                                                                     ''
                                                                                         RESOURCE=${ resources__.production.repository.pass { } }
                                                                                         export PASSWORD_STORE_DIR="$RESOURCE/repository"
+                                                                                        # shellcheck disable=SC1091
                                                                                         source ${ pkgs.pass }/share/bash-completion/completions/pass
                                                                                         _pass "$@"
                                                                                     '' ;
