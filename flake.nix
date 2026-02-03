@@ -2259,6 +2259,12 @@
                                                                                                                                                                 PARENT_2="$( dirname "$STUDIO_2" )" || failure 0db898ea
                                                                                                                                                                 BIN_2="$PARENT_2/stage/bin"
                                                                                                                                                                 git -C "$STUDIO_2" mutable-mirror "$BRANCH"
+                                                                                                                                                                if diff --recursive --exclude .git --exclude .idea "$STUDIO_1" "$STUDIO_2"
+                                                                                                                                                                then
+                                                                                                                                                                    echo "✅ studio repositories are identical"
+                                                                                                                                                                else
+                                                                                                                                                                    failure 79090607 "❌ the studio repositories are NOT identical"
+                                                                                                                                                                fi
                                                                                                                                                                 git -C "$STUDIO_2" mutable-reset
                                                                                                                                                                 if diff --recursive --exclude .git --exclude .idea --exclude flake.lock "$STUDIO_1" "$STUDIO_2"
                                                                                                                                                                 then
