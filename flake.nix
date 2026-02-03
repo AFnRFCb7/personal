@@ -409,17 +409,20 @@
                                                                                                                  text =
                                                                                                                      let
                                                                                                                          autocomplete =
-                                                                                                                             pkgs.writeShellApplication
-                                                                                                                                 {
-                                                                                                                                     name = "autocomplete" ;
-                                                                                                                                     text =
-                                                                                                                                         ''
-                                                                                                                                             A${ hash } ( ) {
-                                                                                                                                                ${ value }
-                                                                                                                                             }
-                                                                                                                                             complete -F A${ hash } ${ name }
-                                                                                                                                         '' ;
-                                                                                                                                 } ;
+                                                                                                                            let
+                                                                                                                                application =
+                                                                                                                                     pkgs.writeShellApplication
+                                                                                                                                         {
+                                                                                                                                             name = "autocomplete" ;
+                                                                                                                                             text =
+                                                                                                                                                 ''
+                                                                                                                                                     A${ hash } ( ) {
+                                                                                                                                                        ${ value }
+                                                                                                                                                     }
+                                                                                                                                                     complete -F A${ hash } ${ name }
+                                                                                                                                                 '' ;
+                                                                                                                                         } ;
+                                                                                                                                 in "${ application }/bin/autocomplete" ;
                                                                                                                          in
                                                                                                                              ''
                                                                                                                                  ln --symbolic ${ autocomplete } /mount/autocomplete.sh
@@ -2254,9 +2257,9 @@
                                                                                                                                                                 git -C "$STUDIO_1" mutable-test
                                                                                                                                                                 prompt "mutable-test 1"
                                                                                                                                                                 SEQUENCE="$( sequential )" || failure ae7e6cd4
-                                                                                                                                                                STUDIO_2="$( "$SETUP" "$SEQUENCE" )" || failure 1ba93b40
+                                                                                                                                                                PARENT_2="$( "$SETUP" "$SEQUENCE" )" || failure 1ba93b40
+                                                                                                                                                                STUDIO_2="$PARENT_2/repository"
                                                                                                                                                                 BRANCH="$( git -C "$STUDIO_1" rev-parse --abbrev-ref HEAD )" || failure 89dfeef9
-                                                                                                                                                                git -C "$STUDIO_2" mutable-mirror "$BRANCH"
                                                                                                                                                                 PARENT_2="$( dirname "$STUDIO_2" )" || failure 0db898ea
                                                                                                                                                                 BIN_2="$PARENT_2/stage/bin"
                                                                                                                                                                 git -C "$STUDIO_2" mutable-mirror "$BRANCH"
@@ -3168,7 +3171,7 @@
                                                                                                                                                                 ${ builtins.concatStringsSep "\n" ( builtins.map mapper config.personal.pads.autocomplete ) }
                                                                                                                                                             '' ;
                                                                                                                                             } ;
-                                                                                                                                    in "${ application }/bin/envrc" ;
+                                                                                                                                    in "${ application }/bin/autocomplete" ;
                                                                                                                             double-quotes = builtins.concatStringsSep "" [ "'" "'" ] ;
                                                                                                                             envrc =
                                                                                                                                 let
