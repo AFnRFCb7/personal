@@ -1398,15 +1398,6 @@
                                                                                             '' ;
                                                                                     } ;
                                                                         } ;
-                                                            pads =
-                                                                let
-                                                                    mapper =
-                                                                        name : value : ignore :
-                                                                            {
-                                                                                init = value ;
-                                                                                targets = [ "envrc" ] ;
-                                                                            } ;
-                                                                    in builtins.mapAttrs mapper config.personal.pads ;
                                                             repository =
                                                                 let
                                                                     post-commit =
@@ -3185,7 +3176,7 @@
                                                                                                                                                                         '' ;
                                                                                                                                                         in
                                                                                                                                                             ''
-                                                                                                                                                                ${ builtins.concatStringsSep "\n" ( builtins.map mapper config.personal.pads.autocomplete ) }
+                                                                                                                                                                ${ builtins.concatStringsSep "\n" ( builtins.map mapper nodeautocomplete ) }
                                                                                                                                                             '' ;
                                                                                                                                             } ;
                                                                                                                                     in "${ application }/bin/autocomplete" ;
@@ -3198,15 +3189,15 @@
                                                                                                                                                 name = "envrc" ;
                                                                                                                                                 text =
                                                                                                                                                     ''
-                                                                                                                                                        ${ builtins.concatStringsSep "\n" ( builtins.map ( value : "M${ builtins.hashString "sha512" value }=${ value }" ) config.personal.pads.man ) }
-                                                                                                                                                        export MANPATH="${ builtins.concatStringsSep ":" ( builtins.map ( value : "$M${ builtins.hashString "sha512" value }" ) config.personal.pads.man ) }"
-                                                                                                                                                        ${ builtins.concatStringsSep "\n" ( builtins.map ( value : "B${ builtins.hashString "sha512" value }=${ value }" ) config.personal.pads.bin ) }
-                                                                                                                                                        PATH="${ builtins.concatStringsSep ":" ( builtins.map ( value : "$B${ builtins.hashString "sha512" value }" ) config.personal.pads.bin ) }"
+                                                                                                                                                        ${ builtins.concatStringsSep "\n" ( builtins.map ( value : "M${ builtins.hashString "sha512" value }=${ value }" ) node.man ) }
+                                                                                                                                                        export MANPATH="${ builtins.concatStringsSep ":" ( builtins.map ( value : "$M${ builtins.hashString "sha512" value }" ) node.man ) }"
+                                                                                                                                                        ${ builtins.concatStringsSep "\n" ( builtins.map ( value : "B${ builtins.hashString "sha512" value }=${ value }" ) node.bin ) }
+                                                                                                                                                        PATH="${ builtins.concatStringsSep ":" ( builtins.map ( value : "$B${ builtins.hashString "sha512" value }" ) node.bin ) }"
                                                                                                                                                         export PATH="$PATH:${ pkgs.less }/bin:${ pkgs.man-db }/bin"
-                                                                                                                                                        export PS1='${ config.personal.pads.prompt }'
                                                                                                                                                     '' ;
                                                                                                                                             } ;
                                                                                                                                     in "${ application }/bin/envrc" ;
+                                                                                                                            node = config.personal.pads null ;
                                                                                                                             in
                                                                                                                                 ''
                                                                                                                                     mkdir --parents /home/${ config.personal.name }/shell
@@ -3521,40 +3512,46 @@
                                                                     lib.mkOption
                                                                         {
                                                                             type =
-                                                                                lib.types.submodule
-                                                                                    {
-                                                                                        options =
-                                                                                            {
-                                                                                                autocomplete = lib.mkOption { default = { } ; type = lib.types.listOf lib.types.str ; } ;
-                                                                                                bin = lib.mkOption { default = [ ] ; type = lib.types.listOf lib.types.str ; } ;
-                                                                                                man = lib.mkOption { default = [ ] ; type = lib.types.listOf lib.types.str ; } ;
-                                                                                                prompt = lib.mkOption { default = "\u@\h:\w \\$ " ; type = lib.types.str ; } ;
-                                                                                            } ;
-                                                                                    } ;
+                                                                                let
+                                                                                    leaf =
+                                                                                        let
+                                                                                            type =
+                                                                                                lib.types.submodule
+                                                                                                    {
+                                                                                                        options =
+                                                                                                            {
+                                                                                                                autocomplete = lib.mkOption { default = { } ; type = lib.types.listOf lib.types.str ; } ;
+                                                                                                                bin = lib.mkOption { default = [ ] ; type = lib.types.listOf lib.types.str ; } ;
+                                                                                                                man = lib.mkOption { default = [ ] ; type = lib.types.listOf lib.types.str ; } ;
+                                                                                                            } ;
+                                                                                                    } ;
+                                                                                            in lib.types.functionTo type ;
+                                                                                    in leaf ;
                                                                             default =
-                                                                                {
-                                                                                    autocomplete =
-                                                                                        [
-                                                                                            ( resources__.production.autocomplete.pass { failure = ___failure "28ecf633" ; } )
-                                                                                            ( resources__.production.autocomplete.silly { failure = ___failure "f15371a4" ; } )
-                                                                                        ] ;
-                                                                                    bin =
-                                                                                        [
-                                                                                            ( resources__.production.bin.chromium { failure = ___failure "1954d2c7" ; } )
-                                                                                            ( resources__.production.bin.gpg { failure = ___failure "7386330c" ; } )
-                                                                                            ( resources__.production.bin.idea-community { failure = ___failure "7eba8454" ; } )
-                                                                                            ( resources__.production.bin.pass { failure = ___failure "c055f2a0" ; } )
-                                                                                            ( resources__.production.bin.ssh { failure = ___failure "c055f2a0" ; } )
-                                                                                        ] ;
-                                                                                    man =
-                                                                                        [
-                                                                                            ( resources__.production.man.chromium { failure = ___failure "967ea0e1" ; } )
-                                                                                            ( resources__.production.man.gpg { failure = ___failure "aa1f5c38" ; } )
-                                                                                            ( resources__.production.man.idea-community { failure = ___failure "f5992d47" ; } )
-                                                                                            ( resources__.production.man.pass { failure = ___failure "4a4c361e" ; } )
-                                                                                            ( resources__.production.man.ssh { failure = ___failure "6d01304d" ; } )
-                                                                                        ] ;
-                                                                                } ;
+                                                                                ignore :
+                                                                                    {
+                                                                                        autocomplete =
+                                                                                            [
+                                                                                                ( resources__.production.autocomplete.pass { failure = ___failure "28ecf633" ; } )
+                                                                                                ( resources__.production.autocomplete.silly { failure = ___failure "f15371a4" ; } )
+                                                                                            ] ;
+                                                                                        bin =
+                                                                                            [
+                                                                                                ( resources__.production.bin.chromium { failure = ___failure "1954d2c7" ; } )
+                                                                                                ( resources__.production.bin.gpg { failure = ___failure "7386330c" ; } )
+                                                                                                ( resources__.production.bin.idea-community { failure = ___failure "7eba8454" ; } )
+                                                                                                ( resources__.production.bin.pass { failure = ___failure "c055f2a0" ; } )
+                                                                                                ( resources__.production.bin.ssh { failure = ___failure "c055f2a0" ; } )
+                                                                                            ] ;
+                                                                                        man =
+                                                                                            [
+                                                                                                ( resources__.production.man.chromium { failure = ___failure "967ea0e1" ; } )
+                                                                                                ( resources__.production.man.gpg { failure = ___failure "aa1f5c38" ; } )
+                                                                                                ( resources__.production.man.idea-community { failure = ___failure "f5992d47" ; } )
+                                                                                                ( resources__.production.man.pass { failure = ___failure "4a4c361e" ; } )
+                                                                                                ( resources__.production.man.ssh { failure = ___failure "6d01304d" ; } )
+                                                                                            ] ;
+                                                                                    } ;
                                                                         } ;
                                                                 password = lib.mkOption { type = lib.types.str ; } ;
                                                                 repository =
