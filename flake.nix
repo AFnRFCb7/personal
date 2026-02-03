@@ -2509,7 +2509,7 @@
                                                                                                                                                         text =
                                                                                                                                                             ''
                                                                                                                                                                 SEQUENCE="$( sequential )" || failure af81a475
-                                                                                                                                                                STUDIO=${ resources.production.repository.studio.entrance { setup = setup : ''${ setup } "$SEQUENCE"'' ; failure = "failure 1f1246a8" ; } }
+                                                                                                                                                                STUDIO=${ resources.production.repository.studio.entry { setup = setup : ''${ setup } "$SEQUENCE"'' ; failure = "failure 1f1246a8" ; } }
                                                                                                                                                                 BRANCH=$( git rev-parse --abbrev-ref HEAD )" || failure b9c7fdf2
                                                                                                                                                                 git -C "$STUDIO/repository" mutable-mirror "$BRANCH"
                                                                                                                                                                 echo "$STUDIO/repository
