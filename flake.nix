@@ -3164,7 +3164,7 @@
                                                                                                                                                             value :
                                                                                                                                                                 ''
                                                                                                                                                                     RESOURCE=${ value }
-                                                                                                                                                                    if ! find "$RESOURCE" \( -type f -o -type l \) )"
+                                                                                                                                                                    if ! find "$RESOURCE" \( -type f -o -type l \)
                                                                                                                                                                     then
                                                                                                                                                                         failure 54c327ad
                                                                                                                                                                     fi | while IFS= read -r f
