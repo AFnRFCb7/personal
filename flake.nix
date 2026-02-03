@@ -409,17 +409,20 @@
                                                                                                                  text =
                                                                                                                      let
                                                                                                                          autocomplete =
-                                                                                                                             pkgs.writeShellApplication
-                                                                                                                                 {
-                                                                                                                                     name = "autocomplete" ;
-                                                                                                                                     text =
-                                                                                                                                         ''
-                                                                                                                                             A${ hash } ( ) {
-                                                                                                                                                ${ value }
-                                                                                                                                             }
-                                                                                                                                             complete -F A${ hash } ${ name }
-                                                                                                                                         '' ;
-                                                                                                                                 } ;
+                                                                                                                            let
+                                                                                                                                application =
+                                                                                                                                     pkgs.writeShellApplication
+                                                                                                                                         {
+                                                                                                                                             name = "autocomplete" ;
+                                                                                                                                             text =
+                                                                                                                                                 ''
+                                                                                                                                                     A${ hash } ( ) {
+                                                                                                                                                        ${ value }
+                                                                                                                                                     }
+                                                                                                                                                     complete -F A${ hash } ${ name }
+                                                                                                                                                 '' ;
+                                                                                                                                         } ;
+                                                                                                                                 in "${ application }/bin/autocomplete" ;
                                                                                                                          in
                                                                                                                              ''
                                                                                                                                  ln --symbolic ${ autocomplete } /mount/autocomplete.sh
@@ -3168,7 +3171,7 @@
                                                                                                                                                                 ${ builtins.concatStringsSep "\n" ( builtins.map mapper config.personal.pads.autocomplete ) }
                                                                                                                                                             '' ;
                                                                                                                                             } ;
-                                                                                                                                    in "${ application }/bin/envrc" ;
+                                                                                                                                    in "${ application }/bin/autocomplete" ;
                                                                                                                             double-quotes = builtins.concatStringsSep "" [ "'" "'" ] ;
                                                                                                                             envrc =
                                                                                                                                 let
