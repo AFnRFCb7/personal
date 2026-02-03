@@ -3164,7 +3164,7 @@
                                                                                                                                                             value :
                                                                                                                                                                 ''
                                                                                                                                                                     RESOURCE=${ value }
-                                                                                                                                                                    find "$RESOURCE" -type f -exec source {} \;
+                                                                                                                                                                    find "$RESOURCE" -type l -exec source {} \;
                                                                                                                                                                 '' ;
                                                                                                                                                         in
                                                                                                                                                             ''
