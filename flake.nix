@@ -3528,7 +3528,7 @@
                                                                                                 autocomplete = lib.mkOption { default = { } ; type = lib.types.listOf lib.types.str ; } ;
                                                                                                 bin = lib.mkOption { default = [ ] ; type = lib.types.listOf lib.types.str ; } ;
                                                                                                 man = lib.mkOption { default = [ ] ; type = lib.types.listOf lib.types.str ; } ;
-                                                                                                prompt = lib.mkOption { default = "\u@\h:\w \$ " ; type = lib.types.str ; } ;
+                                                                                                prompt = lib.mkOption { default = "\u@\h:\w \\$ " ; type = lib.types.str ; } ;
                                                                                             } ;
                                                                                     } ;
                                                                             default =
