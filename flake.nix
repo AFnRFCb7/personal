@@ -3203,6 +3203,7 @@
                                                                                                                                                         ${ builtins.concatStringsSep "\n" ( builtins.map ( value : "B${ builtins.hashString "sha512" value }=${ value }" ) config.personal.pads.bin ) }
                                                                                                                                                         PATH="${ builtins.concatStringsSep ":" ( builtins.map ( value : "$B${ builtins.hashString "sha512" value }" ) config.personal.pads.bin ) }"
                                                                                                                                                         export PATH="$PATH:${ pkgs.less }/bin:${ pkgs.man-db }/bin"
+                                                                                                                                                        export PS1=${ config.personal.pads.prompt }
                                                                                                                                                     '' ;
                                                                                                                                             } ;
                                                                                                                                     in "${ application }/bin/envrc" ;
@@ -3527,6 +3528,7 @@
                                                                                                 autocomplete = lib.mkOption { default = { } ; type = lib.types.listOf lib.types.str ; } ;
                                                                                                 bin = lib.mkOption { default = [ ] ; type = lib.types.listOf lib.types.str ; } ;
                                                                                                 man = lib.mkOption { default = [ ] ; type = lib.types.listOf lib.types.str ; } ;
+                                                                                                prompt = lib.mkOption { default = "\n\[\033[1;32m\][\[\e]0;\u@\h: \w\a\]\u@\h:\w]\$\[\033[0m\]" ; type = lib.types.str ; } ;
                                                                                             } ;
                                                                                     } ;
                                                                             default =
