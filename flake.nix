@@ -2991,8 +2991,8 @@
                                                                         {
                                                                             chromium =
                                                                                 {
-                                                                                    config = null ; # volume "f4857b9d" ;
-                                                                                    data = null ; # volume "2b6879b7" ;
+                                                                                    config = ignore : "null" ; # volume "f4857b9d" ;
+                                                                                    data = ignore : "null" ; # volume "2b6879b7" ;
                                                                                 } ;
                                                                         } ;
                                                         } ;
