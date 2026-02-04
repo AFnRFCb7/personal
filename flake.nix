@@ -3513,7 +3513,10 @@
                                                                                                             } ;
                                                                                                     } ;
                                                                                             in lib.types.functionTo type ;
-                                                                                    in leaf ;
+                                                                                    list = lib.types.listOf type ;
+                                                                                    set = lib.types.attrsOf type ;
+                                                                                    type = lib.types.oneOf [ leaf list set ] ;
+                                                                                    in type ;
                                                                             default =
                                                                                 ignore :
                                                                                     {
