@@ -2922,7 +2922,7 @@
                                                                                                                                 gh auth logout 2>&1
                                                                                                                                 git checkout -b ${ builtins.hashString "sha512" branch } 2>&1
                                                                                                                                 git-crypt init 2>&1
-                                                                                                                                wrap ${ git-attributes } .gitattributes 0400
+                                                                                                                                wrap ${ gitattributes } .gitattributes 0400
                                                                                                                                 git-crypt add-gpg-user "${ config.personal.volume.email }" 2>&1
                                                                                                                                 mkdir secret
                                                                                                                                 git lfs install
