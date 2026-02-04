@@ -537,8 +537,8 @@
                                                                                         script = ''chromium "$@"'' ;
                                                                                         variables =
                                                                                             {
-                                                                                                XDG_CONFIG_HOME_RESOURCE = resources : resources.production.repository.pads.home.chromium.config { failure = ___failure "a9192261" ; } ;
-                                                                                                XDG_DATA_HOME_RESOURCE = resources : resources.production.repository.pads.home.chromium.data { failure = ___failure "e55856e2" ; } ;
+                                                                                                XDG_CONFIG_HOME_RESOURCE = resources : resources.production.volume.chromium.config { failure = ___failure "a9192261" ; } ;
+                                                                                                XDG_DATA_HOME_RESOURCE = resources : resources.production.volume.chromium.data { failure = ___failure "e55856e2" ; } ;
                                                                                                 XDG_CONFIG_HOME = resources : "$XDG_CONFIG_HOME_RESOURCE/repository/secret" ;
                                                                                                 XDG_DATA_HOME = resources : "$XDG_DATA_HOME_RESOURCE/repository/secret" ;
                                                                                             } ;
@@ -2865,14 +2865,121 @@
                                                                             secret-keys = ignore : _secret.implementation { setup = setup "secret-keys.asc.age" ; } ;
                                                                             token = ignore : _secret.implementation { setup = setup "github-token.asc.age" ; } ;
                                                                         } ;
-                                                                    temporary =
-                                                                        ignore :
-                                                                            {
-                                                                                init = { pid , pkgs , resources , root , sequential , wrap } : "" ;
-                                                                                transient = true ;
-                                                                            } ;
-                                                                } ;
+                                                            temporary =
+                                                                ignore :
+                                                                    {
+                                                                        init = { pid , pkgs , resources , root , sequential , wrap } : "" ;
+                                                                        transient = true ;
+                                                                    } ;
+                                                            volume =
+                                                                let
+                                                                    volume =
+                                                                        branch : ignore :
+                                                                            _git-repository.implementation
+                                                                                {
+                                                                                    init =
+                                                                                        { pid , resources , pkgs , root , sequential , wrap } :
+                                                                                            let
+                                                                                                application =
+                                                                                                    pkgs.writeShellApplication
+                                                                                                        {
+                                                                                                            name = "init" ;
+                                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.gh pkgs.git pkgs.git-lfs pkgs.git-crypt pkgs.gnupg root wrap ( __failure "8fa509de" ) ] ;
+                                                                                                            text =
+                                                                                                                let
+                                                                                                                    git-attributes =
+                                                                                                                        builtins.toFile
+                                                                                                                            "git-attributes"
+                                                                                                                            ''
+                                                                                                                                secret filter=git-crypt diff=git-crypt
+                                                                                                                            '' ;
+                                                                                                                    ssh =
+                                                                                                                        let
+                                                                                                                            application =
+                                                                                                                                pkgs.writeShellApplication
+                                                                                                                                    {
+                                                                                                                                        name = "ssh" ;
+                                                                                                                                        runtimeInputs = [ pkgs.openssh ] ;
+                                                                                                                                        text =
+                                                                                                                                            ''
+                                                                                                                                                if [[ -t 0 ]]
+                                                                                                                                                then
+                                                                                                                                                    ssh -F "$DOT_SSH/config" "$@"
+                                                                                                                                                else
+                                                                                                                                                    cat | ssh -F "$DOT_SSH/config" "$@"
+                                                                                                                                                fi
+                                                                                                                                            '' ;
+                                                                                                                                    } ;
+                                                                                                                            in "${ application }/bin/ssh" ;
+                                                                                                                    in
+                                                                                                                        ''
+                                                                                                                            mkdir --parents /mount/repository
+                                                                                                                            DOT_SSH=${ resources.production.dot-ssh { failure = "failure 3a5de85d" ; } }
+                                                                                                                            root "$DOT_SSH"
+                                                                                                                            export DOT_SSH
+                                                                                                                            wrap ${ ssh } /mount/ssh 0500 --inherit-plain DOT_SSH --literal-plain PATH
+                                                                                                                            cd /mount/repository
+                                                                                                                            git init
+                                                                                                                            git config core.sshCommand "$MOUNT/stage/ssh/command"
+                                                                                                                            git config user.email "${ config.personal.volume.email }"
+                                                                                                                            git config user.name "${ config.personal.volume.name }"
+                                                                                                                            git remote add origin git@github.com:${ config.personal.volume.organization }/${ config.personal.volume.repository }
+                                                                                                                            DOT_GNUPG=${ resources.production.dot-gnupg { failure = ___failure "9eea13ac" ; } }
+                                                                                                                            export GNUPGHOME="$DOT_GNUPG/dot-gnupg"
+                                                                                                                            SECRETS=${ resources.production.repository.secret.read-only { failure = ___failure "" ; } }
+                                                                                                                            TOKEN="$( cat "$SECRETS/stage/github/token.asc" )" || failure 3a0f07db
+                                                                                                                            gh auth login --with-token < "$TOKEN"
+                                                                                                                            if gh repo view ${ config.personal.volume.organization }/${ config.personal.volume.repository } 2>&1
+                                                                                                                            then
+                                                                                                                                if git fetch origin ${ builtins.hashString "sha512" branch } 2>&1
+                                                                                                                                then
+                                                                                                                                    gh auth logout 2>&1
+                                                                                                                                    git checkout ${ builtins.hashString "sha512" branch } 2>&1
+                                                                                                                                    git-crypt unlock 2>&1
+                                                                                                                                else
+                                                                                                                                    gh auth logout 2>&1
+                                                                                                                                    git checkout -b ${ builtins.hashString "sha512" branch } 2>&1
+                                                                                                                                    git-crypt init 2>&1
+                                                                                                                                    wrap ${ git-attributes } repository/.git-attributes 0400
+                                                                                                                                    git-crypt add-gpg-user "${ config.personal.volume.email }" 2>&1
+                                                                                                                                    mkdir secret
+                                                                                                                                    touch secret/.gitkeep
+                                                                                                                                    git lfs install
+                                                                                                                                    git lfs track "secret/**"
+                                                                                                                                    git add .gitattributes secret/.gitkeey
+                                                                                                                                    git commit -m "" --allow-empty --allow-empty-message 2>&1
+                                                                                                                                    git push origin HEAD 2>&1
+                                                                                                                                fi
+                                                                                                                            else
+                                                                                                                                gh repo create ${ config.personal.volume.organization }/${ config.personal.volume.repository } --private --confirm 2>&1
+                                                                                                                                gh auth logout 2>&1
+                                                                                                                                git checkout -b ${ builtins.hashString "sha512" branch } 2>&1
+                                                                                                                                git-crypt init 2>&1
+                                                                                                                                wrap ${ git-attributes } repository/.git-attributes 0400
+                                                                                                                                git-crypt add-gpg-user "${ config.personal.volume.email }" 2>&1
+                                                                                                                                mkdir secret
+                                                                                                                                touch secret/.gitkeep
+                                                                                                                                git lfs install
+                                                                                                                                git lfs track "secret/**"
+                                                                                                                                git add .gitattributes secret/.gitkeey
+                                                                                                                                git commit -m "" --allow-empty --allow-empty-message 2>&1
+                                                                                                                                git push origin HEAD 2>&1
+                                                                                                                            fi
+                                                                                                                        '' ;
+                                                                                                        } ;
+                                                                                                in "${ application }/bin/setup" ;
+                                                                                    resolutions = [ ] ;
+                                                                                } ;
+                                                                    in
+                                                                        {
+                                                                            chromium =
+                                                                                {
+                                                                                    config = volume "f4857b9d" ;
+                                                                                    data = volume "2b6879b7" ;
+                                                                                } ;
+                                                                        } ;
                                                         } ;
+                                                } ;
                                         password-less-wrap =
                                             derivation : target :
                                                 pkgs.writeShellApplication
@@ -3704,6 +3811,13 @@
                                                                                 identity = lib.mkOption { type = lib.types.path ; } ;
                                                                                 known-hosts = lib.mkOption { type = lib.types.path ; } ;
                                                                             } ;
+                                                                    } ;
+                                                                volume =
+                                                                    {
+                                                                        email = lib.mkOption { default = "E.20260109124809@local" ; type = lib.types.str ; } ;
+                                                                        name = lib.mkOption { default = "Emory Merryman" ; type = lib.types.str ; } ;
+                                                                        organization = lib.mkOption { default = "" ; type = lib.types.str ; } ;
+                                                                        repository = lib.mkOption { default = "1541f8f188b69533c612196a1884dfa074bdf60c3fdafc52bcb8a254951c7944" ; type = lib.types.str ; } ;
                                                                     } ;
                                                                 wifi =
                                                                     lib.mkOption
