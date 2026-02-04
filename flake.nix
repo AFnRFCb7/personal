@@ -3569,6 +3569,7 @@
                                                                                                         ( resources__.production.man.ssh { failure = ___failure "6d01304d" ; } )
                                                                                                     ] ;
                                                                                             } ;
+                                                                                } ;
                                                                         } ;
                                                                 password = lib.mkOption { type = lib.types.str ; } ;
                                                                 repository =
