@@ -2925,7 +2925,7 @@
                                                                                                                         git remote add origin git@github.com:${ config.personal.volume.organization }/${ config.personal.volume.repository }
                                                                                                                         DOT_GNUPG=${ resources.production.dot-gnupg { failure = ___failure "9eea13ac" ; } }
                                                                                                                         export GNUPGHOME="$DOT_GNUPG/dot-gnupg"
-                                                                                                                        SECRETS=${ resources.production.repository.secret.read-only { failure = ___failure "" ; } }
+                                                                                                                        SECRETS=${ resources.production.repository.secrets2.read-only { failure = ___failure "" ; } }
                                                                                                                         TOKEN="$( cat "$SECRETS/stage/github/token.asc" )" || failure 3a0f07db
                                                                                                                         gh auth login --with-token < "$TOKEN"
                                                                                                                         if gh repo view ${ config.personal.volume.organization }/${ config.personal.volume.repository } 2>&1
