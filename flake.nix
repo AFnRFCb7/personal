@@ -2918,16 +2918,15 @@
                                                                                                                         export DOT_SSH
                                                                                                                         wrap ${ ssh } /mount/ssh 0500 --inherit-plain DOT_SSH --literal-plain PATH
                                                                                                                         cd /mount/repository
-                                                                                                                        git init
+                                                                                                                        git init 2>&1
                                                                                                                         git config core.sshCommand "$MOUNT/stage/ssh/command"
                                                                                                                         git config user.email "${ config.personal.volume.email }"
                                                                                                                         git config user.name "${ config.personal.volume.name }"
                                                                                                                         git remote add origin git@github.com:${ config.personal.volume.organization }/${ config.personal.volume.repository }
                                                                                                                         DOT_GNUPG=${ resources.production.dot-gnupg { failure = ___failure "9eea13ac" ; } }
                                                                                                                         export GNUPGHOME="$DOT_GNUPG/dot-gnupg"
-                                                                                                                        SECRETS=${ resources.production.repository.secrets2.read-only { failure = ___failure "" ; } }
-                                                                                                                        TOKEN="$( cat "$SECRETS/stage/github/token.asc" )" || failure 3a0f07db
-                                                                                                                        gh auth login --with-token < "$TOKEN"
+                                                                                                                        SECRETS=${ resources.production.repository.secrets2.read-only { failure = ___failure "5fb67974" ; } }
+                                                                                                                        gh auth login --with-token < "$SECRETS/stage/github/token.asc" )"
                                                                                                                         if gh repo view ${ config.personal.volume.organization }/${ config.personal.volume.repository } 2>&1
                                                                                                                         then
                                                                                                                             if git fetch origin ${ builtins.hashString "sha512" branch } 2>&1
