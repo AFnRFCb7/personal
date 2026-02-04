@@ -3518,30 +3518,57 @@
                                                                                     type = lib.types.oneOf [ leaf list set ] ;
                                                                                     in type ;
                                                                             default =
-                                                                                ignore :
-                                                                                    {
-                                                                                        autocomplete =
-                                                                                            [
-                                                                                                ( resources__.production.autocomplete.pass { failure = ___failure "28ecf633" ; } )
-                                                                                                ( resources__.production.autocomplete.silly { failure = ___failure "f15371a4" ; } )
-                                                                                            ] ;
-                                                                                        bin =
-                                                                                            [
-                                                                                                ( resources__.production.bin.chromium { failure = ___failure "1954d2c7" ; } )
-                                                                                                ( resources__.production.bin.gpg { failure = ___failure "7386330c" ; } )
-                                                                                                ( resources__.production.bin.idea-community { failure = ___failure "7eba8454" ; } )
-                                                                                                ( resources__.production.bin.pass { failure = ___failure "c055f2a0" ; } )
-                                                                                                ( resources__.production.bin.ssh { failure = ___failure "c055f2a0" ; } )
-                                                                                            ] ;
-                                                                                        man =
-                                                                                            [
-                                                                                                ( resources__.production.man.chromium { failure = ___failure "967ea0e1" ; } )
-                                                                                                ( resources__.production.man.gpg { failure = ___failure "aa1f5c38" ; } )
-                                                                                                ( resources__.production.man.idea-community { failure = ___failure "f5992d47" ; } )
-                                                                                                ( resources__.production.man.pass { failure = ___failure "4a4c361e" ; } )
-                                                                                                ( resources__.production.man.ssh { failure = ___failure "6d01304d" ; } )
-                                                                                            ] ;
-                                                                                    } ;
+                                                                                {
+                                                                                    alpha =
+                                                                                        ignore :
+                                                                                            {
+                                                                                                autocomplete =
+                                                                                                    [
+                                                                                                        ( resources__.production.autocomplete.pass { failure = ___failure "28ecf633" ; } )
+                                                                                                        ( resources__.production.autocomplete.silly { failure = ___failure "f15371a4" ; } )
+                                                                                                    ] ;
+                                                                                                bin =
+                                                                                                    [
+                                                                                                        ( resources__.production.bin.chromium { failure = ___failure "1954d2c7" ; } )
+                                                                                                        ( resources__.production.bin.gpg { failure = ___failure "7386330c" ; } )
+                                                                                                        ( resources__.production.bin.idea-community { failure = ___failure "7eba8454" ; } )
+                                                                                                        ( resources__.production.bin.pass { failure = ___failure "c055f2a0" ; } )
+                                                                                                        ( resources__.production.bin.ssh { failure = ___failure "c055f2a0" ; } )
+                                                                                                    ] ;
+                                                                                                man =
+                                                                                                    [
+                                                                                                        ( resources__.production.man.chromium { failure = ___failure "967ea0e1" ; } )
+                                                                                                        ( resources__.production.man.gpg { failure = ___failure "aa1f5c38" ; } )
+                                                                                                        ( resources__.production.man.idea-community { failure = ___failure "f5992d47" ; } )
+                                                                                                        ( resources__.production.man.pass { failure = ___failure "4a4c361e" ; } )
+                                                                                                        ( resources__.production.man.ssh { failure = ___failure "6d01304d" ; } )
+                                                                                                    ] ;
+                                                                                            } ;
+                                                                                    beta =
+                                                                                        ignore :
+                                                                                            {
+                                                                                                autocomplete =
+                                                                                                    [
+                                                                                                        ( resources__.production.autocomplete.pass { failure = ___failure "28ecf633" ; } )
+                                                                                                        ( resources__.production.autocomplete.silly { failure = ___failure "f15371a4" ; } )
+                                                                                                    ] ;
+                                                                                                bin =
+                                                                                                    [
+                                                                                                        ( resources__.production.bin.chromium { failure = ___failure "1954d2c7" ; } )
+                                                                                                        ( resources__.production.bin.gpg { failure = ___failure "7386330c" ; } )
+                                                                                                        ( resources__.production.bin.idea-community { failure = ___failure "7eba8454" ; } )
+                                                                                                        ( resources__.production.bin.pass { failure = ___failure "c055f2a0" ; } )
+                                                                                                        ( resources__.production.bin.ssh { failure = ___failure "c055f2a0" ; } )
+                                                                                                    ] ;
+                                                                                                man =
+                                                                                                    [
+                                                                                                        ( resources__.production.man.chromium { failure = ___failure "967ea0e1" ; } )
+                                                                                                        ( resources__.production.man.gpg { failure = ___failure "aa1f5c38" ; } )
+                                                                                                        ( resources__.production.man.idea-community { failure = ___failure "f5992d47" ; } )
+                                                                                                        ( resources__.production.man.pass { failure = ___failure "4a4c361e" ; } )
+                                                                                                        ( resources__.production.man.ssh { failure = ___failure "6d01304d" ; } )
+                                                                                                    ] ;
+                                                                                            } ;
                                                                         } ;
                                                                 password = lib.mkOption { type = lib.types.str ; } ;
                                                                 repository =
