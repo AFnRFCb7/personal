@@ -2942,7 +2942,7 @@
                                                                                                                             touch secret/.gitkeep
                                                                                                                             git lfs install
                                                                                                                             git lfs track "secret/**"
-                                                                                                                            git add .gitattributes secret/.gitkeey
+                                                                                                                            git add .gitattributes secret/.gitkeep
                                                                                                                             git commit -m "" --allow-empty --allow-empty-message 2>&1
                                                                                                                             git push origin HEAD 2>&1
                                                                                                                         fi
@@ -3281,7 +3281,7 @@
                                                                                                                                                                         export MANPATH="${ builtins.concatStringsSep ":" ( builtins.map ( value : "$M${ builtins.hashString "sha512" value }" ) node.man ) }"
                                                                                                                                                                         ${ builtins.concatStringsSep "\n" ( builtins.map ( value : "B${ builtins.hashString "sha512" value }=${ value }" ) node.bin ) }
                                                                                                                                                                         PATH="${ builtins.concatStringsSep ":" ( builtins.map ( value : "$B${ builtins.hashString "sha512" value }" ) node.bin ) }"
-                                                                                                                                                                        export PATH="$PATH:${ pkgs.less }/bin:${ pkgs.man-db }/bin:$PATH"
+                                                                                                                                                                        export PATH="$PATH:${ pkgs.less }/bin:${ pkgs.man-db }/bin"
                                                                                                                                                                     '' ;
                                                                                                                                                             } ;
                                                                                                                                                     in "${ application }/bin/envrc" ;
