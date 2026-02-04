@@ -1518,7 +1518,7 @@
                                                                                                                                                                 gh repo create ${ config.personal.chromium.home.config.organization }/${ config.personal.chromium.home.config.repository } --private --confirm 2>&1
                                                                                                                                                                 git checkout -b ${ config.personal.chromium.home.config.branch } 2>&1
                                                                                                                                                                 git-crypt init 2>&1
-                                                                                                                                                                wrap ${ gitattributes } repository/.gitattributes 0400
+                                                                                                                                                                wrap ${ git-attributes } repository/.gitattributes 0400
                                                                                                                                                                 git-crypt add-gpg-user "${ config.personal.chromium.home.config.email }" 2>&1
                                                                                                                                                                 mkdir secret
                                                                                                                                                                 touch secret/.gitkeep
