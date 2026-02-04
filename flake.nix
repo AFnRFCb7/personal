@@ -1,4 +1,4 @@
-# ae66b4ce
+# fdfa49bb
 {
     inputs =
         {
@@ -539,8 +539,8 @@
                                                                                             {
                                                                                                 XDG_CONFIG_HOME_RESOURCE = resources : resources.production.volume.chromium.config { failure = ___failure "a9192261" ; } ;
                                                                                                 XDG_DATA_HOME_RESOURCE = resources : resources.production.volume.chromium.data { failure = ___failure "e55856e2" ; } ;
-                                                                                                XDG_CONFIG_HOME = resources : "$XDG_CONFIG_HOME_RESOURCE/repository/secret" ;
-                                                                                                XDG_DATA_HOME = resources : "$XDG_DATA_HOME_RESOURCE/repository/secret" ;
+                                                                                                XDG_CONFIG_HOME = resources : "$XDG_CONFIG_HOME_RESOURCE/secret" ;
+                                                                                                XDG_DATA_HOME = resources : "$XDG_DATA_HOME_RESOURCE/secret" ;
                                                                                             } ;
                                                                                     } ;
                                                                             gpg =
@@ -1469,127 +1469,6 @@
                                                                                 in "${ application }/bin/ssh" ;
                                                                     in
                                                                         {
-                                                                            pads =
-                                                                                {
-                                                                                    home =
-                                                                                        {
-                                                                                            chromium =
-                                                                                                {
-                                                                                                    config =
-                                                                                                        ignore :
-                                                                                                            _git-repository.implementation
-                                                                                                                {
-                                                                                                                    resolutions = [ ] ;
-                                                                                                                    setup =
-                                                                                                                        { pid , resources , pkgs , root , sequential , wrap } :
-                                                                                                                            let
-                                                                                                                                application =
-                                                                                                                                    pkgs.writeShellApplication
-                                                                                                                                        {
-                                                                                                                                            name = "setup" ;
-                                                                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.gh pkgs.git pkgs.git-crypt pkgs.gnupg wrap ] ;
-                                                                                                                                            text =
-                                                                                                                                                let
-                                                                                                                                                    git-attributes =
-                                                                                                                                                        builtins.toFile
-                                                                                                                                                            "git-attributes"
-                                                                                                                                                            ''
-                                                                                                                                                                secret filter=git-crypt diff=git-crypt
-                                                                                                                                                            '' ;
-                                                                                                                                                    in
-                                                                                                                                                        ''
-                                                                                                                                                            git init
-                                                                                                                                                            ${ ssh pkgs resources root wrap }
-                                                                                                                                                            git config user.email "${ config.personal.chromium.home.config.email }"
-                                                                                                                                                            git config user.name "${ config.personal.chromium.home.config.name }"
-                                                                                                                                                            git remote add origin git@github.com:${ config.personal.chromium.home.config.organization }/${ config.personal.chromium.home.config.repository }
-                                                                                                                                                            DOT_GNUPG=${ resources.production.dot-gnupg { } }
-                                                                                                                                                            export GNUPGHOME="$DOT_GNUPG/dot-gnupg"
-                                                                                                                                                            gpg --list-keys
-                                                                                                                                                            TOKEN=${ resources.production.secrets.token { } }
-                                                                                                                                                            gh auth login --with-token < "$TOKEN/secret"
-                                                                                                                                                            if gh repo view ${ config.personal.chromium.home.config.organization }/${ config.personal.chromium.home.config.repository } 2>&1
-                                                                                                                                                            then
-                                                                                                                                                                git fetch origin ${ config.personal.chromium.home.config.branch } 2>&1
-                                                                                                                                                                git checkout ${ config.personal.chromium.home.config.branch } 2>&1
-                                                                                                                                                                git-crypt unlock 2>&1
-                                                                                                                                                                gh auth logout 2>&1
-                                                                                                                                                            else
-                                                                                                                                                                gh repo create ${ config.personal.chromium.home.config.organization }/${ config.personal.chromium.home.config.repository } --private --confirm 2>&1
-                                                                                                                                                                git checkout -b ${ config.personal.chromium.home.config.branch } 2>&1
-                                                                                                                                                                git-crypt init 2>&1
-                                                                                                                                                                wrap ${ git-attributes } repository/.git-attributes 0400
-                                                                                                                                                                git-crypt add-gpg-user "${ config.personal.chromium.home.config.email }" 2>&1
-                                                                                                                                                                mkdir secret
-                                                                                                                                                                touch secret/.gitkeep
-                                                                                                                                                                git add .git-attributes secret/.gitkeep
-                                                                                                                                                                git commit -m "" --allow-empty --allow-empty-message 2>&1
-                                                                                                                                                                gh auth logout 2>&1
-                                                                                                                                                                git push origin HEAD 2>&1
-                                                                                                                                                            fi
-                                                                                                                                                        '' ;
-                                                                                                                                        } ;
-                                                                                                                                in "${ application }/bin/setup" ;
-                                                                                                                } ;
-                                                                                                    data =
-                                                                                                        ignore :
-                                                                                                            _git-repository.implementation
-                                                                                                                {
-                                                                                                                    resolutions = [ ] ;
-                                                                                                                    setup =
-                                                                                                                        { pid , resources , pkgs , root , sequential , wrap } :
-                                                                                                                            let
-                                                                                                                                application =
-                                                                                                                                    pkgs.writeShellApplication
-                                                                                                                                        {
-                                                                                                                                            name = "setup" ;
-                                                                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.gh pkgs.git pkgs.git-crypt pkgs.gnupg wrap ] ;
-                                                                                                                                            text =
-                                                                                                                                                let
-                                                                                                                                                    git-attributes =
-                                                                                                                                                        builtins.toFile
-                                                                                                                                                            "git-attributes"
-                                                                                                                                                            ''
-                                                                                                                                                                secret filter=git-crypt diff=git-crypt
-                                                                                                                                                            '' ;
-                                                                                                                                                    in
-                                                                                                                                                        ''
-                                                                                                                                                            git init
-                                                                                                                                                            ${ ssh pkgs resources root wrap }
-                                                                                                                                                            git config user.email "${ config.personal.chromium.home.data.email }"
-                                                                                                                                                            git config user.name "${ config.personal.chromium.home.data.name }"
-                                                                                                                                                            git remote add origin git@github.com:${ config.personal.chromium.home.data.organization }/${ config.personal.chromium.home.data.repository }
-                                                                                                                                                            DOT_GNUPG=${ resources.production.dot-gnupg { } }
-                                                                                                                                                            export GNUPGHOME="$DOT_GNUPG/dot-gnupg"
-                                                                                                                                                            gpg --list-keys
-                                                                                                                                                            TOKEN=${ resources.production.secrets.token { } }
-                                                                                                                                                            gh auth login --with-token < "$TOKEN/secret"
-                                                                                                                                                            if gh repo view ${ config.personal.chromium.home.data.organization }/${ config.personal.chromium.home.data.repository } 2>&1
-                                                                                                                                                            then
-                                                                                                                                                                git fetch origin ${ config.personal.chromium.home.data.branch } 2>&1
-                                                                                                                                                                git checkout ${ config.personal.chromium.home.data.branch } 2>&1
-                                                                                                                                                                git-crypt unlock 2>&1
-                                                                                                                                                                gh auth logout 2>&1
-                                                                                                                                                            else
-                                                                                                                                                                gh repo create ${ config.personal.chromium.home.data.organization }/${ config.personal.chromium.home.data.repository } --private --confirm 2>&1
-                                                                                                                                                                git checkout -b ${ config.personal.chromium.home.data.branch } 2>&1
-                                                                                                                                                                git-crypt init 2>&1
-                                                                                                                                                                wrap ${ git-attributes } repository/.git-attributes 0400
-                                                                                                                                                                git-crypt add-gpg-user "${ config.personal.chromium.home.data.email }" 2>&1
-                                                                                                                                                                mkdir secret
-                                                                                                                                                                touch secret/.gitkeep
-                                                                                                                                                                git add .git-attributes secret/.gitkeep
-                                                                                                                                                                git commit -m "" --allow-empty --allow-empty-message 2>&1
-                                                                                                                                                                gh auth logout 2>&1
-                                                                                                                                                                git push origin HEAD 2>&1
-                                                                                                                                                            fi
-                                                                                                                                                        '' ;
-                                                                                                                                        } ;
-                                                                                                                                in "${ application }/bin/setup" ;
-                                                                                                                } ;
-                                                                                                } ;
-                                                                                        } ;
-                                                                                } ;
                                                                             pass =
                                                                                 ignore :
                                                                                     _git-repository.implementation
@@ -2886,48 +2765,27 @@
                                                                                                         runtimeInputs = [ pkgs.coreutils pkgs.gh pkgs.git pkgs.git-lfs pkgs.git-crypt pkgs.gnupg root wrap ( _failure.implementation "8fa509de" ) ] ;
                                                                                                         text =
                                                                                                             let
-                                                                                                                git-attributes =
+                                                                                                                gitattributes =
                                                                                                                     builtins.toFile
-                                                                                                                        "git-attributes"
+                                                                                                                        "gitattributes"
                                                                                                                         ''
                                                                                                                             secret filter=git-crypt diff=git-crypt
                                                                                                                         '' ;
-                                                                                                                ssh =
-                                                                                                                    let
-                                                                                                                        application =
-                                                                                                                            pkgs.writeShellApplication
-                                                                                                                                {
-                                                                                                                                    name = "ssh" ;
-                                                                                                                                    runtimeInputs = [ pkgs.openssh ] ;
-                                                                                                                                    text =
-                                                                                                                                        ''
-                                                                                                                                            if [[ -t 0 ]]
-                                                                                                                                            then
-                                                                                                                                                ssh -F "$DOT_SSH/config" "$@"
-                                                                                                                                            else
-                                                                                                                                                cat | ssh -F "$DOT_SSH/config" "$@"
-                                                                                                                                            fi
-                                                                                                                                        '' ;
-                                                                                                                                } ;
-                                                                                                                        in "${ application }/bin/ssh" ;
                                                                                                                 in
                                                                                                                     ''
-                                                                                                                        mkdir --parents /mount/repository
                                                                                                                         DOT_SSH=${ resources.production.dot-ssh { failure = "failure 3a5de85d" ; } }
                                                                                                                         root "$DOT_SSH"
-                                                                                                                        export DOT_SSH
-                                                                                                                        wrap ${ ssh } /mount/ssh 0500 --inherit-plain DOT_SSH --literal-plain PATH
-                                                                                                                        cd /mount/repository
-                                                                                                                        git init
-                                                                                                                        git config core.sshCommand "$MOUNT/stage/ssh/command"
+                                                                                                                        root ${ pkgs.openssh }
+                                                                                                                        cd /mount
+                                                                                                                        git init 2>&1
+                                                                                                                        git config core.sshCommand "${ pkgs.openssh }/bin/ssh -F $DOT_SSH/config"
                                                                                                                         git config user.email "${ config.personal.volume.email }"
                                                                                                                         git config user.name "${ config.personal.volume.name }"
                                                                                                                         git remote add origin git@github.com:${ config.personal.volume.organization }/${ config.personal.volume.repository }
                                                                                                                         DOT_GNUPG=${ resources.production.dot-gnupg { failure = ___failure "9eea13ac" ; } }
                                                                                                                         export GNUPGHOME="$DOT_GNUPG/dot-gnupg"
-                                                                                                                        SECRETS=${ resources.production.repository.secrets2.read-only { failure = ___failure "" ; } }
-                                                                                                                        TOKEN="$( cat "$SECRETS/stage/github/token.asc" )" || failure 3a0f07db
-                                                                                                                        gh auth login --with-token < "$TOKEN"
+                                                                                                                        SECRETS=${ resources.production.repository.secrets2.read-only { failure = ___failure "5fb67974" ; } }
+                                                                                                                        gh auth login --with-token < "$SECRETS/stage/github/token.asc"
                                                                                                                         if gh repo view ${ config.personal.volume.organization }/${ config.personal.volume.repository } 2>&1
                                                                                                                         then
                                                                                                                             if git fetch origin ${ builtins.hashString "sha512" branch } 2>&1
@@ -2935,32 +2793,36 @@
                                                                                                                                 gh auth logout 2>&1
                                                                                                                                 git checkout ${ builtins.hashString "sha512" branch } 2>&1
                                                                                                                                 git-crypt unlock 2>&1
+                                                                                                                                if [[ ! -d /mount/secrets ]]
+                                                                                                                                then
+                                                                                                                                    mkdir --parents /mount/secrets
+                                                                                                                                fi
                                                                                                                             else
                                                                                                                                 gh auth logout 2>&1
                                                                                                                                 git checkout -b ${ builtins.hashString "sha512" branch } 2>&1
                                                                                                                                 git-crypt init 2>&1
-                                                                                                                                wrap ${ git-attributes } repository/.git-attributes 0400
+                                                                                                                                wrap ${ gitattributes } .gitattributes 0400
                                                                                                                                 git-crypt add-gpg-user "${ config.personal.volume.email }" 2>&1
                                                                                                                                 mkdir secret
-                                                                                                                                touch secret/.gitkeep
                                                                                                                                 git lfs install
                                                                                                                                 git lfs track "secret/**"
-                                                                                                                                git add .gitattributes secret/.gitkeey
+                                                                                                                                git add .gitattributes
                                                                                                                                 git commit -m "" --allow-empty --allow-empty-message 2>&1
                                                                                                                                 git push origin HEAD 2>&1
                                                                                                                             fi
                                                                                                                         else
+                                                                                                                            echo 34863932 gh repo create ${ config.personal.volume.organization }/${ config.personal.volume.repository } --private --confirm
                                                                                                                             gh repo create ${ config.personal.volume.organization }/${ config.personal.volume.repository } --private --confirm 2>&1
+                                                                                                                            echo f1128459
                                                                                                                             gh auth logout 2>&1
                                                                                                                             git checkout -b ${ builtins.hashString "sha512" branch } 2>&1
                                                                                                                             git-crypt init 2>&1
-                                                                                                                            wrap ${ git-attributes } repository/.git-attributes 0400
+                                                                                                                            wrap ${ gitattributes } .gitattributes 0400
                                                                                                                             git-crypt add-gpg-user "${ config.personal.volume.email }" 2>&1
                                                                                                                             mkdir secret
-                                                                                                                            touch secret/.gitkeep
                                                                                                                             git lfs install
                                                                                                                             git lfs track "secret/**"
-                                                                                                                            git add .gitattributes secret/.gitkeey
+                                                                                                                            git add .gitattributes
                                                                                                                             git commit -m "" --allow-empty --allow-empty-message 2>&1
                                                                                                                             git push origin HEAD 2>&1
                                                                                                                         fi
@@ -2986,6 +2848,7 @@
                                                                                                         } ;
                                                                                                 in "${ application }/bin/release" ;
                                                                                     } ;
+                                                                                targets = [ ".git" ".gitattributes" "secret" ] ;
                                                                             } ;
                                                                     in
                                                                         {
@@ -3833,7 +3696,7 @@
                                                                     {
                                                                         email = lib.mkOption { default = "E.20260109124809@local" ; type = lib.types.str ; } ;
                                                                         name = lib.mkOption { default = "Emory Merryman" ; type = lib.types.str ; } ;
-                                                                        organization = lib.mkOption { default = "" ; type = lib.types.str ; } ;
+                                                                        organization = lib.mkOption { default = "AFnRFCb7" ; type = lib.types.str ; } ;
                                                                         repository = lib.mkOption { default = "1541f8f188b69533c612196a1884dfa074bdf60c3fdafc52bcb8a254951c7944" ; type = lib.types.str ; } ;
                                                                     } ;
                                                                 wifi =
