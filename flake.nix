@@ -2922,12 +2922,12 @@
                                                                                                                                 gh auth logout 2>&1
                                                                                                                                 git checkout -b ${ builtins.hashString "sha512" branch } 2>&1
                                                                                                                                 git-crypt init 2>&1
-                                                                                                                                wrap ${ git-attributes } repository/.git-attributes 0400
+                                                                                                                                wrap ${ git-attributes } .git-attributes 0400
                                                                                                                                 git-crypt add-gpg-user "${ config.personal.volume.email }" 2>&1
                                                                                                                                 mkdir secret
                                                                                                                                 git lfs install
                                                                                                                                 git lfs track "secret/**"
-                                                                                                                                git add .git-attributes secret/.gitkeep
+                                                                                                                                git add .git-attributes
                                                                                                                                 git commit -m "" --allow-empty --allow-empty-message 2>&1
                                                                                                                                 git push origin HEAD 2>&1
                                                                                                                             fi
@@ -2938,7 +2938,7 @@
                                                                                                                             gh auth logout 2>&1
                                                                                                                             git checkout -b ${ builtins.hashString "sha512" branch } 2>&1
                                                                                                                             git-crypt init 2>&1
-                                                                                                                            wrap ${ git-attributes } repository/.git-attributes 0400
+                                                                                                                            wrap ${ git-attributes } .git-attributes 0400
                                                                                                                             git-crypt add-gpg-user "${ config.personal.volume.email }" 2>&1
                                                                                                                             mkdir secret
                                                                                                                             git lfs install
