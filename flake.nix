@@ -2897,6 +2897,7 @@
                                                                                                                         DOT_SSH=${ resources.production.dot-ssh { failure = "failure 3a5de85d" ; } }
                                                                                                                         root "$DOT_SSH"
                                                                                                                         root ${ pkgs.openssh }
+                                                                                                                        cd /mount
                                                                                                                         git init 2>&1
                                                                                                                         git config core.sshCommand "${ pkgs.openssh }/bin/ssh -F $DOT_SSH/config"
                                                                                                                         git config user.email "${ config.personal.volume.email }"
