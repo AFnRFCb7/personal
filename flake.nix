@@ -2924,7 +2924,6 @@
                                                                                                                                 wrap ${ git-attributes } repository/.git-attributes 0400
                                                                                                                                 git-crypt add-gpg-user "${ config.personal.volume.email }" 2>&1
                                                                                                                                 mkdir secret
-                                                                                                                                touch secret/.gitkeep
                                                                                                                                 git lfs install
                                                                                                                                 git lfs track "secret/**"
                                                                                                                                 git add .git-attributes secret/.gitkeep
@@ -2940,6 +2939,7 @@
                                                                                                                             # git-crypt init 2>&1
                                                                                                                             # wrap ${ git-attributes } repository/.git-attributes 0400
                                                                                                                             # git-crypt add-gpg-user "${ config.personal.volume.email }" 2>&1
+                                                                                                                            # mkdir secret
                                                                                                                             # git lfs install
                                                                                                                             # git lfs track "secret/**"
                                                                                                                             # git add .git-attributes
