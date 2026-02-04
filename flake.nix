@@ -2892,34 +2892,15 @@
                                                                                                                         ''
                                                                                                                             secret filter=git-crypt diff=git-crypt
                                                                                                                         '' ;
-                                                                                                                ssh =
-                                                                                                                    let
-                                                                                                                        application =
-                                                                                                                            pkgs.writeShellApplication
-                                                                                                                                {
-                                                                                                                                    name = "ssh" ;
-                                                                                                                                    runtimeInputs = [ pkgs.openssh ] ;
-                                                                                                                                    text =
-                                                                                                                                        ''
-                                                                                                                                            if [[ -t 0 ]]
-                                                                                                                                            then
-                                                                                                                                                ssh -F "$DOT_SSH/config" "$@"
-                                                                                                                                            else
-                                                                                                                                                cat | ssh -F "$DOT_SSH/config" "$@"
-                                                                                                                                            fi
-                                                                                                                                        '' ;
-                                                                                                                                } ;
-                                                                                                                        in "${ application }/bin/ssh" ;
                                                                                                                 in
                                                                                                                     ''
                                                                                                                         mkdir --parents /mount/repository
                                                                                                                         DOT_SSH=${ resources.production.dot-ssh { failure = "failure 3a5de85d" ; } }
                                                                                                                         root "$DOT_SSH"
-                                                                                                                        export DOT_SSH
-                                                                                                                        wrap ${ ssh } /mount/ssh 0500 --inherit-plain DOT_SSH --literal-plain PATH
+                                                                                                                        root ${ pkgs.openssh }
                                                                                                                         cd /mount/repository
                                                                                                                         git init 2>&1
-                                                                                                                        git config core.sshCommand "$MOUNT/stage/ssh/command"
+                                                                                                                        git config core.sshCommand "${ pkgs.openssh }/bin/ssh -F $DOT_SSH/config"
                                                                                                                         git config user.email "${ config.personal.volume.email }"
                                                                                                                         git config user.name "${ config.personal.volume.name }"
                                                                                                                         git remote add origin git@github.com:${ config.personal.volume.organization }/${ config.personal.volume.repository }
@@ -2949,7 +2930,9 @@
                                                                                                                                 git push origin HEAD 2>&1
                                                                                                                             fi
                                                                                                                         else
+                                                                                                                            echo 3b16afc2 gh repo create ${ config.personal.volume.organization }/${ config.personal.volume.repository } --private --confirm
                                                                                                                             gh repo create ${ config.personal.volume.organization }/${ config.personal.volume.repository } --private --confirm 2>&1
+                                                                                                                            echo f1128459
                                                                                                                             gh auth logout 2>&1
                                                                                                                             git checkout -b ${ builtins.hashString "sha512" branch } 2>&1
                                                                                                                             git-crypt init 2>&1
@@ -2985,7 +2968,8 @@
                                                                                                         } ;
                                                                                                 in "${ application }/bin/release" ;
                                                                                     } ;
-                                                                                targets = [ "repository" "ssh" ] ;
+                                                                                targets = [ "repository"
+                                                                                ] ;
                                                                             } ;
                                                                     in
                                                                         {
