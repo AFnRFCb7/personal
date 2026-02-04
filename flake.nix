@@ -2910,7 +2910,7 @@
                                                                                                                                         '' ;
                                                                                                                                 } ;
                                                                                                                         in "${ application }/bin/ssh" ;
-                                                                                                                in
+                                                                                                                xxx =
                                                                                                                     ''
                                                                                                                         mkdir --parents /mount/repository
                                                                                                                         DOT_SSH=${ resources.production.dot-ssh { failure = "failure 3a5de85d" ; } }
@@ -2965,6 +2965,7 @@
                                                                                                                             git push origin HEAD 2>&1
                                                                                                                         fi
                                                                                                                     '' ;
+                                                                                                                in "" ;
                                                                                                     } ;
                                                                                             in "${ application }/bin/init" ;
                                                                                 seed =
