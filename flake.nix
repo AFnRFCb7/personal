@@ -2985,6 +2985,7 @@
                                                                                                         } ;
                                                                                                 in "${ application }/bin/release" ;
                                                                                     } ;
+                                                                                targets = [ "repository" "ssh" ] ;
                                                                             } ;
                                                                     in
                                                                         {
