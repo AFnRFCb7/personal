@@ -2875,7 +2875,7 @@
                                                                 let
                                                                     volume =
                                                                         branch : ignore :
-                                                                            _git-repository.implementation
+                                                                            _resource.implementation
                                                                                 {
                                                                                     init =
                                                                                         { pid , resources , pkgs , root , sequential , wrap } :
@@ -2967,7 +2967,7 @@
                                                                                                                             fi
                                                                                                                         '' ;
                                                                                                         } ;
-                                                                                                in "${ application }/bin/setup" ;
+                                                                                                in "${ application }/bin/init" ;
                                                                                     resolutions = [ ] ;
                                                                                 } ;
                                                                     in
