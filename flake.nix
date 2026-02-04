@@ -3278,10 +3278,10 @@
                                                                                                                                                                 text =
                                                                                                                                                                     ''
                                                                                                                                                                         ${ builtins.concatStringsSep "\n" ( builtins.map ( value : "M${ builtins.hashString "sha512" value }=${ value }" ) node.man ) }
-                                                                                                                                                                        export MANPATH="${ builtins.concatStringsSep ":" ( builtins.map ( value : "$M${ builtins.hashString "sha512" value }" ) node.man ) }"
+                                                                                                                                                                        export MANPATH="${ builtins.concatStringsSep ":" ( builtins.map ( value : "$M${ builtins.hashString "sha512" value }" ) node.man ) }:$MANPATH"
                                                                                                                                                                         ${ builtins.concatStringsSep "\n" ( builtins.map ( value : "B${ builtins.hashString "sha512" value }=${ value }" ) node.bin ) }
                                                                                                                                                                         PATH="${ builtins.concatStringsSep ":" ( builtins.map ( value : "$B${ builtins.hashString "sha512" value }" ) node.bin ) }"
-                                                                                                                                                                        export PATH="$PATH:${ pkgs.less }/bin:${ pkgs.man-db }/bin"
+                                                                                                                                                                        export PATH="$PATH:${ pkgs.less }/bin:${ pkgs.man-db }/bin:$PATH"
                                                                                                                                                                     '' ;
                                                                                                                                                             } ;
                                                                                                                                                     in "${ application }/bin/envrc" ;
@@ -3817,7 +3817,7 @@
                                                                     {
                                                                         email = lib.mkOption { default = "E.20260109124809@local" ; type = lib.types.str ; } ;
                                                                         name = lib.mkOption { default = "Emory Merryman" ; type = lib.types.str ; } ;
-                                                                        organization = lib.mkOption { default = "" ; type = lib.types.str ; } ;
+                                                                        organization = lib.mkOption { default = "AFnRFCb7" ; type = lib.types.str ; } ;
                                                                         repository = lib.mkOption { default = "1541f8f188b69533c612196a1884dfa074bdf60c3fdafc52bcb8a254951c7944" ; type = lib.types.str ; } ;
                                                                     } ;
                                                                 wifi =
