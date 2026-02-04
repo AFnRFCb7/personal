@@ -2883,7 +2883,7 @@
                                                                                                 pkgs.writeShellApplication
                                                                                                     {
                                                                                                         name = "init" ;
-                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.gh pkgs.git pkgs.git-lfs pkgs.git-crypt pkgs.gnupg root wrap ( __failure "8fa509de" ) ] ;
+                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.gh pkgs.git pkgs.git-lfs pkgs.git-crypt pkgs.gnupg root wrap ( _failure.implementation "8fa509de" ) ] ;
                                                                                                         text =
                                                                                                             let
                                                                                                                 git-attributes =
