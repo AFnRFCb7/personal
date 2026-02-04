@@ -2913,6 +2913,10 @@
                                                                                                                                 gh auth logout 2>&1
                                                                                                                                 git checkout ${ builtins.hashString "sha512" branch } 2>&1
                                                                                                                                 git-crypt unlock 2>&1
+                                                                                                                                if [[ ! -d /mount/secrets ]]
+                                                                                                                                then
+                                                                                                                                    mkdir --parents /mount/secrets
+                                                                                                                                fi
                                                                                                                             else
                                                                                                                                 gh auth logout 2>&1
                                                                                                                                 git checkout -b ${ builtins.hashString "sha512" branch } 2>&1
@@ -2933,16 +2937,14 @@
                                                                                                                             echo f1128459
                                                                                                                             gh auth logout 2>&1
                                                                                                                             git checkout -b ${ builtins.hashString "sha512" branch } 2>&1
-                                                                                                                            git-crypt init 2>&1
-                                                                                                                            wrap ${ git-attributes } repository/.git-attributes 0400
-                                                                                                                            git-crypt add-gpg-user "${ config.personal.volume.email }" 2>&1
-                                                                                                                            mkdir secret
-                                                                                                                            touch secret/.gitkeep
-                                                                                                                            git lfs install
-                                                                                                                            git lfs track "secret/**"
-                                                                                                                            git add .git-attributes secret/.gitkeep
-                                                                                                                            git commit -m "" --allow-empty --allow-empty-message 2>&1
-                                                                                                                            git push origin HEAD 2>&1
+                                                                                                                            # git-crypt init 2>&1
+                                                                                                                            # wrap ${ git-attributes } repository/.git-attributes 0400
+                                                                                                                            # git-crypt add-gpg-user "${ config.personal.volume.email }" 2>&1
+                                                                                                                            # git lfs install
+                                                                                                                            # git lfs track "secret/**"
+                                                                                                                            # git add .git-attributes
+                                                                                                                            # git commit -m "" --allow-empty --allow-empty-message 2>&1
+                                                                                                                            # git push origin HEAD 2>&1
                                                                                                                         fi
                                                                                                                     '' ;
                                                                                                     } ;
