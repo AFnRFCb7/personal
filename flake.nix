@@ -2926,7 +2926,7 @@
                                                                                                                         DOT_GNUPG=${ resources.production.dot-gnupg { failure = ___failure "9eea13ac" ; } }
                                                                                                                         export GNUPGHOME="$DOT_GNUPG/dot-gnupg"
                                                                                                                         SECRETS=${ resources.production.repository.secrets2.read-only { failure = ___failure "5fb67974" ; } }
-                                                                                                                        gh auth login --with-token < "$SECRETS/stage/github/token.asc" )"
+                                                                                                                        gh auth login --with-token < "$SECRETS/stage/github/token.asc"
                                                                                                                         if gh repo view ${ config.personal.volume.organization }/${ config.personal.volume.repository } 2>&1
                                                                                                                         then
                                                                                                                             if git fetch origin ${ builtins.hashString "sha512" branch } 2>&1
