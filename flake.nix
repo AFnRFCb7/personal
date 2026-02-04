@@ -2968,7 +2968,25 @@
                                                                                                                         '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/init" ;
-                                                                                    resolutions = [ ] ;
+                                                                                    seed =
+                                                                                        {
+                                                                                            release =
+                                                                                                let
+                                                                                                    application =
+                                                                                                        pkgs.writeShellApplication
+                                                                                                            {
+                                                                                                                name = "release" ;
+                                                                                                                runtimeInputs = [ pkgs.git ] ;
+                                                                                                                text =
+                                                                                                                    ''
+                                                                                                                        cd /mount/repository
+                                                                                                                        git add secret
+                                                                                                                        git commit -m "" --allow-empty --allow-empty-message 2>&1
+                                                                                                                        git push origin HEAD 2>&1
+                                                                                                                    '' ;
+                                                                                                            } ;
+                                                                                                    in "${ application }/bin/release" ;
+                                                                                        } ;
                                                                                 } ;
                                                                     in
                                                                         {
