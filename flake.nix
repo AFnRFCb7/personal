@@ -3181,20 +3181,20 @@
                                                                                                                                             in
                                                                                                                                                 [
                                                                                                                                                     ''
-                                                                                                                                                        mkdir --parents /home/${ config.personal.name }/shell
-                                                                                                                                                        cat > /home/${ config.personal.name }/shell/shell.nix <<EOF
+                                                                                                                                                        mkdir --parents /home/${ config.personal.name }/shells/${ builtins.concatStringsSep "/" path }
+                                                                                                                                                        cat > /home/${ config.personal.name }/shells/${ builtins.concatStringsSep "/" path }/shell.nix <<EOF
                                                                                                                                                             { pkgs ? import <nixpkgs> {} } :
                                                                                                                                                                 pkgs.mkShell
                                                                                                                                                                     {
                                                                                                                                                                         shellHook =
                                                                                                                                                                             ${ double-quotes }
-                                                                                                                                                                                source /home/${ config.personal.name }/pad/.envrc
+                                                                                                                                                                                source /home/${ config.personal.name }/pads/${ builtins.concatStringsSep "/" path }/.envrc
                                                                                                                                                                                 source ${ autocomplete }
                                                                                                                                                                             ${ double-quotes } ;
                                                                                                                                                                     }
                                                                                                                                                         EOF
-                                                                                                                                                        mkdir --parents /home/${ config.personal.name }/pad
-                                                                                                                                                        ln --symbolic --force ${ envrc } /home/${ config.personal.name }/pad/.envrc
+                                                                                                                                                        mkdir --parents /home/${ config.personal.name }/pads/${ builtins.concatStringsSep "/" path }
+                                                                                                                                                        ln --symbolic --force ${ envrc } /home/${ config.personal.name }/pads/${ builtins.concatStringsSep "/" path }/.envrc
                                                                                                                                                     ''
                                                                                                                                                 ] ;
                                                                                                                                 list = path : list : builtins.concatLists list ;
