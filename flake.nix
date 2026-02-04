@@ -539,8 +539,8 @@
                                                                                             {
                                                                                                 XDG_CONFIG_HOME_RESOURCE = resources : resources.production.volume.chromium.config { failure = ___failure "a9192261" ; } ;
                                                                                                 XDG_DATA_HOME_RESOURCE = resources : resources.production.volume.chromium.data { failure = ___failure "e55856e2" ; } ;
-                                                                                                XDG_CONFIG_HOME = resources : "$XDG_CONFIG_HOME_RESOURCE/repository/secret" ;
-                                                                                                XDG_DATA_HOME = resources : "$XDG_DATA_HOME_RESOURCE/repository/secret" ;
+                                                                                                XDG_CONFIG_HOME = resources : "$XDG_CONFIG_HOME_RESOURCE/secret" ;
+                                                                                                XDG_DATA_HOME = resources : "$XDG_DATA_HOME_RESOURCE/secret" ;
                                                                                             } ;
                                                                                     } ;
                                                                             gpg =
@@ -2894,11 +2894,9 @@
                                                                                                                         '' ;
                                                                                                                 in
                                                                                                                     ''
-                                                                                                                        mkdir --parents /mount/repository
                                                                                                                         DOT_SSH=${ resources.production.dot-ssh { failure = "failure 3a5de85d" ; } }
                                                                                                                         root "$DOT_SSH"
                                                                                                                         root ${ pkgs.openssh }
-                                                                                                                        cd /mount/repository
                                                                                                                         git init 2>&1
                                                                                                                         git config core.sshCommand "${ pkgs.openssh }/bin/ssh -F $DOT_SSH/config"
                                                                                                                         git config user.email "${ config.personal.volume.email }"
@@ -2925,7 +2923,7 @@
                                                                                                                                 touch secret/.gitkeep
                                                                                                                                 git lfs install
                                                                                                                                 git lfs track "secret/**"
-                                                                                                                                git add .gitattributes secret/.gitkeep
+                                                                                                                                git add .git-attributes secret/.gitkeep
                                                                                                                                 git commit -m "" --allow-empty --allow-empty-message 2>&1
                                                                                                                                 git push origin HEAD 2>&1
                                                                                                                             fi
@@ -2942,7 +2940,7 @@
                                                                                                                             touch secret/.gitkeep
                                                                                                                             git lfs install
                                                                                                                             git lfs track "secret/**"
-                                                                                                                            git add .gitattributes secret/.gitkeep
+                                                                                                                            git add .git-attributes secret/.gitkeep
                                                                                                                             git commit -m "" --allow-empty --allow-empty-message 2>&1
                                                                                                                             git push origin HEAD 2>&1
                                                                                                                         fi
@@ -2968,7 +2966,8 @@
                                                                                                         } ;
                                                                                                 in "${ application }/bin/release" ;
                                                                                     } ;
-                                                                                targets = [ "repository"
+                                                                                targets = [ ".git" ".git-attributes" ".gitattributes" "secret" ] ;
+
                                                                                 ] ;
                                                                             } ;
                                                                     in
