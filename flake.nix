@@ -2966,7 +2966,7 @@
                                                                                                         } ;
                                                                                                 in "${ application }/bin/release" ;
                                                                                     } ;
-                                                                                targets = [ ".git" ".git-attributes" ".gitattributes" "secret" ] ;
+                                                                                targets = [ ".git" ".git-attributes" "secret" ] ;
                                                                             } ;
                                                                     in
                                                                         {
