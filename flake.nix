@@ -1518,11 +1518,11 @@
                                                                                                                                                                 gh repo create ${ config.personal.chromium.home.config.organization }/${ config.personal.chromium.home.config.repository } --private --confirm 2>&1
                                                                                                                                                                 git checkout -b ${ config.personal.chromium.home.config.branch } 2>&1
                                                                                                                                                                 git-crypt init 2>&1
-                                                                                                                                                                wrap ${ git-attributes } repository/.git-attributes 0400
+                                                                                                                                                                wrap ${ gitattributes } repository/.gitattributes 0400
                                                                                                                                                                 git-crypt add-gpg-user "${ config.personal.chromium.home.config.email }" 2>&1
                                                                                                                                                                 mkdir secret
                                                                                                                                                                 touch secret/.gitkeep
-                                                                                                                                                                git add .git-attributes secret/.gitkeep
+                                                                                                                                                                git add .gitattributes secret/.gitkeep
                                                                                                                                                                 git commit -m "" --allow-empty --allow-empty-message 2>&1
                                                                                                                                                                 gh auth logout 2>&1
                                                                                                                                                                 git push origin HEAD 2>&1
@@ -2886,7 +2886,7 @@
                                                                                                         runtimeInputs = [ pkgs.coreutils pkgs.gh pkgs.git pkgs.git-lfs pkgs.git-crypt pkgs.gnupg root wrap ( _failure.implementation "8fa509de" ) ] ;
                                                                                                         text =
                                                                                                             let
-                                                                                                                git-attributes =
+                                                                                                                gitattributes =
                                                                                                                     builtins.toFile
                                                                                                                         "git-attributes"
                                                                                                                         ''
@@ -2922,12 +2922,12 @@
                                                                                                                                 gh auth logout 2>&1
                                                                                                                                 git checkout -b ${ builtins.hashString "sha512" branch } 2>&1
                                                                                                                                 git-crypt init 2>&1
-                                                                                                                                wrap ${ git-attributes } .git-attributes 0400
+                                                                                                                                wrap ${ gitattributes } .gitattributes 0400
                                                                                                                                 git-crypt add-gpg-user "${ config.personal.volume.email }" 2>&1
                                                                                                                                 mkdir secret
                                                                                                                                 git lfs install
                                                                                                                                 git lfs track "secret/**"
-                                                                                                                                git add .git-attributes
+                                                                                                                                git add .gitattributes
                                                                                                                                 git commit -m "" --allow-empty --allow-empty-message 2>&1
                                                                                                                                 git push origin HEAD 2>&1
                                                                                                                             fi
@@ -2938,12 +2938,12 @@
                                                                                                                             gh auth logout 2>&1
                                                                                                                             git checkout -b ${ builtins.hashString "sha512" branch } 2>&1
                                                                                                                             git-crypt init 2>&1
-                                                                                                                            wrap ${ git-attributes } .git-attributes 0400
+                                                                                                                            wrap ${ gitattributes } .gitattributes 0400
                                                                                                                             git-crypt add-gpg-user "${ config.personal.volume.email }" 2>&1
                                                                                                                             mkdir secret
                                                                                                                             git lfs install
                                                                                                                             git lfs track "secret/**"
-                                                                                                                            git add .git-attributes
+                                                                                                                            git add .gitattributes
                                                                                                                             git commit -m "" --allow-empty --allow-empty-message 2>&1
                                                                                                                             git push origin HEAD 2>&1
                                                                                                                         fi
@@ -2969,7 +2969,7 @@
                                                                                                         } ;
                                                                                                 in "${ application }/bin/release" ;
                                                                                     } ;
-                                                                                targets = [ ".git" ".git-attributes" "secret" ] ;
+                                                                                targets = [ ".git" ".gitattributes" "secret" ] ;
                                                                             } ;
                                                                     in
                                                                         {
