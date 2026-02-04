@@ -2925,7 +2925,7 @@
                                                                                                                                 touch secret/.gitkeep
                                                                                                                                 git lfs install
                                                                                                                                 git lfs track "secret/**"
-                                                                                                                                git add .gitattributes secret/.gitkeey
+                                                                                                                                git add .gitattributes secret/.gitkeep
                                                                                                                                 git commit -m "" --allow-empty --allow-empty-message 2>&1
                                                                                                                                 git push origin HEAD 2>&1
                                                                                                                             fi
