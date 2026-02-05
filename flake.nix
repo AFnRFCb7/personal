@@ -131,37 +131,6 @@
                                                 {
                                                     foobar =
                                                         {
-                                                            dot-gnupg =
-                                                                ignore :
-                                                                    _dot-gnupg.implementation
-                                                                        {
-                                                                            ownertrust = { pid , pkgs , resources , root , sequential , wrap } : ignore : "${ _fixture.implementation }/gnupg/dot-gnupg/ownertrust.asc" ;
-                                                                            secret-keys = { pid , pkgs , resources , root , sequential , wrap } : ignore : "${ _fixture.implementation }/gnupg/dot-gnupg/secret-keys.asc" ;
-                                                                            setup =
-                                                                                ''
-                                                                                    wrap "$1" stage/secret-keys.asc
-                                                                                    wrap "$2" stage/ownertrust.asc
-                                                                                '' ;
-                                                                        } ;
-                                                            dot-ssh =
-                                                                ignore :
-                                                                    _dot-ssh.implementation
-                                                                        {
-                                                                            configuration =
-                                                                                {
-                                                                                    github =
-                                                                                        {
-                                                                                            strict-host-key-checking = true ;
-                                                                                            host-name = "github.com" ;
-                                                                                        } ;
-                                                                                    mobile =
-                                                                                        {
-                                                                                            strict-host-key-checking = true ;
-                                                                                            host-name = config.personal.mobile ;
-                                                                                            port = 19952 ;
-                                                                                        } ;
-                                                                                } ;
-                                                                        } ;
                                                             foobar =
                                                                 ignore :
                                                                     {
@@ -172,37 +141,20 @@
                                                                                         pkgs.writeShellApplication
                                                                                             {
                                                                                                 name = "init" ;
-                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.gnupg root ( _failure.implementation "b9d858ef" ) ] ;
+                                                                                                runtimeInputs = [ pkgs.coreutils root ( _failure.implementation "fe174c03" ) ] ;
                                                                                                 text =
                                                                                                     ''
-                                                                                                        INIT=false
-                                                                                                        RELEASE=false
-                                                                                                        if [[ 2 -eq "$#" ]]
+                                                                                                        INIT_STATUS="$1"
+                                                                                                        INIT_ARGUMENTS="$2"
+                                                                                                        RELEASE_STATUS="$3"
+                                                                                                        RELEASE_ARGUMENTS="$4"
+                                                                                                        echo "$INIT_ARGUMENTS"
+                                                                                                        echo "$RELEASE_STATUS" > /mount/status
+                                                                                                        echo "$RELEASE_ARGUMENTS" > /mount/arguments
+                                                                                                        if "$INIT_STATUS"
                                                                                                         then
-                                                                                                            if [[ true == "$1" ]]
-                                                                                                            then
-                                                                                                                INIT=true
-                                                                                                            fi
-                                                                                                            if [[ true == "$2" ]]
-                                                                                                            then
-                                                                                                                RELEASE=true
-                                                                                                            fi
+                                                                                                            failure 375c5e8c
                                                                                                         fi
-                                                                                                        echo "$INIT" > /mount/init
-                                                                                                        echo "$RELEASE" > /mount/release
-                                                                                                        if "$INIT"
-                                                                                                        then
-                                                                                                            failure b9a218e1
-                                                                                                        fi
-                                                                                                        chmod 0400 /mount/init /mount/release
-                                                                                                        DOT_GNUPG="FIXME"
-                                                                                                        ln --symbolic "$DOT_GNUPG/dot-gnupg" /mount
-                                                                                                        DOT_SSH=${ resources.foobar.dot-ssh { } }
-                                                                                                        root "$DOT_SSH"
-                                                                                                        ln --symbolic "$DOT_SSH/config" /mount/dot-ssh
-                                                                                                        GIT_REPOSITORY=${ resources.foobar.git-repository { } }
-                                                                                                        root "$GIT_REPOSITORY"
-                                                                                                        ln --symbolic "$GIT_REPOSITORY/repository" /mount
                                                                                                     '' ;
                                                                                             } ;
                                                                                     in "${ application }/bin/init" ;
@@ -215,8 +167,10 @@
                                                                                             runtimeInputs = [ pkgs.coreutils ( _failure.implementation "f99f6e39" ) ] ;
                                                                                             text =
                                                                                                 ''
-                                                                                                    RELEASE="$( cat /mount/release )" || failure "6e02a8fe"
-                                                                                                    if $RELEASE
+                                                                                                    RELEASE_STATUS="$( cat /mount/status )" || failure "6e02a8fe"
+                                                                                                    RELEASE_ARGUMENTS="$( cat /mount/arguments )" || failure "1991407b"
+                                                                                                    echo "$RELEASE_ARGUMENTS"
+                                                                                                    if $RELEASE_STATUS
                                                                                                     then
                                                                                                         failure e82ab2c6
                                                                                                     fi
@@ -232,34 +186,7 @@
                                                                                         release = [ "gamma" "delta" ] ;
                                                                                     } ;
                                                                             } ;
-                                                                        targets = [ "dot-gnupg" "dot-ssh" "repository" "init" "release" ] ;
-                                                                        transient = true ;
-                                                                    } ;
-                                                            git-repository =
-                                                                ignore :
-                                                                    _git-repository.implementation
-                                                                        {
-                                                                            resolutions = [ ] ;
-                                                                            setup =
-                                                                                { pid , pkgs , resources , root , sequential , wrap } :
-                                                                                    let
-                                                                                        application =
-                                                                                            pkgs.writeShellApplication
-                                                                                                {
-                                                                                                    name = "setup" ;
-                                                                                                    runtimeInputs = [ pkgs.coreutils ] ;
-                                                                                                    text =
-                                                                                                        ''
-                                                                                                            TEMPORARY=${ resources.foobar.temporary { } }
-                                                                                                            git config foobar.temporary "$TEMPORARY"
-                                                                                                        '' ;
-                                                                                                } ;
-                                                                                        in "${ application }/bin/setup" ;
-                                                                        } ;
-                                                            temporary =
-                                                                ignore :
-                                                                    {
-                                                                        init = { pid , pkgs , resources , root , sequential , wrap } : "" ;
+                                                                        targets = [ "release" ] ;
                                                                         transient = true ;
                                                                     } ;
                                                         } ;
@@ -3367,31 +3294,6 @@
                                                                         pkgs.redis
                                                                         pkgs.yq-go
                                                                         pkgs.jq
-                                                                        (
-                                                                            pkgs.writeShellApplication
-                                                                                {
-                                                                                    name = "foobar-read" ;
-                                                                                    runtimeInputs = [ pkgs.coreutils pkgs.jq ] ;
-                                                                                    text =
-                                                                                        ''
-                                                                                            jq "." < /tmp/message
-                                                                                        '' ;
-                                                                                }
-                                                                        )
-                                                                        (
-                                                                            pkgs.writeShellApplication
-                                                                                {
-                                                                                    name = "foobar-listen" ;
-                                                                                    runtimeInputs = [ pkgs.redis ] ;
-                                                                                    text =
-                                                                                        ''
-                                                                                            redis-cli SUBSCRIBE resource | while read -r MESSAGE
-                                                                                            do
-                                                                                                echo "$MESSAGE" > /tmp/message
-                                                                                            done
-                                                                                        '' ;
-                                                                                }
-                                                                        )
                                                                         (
                                                                             pkgs.writeShellApplication
                                                                                 {
