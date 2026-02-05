@@ -186,7 +186,7 @@
                                                                                         release = [ "gamma" "delta" ] ;
                                                                                     } ;
                                                                             } ;
-                                                                        targets = [ "release" ] ;
+                                                                        targets = [ "arguments" "status" ] ;
                                                                         transient = true ;
                                                                     } ;
                                                         } ;
