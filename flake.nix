@@ -158,28 +158,27 @@
                                                                                                     '' ;
                                                                                             } ;
                                                                                     in "${ application }/bin/init" ;
-                                                                        release =
-                                                                            let
-                                                                                application =
-                                                                                    pkgs.writeShellApplication
-                                                                                        {
-                                                                                            name = "release" ;
-                                                                                            runtimeInputs = [ pkgs.coreutils ( _failure.implementation "f99f6e39" ) ] ;
-                                                                                            text =
-                                                                                                ''
-                                                                                                    RELEASE_STATUS="$( cat /mount/status )" || failure "6e02a8fe"
-                                                                                                    RELEASE_ARGUMENTS="$( cat /mount/arguments )" || failure "1991407b"
-                                                                                                    echo "$RELEASE_ARGUMENTS"
-                                                                                                    if $RELEASE_STATUS
-                                                                                                    then
-                                                                                                        failure e82ab2c6
-                                                                                                    fi
-                                                                                                '' ;
-                                                                                        } ;
-                                                                                    in "${ application }/bin/release" ;
                                                                         seed =
                                                                             {
-                                                                                release = "${ pkgs.coreutils }/bin/true" ;
+                                                                                release =
+                                                                                    let
+                                                                                        application =
+                                                                                            pkgs.writeShellApplication
+                                                                                                {
+                                                                                                    name = "release" ;
+                                                                                                    runtimeInputs = [ pkgs.coreutils ( _failure.implementation "f99f6e39" ) ] ;
+                                                                                                    text =
+                                                                                                        ''
+                                                                                                            RELEASE_STATUS="$( cat /mount/status )" || failure "6e02a8fe"
+                                                                                                            RELEASE_ARGUMENTS="$( cat /mount/arguments )" || failure "1991407b"
+                                                                                                            echo "$RELEASE_ARGUMENTS"
+                                                                                                            if $RELEASE_STATUS
+                                                                                                            then
+                                                                                                                failure e82ab2c6
+                                                                                                            fi
+                                                                                                        '' ;
+                                                                                                } ;
+                                                                                            in "${ application }/bin/release" ;
                                                                                 resolutions =
                                                                                     {
                                                                                         init = [ "alpha" "beta" ] ;
