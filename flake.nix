@@ -179,7 +179,11 @@
                                                                                                         '' ;
                                                                                                 } ;
                                                                                             in "${ application }/bin/release" ;
-                                                                                resolutions = [ "alpha" "beta" ] ;
+                                                                                resolutions =
+                                                                                    {
+                                                                                        init = [ "alpha" "beta" ] ;
+                                                                                        release = [ "gamma" "delta" ] ;
+                                                                                    } ;
                                                                             } ;
                                                                         targets = [ "arguments" "status" ] ;
                                                                         transient = true ;
