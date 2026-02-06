@@ -3229,6 +3229,11 @@
                                                                                     ''
                                                                                         Resolves either invalid-init or invalid-release.
                                                                                         It creates a quarantine directory.
+                                                                                        In this quarantine directory there is
+                                                                                        1. a log of the problem
+                                                                                        2. a generic program that "resolves" the problem
+                                                                                        3. the user can specify 0, 1, 2, ... any number of resolutions and it will create a resolution program for each specification
+
                                                                                     '' ;
                                                                                 serviceConfig =
                                                                                     {
