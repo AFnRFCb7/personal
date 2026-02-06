@@ -3185,7 +3185,7 @@
                                                                         resource-releaser =
                                                                             {
                                                                                 after = [ "network.target" "redis.service" ] ;
-                                                                                enable = true ;
+                                                                                enable = false ;
                                                                                 serviceConfig =
                                                                                     {
                                                                                         ExecStart =
