@@ -3642,7 +3642,7 @@
                                                             pkgs.writeShellApplication
                                                                 {
                                                                     name = "execute-install-phase" ;
-                                                                    runtimeInputs = [ pkgs.coreutils ] ;
+                                                                    runtimeInputs = [ pkgs.bash pkgs.coreutils ] ;
                                                                     text =
                                                                         ''
                                                                             OUT="$1"
