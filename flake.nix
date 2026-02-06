@@ -3189,7 +3189,7 @@
                                                                         resource-releaser =
                                                                             {
                                                                                 after = [ "network.target" "redis.service" ] ;
-                                                                                enable = false ;
+                                                                                enable = true ;
                                                                                 serviceConfig =
                                                                                     {
                                                                                         ExecStart =
@@ -3642,7 +3642,11 @@
                                                             pkgs.writeShellApplication
                                                                 {
                                                                     name = "execute-install-phase" ;
-                                                                    runtimeInputs = [ pkgs.bash pkgs.coreutils ] ;
+                                                                    runtimeInputs =
+                                                                        [
+                                                                            pkgs.bash
+                                                                            pkgs.coreutils
+                                                                        ] ;
                                                                     text =
                                                                         ''
                                                                             OUT="$1"
