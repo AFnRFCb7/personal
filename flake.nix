@@ -3631,6 +3631,28 @@
                         {
                             checks =
                                 {
+                                    acme =
+                                        pkgs.stdenv.mkDerivation
+                                            {
+                                                installPhase = ''execute-install-phase "$out"'' ;
+                                                name = "check" ;
+                                                nativeBuildInputs =
+                                                    [
+                                                        (
+                                                            pkgs.writeShellApplication
+                                                                {
+                                                                    name = "execute-install-phase" ;
+                                                                    runtimeInputs = [ pkgs.coreutils ] ;
+                                                                    text =
+                                                                        ''
+                                                                            OUT="$1"
+                                                                            mkdir --parents "$OUT"
+                                                                        '' ;
+                                                                }
+                                                        )
+                                                    ] ;
+                                                src = ./. ;
+                                            } ;
                                     dot-gnupg =
                                         _dot-gnupg.check
                                             {
