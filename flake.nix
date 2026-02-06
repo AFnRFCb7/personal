@@ -3227,6 +3227,8 @@
                                                                                 after = [ "network.target" "redis.service" ] ;
                                                                                 description =
                                                                                     ''
+                                                                                        Resolves either invalid-init or invalid-release.
+                                                                                        It creates a quarantine directory.
                                                                                     '' ;
                                                                                 serviceConfig =
                                                                                     {
