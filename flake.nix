@@ -3233,7 +3233,9 @@
                                                                                         1. a log of the problem
                                                                                         2. a generic program that "resolves" the problem
                                                                                         3. the user can specify 0, 1, 2, ... any number of resolutions and it will create a resolution program for each specification
-
+                                                                                        Users should look at the yaml file to understand the problem.
+                                                                                        Then they should exercise one of the provided program files to resolve it.
+                                                                                        There is always at least one.
                                                                                     '' ;
                                                                                 serviceConfig =
                                                                                     {
