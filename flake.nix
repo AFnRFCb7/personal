@@ -3225,6 +3225,9 @@
                                                                         resource-resolver =
                                                                             {
                                                                                 after = [ "network.target" "redis.service" ] ;
+                                                                                description =
+                                                                                    ''
+                                                                                    '' ;
                                                                                 serviceConfig =
                                                                                     {
                                                                                         ExecStart =
