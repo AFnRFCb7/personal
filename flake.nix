@@ -3167,6 +3167,10 @@
                                                                         resource-logger =
                                                                             {
                                                                                 after = [ "network.target" "redis.service" ] ;
+                                                                                description =
+                                                                                    ''
+                                                                                        Logs JSON payloads from Redis resource channel into a YAML list
+                                                                                    '' ;
                                                                                 serviceConfig =
                                                                                     {
                                                                                         ExecStart =
