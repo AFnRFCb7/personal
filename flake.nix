@@ -3465,6 +3465,10 @@
                                                                                                         ( resources__.production.man.ssh { failure = ___failure "6d01304d" ; } )
                                                                                                     ] ;
                                                                                             } ;
+                                                                                    testing =
+                                                                                        {
+                                                                                            resource = { } ;
+                                                                                        } ;
                                                                                 } ;
                                                                         } ;
                                                                 password = lib.mkOption { type = lib.types.str ; } ;
