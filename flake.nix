@@ -3892,7 +3892,7 @@
                                                              "3e30e86404135fc6036abb77e19e8cf73bb32074c07b3273a45e1262bb308f68d420d3549624ee2a44030ba23147465ed85b2c320d0661b1835627aeec050289"
                                                          ] ;
                                                      expected-transient = -1 ;
-                                                     expected-type = "invalid" ;
+                                                     expected-type = "invalid-init" ;
                                                      init =
                                                          { pid , pkgs , resources , root , sequential , wrap } :
                                                              let
