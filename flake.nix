@@ -3090,53 +3090,6 @@
                                                                                     } ;
                                                                                 wantedBy = [ "multi-user.target" ] ;
                                                                             } ;
-                                                                        recycle-github-identity =
-                                                                            {
-                                                                                after = [ "network-online.target" ] ;
-                                                                                serviceConfig =
-                                                                                    {
-                                                                                        ExecStart =
-                                                                                            let
-                                                                                                application =
-                                                                                                    pkgs.writeShellApplication
-                                                                                                        {
-                                                                                                            name = "ExecStart" ;
-                                                                                                            runtimeInputs = [ pkgs.git __failure ] ;
-                                                                                                            text =
-                                                                                                                ''
-                                                                                                                    SECRETS=${ resources__.production.repository.secrets2.read-write { failure = "failure a4112012" ; } }
-                                                                                                                    "$SECRETS/stage/alias/github-identity"
-                                                                                                                '' ;
-                                                                                                        } ;
-                                                                                                in "${ application }/bin/ExecStart" ;
-                                                                                        User = config.personal.name ;
-                                                                                    } ;
-                                                                                wantedBy = [ ] ;
-                                                                            } ;
-                                                                        recycle-mobile-identity =
-                                                                            {
-                                                                                after = [ "network-online.target" ] ;
-                                                                                enable = false ;
-                                                                                serviceConfig =
-                                                                                    {
-                                                                                        ExecStart =
-                                                                                            let
-                                                                                                application =
-                                                                                                    pkgs.writeShellApplication
-                                                                                                        {
-                                                                                                            name = "ExecStart" ;
-                                                                                                            runtimeInputs = [ pkgs.git __failure ] ;
-                                                                                                            text =
-                                                                                                                ''
-                                                                                                                    SECRETS=${ resources__.production.repository.secrets2.read-write { failure = "failure a4112012" ; } }
-                                                                                                                    "$SECRETS/stage/alias/mobile-identity"
-                                                                                                                '' ;
-                                                                                                        } ;
-                                                                                                in "${ application }/bin/ExecStart" ;
-                                                                                        User = config.personal.name ;
-                                                                                    } ;
-                                                                                wantedBy = [ "multi-user.target" ] ;
-                                                                            } ;
                                                                         resource-logger =
                                                                             {
                                                                                 after = [ "network.target" "redis.service" ] ;
