@@ -2779,6 +2779,7 @@
                                                                                                                                     cat "$MOBILE_PUBLIC/public" | ssh -F "$DOT_SSH" "tail --append ~/.ssh/authorized-keys"
                                                                                                                                 '' ;
                                                                                                                         } ;
+                                                                                                                in "${ application }/bin/pre-push" ;
                                                                                                         in
                                                                                                             ''
                                                                                                                 git init
