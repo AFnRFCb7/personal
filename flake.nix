@@ -3491,19 +3491,12 @@
                                                                                 repository = lib.mkOption { default = "visitor" ; type = lib.types.str ; } ;
                                                                            } ;
                                                                     } ;
-                                                                secrets2 =
+                                                                secrets =
                                                                     {
                                                                         email = lib.mkOption { default = "emory.merryman@gmail.com" ; type = lib.types.str ; } ;
                                                                         name = lib.mkOption { default = "Emory Merryman" ; type = lib.types.str ; } ;
                                                                         organization = lib.mkOption { default = "AFnRFCb7" ; type = lib.types.str ; } ;
                                                                         repository = lib.mkOption { default = "9ebf9ebc" ; type = lib.types.str ; } ;
-                                                                        branch = lib.mkOption { default = "main" ; type = lib.types.str ; } ;
-                                                                    } ;
-                                                                secrets =
-                                                                    {
-                                                                        remote = lib.mkOption { default = "git@github.com:AFnRFCb7/12e5389b-8894-4de5-9cd2-7dab0678d22b" ; type = lib.types.str ; } ;
-                                                                        organization = lib.mkOption { default = "AFnRFCb7" ; type = lib.types.str ; } ;
-                                                                        repository = lib.mkOption { default = "12e5389b-8894-4de5-9cd2-7dab0678d22b" ; type = lib.types.str ; } ;
                                                                         branch = lib.mkOption { default = "main" ; type = lib.types.str ; } ;
                                                                     } ;
                                                                 temporary =
