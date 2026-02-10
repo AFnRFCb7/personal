@@ -534,9 +534,9 @@
                                                                 ignore :
                                                                     _dot-gnupg.implementation
                                                                         {
-                                                                            ownertrust = { pid , pkgs , resources , root , sequential , wrap } : resources.production.secrets.ownertrust ;
+                                                                            ownertrust = { pid , pkgs , resources , root , sequential , wrap } : resources.production.secret { setup = setup : ''${ setup } "dot-gnupg/ownertrust"'' ; } ;
                                                                             ownertrust-file = ''echo "$1/secret"'' ;
-                                                                            secret-keys = { pid , pkgs , resources , root , sequential , wrap } : resources.production.secrets.secret-keys ;
+                                                                            secret-keys = { pid , pkgs , resources , root , sequential , wrap } : resources.production.secret { setup = setup : ''${ setup } "dot-gnupg/secret-keys"'' ; } ;
                                                                             secret-keys-file = ''echo "$1/secret"'' ;
                                                                         } ;
                                                             dot-ssh =
@@ -548,9 +548,9 @@
                                                                                     "github.com" =
                                                                                         {
                                                                                             host-name = "github.com" ;
-                                                                                            identity-file = ignore : "stage/dot-ssh/github/identity.asc" ;
+                                                                                            identity-file = ignore : "stage/dot-ssh/github/dot-ssh/github/identity.asc" ;
                                                                                             strict-host-key-checking = true ;
-                                                                                            user-known-hosts-file = ignore : "stage/dot-ssh/github/known-hosts.asc" ;
+                                                                                            user-known-hosts-file = ignore : "stage/dot-ssh/github/dot-ssh/github/known-hosts.asc" ;
                                                                                             user = "git" ;
                                                                                         } ;
                                                                                     laptop =
@@ -563,7 +563,7 @@
                                                                                     mobile =
                                                                                         {
                                                                                             host-name = config.personal.mobile ;
-                                                                                            identity-file = ignore : "stage/dot-ssh/mobile/identity.asc" ;
+                                                                                            identity-file = ignore : "stage/dot-ssh/mobile/dot-ssh/mobile/identity.asc" ;
                                                                                             port = 8022 ;
                                                                                             strict-host-key-checking = false ;
                                                                                             user-known-hosts-file = ignore : "stage/dot-ssh/mobile/known-hosts.asc" ;
@@ -573,9 +573,8 @@
                                                                                 {
                                                                                     "github.com" =
                                                                                         {
-                                                                                            identity-file = { pid , pkgs , resources , root , sequential , wrap } : resources.production.repository.secrets2.read-only { failure = ___failure "f30c68a9" ; } ;
-
-                                                                                            user-known-hosts-file = { pid , pkgs , resources , root , sequential , wrap } : resources.production.repository.secrets2.read-only { failure = ___failure "67293bbd" ; } ;
+                                                                                            identity-file = { pid , pkgs , resources , root , sequential , wrap } : resources.production.secret { setup = setup : ''${ setup } dot-ssh/github/identity'' ; failure = ___failure "f30c68a9" ; } ;
+                                                                                            user-known-hosts-file = { pid , pkgs , resources , root , sequential , wrap } : resources.production.secret {  setup = setup : ''${ setup } dot-ssh/github/known-hosts'' ;failure = ___failure "67293bbd" ; } ;
                                                                                         } ;
                                                                                     laptop =
                                                                                         {
@@ -584,8 +583,8 @@
                                                                                         } ;
                                                                                     mobile =
                                                                                         {
-                                                                                            identity-file = { pid , pkgs , resources , root , sequential , wrap } : resources.production.repository.secrets2.read-only { failure = ___failure "8379287c" ; } ;
-                                                                                            user-known-hosts-file = { pid , pkgs , resources , root , sequential , wrap } : resources.production.repository.secrets2.read-only { failure = ___failure "df046088" ; } ;
+                                                                                            identity-file = { pid , pkgs , resources , root , sequential , wrap } : resources.production.secret {  setup = setup : ''${ setup } dot-ssh/mobile/identity'' ; failure = ___failure "8379287c" ; } ;
+                                                                                            user-known-hosts-file = { pid , pkgs , resources , root , sequential , wrap } : resources.production.secret {  setup = setup : ''${ setup } dot-ssh/mobile/known-hosts'' ; failure = ___failure "df046088" ; } ;
                                                                                         } ;
                                                                                 } ;
                                                                         } ;
@@ -674,6 +673,27 @@
                                                                                 targets = [ "result" "shared" "standard-error" "standard-output" "status" ] ;
                                                                             } ;
                                                                 } ;
+                                                            identity =
+                                                                ignore :
+                                                                    {
+                                                                        init =
+                                                                            { pid , pkgs , resources , root , sequential , wrap } :
+                                                                                let
+                                                                                    application =
+                                                                                        pkgs.writeShellApplicatioin
+                                                                                            {
+                                                                                                name = "init" ;
+                                                                                                runtimeInputs = [ pkgs.openssh ( failure "80297c3b" ) ] ;
+                                                                                                text =
+                                                                                                    ''
+                                                                                                        NAME="$1"
+                                                                                                        PRIVATE=${ resources.production.secrets { setup = setup ''${ setup } "$NAME"'' ; failure = "failure 803203c6" ; } }
+                                                                                                        ssh-keygen -y -f "$PRIVATE/secret" > /mount/public
+                                                                                                    '' ;
+                                                                                            } ;
+                                                                                    in "${ application }/bin/init" ;
+                                                                        targets = [ "public" ] ;
+                                                                    } ;
                                                             man =
                                                                 let
                                                                     man =
@@ -2409,28 +2429,44 @@
                                                                                                                         } ;
                                                                                                                 in "${ application }/bin/setup" ;
                                                                                                 } ;
-                                                                                    secrets =
+                                                                                    secret =
                                                                                         ignore :
-                                                                                            _git-repository.implementation
-                                                                                                {
-                                                                                                    resolutions = [ ] ;
-                                                                                                    setup =
-                                                                                                        { pid , pkgs , resources , root , sequential , wrap } :
-                                                                                                            let
-                                                                                                                application =
-                                                                                                                    pkgs.writeShellApplication
-                                                                                                                        {
-                                                                                                                            name = "setup" ;
-                                                                                                                            runtimeInputs = [ pkgs.git ] ;
-                                                                                                                            text =
-                                                                                                                                ''
-                                                                                                                                    git remote add origin https://github.com/${ config.personal.secrets.organization }/${ config.personal.secrets.repository }
-                                                                                                                                    git fetch origin ${ config.personal.secrets.branch } 2>&1
-                                                                                                                                    git checkout origin/${ config.personal.secrets.branch } 2>&1
-                                                                                                                                '' ;
-                                                                                                                        } ;
-                                                                                                                in "${ application }/bin/setup" ;
-                                                                                                } ;
+                                                                                            {
+                                                                                                init =
+                                                                                                    { pid , pkgs , resources , root , sequential , wrap } :
+                                                                                                        let
+                                                                                                            application =
+                                                                                                                pkgs.writeShellApplication
+                                                                                                                    {
+                                                                                                                        name = "init" ;
+                                                                                                                        runtimeInputs = [ pkgs.age pkgs.coreutils ] ;
+                                                                                                                        text =
+                                                                                                                            ''
+                                                                                                                                COMMIT_HASH="$1"
+                                                                                                                                ENCRYPTED_FILE="$2"
+                                                                                                                                SECRETS=${ resources.production.secrets { failure = "failure 69cc99d5" ; } }
+                                                                                                                                echo "DECRYPTING "COMMIT_HASH=$COMMIT_HASH" "ENCRYPTED_FILE=ENCRYPTED_FILE"
+                                                                                                                                age --decrypt --identity ${ config.personal.agenix } --output /mount/secret "$SECRETS/$ENCRYPTED_FILE"
+                                                                                                                                chmod 0400 /mount/secret
+                                                                                                                            '' ;
+                                                                                                                    } ;
+                                                                                                            in "${ application }/bin/init" ;
+                                                                                                release =
+                                                                                                    let
+                                                                                                        application =
+                                                                                                            pkgs.writeShellApplication
+                                                                                                                {
+                                                                                                                    name = "release" ;
+                                                                                                                    runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                                    text =
+                                                                                                                        ''
+                                                                                                                            echo shred --force --remove $MOUNT/secret
+                                                                                                                            shred --force --remove /mount/secret
+                                                                                                                        '' ;
+                                                                                                                } ;
+                                                                                                        in "${ application }/bin/release" ;
+                                                                                                targets = [ "secret" ] ;
+                                                                                            } ;
                                                                                     snapshot =
                                                                                         ignore :
                                                                                             _git-repository.implementation
@@ -2642,34 +2678,121 @@
                                                                                 } ;
                                                                         } ;
                                                             secrets =
-                                                                let
-                                                                    setup =
-                                                                        encrypted : { pid , pkgs , resources , root , sequential , wrap } :
-                                                                            ''
-                                                                                ENCRYPTED=${ resources.production.repository.secrets_ { } }
-                                                                                IDENTITY=${ config.personal.agenix }
-                                                                                ln --symbolic "$ENCRYPTED/repository/${ encrypted }" /scratch/encrypted
-                                                                                ln --symbolic "$IDENTITY" /scratch/identity
-                                                                            '' ;
-                                                                    in
-                                                                        {
-                                                                            dot-ssh =
-                                                                                {
-                                                                                    github =
-                                                                                        {
-                                                                                            identity-file = ignore : _secret.implementation { setup = setup "/dot-ssh/boot/identity.asc.age" ; } ;
-                                                                                            user-known-hosts-file = ignore : _secret.implementation { setup = setup "dot-ssh/boot/known-hosts.asc.age" ; } ;
-                                                                                        } ;
-                                                                                    mobile =
-                                                                                        {
-                                                                                            identity-file = ignore : _secret.implementation { setup = setup "dot-ssh/boot/identity.asc.age" ; } ;
-                                                                                            user-known-hosts-file = ignore : _secret.implementation { setup = setup "dot-ssh/boot/known-hosts.asc.age" ; } ;
-                                                                                        } ;
-                                                                                } ;
-                                                                            ownertrust = ignore : _secret.implementation { setup = setup "ownertrust.asc.age" ; } ;
-                                                                            secret-keys = ignore : _secret.implementation { setup = setup "secret-keys.asc.age" ; } ;
-                                                                            token = ignore : _secret.implementation { setup = setup "github-token.asc.age" ; } ;
-                                                                        } ;
+                                                                ignore :
+                                                                    {
+                                                                        init =
+                                                                            { pid , pkgs , resources , root , sequential , wrap } :
+                                                                                let
+                                                                                    application =
+                                                                                        pkgs.writeShellApplication
+                                                                                            {
+                                                                                                name = "init" ;
+                                                                                                runtimeInputs = [ pkgs.git ] ;
+                                                                                                text =
+                                                                                                    let
+                                                                                                        post-commit =
+                                                                                                            let
+                                                                                                                application =
+                                                                                                                    pkgs.writeShellApplication
+                                                                                                                        {
+                                                                                                                            name = "post-commit" ;
+                                                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.openssh ( failure "ce32173e" ) ] ;
+                                                                                                                            text =
+                                                                                                                                ''
+                                                                                                                                    MOUNT="$( git rev-parse --show-toplevel )" || failure 34e6082b
+                                                                                                                                    cd "$MOUNT"
+                                                                                                                                    DOT_SSH=${ resources.production.dot-ssh { failure = "failure 262932e0" ; } }
+                                                                                                                                    export GIT_SSH_COMMAND="ssh -F $DOT_SSH/config"
+                                                                                                                                    while ! git push ssh HEAD
+                                                                                                                                    do
+                                                                                                                                        sleep 1s
+                                                                                                                                    done
+                                                                                                                                '' ;
+                                                                                                                        } ;
+                                                                                                                in "${ application }/bin/post-commit" ;
+                                                                                                        pre-commit =
+                                                                                                            let
+                                                                                                                application =
+                                                                                                                    pkgs.writeShellApplication
+                                                                                                                        {
+                                                                                                                            name = "pre-commit" ;
+                                                                                                                            runtimeInputs = [ pkgs.age ] ;
+                                                                                                                            text =
+                                                                                                                                ''
+                                                                                                                                    MOUNT="$( git rev-parse --show-toplevel )" || failure f7bc9d34
+                                                                                                                                    cd "$MOUNT"
+                                                                                                                                    RECIPIENT="$( age-keygen -y ${ config.personal.agenix } )" || failure 6a920dfe
+                                                                                                                                    ALLOWED=".gitignore"
+                                                                                                                                    echo > "$MOUNT/.gitignore"
+                                                                                                                                    NAMES=( "gnupg/ownertrust" "gnupg/secret-keys" "dot-ssh/github/known-hosts" "dot-ssh/github/identity" "dot-ssh/mobile/known-hosts" "dot-ssh/mobile/identity" "github/token" )
+                                                                                                                                    for NAME in "$NAMES"
+                                                                                                                                    do
+                                                                                                                                        PLAINTEXT="$MOUNT/$NAME"
+                                                                                                                                        CIPHERTEXT="$PLAINTEXT.age"
+                                                                                                                                        ALLOWED+=( "$CIPHERTEXT" )
+                                                                                                                                        echo "$CIPHERTEXT" >> "$MOUNT/.gitignore
+                                                                                                                                        if [[ -f "$PLAINTEXT" ]]
+                                                                                                                                        then
+                                                                                                                                            age --encrypt "$PLAINTEXT" --recipient "$RECIPIENT" --output "$CIPHERTEXT"
+                                                                                                                                            git add "$CIPHERTEXT"
+                                                                                                                                        fi
+                                                                                                                                    done
+                                                                                                                                    git add .gitignore
+                                                                                                                                    if ! git diff
+                                                                                                                                    then
+                                                                                                                                        failure 65b3c514
+                                                                                                                                    elif ! git diff --cached
+                                                                                                                                    then
+                                                                                                                                        failure e57e8e56
+                                                                                                                                    fi
+                                                                                                                                    VIOLATIONS=()
+                                                                                                                                    STAGED=$( git diff --cached --name-only --diff-filter=ACM ) || failure f7246879
+                                                                                                                                    for STAGE in "$STAGED"
+                                                                                                                                    do
+                                                                                                                                        if [[ ! "${ builtin.concatStringsSep "" [ "$" "{" "ALLOWED[*]" "}" ] } == "$STAGE" ]]
+                                                                                                                                        then
+                                                                                                                                            failure a070f9de "STAGE=$STAGE"
+                                                                                                                                        fi
+                                                                                                                                    done
+                                                                                                                                '' ;
+                                                                                                                        } ;
+                                                                                                                in "${ application }/bin/pre-commit" ;
+                                                                                                        pre-push =
+                                                                                                            let
+                                                                                                                application =
+                                                                                                                    pkgs.writeShellApplication
+                                                                                                                        {
+                                                                                                                            name = "pre-push" ;
+                                                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.gh pkgs.openssh ] ;
+                                                                                                                            text =
+                                                                                                                                ''
+                                                                                                                                    MOUNT="$( git rev-parse --show-toplevel )" || failure 285d9345
+                                                                                                                                    cd "$MOUNT"
+                                                                                                                                    TOKEN_FILE=${ resources.production.secret { setup = setup : ''${ setup } "$MOUNT/github/token.asc.age'' ; failure = "failure 2591b6af" ; } }
+                                                                                                                                    TOKEN="$( cat "$TOKEN_FILE" )" || failure 2e9000da
+                                                                                                                                    gh auth login --with-token <<< "$TOKEN"
+                                                                                                                                    GITHUB_PUBLIC=${ resources.production.identity { setup = setup : ''${ setup } "$MOUNT/dot-ssh/github/identity.asc.age'' ; failure = "failure ""02df3ba9" ; } }
+                                                                                                                                    gh key-add "$GITHUB_PUBLIC/public"
+                                                                                                                                    gh auth logout
+                                                                                                                                    DOT_SSH=${ resources.production.dot-ssh { failure = "failure 0b34ad17" ; } }
+                                                                                                                                    MOBILE_PUBLIC=${ resources.production.identity { setup = setup : ''${ setup } $MOUNT/dot-ssh/identity.asc.age'' ; failure = "failure 9e6a979e" ; } }
+                                                                                                                                    cat "$MOBILE_PUBLIC/public" | ssh -F "$DOT_SSH" "tail --append ~/.ssh/authorized-keys"
+                                                                                                                                '' ;
+                                                                                                                        } ;
+                                                                                                        in
+                                                                                                            ''
+                                                                                                                git init
+                                                                                                                ln --symbolic "${ post-commit }" /mount/.git/hooks/post-commit
+                                                                                                                ln --symbolic "${ pre-commit }" /mount/.git/hooks/pre-commit"
+                                                                                                                ln --symbolic "${ pre-push }" /mount/.git/hooks/pre-push"
+                                                                                                                git config user.email "${ config.personal.secrets.email }"
+                                                                                                                git config user.name "${ config.personal.secrets.name }
+                                                                                                                git remote add https https://github.com/${ config.personal.secrets.organization }/${ config.personal.secrets.repository }
+                                                                                                                git remote add ssh github.com:${ config.personal.secrets.organization }:${ config.personal.secrets.repository }
+                                                                                                            '' ;
+                                                                                            } ;
+                                                                                    in "${ application }/bin/setup" ;
+                                                                    } ;
                                                             temporary =
                                                                 ignore :
                                                                     {
@@ -3121,9 +3244,10 @@
                                                                                     } ;
                                                                                 wantedBy = [ "multi-user.target" ] ;
                                                                             } ;
-                                                                        recycle-github-identity =
+                                                                        recycle-identity =
                                                                             {
                                                                                 after = [ "network-online.target" ] ;
+                                                                                description = "recycle ssh identities" ;
                                                                                 serviceConfig =
                                                                                     {
                                                                                         ExecStart =
@@ -3132,41 +3256,18 @@
                                                                                                     pkgs.writeShellApplication
                                                                                                         {
                                                                                                             name = "ExecStart" ;
-                                                                                                            runtimeInputs = [ pkgs.git __failure ] ;
+                                                                                                            runtimeInputs = [ pkgs.git pkgs.openssh __failure ] ;
                                                                                                             text =
                                                                                                                 ''
-                                                                                                                    SECRETS=${ resources__.production.repository.secrets2.read-write { failure = "failure a4112012" ; } }
-                                                                                                                    "$SECRETS/stage/alias/github-identity"
+                                                                                                                    SECRETS=${ resources__.production.secret { failure = "failure a4112012" ; } }
+                                                                                                                    ssh-keygen -C "generated" -f "$SECRETS/dot-ssh/github/identity.asc" -P ""
+                                                                                                                    ssh-keygen -C "generated" -f "$SECRETS/dot-ssh/mobile/identity.asc" -P ""
                                                                                                                 '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/ExecStart" ;
                                                                                         User = config.personal.name ;
                                                                                     } ;
                                                                                 wantedBy = [ ] ;
-                                                                            } ;
-                                                                        recycle-mobile-identity =
-                                                                            {
-                                                                                after = [ "network-online.target" ] ;
-                                                                                enable = false ;
-                                                                                serviceConfig =
-                                                                                    {
-                                                                                        ExecStart =
-                                                                                            let
-                                                                                                application =
-                                                                                                    pkgs.writeShellApplication
-                                                                                                        {
-                                                                                                            name = "ExecStart" ;
-                                                                                                            runtimeInputs = [ pkgs.git __failure ] ;
-                                                                                                            text =
-                                                                                                                ''
-                                                                                                                    SECRETS=${ resources__.production.repository.secrets2.read-write { failure = "failure a4112012" ; } }
-                                                                                                                    "$SECRETS/stage/alias/mobile-identity"
-                                                                                                                '' ;
-                                                                                                        } ;
-                                                                                                in "${ application }/bin/ExecStart" ;
-                                                                                        User = config.personal.name ;
-                                                                                    } ;
-                                                                                wantedBy = [ "multi-user.target" ] ;
                                                                             } ;
                                                                         resource-logger =
                                                                             {
@@ -3582,19 +3683,12 @@
                                                                                 repository = lib.mkOption { default = "visitor" ; type = lib.types.str ; } ;
                                                                            } ;
                                                                     } ;
-                                                                secrets2 =
+                                                                secrets =
                                                                     {
                                                                         email = lib.mkOption { default = "emory.merryman@gmail.com" ; type = lib.types.str ; } ;
                                                                         name = lib.mkOption { default = "Emory Merryman" ; type = lib.types.str ; } ;
                                                                         organization = lib.mkOption { default = "AFnRFCb7" ; type = lib.types.str ; } ;
                                                                         repository = lib.mkOption { default = "9ebf9ebc" ; type = lib.types.str ; } ;
-                                                                        branch = lib.mkOption { default = "main" ; type = lib.types.str ; } ;
-                                                                    } ;
-                                                                secrets =
-                                                                    {
-                                                                        remote = lib.mkOption { default = "git@github.com:AFnRFCb7/12e5389b-8894-4de5-9cd2-7dab0678d22b" ; type = lib.types.str ; } ;
-                                                                        organization = lib.mkOption { default = "AFnRFCb7" ; type = lib.types.str ; } ;
-                                                                        repository = lib.mkOption { default = "12e5389b-8894-4de5-9cd2-7dab0678d22b" ; type = lib.types.str ; } ;
                                                                         branch = lib.mkOption { default = "main" ; type = lib.types.str ; } ;
                                                                     } ;
                                                                 temporary =
@@ -3952,16 +4046,6 @@
                                         resource-releaser = _resource-releaser.check { expected = "/nix/store/nay3i58fbin3xv49isc5bd2hrnfd5kig-resource-releaser/bin/resource-releaser" ; } ;
                                         resource-reporter = _resource-reporter.check { expected = "/nix/store/nn3aj176h78zd4nbbwbvbkj85dw43lqf-resource-reporter/bin/resource-reporter" ; } ;
                                         resource-resolver = _resource-resolver.check { expected = "/nix/store/mvdxn8ral6206d6cagin17f3sl6l5i1z-resource-resolver/bin/resource-resolver" ; } ;
-                                        secret =
-                                            _secret.check
-                                                {
-                                                    # encrypted = ignore : "${ fixture }/age/encrypted/known-hosts.asc" ;
-                                                    expected = "/nix/store/x21jg50mlmqmi59m5j26a4wjh0bx72ls-init/bin/init" ;
-                                                    # identity = ignore : "${ fixture }/age/identity/private" ;
-                                                    failure = _failure.implementation "a720a5e7" ;
-                                                    setup = { pid , pkgs , resources , root , sequential , wrap } : ''ln --symbolic ${ fixture }/age/encrypted/known-hosts.asc /scratch/encrypted && ln --symbolic ${ fixture }/age/identity/private /scratch/identity'' ;
-                                                    pkgs = pkgs ;
-                                               } ;
                                         visitor-happy =
                                             _visitor.check
                                                 {
