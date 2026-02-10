@@ -21,7 +21,6 @@
                         resource-releaser ,
                         resource-reporter ,
                         resource-resolver ,
-                        secret ,
                         string ,
                         system ,
                         visitor
@@ -70,7 +69,6 @@
                             _resource-reporter = resource-reporter.lib { failure = _failure.implementation "029cbc4c" ; pkgs = pkgs ; } ;
                             _resource-releaser = resource-releaser.lib { failure = _failure.implementation "6dd07d42" ; pkgs = pkgs ; } ;
                             _resource-resolver = resource-resolver.lib { failure = _failure.implementation "4321b4b8" ; pkgs = pkgs ; } ;
-                            _secret = secret.lib { failure = _failure.implementation "0b2945d8" ; } ;
                             _string = string.lib { visitor = _visitor.implementation ; } ;
                             _visitor = visitor.lib { } ;
                             identity =
@@ -2641,35 +2639,6 @@
                                                                                                 } ;
                                                                                 } ;
                                                                         } ;
-                                                            secrets =
-                                                                let
-                                                                    setup =
-                                                                        encrypted : { pid , pkgs , resources , root , sequential , wrap } :
-                                                                            ''
-                                                                                ENCRYPTED=${ resources.production.repository.secrets_ { } }
-                                                                                IDENTITY=${ config.personal.agenix }
-                                                                                ln --symbolic "$ENCRYPTED/repository/${ encrypted }" /scratch/encrypted
-                                                                                ln --symbolic "$IDENTITY" /scratch/identity
-                                                                            '' ;
-                                                                    in
-                                                                        {
-                                                                            dot-ssh =
-                                                                                {
-                                                                                    github =
-                                                                                        {
-                                                                                            identity-file = ignore : _secret.implementation { setup = setup "/dot-ssh/boot/identity.asc.age" ; } ;
-                                                                                            user-known-hosts-file = ignore : _secret.implementation { setup = setup "dot-ssh/boot/known-hosts.asc.age" ; } ;
-                                                                                        } ;
-                                                                                    mobile =
-                                                                                        {
-                                                                                            identity-file = ignore : _secret.implementation { setup = setup "dot-ssh/boot/identity.asc.age" ; } ;
-                                                                                            user-known-hosts-file = ignore : _secret.implementation { setup = setup "dot-ssh/boot/known-hosts.asc.age" ; } ;
-                                                                                        } ;
-                                                                                } ;
-                                                                            ownertrust = ignore : _secret.implementation { setup = setup "ownertrust.asc.age" ; } ;
-                                                                            secret-keys = ignore : _secret.implementation { setup = setup "secret-keys.asc.age" ; } ;
-                                                                            token = ignore : _secret.implementation { setup = setup "github-token.asc.age" ; } ;
-                                                                        } ;
                                                             temporary =
                                                                 ignore :
                                                                     {
@@ -3952,16 +3921,6 @@
                                         resource-releaser = _resource-releaser.check { expected = "/nix/store/nay3i58fbin3xv49isc5bd2hrnfd5kig-resource-releaser/bin/resource-releaser" ; } ;
                                         resource-reporter = _resource-reporter.check { expected = "/nix/store/nn3aj176h78zd4nbbwbvbkj85dw43lqf-resource-reporter/bin/resource-reporter" ; } ;
                                         resource-resolver = _resource-resolver.check { expected = "/nix/store/mvdxn8ral6206d6cagin17f3sl6l5i1z-resource-resolver/bin/resource-resolver" ; } ;
-                                        secret =
-                                            _secret.check
-                                                {
-                                                    # encrypted = ignore : "${ fixture }/age/encrypted/known-hosts.asc" ;
-                                                    expected = "/nix/store/x21jg50mlmqmi59m5j26a4wjh0bx72ls-init/bin/init" ;
-                                                    # identity = ignore : "${ fixture }/age/identity/private" ;
-                                                    failure = _failure.implementation "a720a5e7" ;
-                                                    setup = { pid , pkgs , resources , root , sequential , wrap } : ''ln --symbolic ${ fixture }/age/encrypted/known-hosts.asc /scratch/encrypted && ln --symbolic ${ fixture }/age/identity/private /scratch/identity'' ;
-                                                    pkgs = pkgs ;
-                                               } ;
                                         visitor-happy =
                                             _visitor.check
                                                 {
