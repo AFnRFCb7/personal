@@ -529,14 +529,14 @@
                                                                                             } ;
                                                                                     } ;
                                                                         } ;
-                                                                        # FINDME
+                                                                        # FIXME
                                                             dot-gnupg =
                                                                 ignore :
                                                                     _dot-gnupg.implementation
                                                                         {
-                                                                            ownertrust = { pid , pkgs , resources , root , sequential , wrap } : resources.production.secret { setup = setup : ''${ setup } "dot-gnupg/ownertrust"'' ; } ;
+                                                                            ownertrust = { pid , pkgs , resources , root , sequential , wrap } : resources.production.secret ;
                                                                             ownertrust-file = ''echo "$1/secret"'' ;
-                                                                            secret-keys = { pid , pkgs , resources , root , sequential , wrap } : resources.production.secret { setup = setup : ''${ setup } "dot-gnupg/secret-keys"'' ; } ;
+                                                                            secret-keys = { pid , pkgs , resources , root , sequential , wrap } : resources.production.secret ;
                                                                             secret-keys-file = ''echo "$1/secret"'' ;
                                                                         } ;
                                                             dot-ssh =
