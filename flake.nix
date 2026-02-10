@@ -3478,19 +3478,6 @@
                                                                                 organization = lib.mkOption { default = "AFnRFCb7" ; type = lib.types.str ; } ;
                                                                                 repository = lib.mkOption { default = "resource-resolver" ; type = lib.types.str ; } ;
                                                                             } ;
-                                                                        secret =
-                                                                            {
-                                                                                branch = lib.mkOption { default = "main" ; type = lib.types.str ; } ;
-                                                                                organization = lib.mkOption { default = "AFnRFCb7" ; type = lib.types.str ; } ;
-                                                                                repository = lib.mkOption { default = "secret" ; type = lib.types.str ; } ;
-                                                                            } ;
-                                                                        secrets =
-                                                                            {
-                                                                                branch = lib.mkOption { default = "main" ; type = lib.types.str ; } ;
-                                                                                organization = lib.mkOption { default = "AFnRFCb7" ; type = lib.types.str ; } ;
-                                                                                repository = lib.mkOption { default = "secret" ; type = lib.types.str ; } ;
-                                                                                remote = lib.mkOption { default = "git@github.com:AFnRFCb7/12e5389b-8894-4de5-9cd2-7dab0678d22b" ; type = lib.types.str ; } ;
-                                                                           } ;
                                                                         string =
                                                                             {
                                                                                 branch = lib.mkOption { default = "main" ; type = lib.types.str ; } ;
