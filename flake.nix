@@ -683,7 +683,7 @@
                                                                                         pkgs.writeShellApplicatioin
                                                                                             {
                                                                                                 name = "init" ;
-                                                                                                runtimeInputs = [ pkgs.openssh ( failure "80297c3b" ) ] ;
+                                                                                                runtimeInputs = [ pkgs.openssh ( _failure.implementation "80297c3b" ) ] ;
                                                                                                 text =
                                                                                                     ''
                                                                                                         NAME="$1"
@@ -2696,7 +2696,7 @@
                                                                                                                     pkgs.writeShellApplication
                                                                                                                         {
                                                                                                                             name = "post-commit" ;
-                                                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.openssh ( failure.implementation "ce32173e" ) ] ;
+                                                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.openssh ( _failure.implementation "ce32173e" ) ] ;
                                                                                                                             text =
                                                                                                                                 ''
                                                                                                                                     MOUNT="$( git rev-parse --show-toplevel )" || failure 34e6082b
