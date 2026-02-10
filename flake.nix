@@ -2749,7 +2749,7 @@
                                                                                                                                     STAGED=$( git diff --cached --name-only --diff-filter=ACM ) || failure f7246879
                                                                                                                                     for STAGE in "$STAGED"
                                                                                                                                     do
-                                                                                                                                        if [[ ! "${ builtin.concatStringsSep "" [ "$" "{" "ALLOWED[*]" "}" ] } == "$STAGE" ]]
+                                                                                                                                        if [[ ! "${ builtins.concatStringsSep "" [ "$" "{" "ALLOWED[*]" "}" ] } == "$STAGE" ]]
                                                                                                                                         then
                                                                                                                                             failure a070f9de "STAGE=$STAGE"
                                                                                                                                         fi
