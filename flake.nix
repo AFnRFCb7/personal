@@ -687,7 +687,7 @@
                                                                                                 text =
                                                                                                     ''
                                                                                                         NAME="$1"
-                                                                                                        PRIVATE=${ resources.production.secrets { setup = setup ''${ setup } "$NAME"'' ; failure = "failure 803203c6" ; } }
+                                                                                                        PRIVATE=${ resources.production.secrets { setup = setup : ''${ setup } "$NAME"'' ; failure = "failure 803203c6" ; } }
                                                                                                         ssh-keygen -y -f "$PRIVATE/secret" > /mount/public
                                                                                                     '' ;
                                                                                             } ;
