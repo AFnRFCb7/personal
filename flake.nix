@@ -2696,7 +2696,7 @@
                                                                                                                     pkgs.writeShellApplication
                                                                                                                         {
                                                                                                                             name = "post-commit" ;
-                                                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.openssh ( failure "ce32173e" ) ] ;
+                                                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.openssh ( failure.implementation "ce32173e" ) ] ;
                                                                                                                             text =
                                                                                                                                 ''
                                                                                                                                     MOUNT="$( git rev-parse --show-toplevel )" || failure 34e6082b
