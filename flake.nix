@@ -2429,44 +2429,6 @@
                                                                                                                         } ;
                                                                                                                 in "${ application }/bin/setup" ;
                                                                                                 } ;
-                                                                                    secret =
-                                                                                        ignore :
-                                                                                            {
-                                                                                                init =
-                                                                                                    { pid , pkgs , resources , root , sequential , wrap } :
-                                                                                                        let
-                                                                                                            application =
-                                                                                                                pkgs.writeShellApplication
-                                                                                                                    {
-                                                                                                                        name = "init" ;
-                                                                                                                        runtimeInputs = [ pkgs.age pkgs.coreutils ] ;
-                                                                                                                        text =
-                                                                                                                            ''
-                                                                                                                                COMMIT_HASH="$1"
-                                                                                                                                ENCRYPTED_FILE="$2"
-                                                                                                                                SECRETS=${ resources.production.secrets { failure = "failure 69cc99d5" ; } }
-                                                                                                                                echo "DECRYPTING "COMMIT_HASH=$COMMIT_HASH" "ENCRYPTED_FILE=ENCRYPTED_FILE"
-                                                                                                                                age --decrypt --identity ${ config.personal.agenix } --output /mount/secret "$SECRETS/$ENCRYPTED_FILE"
-                                                                                                                                chmod 0400 /mount/secret
-                                                                                                                            '' ;
-                                                                                                                    } ;
-                                                                                                            in "${ application }/bin/init" ;
-                                                                                                release =
-                                                                                                    let
-                                                                                                        application =
-                                                                                                            pkgs.writeShellApplication
-                                                                                                                {
-                                                                                                                    name = "release" ;
-                                                                                                                    runtimeInputs = [ pkgs.coreutils ] ;
-                                                                                                                    text =
-                                                                                                                        ''
-                                                                                                                            echo shred --force --remove $MOUNT/secret
-                                                                                                                            shred --force --remove /mount/secret
-                                                                                                                        '' ;
-                                                                                                                } ;
-                                                                                                        in "${ application }/bin/release" ;
-                                                                                                targets = [ "secret" ] ;
-                                                                                            } ;
                                                                                     snapshot =
                                                                                         ignore :
                                                                                             _git-repository.implementation
@@ -2677,6 +2639,44 @@
                                                                                                 } ;
                                                                                 } ;
                                                                         } ;
+                                                            secret =
+                                                                ignore :
+                                                                    {
+                                                                        init =
+                                                                            { pid , pkgs , resources , root , sequential , wrap } :
+                                                                                let
+                                                                                    application =
+                                                                                        pkgs.writeShellApplication
+                                                                                            {
+                                                                                                name = "init" ;
+                                                                                                runtimeInputs = [ pkgs.age pkgs.coreutils ] ;
+                                                                                                text =
+                                                                                                    ''
+                                                                                                        COMMIT_HASH="$1"
+                                                                                                        ENCRYPTED_FILE="$2"
+                                                                                                        SECRETS=${ resources.production.secrets { failure = "failure 69cc99d5" ; } }
+                                                                                                        echo "DECRYPTING "COMMIT_HASH=$COMMIT_HASH" "ENCRYPTED_FILE=ENCRYPTED_FILE"
+                                                                                                        age --decrypt --identity ${ config.personal.agenix } --output /mount/secret "$SECRETS/$ENCRYPTED_FILE"
+                                                                                                        chmod 0400 /mount/secret
+                                                                                                    '' ;
+                                                                                            } ;
+                                                                                    in "${ application }/bin/init" ;
+                                                                        release =
+                                                                            let
+                                                                                application =
+                                                                                    pkgs.writeShellApplication
+                                                                                        {
+                                                                                            name = "release" ;
+                                                                                            runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                            text =
+                                                                                                ''
+                                                                                                    echo shred --force --remove $MOUNT/secret
+                                                                                                    shred --force --remove /mount/secret
+                                                                                                '' ;
+                                                                                        } ;
+                                                                                in "${ application }/bin/release" ;
+                                                                        targets = [ "secret" ] ;
+                                                                    } ;
                                                             secrets =
                                                                 ignore :
                                                                     {
