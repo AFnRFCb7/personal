@@ -1469,6 +1469,7 @@
                                                                                                                 application =
                                                                                                                     pkgs.writeShellApplication
                                                                                                                         {
+                                                                                                                        {
                                                                                                                             name = "setup" ;
                                                                                                                             runtimeInputs = [ pkgs.age pkgs.coreutils pkgs.git wrap ] ;
                                                                                                                             text =
@@ -2335,35 +2336,6 @@
                                                                                                                 in "${ application }/bin/setup" ;
                                                                                                 } ;
                                                                                 } ;
-                                                                        } ;
-                                                            secrets =
-                                                                let
-                                                                    setup =
-                                                                        encrypted : { pid , pkgs , resources , root , sequential , wrap } :
-                                                                            ''
-                                                                                ENCRYPTED=${ resources.production.repository.secrets_ { } }
-                                                                                IDENTITY=${ config.personal.agenix }
-                                                                                ln --symbolic "$ENCRYPTED/repository/${ encrypted }" /scratch/encrypted
-                                                                                ln --symbolic "$IDENTITY" /scratch/identity
-                                                                            '' ;
-                                                                    in
-                                                                        {
-                                                                            dot-ssh =
-                                                                                {
-                                                                                    github =
-                                                                                        {
-                                                                                            identity-file = ignore : _secret.implementation { setup = setup "/dot-ssh/boot/identity.asc.age" ; } ;
-                                                                                            user-known-hosts-file = ignore : _secret.implementation { setup = setup "dot-ssh/boot/known-hosts.asc.age" ; } ;
-                                                                                        } ;
-                                                                                    mobile =
-                                                                                        {
-                                                                                            identity-file = ignore : _secret.implementation { setup = setup "dot-ssh/boot/identity.asc.age" ; } ;
-                                                                                            user-known-hosts-file = ignore : _secret.implementation { setup = setup "dot-ssh/boot/known-hosts.asc.age" ; } ;
-                                                                                        } ;
-                                                                                } ;
-                                                                            ownertrust = ignore : _secret.implementation { setup = setup "ownertrust.asc.age" ; } ;
-                                                                            secret-keys = ignore : _secret.implementation { setup = setup "secret-keys.asc.age" ; } ;
-                                                                            token = ignore : _secret.implementation { setup = setup "github-token.asc.age" ; } ;
                                                                         } ;
                                                             temporary =
                                                                 ignore :
