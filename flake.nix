@@ -1927,6 +1927,26 @@
                                                                                                                                                             } ;
                                                                                                                                                     in "${ application }/bin/mutable-audit" ;
                                                                                                                                         } ;
+                                                                                                                                    mutable-denurse =
+                                                                                                                                        let
+                                                                                                                                            application =
+                                                                                                                                                pkgs.writeShellApplication
+                                                                                                                                                    {
+                                                                                                                                                        name = "mutable-denurse" ;
+                                                                                                                                                        runtimeInputs = [ ] ;
+                                                                                                                                                        text =
+                                                                                                                                                            ''
+                                                                                                                                                                SUBMODULE_PATH="$1"
+                                                                                                                                                                git submodule deinit -f -- "$SUBMODULE_PATH" || true
+                                                                                                                                                                git rm -f -- "$SUBMODULE_PATH" || true
+                                                                                                                                                                rm -rf ".git/modules/$SUBMODULE_PATH"
+                                                                                                                                                                git config -f .gitmodules --remove-section "submodule.$SUBMODULE_PATH" || true
+                                                                                                                                                                git add .gitmodules || true
+                                                                                                                                                                git commit -m "denursed $SUBMODULE_PATH"
+                                                                                                                                                                git push origin HEAD
+                                                                                                                                                            '' ;
+                                                                                                                                                    } ;
+                                                                                                                                            in "${ application }/bin/mutable-denurse" ;
                                                                                                                                     mutable-mirror =
                                                                                                                                         {
                                                                                                                                             root =
