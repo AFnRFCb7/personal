@@ -534,9 +534,9 @@
                                                                 ignore :
                                                                     _dot-gnupg.implementation
                                                                         {
-                                                                            ownertrust = { pid , pkgs , resources , root , sequential , wrap } : resources.production.secrets2.ownertrust ;
+                                                                            ownertrust = { pid , pkgs , resources , root , sequential , wrap } : resources.production.repository.secrets2.ownertrust ;
                                                                             ownertrust-file = ''echo "$1/secret"'' ;
-                                                                            secret-keys = { pid , pkgs , resources , root , sequential , wrap } : resources.production.secrets2.secret-keys ;
+                                                                            secret-keys = { pid , pkgs , resources , root , sequential , wrap } : resources.production.repository.secrets2.secret-keys ;
                                                                             secret-keys-file = ''echo "$1/secret"'' ;
                                                                         } ;
                                                             dot-ssh =
