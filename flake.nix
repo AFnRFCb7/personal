@@ -1984,8 +1984,8 @@
                                                                                                                                                             ''
                                                                                                                                                                 USER_NAME="$1"
                                                                                                                                                                 REPO_NAME="$2"
-                                                                                                                                                                TOKEN=${ resources.production.secrets.token { } }
-                                                                                                                                                                gh auth login --with-token < "$TOKEN/secret"
+                                                                                                                                                                TOKEN=${ resources.production.repository.secrets2.read-only { } }
+                                                                                                                                                                gh auth login --with-token < "$TOKEN/stage/github/token.asc"
                                                                                                                                                                 gh repo create "$USER_NAME/$REPO_NAME" --public
                                                                                                                                                                 gh auth logout
                                                                                                                                                                 mkdir --parents "$MOUNT/stage/nursery/$USER_NAME/$REPO_NAME"
