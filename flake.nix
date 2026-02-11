@@ -1,4 +1,4 @@
-# 79d28518
+# 36a0576c
 {
     inputs =
         {
@@ -1399,7 +1399,7 @@
                                                                                         {
                                                                                             resolutions = [ ] ;
                                                                                             setup =
-                                                                                                { pid , resources , pkgs , root , sequential , wrap } :
+                                                                                                { failure , pid , resources , pkgs , root , sequential , wrap } :
                                                                                                     let
                                                                                                         application =
                                                                                                             pkgs.writeShellApplication
