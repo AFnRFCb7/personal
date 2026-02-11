@@ -1690,49 +1690,6 @@
                                                                                                                                                             } ;
                                                                                                                                                     in "${ application }/bin/mutable-mirror" ;
                                                                                                                                         } ;
-                                                                                                                                    mutable-nurse =
-                                                                                                                                        let
-                                                                                                                                            application =
-                                                                                                                                                pkgs.writeShellApplication
-                                                                                                                                                    {
-                                                                                                                                                        name = "mutable-nurse" ;
-                                                                                                                                                        runtimeInputs = [ ] ;
-                                                                                                                                                        text =
-                                                                                                                                                            ''
-                                                                                                                                                                USER_NAME="$1"
-                                                                                                                                                                REPO_NAME="$2"
-                                                                                                                                                                TOKEN=${ resources.production.secrets.token { } }
-                                                                                                                                                                gh auth login --with-token < "$TOKEN/secret"
-                                                                                                                                                                gh repo create "$USER_NAME/$REPO_NAME" --public
-                                                                                                                                                                gh auth logout
-                                                                                                                                                                mkdir --parents "$MOUNT/stage/nursery/$USER_NAME/$REPO_NAME"
-                                                                                                                                                                cd "$MOUNT/stage/nursery/$USER_NAME/$REPO_NAME"
-                                                                                                                                                                git init
-                                                                                                                                                                git config core.sshCommand "$MOUNT/stage/ssh/command"
-                                                                                                                                                                git config user.email "${ config.personal.repository.private.email }"
-                                                                                                                                                                git config user.name "${ config.personal.repository.private.name }"
-                                                                                                                                                                git checkout -b main
-                                                                                                                                                                git remote add origin "git@github.com:$USER_NAME/$REPO_NAME.git"
-                                                                                                                                                                git commit -am "" --allow-empty --allow-empty-message
-                                                                                                                                                                git push origin HEAD
-                                                                                                                                                                cd "$MOUNT/repository"
-                                                                                                                                                                git submodule add "git@github.com:$USER_NAME/$REPO_NAME.git"
-                                                                                                                                                                git push origin HEAD
-                                                                                                                                                                cd "$MOUNT/repository/$REPO_NAME"
-                                                                                                                                                                # spellcheck disable=SC2086
-                                                                                                                                                                git config alias.mutable-audit "!$MOUNT/stage/alias/root/mutable-audit"
-                                                                                                                                                                # spellcheck disable=SC2086
-                                                                                                                                                                git config alias.mutable-mirror "!$MOUNT/stage/alias/root/mutable-mirror"
-                                                                                                                                                                # spellcheck disable=SC2086
-                                                                                                                                                                git config alias.mutable-snapshot "!$MOUNT/stage/alias/root/mutable-snapshot"
-                                                                                                                                                                # spellcheck disable=SC2086
-                                                                                                                                                                git config alias.mutable-squash "!$MOUNT/stage/alias/root/mutable-squash"
-                                                                                                                                                                git config core.sshCommand "$MOUNT/stage/ssh/command"
-                                                                                                                                                                git config user.email "${ config.personal.repository.private.email }"
-                                                                                                                                                                git config user.name "${ config.personal.repository.private.name }"
-                                                                                                                                                            '' ;
-                                                                                                                                                    } ;
-                                                                                                                                            in "${ application }/bin/mutable-nurse" ;
                                                                                                                                     mutable-promote =
                                                                                                                                         let
                                                                                                                                             application =
@@ -2072,7 +2029,6 @@
                                                                                                                                             git config alias.mutable-build-vm-with-bootloader "!$MOUNT/stage/alias/root/mutable-build-vm-with-bootloader"
                                                                                                                                             git config alias.mutable-check "!$MOUNT/stage/alias/root/mutable-check"
                                                                                                                                             git config alias.mutable-mirror "!$MOUNT/stage/alias/root/mutable-mirror"
-                                                                                                                                            git config alias.mutable-nurse "!$MOUNT/stage/alias/root/mutable-nurse"
                                                                                                                                             git config alias.mutable-promote "!$MOUNT/stage/alias/root/mutable-promote"
                                                                                                                                             git config alias.mutable-rebase "!$MOUNT/stage/alias/root/mutable-rebase"
                                                                                                                                             git config alias.mutable-reset "!$MOUNT/stage/alias/root/mutable-reset"
