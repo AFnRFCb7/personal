@@ -21,7 +21,6 @@
                         resource-releaser ,
                         resource-reporter ,
                         resource-resolver ,
-                        secret ,
                         string ,
                         system ,
                         visitor
