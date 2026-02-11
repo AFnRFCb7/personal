@@ -534,9 +534,9 @@
                                                                 ignore :
                                                                     _dot-gnupg.implementation
                                                                         {
-                                                                            ownertrust = { pid , pkgs , resources , root , sequential , wrap } : resources.production.repository.secrets2.readonly ;
+                                                                            ownertrust = { pid , pkgs , resources , root , sequential , wrap } : resources.production.repository.secrets2.read-only ;
                                                                             ownertrust-file = ''echo "$1/stage/dot-gnupg/ownertrust.asc"'' ;
-                                                                            secret-keys = { pid , pkgs , resources , root , sequential , wrap } : resources.production.repository.secrets2.readonly ;
+                                                                            secret-keys = { pid , pkgs , resources , root , sequential , wrap } : resources.production.repository.secrets2.read-only ;
                                                                             secret-keys-file = ''echo "$1/stage/dot-gnupg/secret-keys.asc"'' ;
                                                                         } ;
                                                             dot-ssh =
