@@ -1469,7 +1469,6 @@
                                                                                                                 application =
                                                                                                                     pkgs.writeShellApplication
                                                                                                                         {
-                                                                                                                        {
                                                                                                                             name = "setup" ;
                                                                                                                             runtimeInputs = [ pkgs.age pkgs.coreutils pkgs.git wrap ] ;
                                                                                                                             text =
