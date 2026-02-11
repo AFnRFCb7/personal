@@ -3176,23 +3176,6 @@
                                                                                     } ;
                                                                                 wantedBy = [ "multi-user.target" ] ;
                                                                             } ;
-                                                                        resource-reporter-personal =
-                                                                            {
-                                                                                after = [ "network.target" "redis.service" ] ;
-                                                                                serviceConfig =
-                                                                                    {
-                                                                                        ExecStart =
-                                                                                            _resource-reporter.implementation
-                                                                                                {
-                                                                                                    organization = config.personal.repository.personal.organization ;
-                                                                                                    repository = config.personal.repository.personal.repository ;
-                                                                                                    resolution = "personal" ;
-                                                                                                    token = resources__.production.secrets.token { } ;
-                                                                                                } ;
-                                                                                        User = config.personal.name ;
-                                                                                    } ;
-                                                                                wantedBy = [ "multi-user.target" ] ;
-                                                                            } ;
                                                                         resource-resolver =
                                                                             {
                                                                                 after = [ "network.target" "redis.service" ] ;
