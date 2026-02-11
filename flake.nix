@@ -534,10 +534,10 @@
                                                                 ignore :
                                                                     _dot-gnupg.implementation
                                                                         {
-                                                                            ownertrust = { pid , pkgs , resources , root , sequential , wrap } : resources.production.repository.secrets2.ownertrust ;
-                                                                            ownertrust-file = ''echo "$1/secret"'' ;
-                                                                            secret-keys = { pid , pkgs , resources , root , sequential , wrap } : resources.production.repository.secrets2.secret-keys ;
-                                                                            secret-keys-file = ''echo "$1/secret"'' ;
+                                                                            ownertrust = { pid , pkgs , resources , root , sequential , wrap } : resources.production.repository.secrets2.readonly ;
+                                                                            ownertrust-file = ''echo "$1/stage/dot-gnupg/ownertrust.asc"'' ;
+                                                                            secret-keys = { pid , pkgs , resources , root , sequential , wrap } : resources.production.repository.secrets2.readonly ;
+                                                                            secret-keys-file = ''echo "$1/stage/dot-gnupg/secret-keys.asc"'' ;
                                                                         } ;
                                                             dot-ssh =
                                                                 ignore :
