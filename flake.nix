@@ -1974,7 +1974,7 @@
                                                                                                                                                                         # do
                                                                                                                                                                         #     rm --recursive --force "$SUB"
                                                                                                                                                                         #
-                                                                                                                                                                        done
+                                                                                                                                                                        # done
                                                                                                                                                                         git clean -fdx
                                                                                                                                                                         git submodule update --init --recursive
                                                                                                                                                                         git submodule foreach "$MOUNT/stage/alias/submodule/mutable-mirror"
