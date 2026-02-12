@@ -2086,7 +2086,7 @@
                                                                                                                                                                 prompt "mutable-test 1"
                                                                                                                                                                 SEQUENCE="$( sequential )" || failure ae7e6cd4y
                                                                                                                                                                 REPO_2="$( studio "$SEQUENCE" ) || failure c26c59b5
-                                                                                                                                                                PARENT_2="$( dirname "$REPO_2" ) || failure aa07751f
+                                                                                                                                                                PARENT_2="$( dirname "$REPO_2" )" || failure aa07751f
                                                                                                                                                                 # PARENT_2="$( "$SETUP" "$SEQUENCE" )" || failure 1ba93b40
                                                                                                                                                                 STUDIO_2="$PARENT_2/repository"
                                                                                                                                                                 BRANCH="$( git -C "$STUDIO_1" rev-parse --abbrev-ref HEAD )" || failure 89dfeef9
