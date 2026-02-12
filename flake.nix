@@ -1928,6 +1928,7 @@
                                                                                                                                                             } ;
                                                                                                                                                     in "${ application }/bin/mutable-audit" ;
                                                                                                                                         } ;
+                                                                                                                                    mutable-denurse = null ;
                                                                                                                                     mutable-mirror =
                                                                                                                                         {
                                                                                                                                             root =
