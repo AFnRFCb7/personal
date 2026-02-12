@@ -1951,7 +1951,7 @@
                                                                                                                                                         pkgs.writeShellApplication
                                                                                                                                                             {
                                                                                                                                                                 name = "mutable-mirror" ;
-                                                                                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.libuuid ] ;
+                                                                                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.gawk pkgs.git pkgs.libuuid ] ;
                                                                                                                                                                 text =
                                                                                                                                                                     ''
                                                                                                                                                                         OLD_BRANCH="$1"
@@ -1960,10 +1960,20 @@
                                                                                                                                                                         git checkout "origin/$OLD_BRANCH"
                                                                                                                                                                         git submodule deinit -f .
                                                                                                                                                                         git reset --hard
-                                                                                                                                                                        SUBS=$( git submodule status | awk '{print $2}') || failure 1d3e1a75
-                                                                                                                                                                        for SUB in $SUBS
-                                                                                                                                                                        do
-                                                                                                                                                                            rm --recursive --force "$SUB"
+
+                                                                                                                                                                        if [ -d .git/modules ]
+                                                                                                                                                                        then
+                                                                                                                                                                            for SUB in .git/modules/*; do
+                                                                                                                                                                                NAME="$(basename "$SUB")"
+                                                                                                                                                                                rm -rf "$NAME"
+                                                                                                                                                                            done
+                                                                                                                                                                        fi
+
+                                                                                                                                                                        # SUBS=$( git submodule status | awk '{print $2}') || failure 1d3e1a75
+                                                                                                                                                                        # for SUB in $SUBS
+                                                                                                                                                                        # do
+                                                                                                                                                                        #     rm --recursive --force "$SUB"
+                                                                                                                                                                        #
                                                                                                                                                                         done
                                                                                                                                                                         git clean -fdx
                                                                                                                                                                         git submodule update --init --recursive
@@ -2396,7 +2406,7 @@
                                                                                                                                             wrap ${ mutable- "build-vm-with-bootloader" } stage/alias/root/mutable-build-vm-with-bootloader 0500 --literal-plain MUTABLE_SNAPSHOT --literal-plain PATH
                                                                                                                                             wrap ${ mutable- "check" } stage/alias/root/mutable-check 0500 --literal-plain MUTABLE_SNAPSHOT --literal-plain PATH
                                                                                                                                             wrap ${ mutable-denurse } stage/alias/root/mutable-denurse 0500 --literal-plain PATH --literal-plain SUBMODULE --uuid 2039d15a
-                                                                                                                                            wrap ${ mutable-mirror.root } stage/alias/root/mutable-mirror 0500 --inherit-plain MOUNT --literal-plain NEW_BRANCH --literal-plain OLD_BRANCH --literal-plain PATH --literal-plain UUID --literal-plain SUB --literal-plain SUBS --uuid 00a02114
+                                                                                                                                            wrap ${ mutable-mirror.root } stage/alias/root/mutable-mirror 0500 --inherit-plain MOUNT --literal-plain NEW_BRANCH --literal-plain OLD_BRANCH --literal-plain PATH --literal-plain UUID --literal-plain SUB --literal-plain SUBS --literal-plain NAME --uuid 00a02114
                                                                                                                                             wrap ${ mutable-mirror.submodule } stage/alias/submodule/mutable-mirror 0500 --literal-plain BRANCH --literal-plain name --literal-plain PATH --literal-plain toplevel --literal-plain UUID --uuid c36b6d07
                                                                                                                                             wrap ${ mutable-nurse } stage/alias/root/mutable-nurse 0500 --literal-plain 1 --literal-plain 2 --inherit-plain MOUNT --literal-plain REPO_NAME --literal-plain TOKEN --literal-plain USER_NAME
                                                                                                                                             wrap ${ mutable-promote } stage/alias/root/mutable-promote 0500 --literal-plain BIN_1 --literal-plain BIN_2 --literal-plain BRANCH --inherit-plain MOUNT --literal-plain PARENT_1 --literal-plain PARENT_2 --literal-plain PATH --literal-plain SEQUENCE --inherit-plain SETUP --literal-plain STUDIO_1 --literal-plain STUDIO_2 --literal-plain REPO_2 --uuid 3f5bfc02
