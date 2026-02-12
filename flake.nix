@@ -1962,6 +1962,11 @@
                                                                                                                                                                         export GIT_SSH_COMMAND="$MOUNT/stage/ssh/command"
                                                                                                                                                                         git fetch origin "$OLD_BRANCH"
                                                                                                                                                                         git checkout "origin/$OLD_BRANCH"
+                                                                                                                                                                        git reset --hard
+                                                                                                                                                                        git clean -fdx
+                                                                                                                                                                        git submodule deinit -f --all
+                                                                                                                                                                        rm -rf .git/modules/*
+                                                                                                                                                                        git submodule sync --recursive
                                                                                                                                                                         git submodule update --init --recursive
                                                                                                                                                                         git submodule foreach "$MOUNT/stage/alias/submodule/mutable-mirror"
                                                                                                                                                                         UUID="$( uuidgen | sha512sum )" || failure b10e1bdf
