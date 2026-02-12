@@ -2470,6 +2470,7 @@
                                                                                                                                 [
                                                                                                                                     pkgs.coreutils
                                                                                                                                     pkgs.git
+                                                                                                                                    pkgs.git
                                                                                                                                     pkgs.libuuid
                                                                                                                                     root
                                                                                                                                     wrap
