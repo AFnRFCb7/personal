@@ -1928,7 +1928,25 @@
                                                                                                                                                             } ;
                                                                                                                                                     in "${ application }/bin/mutable-audit" ;
                                                                                                                                         } ;
-                                                                                                                                    mutable-denurse = null ;
+                                                                                                                                    mutable-denurse =
+                                                                                                                                        let
+                                                                                                                                            application =
+                                                                                                                                                pkgs.writeShellApplication
+                                                                                                                                                    {
+                                                                                                                                                        name = "mutable-denurse" ;
+                                                                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.gnused ] ;
+                                                                                                                                                        text =
+                                                                                                                                                            ''
+                                                                                                                                                                MODULE="$1"
+                                                                                                                                                                sed -i "s#$MODULE.url = "git+file:./$MODULE" ;##" "$MOUNT/flake.nix"
+                                                                                                                                                                sed -i "s#$MODULE , ##" "$MOUNT/flake.nix"
+                                                                                                                                                                sed -i "s#$MODULE = $MODULE## "$MOUNT/flake.nix"
+                                                                                                                                                                git submodule deinit -f -- "$MODULE"
+                                                                                                                                                                git rm -f -- "$MODULE"
+                                                                                                                                                                rm -rf ".git/modules/$MODULE"
+                                                                                                                                                            '' ;
+                                                                                                                                                    } ;
+                                                                                                                                            in "${ application }/bin/mutable-denurse" ;
                                                                                                                                     mutable-mirror =
                                                                                                                                         {
                                                                                                                                             root =
