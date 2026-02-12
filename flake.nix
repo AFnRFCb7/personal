@@ -59,6 +59,7 @@
                                             redis = pkgs.redis ;
                                             resources = resources ;
                                             resources-directory = resources-directory ;
+                                            sequential-start = "echo $RANDOM" ;
                                             store-garbage-collection-root = store-garbage-collection-root ;
                                             string = _string.implementation ;
                                             visitor = _visitor.implementation ;
