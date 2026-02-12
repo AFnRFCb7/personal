@@ -2370,6 +2370,7 @@
                                                                                                                                             git config alias.mutable-build-vm "!$MOUNT/stage/alias/root/mutable-build-vm"
                                                                                                                                             git config alias.mutable-build-vm-with-bootloader "!$MOUNT/stage/alias/root/mutable-build-vm-with-bootloader"
                                                                                                                                             git config alias.mutable-check "!$MOUNT/stage/alias/root/mutable-check"
+                                                                                                                                            git config alias.mutable-denurse "!$MOUNT/stage/alias/root/mutable-denurse"
                                                                                                                                             git config alias.mutable-mirror "!$MOUNT/stage/alias/root/mutable-mirror"
                                                                                                                                             git config alias.mutable-nurse "!$MOUNT/stage/alias/root/mutable-nurse"
                                                                                                                                             git config alias.mutable-promote "!$MOUNT/stage/alias/root/mutable-promote"
@@ -2386,6 +2387,7 @@
                                                                                                                                             wrap ${ mutable- "build-vm" } stage/alias/root/mutable-build-vm 0500 --literal-plain MUTABLE_SNAPSHOT --literal-plain PATH
                                                                                                                                             wrap ${ mutable- "build-vm-with-bootloader" } stage/alias/root/mutable-build-vm-with-bootloader 0500 --literal-plain MUTABLE_SNAPSHOT --literal-plain PATH
                                                                                                                                             wrap ${ mutable- "check" } stage/alias/root/mutable-check 0500 --literal-plain MUTABLE_SNAPSHOT --literal-plain PATH
+                                                                                                                                            wrap ${ mutable-denurse } stage/alias/root/mutable-denurse 0500 --literal-plain PATH --literal-plain SUBMODULE
                                                                                                                                             wrap ${ mutable-mirror.root } stage/alias/root/mutable-mirror 0500 --inherit-plain MOUNT --literal-plain NEW_BRANCH --literal-plain OLD_BRANCH --literal-plain PATH --literal-plain UUID --uuid 00a02114
                                                                                                                                             wrap ${ mutable-mirror.submodule } stage/alias/submodule/mutable-mirror 0500 --literal-plain BRANCH --literal-plain name --literal-plain PATH --literal-plain toplevel --literal-plain UUID --uuid c36b6d07
                                                                                                                                             wrap ${ mutable-nurse } stage/alias/root/mutable-nurse 0500 --literal-plain 1 --literal-plain 2 --inherit-plain MOUNT --literal-plain REPO_NAME --literal-plain TOKEN --literal-plain USER_NAME
@@ -3102,53 +3104,6 @@
                                                                                                                             }
                                                                                                                             config.personal.pads ;
                                                                                                                     in builtins.concatStringsSep "\n" list ;
-                                                                                                        } ;
-                                                                                                in "${ application }/bin/ExecStart" ;
-                                                                                        User = config.personal.name ;
-                                                                                    } ;
-                                                                                wantedBy = [ "multi-user.target" ] ;
-                                                                            } ;
-                                                                        recycle-github-identity =
-                                                                            {
-                                                                                after = [ "network-online.target" ] ;
-                                                                                serviceConfig =
-                                                                                    {
-                                                                                        ExecStart =
-                                                                                            let
-                                                                                                application =
-                                                                                                    pkgs.writeShellApplication
-                                                                                                        {
-                                                                                                            name = "ExecStart" ;
-                                                                                                            runtimeInputs = [ pkgs.git __failure ] ;
-                                                                                                            text =
-                                                                                                                ''
-                                                                                                                    SECRETS=${ resources__.production.repository.secrets2.read-write { failure = "failure a4112012" ; } }
-                                                                                                                    "$SECRETS/stage/alias/github-identity"
-                                                                                                                '' ;
-                                                                                                        } ;
-                                                                                                in "${ application }/bin/ExecStart" ;
-                                                                                        User = config.personal.name ;
-                                                                                    } ;
-                                                                                wantedBy = [ ] ;
-                                                                            } ;
-                                                                        recycle-mobile-identity =
-                                                                            {
-                                                                                after = [ "network-online.target" ] ;
-                                                                                enable = false ;
-                                                                                serviceConfig =
-                                                                                    {
-                                                                                        ExecStart =
-                                                                                            let
-                                                                                                application =
-                                                                                                    pkgs.writeShellApplication
-                                                                                                        {
-                                                                                                            name = "ExecStart" ;
-                                                                                                            runtimeInputs = [ pkgs.git __failure ] ;
-                                                                                                            text =
-                                                                                                                ''
-                                                                                                                    SECRETS=${ resources__.production.repository.secrets2.read-write { failure = "failure a4112012" ; } }
-                                                                                                                    "$SECRETS/stage/alias/mobile-identity"
-                                                                                                                '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/ExecStart" ;
                                                                                         User = config.personal.name ;
