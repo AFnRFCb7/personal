@@ -134,7 +134,7 @@
                                                                 ignore :
                                                                     {
                                                                         init =
-                                                                            { failure , pid , pkgs , resources , root , sequential , wrap } :
+                                                                            { failure , pid , pkgs , resources , root , seed , sequential , wrap } :
                                                                                 let
                                                                                     application =
                                                                                         pkgs.writeShellApplication
@@ -194,7 +194,7 @@
                                                                 ignore :
                                                                     {
                                                                         init =
-                                                                            { failure , pid , pkgs , resources , root , sequential , wrap } :
+                                                                            { failure , pid , pkgs , resources , root , seed , sequential , wrap } :
                                                                                 let
                                                                                     application =
                                                                                         pkgs.writeShellApplication
@@ -216,7 +216,7 @@
                                                                         ignore :
                                                                             {
                                                                                 init =
-                                                                                    { failure , pid , pkgs , resources , root , sequential , wrap } :
+                                                                                    { failure , pid , pkgs , resources , root , seed , sequential , wrap } :
                                                                                         let
                                                                                             application =
                                                                                                 pkgs.writeShellApplication
@@ -244,7 +244,7 @@
                                                                         ignore :
                                                                             {
                                                                                 init =
-                                                                                    { failure , pid , pkgs , resources , root , sequential , wrap } :
+                                                                                    { failure , pid , pkgs , resources , root , seed , sequential , wrap } :
                                                                                         let
                                                                                             application =
                                                                                                 pkgs.writeShellApplication
@@ -264,7 +264,7 @@
                                                                         ignore :
                                                                             {
                                                                                 init =
-                                                                                    { failure , pid , pkgs , resources , root , sequential , wrap } :
+                                                                                    { failure , pid , pkgs , resources , root , seed , sequential , wrap } :
                                                                                         let
                                                                                             application =
                                                                                                 pkgs.writeShellApplication
@@ -301,7 +301,7 @@
                                                                 ignore :
                                                                     {
                                                                         init =
-                                                                            { failure , pid , pkgs , resources , root , sequential , wrap } :
+                                                                            { failure , pid , pkgs , resources , root , seed , sequential , wrap } :
                                                                                 let
                                                                                     application =
                                                                                         pkgs.writeShellApplication
@@ -325,7 +325,7 @@
                                                                                  in
                                                                                      {
                                                                                          init =
-                                                                                             { failure , pid , pkgs , resources , root , sequential , wrap } :
+                                                                                             { failure , pid , pkgs , resources , root , seed , sequential , wrap } :
                                                                                                  let
                                                                                                      application =
                                                                                                          pkgs.writeShellApplication
@@ -382,7 +382,7 @@
                                                                         { name , environment , runtimeInputs , script , variables } : ignore :
                                                                             {
                                                                                 init =
-                                                                                    { failure , pid , pkgs , resources , root , sequential , wrap } :
+                                                                                    { failure , pid , pkgs , resources , root , seed , sequential , wrap } :
                                                                                         let
                                                                                             application =
                                                                                                 pkgs.writeShellApplication
@@ -533,9 +533,9 @@
                                                                 ignore :
                                                                     _dot-gnupg.implementation
                                                                         {
-                                                                            ownertrust = { failure , pid , pkgs , resources , root , sequential , wrap } : resources.production.repository.secrets2.read-only ;
+                                                                            ownertrust = { failure , pid , pkgs , resources , root , seed , sequential , wrap } : resources.production.repository.secrets2.read-only ;
                                                                             ownertrust-file = ''echo "$1/stage/dot-ssh/ownertrust.asc"'' ;
-                                                                            secret-keys = { failure , pid , pkgs , resources , root , sequential , wrap } : resources.production.repository.secrets2.read-only ;
+                                                                            secret-keys = { failure , pid , pkgs , resources , root , seed , sequential , wrap } : resources.production.repository.secrets2.read-only ;
                                                                             secret-keys-file = ''echo "$1/stage/dot-ssh/secret-keys.asc"'' ;
                                                                         } ;
                                                             dot-ssh =
@@ -572,19 +572,19 @@
                                                                                 {
                                                                                     "github.com" =
                                                                                         {
-                                                                                            identity-file = { failure , pid , pkgs , resources , root , sequential , wrap } : resources.production.repository.secrets2.read-only { failure = ___failure "f30c68a9" ; } ;
+                                                                                            identity-file = { failure , pid , pkgs , resources , root , seed , sequential , wrap } : resources.production.repository.secrets2.read-only { failure = ___failure "f30c68a9" ; } ;
 
-                                                                                            user-known-hosts-file = { failure , pid , pkgs , resources , root , sequential , wrap } : resources.production.repository.secrets2.read-only { failure = ___failure "67293bbd" ; } ;
+                                                                                            user-known-hosts-file = { failure , pid , pkgs , resources , root , seed , sequential , wrap } : resources.production.repository.secrets2.read-only { failure = ___failure "67293bbd" ; } ;
                                                                                         } ;
                                                                                     laptop =
                                                                                         {
-                                                                                            identity-file = { failure , pid , pkgs , resources , root , sequential , wrap } : resources.production.fixture.laptop { } ;
-                                                                                            user-known-hosts-file = { failure , pid , pkgs , resources , root , sequential , wrap } : resources.production.fixture.laptop { } ;
+                                                                                            identity-file = { failure , pid , pkgs , resources , root , seed , sequential , wrap } : resources.production.fixture.laptop { } ;
+                                                                                            user-known-hosts-file = { failure , pid , pkgs , resources , root , seed , sequential , wrap } : resources.production.fixture.laptop { } ;
                                                                                         } ;
                                                                                     mobile =
                                                                                         {
-                                                                                            identity-file = { failure , pid , pkgs , resources , root , sequential , wrap } : resources.production.repository.secrets2.read-only { failure = ___failure "8379287c" ; } ;
-                                                                                            user-known-hosts-file = { failure , pid , pkgs , resources , root , sequential , wrap } : resources.production.repository.secrets2.read-only { failure = ___failure "df046088" ; } ;
+                                                                                            identity-file = { failure , pid , pkgs , resources , root , seed , sequential , wrap } : resources.production.repository.secrets2.read-only { failure = ___failure "8379287c" ; } ;
+                                                                                            user-known-hosts-file = { failure , pid , pkgs , resources , root , seed , sequential , wrap } : resources.production.repository.secrets2.read-only { failure = ___failure "df046088" ; } ;
                                                                                         } ;
                                                                                 } ;
                                                                         } ;
@@ -594,7 +594,7 @@
                                                                             ignore :
                                                                                 {
                                                                                     init =
-                                                                                        { failure , pid , pkgs , resources , root , sequential , wrap } :
+                                                                                        { failure , pid , pkgs , resources , root , seed , sequential , wrap } :
                                                                                             let
                                                                                                 application =
                                                                                                     pkgs.writeShellApplication
@@ -620,7 +620,7 @@
                                                                         ignore :
                                                                             {
                                                                                 init =
-                                                                                    { failure , pid , pkgs , resources , root , sequential , wrap } :
+                                                                                    { failure , pid , pkgs , resources , root , seed , sequential , wrap } :
                                                                                         let
                                                                                             application =
                                                                                                 pkgs.writeShellApplication
@@ -648,7 +648,7 @@
                                                                         ignore :
                                                                             {
                                                                                 init =
-                                                                                    { failure , pid , pkgs , resources , root , sequential , wrap } :
+                                                                                    { failure , pid , pkgs , resources , root , seed , sequential , wrap } :
                                                                                         let
                                                                                             application =
                                                                                                 pkgs.writeShellApplication
@@ -689,7 +689,7 @@
                                                                         } : ignore :
                                                                             {
                                                                                 init =
-                                                                                    { failure , pid , pkgs , resources , root , sequential , wrap } :
+                                                                                    { failure , pid , pkgs , resources , root , seed , sequential , wrap } :
                                                                                         let
                                                                                             application =
                                                                                                 pkgs.writeShellApplication
@@ -1464,7 +1464,7 @@
                                                                                                 {
                                                                                                     resolutions = [ ] ;
                                                                                                     setup =
-                                                                                                        { failure , pid , pkgs , resources , root , sequential , wrap } :
+                                                                                                        { failure , pid , pkgs , resources , root , seed , sequential , wrap } :
                                                                                                             let
                                                                                                                 application =
                                                                                                                     pkgs.writeShellApplication
@@ -1499,7 +1499,7 @@
                                                                                                 {
                                                                                                     resolutions = [ ] ;
                                                                                                     setup =
-                                                                                                        { failure , pid , pkgs , resources , root , sequential , wrap } :
+                                                                                                        { failure , pid , pkgs , resources , root , seed , sequential , wrap } :
                                                                                                             let
                                                                                                                 application =
                                                                                                                     pkgs.writeShellApplication
@@ -1782,7 +1782,7 @@
                                                                                         {
                                                                                             resolutions = [ ] ;
                                                                                             setup =
-                                                                                                { failure , pid , pkgs , resources , root , sequential , wrap } :
+                                                                                                { failure , pid , pkgs , resources , root , seed , sequential , wrap } :
                                                                                                     let
                                                                                                         application =
                                                                                                             pkgs.writeShellApplication
@@ -2415,7 +2415,7 @@
                                                                                                 {
                                                                                                     resolutions = [ ] ;
                                                                                                     setup =
-                                                                                                        { failure , pid , pkgs , resources , root , sequential , wrap } :
+                                                                                                        { failure , pid , pkgs , resources , root , seed , sequential , wrap } :
                                                                                                             let
                                                                                                                 application =
                                                                                                                     pkgs.writeShellApplication
@@ -2437,7 +2437,7 @@
                                                                                                 {
                                                                                                     resolutions = [ ] ;
                                                                                                     setup =
-                                                                                                        { failure , pid , pkgs , resources , root , sequential , wrap } :
+                                                                                                        { failure , pid , pkgs , resources , root , seed , sequential , wrap } :
                                                                                                             let
                                                                                                                 application =
                                                                                                                     pkgs.writeShellApplication
@@ -2644,7 +2644,7 @@
                                                             temporary =
                                                                 ignore :
                                                                     {
-                                                                        init = { failure , pid , pkgs , resources , root , sequential , wrap } : "" ;
+                                                                        init = { failure , pid , pkgs , resources , root , seed , sequential , wrap } : "" ;
                                                                         transient = true ;
                                                                     } ;
                                                             volume =
@@ -3620,10 +3620,10 @@
                                             {
                                                 expected = "/nix/store/rxf0885ih1ws3x75xwdiq3rf2yz3ircg-init/bin/init" ;
                                                 failure = _failure.implementation "dff7788e" ;
-                                                ownertrust = { failure , pid , pkgs , resources , root , sequential , wrap } : ignore : "${ fixture }/gnupg" ;
+                                                ownertrust = { failure , pid , pkgs , resources , root , seed , sequential , wrap } : ignore : "${ fixture }/gnupg" ;
                                                 ownertrust-file = ''echo "$1/ownertrust.asc"'';
                                                 pkgs = pkgs ;
-                                                secret-keys = { failure , pid , pkgs , resources , root , sequential , wrap } : ignore : "${ fixture }/gnupg" ;
+                                                secret-keys = { failure , pid , pkgs , resources , root , seed , sequential , wrap } : ignore : "${ fixture }/gnupg" ;
                                                 secret-keys-file = ''echo "$1/secret-keys.asc"'';
                                             } ;
                                     dot-ssh =
@@ -3655,16 +3655,16 @@
                                                     {
                                                         cb8e09cf =
                                                             {
-                                                                user-known-hosts-file = { failure , pid , pkgs , resources , root , sequential , wrap } : builtins.toString pkgs.coreutils ;
+                                                                user-known-hosts-file = { failure , pid , pkgs , resources , root , seed , sequential , wrap } : builtins.toString pkgs.coreutils ;
                                                             } ;
                                                         f5d69296 =
                                                             {
-                                                                user-known-hosts-file = { failure , pid , pkgs , resources , root , sequential , wrap } : builtins.toString pkgs.coreutils ;
+                                                                user-known-hosts-file = { failure , pid , pkgs , resources , root , seed , sequential , wrap } : builtins.toString pkgs.coreutils ;
                                                             } ;
                                                         b8b6ddc8 =
                                                             {
-                                                                strict-host-key-checking = { failure , pid , pkgs , resources , root , sequential , wrap } : builtins.toString pkgs.coreutils ;
-                                                                user-known-hosts-file = { failure , pid , pkgs , resources , root , sequential , wrap } : builtins.toString pkgs.coreutils ;
+                                                                strict-host-key-checking = { failure , pid , pkgs , resources , root , seed , sequential , wrap } : builtins.toString pkgs.coreutils ;
+                                                                user-known-hosts-file = { failure , pid , pkgs , resources , root , seed , sequential , wrap } : builtins.toString pkgs.coreutils ;
                                                             } ;
                                                     } ;
                                             } ;
@@ -3755,7 +3755,7 @@
                                                         expected-transient = -1 ;
                                                         expected-type = "valid" ;
                                                         init =
-                                                            { failure , pid , pkgs , resources , root , sequential , wrap } :
+                                                            { failure , pid , pkgs , resources , root , seed , sequential , wrap } :
                                                                 let
                                                                     application =
                                                                         pkgs.writeShellApplication
@@ -3848,7 +3848,7 @@
                                                      expected-transient = -1 ;
                                                      expected-type = "invalid-init" ;
                                                      init =
-                                                         { failure , pid , pkgs , resources , root , sequential , wrap } :
+                                                         { failure , pid , pkgs , resources , root , seed , sequential , wrap } :
                                                              let
                                                                  application =
                                                                      pkgs.writeShellApplication
