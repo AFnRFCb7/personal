@@ -1,4 +1,4 @@
-# 539512b7
+# 484d2919
 {
     inputs =
         {
@@ -1933,7 +1933,7 @@
                                                                                                                                                 pkgs.writeShellApplication
                                                                                                                                                     {
                                                                                                                                                         name = "mutable-denurse" ;
-                                                                                                                                                        runtimeInputs = [ ] ;
+                                                                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
                                                                                                                                                         text =
                                                                                                                                                             ''
                                                                                                                                                                 SUBMODULE="$1"
@@ -1951,14 +1951,30 @@
                                                                                                                                                         pkgs.writeShellApplication
                                                                                                                                                             {
                                                                                                                                                                 name = "mutable-mirror" ;
-                                                                                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.libuuid ] ;
+                                                                                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.gawk pkgs.git pkgs.libuuid ] ;
                                                                                                                                                                 text =
                                                                                                                                                                     ''
                                                                                                                                                                         OLD_BRANCH="$1"
                                                                                                                                                                         export GIT_SSH_COMMAND="$MOUNT/stage/ssh/command"
                                                                                                                                                                         git fetch origin "$OLD_BRANCH"
                                                                                                                                                                         git checkout "origin/$OLD_BRANCH"
+                                                                                                                                                                        git submodule deinit -f .
                                                                                                                                                                         git reset --hard
+
+                                                                                                                                                                        if [ -d .git/modules ]
+                                                                                                                                                                        then
+                                                                                                                                                                            for SUB in .git/modules/*; do
+                                                                                                                                                                                NAME="$(basename "$SUB")"
+                                                                                                                                                                                rm -rf "$NAME"
+                                                                                                                                                                            done
+                                                                                                                                                                        fi
+
+                                                                                                                                                                        # SUBS=$( git submodule status | awk '{print $2}') || failure 1d3e1a75
+                                                                                                                                                                        # for SUB in $SUBS
+                                                                                                                                                                        # do
+                                                                                                                                                                        #     rm --recursive --force "$SUB"
+                                                                                                                                                                        #
+                                                                                                                                                                        # done
                                                                                                                                                                         git clean -fdx
                                                                                                                                                                         git submodule update --init --recursive
                                                                                                                                                                         git submodule foreach "$MOUNT/stage/alias/submodule/mutable-mirror"
@@ -2078,8 +2094,10 @@
                                                                                                                                                                 prompt "mutable-build-vm 1"
                                                                                                                                                                 git -C "$STUDIO_1" mutable-test
                                                                                                                                                                 prompt "mutable-test 1"
-                                                                                                                                                                SEQUENCE="$( sequential )" || failure ae7e6cd4
-                                                                                                                                                                PARENT_2="$( "$SETUP" "$SEQUENCE" )" || failure 1ba93b40
+                                                                                                                                                                SEQUENCE="$( sequential )" || failure ae7e6cd4y
+                                                                                                                                                                REPO_2="$( studio "$SEQUENCE" )" || failure c26c59b5
+                                                                                                                                                                PARENT_2="$( dirname "$REPO_2" )" || failure aa07751f
+                                                                                                                                                                # PARENT_2="$( "$SETUP" "$SEQUENCE" )" || failure 1ba93b40
                                                                                                                                                                 STUDIO_2="$PARENT_2/repository"
                                                                                                                                                                 BRANCH="$( git -C "$STUDIO_1" rev-parse --abbrev-ref HEAD )" || failure 89dfeef9
                                                                                                                                                                 PARENT_2="$( dirname "$STUDIO_2" )" || failure 0db898ea
@@ -2370,6 +2388,7 @@
                                                                                                                                             git config alias.mutable-build-vm "!$MOUNT/stage/alias/root/mutable-build-vm"
                                                                                                                                             git config alias.mutable-build-vm-with-bootloader "!$MOUNT/stage/alias/root/mutable-build-vm-with-bootloader"
                                                                                                                                             git config alias.mutable-check "!$MOUNT/stage/alias/root/mutable-check"
+                                                                                                                                            git config alias.mutable-denurse "!$MOUNT/stage/alias/root/mutable-denurse"
                                                                                                                                             git config alias.mutable-mirror "!$MOUNT/stage/alias/root/mutable-mirror"
                                                                                                                                             git config alias.mutable-nurse "!$MOUNT/stage/alias/root/mutable-nurse"
                                                                                                                                             git config alias.mutable-promote "!$MOUNT/stage/alias/root/mutable-promote"
@@ -2386,10 +2405,11 @@
                                                                                                                                             wrap ${ mutable- "build-vm" } stage/alias/root/mutable-build-vm 0500 --literal-plain MUTABLE_SNAPSHOT --literal-plain PATH
                                                                                                                                             wrap ${ mutable- "build-vm-with-bootloader" } stage/alias/root/mutable-build-vm-with-bootloader 0500 --literal-plain MUTABLE_SNAPSHOT --literal-plain PATH
                                                                                                                                             wrap ${ mutable- "check" } stage/alias/root/mutable-check 0500 --literal-plain MUTABLE_SNAPSHOT --literal-plain PATH
-                                                                                                                                            wrap ${ mutable-mirror.root } stage/alias/root/mutable-mirror 0500 --inherit-plain MOUNT --literal-plain NEW_BRANCH --literal-plain OLD_BRANCH --literal-plain PATH --literal-plain UUID --uuid 00a02114
+                                                                                                                                            wrap ${ mutable-denurse } stage/alias/root/mutable-denurse 0500 --literal-plain PATH --literal-plain SUBMODULE --uuid 2039d15a
+                                                                                                                                            wrap ${ mutable-mirror.root } stage/alias/root/mutable-mirror 0500 --inherit-plain MOUNT --literal-plain NEW_BRANCH --literal-plain OLD_BRANCH --literal-plain PATH --literal-plain UUID --literal-plain SUB --literal-plain SUBS --literal-plain NAME --uuid 00a02114
                                                                                                                                             wrap ${ mutable-mirror.submodule } stage/alias/submodule/mutable-mirror 0500 --literal-plain BRANCH --literal-plain name --literal-plain PATH --literal-plain toplevel --literal-plain UUID --uuid c36b6d07
                                                                                                                                             wrap ${ mutable-nurse } stage/alias/root/mutable-nurse 0500 --literal-plain 1 --literal-plain 2 --inherit-plain MOUNT --literal-plain REPO_NAME --literal-plain TOKEN --literal-plain USER_NAME
-                                                                                                                                            wrap ${ mutable-promote } stage/alias/root/mutable-promote 0500 --literal-plain BIN_1 --literal-plain BIN_2 --literal-plain BRANCH --inherit-plain MOUNT --literal-plain PARENT_1 --literal-plain PARENT_2 --literal-plain PATH --literal-plain SEQUENCE --inherit-plain SETUP --literal-plain STUDIO_1 --literal-plain STUDIO_2 --uuid 3f5bfc02
+                                                                                                                                            wrap ${ mutable-promote } stage/alias/root/mutable-promote 0500 --literal-plain BIN_1 --literal-plain BIN_2 --literal-plain BRANCH --inherit-plain MOUNT --literal-plain PARENT_1 --literal-plain PARENT_2 --literal-plain PATH --literal-plain SEQUENCE --inherit-plain SETUP --literal-plain STUDIO_1 --literal-plain STUDIO_2 --literal-plain REPO_2 --uuid 3f5bfc02
                                                                                                                                             wrap ${ mutable-rebase.root } stage/alias/root/mutable-rebase 0500 --literal-plain BRANCH --literal-plain COMMIT --set-plain INDEX "$INDEX" --inherit-plain MOUNT --literal-plain MUTABLE_SNAPSHOT --literal-plain PATH --literal-plain UUID --uuid e31d4139
                                                                                                                                             wrap ${ mutable-rebase.submodule } stage/alias/submodule/mutable-rebase 0500 --literal-plain BRANCH --literal-plain name --literal-plain PATH --literal-plain TOKEN --literal-plain TOKEN_DIRECTORY --literal-plain toplevel --literal-plain UUID --uuid f5b5a1c7
                                                                                                                                             wrap ${ mutable-reset.root } stage/alias/root/mutable-reset 0500 --literal-plain BRANCH --inherit-plain MOUNT --literal-plain PATH --literal-plain UUID --uuid 5b1e2753
@@ -3102,53 +3122,6 @@
                                                                                                                             }
                                                                                                                             config.personal.pads ;
                                                                                                                     in builtins.concatStringsSep "\n" list ;
-                                                                                                        } ;
-                                                                                                in "${ application }/bin/ExecStart" ;
-                                                                                        User = config.personal.name ;
-                                                                                    } ;
-                                                                                wantedBy = [ "multi-user.target" ] ;
-                                                                            } ;
-                                                                        recycle-github-identity =
-                                                                            {
-                                                                                after = [ "network-online.target" ] ;
-                                                                                serviceConfig =
-                                                                                    {
-                                                                                        ExecStart =
-                                                                                            let
-                                                                                                application =
-                                                                                                    pkgs.writeShellApplication
-                                                                                                        {
-                                                                                                            name = "ExecStart" ;
-                                                                                                            runtimeInputs = [ pkgs.git __failure ] ;
-                                                                                                            text =
-                                                                                                                ''
-                                                                                                                    SECRETS=${ resources__.production.repository.secrets2.read-write { failure = "failure a4112012" ; } }
-                                                                                                                    "$SECRETS/stage/alias/github-identity"
-                                                                                                                '' ;
-                                                                                                        } ;
-                                                                                                in "${ application }/bin/ExecStart" ;
-                                                                                        User = config.personal.name ;
-                                                                                    } ;
-                                                                                wantedBy = [ ] ;
-                                                                            } ;
-                                                                        recycle-mobile-identity =
-                                                                            {
-                                                                                after = [ "network-online.target" ] ;
-                                                                                enable = false ;
-                                                                                serviceConfig =
-                                                                                    {
-                                                                                        ExecStart =
-                                                                                            let
-                                                                                                application =
-                                                                                                    pkgs.writeShellApplication
-                                                                                                        {
-                                                                                                            name = "ExecStart" ;
-                                                                                                            runtimeInputs = [ pkgs.git __failure ] ;
-                                                                                                            text =
-                                                                                                                ''
-                                                                                                                    SECRETS=${ resources__.production.repository.secrets2.read-write { failure = "failure a4112012" ; } }
-                                                                                                                    "$SECRETS/stage/alias/mobile-identity"
-                                                                                                                '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/ExecStart" ;
                                                                                         User = config.personal.name ;
