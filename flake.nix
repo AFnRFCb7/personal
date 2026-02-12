@@ -1958,6 +1958,7 @@
                                                                                                                                                                         export GIT_SSH_COMMAND="$MOUNT/stage/ssh/command"
                                                                                                                                                                         git fetch origin "$OLD_BRANCH"
                                                                                                                                                                         git checkout "origin/$OLD_BRANCH"
+                                                                                                                                                                        git submodule deinit -f .
                                                                                                                                                                         git reset --hard
                                                                                                                                                                         git clean -fdx
                                                                                                                                                                         git submodule update --init --recursive
