@@ -530,13 +530,34 @@
                                                                         # FINDME
                                                             dot-gnupg =
                                                                 ignore :
-                                                                    _dot-gnupg.implementation
-                                                                        {
-                                                                            ownertrust = { pid , pkgs , resources , root , sequential , wrap } : resources.production.repository.secrets2.read-only ;
-                                                                            ownertrust-file = ''echo "$1/stage/dot-ssh/ownertrust.asc"'' ;
-                                                                            secret-keys = { pid , pkgs , resources , root , sequential , wrap } : resources.production.repository.secrets2.read-only ;
-                                                                            secret-keys-file = ''echo "$1/stage/dot-ssh/secret-keys.asc"'' ;
-                                                                        } ;
+                                                                    {
+                                                                        init =
+                                                                            { failure , pid , pkgs , resources , root , sequential , wrap } :
+                                                                                let
+                                                                                    application =
+                                                                                        pkgs.writeShellApplication
+                                                                                            {
+                                                                                                name = "init" ;
+                                                                                                runtimeInputs = [ pkgs.gnupg failure ] ;
+                                                                                                text =
+                                                                                                    ''
+                                                                                                        SECRET_KEYS=${ resources.production.secret.dot-gnupg.secret-keys { failure = "failure 97b76549" ; } }
+                                                                                                        OWNERTRUST=${ resources.production.secret.dot-gnupg.ownertrust { failure = "failure 97b76549" ; } }
+                                                                                                        GNUPGHOME=/mount/dot-gnupg
+                                                                                                        export GNUPGHOME
+                                                                                                        mkdir --parents "$GNUPGHOME"
+                                                                                                        chmod 0700 "$GNUPGHOME"
+                                                                                                        echo importing secret keys
+                                                                                                        gpg --batch --yes --homedir "$GNUPGHOME" --import "$SECRET_KEYS/plaintext" 2>&1
+                                                                                                        echo importing ownertrust
+                                                                                                        gpg --batch --yes --homedir "$GNUPGHOME" --import-ownertrust "$OWNERTRUST/plaintext" 2>&1
+                                                                                                        echo updating trustdb
+                                                                                                        gpg --batch --yes --homedir "$GNUPGHOME" --update-trustdb 2>&1
+                                                                                                    '' ;
+                                                                                            } ;
+                                                                                    in "${ application }/bin/init" ;
+                                                                        targets = [ "dot-gnupg" ] ;
+                                                                    } ;
                                                             dot-ssh =
                                                                 ignore :
                                                                     _dot-ssh.implementation
@@ -2644,11 +2665,50 @@
                                                                                                 } ;
                                                                                 } ;
                                                                         } ;
+                                                            secret =
+                                                                let
+                                                                    secret =
+                                                                        name : ignore :
+                                                                            {
+                                                                                init =
+                                                                                    { failure , pid , pkgs , resources , root , sequential , wrap } :
+                                                                                        let
+                                                                                            application =
+                                                                                                pkgs.writeShellApplication
+                                                                                                    {
+                                                                                                        name = "init" ;
+                                                                                                        runtimeInputs = [ failure ] ;
+                                                                                                        text =
+                                                                                                            ''
+                                                                                                                SECRETS=${ resources.production.secrets { failure = "failure 489df9d8" ; } }
+                                                                                                                age --decrypt --identity ${ config.personal.agenix } --output /mount/plaintext "$SECRETS/${ name }.asc.age"
+                                                                                                            '' ;
+                                                                                                    } ;
+                                                                                            in "${ application }/bin/application" ;
+                                                                                targets = [ "plaintext" ] ;
+                                                                            } ;
+                                                                    in
+                                                                        {
+                                                                            dot-gnupg =
+                                                                                {
+                                                                                    ownertrust = secret "dot-gnupg/ownertrust" ;
+                                                                                    secret-keys = secret "dot-gnupg/secret-keys" ;
+                                                                                } ;
+                                                                        } ;
                                                             secrets =
                                                                 ignore :
                                                                     let
-
-                                                                        targets = [ ".git" "dot-gnupg/owner-trust.asc.age" ] ;
+                                                                        targets =
+                                                                            [
+                                                                                ".git"
+                                                                                "dot-gnupg/ownertrust.asc.age"
+                                                                                "dot-gnupg/secret-keys.asc"
+                                                                                "dot-ssh/github/known-hosts.asc.age"
+                                                                                "dot-ssh/github/identity.asc.age"
+                                                                                "dot-ssh/mobile/known-hosts.asc.age"
+                                                                                "dot-ssh/mobile/identity.asc.age"
+                                                                                "github/token.asc.age"
+                                                                            ] ;
                                                                         in
                                                                             {
                                                                                 init =
@@ -3645,17 +3705,6 @@
                                                         )
                                                     ] ;
                                                 src = ./. ;
-                                            } ;
-                                    dot-gnupg =
-                                        _dot-gnupg.check
-                                            {
-                                                expected = "/nix/store/rxf0885ih1ws3x75xwdiq3rf2yz3ircg-init/bin/init" ;
-                                                failure = _failure.implementation "dff7788e" ;
-                                                ownertrust = { pid , pkgs , resources , root , sequential , wrap } : ignore : "${ fixture }/gnupg" ;
-                                                ownertrust-file = ''echo "$1/ownertrust.asc"'';
-                                                pkgs = pkgs ;
-                                                secret-keys = { pid , pkgs , resources , root , sequential , wrap } : ignore : "${ fixture }/gnupg" ;
-                                                secret-keys-file = ''echo "$1/secret-keys.asc"'';
                                             } ;
                                     dot-ssh =
                                         _dot-ssh.check
