@@ -1942,6 +1942,11 @@
                                                                                                                                                                         export GIT_SSH_COMMAND="$MOUNT/stage/ssh/command"
                                                                                                                                                                         git fetch origin "$OLD_BRANCH"
                                                                                                                                                                         git checkout "origin/$OLD_BRANCH"
+                                                                                                                                                                        git reset --hard
+                                                                                                                                                                        git clean -fdx
+                                                                                                                                                                        git submodule deinit -f --all
+                                                                                                                                                                        rm -rf .git/modules/*
+                                                                                                                                                                        git submodule sync --recursive
                                                                                                                                                                         git submodule update --init --recursive
                                                                                                                                                                         git submodule foreach "$MOUNT/stage/alias/submodule/mutable-mirror"
                                                                                                                                                                         UUID="$( uuidgen | sha512sum )" || failure b10e1bdf
@@ -2639,10 +2644,38 @@
                                                                                                 } ;
                                                                                 } ;
                                                                         } ;
+                                                            secrets =
+                                                                ignore :
+                                                                    let
+
+                                                                        targets = [ ".git" "dot-gnupg/owner-trust.asc.age" ] ;
+                                                                        in
+                                                                            {
+                                                                                init =
+                                                                                    { failure , pid , pkgs , resources , root , sequential , wrap } :
+                                                                                        let
+                                                                                            application =
+                                                                                                pkgs.writeShellApplication
+                                                                                                    {
+                                                                                                        name = "init" ;
+                                                                                                        runtimeInputs = [ pkgs.git ] ;
+                                                                                                        text =
+                                                                                                            ''
+                                                                                                                git init
+                                                                                                                git config user.email "${ config.personal.secrets2.email }"
+                                                                                                                git config user.name "${ config.personal.secrets2.name }"
+                                                                                                                git remote add https https:github.com/${ config.personal.secrets2.organization }/${ config.personal.secrets2.repository }.git
+                                                                                                                git remote add ssh github.com:${ config.personal.secrets2.organization }/${ config.personal.secrets2.repository }.git
+                                                                                                                git fetch origin main
+                                                                                                            '' ;
+                                                                                                    } ;
+                                                                                            in "${ application }/bin/init" ;
+                                                                                targets = targets ;
+                                                                            } ;
                                                             temporary =
                                                                 ignore :
                                                                     {
-                                                                        init = { pid , pkgs , resources , root , sequential , wrap } : "" ;
+                                                                        init = { failure , pid , pkgs , resources , root , sequential , wrap } : "" ;
                                                                         transient = true ;
                                                                     } ;
                                                             volume =
