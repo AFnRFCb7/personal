@@ -1927,6 +1927,22 @@
                                                                                                                                                             } ;
                                                                                                                                                     in "${ application }/bin/mutable-audit" ;
                                                                                                                                         } ;
+                                                                                                                                    mutable-denurse =
+                                                                                                                                        let
+                                                                                                                                            application =
+                                                                                                                                                pkgs.writeShellApplication
+                                                                                                                                                    {
+                                                                                                                                                        name = "mutable-denurse" ;
+                                                                                                                                                        runtimeInputs = [ ] ;
+                                                                                                                                                        text =
+                                                                                                                                                            ''
+                                                                                                                                                                SUBMODULE="$1"
+                                                                                                                                                                git rm -f "$SUBMODULE"
+                                                                                                                                                                rm -rf "$SUBMODULE"
+                                                                                                                                                                git config -f .git/config --remove-section "submodule.$SUBMODULE"
+                                                                                                                                                            '' ;
+                                                                                                                                                    } ;
+                                                                                                                                            in "${ application }/bin/mutable-denurse" ;
                                                                                                                                     mutable-mirror =
                                                                                                                                         {
                                                                                                                                             root =
@@ -1942,6 +1958,8 @@
                                                                                                                                                                         export GIT_SSH_COMMAND="$MOUNT/stage/ssh/command"
                                                                                                                                                                         git fetch origin "$OLD_BRANCH"
                                                                                                                                                                         git checkout "origin/$OLD_BRANCH"
+                                                                                                                                                                        git reset --hard
+                                                                                                                                                                        git clean -fdx
                                                                                                                                                                         git submodule update --init --recursive
                                                                                                                                                                         git submodule foreach "$MOUNT/stage/alias/submodule/mutable-mirror"
                                                                                                                                                                         UUID="$( uuidgen | sha512sum )" || failure b10e1bdf
