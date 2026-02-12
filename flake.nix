@@ -1966,6 +1966,7 @@
                                                                                                                                                                         git clean -fdx
                                                                                                                                                                         git submodule deinit -f --all
                                                                                                                                                                         rm -rf .git/modules/*
+                                                                                                                                                                        git clean -fdx
                                                                                                                                                                         git submodule sync --recursive
                                                                                                                                                                         git submodule update --init --recursive
                                                                                                                                                                         git submodule foreach "$MOUNT/stage/alias/submodule/mutable-mirror"
