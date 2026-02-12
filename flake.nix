@@ -2084,7 +2084,7 @@
                                                                                                                                                                 prompt "mutable-build-vm 1"
                                                                                                                                                                 git -C "$STUDIO_1" mutable-test
                                                                                                                                                                 prompt "mutable-test 1"
-                                                                                                                                                                SEQUENCE="$( sequential )" || failure ae7e6cd4
+                                                                                                                                                                SEQUENCE="$( sequential )" || failure ae7e6cd4y
                                                                                                                                                                 PARENT_2="$( "$SETUP" "$SEQUENCE" )" || failure 1ba93b40
                                                                                                                                                                 STUDIO_2="$PARENT_2/repository"
                                                                                                                                                                 BRANCH="$( git -C "$STUDIO_1" rev-parse --abbrev-ref HEAD )" || failure 89dfeef9
