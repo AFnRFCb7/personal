@@ -1960,7 +1960,7 @@
                                                                                                                                                                         git checkout "origin/$OLD_BRANCH"
                                                                                                                                                                         git submodule deinit -f .
                                                                                                                                                                         git reset --hard
-                                                                                                                                                                        SUBS=$( $(git submodule status | awk '{print $2}') || failure 1d3e1a75
+                                                                                                                                                                        SUBS=$( git submodule status | awk '{print $2}') || failure 1d3e1a75
                                                                                                                                                                         for SUB in $SUBS
                                                                                                                                                                         do
                                                                                                                                                                             rm --recursive --force "$SUB"
