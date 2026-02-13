@@ -3411,7 +3411,11 @@
                                                                         timeout = lib.mkOption { default = 60 * 60 ; type = lib.types.int ; } ;
                                                                         timeout2 = lib.mkOption { default = 60 ; type = lib.types.int ; } ;
                                                                     } ;
-                                                                mobile = lib.mkOption { default = "192.168.1.192" ; type = lib.types.str ; } ;
+                                                                mobile =
+                                                                    {
+                                                                        ip = lib.mkOption { default = "192.168.1.192" ; type = lib.types.str ; } ;
+                                                                        port = lib.mkOption { default = 8022 ; type = lib.types.int ; } ;
+                                                                    } ;
                                                                 name = lib.mkOption { type = lib.types.str ; } ;
                                                                 pass =
                                                                     {
