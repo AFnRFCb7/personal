@@ -554,16 +554,6 @@
                                                                                     in "${ application }/bin/init" ;
                                                                         targets = [ "dot-gnupg" ] ;
                                                                     } ;
-
-                                                                # ignore :
-                                                                #     _dot-gnupg.implementation
-                                                                #         {
-                                                                #             ownertrust = { pid , pkgs , resources , root , sequential , wrap } : resources.production.repository.secrets2.read-only ;
-                                                                #             ownertrust-file = ''echo "$1/stage/dot-ssh/ownertrust.asc"'' ;
-                                                                #             secret-keys = { pid , pkgs , resources , root , sequential , wrap } : resources.production.repository.secrets2.read-only ;
-                                                                #             secret-keys-file = ''echo "$1/stage/dot-ssh/secret-keys.asc"'' ;
-                                                                #
-                                                                        } ;
                                                             dot-ssh =
                                                                 ignore :
                                                                     _dot-ssh.implementation
