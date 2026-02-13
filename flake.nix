@@ -571,15 +571,15 @@
                                                                                                                     Host github.com
                                                                                                                         HostName github.com
                                                                                                                         User git
-                                                                                                                        IdentityFile $GITHUB_IDENTITY
-                                                                                                                        UserKnownHostsFile $GITHUB_KNOWN_HOSTS
+                                                                                                                        IdentityFile $GITHUB_IDENTITY/plaintext
+                                                                                                                        UserKnownHostsFile $GITHUB_KNOWN_HOSTS/plaintext
                                                                                                                         StrictHostKeyChecking yes
 
                                                                                                                     Host mobile
                                                                                                                         HostName $MOBILE_IP
                                                                                                                         User git
-                                                                                                                        IdentityFile $MOBILE_IDENTITY
-                                                                                                                        UserKnownHostsFile $MOBILE_KNOWN_HOSTS
+                                                                                                                        IdentityFile $MOBILE_IDENTITY/plaintext
+                                                                                                                        UserKnownHostsFile $MOBILE_KNOWN_HOSTS/plaintext
                                                                                                                         StrictHostKeyChecking yes
                                                                                                                         Port = $MOBILE_PORT
                                                                                                                 '' ;
@@ -3276,11 +3276,7 @@
                                                                     } ;
                                                                 timers =
                                                                     {
-                                                                        recycle-github-identity =
-                                                                            {
-                                                                                timerConfig.OnCalendar = "daily" ;
-                                                                            } ;
-                                                                        recycle-mobile-identity =
+                                                                        recycle-identities =
                                                                             {
                                                                                 timerConfig.OnCalendar = "daily" ;
                                                                             } ;
