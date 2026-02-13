@@ -2714,7 +2714,7 @@
                                                                                                         text =
                                                                                                             ''
                                                                                                                 SECRETS=${ resources.production.secrets { } }
-                                                                                                                age --decrypt "$SECRETS/${ name }" --identity ${ config.personal.agenix } --output /mount/plaintext
+                                                                                                                age --decrypt --identity ${ config.personal.agenix } --output /mount/plaintext "$SECRETS/${ name }"
                                                                                                                 chmod 0400 /mount/plaintext
                                                                                                             '' ;
                                                                                                     } ;
