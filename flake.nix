@@ -568,7 +568,6 @@
                                                                                                             builtins.toFile
                                                                                                                 "config"
                                                                                                                 ''
-                                                                                                                    # 532a9811
                                                                                                                     Host github.com
                                                                                                                         HostName github.com
                                                                                                                         User git
@@ -586,7 +585,6 @@
                                                                                                                 '' ;
                                                                                                         in
                                                                                                             ''
-                                                                                                                # 31b80a4b
                                                                                                                 GITHUB_KNOWN_HOSTS=${ resources.production.secret.dot-ssh.github.known-hosts { failure = "failure 29e0e495" ; } }
                                                                                                                 export GITHUB_KNOWN_HOSTS
                                                                                                                 GITHUB_IDENTITY=${ resources.production.secret.dot-ssh.github.identity { failure = "failure 29e0e495" ; } }
@@ -2407,6 +2405,7 @@
                                                                                                                                             in "${ application }/bin/ssh" ;
                                                                                                                                     in
                                                                                                                                         ''
+                                                                                                                                            # 2bfb88b1
                                                                                                                                             git config alias.mutable-audit "!$MOUNT/stage/alias/root/mutable-audit"
                                                                                                                                             git config alias.mutable-build-vm "!$MOUNT/stage/alias/root/mutable-build-vm"
                                                                                                                                             git config alias.mutable-build-vm-with-bootloader "!$MOUNT/stage/alias/root/mutable-build-vm-with-bootloader"
