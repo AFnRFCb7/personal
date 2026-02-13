@@ -586,6 +586,7 @@
                                                                                                                 '' ;
                                                                                                         in
                                                                                                             ''
+                                                                                                                # 31b80a4b
                                                                                                                 GITHUB_KNOWN_HOSTS=${ resources.production.secret.dot-ssh.github.known-hosts { failure = "failure 29e0e495" ; } }
                                                                                                                 export GITHUB_KNOWN_HOSTS
                                                                                                                 GITHUB_IDENTITY=${ resources.production.secret.dot-ssh.github.identity { failure = "failure 29e0e495" ; } }
