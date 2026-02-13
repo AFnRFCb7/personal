@@ -541,8 +541,8 @@
                                                                                                 runtimeInputs = [ pkgs.coreutils pkgs.gnupg ( ___failure "428d8579" ) ] ;
                                                                                                 text =
                                                                                                     ''
-                                                                                                        OWNERTRUST=${ resources.production..dot-gnupg.ownertrust { failure = "failure 4f690149" ; } }
-                                                                                                        SECRET_KEYS=${ resources.productions.secrets.dot-gnupg.secret-keys { failure = "failure a0e69797" ; } }
+                                                                                                        OWNERTRUST=${ resources.production.secret.dot-gnupg.ownertrust { failure = "failure 4f690149" ; } }
+                                                                                                        SECRET_KEYS=${ resources.productions.secret.dot-gnupg.secret-keys { failure = "failure a0e69797" ; } }
                                                                                                         GNUPGHOME=/mount/dot-gnupg
                                                                                                         export GNUPGHOME
                                                                                                         mkdir --parents "$GNUPGHOME"
