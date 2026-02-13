@@ -2710,7 +2710,7 @@
                                                                                                         runtimeInputs = [ pkgs.age pkgs.coreutils ] ;
                                                                                                         text =
                                                                                                             ''
-                                                                                                                SECRETS=${ resource.production.secrets { } }
+                                                                                                                SECRETS=${ resources.production.secrets { } }
                                                                                                                 age --decrypt "$SECRETS/${ name }" --identity ${ config.personal.agenix } --output /mount/plaintext
                                                                                                                 chmod 0400 /mount/plaintext
                                                                                                             '' ;
