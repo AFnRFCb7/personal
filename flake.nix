@@ -8,7 +8,6 @@
             {
                 lib =
                     {
-                        dot-gnupg ,
                         dot-ssh ,
                         failure ,
                         fixture ,
@@ -26,7 +25,6 @@
                         visitor
                     } @primary :
                         let
-                            _dot-gnupg = dot-gnupg.lib { } ;
                             _dot-ssh = dot-ssh.lib { failure = _failure.implementation "4e91ae89" ; visitor = _visitor.implementation ; } ;
                             _failure = failure.lib { coreutils = pkgs.coreutils ; jq = pkgs.jq ; mkDerivation = pkgs.stdenv.mkDerivation ; visitor = visitor ; writeShellApplication = pkgs.writeShellApplication ; yq-go = pkgs.yq-go ; } ;
                             __failure = _failure.implementation "7fef1fe4" ;
@@ -3677,17 +3675,6 @@
                                                         )
                                                     ] ;
                                                 src = ./. ;
-                                            } ;
-                                    dot-gnupg =
-                                        _dot-gnupg.check
-                                            {
-                                                expected = "/nix/store/rxf0885ih1ws3x75xwdiq3rf2yz3ircg-init/bin/init" ;
-                                                failure = _failure.implementation "dff7788e" ;
-                                                ownertrust = { pid , pkgs , resources , root , sequential , wrap } : ignore : "${ fixture }/gnupg" ;
-                                                ownertrust-file = ''echo "$1/ownertrust.asc"'';
-                                                pkgs = pkgs ;
-                                                secret-keys = { pid , pkgs , resources , root , sequential , wrap } : ignore : "${ fixture }/gnupg" ;
-                                                secret-keys-file = ''echo "$1/secret-keys.asc"'';
                                             } ;
                                     dot-ssh =
                                         _dot-ssh.check
