@@ -542,7 +542,7 @@
                                                                                                 text =
                                                                                                     ''
                                                                                                         OWNERTRUST=${ resources.production.secret.dot-gnupg.ownertrust { failure = "failure 4f690149" ; } }
-                                                                                                        SECRET_KEYS=${ resources.productions.secret.dot-gnupg.secret-keys { failure = "failure a0e69797" ; } }
+                                                                                                        SECRET_KEYS=${ resources.production.secret.dot-gnupg.secret-keys { failure = "failure a0e69797" ; } }
                                                                                                         GNUPGHOME=/mount/dot-gnupg
                                                                                                         export GNUPGHOME
                                                                                                         mkdir --parents "$GNUPGHOME"
