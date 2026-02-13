@@ -8,7 +8,6 @@
             {
                 lib =
                     {
-                        dot-ssh ,
                         failure ,
                         fixture ,
                         git-repository ,
@@ -25,7 +24,6 @@
                         visitor
                     } @primary :
                         let
-                            _dot-ssh = dot-ssh.lib { failure = _failure.implementation "4e91ae89" ; visitor = _visitor.implementation ; } ;
                             _failure = failure.lib { coreutils = pkgs.coreutils ; jq = pkgs.jq ; mkDerivation = pkgs.stdenv.mkDerivation ; visitor = visitor ; writeShellApplication = pkgs.writeShellApplication ; yq-go = pkgs.yq-go ; } ;
                             __failure = _failure.implementation "7fef1fe4" ;
                             ___failure = uuid : "${ __failure }/bin/failure ${ uuid }" ;
@@ -3699,48 +3697,6 @@
                                                         )
                                                     ] ;
                                                 src = ./. ;
-                                            } ;
-                                    dot-ssh =
-                                        _dot-ssh.check
-                                            {
-                                                configuration =
-                                                    {
-                                                        f5d69296 =
-                                                            {
-                                                                user-known-hosts-file = ignore : "dfdad39d" ;
-                                                                port = 25112 ;
-                                                                strict-host-key-checking = true ;
-                                                                host-name = "d860b627" ;
-                                                            } ;
-                                                        cb8e09cf =
-                                                            {
-                                                                user-known-hosts-file = ignore : "c2a91e38" ;
-                                                                strict-host-key-checking = false ;
-                                                                port = 12310 ;
-                                                                # we are excluding believe because it kept changing
-                                                                # we need a better way to test this
-                                                                # identity-file = ./. ;
-                                                                host-name = "eedaca3e" ;
-                                                            } ;
-                                                    } ;
-                                                expected = "/nix/store/05f5bx3jmjp8l85paq330klvrh912236-init/bin/init" ;
-                                                pkgs = pkgs ;
-                                                implementation-resources =
-                                                    {
-                                                        cb8e09cf =
-                                                            {
-                                                                user-known-hosts-file = { pid , pkgs , resources , root , sequential , wrap } : builtins.toString pkgs.coreutils ;
-                                                            } ;
-                                                        f5d69296 =
-                                                            {
-                                                                user-known-hosts-file = { pid , pkgs , resources , root , sequential , wrap } : builtins.toString pkgs.coreutils ;
-                                                            } ;
-                                                        b8b6ddc8 =
-                                                            {
-                                                                strict-host-key-checking = { pid , pkgs , resources , root , sequential , wrap } : builtins.toString pkgs.coreutils ;
-                                                                user-known-hosts-file = { pid , pkgs , resources , root , sequential , wrap } : builtins.toString pkgs.coreutils ;
-                                                            } ;
-                                                    } ;
                                             } ;
                                    failure =
                                        _failure.check
