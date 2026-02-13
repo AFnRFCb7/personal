@@ -2757,11 +2757,11 @@
                                                                                                     ''
                                                                                                         mkdir /mount/repository
                                                                                                         cd /mount/repository
-                                                                                                        git init
+                                                                                                        git init 2>&1
                                                                                                         git remote add https https://github.com/${ config.personal.secrets2.organization }/${ config.personal.secrets2.repository }
                                                                                                         git remote add ssh github.com:${ config.personal.secrets2.organization }/${ config.personal.secrets2.repository }
-                                                                                                        git fetch https main
-                                                                                                        git checkout https/main
+                                                                                                        git fetch https main 2>&1
+                                                                                                        git checkout https/main 2>&1
                                                                                                     '' ;
                                                                                             } ;
                                                                                     in "${ application }/bin/init" ;
