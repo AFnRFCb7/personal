@@ -2139,7 +2139,7 @@
                                                                                                                                                                 fi
                                                                                                                                                                 if git -C "$STUDIO_2" mutable-check
                                                                                                                                                                 then
-                                                                                                                                                                    echo "✅ the second checks passed"
+                                                                                                                                                                    echo "✅ the second checks passed" "$STUDIO_2"
                                                                                                                                                                 else
                                                                                                                                                                     failure 49034d7a "❌ the second checks failed"
                                                                                                                                                                 fi
