@@ -2405,7 +2405,7 @@
                                                                                                                                             in "${ application }/bin/ssh" ;
                                                                                                                                     in
                                                                                                                                         ''
-                                                                                                                                            # 2bfb88b1
+                                                                                                                                            echo 2bfb88b1
                                                                                                                                             git config alias.mutable-audit "!$MOUNT/stage/alias/root/mutable-audit"
                                                                                                                                             git config alias.mutable-build-vm "!$MOUNT/stage/alias/root/mutable-build-vm"
                                                                                                                                             git config alias.mutable-build-vm-with-bootloader "!$MOUNT/stage/alias/root/mutable-build-vm-with-bootloader"
