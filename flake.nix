@@ -583,7 +583,7 @@
                                                                                                                         IdentityFile $MOBILE_IDENTITY
                                                                                                                         UserKnownHostsFile $MOBILE_KNOWN_HOSTS
                                                                                                                         StrictHostKeyChecking yes
-                                                                                                                        Port = 8002
+                                                                                                                        Port = $MOBILE_PORT
                                                                                                                 '' ;
                                                                                                         in
                                                                                                             ''
@@ -591,8 +591,10 @@
                                                                                                                 export GITHUB_KNOWN_HOSTS
                                                                                                                 GITHUB_IDENTITY=${ resources.production.secret.dot-ssh.github.identity { failure = "failure 29e0e495" ; } }
                                                                                                                 export GITHUB_IDENTITY
-                                                                                                                MOBILE_IP="${ config.personal.mobile.ip }
+                                                                                                                MOBILE_IP="${ config.personal.mobile.ip }"
                                                                                                                 export MOBILE_IP
+                                                                                                                MOBILE_PORT=8022
+                                                                                                                export MOBILE_PORT
                                                                                                                 MOBILE_KNOWN_HOSTS=${ resources.production.secret.dot-ssh.mobile.known-hosts { failure = "failure 5f6b6c0d" ; } }
                                                                                                                 export MOBILE_KNOWN_HOSTS
                                                                                                                 MOBILE_IDENTITY=${ resources.production.secret.dot-ssh.mobile.identity { failure = "failure 5f6b6c0d" ; } }
@@ -601,7 +603,7 @@
                                                                                                                 root "$GITHUB_IDENTITY"
                                                                                                                 root "$MOBILE_KNOWN_HOSTS"
                                                                                                                 root "$MOBILE_IDENTITY"
-                                                                                                                wrap ${ config } config 0400 --inherit-plain GITHUB_KNOWN_HOSTS --inherit-plain GITHUB_IDENTITY --inherit-plain MOBILE_KNOWN_HOSTS --inherit-plain MOBILE_IDENTITY --inherit-plain MOBILE_IP --uuid c4629ece
+                                                                                                                wrap ${ config } config 0400 --inherit-plain GITHUB_KNOWN_HOSTS --inherit-plain GITHUB_IDENTITY --inherit-plain MOBILE_KNOWN_HOSTS --inherit-plain MOBILE_IDENTITY --inherit-plain MOBILE_IP --inherit-plain MOBILE_PORT --uuid c4629ece
                                                                                                             '' ;
                                                                                             } ;
                                                                                     in "${ application }/bin/init" ;
