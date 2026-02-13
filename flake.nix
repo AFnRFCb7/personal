@@ -2019,6 +2019,7 @@
                                                                                                                                                             } ;
                                                                                                                                                     in "${ application }/bin/mutable-mirror" ;
                                                                                                                                         } ;
+                                                                                                                                    mutable-mutable = null ;
                                                                                                                                     mutable-nurse =
                                                                                                                                         let
                                                                                                                                             application =
@@ -2721,6 +2722,19 @@
                                                                                     ownertrust = secret "dot-gnupg/ownertrust" ;
                                                                                     secret-keys = secret "dot-gnupg/secret-keys" ;
                                                                                 } ;
+                                                                            dot-ssh =
+                                                                                {
+                                                                                    github =
+                                                                                        {
+                                                                                            known-hosts = secret "dot-ssh/github/known-hosts" ;
+                                                                                            identity = secret "dot-ssh/github/identity" ;
+                                                                                        } ;
+                                                                                    mobile =
+                                                                                        {
+                                                                                            known-hosts = secret "dot-ssh/mobile/known-hosts" ;
+                                                                                            identity = secret "dot-ssh/mobile/identity" ;
+                                                                                        } ;
+                                                                                }
                                                                         } ;
                                                             secrets =
                                                                 ignore :
