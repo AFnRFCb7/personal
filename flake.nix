@@ -2734,7 +2734,7 @@
                                                                                             known-hosts = secret "dot-ssh/mobile/known-hosts" ;
                                                                                             identity = secret "dot-ssh/mobile/identity" ;
                                                                                         } ;
-                                                                                }
+                                                                                } ;
                                                                         } ;
                                                             secrets =
                                                                 ignore :
