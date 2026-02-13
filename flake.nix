@@ -578,7 +578,7 @@
                                                                                                                         StrictHostKeyChecking yes
 
                                                                                                                     Host mobile
-                                                                                                                        HostName ${ config.personal.mobile }
+                                                                                                                        HostName 192.168.1.192
                                                                                                                         User git
                                                                                                                         IdentityFile $MOBILE_IDENTITY
                                                                                                                         UserKnownHostsFile $MOBILE_KNOWN_HOSTS
