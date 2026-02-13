@@ -555,54 +555,52 @@
                                                                     } ;
                                                             dot-ssh =
                                                                 ignore :
-                                                                    _dot-ssh.implementation
-                                                                        {
-                                                                            configuration =
-                                                                                {
-                                                                                    "github.com" =
-                                                                                        {
-                                                                                            host-name = "github.com" ;
-                                                                                            identity-file = ignore : "stage/dot-ssh/github/identity.asc" ;
-                                                                                            strict-host-key-checking = true ;
-                                                                                            user-known-hosts-file = ignore : "stage/dot-ssh/github/known-hosts.asc" ;
-                                                                                            user = "git" ;
-                                                                                        } ;
-                                                                                    laptop =
-                                                                                        {
-                                                                                            host-name = "127.0.0.1" ;
-                                                                                            identity-file = ignore : "identity" ;
-                                                                                            strict-host-key-checking = false ;
-                                                                                            user-known-hosts-file = ignore : "known-hosts" ;
-                                                                                        } ;
-                                                                                    mobile =
-                                                                                        {
-                                                                                            host-name = config.personal.mobile ;
-                                                                                            identity-file = ignore : "stage/dot-ssh/mobile/identity.asc" ;
-                                                                                            port = 8022 ;
-                                                                                            strict-host-key-checking = false ;
-                                                                                            user-known-hosts-file = ignore : "stage/dot-ssh/mobile/known-hosts.asc" ;
-                                                                                        } ;
-                                                                                } ;
-                                                                            resources =
-                                                                                {
-                                                                                    "github.com" =
-                                                                                        {
-                                                                                            identity-file = { pid , pkgs , resources , root , sequential , wrap } : resources.production.repository.secrets2.read-only { failure = ___failure "f30c68a9" ; } ;
+                                                                    {
+                                                                        init =
+                                                                            { pid , pkgs , resources , root , sequential , wrap } :
+                                                                                let
+                                                                                    application =
+                                                                                        pkgs.writeShellApplication
+                                                                                            {
+                                                                                                name = "init" ;
+                                                                                                runtimeInputs = [ root wrap ( ___failure "ff7d31ef" )] ;
+                                                                                                text =
+                                                                                                    let
+                                                                                                        config =
+                                                                                                            builtins.toFile
+                                                                                                                "config"
+                                                                                                                ''
+                                                                                                                    Host github.com
+                                                                                                                        HostName github.com
+                                                                                                                        User git
+                                                                                                                        IdentityFile $GITHUB_IDENTITY
+                                                                                                                        UserKnownHostsFile $GITHUB_KNOWN_HOSTS
+                                                                                                                        StrictHostKeyChecking yes
 
-                                                                                            user-known-hosts-file = { pid , pkgs , resources , root , sequential , wrap } : resources.production.repository.secrets2.read-only { failure = ___failure "67293bbd" ; } ;
-                                                                                        } ;
-                                                                                    laptop =
-                                                                                        {
-                                                                                            identity-file = { pid , pkgs , resources , root , sequential , wrap } : resources.production.fixture.laptop { } ;
-                                                                                            user-known-hosts-file = { pid , pkgs , resources , root , sequential , wrap } : resources.production.fixture.laptop { } ;
-                                                                                        } ;
-                                                                                    mobile =
-                                                                                        {
-                                                                                            identity-file = { pid , pkgs , resources , root , sequential , wrap } : resources.production.repository.secrets2.read-only { failure = ___failure "8379287c" ; } ;
-                                                                                            user-known-hosts-file = { pid , pkgs , resources , root , sequential , wrap } : resources.production.repository.secrets2.read-only { failure = ___failure "df046088" ; } ;
-                                                                                        } ;
-                                                                                } ;
-                                                                        } ;
+                                                                                                                    Host mobile
+                                                                                                                        HostName ${ config.personal.mobile }
+                                                                                                                        User git
+                                                                                                                        IdentityFile $MOBILE_IDENTITY
+                                                                                                                        UserKnownHostsFile $MOBILE_KNOWN_HOSTS
+                                                                                                                        StrictHostKeyChecking yes
+                                                                                                                        Port = 8002
+                                                                                                                '' ;
+                                                                                                        in
+                                                                                                            ''
+                                                                                                                GITHUB_KNOWN_HOSTS=${ resources.production.secret.dot-ssh.github.known-hosts { failure = "failure 29e0e495" ; } }
+                                                                                                                GITHUB_IDENTITY=${ resources.production.secret.dot-ssh.github.identity { failure = "failure 29e0e495" ; } }
+                                                                                                                MOBILE_KNOWN_HOSTS=${ resources.production.secret.dot-ssh.mobile.known-hosts { failure = "failure 5f6b6c0d" ; } }
+                                                                                                                MOBILE_IDENTITY=${ resources.production.secret.dot-ssh.mobile.identity { failure = "failure 5f6b6c0d" ; } }
+                                                                                                                root "$GITHUB_KNOWN_HOSTS"
+                                                                                                                root "$GITHUB_IDENTITY"
+                                                                                                                root "$MOBILE_KNOWN_HOSTS"
+                                                                                                                root "$MOBILE_IDENTITY"
+                                                                                                                wrap ${ config } config 0400 --inherit-plain GITHUB_KNOWN_HOSTS --inherit-plain GITHUB_IDENTITY --inherit-plain MOBILE_KNOWN_HOSTS --inherit-plain MOBILE_IDENTITY --uuid c4629ece
+                                                                                                            '' ;
+                                                                                            } ;
+                                                                                    in "${ application }/bin/init" ;
+                                                                        targets = [ "config" ] ;
+                                                                    } ;
                                                             fixture =
                                                                 {
                                                                     laptop =
