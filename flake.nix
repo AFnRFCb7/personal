@@ -566,7 +566,7 @@
                                                                                                 runtimeInputs = [ root wrap ( ___failure "ff7d31ef" )] ;
                                                                                                 text =
                                                                                                     let
-                                                                                                        config =
+                                                                                                        ssh-config =
                                                                                                             builtins.toFile
                                                                                                                 "config"
                                                                                                                 ''
@@ -593,7 +593,7 @@
                                                                                                                 export GITHUB_IDENTITY
                                                                                                                 MOBILE_IP="${ config.personal.mobile.ip }"
                                                                                                                 export MOBILE_IP
-                                                                                                                MOBILE_PORT=8022
+                                                                                                                MOBILE_PORT=${ builtins.toString config.personal.mobile.port }
                                                                                                                 export MOBILE_PORT
                                                                                                                 MOBILE_KNOWN_HOSTS=${ resources.production.secret.dot-ssh.mobile.known-hosts { failure = "failure 5f6b6c0d" ; } }
                                                                                                                 export MOBILE_KNOWN_HOSTS
@@ -603,7 +603,7 @@
                                                                                                                 root "$GITHUB_IDENTITY"
                                                                                                                 root "$MOBILE_KNOWN_HOSTS"
                                                                                                                 root "$MOBILE_IDENTITY"
-                                                                                                                wrap ${ config } config 0400 --inherit-plain GITHUB_KNOWN_HOSTS --inherit-plain GITHUB_IDENTITY --inherit-plain MOBILE_KNOWN_HOSTS --inherit-plain MOBILE_IDENTITY --inherit-plain MOBILE_IP --inherit-plain MOBILE_PORT --uuid c4629ece
+                                                                                                                wrap ${ ssh-config } config 0400 --inherit-plain GITHUB_KNOWN_HOSTS --inherit-plain GITHUB_IDENTITY --inherit-plain MOBILE_KNOWN_HOSTS --inherit-plain MOBILE_IDENTITY --inherit-plain MOBILE_IP --inherit-plain MOBILE_PORT --uuid c4629ece
                                                                                                             '' ;
                                                                                             } ;
                                                                                     in "${ application }/bin/init" ;
