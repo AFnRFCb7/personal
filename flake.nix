@@ -591,7 +591,7 @@
                                                                                                                 export GITHUB_KNOWN_HOSTS
                                                                                                                 GITHUB_IDENTITY=${ resources.production.secret.dot-ssh.github.identity { failure = "failure 29e0e495" ; } }
                                                                                                                 export GITHUB_IDENTITY
-                                                                                                                MOBILE_IP="${ config.personal.mobile }"
+                                                                                                                MOBILE_IP=192.168.1.192
                                                                                                                 export MOBILE_IP
                                                                                                                 MOBILE_KNOWN_HOSTS=${ resources.production.secret.dot-ssh.mobile.known-hosts { failure = "failure 5f6b6c0d" ; } }
                                                                                                                 export MOBILE_KNOWN_HOSTS
