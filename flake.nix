@@ -2744,6 +2744,7 @@
                                                                                             identity = secret "dot-ssh/mobile/identity" ;
                                                                                         } ;
                                                                                 } ;
+                                                                            github.token = secret "github/token" ;
                                                                         } ;
                                                             secrets =
                                                                 ignore :
