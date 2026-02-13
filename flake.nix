@@ -547,8 +547,8 @@
                                                                                                         export GNUPGHOME
                                                                                                         mkdir --parents "$GNUPGHOME"
                                                                                                         chmod 0700 "$GNUPGHOME"
-                                                                                                        gpg --batch --yes --homedir "$GNUPGHOME" --import "$SECRET_KEYS_FILE" 2>&1
-                                                                                                        gpg --batch --yes --homedir "$GNUPGHOME" --import-ownertrust "$OWNERTRUST_FILE" 2>&1
+                                                                                                        gpg --batch --yes --homedir "$GNUPGHOME" --import "$SECRET_KEYS/plaintext" 2>&1
+                                                                                                        gpg --batch --yes --homedir "$GNUPGHOME" --import-ownertrust "$OWNERTRUST/plaintext" 2>&1
                                                                                                         gpg --batch --yes --homedir "$GNUPGHOME" --update-trustdb 2>&1
                                                                                                     '' ;
                                                                                             } ;
