@@ -1453,6 +1453,7 @@
                                                                                                                                                 runtimeInputs = [ pkgs.openssh ] ;
                                                                                                                                                 text =
                                                                                                                                                     ''
+                                                                                                                                                        # 09e7c116
                                                                                                                                                         ssh -F "$MOUNT/stage/ssh/config" "$@"
                                                                                                                                                     '' ;
                                                                                                                                             } ;
@@ -2399,6 +2400,7 @@
                                                                                                                                                         runtimeInputs = [ pkgs.openssh ] ;
                                                                                                                                                         text =
                                                                                                                                                             ''
+                                                                                                                                                                # baec716a
                                                                                                                                                                 ssh -F "$MOUNT/stage/ssh/config" "$@"
                                                                                                                                                             '' ;
                                                                                                                                                     } ;
@@ -2655,6 +2657,7 @@
                                                                                                                                                         runtimeInputs = [ pkgs.openssh ] ;
                                                                                                                                                         text =
                                                                                                                                                             ''
+                                                                                                                                                                # a33da716
                                                                                                                                                                 ssh -F "$MOUNT/stage/ssh/config" "$@"
                                                                                                                                                             '' ;
                                                                                                                                                     } ;
