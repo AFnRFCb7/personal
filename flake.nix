@@ -568,6 +568,7 @@
                                                                                                             builtins.toFile
                                                                                                                 "config"
                                                                                                                 ''
+                                                                                                                    # 532a9811
                                                                                                                     Host github.com
                                                                                                                         HostName github.com
                                                                                                                         User git
