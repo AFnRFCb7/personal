@@ -532,13 +532,13 @@
                                                                 ignore :
                                                                     {
                                                                         init =
-                                                                            { failure , pid , pkgs , resources , root , sequential , wrap } :
+                                                                            { pid , pkgs , resources , root , sequential , wrap } :
                                                                                 let
                                                                                     application =
                                                                                         pkgs.writeShellApplication
                                                                                             {
                                                                                                 name = "init" ;
-                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.gnupg ] ;
+                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.gnupg ( ___failure "428d8579" ) ] ;
                                                                                                 text =
                                                                                                     ''
                                                                                                         OWNERTRUST=${ resources.production.secrets.dot-gnupg.ownertrust { failure = "failure 4f690149" ; } }
