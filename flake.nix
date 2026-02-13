@@ -541,7 +541,7 @@
                                                                                                 runtimeInputs = [ pkgs.coreutils pkgs.gnupg ( ___failure "428d8579" ) ] ;
                                                                                                 text =
                                                                                                     ''
-                                                                                                        OWNERTRUST=${ resources.production.secrets.dot-gnupg.ownertrust { failure = "failure 4f690149" ; } }
+                                                                                                        OWNERTRUST=${ resources.production..dot-gnupg.ownertrust { failure = "failure 4f690149" ; } }
                                                                                                         SECRET_KEYS=${ resources.productions.secrets.dot-gnupg.secret-keys { failure = "failure a0e69797" ; } }
                                                                                                         GNUPGHOME=/mount/dot-gnupg
                                                                                                         export GNUPGHOME
@@ -2695,6 +2695,62 @@
                                                                                                 } ;
                                                                                 } ;
                                                                         } ;
+                                                            secret =
+                                                                let
+                                                                    secret =
+                                                                        name : ignore :
+                                                                            {
+                                                                                init =
+                                                                                    { pid , pkgs , resources , root , sequential , wrap } :
+                                                                                        let
+                                                                                            application =
+                                                                                                pkgs.writeShellApplication
+                                                                                                    {
+                                                                                                        name = "init" ;
+                                                                                                        runtimeInputs = [ pkgs.age pkgs.coreutils ] ;
+                                                                                                        text =
+                                                                                                            ''
+                                                                                                                SECRETS=${ resource.production.secrets { } }
+                                                                                                                age --decrypt "$SECRETS/${ name }" --identity ${ config.personal.agenix } --output /mount/plaintext
+                                                                                                                chmod 0400 /mount/plaintext
+                                                                                                            '' ;
+                                                                                                    } ;
+                                                                                            in "${ application }/bin/init" ;
+                                                                                targets = [ "plaintext" ] ;
+                                                                            } ;
+                                                                    in
+                                                                        {
+                                                                            dot-gnupg =
+                                                                                {
+                                                                                    ownertrust = secret "dot-gnupg/ownertrust" ;
+                                                                                    secret-keys = secret "dot-gnupg/secret-keys" ;
+                                                                                } ;
+                                                                        } ;
+                                                            secrets =
+                                                                ignore :
+                                                                    {
+                                                                        init =
+                                                                            { pid , pkgs , resources , root , sequential , wrap } :
+                                                                                let
+                                                                                    application =
+                                                                                        pkgs.writeShellApplication
+                                                                                            {
+                                                                                                name = "init" ;
+                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
+                                                                                                text =
+                                                                                                    ''
+                                                                                                        mkdir /mount/repository
+                                                                                                        cd /mount/repository
+                                                                                                        git init
+                                                                                                        git remote add https https://github.com/${ config.personal.secrets2.organization }/${ config.personal.secrets2.repository }
+                                                                                                        git remote add ssh github.com:${ config.personal.secrets2.organization }/${ config.personal.secrets2.repository }
+                                                                                                        git fetch https main
+                                                                                                        git checkout https/main
+                                                                                                    '' ;
+                                                                                            } ;
+                                                                                    in "${ application }/bin/init" ;
+                                                                        targets = [ ".git" "dot-gnupg" "dot-ssh" "github" ] ;
+                                                                    } ;
                                                             temporary =
                                                                 ignore :
                                                                     {
