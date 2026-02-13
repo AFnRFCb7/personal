@@ -532,25 +532,26 @@
                                                                 ignore :
                                                                     {
                                                                         init =
-                                                                            { pid , pkgs , resources , root , sequential , wrap } :
+                                                                            { failure , pid , pkgs , resources , root , sequential , wrap } :
                                                                                 let
                                                                                     application =
-                                                                                        {
-                                                                                            name = "init" ;
-                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.gnupg ] ;
-                                                                                            text =
-                                                                                                ''
-                                                                                                    OWNERTRUST=${ resources.production.secrets.dot-gnupg.ownertrust { failure = "failure 4f690149" ; } }
-                                                                                                    SECRET_KEYS=${ resources.productions.secrets.dot-gnupg.secret-keys { failure = "failure a0e69797" ; } }
-                                                                                                    GNUPGHOME=/mount/dot-gnupg
-                                                                                                    export GNUPGHOME
-                                                                                                    mkdir --parents "$GNUPGHOME"
-                                                                                                    chmod 0700 "$GNUPGHOME"
-                                                                                                    gpg --batch --yes --homedir "$GNUPGHOME" --import "$SECRET_KEYS_FILE" 2>&1
-                                                                                                    gpg --batch --yes --homedir "$GNUPGHOME" --import-ownertrust "$OWNERTRUST_FILE" 2>&1
-                                                                                                    gpg --batch --yes --homedir "$GNUPGHOME" --update-trustdb 2>&1
-                                                                                                '' ;
-                                                                                        } ;
+                                                                                        pkgs.writeShellApplication
+                                                                                            {
+                                                                                                name = "init" ;
+                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.gnupg ] ;
+                                                                                                text =
+                                                                                                    ''
+                                                                                                        OWNERTRUST=${ resources.production.secrets.dot-gnupg.ownertrust { failure = "failure 4f690149" ; } }
+                                                                                                        SECRET_KEYS=${ resources.productions.secrets.dot-gnupg.secret-keys { failure = "failure a0e69797" ; } }
+                                                                                                        GNUPGHOME=/mount/dot-gnupg
+                                                                                                        export GNUPGHOME
+                                                                                                        mkdir --parents "$GNUPGHOME"
+                                                                                                        chmod 0700 "$GNUPGHOME"
+                                                                                                        gpg --batch --yes --homedir "$GNUPGHOME" --import "$SECRET_KEYS_FILE" 2>&1
+                                                                                                        gpg --batch --yes --homedir "$GNUPGHOME" --import-ownertrust "$OWNERTRUST_FILE" 2>&1
+                                                                                                        gpg --batch --yes --homedir "$GNUPGHOME" --update-trustdb 2>&1
+                                                                                                    '' ;
+                                                                                            } ;
                                                                                     in "${ application }/bin/init" ;
                                                                         targets = [ "dot-gnupg" ] ;
                                                                     } ;
