@@ -1,4 +1,4 @@
-# 484d2919
+# 549dc6a4
 {
     inputs =
         {
@@ -8,7 +8,6 @@
             {
                 lib =
                     {
-                        dot-ssh ,
                         failure ,
                         fixture ,
                         git-repository ,
@@ -25,7 +24,6 @@
                         visitor
                     } @primary :
                         let
-                            _dot-ssh = dot-ssh.lib { failure = _failure.implementation "4e91ae89" ; visitor = _visitor.implementation ; } ;
                             _failure = failure.lib { coreutils = pkgs.coreutils ; jq = pkgs.jq ; mkDerivation = pkgs.stdenv.mkDerivation ; visitor = visitor ; writeShellApplication = pkgs.writeShellApplication ; yq-go = pkgs.yq-go ; } ;
                             __failure = _failure.implementation "7fef1fe4" ;
                             ___failure = uuid : "${ __failure }/bin/failure ${ uuid }" ;
@@ -555,54 +553,60 @@
                                                                     } ;
                                                             dot-ssh =
                                                                 ignore :
-                                                                    _dot-ssh.implementation
-                                                                        {
-                                                                            configuration =
-                                                                                {
-                                                                                    "github.com" =
-                                                                                        {
-                                                                                            host-name = "github.com" ;
-                                                                                            identity-file = ignore : "stage/dot-ssh/github/identity.asc" ;
-                                                                                            strict-host-key-checking = true ;
-                                                                                            user-known-hosts-file = ignore : "stage/dot-ssh/github/known-hosts.asc" ;
-                                                                                            user = "git" ;
-                                                                                        } ;
-                                                                                    laptop =
-                                                                                        {
-                                                                                            host-name = "127.0.0.1" ;
-                                                                                            identity-file = ignore : "identity" ;
-                                                                                            strict-host-key-checking = false ;
-                                                                                            user-known-hosts-file = ignore : "known-hosts" ;
-                                                                                        } ;
-                                                                                    mobile =
-                                                                                        {
-                                                                                            host-name = config.personal.mobile ;
-                                                                                            identity-file = ignore : "stage/dot-ssh/mobile/identity.asc" ;
-                                                                                            port = 8022 ;
-                                                                                            strict-host-key-checking = false ;
-                                                                                            user-known-hosts-file = ignore : "stage/dot-ssh/mobile/known-hosts.asc" ;
-                                                                                        } ;
-                                                                                } ;
-                                                                            resources =
-                                                                                {
-                                                                                    "github.com" =
-                                                                                        {
-                                                                                            identity-file = { pid , pkgs , resources , root , sequential , wrap } : resources.production.repository.secrets2.read-only { failure = ___failure "f30c68a9" ; } ;
+                                                                    {
+                                                                        init =
+                                                                            { pid , pkgs , resources , root , sequential , wrap } :
+                                                                                let
+                                                                                    application =
+                                                                                        pkgs.writeShellApplication
+                                                                                            {
+                                                                                                name = "init" ;
+                                                                                                runtimeInputs = [ root wrap ( ___failure "ff7d31ef" )] ;
+                                                                                                text =
+                                                                                                    let
+                                                                                                        ssh-config =
+                                                                                                            builtins.toFile
+                                                                                                                "config"
+                                                                                                                ''
+                                                                                                                    Host github.com
+                                                                                                                        HostName github.com
+                                                                                                                        User git
+                                                                                                                        IdentityFile $GITHUB_IDENTITY/plaintext
+                                                                                                                        UserKnownHostsFile $GITHUB_KNOWN_HOSTS/plaintext
+                                                                                                                        StrictHostKeyChecking yes
 
-                                                                                            user-known-hosts-file = { pid , pkgs , resources , root , sequential , wrap } : resources.production.repository.secrets2.read-only { failure = ___failure "67293bbd" ; } ;
-                                                                                        } ;
-                                                                                    laptop =
-                                                                                        {
-                                                                                            identity-file = { pid , pkgs , resources , root , sequential , wrap } : resources.production.fixture.laptop { } ;
-                                                                                            user-known-hosts-file = { pid , pkgs , resources , root , sequential , wrap } : resources.production.fixture.laptop { } ;
-                                                                                        } ;
-                                                                                    mobile =
-                                                                                        {
-                                                                                            identity-file = { pid , pkgs , resources , root , sequential , wrap } : resources.production.repository.secrets2.read-only { failure = ___failure "8379287c" ; } ;
-                                                                                            user-known-hosts-file = { pid , pkgs , resources , root , sequential , wrap } : resources.production.repository.secrets2.read-only { failure = ___failure "df046088" ; } ;
-                                                                                        } ;
-                                                                                } ;
-                                                                        } ;
+                                                                                                                    Host mobile
+                                                                                                                        HostName $MOBILE_IP
+                                                                                                                        User git
+                                                                                                                        IdentityFile $MOBILE_IDENTITY/plaintext
+                                                                                                                        UserKnownHostsFile $MOBILE_KNOWN_HOSTS/plaintext
+                                                                                                                        StrictHostKeyChecking yes
+                                                                                                                        Port = $MOBILE_PORT
+                                                                                                                '' ;
+                                                                                                        in
+                                                                                                            ''
+                                                                                                                GITHUB_KNOWN_HOSTS=${ resources.production.secret.dot-ssh.github.known-hosts { failure = "failure 29e0e495" ; } }
+                                                                                                                export GITHUB_KNOWN_HOSTS
+                                                                                                                GITHUB_IDENTITY=${ resources.production.secret.dot-ssh.github.identity { failure = "failure 29e0e495" ; } }
+                                                                                                                export GITHUB_IDENTITY
+                                                                                                                MOBILE_IP="${ config.personal.mobile.ip }"
+                                                                                                                export MOBILE_IP
+                                                                                                                MOBILE_PORT=${ builtins.toString config.personal.mobile.port }
+                                                                                                                export MOBILE_PORT
+                                                                                                                MOBILE_KNOWN_HOSTS=${ resources.production.secret.dot-ssh.mobile.known-hosts { failure = "failure 5f6b6c0d" ; } }
+                                                                                                                export MOBILE_KNOWN_HOSTS
+                                                                                                                MOBILE_IDENTITY=${ resources.production.secret.dot-ssh.mobile.identity { failure = "failure 5f6b6c0d" ; } }
+                                                                                                                export MOBILE_IDENTITY
+                                                                                                                root "$GITHUB_KNOWN_HOSTS"
+                                                                                                                root "$GITHUB_IDENTITY"
+                                                                                                                root "$MOBILE_KNOWN_HOSTS"
+                                                                                                                root "$MOBILE_IDENTITY"
+                                                                                                                wrap ${ ssh-config } config 0400 --inherit-plain GITHUB_KNOWN_HOSTS --inherit-plain GITHUB_IDENTITY --inherit-plain MOBILE_KNOWN_HOSTS --inherit-plain MOBILE_IDENTITY --inherit-plain MOBILE_IP --inherit-plain MOBILE_PORT --uuid c4629ece
+                                                                                                            '' ;
+                                                                                            } ;
+                                                                                    in "${ application }/bin/init" ;
+                                                                        targets = [ "config" ] ;
+                                                                    } ;
                                                             fixture =
                                                                 {
                                                                     laptop =
@@ -2021,6 +2025,7 @@
                                                                                                                                                             } ;
                                                                                                                                                     in "${ application }/bin/mutable-mirror" ;
                                                                                                                                         } ;
+                                                                                                                                    mutable-mutable = null ;
                                                                                                                                     mutable-nurse =
                                                                                                                                         let
                                                                                                                                             application =
@@ -2111,9 +2116,9 @@
                                                                                                                                                                 git -C "$STUDIO_1" mutable-test
                                                                                                                                                                 prompt "mutable-test 1"
                                                                                                                                                                 SEQUENCE="$( sequential )" || failure ae7e6cd4y
-                                                                                                                                                                REPO_2="$( studio "$SEQUENCE" )" || failure c26c59b5
-                                                                                                                                                                PARENT_2="$( dirname "$REPO_2" )" || failure aa07751f
-                                                                                                                                                                # PARENT_2="$( "$SETUP" "$SEQUENCE" )" || failure 1ba93b40
+                                                                                                                                                                # REPO_2="$( studio "$SEQUENCE" )" || failure c26c59b5
+                                                                                                                                                                # PARENT_2="$( dirname "$REPO_2" )" || failure aa07751f
+                                                                                                                                                                PARENT_2="$( "$SETUP" "$SEQUENCE" )" || failure 1ba93b40
                                                                                                                                                                 STUDIO_2="$PARENT_2/repository"
                                                                                                                                                                 BRANCH="$( git -C "$STUDIO_1" rev-parse --abbrev-ref HEAD )" || failure 89dfeef9
                                                                                                                                                                 PARENT_2="$( dirname "$STUDIO_2" )" || failure 0db898ea
@@ -2436,7 +2441,7 @@
                                                                                                                                             wrap ${ mutable- "switch" } stage/alias/root/mutable-switch 0500 --literal-plain MUTABLE_SNAPSHOT --literal-plain PATH
                                                                                                                                             wrap ${ mutable- "test" } stage/alias/root/mutable-test 0500 --literal-plain MUTABLE_SNAPSHOT --literal-plain PATH
                                                                                                                                             wrap ${ ssh } stage/ssh/command 0500 --literal-plain "@" --inherit-plain MOUNT --literal-plain PATH
-                                                                                                                                            DOT_SSH=${ resources.production.dot-ssh { } }
+                                                                                                                                            DOT_SSH=${ resources.production.dot-ssh { setup = setup : ''${ setup } "$(uuidgen)"'' ; failure = "failure ab712001" ; } }
                                                                                                                                             root "$DOT_SSH"
                                                                                                                                             wrap "$DOT_SSH/config" stage/ssh/config 0400
                                                                                                                                             "$MOUNT/stage/alias/root/mutable-mirror" main 2>&1
@@ -2709,7 +2714,7 @@
                                                                                                         text =
                                                                                                             ''
                                                                                                                 SECRETS=${ resources.production.secrets { } }
-                                                                                                                age --decrypt "$SECRETS/${ name }" --identity ${ config.personal.agenix } --output /mount/plaintext
+                                                                                                                age --decrypt --identity ${ config.personal.agenix } --output /mount/plaintext "$SECRETS/repository/${ name }.asc.age"
                                                                                                                 chmod 0400 /mount/plaintext
                                                                                                             '' ;
                                                                                                     } ;
@@ -2722,6 +2727,19 @@
                                                                                 {
                                                                                     ownertrust = secret "dot-gnupg/ownertrust" ;
                                                                                     secret-keys = secret "dot-gnupg/secret-keys" ;
+                                                                                } ;
+                                                                            dot-ssh =
+                                                                                {
+                                                                                    github =
+                                                                                        {
+                                                                                            known-hosts = secret "dot-ssh/github/known-hosts" ;
+                                                                                            identity = secret "dot-ssh/github/identity" ;
+                                                                                        } ;
+                                                                                    mobile =
+                                                                                        {
+                                                                                            known-hosts = secret "dot-ssh/mobile/known-hosts" ;
+                                                                                            identity = secret "dot-ssh/mobile/identity" ;
+                                                                                        } ;
                                                                                 } ;
                                                                         } ;
                                                             secrets =
@@ -2739,15 +2757,15 @@
                                                                                                     ''
                                                                                                         mkdir /mount/repository
                                                                                                         cd /mount/repository
-                                                                                                        git init
+                                                                                                        git init 2>&1
                                                                                                         git remote add https https://github.com/${ config.personal.secrets2.organization }/${ config.personal.secrets2.repository }
                                                                                                         git remote add ssh github.com:${ config.personal.secrets2.organization }/${ config.personal.secrets2.repository }
-                                                                                                        git fetch https main
-                                                                                                        git checkout https/main
+                                                                                                        git fetch https main 2>&1
+                                                                                                        git checkout https/main 2>&1
                                                                                                     '' ;
                                                                                             } ;
                                                                                     in "${ application }/bin/init" ;
-                                                                        targets = [ ".git" "dot-gnupg" "dot-ssh" "github" ] ;
+                                                                        targets = [ "repository" ] ;
                                                                     } ;
                                                             temporary =
                                                                 ignore :
@@ -3258,11 +3276,7 @@
                                                                     } ;
                                                                 timers =
                                                                     {
-                                                                        recycle-github-identity =
-                                                                            {
-                                                                                timerConfig.OnCalendar = "daily" ;
-                                                                            } ;
-                                                                        recycle-mobile-identity =
+                                                                        recycle-identities =
                                                                             {
                                                                                 timerConfig.OnCalendar = "daily" ;
                                                                             } ;
@@ -3393,7 +3407,11 @@
                                                                         timeout = lib.mkOption { default = 60 * 60 ; type = lib.types.int ; } ;
                                                                         timeout2 = lib.mkOption { default = 60 ; type = lib.types.int ; } ;
                                                                     } ;
-                                                                mobile = lib.mkOption { default = "192.168.1.192" ; type = lib.types.str ; } ;
+                                                                mobile =
+                                                                    {
+                                                                        ip = lib.mkOption { default = "192.168.1.192" ; type = lib.types.str ; } ;
+                                                                        port = lib.mkOption { default = 8022 ; type = lib.types.int ; } ;
+                                                                    } ;
                                                                 name = lib.mkOption { type = lib.types.str ; } ;
                                                                 pass =
                                                                     {
@@ -3675,48 +3693,6 @@
                                                         )
                                                     ] ;
                                                 src = ./. ;
-                                            } ;
-                                    dot-ssh =
-                                        _dot-ssh.check
-                                            {
-                                                configuration =
-                                                    {
-                                                        f5d69296 =
-                                                            {
-                                                                user-known-hosts-file = ignore : "dfdad39d" ;
-                                                                port = 25112 ;
-                                                                strict-host-key-checking = true ;
-                                                                host-name = "d860b627" ;
-                                                            } ;
-                                                        cb8e09cf =
-                                                            {
-                                                                user-known-hosts-file = ignore : "c2a91e38" ;
-                                                                strict-host-key-checking = false ;
-                                                                port = 12310 ;
-                                                                # we are excluding believe because it kept changing
-                                                                # we need a better way to test this
-                                                                # identity-file = ./. ;
-                                                                host-name = "eedaca3e" ;
-                                                            } ;
-                                                    } ;
-                                                expected = "/nix/store/05f5bx3jmjp8l85paq330klvrh912236-init/bin/init" ;
-                                                pkgs = pkgs ;
-                                                implementation-resources =
-                                                    {
-                                                        cb8e09cf =
-                                                            {
-                                                                user-known-hosts-file = { pid , pkgs , resources , root , sequential , wrap } : builtins.toString pkgs.coreutils ;
-                                                            } ;
-                                                        f5d69296 =
-                                                            {
-                                                                user-known-hosts-file = { pid , pkgs , resources , root , sequential , wrap } : builtins.toString pkgs.coreutils ;
-                                                            } ;
-                                                        b8b6ddc8 =
-                                                            {
-                                                                strict-host-key-checking = { pid , pkgs , resources , root , sequential , wrap } : builtins.toString pkgs.coreutils ;
-                                                                user-known-hosts-file = { pid , pkgs , resources , root , sequential , wrap } : builtins.toString pkgs.coreutils ;
-                                                            } ;
-                                                    } ;
                                             } ;
                                    failure =
                                        _failure.check
