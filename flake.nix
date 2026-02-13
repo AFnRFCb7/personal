@@ -2765,7 +2765,7 @@
                                                                                                     '' ;
                                                                                             } ;
                                                                                     in "${ application }/bin/init" ;
-                                                                        targets = [ ".git" "dot-gnupg" "dot-ssh" "github" ] ;
+                                                                        targets = [ "repository" ] ;
                                                                     } ;
                                                             temporary =
                                                                 ignore :
