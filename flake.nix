@@ -2405,7 +2405,6 @@
                                                                                                                                             in "${ application }/bin/ssh" ;
                                                                                                                                     in
                                                                                                                                         ''
-                                                                                                                                            echo 2bfb88b1
                                                                                                                                             git config alias.mutable-audit "!$MOUNT/stage/alias/root/mutable-audit"
                                                                                                                                             git config alias.mutable-build-vm "!$MOUNT/stage/alias/root/mutable-build-vm"
                                                                                                                                             git config alias.mutable-build-vm-with-bootloader "!$MOUNT/stage/alias/root/mutable-build-vm-with-bootloader"
@@ -2442,7 +2441,7 @@
                                                                                                                                             wrap ${ mutable- "switch" } stage/alias/root/mutable-switch 0500 --literal-plain MUTABLE_SNAPSHOT --literal-plain PATH
                                                                                                                                             wrap ${ mutable- "test" } stage/alias/root/mutable-test 0500 --literal-plain MUTABLE_SNAPSHOT --literal-plain PATH
                                                                                                                                             wrap ${ ssh } stage/ssh/command 0500 --literal-plain "@" --inherit-plain MOUNT --literal-plain PATH
-                                                                                                                                            DOT_SSH=${ resources.production.dot-ssh { } }
+                                                                                                                                            DOT_SSH=${ resources.production.dot-ssh { setup = setup : "${ setup } 95169df5" ; failure = "failure ab712001" ; } }
                                                                                                                                             root "$DOT_SSH"
                                                                                                                                             wrap "$DOT_SSH/config" stage/ssh/config 0400
                                                                                                                                             "$MOUNT/stage/alias/root/mutable-mirror" main 2>&1
