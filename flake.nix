@@ -1499,7 +1499,7 @@
                                                                                                                                                             ''
                                                                                                                                                                 MOUNT="$( git rev-parse --show-toplevel )" || failure 37eb0a7a
                                                                                                                                                                 cd $MOUNT
-                                                                                                                                                                git submodule foreach '${ submodule.mutable-snapshot }'
+                                                                                                                                                                git submodule foreach '${ submodule.snapshot }'
                                                                                                                                                                 BRANCH="$( git rev-parse --abbrev-ref HEAD )" || failure d14e84bf
                                                                                                                                                                 if ! git diff --quiet || ! git diff --quiet --cached
                                                                                                                                                                 then
