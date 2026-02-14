@@ -2984,6 +2984,7 @@
                                                                     victor =
                                                                         {
                                                                             description = config.victor.description ;
+                                                                            isNormalUser = true ;
                                                                             name = config.victor.name ;
                                                                             packages = [ pkgs.at ] ;
                                                                         } ;
