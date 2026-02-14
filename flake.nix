@@ -3001,6 +3001,7 @@
                                                                                             } ;
                                                                                     } ;
                                                                             in builtins.listOf type ;
+                                                                } ;
                                                         personal =
                                                             {
                                                                 agenix = lib.mkOption { type = lib.types.path ; } ;
