@@ -1878,7 +1878,6 @@
                                                                                                                                     } ;
                                                                                                                                 xxx =
                                                                                                                                     ''
-                                                                                                                                        ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''git config alias.${ name } "!${ value }"'' ) root ) ) }
                                                                                                                                         root ${ pkgs.openssh }
                                                                                                                                         DOT_SSH=${ resources.dot-ssh { failure = "failure 26f12474" ; } }
                                                                                                                                         root "$DOT_SSH"
