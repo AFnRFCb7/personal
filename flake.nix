@@ -1483,11 +1483,11 @@
                                                                                                                                             application =
                                                                                                                                                 pkgs.writeShellApplication
                                                                                                                                                     {
-                                                                                                                                                        name = "mutable-${ name }" ;
+                                                                                                                                                        name = name ;
                                                                                                                                                         runtimeInputs = runtimeInputs ;
                                                                                                                                                         text = text ;
                                                                                                                                                     } ;
-                                                                                                                                            in "${ application }/bin/mutable-${ name }" ;
+                                                                                                                                            in "${ application }/bin/${ name }" ;
                                                                                                                                 root =
                                                                                                                                     let
                                                                                                                                         set =
@@ -1506,7 +1506,7 @@
                                                                                                                                                                 fi
                                                                                                                                                                 git push origin HEAD >&2
                                                                                                                                                                 COMMIT=$( git rev-parse HEAD )" || failure e6fec78a
-                                                                                                                                                                SNAPSHOT=${ resources.production.repository.studio.snapshot { failure = 8500 ; setup = setup : ''${ setup } "$BRANCH" "$COMMIT"'' ;} }
+                                                                                                                                                                SNAPSHOT=${ resources.production.repository.studio.snapshot { failure = 8500 ; setup = setup : ''${ setup } "$BRANCH" "$COMMIT"'' ; } }
                                                                                                                                                                 root "$SNAPSHOT"
                                                                                                                                                                 echo "$SNAPSHOT"
                                                                                                                                                             '' ;
@@ -1560,7 +1560,7 @@
                                                                                                                                         mkdir --parents /mount/repository
                                                                                                                                         cd /mount/repository
                                                                                                                                         git init
-                                                                                                                                        ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''git config alias.${ name } "!${ value }"'' ) root ) ) }
+                                                                                                                                        ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''git config alias.mutable-${ name } "!${ value }"'' ) root ) ) }
                                                                                                                                     '' ;
                                                                                                                     } ;
                                                                                                             in "${ application }/bin/init" ;
