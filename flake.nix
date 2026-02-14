@@ -1520,9 +1520,9 @@
                                                                                                                                                                         '' ;
                                                                                                                                                                 } ;
                                                                                                                                                         in "${ application }/bin/mutable-audit" ;
-                                                                                                                                                mutable-build-vm = root.mutable_ "build-vm" ;
-                                                                                                                                                mutable-build-vm-with-bootloader = root.mutable_ "build-vm-with-bootloader" ;
-                                                                                                                                                mutable-check = root.mutable_ "check" ;
+                                                                                                                                                mutable-build-vm = mutable- "build-vm" ;
+                                                                                                                                                mutable-build-vm-with-bootloader = mutable- "build-vm-with-bootloader" ;
+                                                                                                                                                mutable-check = mutable- "check" ;
                                                                                                                                                 mutable-denurse =
                                                                                                                                                     let
                                                                                                                                                         application =
@@ -1797,8 +1797,8 @@
                                                                                                                                                                         '' ;
                                                                                                                                                                 } ;
                                                                                                                                                         in "${ application }/bin/mutable-studio" ;
-                                                                                                                                                mutable-switch = root.mutable_ "switch" ;
-                                                                                                                                                mutable-test = root.mutable_ "test" ;
+                                                                                                                                                mutable-switch = mutable- "switch" ;
+                                                                                                                                                mutable-test = mutable- "test" ;
                                                                                                                                             } ;
                                                                                                                                 submodule =
                                                                                                                                     {
