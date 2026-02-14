@@ -1458,7 +1458,7 @@
                                                                                                                                 git checkout ${ config.personal.pass.branch } 2>&1
                                                                                                                             '' ;
                                                                                                             } ;
-                                                                                                    in "${ application }/bin/init"
+                                                                                                    in "${ application }/bin/init" ;
                                                                                         targets = [ "repository" ] ;
                                                                                     }
                                                                                     _git-repository.implementation
