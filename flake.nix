@@ -1460,68 +1460,7 @@
                                                                                                             } ;
                                                                                                     in "${ application }/bin/init" ;
                                                                                         targets = [ "repository" ] ;
-                                                                                    }
-                                                                                    _git-repository.implementation
-                                                                                        {
-                                                                                            resolutions = [ ] ;
-                                                                                            setup =
-                                                                                                { pid , resources , pkgs , root , sequential , wrap } :
-                                                                                                    let
-                                                                                                        application =
-                                                                                                            pkgs.writeShellApplication
-                                                                                                                {
-                                                                                                                    name = "setup" ;
-                                                                                                                    runtimeInputs = [ pkgs.git root wrap ] ;
-                                                                                                                    text =
-                                                                                                                        let
-                                                                                                                            post-commit =
-                                                                                                                                let
-                                                                                                                                    application =
-                                                                                                                                        pkgs.writeShellApplication
-                                                                                                                                            {
-                                                                                                                                                name = "post-commit" ;
-                                                                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
-                                                                                                                                                text =
-                                                                                                                                                    ''
-                                                                                                                                                        while ! git push origin HEAD
-                                                                                                                                                        do
-                                                                                                                                                            sleep 1
-                                                                                                                                                        done
-                                                                                                                                                    '' ;
-                                                                                                                                            } ;
-                                                                                                                                    in "${ application }/bin/post-commit" ;
-                                                                                                                            ssh =
-                                                                                                                                let
-                                                                                                                                    application =
-                                                                                                                                        pkgs.writeShellApplication
-                                                                                                                                            {
-                                                                                                                                                name = "ssh" ;
-                                                                                                                                                runtimeInputs = [ pkgs.openssh ] ;
-                                                                                                                                                text =
-                                                                                                                                                    ''
-                                                                                                                                                        # 09e7c116
-                                                                                                                                                        ssh -F "$MOUNT/stage/ssh/config" "$@"
-                                                                                                                                                    '' ;
-                                                                                                                                            } ;
-                                                                                                                                    in "${ application }/bin/ssh" ;
-                                                                                                                            in
-                                                                                                                                ''
-                                                                                                                                    git config core.sshCommand "$MOUNT/stage/ssh/command"
-                                                                                                                                    git config user.email ${ config.personal.pass.email }
-                                                                                                                                    git config user.name ${ config.personal.pass.name }
-                                                                                                                                    ln --symbolic ${ post-commit } "/mount/repository/.git/hooks/post-commit"
-                                                                                                                                    git remote add origin ${ config.personal.pass.remote }
-                                                                                                                                    wrap ${ ssh } stage/ssh/command 0500 --literal-plain "@" --inherit-plain MOUNT --literal-plain PATH
-                                                                                                                                    DOT_SSH=${ resources.production.dot-ssh { } }
-                                                                                                                                    root "$DOT_SSH"
-                                                                                                                                    wrap "$DOT_SSH/config" stage/ssh/config 0400
-                                                                                                                                    git fetch origin ${ config.personal.pass.branch } 2>&1
-                                                                                                                                    git checkout ${ config.personal.pass.branch } 2>&1
-                                                                                                                                '' ;
-                                                                                                                } ;
-                                                                                                        in "${ application }/bin/setup" ;
-
-                                                                                        } ;
+                                                                                    } ;
                                                                             studio =
                                                                                 {
                                                                                     entry =
