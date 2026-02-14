@@ -1498,17 +1498,6 @@
                                                                                                                                                         text =
                                                                                                                                                             ''
                                                                                                                                                                 MOUNT="$( git rev-parse --show-toplevel )" || failure 37eb0a7a
-                                                                                                                                                                cd $MOUNT
-                                                                                                                                                                BRANCH="$( git rev-parse --abbrev-ref HEAD )" || failure d14e84bf
-                                                                                                                                                                if ! git diff --quiet || ! git diff --quiet --cached
-                                                                                                                                                                then
-                                                                                                                                                                    git commit -a --verbose --allow-empty-message >&2
-                                                                                                                                                                fi
-                                                                                                                                                                git push origin HEAD >&2
-                                                                                                                                                                COMMIT=$( git rev-parse HEAD )" || failure e6fec78a
-                                                                                                                                                                SNAPSHOT=${ resources.production.repository.studio.snapshot { failure = 8500 ; setup = setup : ''${ setup } "$BRANCH" "$COMMIT"'' ; } }
-                                                                                                                                                                root "$SNAPSHOT"
-                                                                                                                                                                echo "$SNAPSHOT"
                                                                                                                                                             '' ;
                                                                                                                                                     } ;
                                                                                                                                             } ;
