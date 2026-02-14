@@ -1508,6 +1508,7 @@
                                                                                                                                                         set =
                                                                                                                                                             {
                                                                                                                                                                 build-vm = mutable- "build-vm" ;
+                                                                                                                                                                build-vm-with-bootloader = mutable- "build-vm-with-bootloader" ;
                                                                                                                                                                 check = mutable- "check" ;
                                                                                                                                                                 snapshot =
                                                                                                                                                                     {
@@ -1529,6 +1530,8 @@
                                                                                                                                                                                 echo "$SNAPSHOT"
                                                                                                                                                                             '' ;
                                                                                                                                                                     } ;
+                                                                                                                                                                switch = mutable- "switch" ;
+                                                                                                                                                                test = mutable- "test" ;
                                                                                                                                                             } ;
                                                                                                                                                         in builtins.mapAttrs mapper set ;
                                                                                                                                                 submodule =
