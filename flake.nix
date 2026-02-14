@@ -2654,6 +2654,7 @@
                                                             } ;
                                                         services =
                                                             {
+                                                                atd.enable = true ;
                                                                 blueman.enable = true ;
                                                                 dbus.packages = [ pkgs.gcr ] ;
                                                                 openssh =
@@ -2980,28 +2981,23 @@
                                                                             ] ;
                                                                         password = config.personal.password ;
                                                                     } ;
+                                                                    victor =
+                                                                        {
+                                                                            description = config.victor.description ;
+                                                                            name = config.victor.name ;
+                                                                            packages = [ pkgs.at ] ;
+                                                                        } ;
                                                             } ;
-                                                    } // ( builtins.listToAttrs ( builtins.map ( value : { name = value.name ; value = value ; } ) config.auxiallary ) ) ;
+                                                    } ;
                                                 options =
                                                     {
-                                                        auxillary =
-                                                            lib.mkOption
-                                                                {
-                                                                    default = [ ] ;
-                                                                    type =
-                                                                        let
-                                                                            type =
-                                                                                lib.types.submodule
-                                                                                    {
-                                                                                        options =
-                                                                                            {
-                                                                                                description = lib.mkOption { type = lib.types.str ; } ;
-                                                                                                name = lib.mkOption { type = lib.types.str ; } ;
-                                                                                                password = lib.mkOption { type = lib.types.str ; } ;
-                                                                                            } ;
-                                                                                    } ;
-                                                                            in builtins.listOf type ;
-                                                                } ;
+                                                        victor =
+                                                            {
+                                                                description = lib.mkOption { default = "Victor Merryman" ; type = lib.types.str ; } ;
+                                                                enable = lib.mkOption { default = false ; type = lib.types.bool ; } ;
+                                                                name = lib.mkOption { default = "victor" ; type = lib.types.str ; } ;
+                                                                password = lib.mkOption { type = lib.types.str ; } ;
+                                                            } ;
                                                         personal =
                                                             {
                                                                 agenix = lib.mkOption { type = lib.types.path ; } ;
