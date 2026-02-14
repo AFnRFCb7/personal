@@ -1478,6 +1478,10 @@
                                                                                                                         text =
                                                                                                                             let
                                                                                                                                 root =
+                                                                                                                                    {
+
+                                                                                                                                    } ;
+                                                                                                                                root.xxx =
                                                                                                                                     let
                                                                                                                                         mutable- =
                                                                                                                                             command :
