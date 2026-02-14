@@ -1843,7 +1843,7 @@
                                                                                                                                                                 '' ;
                                                                                                                                                         } ;
                                                                                                                                                 in "${ application }/bin/mutable-mirror" ;
-                                                                                                                                            submodule =
+                                                                                                                                            mutable-reset =
                                                                                                                                                 let
                                                                                                                                                     application =
                                                                                                                                                         pkgs.writeShellApplication
