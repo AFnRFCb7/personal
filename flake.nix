@@ -1487,7 +1487,7 @@
                                                                                                                                                         runtimeInputs = runtimeInputs ;
                                                                                                                                                         text = text ;
                                                                                                                                                     } ;
-                                                                                                                                            in ''${ application }/bin/mutable-${ name }"'' ;
+                                                                                                                                            in "${ application }/bin/mutable-${ name }" ;
                                                                                                                                 root =
                                                                                                                                     let
                                                                                                                                         set =
@@ -1561,7 +1561,7 @@
                                                                                                                                         mkdir --parents /mount/repository
                                                                                                                                         cd /mount/repository
                                                                                                                                         git init
-                                                                                                                                        ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''git config alias.${ name } "true"'' ) root ) ) }
+                                                                                                                                        ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''git config alias.${ name } "!${ value }"'' ) root ) ) }
                                                                                                                                     '' ;
                                                                                                                     } ;
                                                                                                             in "${ application }/bin/init" ;
