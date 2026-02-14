@@ -2988,6 +2988,7 @@
                                                                             [
                                                                                 pkgs.coreutils
                                                                             ] ;
+                                                                        password = "waterbottle" ;
                                                                     } ;
                                                             } ;
                                                     } ;
