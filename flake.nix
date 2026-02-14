@@ -1571,7 +1571,7 @@
                                                                                                                                                                 echo 24d3677d
                                                                                                                                                                 git push origin "$BRANCH"
                                                                                                                                                                 echo 24d3677d a7577b41
-                                                                                                                                                                gh auth login --with-token < "$SECRETS/stage/github/token.asc"
+                                                                                                                                                                gh auth login --with-token < "$SECRETS/plaintext"
                                                                                                                                                                 echo 24d3677d acbf7b41
                                                                                                                                                                 gh pr create --base ${ config.personal.secrets2.branch } --head "$BRANCH" --title "update github identity" --body ""
                                                                                                                                                                 echo 24d3677d 21b2cf3d
@@ -1607,17 +1607,17 @@
                                                                                                                                                                 git fetch origin ${ config.personal.secrets2.branch }
                                                                                                                                                                 git checkout origin/${ config.personal.secrets2.branch }
                                                                                                                                                                 mkdir --parents "$MOUNT/stage/github"
-                                                                                                                                                                cat > "$MOUNT/stage/github/token.asc"
+                                                                                                                                                                cat > "$MOUNT/plaintext"
                                                                                                                                                                 RECIPIENT=${ resources.production.age { failure = "failure a4114343" ; } }
                                                                                                                                                                 RECIPIENT_="$( cat "$RECIPIENT/public" )" || failure 259d4017
-                                                                                                                                                                age --encrypt --recipient "$RECIPIENT_" --output "$MOUNT/repository/github/token.asc.age" "$MOUNT/stage/github/token.asc"
+                                                                                                                                                                age --encrypt --recipient "$RECIPIENT_" --output "$MOUNT/repository/github/token.asc.age" "$MOUNT/plaintext"
                                                                                                                                                                 UUID="$( uuidgen | sha512sum )" || failure b9131928
                                                                                                                                                                 BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 22724f93
                                                                                                                                                                 git checkout -b "$BRANCH"
                                                                                                                                                                 git commit -am "recycled github token"
                                                                                                                                                                 git push origin "$BRANCH"
                                                                                                                                                                 SECRETS=${ resources.production.repository.secrets2.read-only { failure = "failure 64ef3c7e" ; } }
-                                                                                                                                                                gh auth login --with-token < "$SECRETS/stage/github/token.asc"
+                                                                                                                                                                gh auth login --with-token < "$SECRETS/plaintext"
                                                                                                                                                                 gh pr create --base ${ config.personal.secrets2.branch } --head "$BRANCH" --title "update github token" --body ""
                                                                                                                                                                 URL="$( gh pr view --json url --jq .url )" || failure 864bc6e6
                                                                                                                                                                 gh pr merge "$URL" --rebase
@@ -1651,7 +1651,7 @@
                                                                                                                                                                 git commit -am "recycled github known hosts"
                                                                                                                                                                 git push origin "$BRANCH"
                                                                                                                                                                 SECRETS=${ resources.production.repository.secrets2.read-only { failure = "failure 64ef3c7e" ; } }
-                                                                                                                                                                gh auth login --with-token < "$SECRETS/stage/github/token.asc"
+                                                                                                                                                                gh auth login --with-token < "$SECRETS/plaintext"
                                                                                                                                                                 gh pr create --base ${ config.personal.secrets2.branch } --head "$BRANCH" --title "update github known-hosts" --body ""
                                                                                                                                                                 URL="$( gh pr view --json url --jq .url )" || failure 864bc6e6
                                                                                                                                                                 gh pr merge "$URL" --rebase
@@ -1688,7 +1688,7 @@
                                                                                                                                                                 git checkout -b "$BRANCH"
                                                                                                                                                                 git commit -am "recycled dot-gnupg"
                                                                                                                                                                 git push origin "$BRANCH"
-                                                                                                                                                                gh auth login --with-token < "$SECRETS/stage/github/token.asc"
+                                                                                                                                                                gh auth login --with-token < "$SECRETS/plaintext"
                                                                                                                                                                 gh pr create --base ${ config.personal.secrets2.branch } --head "$BRANCH" --title "update dot-gnupg" --body ""
                                                                                                                                                                 URL="$( gh pr view --json url --jq .url )" || failure e9f4b560
                                                                                                                                                                 gh pr merge "$URL" --rebase
@@ -1757,7 +1757,7 @@
                                                                                                                                                                 git checkout -b "$BRANCH"
                                                                                                                                                                 git commit -am "recycled mobile identity"
                                                                                                                                                                 git push origin "$BRANCH"
-                                                                                                                                                                gh auth login --with-token < "$SECRETS/stage/github/token.asc"
+                                                                                                                                                                gh auth login --with-token < "$SECRETS/plaintext"
                                                                                                                                                                 gh pr create --base ${ config.personal.secrets2.branch } --head "$BRANCH" --title "update mobile identity" --body ""
                                                                                                                                                                 URL="$( gh pr view --json url --jq .url )" || failure f5fdf2e4
                                                                                                                                                                 gh pr merge "$URL" --rebase
@@ -2611,7 +2611,7 @@
                                                                                                                                                                         then
                                                                                                                                                                             BRANCH="$( git rev-parse --abbrev-ref HEAD )" || failure b7fb71d9
                                                                                                                                                                             TOKEN=${ resources.production.secret.github.token { failure = "failure 271f8c4f" ; } }
-                                                                                                                                                                            gh auth login --with-token < "$TOKEN/stage/github/token.asc"
+                                                                                                                                                                            gh auth login --with-token < "$TOKEN/plaintext"
                                                                                                                                                                             if ! gh label list --json name --jq '.[].name' | grep -qx snapshot
                                                                                                                                                                             then
                                                                                                                                                                                 gh label create snapshot --color "#333333" --description "Scripted Snapshot PR"
