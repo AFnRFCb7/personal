@@ -1477,70 +1477,75 @@
                                                                                                                         runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
                                                                                                                         text =
                                                                                                                             let
-                                                                                                                                mapper =
-                                                                                                                                    name : { runtimeInputs , text } :
-                                                                                                                                        let
-                                                                                                                                            application =
-                                                                                                                                                pkgs.writeShellApplication
-                                                                                                                                                    {
-                                                                                                                                                        name = name ;
-                                                                                                                                                        runtimeInputs = runtimeInputs ;
-                                                                                                                                                        text = text ;
-                                                                                                                                                    } ;
-                                                                                                                                            in "${ application }/bin/${ name }" ;
-                                                                                                                                root =
+                                                                                                                                scripts =
                                                                                                                                     let
-                                                                                                                                        set =
+                                                                                                                                        mapper =
+                                                                                                                                            name : { runtimeInputs , text } :
+                                                                                                                                                let
+                                                                                                                                                    application =
+                                                                                                                                                        pkgs.writeShellApplication
+                                                                                                                                                            {
+                                                                                                                                                                name = name ;
+                                                                                                                                                                runtimeInputs = runtimeInputs ;
+                                                                                                                                                                text = text ;
+                                                                                                                                                            } ;
+                                                                                                                                                    in "${ application }/bin/${ name }" ;
+                                                                                                                                        in
                                                                                                                                             {
-                                                                                                                                                snapshot =
-                                                                                                                                                    {
-                                                                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.git root ] ;
-                                                                                                                                                        text =
-                                                                                                                                                            ''
-                                                                                                                                                                MOUNT="$( git rev-parse --show-toplevel )" || failure 37eb0a7a
-                                                                                                                                                                cd $MOUNT
-                                                                                                                                                                BRANCH="$( git rev-parse --abbrev-ref HEAD )" || failure d14e84bf
-                                                                                                                                                                if ! git diff --quiet || ! git diff --quiet --cached
-                                                                                                                                                                then
-                                                                                                                                                                    git commit -a --verbose --allow-empty-message >&2
-                                                                                                                                                                fi
-                                                                                                                                                                git push origin HEAD >&2
-                                                                                                                                                                COMMIT=$( git rev-parse HEAD )" || failure e6fec78a
-                                                                                                                                                                SNAPSHOT=${ resources.production.repository.studio.snapshot { failure = 8500 ; setup = setup : ''${ setup } "$BRANCH" "$COMMIT"'' ; } }
-                                                                                                                                                                root "$SNAPSHOT"
-                                                                                                                                                                echo "$SNAPSHOT"
-                                                                                                                                                            '' ;
-                                                                                                                                                    } ;
-                                                                                                                                            } ;
-                                                                                                                                        in builtins.mapAttrs mapper set ;
-                                                                                                                                submodule =
-                                                                                                                                    let
-                                                                                                                                        set =
-                                                                                                                                            {
-                                                                                                                                                snapshot =
-                                                                                                                                                    {
-                                                                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.nix sequential ] ;
-                                                                                                                                                        text =
-                                                                                                                                                            ''
-                                                                                                                                                                : "${ builtins.concatStringsSep "" [ "$" "{" "toplevel:?this script must be run via git submodule foreach which will export toplevel" "}" ] }"
-                                                                                                                                                                : "${ builtins.concatStringsSep "" [ "$" "{" "name:?this script must be run via git submodule foreach which will export name" "}" ] }"
-                                                                                                                                                                cd "$toplevel/$name"
-                                                                                                                                                                if ! git diff --quiet || ! git diff --quiet --cached
-                                                                                                                                                                then
-                                                                                                                                                                    UUID="$( sequence | sha512sum )" || failure
-                                                                                                                                                                    BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 20b63f59
-                                                                                                                                                                    git checkout -b "$BRANCH"
-                                                                                                                                                                    git commit -a --verbose --allow-empty-message
-                                                                                                                                                                fi
-                                                                                                                                                                TOKEN_DIRECTORY=${ resources.production.secret.github.token { failure = "failure a10b1a75" ; } }
-                                                                                                                                                                TOKEN="$( cat "$TOKEN_DIRECTORY/plaintext )" || failure 156a1fdb
-                                                                                                                                                                export NIX_CONFIG="access-tokens = github.com=$TOKEN"
-                                                                                                                                                                cd "$toplevel"
-                                                                                                                                                                nix flake update --flake "$toplevel" "$name"
-                                                                                                                                                            '' ;
-                                                                                                                                                    } ;
-                                                                                                                                            } ;
-                                                                                                                                        in builtins.mapAttrs mapper set ;
+                                                                                                                                                root =
+                                                                                                                                                    let
+                                                                                                                                                        set =
+                                                                                                                                                            {
+                                                                                                                                                                snapshot =
+                                                                                                                                                                    {
+                                                                                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.git root ] ;
+                                                                                                                                                                        text =
+                                                                                                                                                                            ''
+                                                                                                                                                                                MOUNT="$( git rev-parse --show-toplevel )" || failure 37eb0a7a
+                                                                                                                                                                                cd $MOUNT
+                                                                                                                                                                                BRANCH="$( git rev-parse --abbrev-ref HEAD )" || failure d14e84bf
+                                                                                                                                                                                if ! git diff --quiet || ! git diff --quiet --cached
+                                                                                                                                                                                then
+                                                                                                                                                                                    git commit -a --verbose --allow-empty-message >&2
+                                                                                                                                                                                fi
+                                                                                                                                                                                git push origin HEAD >&2
+                                                                                                                                                                                COMMIT=$( git rev-parse HEAD )" || failure e6fec78a
+                                                                                                                                                                                SNAPSHOT=${ resources.production.repository.studio.snapshot { failure = 8500 ; setup = setup : ''${ setup } "$BRANCH" "$COMMIT"'' ; } }
+                                                                                                                                                                                root "$SNAPSHOT"
+                                                                                                                                                                                echo "$SNAPSHOT"
+                                                                                                                                                                            '' ;
+                                                                                                                                                                    } ;
+                                                                                                                                                            } ;
+                                                                                                                                                        in builtins.mapAttrs mapper set ;
+                                                                                                                                                submodule =
+                                                                                                                                                    let
+                                                                                                                                                        set =
+                                                                                                                                                            {
+                                                                                                                                                                snapshot =
+                                                                                                                                                                    {
+                                                                                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.nix sequential ] ;
+                                                                                                                                                                        text =
+                                                                                                                                                                            ''
+                                                                                                                                                                                : "${ builtins.concatStringsSep "" [ "$" "{" "toplevel:?this script must be run via git submodule foreach which will export toplevel" "}" ] }"
+                                                                                                                                                                                : "${ builtins.concatStringsSep "" [ "$" "{" "name:?this script must be run via git submodule foreach which will export name" "}" ] }"
+                                                                                                                                                                                cd "$toplevel/$name"
+                                                                                                                                                                                if ! git diff --quiet || ! git diff --quiet --cached
+                                                                                                                                                                                then
+                                                                                                                                                                                    UUID="$( sequence | sha512sum )" || failure
+                                                                                                                                                                                    BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 20b63f59
+                                                                                                                                                                                    git checkout -b "$BRANCH"
+                                                                                                                                                                                    git commit -a --verbose --allow-empty-message
+                                                                                                                                                                                fi
+                                                                                                                                                                                TOKEN_DIRECTORY=${ resources.production.secret.github.token { failure = "failure a10b1a75" ; } }
+                                                                                                                                                                                TOKEN="$( cat "$TOKEN_DIRECTORY/plaintext )" || failure 156a1fdb
+                                                                                                                                                                                export NIX_CONFIG="access-tokens = github.com=$TOKEN"
+                                                                                                                                                                                cd "$toplevel"
+                                                                                                                                                                                nix flake update --flake "$toplevel" "$name"
+                                                                                                                                                                            '' ;
+                                                                                                                                                                    } ;
+                                                                                                                                                            } ;
+                                                                                                                                                        in builtins.mapAttrs mapper set ;
+                                                                                                                                        } ;
                                                                                                                                 xxx =
                                                                                                                                     ''
                                                                                                                                         root ${ pkgs.openssh }
@@ -1564,7 +1569,7 @@
                                                                                                                                         DOT_SSH=${ resources.production.dot-ssh { failure = 2564 ; } }
                                                                                                                                         root "$DOT_SSH"
                                                                                                                                         export GIT_SSH_COMMAND="$DOT_SSH/config"
-                                                                                                                                        ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''git config alias.mutable-${ name } "!${ value }"'' ) root ) ) }
+                                                                                                                                        ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''git config alias.mutable-${ name } "!${ value }"'' ) scripts.root ) ) }
                                                                                                                                     '' ;
                                                                                                                     } ;
                                                                                                             in "${ application }/bin/init" ;
