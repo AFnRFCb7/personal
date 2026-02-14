@@ -2980,20 +2980,27 @@
                                                                             ] ;
                                                                         password = config.personal.password ;
                                                                     } ;
-                                                                victor =
-                                                                    {
-                                                                        description = "VICTOR IS NOT AN ALIEN" ;
-                                                                        isNormalUser = true ;
-                                                                        packages =
-                                                                            [
-                                                                                pkgs.coreutils
-                                                                            ] ;
-                                                                        password = "waterbottle" ;
-                                                                    } ;
                                                             } ;
-                                                    } ;
+                                                    } // ( builtins.listToAttrs ( builtins.map ( value : { name = value.name ; value = value ; } ) config.auxiallary ) ) ;
                                                 options =
                                                     {
+                                                        auxillary =
+                                                            lib.mkOption
+                                                                {
+                                                                    default = [ ] ;
+                                                                    type =
+                                                                        let
+                                                                            type =
+                                                                                lib.types.submodule
+                                                                                    {
+                                                                                        options =
+                                                                                            {
+                                                                                                description = lib.mkOption { type = lib.types.str ; } ;
+                                                                                                name = lib.mkOption { type = lib.types.str ; } ;
+                                                                                                password = lib.mkOption { type = lib.types.str ; } ;
+                                                                                            } ;
+                                                                                    } ;
+                                                                            in builtins.listOf type ;
                                                         personal =
                                                             {
                                                                 agenix = lib.mkOption { type = lib.types.path ; } ;
