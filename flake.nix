@@ -1447,7 +1447,7 @@
                                                                                                                                 mkdir --parents /mount/repository
                                                                                                                                 cd /mount/repository
                                                                                                                                 root ${ pkgs.openssh }
-                                                                                                                                DOT_SSH=${ resources.dot-ssh { failure = "failure f2774d0a" ; } }
+                                                                                                                                DOT_SSH=${ resources.production.dot-ssh { failure = "failure f2774d0a" ; } }
                                                                                                                                 root "$DOT_SSH"
                                                                                                                                 git config core.sshCommand "${ pkgs.openssh }/bin/ssh -F $DOT_SSH/config"
                                                                                                                                 git config user.email "${ config.personal.pass.email }"
