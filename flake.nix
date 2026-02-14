@@ -2986,7 +2986,8 @@
                                                                             description = config.victor.description ;
                                                                             isNormalUser = true ;
                                                                             name = config.victor.name ;
-                                                                            packages = [ pkgs.at ] ;
+                                                                            packages = [ pkgs.at pkgs.coreutils ] ;
+                                                                            password = config.victor.password ;
                                                                         } ;
                                                             } ;
                                                     } ;
