@@ -1544,7 +1544,7 @@
                                                                                                                                 xxx =
                                                                                                                                     ''
                                                                                                                                         root ${ pkgs.openssh }
-                                                                                                                                        DOT_SSH=${ resources.dot-ssh { failure = "failure 26f12474" ; } }
+                                                                                                                                        DOT_SSH=${ resources.production.dot-ssh { failure = "failure 26f12474" ; } }
                                                                                                                                         root "$DOT_SSH"
                                                                                                                                         git config core.sshCommand "${ pkgs.openssh }/bin/ssh -F $DOT_SSH/config"
                                                                                                                                         git config user.email "${ config.personal.repository.private.email }"
