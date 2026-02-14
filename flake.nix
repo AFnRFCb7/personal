@@ -2654,6 +2654,7 @@
                                                             } ;
                                                         services =
                                                             {
+                                                                atd.enable = true ;
                                                                 blueman.enable = true ;
                                                                 dbus.packages = [ pkgs.gcr ] ;
                                                                 openssh =
@@ -2916,71 +2917,89 @@
                                                                     } ;
                                                             } ;
                                                         time.timeZone = "America/New_York" ;
-                                                        users.users.user =
+                                                        users.users =
                                                             {
-                                                                description = config.personal.description ;
-                                                                extraGroups = [ "wheel" ] ;
-                                                                isNormalUser = true ;
-                                                                name = config.personal.name ;
-                                                                openssh =
+                                                                user =
                                                                     {
-                                                                        authorizedKeys =
+                                                                        description = config.personal.description ;
+                                                                        extraGroups = [ "wheel" ] ;
+                                                                        isNormalUser = true ;
+                                                                        name = config.personal.name ;
+                                                                        openssh =
                                                                             {
-                                                                                keyFiles = [ "${ identity }/identity.pub" ] ;
+                                                                                authorizedKeys =
+                                                                                    {
+                                                                                        keyFiles = [ "${ identity }/identity.pub" ] ;
+                                                                                    } ;
                                                                             } ;
+                                                                        packages =
+                                                                            [
+                                                                                pkgs.age
+                                                                                pkgs.gh
+                                                                                ( _failure.implementation "762e3818" )
+                                                                                (
+                                                                                    pkgs.writeShellApplication
+                                                                                        {
+                                                                                            name = "studio" ;
+                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.jetbrains.idea-community ] ;
+                                                                                            text =
+                                                                                                ''
+                                                                                                    if [[ "$#" -gt 0 ]]
+                                                                                                    then
+                                                                                                        HAS_ARGUMENTS=true
+                                                                                                        ARGUMENTS="$1"
+                                                                                                    else
+                                                                                                        HAS_ARGUMENTS=false
+                                                                                                        ARGUMENTS=
+                                                                                                    fi
+                                                                                                    STUDIO=${ resources__.production.repository.studio.entry { setup = setup : ''${ setup } "$HAS_ARGUMENTS" "$ARGUMENTS"'' ; } }
+                                                                                                    if $HAS_ARGUMENTS
+                                                                                                    then
+                                                                                                        echo "$STUDIO/repository"
+                                                                                                    else
+                                                                                                        idea-community "$STUDIO/repository"
+                                                                                                    fi
+                                                                                                '' ;
+                                                                                        }
+                                                                                )
+                                                                                pkgs.git
+                                                                                pkgs.redis
+                                                                                pkgs.yq-go
+                                                                                pkgs.jq
+                                                                                (
+                                                                                    pkgs.writeShellApplication
+                                                                                        {
+                                                                                            name = "foobar" ;
+                                                                                            runtimeInputs = [ ] ;
+                                                                                            text =
+                                                                                                ''
+                                                                                                    FOOBAR=${ resources__.foobar.foobar { setup = setup : ''${ setup } "$@"'' ; failure = "failure 175470c8" ; } }
+                                                                                                    echo "$FOOBAR"
+                                                                                                '' ;
+                                                                                        }
+                                                                                )
+                                                                            ] ;
+                                                                        password = config.personal.password ;
                                                                     } ;
-                                                                packages =
-                                                                    [
-                                                                        pkgs.age
-                                                                        pkgs.gh
-                                                                        ( _failure.implementation "762e3818" )
-                                                                        (
-                                                                            pkgs.writeShellApplication
-                                                                                {
-                                                                                    name = "studio" ;
-                                                                                    runtimeInputs = [ pkgs.coreutils pkgs.jetbrains.idea-community ] ;
-                                                                                    text =
-                                                                                        ''
-                                                                                            if [[ "$#" -gt 0 ]]
-                                                                                            then
-                                                                                                HAS_ARGUMENTS=true
-                                                                                                ARGUMENTS="$1"
-                                                                                            else
-                                                                                                HAS_ARGUMENTS=false
-                                                                                                ARGUMENTS=
-                                                                                            fi
-                                                                                            STUDIO=${ resources__.production.repository.studio.entry { setup = setup : ''${ setup } "$HAS_ARGUMENTS" "$ARGUMENTS"'' ; } }
-                                                                                            if $HAS_ARGUMENTS
-                                                                                            then
-                                                                                                echo "$STUDIO/repository"
-                                                                                            else
-                                                                                                idea-community "$STUDIO/repository"
-                                                                                            fi
-                                                                                        '' ;
-                                                                                }
-                                                                        )
-                                                                        pkgs.git
-                                                                        pkgs.redis
-                                                                        pkgs.yq-go
-                                                                        pkgs.jq
-                                                                        (
-                                                                            pkgs.writeShellApplication
-                                                                                {
-                                                                                    name = "foobar" ;
-                                                                                    runtimeInputs = [ ] ;
-                                                                                    text =
-                                                                                        ''
-                                                                                            FOOBAR=${ resources__.foobar.foobar { setup = setup : ''${ setup } "$@"'' ; failure = "failure 175470c8" ; } }
-                                                                                            echo "$FOOBAR"
-                                                                                        '' ;
-                                                                                }
-                                                                        )
-                                                                    ] ;
-                                                                password = config.personal.password ;
+                                                                    victor =
+                                                                        {
+                                                                            description = config.victor.description ;
+                                                                            isNormalUser = true ;
+                                                                            name = config.victor.name ;
+                                                                            packages = [ pkgs.at pkgs.coreutils ] ;
+                                                                            password = config.victor.password ;
+                                                                        } ;
                                                             } ;
                                                     } ;
                                                 options =
                                                     {
+                                                        victor =
+                                                            {
+                                                                description = lib.mkOption { default = "Victor Merryman" ; type = lib.types.str ; } ;
+                                                                enable = lib.mkOption { default = false ; type = lib.types.bool ; } ;
+                                                                name = lib.mkOption { default = "victor" ; type = lib.types.str ; } ;
+                                                                password = lib.mkOption { type = lib.types.str ; } ;
+                                                            } ;
                                                         personal =
                                                             {
                                                                 agenix = lib.mkOption { type = lib.types.path ; } ;
