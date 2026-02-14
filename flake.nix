@@ -1500,13 +1500,14 @@
                                                                                                                                                                     runtimeInputs = [ pkgs.git root ] ;
                                                                                                                                                                     text =
                                                                                                                                                                         ''
-                                                                                                                                                                            SNAPSHOT=${ resources.production.studio.snapshot { failure = 30870 ; } }
+                                                                                                                                                                            SNAPSHOT=${ resources.production.repository.studio.snapshot { failure = 30870 ; } }
                                                                                                                                                                             root "$SNAPSHOT"
                                                                                                                                                                             git -C "$SNAPSHOT/repository" mutable-${ command }
                                                                                                                                                                         '' ;
                                                                                                                                                                 } ;
                                                                                                                                                         set =
                                                                                                                                                             {
+                                                                                                                                                                build-vm = mutable- "build-vm" ;
                                                                                                                                                                 check = mutable- "check" ;
                                                                                                                                                                 snapshot =
                                                                                                                                                                     {
