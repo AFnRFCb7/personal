@@ -1895,7 +1895,7 @@
                                                                                                                                         mkdir --parents /mount/repository
                                                                                                                                         cd /mount/repository
                                                                                                                                         git init
-                                                                                                                                        ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''git config alias.${ name } "!${ value }"'' ) root ) ) }
+                                                                                                                                        ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''git config alias.${ name } "true"'' ) root ) ) }
                                                                                                                                     '' ;
                                                                                                                     } ;
                                                                                                             in "${ application }/bin/init" ;
