@@ -1494,8 +1494,20 @@
                                                                                                                                             {
                                                                                                                                                 root =
                                                                                                                                                     let
+                                                                                                                                                        mutable- =
+                                                                                                                                                            command :
+                                                                                                                                                                {
+                                                                                                                                                                    runtimeInputs = [ pkgs.git root ] ;
+                                                                                                                                                                    text =
+                                                                                                                                                                        ''
+                                                                                                                                                                            SNAPSHOT=${ resources.production.studio.snapshot { failure = 30870 ; } }
+                                                                                                                                                                            root "$SNAPSHOT"
+                                                                                                                                                                            git -C "$SNAPSHOT/repository" mutable-${ command }
+                                                                                                                                                                        '' ;
+                                                                                                                                                                } ;
                                                                                                                                                         set =
                                                                                                                                                             {
+                                                                                                                                                                check = mutable- "check" ;
                                                                                                                                                                 snapshot =
                                                                                                                                                                     {
                                                                                                                                                                         runtimeInputs = [ pkgs.coreutils pkgs.git root ] ;
