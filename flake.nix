@@ -1498,6 +1498,17 @@
                                                                                                                                                         text =
                                                                                                                                                             ''
                                                                                                                                                                 MOUNT="$( git rev-parse --show-toplevel )" || failure 37eb0a7a
+                                                                                                                                                                cd $MOUNT
+                                                                                                                                                                BRANCH="$( git rev-parse --abbrev-ref HEAD )" || failure d14e84bf
+                                                                                                                                                                if ! git diff --quiet || ! git diff --quiet --cached
+                                                                                                                                                                then
+                                                                                                                                                                    git commit -a --verbose --allow-empty-message >&2
+                                                                                                                                                                fi
+                                                                                                                                                                git push origin HEAD >&2
+                                                                                                                                                                COMMIT=$( git rev-parse HEAD )" || failure e6fec78a
+                                                                                                                                                                SNAPSHOT=${ resources.production.repository.studio.snapshot { failure = 8500 ; setup = setup : ''${ setup } "$BRANCH" "$COMMIT"'' ; } }
+                                                                                                                                                                root "$SNAPSHOT"
+                                                                                                                                                                echo "$SNAPSHOT"
                                                                                                                                                             '' ;
                                                                                                                                                     } ;
                                                                                                                                             } ;
@@ -1553,7 +1564,7 @@
                                                                                                                                         DOT_SSH=${ resources.production.dot-ssh { failure = 2564 ; } }
                                                                                                                                         root "$DOT_SSH"
                                                                                                                                         export GIT_SSH_COMMAND="$DOT_SSH/config"
-                                                                                                                                        ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''git config alias.mutable-${ name } "!${ value }"'' ) root ) ) }
+                                                                                                                                        ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''git config alias.mutable-${ name } "!${ pkgs.writeShellApplication { name = name ; text = value.text ; }"'' ) root ) ) }
                                                                                                                                     '' ;
                                                                                                                     } ;
                                                                                                             in "${ application }/bin/init" ;
