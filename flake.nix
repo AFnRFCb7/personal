@@ -1415,6 +1415,52 @@
                                                                         {
                                                                             pass =
                                                                                 ignore :
+                                                                                    {
+                                                                                        init =
+                                                                                            { pid , resources , pkgs , root , sequential , wrap } :
+                                                                                                let
+                                                                                                    application =
+                                                                                                        pkgs.writeShellApplication
+                                                                                                            {
+                                                                                                                name = "init" ;
+                                                                                                                runtimeInputs = [ pkgs.openssh root ] ;
+                                                                                                                text =
+                                                                                                                    let
+                                                                                                                        post-commit =
+                                                                                                                            let
+                                                                                                                                application =
+                                                                                                                                    pkgs.writeShellApplication
+                                                                                                                                        {
+                                                                                                                                            name = "post-commit" ;
+                                                                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
+                                                                                                                                            text =
+                                                                                                                                                ''
+                                                                                                                                                    while ! git push origin HEAD
+                                                                                                                                                    do
+                                                                                                                                                        sleep 1
+                                                                                                                                                    done
+                                                                                                                                                '' ;
+                                                                                                                                        } ;
+                                                                                                                                in "${ application }/bin/post-commit" ;
+                                                                                                                        in
+                                                                                                                            ''
+                                                                                                                                mkdir /mount/repository
+                                                                                                                                cd /mount/repository
+                                                                                                                                root ${ pkgs.openssh }
+                                                                                                                                DOT_SSH=${ resources.production.dot-ssh { failure = "failure 87c78d5c" ; } }
+                                                                                                                                root "$DOT_SSH"
+                                                                                                                                git config core.sshCommand "${ pkgs.openssh }/bin/ssh -F $DOT_SSH/config"
+                                                                                                                                git config user.email "${ config.personal.pass.email }"
+                                                                                                                                git config user.name "${ config.personal.pass.name }"
+                                                                                                                                ln --symbolic ${ post-commit } "/mount/repository/.git/hooks/post-commit"
+                                                                                                                                git remote add origin ${ config.personal.pass.remote }
+                                                                                                                                git fetch origin ${ config.personal.pass.branch } 2>&1
+                                                                                                                                git checkout ${ config.personal.pass.branch } 2>&1
+                                                                                                                            '' ;
+                                                                                                            } ;
+                                                                                                    in "${ application }/bin/init" ;
+                                                                                        targets = [ "repository" ] ;
+                                                                                    }
                                                                                     _git-repository.implementation
                                                                                         {
                                                                                             resolutions = [ ] ;
