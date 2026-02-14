@@ -1872,11 +1872,8 @@
                                                                                                                                                             } ;
                                                                                                                                                     in "${ application }/bin/mutable-reset" ;
                                                                                                                                     } ;
-                                                                                                                                in
+                                                                                                                                xxx =
                                                                                                                                     ''
-                                                                                                                                        mkdir --parents /mount/repository
-                                                                                                                                        cd /mount/repository
-                                                                                                                                        git init
                                                                                                                                         ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''git config alias.${ name } "!${ value }"'' ) root ) ) }
                                                                                                                                         root ${ pkgs.openssh }
                                                                                                                                         DOT_SSH=${ resources.dot-ssh { failure = "failure 26f12474" ; } }
@@ -1889,6 +1886,12 @@
                                                                                                                                         git submodule foreach 'git config core.sshCommand "${ pkgs.openssh }/bin/ssh -F $DOT_SSH/config"' 2>&1
                                                                                                                                         git submodule foreach 'git config user.email "${ config.personal.repository.private.email }"' 2>&2
                                                                                                                                         git submodule foreach 'git config user.name "${ config.personal.repository.private.name }""' 2>&2
+                                                                                                                                    '' ;
+                                                                                                                                in
+                                                                                                                                    ''
+                                                                                                                                        mkdir --parents /mount/repository
+                                                                                                                                        cd /mount/repository
+                                                                                                                                        git init
                                                                                                                                     '' ;
                                                                                                                     } ;
                                                                                                             in "${ application }/bin/init" ;
