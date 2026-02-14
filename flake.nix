@@ -1560,6 +1560,10 @@
                                                                                                                                         mkdir --parents /mount/repository
                                                                                                                                         cd /mount/repository
                                                                                                                                         git init
+                                                                                                                                        root ${ pkgs.openssh }
+                                                                                                                                        DOT_SSH=${ resources.dot-ssh { failure = "failure 26f12474" ; } }
+                                                                                                                                        root "$DOT_SSH"
+                                                                                                                                        export GIT_SSH_COMMAND="$DOT_SSH/config"
                                                                                                                                         ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''git config alias.mutable-${ name } "!${ value }"'' ) root ) ) }
                                                                                                                                     '' ;
                                                                                                                     } ;
