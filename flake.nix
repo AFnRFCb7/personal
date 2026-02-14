@@ -1494,7 +1494,7 @@
                                                                                                                                             {
                                                                                                                                                 snapshot =
                                                                                                                                                     {
-                                                                                                                                                        runtimeInputs = [ ] ;
+                                                                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.git root ] ;
                                                                                                                                                         text =
                                                                                                                                                             ''
                                                                                                                                                                 MOUNT="$( git rev-parse --show-toplevel )" || failure 37eb0a7a
@@ -1529,7 +1529,7 @@
                                                                                                                                                                 if ! git diff --quiet || ! git diff --quiet --cached
                                                                                                                                                                 then
                                                                                                                                                                     UUID="$( sequence | sha512sum )" || failure
-                                                                                                                                                                    BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64" || failure
+                                                                                                                                                                    BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 20b63f59
                                                                                                                                                                     git checkout -b "$BRANCH"
                                                                                                                                                                     git commit -a --verbose --allow-empty-message
                                                                                                                                                                 fi
