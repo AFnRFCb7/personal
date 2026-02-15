@@ -1589,7 +1589,6 @@
                                                                                                                                                                                 if ! git diff --quiet origin/main || git diff --quiet --cache origin/main
                                                                                                                                                                                 then
                                                                                                                                                                                     git reset --soft origin/main
-
                                                                                                                                                                                 fi
                                                                                                                                                                             '' ;
                                                                                                                                                                     } ;
@@ -1680,7 +1679,6 @@
                                                                                                                                                                             ''
                                                                                                                                                                                 : "${ builtins.concatStringsSep "" [ "$" "{" "toplevel:?this script must be run via git submodule foreach which will export toplevel" "}" ] }"
                                                                                                                                                                                 : "${ builtins.concatStringsSep "" [ "$" "{" "name:?this script must be run via git submodule foreach which will export name" "}" ] }"
-                                                                                                                                                                                cd "$toplevel/$name"
                                                                                                                                                                                 TOKEN_DIRECTORY=${ resources.production.secret.github.token { failure = 4865 ; } }
                                                                                                                                                                                 TOKEN="$( cat "$TOKEN_DIRECTORY/plaintext" )" || failure 5f06a5e9
                                                                                                                                                                                 export NIX_CONFIG="access-tokens = github.com=$TOKEN"
@@ -1709,8 +1707,8 @@
                                                                                                                                             in "${ application }/bin/studio" ;
                                                                                                                                 in
                                                                                                                                     ''
-                                                                                                                                        wrap ${ root }/bin/root /mount/bin/root 0500 --literal-plain DIRECTORY --inherit-plain INDEX --literal-plain PATH --literal-plain TARGET --uuid 608bd8f9
-                                                                                                                                        wrap ${ studio } /mount/bin/studio 0500 --inherit-plain MOUNT --literal-plain PATH --literal-plain SEQUENCE --inherit-plain SETUP --literal-plain STUDIO --uuid 79a37900
+                                                                                                                                        wrap ${ root }/bin/root bin/root 0500 --literal-plain DIRECTORY --inherit-plain INDEX --literal-plain PATH --literal-plain TARGET --uuid 608bd8f9
+                                                                                                                                        wrap ${ studio } bin/studio 0500 --inherit-plain MOUNT --literal-plain PATH --literal-plain SEQUENCE --inherit-plain SETUP --literal-plain STUDIO --uuid 79a37900
                                                                                                                                         mkdir --parents /mount/repository
                                                                                                                                         cd /mount/repository
                                                                                                                                         git init 2>&1
