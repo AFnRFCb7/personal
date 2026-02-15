@@ -1695,7 +1695,7 @@
                                                                                                                                     '' ;
                                                                                                                     } ;
                                                                                                             in "${ application }/bin/init" ;
-                                                                                                targets = [ "repository" ] ;
+                                                                                                targets = [ "bin" "repository" ] ;
                                                                                             } ;
                                                                                     secrets =
                                                                                         ignore :
