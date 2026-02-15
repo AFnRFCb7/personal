@@ -1563,20 +1563,6 @@
                                                                                                                                                             } ;
                                                                                                                                                         in builtins.mapAttrs mapper set ;
                                                                                                                                         } ;
-                                                                                                                                xxx =
-                                                                                                                                    ''
-                                                                                                                                        root ${ pkgs.openssh }
-                                                                                                                                        DOT_SSH=${ resources.production.dot-ssh { failure = 10981 ; } }
-                                                                                                                                        root "$DOT_SSH"
-                                                                                                                                        git config core.sshCommand "${ pkgs.openssh }/bin/ssh -F $DOT_SSH/config"
-                                                                                                                                        git config user.email "${ config.personal.repository.private.email }"
-                                                                                                                                        git config user.name "${ config.personal.repository.private.name }"
-                                                                                                                                        git remote add origin "${ config.personal.repository.private.remote }"
-                                                                                                                                        git mutable-mirror main 2>&1
-                                                                                                                                        git submodule foreach 'git config core.sshCommand "${ pkgs.openssh }/bin/ssh -F $DOT_SSH/config"' 2>&1
-                                                                                                                                        git submodule foreach 'git config user.email "${ config.personal.repository.private.email }"' 2>&2
-                                                                                                                                        git submodule foreach 'git config user.name "${ config.personal.repository.private.name }""' 2>&2
-                                                                                                                                    '' ;
                                                                                                                                 in
                                                                                                                                     ''
                                                                                                                                         mkdir --parents /mount/repository
@@ -1587,6 +1573,14 @@
                                                                                                                                         root "$DOT_SSH"
                                                                                                                                         export GIT_SSH_COMMAND="$DOT_SSH/config"
                                                                                                                                         ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''git config alias.mutable-${ name } "!${ value }"'' ) scripts.root ) ) }
+                                                                                                                                        git config core.sshCommand "${ pkgs.openssh }/bin/ssh -F $DOT_SSH/config"
+                                                                                                                                        git config user.email "${ config.personal.repository.private.email }"
+                                                                                                                                        git config user.name "${ config.personal.repository.private.name }"
+                                                                                                                                        git remote add origin "${ config.personal.repository.private.remote }"
+                                                                                                                                        git mutable-mirror main 2>&1
+                                                                                                                                        git submodule foreach 'git config core.sshCommand "${ pkgs.openssh }/bin/ssh -F $DOT_SSH/config"' 2>&1
+                                                                                                                                        git submodule foreach 'git config user.email "${ config.personal.repository.private.email }"' 2>&2
+                                                                                                                                        git submodule foreach 'git config user.name "${ config.personal.repository.private.name }""' 2>&2
                                                                                                                                     '' ;
                                                                                                                     } ;
                                                                                                             in "${ application }/bin/init" ;
