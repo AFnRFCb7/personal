@@ -1601,6 +1601,7 @@
                                                                                                                                                                         runtimeInputs = [ pkgs.git sequential ] ;
                                                                                                                                                                         text =
                                                                                                                                                                             ''
+                                                                                                                                                                                # reset this to main, squashing all comments to one; iteratively do the same for submodules
                                                                                                                                                                                 REPOSITORY="$( git rev-parse --show-toplevel )" || failure 3b2b98e3
                                                                                                                                                                                 cd "$REPOSITORY"
                                                                                                                                                                                 git submodule foreach '${ scripts.submodule.reset }'
@@ -1621,6 +1622,7 @@
                                                                                                                                                                         runtimeInputs = [ pkgs.coreutils pkgs.git root ] ;
                                                                                                                                                                         text =
                                                                                                                                                                             ''
+                                                                                                                                                                                # create a snapshot (read-only copy) of this (and root it)
                                                                                                                                                                                 REPOSITORY="$( git rev-parse --show-toplevel )" || failure ca25d32c
                                                                                                                                                                                 cd "$REPOSITORY"
                                                                                                                                                                                 git submodule foreach '${ scripts.submodule.snapshot }' >&2
@@ -1638,9 +1640,10 @@
                                                                                                                                                                     } ;
                                                                                                                                                                 studio =
                                                                                                                                                                     {
-                                                                                                                                                                        runtimeInputs = [ pkgs.git ] ;
+                                                                                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
                                                                                                                                                                         text =
                                                                                                                                                                             ''
+                                                                                                                                                                                # create a studio (read-write copy of main) of this repository
                                                                                                                                                                                 REPOSITORY="$( git rev-parse --show-toplevel )" || failure 37eb0a7a
                                                                                                                                                                                 cd "$REPOSITORY"
                                                                                                                                                                                 STUDIO="$( ../bin/studio )" || failure 9d7604c6
@@ -1660,6 +1663,7 @@
                                                                                                                                                                         runtimeInputs = [ pkgs.git pkgs.nix sequential ] ;
                                                                                                                                                                         text =
                                                                                                                                                                             ''
+                                                                                                                                                                                # reset this to main and update nix
                                                                                                                                                                                 : "${ builtins.concatStringsSep "" [ "$" "{" "toplevel:?this script must be run via git submodule foreach which will export toplevel" "}" ] }"
                                                                                                                                                                                 : "${ builtins.concatStringsSep "" [ "$" "{" "name:?this script must be run via git submodule foreach which will export name" "}" ] }"
                                                                                                                                                                                 cd "$toplevel/$name"
@@ -1681,6 +1685,7 @@
                                                                                                                                                                         runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.nix sequential ] ;
                                                                                                                                                                         text =
                                                                                                                                                                             ''
+                                                                                                                                                                                # create a snapshot and update nix
                                                                                                                                                                                 : "${ builtins.concatStringsSep "" [ "$" "{" "toplevel:?this script must be run via git submodule foreach which will export toplevel" "}" ] }"
                                                                                                                                                                                 : "${ builtins.concatStringsSep "" [ "$" "{" "name:?this script must be run via git submodule foreach which will export name" "}" ] }"
                                                                                                                                                                                 cd "$toplevel/$name"
@@ -1700,6 +1705,7 @@
                                                                                                                                                                         runtimeInputs = [ pkgs.coreutils pkgs.nix ] ;
                                                                                                                                                                         text =
                                                                                                                                                                             ''
+                                                                                                                                                                                # update nix
                                                                                                                                                                                 : "${ builtins.concatStringsSep "" [ "$" "{" "toplevel:?this script must be run via git submodule foreach which will export toplevel" "}" ] }"
                                                                                                                                                                                 : "${ builtins.concatStringsSep "" [ "$" "{" "name:?this script must be run via git submodule foreach which will export name" "}" ] }"
                                                                                                                                                                                 TOKEN_DIRECTORY=${ resources.production.secret.github.token { failure = 4865 ; } }
@@ -1721,6 +1727,7 @@
                                                                                                                                                         runtimeInputs = [ pkgs.coreutils sequential ] ;
                                                                                                                                                         text =
                                                                                                                                                             ''
+                                                                                                                                                                # create a studio (read write copy) of this repository and root it
                                                                                                                                                                 SEQUENCE="$( sequential )" || failure a5f58156
                                                                                                                                                                 STUDIO="$( "$SETUP" "$SEQUENCE" )" || failure 3c02f464
                                                                                                                                                                 "$MOUNT/bin/root" "$STUDIO"
@@ -1730,6 +1737,7 @@
                                                                                                                                             in "${ application }/bin/studio" ;
                                                                                                                                 in
                                                                                                                                     ''
+                                                                                                                                        # initialize a read write copy of main
                                                                                                                                         wrap ${ root }/bin/root bin/root 0500 --literal-plain DIRECTORY --inherit-plain INDEX --literal-plain PATH --literal-plain TARGET --uuid 608bd8f9
                                                                                                                                         wrap ${ studio } bin/studio 0500 --inherit-plain MOUNT --literal-plain PATH --literal-plain SEQUENCE --inherit-plain SETUP --literal-plain STUDIO --uuid 79a37900
                                                                                                                                         mkdir --parents /mount/repository
