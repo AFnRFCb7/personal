@@ -1636,13 +1636,12 @@
                                                                                                                                         git config user.name "${ config.personal.repository.private.name }"
                                                                                                                                         git remote add origin "${ config.personal.repository.private.remote }"
                                                                                                                                         git mutable-mirror main 2>&1
-                                                                                                                                        echo 5f91f111
                                                                                                                                         # shellcheck disable=SC2016
                                                                                                                                         git submodule foreach 'git config core.sshCommand "${ pkgs.openssh }/bin/ssh -F $DOT_SSH/config"' 2>&1
                                                                                                                                         # shellcheck disable=SC2016
                                                                                                                                         git submodule foreach 'git config user.email "${ config.personal.repository.private.email }"' 2>&2
                                                                                                                                         # shellcheck disable=SC2016
-                                                                                                                                        git submodule foreach 'git config user.name "${ config.personal.repository.private.name }""' 2>&2
+                                                                                                                                        git submodule foreach 'git config user.name "${ config.personal.repository.private.name }"' 2>&2
                                                                                                                                     '' ;
                                                                                                                     } ;
                                                                                                             in "${ application }/bin/init" ;
