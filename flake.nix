@@ -1578,7 +1578,7 @@
                                                                                                                                                                                 # sometimes you may want to manually promote.
                                                                                                                                                                                 # this script will show you the steps
                                                                                                                                                                                 #
-                                                                                                                                                                                INDEX="${ builtins.concatStringsSep "" [ "$" "{" "1:-10" "}" ] }"
+                                                                                                                                                                                INDEX="${ builtins.concatStringsSep "" [ "$" "{" "1:-3" "}" ] }"
                                                                                                                                                                                 REPOSITORY="${ builtins.concatStringsSep "" [ "$" "{" ''2:-"$( git rev-parse --show-toplevel )"'' "}" ] }" || failure c9ca5124
                                                                                                                                                                                 BRANCH="${ builtins.concatStringsSep "" [ "$" "{" "3:-" "}" ] }"
                                                                                                                                                                                 cd "$REPOSITORY"
@@ -1598,7 +1598,7 @@
                                                                                                                                                                                 if [[ "$INDEX" == 0 ]]
                                                                                                                                                                                 then
                                                                                                                                                                                     git mutable-switch
-                                                                                                                                                                                    prompt "mutable-switch 2"
+                                                                                                                                                                                    prompt "mutable-switch"
                                                                                                                                                                                 else
                                                                                                                                                                                     NEXT_INDEX=$(( INDEX - 1 ))
                                                                                                                                                                                     NEXT_REPOSITORY="$( git mutable-studio )" || failure 00b2b3fb
