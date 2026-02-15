@@ -1654,7 +1654,7 @@
                                                                                                                                                                                     git reset --soft origin/main
                                                                                                                                                                                     git commit -a --verbose --allow-empty-message
                                                                                                                                                                                     git push origin HEAD
-                                                                                                                                                                                    ${ scripts.alias.update }
+                                                                                                                                                                                    ${ scripts.submodule.update }
                                                                                                                                                                                 fi
                                                                                                                                                                             '' ;
                                                                                                                                                                     } ;
