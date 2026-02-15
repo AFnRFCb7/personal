@@ -1451,7 +1451,7 @@
                                                                                                                                 root ${ pkgs.openssh }
                                                                                                                                 DOT_SSH=${ resources.production.dot-ssh { failure = "failure f2774d0a" ; } }
                                                                                                                                 root "$DOT_SSH"
-                                                                                                                                git config core.sshCommand "${ pkgs.openssh }/bin/ssh -F $DOT_SSH/config"
+                                                                                                                                git config core.sshCommand "${ pkgs.openssh }/bin/ssh -F $DOT_SSH/config/"
                                                                                                                                 git config user.email "${ config.personal.pass.email }"
                                                                                                                                 git config user.name "${ config.personal.pass.name }"
                                                                                                                                 ln --symbolic ${ post-commit } "/mount/repository/.git/hooks/post-commit"
@@ -1759,13 +1759,13 @@
                                                                                                                                         root "$DOT_SSH"
                                                                                                                                         export GIT_SSH_COMMAND="${ pkgs.openssh }/bin/ssh -F $DOT_SSH/config"
                                                                                                                                         ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''git config alias.mutable-${ name } "!${ value }"'' ) scripts.root ) ) }
-                                                                                                                                        git config core.sshCommand "${ pkgs.openssh }/bin/ssh -F $DOT_SSH/config"
+                                                                                                                                        git config core.sshCommand "${ pkgs.openssh }/bin/ssh -F $DOT_SSH/config//"
                                                                                                                                         git config user.email "${ config.personal.repository.private.email }"
                                                                                                                                         git config user.name "${ config.personal.repository.private.name }"
                                                                                                                                         git remote add origin "${ config.personal.repository.private.remote }"
                                                                                                                                         git mutable-mirror main 2>&1
                                                                                                                                         export DOT_SSH
-                                                                                                                                        git submodule foreach "git config core.sshCommand '${ pkgs.openssh }/bin/ssh -F \$DOT_SSH/config'" 2>&1
+                                                                                                                                        git submodule foreach "git config core.sshCommand '${ pkgs.openssh }/bin/ssh -F \$DOT_SSH/config\\\'" 2>&1
                                                                                                                                         # shellcheck disable=SC2016
                                                                                                                                         git submodule foreach 'git config user.email "${ config.personal.repository.private.email }"' 2>&2
                                                                                                                                         # shellcheck disable=SC2016
@@ -2112,7 +2112,7 @@
                                                                                                                         root ${ pkgs.openssh }
                                                                                                                         cd /mount
                                                                                                                         git init 2>&1
-                                                                                                                        git config core.sshCommand "${ pkgs.openssh }/bin/ssh -F $DOT_SSH/config"
+                                                                                                                        git config core.sshCommand "${ pkgs.openssh }/bin/ssh -F $DOT_SSH/config////"
                                                                                                                         git config user.email "${ config.personal.volume.email }"
                                                                                                                         git config user.name "${ config.personal.volume.name }"
                                                                                                                         git remote add origin git@github.com:${ config.personal.volume.organization }/${ config.personal.volume.repository }
