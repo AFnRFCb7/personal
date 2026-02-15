@@ -1889,7 +1889,7 @@
                                                                                                                                                                     ''
                                                                                                                                                                         cd "$MOUNT/stage/artifacts/switch"
                                                                                                                                                                         echo  56dc1884 149ffcdd
-                                                                                                                                                                        git -C "$MOUNT/repository submodule foreach 'git config --get core.sshCommand'
+                                                                                                                                                                        git -C "$MOUNT/repository" submodule foreach 'git config --get core.sshCommand'
                                                                                                                                                                         echo  56dc1884 7686a00c
                                                                                                                                                                         git -C "$MOUNT/repository" submodule foreach "$MOUNT/stage/alias/submodule/mutable-switch"
                                                                                                                                                                         echo  56dc1884 89030550
