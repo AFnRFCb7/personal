@@ -1731,7 +1731,7 @@
                                                                                                                                                                 SEQUENCE="$( sequential )" || failure a5f58156
                                                                                                                                                                 STUDIO="$( "$SETUP" "$SEQUENCE" )" || failure 3c02f464
                                                                                                                                                                 "$MOUNT/bin/root" "$STUDIO"
-                                                                                                                                                                echo "$STUDIO"
+                                                                                                                                                                echo "$STUDIO/repository"
                                                                                                                                                             '' ;
                                                                                                                                                     } ;
                                                                                                                                             in "${ application }/bin/studio" ;
