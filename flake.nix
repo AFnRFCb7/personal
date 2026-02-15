@@ -1598,15 +1598,18 @@
                                                                                                                                                                                 prompt "mutable-test $INDEX"
                                                                                                                                                                                 if [[ "$INDEX" == 0 ]]
                                                                                                                                                                                 then
-                                                                                                                                                                                    echo 56dc1884 d5bcfc79
+                                                                                                                                                                                    echo 56dc1884 d5bcfc79 "$INDEX"
                                                                                                                                                                                     git mutable-switch
                                                                                                                                                                                     echo 56dc1884 22f0dd4c
                                                                                                                                                                                     prompt "mutable-switch"
+                                                                                                                                                                                    echo 56dc1884 94e35277 "$INDEX"
                                                                                                                                                                                 else
+                                                                                                                                                                                    echo 56dc1884 a1d1b215 "$INDEX"
                                                                                                                                                                                     NEXT_INDEX=$(( INDEX - 1 ))
                                                                                                                                                                                     NEXT_REPOSITORY="$( git mutable-studio )" || failure 00b2b3fb
                                                                                                                                                                                     NEXT_BRANCH="$( git rev-parse --abbrev-ref HEAD )" || failure 9cf16a4e
                                                                                                                                                                                     git mutable-promote "$NEXT_INDEX" "$NEXT_REPOSITORY" "$NEXT_BRANCH"
+                                                                                                                                                                                    echo 56dc1884 e297ba9f "$INDEX"
                                                                                                                                                                                 fi
                                                                                                                                                                             '' ;
                                                                                                                                                                     } ;
