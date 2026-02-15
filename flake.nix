@@ -55,7 +55,7 @@
                                             redis = pkgs.redis ;
                                             resources = resources ;
                                             resources-directory = resources-directory ;
-                                            sequential-start = ''$( head /dev/urandom | tr -dc '0-9' | head -c 16 )'' ;
+                                            sequential-start = ''$( head /dev/urandom | tr -dc '0-9' | head -c 15 )'' ;
                                             store-garbage-collection-root = store-garbage-collection-root ;
                                             string = _string.implementation ;
                                             visitor = _visitor.implementation ;
