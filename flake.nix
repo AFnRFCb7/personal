@@ -1577,7 +1577,7 @@
                                                                                                                                                                                 MOUNT="$( git rev-parse --show-toplevel )" || failure 37eb0a7a
                                                                                                                                                                                 cd "$MOUNT"
                                                                                                                                                                                 SEQUENCE="$( sequential )" || failure a802b5c3
-                                                                                                                                                                                STUDIO="$( $SETUP )" || failure
+                                                                                                                                                                                STUDIO="$( "$SETUP" "$SEQUENCE" )" || failure 9d7604c6
                                                                                                                                                                                 INDEX="$( dirname "$MOUNT" )" || failure ef0afb44
                                                                                                                                                                                 INDEX="$( basename "$INDEX" )" || failure 80fbf0e2
                                                                                                                                                                                 export INDEX
