@@ -1547,9 +1547,9 @@
                                                                                                                                                                                                     read -p "$MESSAGE" -r ANSWER
                                                                                                                                                                                                     if [[ "$ANSWER" == "y" ]]
                                                                                                                                                                                                     then
-                                                                                                                                                                                                        echo YES
+                                                                                                                                                                                                        echo YES "$MESSAGE"
                                                                                                                                                                                                     else
-                                                                                                                                                                                                        failure "$ANSWER"
+                                                                                                                                                                                                        failure "$MESSAGE" "$ANSWER"
                                                                                                                                                                                                     fi
                                                                                                                                                                                                 '' ;
                                                                                                                                                                                         }
