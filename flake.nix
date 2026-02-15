@@ -1598,7 +1598,9 @@
                                                                                                                                                                                 prompt "mutable-test $INDEX"
                                                                                                                                                                                 if [[ "$INDEX" == 0 ]]
                                                                                                                                                                                 then
+                                                                                                                                                                                    echo 56dc1884 d5bcfc79
                                                                                                                                                                                     git mutable-switch
+                                                                                                                                                                                    echo 56dc1884 22f0dd4c
                                                                                                                                                                                     prompt "mutable-switch"
                                                                                                                                                                                 else
                                                                                                                                                                                     NEXT_INDEX=$(( INDEX - 1 ))
@@ -1887,6 +1889,7 @@
                                                                                                                                                                 runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.libuuid ( password-less-wrap pkgs.nixos-rebuild "nixos-rebuild" ) ] ;
                                                                                                                                                                 text =
                                                                                                                                                                     ''
+                                                                                                                                                                        echo 56dc1884 63ab43ed
                                                                                                                                                                         cd "$MOUNT/stage/artifacts/switch"
                                                                                                                                                                         echo  56dc1884 149ffcdd
                                                                                                                                                                         git -C "$MOUNT/repository" submodule foreach 'git config --get core.sshCommand'
@@ -1897,6 +1900,7 @@
                                                                                                                                                                         BRANCH="$( echo "scratch/$UUID" | cut --bytes 1-64 )" || failure d5910859
                                                                                                                                                                         git -C "$MOUNT/repository" checkout -b "$BRANCH"
                                                                                                                                                                         git -C "$MOUNT/repository" commit -am "" --allow-empty --allow-empty-message
+                                                                                                                                                                        echo 56dc1884 d823f150
                                                                                                                                                                         git -C "$MOUNT/repository" fetch origin main
                                                                                                                                                                         git -C "$MOUNT/repository" reset --soft origin/main
                                                                                                                                                                         git -C "$MOUNT/repository" commit -a --verbose
