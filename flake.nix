@@ -1501,10 +1501,11 @@
                                                                                                                                                                     runtimeInputs = [ pkgs.git root ] ;
                                                                                                                                                                     text =
                                                                                                                                                                         ''
+                                                                                                                                                                            # dispatch the ${ command } command to the snapshot
                                                                                                                                                                             REPOSITORY="$( git rev-parse --show-toplevel )" || failure 302057cb
                                                                                                                                                                             cd "$REPOSITORY"
                                                                                                                                                                             SNAPSHOT=${ resources.production.repository.studio.snapshot { failure = 30870 ; } }
-                                                                                                                                                                            root "$SNAPSHOT"
+                                                                                                                                                                            ../bin/root "$SNAPSHOT"
                                                                                                                                                                             git -C "$SNAPSHOT/repository" mutable-${ command }
                                                                                                                                                                         '' ;
                                                                                                                                                                 } ;
@@ -1518,6 +1519,7 @@
                                                                                                                                                                         runtimeInputs = [ pkgs.coreutils pkgs.git sequential ] ;
                                                                                                                                                                         text =
                                                                                                                                                                             ''
+                                                                                                                                                                                # mirror $SOURCE_BRANCH from origin to this
                                                                                                                                                                                 SOURCE_BRANCH="$1"
                                                                                                                                                                                 REPOSITORY="$( git rev-parse --show-toplevel )" || failure f82885fe
                                                                                                                                                                                 cd "$REPOSITORY"
@@ -1534,6 +1536,7 @@
                                                                                                                                                                     {
                                                                                                                                                                         runtimeInputs =
                                                                                                                                                                             [
+                                                                                                                                                                                pkgs.coreutils
                                                                                                                                                                                 pkgs.diffutils
                                                                                                                                                                                 pkgs.git
                                                                                                                                                                                 (
@@ -1557,6 +1560,21 @@
                                                                                                                                                                             ] ;
                                                                                                                                                                         text =
                                                                                                                                                                             ''
+                                                                                                                                                                                # promote this feature set
+                                                                                                                                                                                #
+                                                                                                                                                                                # run check, build-vm, and test on this studio
+                                                                                                                                                                                # use studio to obtain a brand new studio
+                                                                                                                                                                                # use mirror to make the new studio the same as this one
+                                                                                                                                                                                # comparison check the new studio with the old
+                                                                                                                                                                                # run check, build-vm, and test on the new studio
+                                                                                                                                                                                # run switch on the new studio
+                                                                                                                                                                                #
+                                                                                                                                                                                # this process is lengthy and repeats most things twice
+                                                                                                                                                                                # the reason is that most everything will be done with the new code not the old code
+                                                                                                                                                                                #
+                                                                                                                                                                                # for example, say in this feature set we change how the build-vm works
+                                                                                                                                                                                # in our first iteration of build-vm we will use the code from before the change
+                                                                                                                                                                                # but in our second iteration of build-vm we will use the code from after the change
                                                                                                                                                                                 REPOSITORY_1="$( git rev-parse --show-toplevel )" || failure c9ca5124
                                                                                                                                                                                 cd "$REPOSITORY_1"
                                                                                                                                                                                 git mutable-check
