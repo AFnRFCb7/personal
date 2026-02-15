@@ -1553,7 +1553,7 @@
                                                                                                                                                                             ''
                                                                                                                                                                                 MOUNT="$( git rev-parse --show-toplevel )" || failure 37eb0a7a
                                                                                                                                                                                 cd "$MOUNT"
-                                                                                                                                                                                git submodule foreach '${ scripts.submodule.snapshot }'
+                                                                                                                                                                                git submodule foreach '${ scripts.submodule.snapshot }' >&2
                                                                                                                                                                                 if ! git diff --quiet || ! git diff --quiet --cached
                                                                                                                                                                                 then
                                                                                                                                                                                     git commit -a --verbose --allow-empty-message >&2
@@ -1566,7 +1566,22 @@
                                                                                                                                                                                 INDEX="$( basename "$INDEX" )" || failure 80fbf0e2
                                                                                                                                                                                 export INDEX
                                                                                                                                                                                 root "$SNAPSHOT"
-                                                                                                                                                                                echo "$SNAPSHOT"
+                                                                                                                                                                                echo "$SNAPSHOT/repository"
+                                                                                                                                                                            '' ;
+                                                                                                                                                                    } ;
+                                                                                                                                                                studio =
+                                                                                                                                                                    {
+                                                                                                                                                                        runtimeInputs = [ pkgs.git ] ;
+                                                                                                                                                                        text =
+                                                                                                                                                                            ''
+                                                                                                                                                                                MOUNT="$( git rev-parse --show-toplevel )" || failure 37eb0a7a
+                                                                                                                                                                                cd "$MOUNT"
+                                                                                                                                                                                SEQUENCE="$( sequential )" || failure a802b5c3
+                                                                                                                                                                                STUDIO=${ resources.production.repository.studio.entry { failure = 16047 ; setup = setup : ''${ setup } "$SEQUENCE"'' ; } }
+                                                                                                                                                                                INDEX="$( dirname "$MOUNT" )" || failure ef0afb44
+                                                                                                                                                                                INDEX="$( basename "$INDEX" )" || failure 80fbf0e2
+                                                                                                                                                                                export INDEX
+                                                                                                                                                                                root "$STUDIO"
                                                                                                                                                                             '' ;
                                                                                                                                                                     } ;
                                                                                                                                                                 switch = mutable- "switch" ;
