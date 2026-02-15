@@ -1530,14 +1530,6 @@
                                                                                                                                                                                 echo "$SNAPSHOT"
                                                                                                                                                                             '' ;
                                                                                                                                                                     } ;
-                                                                                                                                                                reset =
-                                                                                                                                                                    {
-                                                                                                                                                                        runtimeInputs = [ pkgs.git ] ;
-                                                                                                                                                                        text =
-                                                                                                                                                                            ''
-
-                                                                                                                                                                            '' ;
-                                                                                                                                                                    } ;
                                                                                                                                                                 switch = mutable- "switch" ;
                                                                                                                                                                 test = mutable- "test" ;
                                                                                                                                                             } ;
