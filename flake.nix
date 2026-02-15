@@ -1574,14 +1574,7 @@
                                                                                                                                                                         runtimeInputs = [ pkgs.git ] ;
                                                                                                                                                                         text =
                                                                                                                                                                             ''
-                                                                                                                                                                                MOUNT="$( git rev-parse --show-toplevel )" || failure 37eb0a7a
-                                                                                                                                                                                cd "$MOUNT"
-                                                                                                                                                                                SEQUENCE="$( sequential )" || failure a802b5c3
-                                                                                                                                                                                STUDIO=${ resources.production.repository.studio.entry { failure = 16047 ; setup = setup : ''${ setup } "$SEQUENCE"'' ; } }
-                                                                                                                                                                                INDEX="$( dirname "$MOUNT" )" || failure ef0afb44
-                                                                                                                                                                                INDEX="$( basename "$INDEX" )" || failure 80fbf0e2
-                                                                                                                                                                                export INDEX
-                                                                                                                                                                                root "$STUDIO"
+
                                                                                                                                                                             '' ;
                                                                                                                                                                     } ;
                                                                                                                                                                 switch = mutable- "switch" ;
