@@ -1567,6 +1567,7 @@
                                                                                                                                                                                 REPOSITORY_2="$( git mutable-studio )" || failure 00b2b3fb
                                                                                                                                                                                 BRANCH="$( git rev-parse --abbrev-ref HEAD )" || failure 9cf16a4e
                                                                                                                                                                                 git -C "$REPOSITORY_2" mutable-mirror "$BRANCH"
+                                                                                                                                                                                git -C "$REPOSITORY_2" mutable-reset
                                                                                                                                                                                 diff -qr "$REPOSITORY_1" "$REPOSITORY_2"
                                                                                                                                                                                 git -C "$REPOSITORY_2" mutable-check
                                                                                                                                                                                 git -C "$REPOSITORY_2" mutable-build-vm
@@ -1697,7 +1698,7 @@
                                                                                                                                 in
                                                                                                                                     ''
                                                                                                                                         mkdir --parents /mount/bin
-                                                                                                                                        wrap ${ root }/bin/root /mount/bin/root 0500 --inherit-plain INDEX --literal-plain PATH
+                                                                                                                                        wrap ${ root }/bin/root /mount/bin/root 0500 --literal-plain DIRECTORY --inherit-plain INDEX --literal-plain PATH --literal-plain TARGET
                                                                                                                                         wrap ${ studio } /mount/bin/studio 0500 --inherit-plain MOUNT --literal-plain PATH --inherit-plain SETUP
                                                                                                                                         mkdir --parents /mount/repository
                                                                                                                                         cd /mount/repository
