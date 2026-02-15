@@ -1636,7 +1636,6 @@
                                                                                                                                         git config user.email "${ config.personal.repository.private.email }"
                                                                                                                                         git config user.name "${ config.personal.repository.private.name }"
                                                                                                                                         git remote add origin "${ config.personal.repository.private.remote }"
-                                                                                                                                        echo 2f420ba3
                                                                                                                                         git mutable-mirror main 2>&1
                                                                                                                                         echo 5f91f111
                                                                                                                                         # shellcheck disable=SC2016
