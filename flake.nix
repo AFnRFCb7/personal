@@ -1510,6 +1510,20 @@
                                                                                                                                                                 build-vm = mutable- "build-vm" ;
                                                                                                                                                                 build-vm-with-bootloader = mutable- "build-vm-with-bootloader" ;
                                                                                                                                                                 check = mutable- "check" ;
+                                                                                                                                                                reset =
+                                                                                                                                                                    {
+                                                                                                                                                                        runtimeInputs = [ pkgs.git ] ;
+                                                                                                                                                                        text =
+                                                                                                                                                                            ''
+                                                                                                                                                                                git submodule foreach '${ scripts.submodule.reset }'
+                                                                                                                                                                                git fetch origin/main
+                                                                                                                                                                                if ! git diff --quiet origin/main || git diff --quiet --cache origin/main
+                                                                                                                                                                                then
+                                                                                                                                                                                    git reset --soft origin/main
+
+                                                                                                                                                                                fi
+                                                                                                                                                                            '' ;
+                                                                                                                                                                    } ;
                                                                                                                                                                 snapshot =
                                                                                                                                                                     {
                                                                                                                                                                         runtimeInputs = [ pkgs.coreutils pkgs.git root ] ;
@@ -1538,6 +1552,18 @@
                                                                                                                                                     let
                                                                                                                                                         set =
                                                                                                                                                             {
+                                                                                                                                                                reset =
+                                                                                                                                                                    {
+                                                                                                                                                                        runtimeInputs = [ pkgs.git ] ;
+                                                                                                                                                                        text =
+                                                                                                                                                                            ''
+                                                                                                                                                                                git fetch origin main
+                                                                                                                                                                                if ! git diff --quiet origin/main || ! git diff --quiet --cache origin/main
+                                                                                                                                                                                then
+                                                                                                                                                                                    git reset --soft origin/main
+                                                                                                                                                                                fi
+                                                                                                                                                                            '' ;
+                                                                                                                                                                    }
                                                                                                                                                                 snapshot =
                                                                                                                                                                     {
                                                                                                                                                                         runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.nix sequential ] ;
