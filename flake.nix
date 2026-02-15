@@ -1520,11 +1520,9 @@
                                                                                                                                                                                 SOURCE_BRANCH="$1"
                                                                                                                                                                                 MOUNT="$( git rev-parse --show-toplevel )" || failure 37eb0a7a
                                                                                                                                                                                 cd "$MOUNT"
-                                                                                                                                                                                echo 273a7031
                                                                                                                                                                                 git fetch origin "$SOURCE_BRANCH"
-                                                                                                                                                                                echo 4f3bcadb
                                                                                                                                                                                 git checkout "origin/$SOURCE_BRANCH"
-                                                                                                                                                                                UUID="$( sequence )" || failure b3329fb1
+                                                                                                                                                                                UUID="$( sequential )" || failure b3329fb1
                                                                                                                                                                                 TARGET_BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 0fbafe21
                                                                                                                                                                                 git checkout -b "$TARGET_BRANCH"
                                                                                                                                                                                 git submodule deinit -f .
