@@ -1580,16 +1580,21 @@
                                                                                                                                                                     } ;
                                                                                                                                                                 reset =
                                                                                                                                                                     {
-                                                                                                                                                                        runtimeInputs = [ pkgs.git ] ;
+                                                                                                                                                                        runtimeInputs = [ pkgs.git sequenctial ] ;
                                                                                                                                                                         text =
                                                                                                                                                                             ''
-                                                                                                                                                                                REPOSITORY="$( git rev-parse --show-toplevel )" || failure ca25d32c
+                                                                                                                                                                                REPOSITORY="$( git rev-parse --show-toplevel )" || failure 3b2b98e3
                                                                                                                                                                                 cd "$REPOSITORY"
                                                                                                                                                                                 git submodule foreach '${ scripts.submodule.reset }'
                                                                                                                                                                                 git fetch origin/main
                                                                                                                                                                                 if ! git diff --quiet origin/main || git diff --quiet --cache origin/main
                                                                                                                                                                                 then
+                                                                                                                                                                                    UUID="$( sequential | sha512sum )" || failure 15ff04d3
+                                                                                                                                                                                    BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure c7dc3ee2
+                                                                                                                                                                                    git checkout -b "$BRANCH"
                                                                                                                                                                                     git reset --soft origin/main
+                                                                                                                                                                                    git commit -a --verbose --allow-empty
+                                                                                                                                                                                    git push origin HEAD
                                                                                                                                                                                 fi
                                                                                                                                                                             '' ;
                                                                                                                                                                     } ;
@@ -1643,14 +1648,13 @@
                                                                                                                                                                                 git fetch origin main
                                                                                                                                                                                 if ! git diff --quiet origin/main || ! git diff --quiet --cache origin/main
                                                                                                                                                                                 then
-                                                                                                                                                                                    UUID="$( sequence | sha512sum )" || failure 78ffc3fb
+                                                                                                                                                                                    UUID="$( sequential | sha512sum )" || failure 78ffc3fb
                                                                                                                                                                                     BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 6e29e051
                                                                                                                                                                                     git checkout -b "$BRANCH"
                                                                                                                                                                                     git reset --soft origin/main
                                                                                                                                                                                     git commit -a --verbose --allow-empty-message
                                                                                                                                                                                     git push origin HEAD
-                                                                                                                                                                                    cd "$toplevel"
-                                                                                                                                                                                    nix flake update --flake "$toplevel" "$name"
+                                                                                                                                                                                    ${ scripts.alias.update }
                                                                                                                                                                                 fi
                                                                                                                                                                             '' ;
                                                                                                                                                                     } ;
