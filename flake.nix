@@ -1663,6 +1663,7 @@
                                                                                                                                                                 echo "$STUDIO"
                                                                                                                                                             '' ;
                                                                                                                                                     } ;
+                                                                                                                                            in "${ application }/bin/studio" ;
                                                                                                                                 in
                                                                                                                                     ''
                                                                                                                                         mkdir --parents /mount/bin
