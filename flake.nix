@@ -1505,7 +1505,7 @@
                                                                                                                                                                             REPOSITORY="$( git rev-parse --show-toplevel )" || failure 302057cb
                                                                                                                                                                             cd "$REPOSITORY"
                                                                                                                                                                             SNAPSHOT="$( ${ scripts.root.snapshot } )" || failure 33677eea
-                                                                                                                                                                            git -C "$SNAPSHOT/repository" mutable-${ command }
+                                                                                                                                                                            git -C "$SNAPSHOT" mutable-${ command }
                                                                                                                                                                         '' ;
                                                                                                                                                                 } ;
                                                                                                                                                         set =
