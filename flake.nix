@@ -1465,22 +1465,6 @@
                                                                                     } ;
                                                                             studio =
                                                                                 {
-                                                                                    bin =
-                                                                                        ignore :
-                                                                                            {
-                                                                                                init =
-                                                                                                    { pid , resources , pkgs , root , sequential , wrap } :
-                                                                                                        let
-                                                                                                            application =
-                                                                                                                pkgs.writeShellApplication
-                                                                                                                    {
-                                                                                                                        name = "init" ;
-                                                                                                                        runtimeInputs = [ ] ;
-                                                                                                                        text = "" ;
-                                                                                                                    } ;
-                                                                                                            in "${ application }/bin/init" ;
-                                                                                                targets = [ ] ;
-                                                                                            } ;
                                                                                     entry =
                                                                                         ignore :
                                                                                             {
@@ -1517,7 +1501,7 @@
                                                                                                                                                                     runtimeInputs = [ pkgs.git root ] ;
                                                                                                                                                                     text =
                                                                                                                                                                         ''
-                                                                                                                                                                            REPOSITORY="$( git rev-parse --show-toplevel )" || failure 37eb0a7a
+                                                                                                                                                                            REPOSITORY="$( git rev-parse --show-toplevel )" || failure 302057cb
                                                                                                                                                                             cd "$REPOSITORY"
                                                                                                                                                                             SNAPSHOT=${ resources.production.repository.studio.snapshot { failure = 30870 ; } }
                                                                                                                                                                             root "$SNAPSHOT"
@@ -1535,7 +1519,7 @@
                                                                                                                                                                         text =
                                                                                                                                                                             ''
                                                                                                                                                                                 SOURCE_BRANCH="$1"
-                                                                                                                                                                                REPOSITORY="$( git rev-parse --show-toplevel )" || failure 37eb0a7a
+                                                                                                                                                                                REPOSITORY="$( git rev-parse --show-toplevel )" || failure f82885fe
                                                                                                                                                                                 cd "$REPOSITORY"
                                                                                                                                                                                 git fetch origin "$SOURCE_BRANCH"
                                                                                                                                                                                 git checkout "origin/$SOURCE_BRANCH"
@@ -1551,7 +1535,7 @@
                                                                                                                                                                         runtimeInputs = [ pkgs.git ] ;
                                                                                                                                                                         text =
                                                                                                                                                                             ''
-                                                                                                                                                                                REPOSITORY="$( git rev-parse --show-toplevel )" || failure 37eb0a7a
+                                                                                                                                                                                REPOSITORY="$( git rev-parse --show-toplevel )" || failure 0cc1ebf6
                                                                                                                                                                                 cd "$REPOSITIORY"
                                                                                                                                                                                 git submodule foreach '${ scripts.submodule.reset }'
                                                                                                                                                                                 git fetch origin/main
@@ -1567,8 +1551,8 @@
                                                                                                                                                                         runtimeInputs = [ pkgs.coreutils pkgs.git root ] ;
                                                                                                                                                                         text =
                                                                                                                                                                             ''
-                                                                                                                                                                                REPOSITORY="$( git rev-parse --show-toplevel )" || failure 37eb0a7a
-                                                                                                                                                                                cd "$REPOSITORYii"
+                                                                                                                                                                                REPOSITORY="$( git rev-parse --show-toplevel )" || failure ca25d32c
+                                                                                                                                                                                cd "$REPOSITORY"
                                                                                                                                                                                 git submodule foreach '${ scripts.submodule.snapshot }' >&2
                                                                                                                                                                                 if ! git diff --quiet || ! git diff --quiet --cached
                                                                                                                                                                                 then
@@ -1688,10 +1672,6 @@
                                                                                                                                         git submodule foreach 'git config user.email "${ config.personal.repository.private.email }"' 2>&2
                                                                                                                                         # shellcheck disable=SC2016
                                                                                                                                         git submodule foreach 'git config user.name "${ config.personal.repository.private.name }"' 2>&2
-                                                                                                                                        BIN="${ resources.production.repository.studio.bin { failure = 10271 ; setup = setup : "${ setup } $MOUNT" ; } }
-                                                                                                                                        wrap root "$BIN/root" 0500 --inherit-plain INDEX
-                                                                                                                                        wrap *  "$BIN/studio" 0500 --inherit-plain SETUP
-                                                                                                                                        root "$BIN"
                                                                                                                                     '' ;
                                                                                                                     } ;
                                                                                                             in "${ application }/bin/init" ;
