@@ -1554,12 +1554,13 @@
                                                                                                                                                             {
                                                                                                                                                                 reset =
                                                                                                                                                                     {
-                                                                                                                                                                        runtimeInputs = [ pkgs.git ] ;
+                                                                                                                                                                        runtimeInputs = [ pkgs.git sequential ] ;
                                                                                                                                                                         text =
                                                                                                                                                                             ''
                                                                                                                                                                                 git fetch origin main
                                                                                                                                                                                 if ! git diff --quiet origin/main || ! git diff --quiet --cache origin/main
                                                                                                                                                                                 then
+                                                                                                                                                                                    UUID="$( sequence )" || failure
                                                                                                                                                                                     git reset --soft origin/main
                                                                                                                                                                                 fi
                                                                                                                                                                             '' ;
