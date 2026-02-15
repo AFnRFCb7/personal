@@ -1465,6 +1465,22 @@
                                                                                     } ;
                                                                             studio =
                                                                                 {
+                                                                                    bin =
+                                                                                        ignore :
+                                                                                            {
+                                                                                                init =
+                                                                                                    { pid , resources , pkgs , root , sequential , wrap } :
+                                                                                                        let
+                                                                                                            application =
+                                                                                                                pkgs.writeShellApplication
+                                                                                                                    {
+                                                                                                                        name = "init" ;
+                                                                                                                        runtimeInputs = [ ] ;
+                                                                                                                        text = "" ;
+                                                                                                                    } ;
+                                                                                                            in "${ application }/bin/init" ;
+                                                                                                targets = [ ] ;
+                                                                                            } ;
                                                                                     entry =
                                                                                         ignore :
                                                                                             {
@@ -1501,8 +1517,8 @@
                                                                                                                                                                     runtimeInputs = [ pkgs.git root ] ;
                                                                                                                                                                     text =
                                                                                                                                                                         ''
-                                                                                                                                                                            MOUNT="$( git rev-parse --show-toplevel )" || failure 37eb0a7a
-                                                                                                                                                                            cd "$MOUNT"
+                                                                                                                                                                            REPOSITORY="$( git rev-parse --show-toplevel )" || failure 37eb0a7a
+                                                                                                                                                                            cd "$REPOSITORY"
                                                                                                                                                                             SNAPSHOT=${ resources.production.repository.studio.snapshot { failure = 30870 ; } }
                                                                                                                                                                             root "$SNAPSHOT"
                                                                                                                                                                             git -C "$SNAPSHOT/repository" mutable-${ command }
@@ -1519,8 +1535,8 @@
                                                                                                                                                                         text =
                                                                                                                                                                             ''
                                                                                                                                                                                 SOURCE_BRANCH="$1"
-                                                                                                                                                                                MOUNT="$( git rev-parse --show-toplevel )" || failure 37eb0a7a
-                                                                                                                                                                                cd "$MOUNT"
+                                                                                                                                                                                REPOSITORY="$( git rev-parse --show-toplevel )" || failure 37eb0a7a
+                                                                                                                                                                                cd "$REPOSITORY"
                                                                                                                                                                                 git fetch origin "$SOURCE_BRANCH"
                                                                                                                                                                                 git checkout "origin/$SOURCE_BRANCH"
                                                                                                                                                                                 UUID="$( sequential )" || failure b3329fb1
@@ -1535,8 +1551,8 @@
                                                                                                                                                                         runtimeInputs = [ pkgs.git ] ;
                                                                                                                                                                         text =
                                                                                                                                                                             ''
-                                                                                                                                                                                MOUNT="$( git rev-parse --show-toplevel )" || failure 37eb0a7a
-                                                                                                                                                                                cd "$MOUNT"
+                                                                                                                                                                                REPOSITORY="$( git rev-parse --show-toplevel )" || failure 37eb0a7a
+                                                                                                                                                                                cd "$REPOSITIORY"
                                                                                                                                                                                 git submodule foreach '${ scripts.submodule.reset }'
                                                                                                                                                                                 git fetch origin/main
                                                                                                                                                                                 if ! git diff --quiet origin/main || git diff --quiet --cache origin/main
@@ -1551,8 +1567,8 @@
                                                                                                                                                                         runtimeInputs = [ pkgs.coreutils pkgs.git root ] ;
                                                                                                                                                                         text =
                                                                                                                                                                             ''
-                                                                                                                                                                                MOUNT="$( git rev-parse --show-toplevel )" || failure 37eb0a7a
-                                                                                                                                                                                cd "$MOUNT"
+                                                                                                                                                                                REPOSITORY="$( git rev-parse --show-toplevel )" || failure 37eb0a7a
+                                                                                                                                                                                cd "$REPOSITORYii"
                                                                                                                                                                                 git submodule foreach '${ scripts.submodule.snapshot }' >&2
                                                                                                                                                                                 if ! git diff --quiet || ! git diff --quiet --cached
                                                                                                                                                                                 then
@@ -1562,10 +1578,7 @@
                                                                                                                                                                                 BRANCH="$( git rev-parse --abbrev-ref HEAD )" || failure d14e84bf
                                                                                                                                                                                 COMMIT="$( git rev-parse HEAD )" || failure e6fec78a
                                                                                                                                                                                 SNAPSHOT=${ resources.production.repository.studio.snapshot { failure = 8500 ; setup = setup : ''${ setup } "$BRANCH" "$COMMIT"'' ; } }
-                                                                                                                                                                                INDEX="$( dirname "$MOUNT" )" || failure ef0afb44
-                                                                                                                                                                                INDEX="$( basename "$INDEX" )" || failure 80fbf0e2
-                                                                                                                                                                                export INDEX
-                                                                                                                                                                                root "$SNAPSHOT"
+                                                                                                                                                                                ../bin/root "$SNAPSHOT"
                                                                                                                                                                                 echo "$SNAPSHOT/repository"
                                                                                                                                                                             '' ;
                                                                                                                                                                     } ;
@@ -1574,14 +1587,10 @@
                                                                                                                                                                         runtimeInputs = [ pkgs.git ] ;
                                                                                                                                                                         text =
                                                                                                                                                                             ''
-                                                                                                                                                                                MOUNT="$( git rev-parse --show-toplevel )" || failure 37eb0a7a
-                                                                                                                                                                                cd "$MOUNT"
-                                                                                                                                                                                SEQUENCE="$( sequential )" || failure a802b5c3
-                                                                                                                                                                                STUDIO="$( "$SETUP" "$SEQUENCE" )" || failure 9d7604c6
-                                                                                                                                                                                INDEX="$( dirname "$MOUNT" )" || failure ef0afb44
-                                                                                                                                                                                INDEX="$( basename "$INDEX" )" || failure 80fbf0e2
-                                                                                                                                                                                export INDEX
-                                                                                                                                                                                root "$STUDIO"
+                                                                                                                                                                                REPOSITORY="$( git rev-parse --show-toplevel )" || failure 37eb0a7a
+                                                                                                                                                                                cd "$REPOSITORY"
+                                                                                                                                                                                STUDIO="$( ../bin/studio )" || failure 9d7604c6
+                                                                                                                                                                                echo "$STUDIO"
                                                                                                                                                                             '' ;
                                                                                                                                                                     } ;
                                                                                                                                                                 switch = mutable- "switch" ;
@@ -1639,8 +1648,26 @@
                                                                                                                                                             } ;
                                                                                                                                                         in builtins.mapAttrs mapper set ;
                                                                                                                                         } ;
+                                                                                                                                    studio =
+                                                                                                                                        let
+                                                                                                                                            application =
+                                                                                                                                                pkgs.writeShellApplication
+                                                                                                                                                    {
+                                                                                                                                                        name = "studio" ;
+                                                                                                                                                        runtimeInputs = [ pkgs.coreutils sequential ] ;
+                                                                                                                                                        text =
+                                                                                                                                                            ''
+                                                                                                                                                                SEQUENCE="$( sequential )" || failure a5f58156
+                                                                                                                                                                STUDIO="$( "$SETUP" "SEQUENCE" )" || failure 3c02f464
+                                                                                                                                                                "$MOUNT/bin/root" "$STUDIO"
+                                                                                                                                                                echo "$STUDIO"
+                                                                                                                                                            '' ;
+                                                                                                                                                    } ;
                                                                                                                                 in
                                                                                                                                     ''
+                                                                                                                                        mkdir --parents /mount/bin
+                                                                                                                                        wrap ${ root }/bin/root /mount/bin/root 0500 --inherit-plain INDEX --literal-plain PATH
+                                                                                                                                        wrap ${ studio } /mount/bin/studio 0500 --inherit-plain MOUNT --literal-plain PATH --inherit-plain SETUP
                                                                                                                                         mkdir --parents /mount/repository
                                                                                                                                         cd /mount/repository
                                                                                                                                         git init 2>&1
@@ -1660,6 +1687,10 @@
                                                                                                                                         git submodule foreach 'git config user.email "${ config.personal.repository.private.email }"' 2>&2
                                                                                                                                         # shellcheck disable=SC2016
                                                                                                                                         git submodule foreach 'git config user.name "${ config.personal.repository.private.name }"' 2>&2
+                                                                                                                                        BIN="${ resources.production.repository.studio.bin { failure = 10271 ; setup = setup : "${ setup } $MOUNT" ; } }
+                                                                                                                                        wrap root "$BIN/root" 0500 --inherit-plain INDEX
+                                                                                                                                        wrap *  "$BIN/studio" 0500 --inherit-plain SETUP
+                                                                                                                                        root "$BIN"
                                                                                                                                     '' ;
                                                                                                                     } ;
                                                                                                             in "${ application }/bin/init" ;
