@@ -1759,7 +1759,7 @@
                                                                                                                                         root "$DOT_SSH"
                                                                                                                                         export GIT_SSH_COMMAND="${ pkgs.openssh }/bin/ssh -F $DOT_SSH/config"
                                                                                                                                         ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''git config alias.mutable-${ name } "!${ value }"'' ) scripts.root ) ) }
-                                                                                                                                        git config core.sshCommand "${ pkgs.openssh }/bin/ssh -F $DOT_SSH/config//"
+                                                                                                                                        git config core.sshCommand "${ pkgs.openssh }/bin/ssh -F $DOT_SSH/config"
                                                                                                                                         git config user.email "${ config.personal.repository.private.email }"
                                                                                                                                         git config user.name "${ config.personal.repository.private.name }"
                                                                                                                                         git remote add origin "${ config.personal.repository.private.remote }"
