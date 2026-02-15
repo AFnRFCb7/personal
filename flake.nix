@@ -1546,7 +1546,7 @@
                                                                                                                                                                                             text =
                                                                                                                                                                                                 ''
                                                                                                                                                                                                     MESSAGE="$1"
-                                                                                                                                                                                                    read -p "$MESSAGE" -r ANSWER
+                                                                                                                                                                                                    read -p "$MESSAGE?  " -r ANSWER
                                                                                                                                                                                                     if [[ "$ANSWER" == "y" ]]
                                                                                                                                                                                                     then
                                                                                                                                                                                                         echo YES "$MESSAGE"
@@ -1578,7 +1578,7 @@
                                                                                                                                                                                 # sometimes you may want to manually promote.
                                                                                                                                                                                 # this script will show you the steps
                                                                                                                                                                                 #
-                                                                                                                                                                                INDEX="${ builtins.concatStringsSep "" [ "$" "{" "1:-3" "}" ] }"
+                                                                                                                                                                                INDEX="${ builtins.concatStringsSep "" [ "$" "{" "1:-2" "}" ] }"
                                                                                                                                                                                 REPOSITORY="${ builtins.concatStringsSep "" [ "$" "{" ''2:-"$( git rev-parse --show-toplevel )"'' "}" ] }" || failure c9ca5124
                                                                                                                                                                                 BRANCH="${ builtins.concatStringsSep "" [ "$" "{" "3:-" "}" ] }"
                                                                                                                                                                                 cd "$REPOSITORY"
