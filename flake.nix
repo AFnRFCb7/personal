@@ -1475,7 +1475,7 @@
                                                                                                                 pkgs.writeShellApplication
                                                                                                                     {
                                                                                                                         name = "init" ;
-                                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.git root ] ;
+                                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.git root wrap ] ;
                                                                                                                         text =
                                                                                                                             let
                                                                                                                                 scripts =
