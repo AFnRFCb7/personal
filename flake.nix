@@ -1498,14 +1498,13 @@
                                                                                                                                                         mutable- =
                                                                                                                                                             command :
                                                                                                                                                                 {
-                                                                                                                                                                    runtimeInputs = [ pkgs.git root ] ;
+                                                                                                                                                                    runtimeInputs = [ pkgs.git ] ;
                                                                                                                                                                     text =
                                                                                                                                                                         ''
                                                                                                                                                                             # dispatch the ${ command } command to the snapshot
                                                                                                                                                                             REPOSITORY="$( git rev-parse --show-toplevel )" || failure 302057cb
                                                                                                                                                                             cd "$REPOSITORY"
                                                                                                                                                                             SNAPSHOT="$( ${ scripts.root.snapshot } )" || failure 33677eea
-                                                                                                                                                                            ../bin/root "$SNAPSHOT"
                                                                                                                                                                             git -C "$SNAPSHOT/repository" mutable-${ command }
                                                                                                                                                                         '' ;
                                                                                                                                                                 } ;
