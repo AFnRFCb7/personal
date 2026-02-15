@@ -1474,7 +1474,7 @@
                                                                                                                 pkgs.writeShellApplication
                                                                                                                     {
                                                                                                                         name = "init" ;
-                                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
+                                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.git root ] ;
                                                                                                                         text =
                                                                                                                             let
                                                                                                                                 scripts =
@@ -1581,7 +1581,7 @@
                                                                                                                                     ''
                                                                                                                                         mkdir --parents /mount/repository
                                                                                                                                         cd /mount/repository
-                                                                                                                                        git init
+                                                                                                                                        git init 2>&1
                                                                                                                                         root ${ pkgs.openssh }
                                                                                                                                         DOT_SSH=${ resources.production.dot-ssh { failure = 2564 ; } }
                                                                                                                                         root "$DOT_SSH"
