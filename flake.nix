@@ -1532,11 +1532,21 @@
                                                                                                                                                                     } ;
                                                                                                                                                                 promote =
                                                                                                                                                                     {
-                                                                                                                                                                        runtimeInputs = [ ] ;
+                                                                                                                                                                        runtimeInputs = [ pkgs.git ] ;
                                                                                                                                                                         text =
                                                                                                                                                                             ''
-                                                                                                                                                                                REPOSITORY="$( git rev-parse --show-toplevel )" || failure c9ca5124
-                                                                                                                                                                                cd "$REPOSITORY"
+                                                                                                                                                                                REPOSITORY_1="$( git rev-parse --show-toplevel )" || failure c9ca5124
+                                                                                                                                                                                cd "$REPOSITORY_1"
+                                                                                                                                                                                git mutable-check
+                                                                                                                                                                                git mutable-build-vm
+                                                                                                                                                                                git mutable-test
+                                                                                                                                                                                REPOSITORY_2="$( git mutable-studio )" || failure 00b2b3fb
+                                                                                                                                                                                BRANCH="$( git rev-parse --abbrev-ref HEAD )" || failure 9cf16a4e
+                                                                                                                                                                                git -C "$REPOSITORY_2" mutable-mirror "$BRANCH"
+                                                                                                                                                                                git -C "$REPOSITORY_2" mutable-check
+                                                                                                                                                                                git -C "$REPOSITORY_2" mutable-build-vm
+                                                                                                                                                                                git -C "$REPOSITORY_2" mutable-test
+                                                                                                                                                                                git -C "$REPOSITORY_2" mutable-switch
                                                                                                                                                                             '' ;
                                                                                                                                                                     } ;
                                                                                                                                                                 reset =
@@ -1650,7 +1660,7 @@
                                                                                                                                                         text =
                                                                                                                                                             ''
                                                                                                                                                                 SEQUENCE="$( sequential )" || failure a5f58156
-                                                                                                                                                                STUDIO="$( "$SETUP" "SEQUENCE" )" || failure 3c02f464
+                                                                                                                                                                STUDIO="$( "$SETUP" "$SEQUENCE" )" || failure 3c02f464
                                                                                                                                                                 "$MOUNT/bin/root" "$STUDIO"
                                                                                                                                                                 echo "$STUDIO"
                                                                                                                                                             '' ;
