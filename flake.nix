@@ -1563,7 +1563,7 @@
                                                                                                                                                                                     git reset --soft origin/main
                                                                                                                                                                                 fi
                                                                                                                                                                             '' ;
-                                                                                                                                                                    }
+                                                                                                                                                                    } ;
                                                                                                                                                                 snapshot =
                                                                                                                                                                     {
                                                                                                                                                                         runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.nix sequential ] ;
