@@ -1580,7 +1580,7 @@
                                                                                                                                                                     } ;
                                                                                                                                                                 reset =
                                                                                                                                                                     {
-                                                                                                                                                                        runtimeInputs = [ pkgs.git sequenctial ] ;
+                                                                                                                                                                        runtimeInputs = [ pkgs.git sequential ] ;
                                                                                                                                                                         text =
                                                                                                                                                                             ''
                                                                                                                                                                                 REPOSITORY="$( git rev-parse --show-toplevel )" || failure 3b2b98e3
