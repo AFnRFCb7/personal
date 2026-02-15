@@ -1535,6 +1535,8 @@
                                                                                                                                                                         runtimeInputs = [ ] ;
                                                                                                                                                                         text =
                                                                                                                                                                             ''
+                                                                                                                                                                                REPOSITORY="$( git rev-parse --show-toplevel )" || failure c9ca5124
+                                                                                                                                                                                cd "$REPOSITORY"
                                                                                                                                                                             '' ;
                                                                                                                                                                     } ;
                                                                                                                                                                 reset =
@@ -1542,8 +1544,7 @@
                                                                                                                                                                         runtimeInputs = [ pkgs.git ] ;
                                                                                                                                                                         text =
                                                                                                                                                                             ''
-                                                                                                                                                                                REPOSITORY="$( git rev-parse --show-toplevel )" || failure 0cc1ebf6
-                                                                                                                                                                                cd "$REPOSITIORY"
+
                                                                                                                                                                                 git submodule foreach '${ scripts.submodule.reset }'
                                                                                                                                                                                 git fetch origin/main
                                                                                                                                                                                 if ! git diff --quiet origin/main || git diff --quiet --cache origin/main
