@@ -1888,7 +1888,11 @@
                                                                                                                                                                 text =
                                                                                                                                                                     ''
                                                                                                                                                                         cd "$MOUNT/stage/artifacts/switch"
+                                                                                                                                                                        echo  56dc1884 149ffcdd
+                                                                                                                                                                        git -C "$MOUNT/repository submodule foreach 'git config --get core.sshCommand'
+                                                                                                                                                                        echo  56dc1884 7686a00c
                                                                                                                                                                         git -C "$MOUNT/repository" submodule foreach "$MOUNT/stage/alias/submodule/mutable-switch"
+                                                                                                                                                                        echo  56dc1884 89030550
                                                                                                                                                                         UUID="$( uuidgen | sha512sum )" || failure 0f1227b6
                                                                                                                                                                         BRANCH="$( echo "scratch/$UUID" | cut --bytes 1-64 )" || failure d5910859
                                                                                                                                                                         git -C "$MOUNT/repository" checkout -b "$BRANCH"
