@@ -1583,7 +1583,8 @@
                                                                                                                                                                         runtimeInputs = [ pkgs.git ] ;
                                                                                                                                                                         text =
                                                                                                                                                                             ''
-
+                                                                                                                                                                                REPOSITORY="$( git rev-parse --show-toplevel )" || failure ca25d32c
+                                                                                                                                                                                cd "$REPOSITORY"
                                                                                                                                                                                 git submodule foreach '${ scripts.submodule.reset }'
                                                                                                                                                                                 git fetch origin/main
                                                                                                                                                                                 if ! git diff --quiet origin/main || git diff --quiet --cache origin/main
