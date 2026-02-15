@@ -1543,7 +1543,7 @@
                                                                                                                                                                                             runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                                                                                                             text =
                                                                                                                                                                                                 ''
-                                                                                                                                                                                                    PROMPT="$1"
+                                                                                                                                                                                                    MESSAGE="$1"
                                                                                                                                                                                                     read -p "$MESSAGE" -r ANSWER
                                                                                                                                                                                                     if [[ "$ANSWER" == "y" ]]
                                                                                                                                                                                                     then
