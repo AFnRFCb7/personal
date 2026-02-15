@@ -1757,6 +1757,7 @@
                                                                                                                                         root ${ pkgs.openssh }
                                                                                                                                         DOT_SSH=${ resources.production.dot-ssh { failure = 2564 ; } }
                                                                                                                                         root "$DOT_SSH"
+                                                                                                                                        echo "472ee5ee" GIT_SSH_COMMAND="${ pkgs.openssh }/bin/ssh -F $DOT_SSH/config"
                                                                                                                                         export GIT_SSH_COMMAND="${ pkgs.openssh }/bin/ssh -F $DOT_SSH/config"
                                                                                                                                         ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''git config alias.mutable-${ name } "!${ value }"'' ) scripts.root ) ) }
                                                                                                                                         git config core.sshCommand "${ pkgs.openssh }/bin/ssh -F $DOT_SSH/config"
