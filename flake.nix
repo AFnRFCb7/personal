@@ -1587,12 +1587,16 @@
                                                                                                                                                                                 then
                                                                                                                                                                                     git mutable-mirror "$BRANCH"
                                                                                                                                                                                 fi
+                                                                                                                                                                                if [[ "$INDEX" == 0 ]]
+                                                                                                                                                                                then
+                                                                                                                                                                                    git mutable-reset
+                                                                                                                                                                                fi
                                                                                                                                                                                 git mutable-check
                                                                                                                                                                                 git mutable-build-vm
                                                                                                                                                                                 prompt "mutable-build-vm $INDEX"
                                                                                                                                                                                 git mutable-test
                                                                                                                                                                                 prompt "mutable-test $INDEX"
-                                                                                                                                                                                if [[ $INDEX == 0 ]]
+                                                                                                                                                                                if [[ "$INDEX" == 0 ]]
                                                                                                                                                                                 then
                                                                                                                                                                                     git mutable-switch
                                                                                                                                                                                     prompt "mutable-switch 2"
