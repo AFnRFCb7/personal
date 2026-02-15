@@ -1530,6 +1530,13 @@
                                                                                                                                                                                 git submodule update --init --recursive
                                                                                                                                                                             '' ;
                                                                                                                                                                     } ;
+                                                                                                                                                                promote =
+                                                                                                                                                                    {
+                                                                                                                                                                        runtimeInputs = [ ] ;
+                                                                                                                                                                        text =
+                                                                                                                                                                            ''
+                                                                                                                                                                            '' ;
+                                                                                                                                                                    } ;
                                                                                                                                                                 reset =
                                                                                                                                                                     {
                                                                                                                                                                         runtimeInputs = [ pkgs.git ] ;
