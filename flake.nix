@@ -1500,6 +1500,8 @@
                                                                                                                                                                     runtimeInputs = [ pkgs.git root ] ;
                                                                                                                                                                     text =
                                                                                                                                                                         ''
+                                                                                                                                                                            MOUNT="$( git rev-parse --show-toplevel )" || failure 37eb0a7a
+                                                                                                                                                                            cd "$MOUNT"
                                                                                                                                                                             SNAPSHOT=${ resources.production.repository.studio.snapshot { failure = 30870 ; } }
                                                                                                                                                                             root "$SNAPSHOT"
                                                                                                                                                                             git -C "$SNAPSHOT/repository" mutable-${ command }
@@ -1510,11 +1512,30 @@
                                                                                                                                                                 build-vm = mutable- "build-vm" ;
                                                                                                                                                                 build-vm-with-bootloader = mutable- "build-vm-with-bootloader" ;
                                                                                                                                                                 check = mutable- "check" ;
+                                                                                                                                                                mirror =
+                                                                                                                                                                    {
+                                                                                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.git sequential ] ;
+                                                                                                                                                                        text =
+                                                                                                                                                                            ''
+                                                                                                                                                                                SOURCE_BRANCH="$1"
+                                                                                                                                                                                MOUNT="$( git rev-parse --show-toplevel )" || failure 37eb0a7a
+                                                                                                                                                                                cd "$MOUNT"
+                                                                                                                                                                                git fetch origin "$SOURCE_BRANCH"
+                                                                                                                                                                                git checkout "origin/$SOURCE_BRANCH"
+                                                                                                                                                                                UUID="$( sequence )" || failure b3329fb1
+                                                                                                                                                                                TARGET_BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 0fbafe21
+                                                                                                                                                                                git checkout -b "$TARGET_BRANCH"
+                                                                                                                                                                                git submodule deinit -f .
+                                                                                                                                                                                git submodule update --init --recursive
+                                                                                                                                                                            '' ;
+                                                                                                                                                                    } ;
                                                                                                                                                                 reset =
                                                                                                                                                                     {
                                                                                                                                                                         runtimeInputs = [ pkgs.git ] ;
                                                                                                                                                                         text =
                                                                                                                                                                             ''
+                                                                                                                                                                                MOUNT="$( git rev-parse --show-toplevel )" || failure 37eb0a7a
+                                                                                                                                                                                cd "$MOUNT"
                                                                                                                                                                                 git submodule foreach '${ scripts.submodule.reset }'
                                                                                                                                                                                 git fetch origin/main
                                                                                                                                                                                 if ! git diff --quiet origin/main || git diff --quiet --cache origin/main
@@ -1554,14 +1575,23 @@
                                                                                                                                                             {
                                                                                                                                                                 reset =
                                                                                                                                                                     {
-                                                                                                                                                                        runtimeInputs = [ pkgs.git sequential ] ;
+                                                                                                                                                                        runtimeInputs = [ pkgs.git pkgs.nix sequential ] ;
                                                                                                                                                                         text =
                                                                                                                                                                             ''
+                                                                                                                                                                                : "${ builtins.concatStringsSep "" [ "$" "{" "toplevel:?this script must be run via git submodule foreach which will export toplevel" "}" ] }"
+                                                                                                                                                                                : "${ builtins.concatStringsSep "" [ "$" "{" "name:?this script must be run via git submodule foreach which will export name" "}" ] }"
+                                                                                                                                                                                cd "$toplevel/$name"
                                                                                                                                                                                 git fetch origin main
                                                                                                                                                                                 if ! git diff --quiet origin/main || ! git diff --quiet --cache origin/main
                                                                                                                                                                                 then
-                                                                                                                                                                                    UUID="$( sequence )" || failure
+                                                                                                                                                                                    UUID="$( sequence | sha512sum )" || failure 78ffc3fb
+                                                                                                                                                                                    BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 6e29e051
+                                                                                                                                                                                    git checkout -b "$BRANCH"
                                                                                                                                                                                     git reset --soft origin/main
+                                                                                                                                                                                    git commit -a --verbose --allow-empty-message
+                                                                                                                                                                                    git push origin HEAD
+                                                                                                                                                                                    cd "$toplevel"
+                                                                                                                                                                                    nix flake update --flake "$toplevel" "$name"
                                                                                                                                                                                 fi
                                                                                                                                                                             '' ;
                                                                                                                                                                     } ;
