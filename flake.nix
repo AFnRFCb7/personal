@@ -1532,21 +1532,49 @@
                                                                                                                                                                     } ;
                                                                                                                                                                 promote =
                                                                                                                                                                     {
-                                                                                                                                                                        runtimeInputs = [ pkgs.git ] ;
+                                                                                                                                                                        runtimeInputs =
+                                                                                                                                                                            [
+                                                                                                                                                                                pkgs.diffutils
+                                                                                                                                                                                pkgs.git
+                                                                                                                                                                                (
+                                                                                                                                                                                    pkgs.writeShellApplication
+                                                                                                                                                                                        {
+                                                                                                                                                                                            name = "prompt" ;
+                                                                                                                                                                                            runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                                                                                                            text =
+                                                                                                                                                                                                ''
+                                                                                                                                                                                                    PROMPT="$1"
+                                                                                                                                                                                                    read -p "$MESSAGE" -r ANSWER
+                                                                                                                                                                                                    if [[ "$ANSWER" == "y" ]]
+                                                                                                                                                                                                    then
+                                                                                                                                                                                                        echo YES
+                                                                                                                                                                                                    else
+                                                                                                                                                                                                        failure "$ANSWER"
+                                                                                                                                                                                                    fi
+                                                                                                                                                                                                '' ;
+                                                                                                                                                                                        }
+                                                                                                                                                                                )
+                                                                                                                                                                            ] ;
                                                                                                                                                                         text =
                                                                                                                                                                             ''
                                                                                                                                                                                 REPOSITORY_1="$( git rev-parse --show-toplevel )" || failure c9ca5124
                                                                                                                                                                                 cd "$REPOSITORY_1"
                                                                                                                                                                                 git mutable-check
                                                                                                                                                                                 git mutable-build-vm
+                                                                                                                                                                                prompt "mutable-build-vm 1"
                                                                                                                                                                                 git mutable-test
+                                                                                                                                                                                prompt "mutable-test 1"
                                                                                                                                                                                 REPOSITORY_2="$( git mutable-studio )" || failure 00b2b3fb
                                                                                                                                                                                 BRANCH="$( git rev-parse --abbrev-ref HEAD )" || failure 9cf16a4e
                                                                                                                                                                                 git -C "$REPOSITORY_2" mutable-mirror "$BRANCH"
+                                                                                                                                                                                diff -qr "$REPOSITORY_1" "$REPOSITORY_2"
                                                                                                                                                                                 git -C "$REPOSITORY_2" mutable-check
                                                                                                                                                                                 git -C "$REPOSITORY_2" mutable-build-vm
+                                                                                                                                                                                prompt "mutable-build-vm 2"
                                                                                                                                                                                 git -C "$REPOSITORY_2" mutable-test
+                                                                                                                                                                                prompt "mutable-test 2"
                                                                                                                                                                                 git -C "$REPOSITORY_2" mutable-switch
+                                                                                                                                                                                prompt "mutable-switch 2"
                                                                                                                                                                             '' ;
                                                                                                                                                                     } ;
                                                                                                                                                                 reset =
