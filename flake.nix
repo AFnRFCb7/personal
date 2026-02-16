@@ -1589,7 +1589,9 @@
                                                                                                                                                                                 fi
                                                                                                                                                                                 if [[ "$INDEX" == 0 ]]
                                                                                                                                                                                 then
+                                                                                                                                                                                    echo 56dc1884 9fc6c27a "$INDEX"
                                                                                                                                                                                     git mutable-reset
+                                                                                                                                                                                    echo 56dc1884 cab69439 "$INDEX"
                                                                                                                                                                                 fi
                                                                                                                                                                                 git mutable-check
                                                                                                                                                                                 git mutable-build-vm
@@ -1621,6 +1623,9 @@
                                                                                                                                                                                 # reset this to main, squashing all comments to one; iteratively do the same for submodules
                                                                                                                                                                                 REPOSITORY="$( git rev-parse --show-toplevel )" || failure 3b2b98e3
                                                                                                                                                                                 cd "$REPOSITORY"
+                                                                                                                                                                                echo 56dc1884 b560f034 "$( pwd )"
+                                                                                                                                                                                git submodule foreach 'git config --get core.sshCommand'
+                                                                                                                                                                                echo 56dc1884 6cbae88a
                                                                                                                                                                                 git submodule foreach '${ scripts.submodule.reset }'
                                                                                                                                                                                 git fetch origin/main
                                                                                                                                                                                 if ! git diff --quiet origin/main || git diff --quiet --cache origin/main
@@ -1684,6 +1689,7 @@
                                                                                                                                                                                 : "${ builtins.concatStringsSep "" [ "$" "{" "toplevel:?this script must be run via git submodule foreach which will export toplevel" "}" ] }"
                                                                                                                                                                                 : "${ builtins.concatStringsSep "" [ "$" "{" "name:?this script must be run via git submodule foreach which will export name" "}" ] }"
                                                                                                                                                                                 cd "$toplevel/$name"
+                                                                                                                                                                                echo 56dc1884 8c1f6e8e
                                                                                                                                                                                 git fetch origin main
                                                                                                                                                                                 if ! git diff --quiet origin/main || ! git diff --quiet --cache origin/main
                                                                                                                                                                                 then
