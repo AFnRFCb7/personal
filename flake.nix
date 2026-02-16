@@ -1627,6 +1627,7 @@
                                                                                                                                                                         runtimeInputs = [ pkgs.git sequential ] ;
                                                                                                                                                                         text =
                                                                                                                                                                             ''
+
                                                                                                                                                                                 # reset this to main, squashing all comments to one; iteratively do the same for submodules
                                                                                                                                                                                 REPOSITORY="$( git rev-parse --show-toplevel )" || failure 3b2b98e3
                                                                                                                                                                                 cd "$REPOSITORY"
