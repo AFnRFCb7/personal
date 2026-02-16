@@ -1928,7 +1928,7 @@
                                                                                                                                         COMMIT="$2"
                                                                                                                                         echo 71fc97ef 3174e6af
                                                                                                                                         echo 71fc97ef 3174e6af
-                                                                                                                                        root ${ pkgs.openssh }
+                                                                                                                                        # root ${ pkgs.openssh }
                                                                                                                                         DOT_SSH=${ resources.production.dot-ssh { failure = 7513 ; } }
                                                                                                                                         # root "$DOT_SSH"
                                                                                                                                         mkdir /mount/repository
