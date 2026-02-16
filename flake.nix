@@ -1921,6 +1921,9 @@
                                                                                                                                         root ${ pkgs.openssh }
                                                                                                                                         DOT_SSH=${ resources.production.dot-ssh { failure = 7513 ; } }
                                                                                                                                         root "$DOT_SSH"
+                                                                                                                                        mkdir /mount/repository
+                                                                                                                                        cd /mount/repository
+                                                                                                                                        git init
                                                                                                                                         git config core.sshCommand "${ pkgs.openssh }/bin/ssh -F $DOT_SSH/config"
                                                                                                                                         git config user.email "${ config.personal.email }"
                                                                                                                                         git config user.name "${ config.personal.description }"
