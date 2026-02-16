@@ -1934,7 +1934,7 @@
                                                                                                                                         mkdir /mount/repository
                                                                                                                                         cd /mount/repository
                                                                                                                                         echo 71fc97ef 3174e6af
-                                                                                                                                        git init
+                                                                                                                                        git init 2>&1
                                                                                                                                         ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''git config alias.mutable-${ name } "!${ value }"'' ) scripts.root ) ) }
                                                                                                                                         echo 71fc97ef a88397ce
                                                                                                                                         git config core.sshCommand "${ pkgs.openssh }/bin/ssh -F $DOT_SSH/config"
