@@ -2590,7 +2590,7 @@
                                                                                                         } ;
                                                                                                     submodule =
                                                                                                         {
-                                                                                                            snapshot =
+                                                                                                            mutable-snapshot =
                                                                                                                 let
                                                                                                                     application =
                                                                                                                         pkgs.writeShellApplication
