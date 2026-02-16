@@ -1634,7 +1634,7 @@
                                                                                                                                                                                 git submodule foreach 'git config --get core.sshCommand'
                                                                                                                                                                                 echo 56dc1884 6cbae88a
                                                                                                                                                                                 git submodule foreach '${ scripts.submodule.reset }'
-                                                                                                                                                                                git fetch origin/main
+                                                                                                                                                                                git fetch origin main
                                                                                                                                                                                 if ! git diff --quiet origin/main || git diff --quiet --cache origin/main
                                                                                                                                                                                 then
                                                                                                                                                                                     UUID="$( sequential | sha512sum )" || failure 15ff04d3
