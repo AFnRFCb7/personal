@@ -1625,7 +1625,7 @@
                                                                                                                                                                                     BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure c7dc3ee2
                                                                                                                                                                                     git checkout -b "$BRANCH"
                                                                                                                                                                                     git reset --soft origin/main
-                                                                                                                                                                                    git commit -a --verbose --allow-empty
+                                                                                                                                                                                    git commit -a --verbose --allow-empty --allow-empty-message
                                                                                                                                                                                     git push origin HEAD
                                                                                                                                                                                 fi
                                                                                                                                                                             '' ;
@@ -2112,7 +2112,8 @@
                                                                                                                 ''
                                                                                                                     cd /mount/repository
                                                                                                                     git add secret
-                                                                                                                    git commit -m "" --allow-empty --allow-empty-message 2>&1
+                                                                                                                    git
+                                                                                                                     -m "" --allow-empty --allow-empty-message 2>&1
                                                                                                                     git push origin HEAD 2>&1
                                                                                                                 '' ;
                                                                                                         } ;
