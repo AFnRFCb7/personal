@@ -2567,7 +2567,7 @@
                                                                                                                         pkgs.writeShellApplication
                                                                                                                             {
                                                                                                                                 name = "mutable-snapshot" ;
-                                                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.git root ] ;
+                                                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
                                                                                                                                 text =
                                                                                                                                     ''
                                                                                                                                         # create a snapshot (read-only copy) of this (and root it)
