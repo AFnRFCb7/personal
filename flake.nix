@@ -1753,7 +1753,9 @@
                                                                                                                                         wrap ${ studio } bin/studio 0500 --inherit-plain MOUNT --literal-plain PATH --literal-plain SEQUENCE --inherit-plain SETUP --literal-plain STUDIO --uuid 79a37900
                                                                                                                                         mkdir --parents /mount/repository
                                                                                                                                         cd /mount/repository
+                                                                                                                                        echo 71fc97ef ed159260
                                                                                                                                         git init 2>&1
+                                                                                                                                        echo 71fc97ef 6ad3d856
                                                                                                                                         root ${ pkgs.openssh }
                                                                                                                                         DOT_SSH=${ resources.production.dot-ssh { failure = 2564 ; } }
                                                                                                                                         root "$DOT_SSH"
@@ -1927,7 +1929,9 @@
                                                                                                                                         root "$DOT_SSH"
                                                                                                                                         mkdir /mount/repository
                                                                                                                                         cd /mount/repository
+                                                                                                                                        echo 71fc97ef 3174e6af
                                                                                                                                         git init
+                                                                                                                                        echo 71fc97ef a88397ce
                                                                                                                                         git config core.sshCommand "${ pkgs.openssh }/bin/ssh -F $DOT_SSH/config"
                                                                                                                                         git config user.email "${ config.personal.email }"
                                                                                                                                         git config user.name "${ config.personal.description }"
