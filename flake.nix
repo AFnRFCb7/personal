@@ -1950,7 +1950,7 @@
                                                                                                                                         mkdir --parents /mount/stage/artifacts/switch
                                                                                                                                         git submodule sync 2>&1
                                                                                                                                         git submodule update --init --recursive 2>&1
-                                                                                                                                        git submodule foreach "submodule" 2>&1
+                                                                                                                                        # git submodule foreach "submodule" 2>&1
                                                                                                                                     '' ;
                                                                                                                     } ;
                                                                                                             in "${ application }/bin/init" ;
