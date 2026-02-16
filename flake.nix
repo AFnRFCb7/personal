@@ -10,7 +10,6 @@
                     {
                         failure ,
                         fixture ,
-                        git-repository ,
                         nixpkgs ,
                         private ,
                         private-reporter ,
