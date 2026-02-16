@@ -2112,8 +2112,7 @@
                                                                                                                 ''
                                                                                                                     cd /mount/repository
                                                                                                                     git add secret
-                                                                                                                    git
-                                                                                                                     -m "" --allow-empty --allow-empty-message 2>&1
+                                                                                                                    git -m "" --allow-empty --allow-empty-message 2>&1
                                                                                                                     git push origin HEAD 2>&1
                                                                                                                 '' ;
                                                                                                         } ;
