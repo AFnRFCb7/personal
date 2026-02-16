@@ -2610,7 +2610,8 @@
                                                                                                                                             git checkout -b "$BRANCH"
                                                                                                                                             git commit -a --verbose --allow-empty-message
                                                                                                                                             git push origin HEAD
-                                                                                                                                            ${ scripts.submodule.update }
+                                                                                                                                            cd "$toplevel"
+                                                                                                                                            nix flake update --flake "$toplevel" "$name"
                                                                                                                                         fi
                                                                                                                                     '' ;
                                                                                                                             } ;
