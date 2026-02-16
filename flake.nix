@@ -1634,6 +1634,7 @@
                                                                                                                                                                         text =
                                                                                                                                                                             ''
                                                                                                                                                                                 # create a snapshot (read-only copy) of this (and root it)
+                                                                                                                                                                                echo 71fc97ef acb760c9
                                                                                                                                                                                 REPOSITORY="$( git rev-parse --show-toplevel )" || failure ca25d32c
                                                                                                                                                                                 cd "$REPOSITORY"
                                                                                                                                                                                 git submodule foreach '${ scripts.submodule.snapshot }' >&2
