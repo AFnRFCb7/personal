@@ -2576,19 +2576,32 @@
                                                                                                                                 text =
                                                                                                                                     ''
                                                                                                                                         # create a snapshot (read-only copy) of this (and root it)
+                                                                                                                                        echo 71fc97ef 095c2412
                                                                                                                                         REPOSITORY="$( git rev-parse --show-toplevel )" || failure ca25d32c
+                                                                                                                                        echo 71fc97ef ca44c767
                                                                                                                                         cd "$REPOSITORY"
+                                                                                                                                        echo 71fc97ef 1d61e82f
                                                                                                                                         git submodule foreach '${ scripts.submodule.mutable-snapshot }' >&2
+                                                                                                                                        echo 71fc97ef e5024f56
                                                                                                                                         if ! git diff --quiet || ! git diff --quiet --cached
                                                                                                                                         then
+                                                                                                                                            echo 71fc97ef 2f780f9d
                                                                                                                                             git commit -a --verbose --allow-empty-message >&2
+                                                                                                                                            echo 71fc97ef 74ff5c20
                                                                                                                                         fi
+                                                                                                                                        echo 71fc97ef 2ea26c75
                                                                                                                                         git push origin HEAD >&2
+                                                                                                                                        echo 71fc97ef 364658d0
                                                                                                                                         BRANCH="$( git rev-parse --abbrev-ref HEAD )" || failure d14e84bf
+                                                                                                                                        echo 71fc97ef cbcd6be7
                                                                                                                                         COMMIT="$( git rev-parse HEAD )" || failure e6fec78a
+                                                                                                                                        echo 71fc97ef f805063a
                                                                                                                                         SNAPSHOT=${ resources__.production.repository.studio.snapshot { failure = 8500 ; setup = setup : ''${ setup } "$BRANCH" "$COMMIT"'' ; } }
+                                                                                                                                        echo 71fc97ef 94380cce
                                                                                                                                         ../bin/root "$SNAPSHOT"
+                                                                                                                                        echo 71fc97ef d0031231
                                                                                                                                         echo "$SNAPSHOT/repository"
+                                                                                                                                        echo 71fc97ef 029fdfbf
                                                                                                                                     '' ;
                                                                                                                             } ;
                                                                                                                     in "${ application }/bin/mutable-snapshot" ;
