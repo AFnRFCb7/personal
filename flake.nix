@@ -2619,7 +2619,7 @@
                                                                                                 } ;
                                                                                             in
                                                                                                 ''
-                                                                                                    git config alias.mutable-snapshot "!${ mutable-snapshot }"
+                                                                                                    git config alias.mutable-snapshot "!${ scripts.root.mutable-snapshot }"
                                                                                                 '' ;
                                                                                 }
                                                                         )
