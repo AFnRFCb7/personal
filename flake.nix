@@ -28,7 +28,6 @@
                             __failure = _failure.implementation "7fef1fe4" ;
                             ___failure = uuid : "${ __failure }/bin/failure ${ uuid }" ;
                             _fixture = fixture.lib { age = pkgs.age ; coreutils = pkgs.coreutils ; failure = _failure.implementation "6bf7303d" ; gnupg = pkgs.gnupg ; libuuid = pkgs.libuuid ; mkDerivation = pkgs.stdenv.mkDerivation ; writeShellApplication = pkgs.writeShellApplication ; } ;
-                            _git-repository = git-repository.lib { string = _string.implementation ; visitor = _visitor.implementation ; } ;
                             _private-reporter = private-reporter.lib { failure = _failure.implementation "8e2eb1d7" ; pkgs = pkgs ; } ;
                             _resource =
                                 {
@@ -2955,13 +2954,6 @@
                                                        "b026466b770b22f738c176f6130e1d5daaca7cbffee8605eeb9f3cb2c9c7a65eb3af44cc202745bc168a7b19e2fc87a909762516f697b7dee855f5454b90c39b"
                                                    ] ;
                                            } ;
-                                    git-repository =
-                                        _git-repository.check
-                                            {
-                                                expected = "/nix/store/4xwf67qp7hzza1vb0vj5cv3xr2jhpa5n-init/bin/init" ;
-                                                failure = _failure.implementation "8a8f3b60" ;
-                                                pkgs = pkgs ;
-                                            } ;
                                     private-reporter = _private-reporter.check { expected = "/nix/store/jpbp14585f0z5bl3s8vg60j0rxiqhwsq-private-reporter/bin/private-reporter" ; } ;
                                     resource-happy =
                                         let
