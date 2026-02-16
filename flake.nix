@@ -1930,7 +1930,7 @@
                                                                                                                                         echo 71fc97ef 3174e6af
                                                                                                                                         root ${ pkgs.openssh }
                                                                                                                                         DOT_SSH=${ resources.production.dot-ssh { failure = 7513 ; } }
-                                                                                                                                        root "$DOT_SSH"
+                                                                                                                                        # root "$DOT_SSH"
                                                                                                                                         mkdir /mount/repository
                                                                                                                                         cd /mount/repository
                                                                                                                                         echo 71fc97ef 3174e6af
