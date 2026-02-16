@@ -1787,7 +1787,7 @@
                                                                                                                                         git mutable-mirror main 2>&1
                                                                                                                                         export DOT_SSH
                                                                                                                                         echo 56dc1884 48dcd5d6 git config core.sshCommand "${ pkgs.openssh }/bin/ssh -F $DOT_SSH/config"
-                                                                                                                                        git submodule foreach "git config core.sshCommand '${ pkgs.openssh }/bin/ssh -F \$DOT_SSH/config'" 2>&1
+                                                                                                                                        git submodule foreach "git config core.sshCommand '${ pkgs.openssh }/bin/ssh -F $DOT_SSH/config'" 2>&1
                                                                                                                                         # shellcheck disable=SC2016
                                                                                                                                         git submodule foreach 'git config user.email "${ config.personal.repository.private.email }"' 2>&2
                                                                                                                                         # shellcheck disable=SC2016
