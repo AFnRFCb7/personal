@@ -1722,7 +1722,7 @@
                                                                                                                                                                                 cd "$toplevel/$name"
                                                                                                                                                                                 if ! git diff --quiet || ! git diff --quiet --cached
                                                                                                                                                                                 then
-                                                                                                                                                                                    UUID="$( sequence | sha512sum )" || failure e2e7dad7
+                                                                                                                                                                                    UUID="$( sequential | sha512sum )" || failure e2e7dad7
                                                                                                                                                                                     BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 20b63f59
                                                                                                                                                                                     git checkout -b "$BRANCH"
                                                                                                                                                                                     git commit -a --verbose --allow-empty-message
@@ -1798,28 +1798,6 @@
                                                                                                             in "${ application }/bin/init" ;
                                                                                                 targets = [ "bin" "repository" ] ;
                                                                                             } ;
-                                                                                    secrets =
-                                                                                        ignore :
-                                                                                            _git-repository.implementation
-                                                                                                {
-                                                                                                    resolutions = [ ] ;
-                                                                                                    setup =
-                                                                                                        { pid , pkgs , resources , root , sequential , wrap } :
-                                                                                                            let
-                                                                                                                application =
-                                                                                                                    pkgs.writeShellApplication
-                                                                                                                        {
-                                                                                                                            name = "setup" ;
-                                                                                                                            runtimeInputs = [ pkgs.git ] ;
-                                                                                                                            text =
-                                                                                                                                ''
-                                                                                                                                    git remote add origin https://github.com/${ config.personal.secrets.organization }/${ config.personal.secrets.repository }
-                                                                                                                                    git fetch origin ${ config.personal.secrets.branch } 2>&1
-                                                                                                                                    git checkout origin/${ config.personal.secrets.branch } 2>&1
-                                                                                                                                '' ;
-                                                                                                                        } ;
-                                                                                                                in "${ application }/bin/setup" ;
-                                                                                                } ;
                                                                                     snapshot =
                                                                                         ignore :
                                                                                             _git-repository.implementation
