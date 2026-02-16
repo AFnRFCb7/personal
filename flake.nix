@@ -2581,7 +2581,7 @@
                                                                                                                                         git push origin HEAD >&2
                                                                                                                                         BRANCH="$( git rev-parse --abbrev-ref HEAD )" || failure d14e84bf
                                                                                                                                         COMMIT="$( git rev-parse HEAD )" || failure e6fec78a
-                                                                                                                                        SNAPSHOT=${ resources.production.repository.studio.snapshot { failure = 8500 ; setup = setup : ''${ setup } "$BRANCH" "$COMMIT"'' ; } }
+                                                                                                                                        SNAPSHOT=${ resources__.production.repository.studio.snapshot { failure = 8500 ; setup = setup : ''${ setup } "$BRANCH" "$COMMIT"'' ; } }
                                                                                                                                         ../bin/root "$SNAPSHOT"
                                                                                                                                         echo "$SNAPSHOT/repository"
                                                                                                                                     '' ;
@@ -2596,7 +2596,7 @@
                                                                                                                         pkgs.writeShellApplication
                                                                                                                             {
                                                                                                                                 name = "mutable-snapshot" ;
-                                                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.nix sequential ] ;
+                                                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.libuuid pkgs.nix ] ;
                                                                                                                                 text =
                                                                                                                                     ''
                                                                                                                                         # create a snapshot and update nix
@@ -2605,7 +2605,7 @@
                                                                                                                                         cd "$toplevel/$name"
                                                                                                                                         if ! git diff --quiet || ! git diff --quiet --cached
                                                                                                                                         then
-                                                                                                                                            UUID="$( sequential | sha512sum )" || failure e2e7dad7
+                                                                                                                                            UUID="$( uuidgen | sha512sum )" || failure e2e7dad7
                                                                                                                                             BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 20b63f59
                                                                                                                                             git checkout -b "$BRANCH"
                                                                                                                                             git commit -a --verbose --allow-empty-message
