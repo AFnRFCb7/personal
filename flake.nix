@@ -1884,7 +1884,7 @@
                                                                                                                                                             {
                                                                                                                                                                 switch =
                                                                                                                                                                     {
-                                                                                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.gh pkgs.git pkgs.nix ( _failure.implementation "c0f7e8f6" ) root ] ;
+                                                                                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.gh pkgs.git pkgs.nix ( _failure.implementation "c0f7e8f6" ) ] ;
                                                                                                                                                                         text =
                                                                                                                                                                             ''
                                                                                                                                                                                 : "${ builtins.concatStringsSep "" [ "$" "{" "toplevel:?this script must be run via git submodule foreach which will export toplevel" "}" ] }"
@@ -1909,7 +1909,7 @@
                                                                                                                                                                                     TOKEN="$( cat "$TOKEN_DIRECTORY/plaintext" )" || failure 6ad73063
                                                                                                                                                                                     export NIX_CONFIG="access-tokens = github.com=$TOKEN"
                                                                                                                                                                                     DOT_SSH=${ resources.production.dot-ssh { failure = 2980 ; } }
-                                                                                                                                                                                    root ${ pkgs.openssh }
+                                                                                                                                                                                    ../stage/root ${ pkgs.openssh }
                                                                                                                                                                                     export GIT_SSH_COMMAND="${ pkgs.openssh }/bin/ssh -F $DOT_SSH/config"
                                                                                                                                                                                     cd "$toplevel"
                                                                                                                                                                                     nix flake update --flake "$toplevel" "$NAME"
@@ -1955,6 +1955,7 @@
                                                                                                                                         echo 380b7b99 b29cd747
                                                                                                                                         git submodule foreach "git push origin HEAD" 2>&1
                                                                                                                                         echo 380b7b99 a7df32c6
+                                                                                                                                        wrap ${ root }/bin/root stage/root 0500 --inherit-plain INDEX --literal-plain PATH
                                                                                                                                     '' ;
                                                                                                                     } ;
                                                                                                             in "${ application }/bin/init" ;
