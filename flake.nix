@@ -1854,16 +1854,25 @@
                                                                                                                                                                                 UUID="$( uuidgen | sha512sum )" || failure 0f1227b6
                                                                                                                                                                                 BRANCH="$( echo "scratch/$UUID" | cut --bytes 1-64 )" || failure d5910859
                                                                                                                                                                                 git checkout -b "$BRANCH"
+                                                                                                                                                                                echo 71fc97ef 85413523
                                                                                                                                                                                 git commit -am "" --allow-empty --allow-empty-message
-                                                                                                                                                                                git fetch origin main
+                                                                                                                                                                                echo 71fc97ef 5a97968b                                                                                                                                                                                git fetch origin main
                                                                                                                                                                                 git reset --soft origin/main
+                                                                                                                                                                                echo 71fc97ef ea32a09e
                                                                                                                                                                                 git commit -a --verbose --allow-empty-message
+                                                                                                                                                                                echo 71fc97ef 9f8d911e
                                                                                                                                                                                 git push origin HEAD
+                                                                                                                                                                                echo 71fc97ef aabe9286
                                                                                                                                                                                 git checkout main
+                                                                                                                                                                                echo 71fc97ef b9194a70
                                                                                                                                                                                 git rebase "$BRANCH"
+                                                                                                                                                                                echo 71fc97ef f73d80a8
                                                                                                                                                                                 git push origin main
+                                                                                                                                                                                echo 71fc97ef 135616e0
                                                                                                                                                                                 echo nixos-rebuild switch --flake "$REPOSITORY#user" --show-trace
+                                                                                                                                                                                echo 71fc97ef d1924adc
                                                                                                                                                                                 nixos-rebuild switch --flake "$REPOSITORY#user" --show-trace
+                                                                                                                                                                                echo 71fc97ef 4d1d9595
                                                                                                                                                                             '' ;
                                                                                                                                                                     } ;
                                                                                                                                                                 test =
@@ -1951,7 +1960,7 @@
                                                                                                                                         mkdir --parents /mount/stage/artifacts/switch
                                                                                                                                         git submodule sync 2>&1
                                                                                                                                         git submodule update --init --recursive 2>&1
-                                                                                                                                        # git submodule foreach "submodule" 2>&1
+                                                                                                                                        git submodule foreach "git config core.sshCommand \"$GIT_SSH_COMMAND\"" 2>&1
                                                                                                                                     '' ;
                                                                                                                     } ;
                                                                                                             in "${ application }/bin/init" ;
