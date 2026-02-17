@@ -1776,8 +1776,8 @@
                                                                                                                                         UUID="$( sequential | sha512sum )" || failure 9a3ecf57
                                                                                                                                         BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 73dbb010
                                                                                                                                         # shellcheck disable=SC2016
-                                                                                                                                        git submodule foreach "git checkout -b scratch/$BRANCH"
-                                                                                                                                        git submodule foreach 'git push origin HEAD'
+                                                                                                                                        git submodule foreach "git checkout -b $BRANCH" 2>&1
+                                                                                                                                        git submodule foreach 'git push origin HEAD' 2>&1
                                                                                                                                     '' ;
                                                                                                                     } ;
                                                                                                             in "${ application }/bin/init" ;
