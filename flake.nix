@@ -1865,7 +1865,7 @@
                                                                                                                                                                             ''
                                                                                                                                                                                 REPOSITORY="$( git rev-parse --show-toplevel )" || failure 2402a278
                                                                                                                                                                                 cd "$REPOSITORY"
-                                                                                                                                                                                cd ../stage/artifact/test
+                                                                                                                                                                                cd ../stage/artifacts/test
                                                                                                                                                                                 echo nixos-rebuild test --flake "$REPOSITORY#user"
                                                                                                                                                                                 nixos-rebuild test --flake "REPOSITORY#user"
                                                                                                                                                                             '' ;
