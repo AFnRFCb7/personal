@@ -1768,9 +1768,9 @@
                                                                                                                                         export DOT_SSH
                                                                                                                                         git submodule foreach "git config core.sshCommand \"${ pkgs.openssh }/bin/ssh -F $DOT_SSH/config\"" 2>&1
                                                                                                                                         # shellcheck disable=SC2016
-                                                                                                                                        git submodule foreach 'git config user.email "${ config.personal.repository.private.email }"' 2>&2
+                                                                                                                                        git submodule foreach 'git config user.email "${ config.personal.repository.private.email }"' 2>&1
                                                                                                                                         # shellcheck disable=SC2016
-                                                                                                                                        git submodule foreach 'git config user.name "${ config.personal.repository.private.name }"' 2>&2
+                                                                                                                                        git submodule foreach 'git config user.name "${ config.personal.repository.private.name }"' 2>&1
                                                                                                                                     '' ;
                                                                                                                     } ;
                                                                                                             in "${ application }/bin/init" ;
