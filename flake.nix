@@ -1821,7 +1821,7 @@
                                                                                                                                                                             REPOSITORY="$( git rev-parse --show-toplevel )" || failure 06532bae
                                                                                                                                                                             cd "$REPOSITORY"
                                                                                                                                                                             cd "../stage/artifacts/${ vm }"
-                                                                                                                                                                            nixos-rebuild ${ vm } --flake "$REPOSITORY/repository#user"
+                                                                                                                                                                            nixos-rebuild ${ vm } --flake "$REPOSITORY#user"
                                                                                                                                                                             export SHARED_DIR=/artifacts/${ vm }/shared
                                                                                                                                                                             "./result/bin/run-nixos-vm"
                                                                                                                                                                         '' ;
@@ -1862,7 +1862,7 @@
                                                                                                                                                                                 git rebase "$BRANCH"
                                                                                                                                                                                 git push origin main
                                                                                                                                                                                 echo nixos-rebuild switch --flake "$REPOSITORY#user" --show-trace
-                                                                                                                                                                                nixos-rebuild switch --flake "$REPOSITORY/repository#user" --show-trace
+                                                                                                                                                                                nixos-rebuild switch --flake "$REPOSITORY#user" --show-trace
                                                                                                                                                                             '' ;
                                                                                                                                                                     } ;
                                                                                                                                                                 test =
@@ -1874,7 +1874,7 @@
                                                                                                                                                                                 cd "$REPOSITORY"
                                                                                                                                                                                 cd "../stage/artifacts/test"
                                                                                                                                                                                 echo nixos-rebuild test --flake "$REPOSITORY#user" --show-trace
-                                                                                                                                                                                nixos-rebuild test --flake "$REPOSITORY/repository#user" --show-trace
+                                                                                                                                                                                nixos-rebuild test --flake "$REPOSITORY#user" --show-trace
                                                                                                                                                                             '' ;
                                                                                                                                                                     } ;
                                                                                                                                                             } ;
