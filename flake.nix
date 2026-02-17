@@ -1954,7 +1954,7 @@
                                                                                                                                     '' ;
                                                                                                                     } ;
                                                                                                             in "${ application }/bin/init" ;
-                                                                                                targets = [ "repository" ] ;
+                                                                                                targets = [ "repository" "stage" ] ;
                                                                                             } ;
                                                                                 } ;
                                                                         } ;
