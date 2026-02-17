@@ -1947,7 +1947,7 @@
                                                                                                                                         echo 380b7b99 cb5fe1a6
                                                                                                                                         git submodule foreach "git config core.sshCommand \"$GIT_SSH_COMMAND\"" 2>&1
                                                                                                                                         echo 380b7b99 b4542105
-                                                                                                                                        UUID="$( sequential | uuidgen )" || failure 2ecf55e5
+                                                                                                                                        UUID="$( sequential | sha512sum )" || failure 2ecf55e5
                                                                                                                                         echo 380b7b99 fb8ae5e7
                                                                                                                                         BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure ee625965
                                                                                                                                         echo 380b7b99 2bb86aa3
