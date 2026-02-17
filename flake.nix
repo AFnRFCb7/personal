@@ -1822,8 +1822,9 @@
                                                                                                                                                                             cd "$REPOSITORY"
                                                                                                                                                                             cd "../stage/artifacts/${ vm }"
                                                                                                                                                                             nixos-rebuild ${ vm } --flake "$REPOSITORY#user"
-                                                                                                                                                                            export SHARED_DIR=./shared
-                                                                                                                                                                            "./result/bin/run-nixos-vm"
+                                                                                                                                                                            PRESENT_WORKING_DIRECTORY="$( pwd )" || failure 6afaf757
+                                                                                                                                                                            export SHARED_DIR="$PRESENT_WORKING_DIRECTORY/shared"
+                                                                                                                                                                            "$PRESENT_WORKING_DIRECTORY/result/bin/run-nixos-vm"
                                                                                                                                                                         '' ;
                                                                                                                                                                 } ;
                                                                                                                                                         set =
