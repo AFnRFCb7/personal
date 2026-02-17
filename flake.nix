@@ -1838,8 +1838,8 @@
                                                                                                                                                                             ''
                                                                                                                                                                                 REPOSITORY="$( git rev-parse --show-toplevel )" || failure 62f13008
                                                                                                                                                                                 cd "$REPOSITORY"
-                                                                                                                                                                                echo nix flake check "$MOUNT/repository" >&2
-                                                                                                                                                                                nix flake check "$MOUNT/repository"
+                                                                                                                                                                                echo nix flake check "$REPOSITORY" >&2
+                                                                                                                                                                                nix flake check "$REPOSITORY"
                                                                                                                                                                             '' ;
                                                                                                                                                                     } ;
                                                                                                                                                                 switch =
