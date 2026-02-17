@@ -1948,8 +1948,8 @@
                                                                                                                                         git submodule foreach "git config core.sshCommand \"$GIT_SSH_COMMAND\"" 2>&1
                                                                                                                                         UUID="$( sequential | uuidgen )" || failure 2ecf55e5
                                                                                                                                         BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure ee625965
-                                                                                                                                        git submodule foreach "git checkout -b $BRANCH"
-                                                                                                                                        git submodule foreach "git push origin HEAD"
+                                                                                                                                        git submodule foreach "git checkout -b $BRANCH" 2>&1
+                                                                                                                                        git submodule foreach "git push origin HEAD" 2>&1
                                                                                                                                         echo 380b7b99 91a13541
                                                                                                                                     '' ;
                                                                                                                     } ;
