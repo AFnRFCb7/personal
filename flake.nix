@@ -1786,7 +1786,7 @@
                                                                                                                 pkgs.writeShellApplication
                                                                                                                     {
                                                                                                                         name = "init" ;
-                                                                                                                        runtimeInputs = [ pkgs.git sequential ] ;
+                                                                                                                        runtimeInputs = [ pkgs.git sequential wrap ] ;
                                                                                                                         text =
                                                                                                                             let
                                                                                                                                 scripts =
