@@ -21,6 +21,8 @@ jobs:
               repo: context.repo.repo,
               protected: false,
               per_page: 100,
+              sort: "updated",
+              direction: "asc"
             });
             for (const branch of branches.data) {
               const branchName = branch.name;
