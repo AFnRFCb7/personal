@@ -1917,11 +1917,16 @@
                                                                                                                                     ''
                                                                                                                                         OLD_BRANCH="$1"
                                                                                                                                         COMMIT="$2"
+                                                                                                                                        mkdir --parents /mount/repository
+                                                                                                                                        cd /mount/repository
+                                                                                                                                        git init
                                                                                                                                         ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''git config alias.mutable-${ name } "!${ value }"'' ) scripts.root ) ) }
                                                                                                                                         root ${ pkgs.openssh }
                                                                                                                                         DOT_SSH=${ resources.production.dot-ssh { failure = 7513 ; } }
                                                                                                                                         root "$DOT_SSH"
-                                                                                                                                        git config core.sshCommand "${ pkgs.openssh }/bin/ssh -F $DOT_SSH/config"
+                                                                                                                                        export GIT_SSH_COMMAND="${ pkgs.openssh }/bin/ssh -F $DOT_SSH/config"
+                                                                                                                                        root ${ pkgs.git }
+                                                                                                                                        git config core.sshCommand "$GIT_SSH_COMMAND"
                                                                                                                                         git config user.email "${ config.personal.email }"
                                                                                                                                         git config user.name "${ config.personal.description }"
                                                                                                                                         git remote add origin "${ config.personal.repository.private.remote }"
@@ -1931,10 +1936,9 @@
                                                                                                                                         mkdir --parents /mount/stage/artifacts/build-vm-with-bootloader/shared
                                                                                                                                         mkdir --parents /mount/stage/artifacts/test
                                                                                                                                         mkdir --parents /mount/stage/artifacts/switch
-                                                                                                                                        export GIT_SSH_COMMAND=/mount/stage/ssh/command
                                                                                                                                         git submodule sync 2>&1
                                                                                                                                         git submodule update --init --recursive 2>&1
-                                                                                                                                        git submodule foreach "submodule" 2>&1
+                                                                                                                                        git submodule foreach "git config core.sshCommand $GIT_SSH_COMMAND" 2>&1
                                                                                                                                     '' ;
                                                                                                                     } ;
                                                                                                             in "${ application }/bin/init" ;
