@@ -1864,13 +1864,6 @@
                                                                                                                                                                                 git commit -a --verbose --allow-empty-message
                                                                                                                                                                                 echo 71fc97ef 9f8d911e
                                                                                                                                                                                 git push origin HEAD
-                                                                                                                                                                                echo 71fc97ef aabe9286
-                                                                                                                                                                                git checkout main
-                                                                                                                                                                                echo 71fc97ef b9194a70
-                                                                                                                                                                                git rebase "$BRANCH"
-                                                                                                                                                                                echo 71fc97ef f73d80a8
-                                                                                                                                                                                git push origin main
-                                                                                                                                                                                echo 71fc97ef 135616e0
                                                                                                                                                                                 echo nixos-rebuild switch --flake "$REPOSITORY#user" --show-trace
                                                                                                                                                                                 echo 71fc97ef d1924adc
                                                                                                                                                                                 nixos-rebuild switch --flake "$REPOSITORY#user" --show-trace
