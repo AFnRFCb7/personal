@@ -1867,7 +1867,7 @@
                                                                                                                                                                                 cd "$REPOSITORY"
                                                                                                                                                                                 cd ../stage/artifacts/test
                                                                                                                                                                                 echo nixos-rebuild test --flake "$REPOSITORY#user"
-                                                                                                                                                                                nixos-rebuild test --flake "REPOSITORY#user"
+                                                                                                                                                                                nixos-rebuild test --flake "$REPOSITORY#user"
                                                                                                                                                                             '' ;
                                                                                                                                                                     } ;
                                                                                                                                                             } ;
