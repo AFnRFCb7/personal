@@ -1822,7 +1822,7 @@
                                                                                                                                                                             cd "$REPOSITORY"
                                                                                                                                                                             cd "../stage/artifacts/${ vm }"
                                                                                                                                                                             nixos-rebuild ${ vm } --flake "$REPOSITORY#user"
-                                                                                                                                                                            export SHARED_DIR=./artifacts/${ vm }/shared
+                                                                                                                                                                            export SHARED_DIR=./shared
                                                                                                                                                                             "./result/bin/run-nixos-vm"
                                                                                                                                                                         '' ;
                                                                                                                                                                 } ;
