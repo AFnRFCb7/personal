@@ -1801,7 +1801,7 @@
                                                                                                                                                                 runtimeInputs = runtimeInputs ;
                                                                                                                                                                 text = text ;
                                                                                                                                                             } ;
-                                                                                                                                                    in "${ application }/bin/name" ;
+                                                                                                                                                    in "${ application }/bin/${ name }" ;
                                                                                                                                         in
                                                                                                                                             {
                                                                                                                                                 root =
