@@ -1919,7 +1919,7 @@
                                                                                                                                         COMMIT="$2"
                                                                                                                                         mkdir --parents /mount/repository
                                                                                                                                         cd /mount/repository
-                                                                                                                                        git init
+                                                                                                                                        git init 2>&1
                                                                                                                                         ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''git config alias.mutable-${ name } "!${ value }"'' ) scripts.root ) ) }
                                                                                                                                         root ${ pkgs.openssh }
                                                                                                                                         DOT_SSH=${ resources.production.dot-ssh { failure = 7513 ; } }
