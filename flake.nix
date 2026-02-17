@@ -1792,7 +1792,7 @@
                                                                                                                 pkgs.writeShellApplication
                                                                                                                     {
                                                                                                                         name = "init" ;
-                                                                                                                        runtimeInputs = [ pkgs.git ] ;
+                                                                                                                        runtimeInputs = [ pkgs.git root ] ;
                                                                                                                         text =
                                                                                                                             let
                                                                                                                                 scripts =
@@ -1856,7 +1856,7 @@
                                                                                                                                                                                 git checkout -b "$BRANCH"
                                                                                                                                                                                 echo 71fc97ef 85413523
                                                                                                                                                                                 git commit -am "" --allow-empty --allow-empty-message
-                                                                                                                                                                                echo 71fc97ef d3cd0739
+                                                                                                                                                                                echo 71fc97ef d3cd0739 PWD=$(pwd) GIT_SSH_COMMAND=$GIT_SSH_COMMAND core.sshCommand=$(git config --get core.sshCommand)
                                                                                                                                                                                 git fetch origin main
                                                                                                                                                                                 echo 71fc97ef f644b3b4
                                                                                                                                                                                 git reset --soft origin/main
@@ -1939,11 +1939,10 @@
                                                                                                                                         echo 71fc97ef 3174e6af
                                                                                                                                         COMMIT="$2"
                                                                                                                                         echo 71fc97ef 3174e6af
-                                                                                                                                        echo 71fc97ef 3174e6af
-                                                                                                                                        # root ${ pkgs.openssh }
+                                                                                                                                        root ${ pkgs.openssh }
                                                                                                                                         DOT_SSH=${ resources.production.dot-ssh { failure = 7513 ; } }
                                                                                                                                         export GIT_SSH_COMMAND="${ pkgs.openssh }/bin/ssh -F $DOT_SSH/config"
-                                                                                                                                        # root "$DOT_SSH"
+                                                                                                                                        root "$DOT_SSH"
                                                                                                                                         mkdir /mount/repository
                                                                                                                                         cd /mount/repository
                                                                                                                                         echo 71fc97ef 3174e6af
