@@ -128,7 +128,7 @@
                                                                 ignore :
                                                                     {
                                                                         init =
-                                                                            { pid , pkgs , resources , root , sequential , wrap } :
+                                                                            { failure , pid , pkgs , resources , root , seed , sequential , wrap } :
                                                                                 let
                                                                                     application =
                                                                                         pkgs.writeShellApplication
@@ -188,7 +188,7 @@
                                                                 ignore :
                                                                     {
                                                                         init =
-                                                                            { pid , pkgs , resources , root , sequential , wrap } :
+                                                                            { failure , pid , pkgs , resources , root , seed , sequential , wrap } :
                                                                                 let
                                                                                     application =
                                                                                         pkgs.writeShellApplication
@@ -210,7 +210,7 @@
                                                                         ignore :
                                                                             {
                                                                                 init =
-                                                                                    { pid , pkgs , resources , root , sequential , wrap } :
+                                                                                    { failure , pid , pkgs , resources , root , seed , sequential , wrap } :
                                                                                         let
                                                                                             application =
                                                                                                 pkgs.writeShellApplication
@@ -238,7 +238,7 @@
                                                                         ignore :
                                                                             {
                                                                                 init =
-                                                                                    { pid , pkgs , resources , root , sequential , wrap } :
+                                                                                    { failure , pid , pkgs , resources , root , seed , sequential , wrap } :
                                                                                         let
                                                                                             application =
                                                                                                 pkgs.writeShellApplication
@@ -258,7 +258,7 @@
                                                                         ignore :
                                                                             {
                                                                                 init =
-                                                                                    { pid , pkgs , resources , root , sequential , wrap } :
+                                                                                    { failure , pid , pkgs , resources , root , seed , sequential , wrap } :
                                                                                         let
                                                                                             application =
                                                                                                 pkgs.writeShellApplication
@@ -295,7 +295,7 @@
                                                                 ignore :
                                                                     {
                                                                         init =
-                                                                            { pid , pkgs , resources , root , sequential , wrap } :
+                                                                            { failure , pid , pkgs , resources , root , seed , sequential , wrap } :
                                                                                 let
                                                                                     application =
                                                                                         pkgs.writeShellApplication
@@ -319,7 +319,7 @@
                                                                                  in
                                                                                      {
                                                                                          init =
-                                                                                             { pid , pkgs , resources , root , sequential , wrap } :
+                                                                                             { failure , pid , pkgs , resources , root , seed , sequential , wrap } :
                                                                                                  let
                                                                                                      application =
                                                                                                          pkgs.writeShellApplication
@@ -376,7 +376,7 @@
                                                                         { name , environment , runtimeInputs , script , variables } : ignore :
                                                                             {
                                                                                 init =
-                                                                                    { pid , pkgs , resources , root , sequential , wrap } :
+                                                                                    { failure , pid , pkgs , resources , root , seed , sequential , wrap } :
                                                                                         let
                                                                                             application =
                                                                                                 pkgs.writeShellApplication
@@ -527,7 +527,7 @@
                                                                 ignore :
                                                                     {
                                                                         init =
-                                                                            { pid , pkgs , resources , root , sequential , wrap } :
+                                                                            { failure , pid , pkgs , resources , root , seed , sequential , wrap } :
                                                                                 let
                                                                                     application =
                                                                                         pkgs.writeShellApplication
@@ -554,7 +554,7 @@
                                                                 ignore :
                                                                     {
                                                                         init =
-                                                                            { pid , pkgs , resources , root , sequential , wrap } :
+                                                                            { failure , pid , pkgs , resources , root , seed , sequential , wrap } :
                                                                                 let
                                                                                     application =
                                                                                         pkgs.writeShellApplication
@@ -612,7 +612,7 @@
                                                                             ignore :
                                                                                 {
                                                                                     init =
-                                                                                        { pid , pkgs , resources , root , sequential , wrap } :
+                                                                                        { failure , pid , pkgs , resources , root , seed , sequential , wrap } :
                                                                                             let
                                                                                                 application =
                                                                                                     pkgs.writeShellApplication
@@ -638,7 +638,7 @@
                                                                         ignore :
                                                                             {
                                                                                 init =
-                                                                                    { pid , pkgs , resources , root , sequential , wrap } :
+                                                                                    { failure , pid , pkgs , resources , root , seed , sequential , wrap } :
                                                                                         let
                                                                                             application =
                                                                                                 pkgs.writeShellApplication
@@ -666,7 +666,7 @@
                                                                         ignore :
                                                                             {
                                                                                 init =
-                                                                                    { pid , pkgs , resources , root , sequential , wrap } :
+                                                                                    { failure , pid , pkgs , resources , root , seed , sequential , wrap } :
                                                                                         let
                                                                                             application =
                                                                                                 pkgs.writeShellApplication
@@ -707,7 +707,7 @@
                                                                         } : ignore :
                                                                             {
                                                                                 init =
-                                                                                    { pid , pkgs , resources , root , sequential , wrap } :
+                                                                                    { failure , pid , pkgs , resources , root , seed , sequential , wrap } :
                                                                                         let
                                                                                             application =
                                                                                                 pkgs.writeShellApplication
@@ -1416,7 +1416,7 @@
                                                                                 ignore :
                                                                                     {
                                                                                         init =
-                                                                                            { pid , resources , pkgs , root , sequential , wrap } :
+                                                                                            { failure , pid , pkgs , resources , root , seed , sequential , wrap } :
                                                                                                 let
                                                                                                     application =
                                                                                                         pkgs.writeShellApplication
@@ -1467,7 +1467,7 @@
                                                                                         ignore :
                                                                                             {
                                                                                                 init =
-                                                                                                    { pid , resources , pkgs , root , sequential , wrap } :
+                                                                                                    { failure , pid , pkgs , resources , root , seed , sequential , wrap } :
                                                                                                         let
                                                                                                             application =
                                                                                                                 pkgs.writeShellApplication
@@ -1634,6 +1634,7 @@
                                                                                                                                                                         text =
                                                                                                                                                                             ''
                                                                                                                                                                                 # create a snapshot (read-only copy) of this (and root it)
+                                                                                                                                                                                echo 71fc97ef acb760c9
                                                                                                                                                                                 REPOSITORY="$( git rev-parse --show-toplevel )" || failure ca25d32c
                                                                                                                                                                                 cd "$REPOSITORY"
                                                                                                                                                                                 git submodule foreach '${ scripts.submodule.snapshot }' >&2
@@ -1753,11 +1754,12 @@
                                                                                                                                         wrap ${ studio } bin/studio 0500 --inherit-plain MOUNT --literal-plain PATH --literal-plain SEQUENCE --inherit-plain SETUP --literal-plain STUDIO --uuid 79a37900
                                                                                                                                         mkdir --parents /mount/repository
                                                                                                                                         cd /mount/repository
+                                                                                                                                        echo 71fc97ef ed159260
                                                                                                                                         git init 2>&1
+                                                                                                                                        echo 71fc97ef 6ad3d856
                                                                                                                                         root ${ pkgs.openssh }
                                                                                                                                         DOT_SSH=${ resources.production.dot-ssh { failure = 2564 ; } }
                                                                                                                                         root "$DOT_SSH"
-                                                                                                                                        echo "472ee5ee" GIT_SSH_COMMAND="${ pkgs.openssh }/bin/ssh -F $DOT_SSH/config"
                                                                                                                                         export GIT_SSH_COMMAND="${ pkgs.openssh }/bin/ssh -F $DOT_SSH/config"
                                                                                                                                         ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''git config alias.mutable-${ name } "!${ value }"'' ) scripts.root ) ) }
                                                                                                                                         git config core.sshCommand "${ pkgs.openssh }/bin/ssh -F $DOT_SSH/config"
@@ -1771,6 +1773,11 @@
                                                                                                                                         git submodule foreach 'git config user.email "${ config.personal.repository.private.email }"' 2>&2
                                                                                                                                         # shellcheck disable=SC2016
                                                                                                                                         git submodule foreach 'git config user.name "${ config.personal.repository.private.name }"' 2>&2
+                                                                                                                                        UUID="$( sequential | sha512sum )" || failure 9a3ecf57
+                                                                                                                                        BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 73dbb010
+                                                                                                                                        # shellcheck disable=SC2016
+                                                                                                                                        git submodule foreach "git checkout -b scratch/$BRANCH"
+                                                                                                                                        git submodule foreach 'git push origin HEAD'
                                                                                                                                     '' ;
                                                                                                                     } ;
                                                                                                             in "${ application }/bin/init" ;
@@ -1780,7 +1787,7 @@
                                                                                         ignore :
                                                                                             {
                                                                                                 init =
-                                                                                                    { pid , pkgs , resources , root , sequential , wrap } :
+                                                                                                    { failure , pid , pkgs , resources , root , seed , sequential , wrap } :
                                                                                                         let
                                                                                                             application =
                                                                                                                 pkgs.writeShellApplication
@@ -1915,13 +1922,23 @@
                                                                                                                                             } ;
                                                                                                                                 in
                                                                                                                                     ''
+                                                                                                                                        echo 71fc97ef 3174e6af
                                                                                                                                         OLD_BRANCH="$1"
+                                                                                                                                        echo 71fc97ef 3174e6af
                                                                                                                                         COMMIT="$2"
-                                                                                                                                        ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''git config alias.mutable-${ name } "!${ value }"'' ) scripts.root ) ) }
-                                                                                                                                        root ${ pkgs.openssh }
+                                                                                                                                        echo 71fc97ef 3174e6af
+                                                                                                                                        echo 71fc97ef 3174e6af
+                                                                                                                                        # root ${ pkgs.openssh }
                                                                                                                                         DOT_SSH=${ resources.production.dot-ssh { failure = 7513 ; } }
-                                                                                                                                        root "$DOT_SSH"
-                                                                                                                                        git config core.sshCommand "${ pkgs.openssh }/bin/ssh -F $DOT_SSH/config"
+                                                                                                                                        export GIT_SSH_COMMAND="${ pkgs.openssh }/bin/ssh -F $DOT_SSH/config"
+                                                                                                                                        # root "$DOT_SSH"
+                                                                                                                                        mkdir /mount/repository
+                                                                                                                                        cd /mount/repository
+                                                                                                                                        echo 71fc97ef 3174e6af
+                                                                                                                                        git init 2>&1
+                                                                                                                                        ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''git config alias.mutable-${ name } "!${ value }"'' ) scripts.root ) ) }
+                                                                                                                                        echo 71fc97ef a88397ce
+                                                                                                                                        git config core.sshCommand "$GIT_SSH_COMMAND"
                                                                                                                                         git config user.email "${ config.personal.email }"
                                                                                                                                         git config user.name "${ config.personal.description }"
                                                                                                                                         git remote add origin "${ config.personal.repository.private.remote }"
@@ -1931,14 +1948,13 @@
                                                                                                                                         mkdir --parents /mount/stage/artifacts/build-vm-with-bootloader/shared
                                                                                                                                         mkdir --parents /mount/stage/artifacts/test
                                                                                                                                         mkdir --parents /mount/stage/artifacts/switch
-                                                                                                                                        export GIT_SSH_COMMAND=/mount/stage/ssh/command
                                                                                                                                         git submodule sync 2>&1
                                                                                                                                         git submodule update --init --recursive 2>&1
-                                                                                                                                        git submodule foreach "submodule" 2>&1
+                                                                                                                                        # git submodule foreach "submodule" 2>&1
                                                                                                                                     '' ;
                                                                                                                     } ;
                                                                                                             in "${ application }/bin/init" ;
-                                                                                                targets = [ "repository" ] ;
+                                                                                                targets = [ "repository" "stage" ] ;
                                                                                             } ;
                                                                                 } ;
                                                                         } ;
@@ -1948,7 +1964,7 @@
                                                                         name : ignore :
                                                                             {
                                                                                 init =
-                                                                                    { pid , pkgs , resources , root , sequential , wrap } :
+                                                                                    { failure , pid , pkgs , resources , root , seed , sequential , wrap } :
                                                                                         let
                                                                                             application =
                                                                                                 pkgs.writeShellApplication
@@ -1991,7 +2007,7 @@
                                                                 ignore :
                                                                     {
                                                                         init =
-                                                                            { pid , pkgs , resources , root , sequential , wrap } :
+                                                                            { failure , pid , pkgs , resources , root , seed , sequential , wrap } :
                                                                                 let
                                                                                     application =
                                                                                         pkgs.writeShellApplication
@@ -2015,7 +2031,7 @@
                                                             temporary =
                                                                 ignore :
                                                                     {
-                                                                        init = { pid , pkgs , resources , root , sequential , wrap } : "" ;
+                                                                        init = { failure , pid , pkgs , resources , root , seed , sequential , wrap } : "" ;
                                                                         transient = true ;
                                                                     } ;
                                                             volume =
@@ -2024,7 +2040,7 @@
                                                                         branch : ignore :
                                                                             {
                                                                                 init =
-                                                                                    { pid , resources , pkgs , root , sequential , wrap } :
+                                                                                    { failure , pid , pkgs , resources , root , seed , sequential , wrap } :
                                                                                         let
                                                                                             application =
                                                                                                 pkgs.writeShellApplication
@@ -2543,6 +2559,80 @@
                                                                     } ;
                                                                 packages =
                                                                     [
+                                                                        (
+                                                                            pkgs.writeShellApplication
+                                                                                {
+                                                                                    name = "emergency-fix" ;
+                                                                                    runtimeInputs = [ pkgs.git ] ;
+                                                                                    text =
+                                                                                        let
+                                                                                            scripts =
+                                                                                                {
+                                                                                                    root =
+                                                                                                        {
+                                                                                                            mutable-snapshot =
+                                                                                                                let
+                                                                                                                    application =
+                                                                                                                        pkgs.writeShellApplication
+                                                                                                                            {
+                                                                                                                                name = "mutable-snapshot" ;
+                                                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
+                                                                                                                                text =
+                                                                                                                                    ''
+                                                                                                                                        # create a snapshot (read-only copy) of this (and root it)
+                                                                                                                                        REPOSITORY="$( git rev-parse --show-toplevel )" || failure ca25d32c
+                                                                                                                                        cd "$REPOSITORY"
+                                                                                                                                        git submodule foreach '${ scripts.submodule.mutable-snapshot }' >&2
+                                                                                                                                        if ! git diff --quiet || ! git diff --quiet --cached
+                                                                                                                                        then
+                                                                                                                                            git commit -a --verbose --allow-empty-message >&2
+                                                                                                                                        fi
+                                                                                                                                        git push origin HEAD >&2
+                                                                                                                                        BRANCH="$( git rev-parse --abbrev-ref HEAD )" || failure d14e84bf
+                                                                                                                                        COMMIT="$( git rev-parse HEAD )" || failure e6fec78a
+                                                                                                                                        SNAPSHOT=${ resources__.production.repository.studio.snapshot { failure = 8500 ; setup = setup : ''${ setup } "$BRANCH" "$COMMIT"'' ; } }
+                                                                                                                                        ../bin/root "$SNAPSHOT"
+                                                                                                                                        echo "$SNAPSHOT/repository"
+                                                                                                                                    '' ;
+                                                                                                                            } ;
+                                                                                                                    in "${ application }/bin/mutable-snapshot" ;
+                                                                                                        } ;
+                                                                                                    submodule =
+                                                                                                        {
+                                                                                                            mutable-snapshot =
+                                                                                                                let
+                                                                                                                    application =
+                                                                                                                        pkgs.writeShellApplication
+                                                                                                                            {
+                                                                                                                                name = "mutable-snapshot" ;
+                                                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.libuuid pkgs.nix ] ;
+                                                                                                                                text =
+                                                                                                                                    ''
+                                                                                                                                        # create a snapshot and update nix
+                                                                                                                                        : "${ builtins.concatStringsSep "" [ "$" "{" "toplevel:?this script must be run via git submodule foreach which will export toplevel" "}" ] }"
+                                                                                                                                        : "${ builtins.concatStringsSep "" [ "$" "{" "name:?this script must be run via git submodule foreach which will export name" "}" ] }"
+                                                                                                                                        cd "$toplevel/$name"
+                                                                                                                                        if ! git diff --quiet || ! git diff --quiet --cached
+                                                                                                                                        then
+                                                                                                                                            UUID="$( uuidgen | sha512sum )" || failure e2e7dad7
+                                                                                                                                            BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 20b63f59
+                                                                                                                                            git checkout -b "$BRANCH"
+                                                                                                                                            git commit -a --verbose --allow-empty-message
+                                                                                                                                            git push origin HEAD
+                                                                                                                                            cd "$toplevel"
+                                                                                                                                            nix flake update --flake "$toplevel" "$name"
+                                                                                                                                        fi
+                                                                                                                                    '' ;
+                                                                                                                            } ;
+                                                                                                                    in "${ application }/bin/mutable-snapshot" ;
+                                                                                                        } ;
+                                                                                                } ;
+                                                                                            in
+                                                                                                ''
+                                                                                                    git config alias.mutable-snapshot "!${ scripts.root.mutable-snapshot }"
+                                                                                                '' ;
+                                                                                }
+                                                                        )
                                                                         pkgs.age
                                                                         pkgs.gh
                                                                         ( _failure.implementation "762e3818" )
@@ -3012,7 +3102,7 @@
                                                         expected-transient = -1 ;
                                                         expected-type = "valid" ;
                                                         init =
-                                                            { pid , pkgs , resources , root , sequential , wrap } :
+                                                            { failure , pid , pkgs , resources , root , seed , sequential , wrap } :
                                                                 let
                                                                     application =
                                                                         pkgs.writeShellApplication
@@ -3105,7 +3195,7 @@
                                                      expected-transient = -1 ;
                                                      expected-type = "invalid-init" ;
                                                      init =
-                                                         { pid , pkgs , resources , root , sequential , wrap } :
+                                                         { failure , pid , pkgs , resources , root , seed , sequential , wrap } :
                                                              let
                                                                  application =
                                                                      pkgs.writeShellApplication
