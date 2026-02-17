@@ -1938,7 +1938,9 @@
                                                                                                                                         mkdir --parents /mount/stage/artifacts/switch
                                                                                                                                         git submodule sync 2>&1
                                                                                                                                         git submodule update --init --recursive 2>&1
-                                                                                                                                        git submodule foreach "git config core.sshCommand $GIT_SSH_COMMAND" 2>&1
+                                                                                                                                        echo 380b7b99 cb5fe1a6
+                                                                                                                                        git submodule foreach "git config core.sshCommand \"$GIT_SSH_COMMAND\"" 2>&1
+                                                                                                                                        echo 380b7b99 91a13541
                                                                                                                                     '' ;
                                                                                                                     } ;
                                                                                                             in "${ application }/bin/init" ;
