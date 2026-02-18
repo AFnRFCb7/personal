@@ -2031,8 +2031,6 @@
                                                                                                                             runtimeInputs = [ pkgs.coreutils pkgs.openssh ] ;
                                                                                                                             text =
                                                                                                                                 ''
-                                                                                                                                    DOT_SSH=${ resources.production.dot-ssh { failure = 16230 ; } }
-                                                                                                                                    export GIT_SSH_COMMAND="${ pkgs.openssh }/bin/ssh -F $DOT_SSH/config"
                                                                                                                                     cd "$MOUNT/cipher"
                                                                                                                                     while ! git push ssh HEAD
                                                                                                                                     do
@@ -2094,11 +2092,11 @@
                                                                                                                                 ''
                                                                                                                                     if [[ -f "$MOUNT/plain/dot-ssh/mobile/identity.asc" ]]
                                                                                                                                     then
-                                                                                                                                        PUBLIC="$( ssh-keygen -y -f "$MOUNT/plain/dot-ssh/mobile/identity.asc" )" || failure 47cc9859
-                                                                                                                                        DOT_SSH=WRONG
-                                                                                                                                        ssh -F "$DOT_SSH/config" "chmod 0600 ~/.ssh/authorized-keys"
-                                                                                                                                        echo "$PUBLIC" | ssh -F "$DOT_SSH/config" mobile "cat >> ~/.ssh/authorized-keys"
-                                                                                                                                        ssh -F "$DOT_SSH/config" "chmod 0400 ~/.ssh/authorized-keys"
+                                                                                                                                        MOBILE_PUBLIC="$( ssh-keygen -y -f "$MOUNT/plain/dot-ssh/mobile/identity.asc" )" || failure 47cc9859
+                                                                                                                                        SSH="$( git config --get core.sshCommand )" || failure d10e6488
+                                                                                                                                        "$SSH" mobile "chmod 0600 ~/.ssh/authorized-keys"
+                                                                                                                                        echo "$MOBILE_PUBLIC" | "$SSH" mobile "cat >> ~/.ssh/authorized-keys"
+                                                                                                                                        "$SSH" "chmod 0400 ~/.ssh/authorized-keys"
                                                                                                                                     fi
                                                                                                                                '' ;
                                                                                                                         } ;
@@ -2589,9 +2587,12 @@
                                                                                                             runtimeInputs = [ pkgs.git pkgs.openssh ] ;
                                                                                                             text =
                                                                                                                 ''
-                                                                                                                    SECRETS=${ resources__.production.secrets { failure = "exit 65" ; } }
+                                                                                                                    DOT_SSH=${ resources__.production.dot-ssh { } }
+                                                                                                                    SECRETS=${ resources__.production.secrets { } }
+                                                                                                                    git -C "$SECRETS/cipher" config core.sshCommand "${ pkgs.openssh }/bin/ssh -F $DOT_SSH/config"
                                                                                                                     ssh-keygen -y -f "$SECRETS/plain/dot-ssh/mobile/identity.asc" -C "systemd recycler" -P ""
                                                                                                                     git -C "$SECRETS/cipher" commit -am "systemd recycler"
+                                                                                                                    git -C "$SECRETS/cipher" config --unset core.sshCommand
                                                                                                                 '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/ExecStart" ;
