@@ -1749,7 +1749,7 @@
                                                                                                                                 in
                                                                                                                                     ''
                                                                                                                                         # initialize a read write copy of main
-                                                                                                                                        wrap ${ root }/bin/root bin/root 0500 --inherit-plain INDEX --literal-plain PATH --uuid 608bd8f9
+                                                                                                                                        wrap ${ root }/bin/root bin/root 0500 --literal-plain DIRECTORY --inherit-plain INDEX --literal-plain PATH --literal-plain TARGET --uuid 608bd8f9
                                                                                                                                         wrap ${ studio } bin/studio 0500 --inherit-plain MOUNT --literal-plain PATH --literal-plain SEQUENCE --inherit-plain SETUP --literal-plain STUDIO --uuid 79a37900
                                                                                                                                         mkdir --parents /mount/repository
                                                                                                                                         cd /mount/repository
