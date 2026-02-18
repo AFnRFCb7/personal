@@ -2081,32 +2081,33 @@
                                                                                                                                 '' ;
                                                                                                                         } ;
                                                                                                                 in "${ application }/bin/pre-commit" ;
-                                                                                                        # pre-push =
-                                                                                                        #     let
-                                                                                                        #         application =
-                                                                                                        #             pkgs.writeShellApplication
-                                                                                                        #                 {
-                                                                                                        #                     name = "pre-push" ;
-                                                                                                        #                     runtimeInputs = [ pkgs.openssh failure ] ;
-                                                                                                        #                     text =
-                                                                                                        #                         ''
-                                                                                                        #                             if [[ -f "$MOUNT/plain/dot-ssh/mobile/identity.asc" ]]
-                                                                                                        #                             then
-                                                                                                        #                                 PUBLIC="$( ssh-keygen -y -f "$MOUNT/plain/dot-ssh/mobile/identity.asc" )" || failure 47cc9859
-                                                                                                        #                                 DOT_SSH="${ resources.production.dot-ssh { failure = 5220 ; } }
-                                                                                                        #                                 ssh -F "$DOT_SSH/config" "chmod 0600 ~/.ssh/authorized-keys"
-                                                                                                        #                                 echo "$PUBLIC" | ssh -F "$DOT_SSH/config" mobile "cat >> ~/.ssh/authorized-keys"
-                                                                                                        #                                 ssh -F "$DOT_SSH/config" "chmod 0400 ~/.ssh/authorized-keys"
-                                                                                                        #                             fi
-                                                                                                        #                        '' ;
-                                                                                                        #                 } ;
-                                                                                                        #        in "${ application }/bin/pre-push" ;
+                                                                                                        pre-push =
+                                                                                                            let
+                                                                                                                application =
+                                                                                                                    pkgs.writeShellApplication
+                                                                                                                        {
+                                                                                                                            name = "pre-push" ;
+                                                                                                                            runtimeInputs = [ pkgs.openssh failure ] ;
+                                                                                                                            text =
+                                                                                                                                ''
+                                                                                                                                    if [[ -f "$MOUNT/plain/dot-ssh/mobile/identity.asc" ]]
+                                                                                                                                    then
+                                                                                                                                        PUBLIC="$( ssh-keygen -y -f "$MOUNT/plain/dot-ssh/mobile/identity.asc" )" || failure 47cc9859
+                                                                                                                                        DOT_SSH="${ resources.production.dot-ssh { failure = 5220 ; } }
+                                                                                                                                        ssh -F "$DOT_SSH/config" "chmod 0600 ~/.ssh/authorized-keys"
+                                                                                                                                        echo "$PUBLIC" | ssh -F "$DOT_SSH/config" mobile "cat >> ~/.ssh/authorized-keys"
+                                                                                                                                        ssh -F "$DOT_SSH/config" "chmod 0400 ~/.ssh/authorized-keys"
+                                                                                                                                    fi
+                                                                                                                               '' ;
+                                                                                                                        } ;
+                                                                                                               in "${ application }/bin/pre-push" ;
                                                                                                         in
                                                                                                             ''
                                                                                                                 mkdir /mount/cipher
                                                                                                                 cd /mount/cipher
                                                                                                                 wrap ${ post-commit } .git/hooks/post-commit 0500 --inherit-literal MOUNT --literal-plain PATH --uuid 708e9f8d
                                                                                                                 wrap ${ pre-commit } .git/hooks/pre-commit 0500 --literal-plain PATH --uuid e7266fc5
+                                                                                                                wrap ${ pre-push } .git/hooks/pre-push 0500 --uuid c49c4509
                                                                                                                 git init 2>&1
                                                                                                                 git remote add https https://github.com/${ config.personal.secrets.organization }/${ config.personal.secrets.repository }
                                                                                                                 git remote add ssh github.com:${ config.personal.secrets.organization }/${ config.personal.secrets.repository }
