@@ -1980,7 +1980,7 @@
                                                                                                         text =
                                                                                                             ''
                                                                                                                 SECRETS=${ resources.production.secrets { } }
-                                                                                                                age --decrypt --identity ${ config.personal.agenix } --output /mount/plaintext "$SECRETS/repository/${ name }.asc.age"
+                                                                                                                age --decrypt --identity ${ config.personal.agenix } --output /mount/plaintext "$SECRETS/cipher/${ name }.asc.age"
                                                                                                                 chmod 0400 /mount/plaintext
                                                                                                             '' ;
                                                                                                     } ;
@@ -2021,18 +2021,103 @@
                                                                                                 name = "init" ;
                                                                                                 runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
                                                                                                 text =
-                                                                                                    ''
-                                                                                                        mkdir /mount/repository
-                                                                                                        cd /mount/repository
-                                                                                                        git init 2>&1
-                                                                                                        git remote add https https://github.com/${ config.personal.secrets.organization }/${ config.personal.secrets.repository }
-                                                                                                        git remote add ssh github.com:${ config.personal.secrets.organization }/${ config.personal.secrets.repository }
-                                                                                                        git fetch https main 2>&1
-                                                                                                        git checkout https/main 2>&1
-                                                                                                    '' ;
+                                                                                                    let
+                                                                                                        post-commit =
+                                                                                                            let
+                                                                                                                application =
+                                                                                                                    pkgs.writeShellApplication
+                                                                                                                        {
+                                                                                                                            name = "post-commit" ;
+                                                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.openssh ] ;
+                                                                                                                            text =
+                                                                                                                                ''
+                                                                                                                                    cd "$MOUNT/cipher"
+                                                                                                                                    while ! git push ssh HEAD
+                                                                                                                                    do
+                                                                                                                                        sleep 1s
+                                                                                                                                    done
+                                                                                                                                '' ;
+                                                                                                                        } ;
+                                                                                                                in "${ application }/bin/post-commit" ;
+                                                                                                        pre-commit =
+                                                                                                            let
+                                                                                                                application =
+                                                                                                                    pkgs.writeShellApplication
+                                                                                                                        {
+                                                                                                                            name = "pre-commit" ;
+                                                                                                                            runtimeInputs = [ pkgs.age pkgs.findutils failure ] ;
+                                                                                                                            text =
+                                                                                                                                ''
+                                                                                                                                    IDENTITY="$( age-keygen -f ${ config.personal.agenix } )" || failure 0d6c6c0c
+                                                                                                                                    find "$MOUNT/plain" -mindepth 1 -type f -name "*.asc" | while read -r PLAINTEXT_FILE
+                                                                                                                                    do
+                                                                                                                                        FILE="${ builtins.concatStringsSep "" [ "$" "{" "PLAINTEXT_FILE#$MOUNT/plain/" "}" ] }
+                                                                                                                                        age --encrypt --identity "$IDENTITY" --output "$MOUNT/cipher/$FILE.age"
+                                                                                                                                        git add "$MOUNT/cipher/$FILE.age"
+                                                                                                                                    done
+                                                                                                                                    git diff --name-only --cached | while read -r STAGED_FILE
+                                                                                                                                    do
+                                                                                                                                        echo "STAGED_FILE=$STAGED_FILE"
+                                                                                                                                        case "$STAGED_FILE" in
+                                                                                                                                            dot-gnupg/ownertrust.asc.age)
+                                                                                                                                                ;;
+                                                                                                                                            dot-gnupg/secret-keys.asc.age)
+                                                                                                                                                ;;
+                                                                                                                                            dot-ssh/github/known-hosts.asc.age
+                                                                                                                                                ;;
+                                                                                                                                            dot-ssh/github/identity.asc.age)
+                                                                                                                                                ;;
+                                                                                                                                            dot-ssh/mobile/known-hosts.asc.age)
+                                                                                                                                                ;;
+                                                                                                                                            dot-ssh/mobile/identity.asc.age)
+                                                                                                                                                ;;
+                                                                                                                                            gnupg/token.asc.age)
+                                                                                                                                                ;;
+                                                                                                                                            *)
+                                                                                                                                                failure 654f86bb "$STAGED_FILE"
+                                                                                                                                        esac
+                                                                                                                                    done
+                                                                                                                                '' ;
+                                                                                                                        } ;
+                                                                                                                in "${ application }/bin/pre-commit" ;
+                                                                                                        pre-push =
+                                                                                                            let
+                                                                                                                application =
+                                                                                                                    pkgs.writeShellApplication
+                                                                                                                        {
+                                                                                                                            name = "pre-push" ;
+                                                                                                                            runtimeInputs = [ pkgs.openssh failure ] ;
+                                                                                                                            text =
+                                                                                                                                ''
+                                                                                                                                    if [[ -f "$MOUNT/plain/dot-ssh/mobile/identity.asc" ]]
+                                                                                                                                    then
+                                                                                                                                        PUBLIC="$( ssh-keygen -y -f "$MOUNT/plain/dot-ssh/mobile/identity.asc" )" || failure 47cc9859
+                                                                                                                                        DOT_SSH="${ resources.production.dot-ssh { failure = 5220 ; } }
+                                                                                                                                        ssh -F "$DOT_SSH/config" "chmod 0600 ~/.ssh/authorized-keys"
+                                                                                                                                        echo "$PUBLIC" | ssh -F "$DOT_SSH/config" mobile "cat >> ~/.ssh/authorized-keys"
+                                                                                                                                        ssh -F "$DOT_SSH/config" "chmod 0400 ~/.ssh/authorized-keys"
+                                                                                                                                    fi
+                                                                                                                                '' ;
+                                                                                                                        } ;
+                                                                                                                in "${ application }/bin/pre-push" ;
+                                                                                                        in
+                                                                                                            ''
+                                                                                                                mkdir /mount/cipher
+                                                                                                                cd /mount/cipher
+                                                                                                                git init 2>&1
+                                                                                                                wrap ${ pre-commit } .git/hooks/pre-commit 0500 --literal-plain PATH --uuid e7266fc5
+                                                                                                                wrap ${ pre-push } .git/hooks/pre-push 0500 --literal-plain DOT_SSH --literal-plain PATH --literal-plain PUBLIC --uuid e1c771d6
+                                                                                                                wrap ${ post-commit } .git/hooks/post-commit 0500 --inherit-literal MOUNT --literal-plain PATH --uuid 708e9f8d
+                                                                                                                git remote add https https://github.com/${ config.personal.secrets.organization }/${ config.personal.secrets.repository }
+                                                                                                                git remote add ssh github.com:${ config.personal.secrets.organization }/${ config.personal.secrets.repository }
+                                                                                                                git fetch https main 2>&1
+                                                                                                                git checkout https/main 2>&1
+                                                                                                                DOT_SSH="${ resources.production.dot-ssh { failure = 26502 ; } }
+                                                                                                                root "$DOT_SSH"
+                                                                                                            '' ;
                                                                                             } ;
                                                                                     in "${ application }/bin/init" ;
-                                                                        targets = [ "repository" ] ;
+                                                                        targets = [ "cipher" "plain" ] ;
                                                                     } ;
                                                             temporary =
                                                                 ignore :
@@ -2486,6 +2571,32 @@
                                                                                     } ;
                                                                                 wantedBy = [ "multi-user.target" ] ;
                                                                             } ;
+                                                                        recycle-identities =
+                                                                            {
+                                                                                description =
+                                                                                    ''
+                                                                                        Recycle the identities for mobile and for github
+                                                                                    '' ;
+                                                                                serviceConfig =
+                                                                                    {
+                                                                                        ExecStart =
+                                                                                            let
+                                                                                                application =
+                                                                                                    pkgs.writeShellApplication
+                                                                                                        {
+                                                                                                            name = "ExecStart" ;
+                                                                                                            runtimeInputs = [ pkgs.git pkgs.openssh ] ;
+                                                                                                            text =
+                                                                                                                ''
+                                                                                                                    SECRETS=${ resources__.production.secrets { } }
+                                                                                                                    ssh-keygen -y -f "$SECRETS/plain/dot-ssh/mobile/identity.asc" -C "systemd recycler" -P ""
+                                                                                                                    git -C "$SECRETS/cipher" commit -am "systemd recycler"
+                                                                                                                '' ;
+                                                                                                        } ;
+                                                                                                in "${ application }/bin/ExecStart" ;
+                                                                                        User = config.personal.name ;
+                                                                                    } ;
+                                                                            }
                                                                         resource-logger =
                                                                             {
                                                                                 after = [ "network.target" "redis.service" ] ;
