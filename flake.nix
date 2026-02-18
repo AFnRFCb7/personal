@@ -2088,9 +2088,13 @@
                                                                                                                     pkgs.writeShellApplication
                                                                                                                         {
                                                                                                                             name = "pre-push" ;
-                                                                                                                            runtimeInputs = [ pkgs.openssh failure ] ;
+                                                                                                                            runtimeInputs = [ pkgs.gh pkgs.openssh failure ] ;
                                                                                                                             text =
                                                                                                                                 ''
+                                                                                                                                    if [[ -f "$MOUNT/plain/dot-ssh/github/identity.asc" ]]
+                                                                                                                                    then
+                                                                                                                                        ssh-keygen -y -f "$MOUNT/plain/dot-ssh/github/identity.asc" | gh ssh-key add -
+                                                                                                                                    fi
                                                                                                                                     if [[ -f "$MOUNT/plain/dot-ssh/mobile/identity.asc" ]]
                                                                                                                                     then
                                                                                                                                         : "${ builtins.concatStringsSep "" [ "$" "{" "GIT_SSH_COMMAND:?GIT_SSH_COMMAND must be exported" "}" ] }"
@@ -2120,7 +2124,6 @@
                                                                                                                 # shellcheck disable=SC2016
                                                                                                                 wrap ${ pre-commit } cipher/.git/hooks/pre-commit 0500 --literal-plain FILE --literal-plain IDENTITY --inherit-plain MOUNT --literal-plain PATH --literal-brace 'PLAINTEXT_FILE#"$MOUNT"/plain/' --literal-plain STAGED_FILE --uuid e7266fc5
                                                                                                                 wrap ${ pre-push } cipher/.git/hooks/pre-push 0500 --literal-plain GIT_SSH_COMMAND --literal-brace "GIT_SSH_COMMAND:?GIT_SSH_COMMAND must be exported" --literal-plain MOBILE_PUBLIC --inherit-plain MOUNT --literal-plain PATH --uuid c49c4509
-
                                                                                                             '' ;
                                                                                             } ;
                                                                                     in "${ application }/bin/init" ;
@@ -2592,15 +2595,18 @@
                                                                                                     pkgs.writeShellApplication
                                                                                                         {
                                                                                                             name = "ExecStart" ;
-                                                                                                            runtimeInputs = [ pkgs.git pkgs.openssh ] ;
+                                                                                                            runtimeInputs = [ pkgs.gh pkgs.git pkgs.openssh ] ;
                                                                                                             text =
                                                                                                                 ''
+                                                                                                                    TOKEN=${ resources__.production.secret.github.token { } }
+                                                                                                                    gh auth login --with-token < "$TOKEN/plaintext"
                                                                                                                     DOT_SSH=${ resources__.production.dot-ssh { } }
                                                                                                                     SECRETS=${ resources__.production.secrets { } }
                                                                                                                     export GIT_SSH_COMMAND="${ pkgs.openssh }/bin/ssh -F $DOT_SSH/config"
                                                                                                                     git -C "$SECRETS/cipher" config core.sshCommand "${ pkgs.openssh }/bin/ssh -F $DOT_SSH/config"
                                                                                                                     ssh-keygen -y -f "$SECRETS/plain/dot-ssh/mobile/identity.asc" -C "systemd recycler" -P ""
                                                                                                                     git -C "$SECRETS/cipher" commit -am "systemd recycler"
+                                                                                                                    gh auth logout
                                                                                                                 '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/ExecStart" ;
