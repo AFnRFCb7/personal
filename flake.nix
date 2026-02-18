@@ -2039,47 +2039,47 @@
                                                                                                                                 '' ;
                                                                                                                         } ;
                                                                                                                 in "${ application }/bin/post-commit" ;
-                                                                                                        # pre-commit =
-                                                                                                        #     let
-                                                                                                        #         application =
-                                                                                                        #             pkgs.writeShellApplication
-                                                                                                        #                 {
-                                                                                                        #                     name = "pre-commit" ;
-                                                                                                        #                     runtimeInputs = [ pkgs.age pkgs.findutils failure ] ;
-                                                                                                        #                     text =
-                                                                                                        #                         ''
-                                                                                                        #                             IDENTITY="$( age-keygen -f ${ config.personal.agenix } )" || failure 0d6c6c0c
-                                                                                                        #                             find "$MOUNT/plain" -mindepth 1 -type f -name "*.asc" | while read -r PLAINTEXT_FILE
-                                                                                                        #                             do
-                                                                                                        #                                 FILE="${ builtins.concatStringsSep "" [ "$" "{" "PLAINTEXT_FILE#$MOUNT/plain/" "}" ] }
-                                                                                                        #                                 age --encrypt --identity "$IDENTITY" --output "$MOUNT/cipher/$FILE.age"
-                                                                                                        #                                 git add "$MOUNT/cipher/$FILE.age"
-                                                                                                        #                             done
-                                                                                                        #                             git diff --name-only --cached | while read -r STAGED_FILE
-                                                                                                        #                             do
-                                                                                                        #                                 echo "STAGED_FILE=$STAGED_FILE"
-                                                                                                        #                                 case "$STAGED_FILE" in
-                                                                                                        #                                     dot-gnupg/ownertrust.asc.age)
-                                                                                                        #                                         ;;
-                                                                                                        #                                     dot-gnupg/secret-keys.asc.age)
-                                                                                                        #                                         ;;
-                                                                                                        #                                     dot-ssh/github/known-hosts.asc.age
-                                                                                                        #                                         ;;
-                                                                                                        #                                     dot-ssh/github/identity.asc.age)
-                                                                                                        #                                         ;;
-                                                                                                        #                                     dot-ssh/mobile/known-hosts.asc.age)
-                                                                                                        #                                         ;;
-                                                                                                        #                                     dot-ssh/mobile/identity.asc.age)
-                                                                                                        #                                         ;;
-                                                                                                        #                                     gnupg/token.asc.age)
-                                                                                                        #                                         ;;
-                                                                                                        #                                    *)
-                                                                                                        #                                         failure 654f86bb "$STAGED_FILE"
-                                                                                                        #                                 esac
-                                                                                                        #                             done
-                                                                                                        #                         '' ;
-                                                                                                        #                 } ;
-                                                                                                        #         in "${ application }/bin/pre-commit" ;
+                                                                                                        pre-commit =
+                                                                                                            let
+                                                                                                                application =
+                                                                                                                    pkgs.writeShellApplication
+                                                                                                                        {
+                                                                                                                            name = "pre-commit" ;
+                                                                                                                            runtimeInputs = [ pkgs.age pkgs.findutils failure ] ;
+                                                                                                                            text =
+                                                                                                                                ''
+                                                                                                                                    IDENTITY="$( age-keygen -f ${ config.personal.agenix } )" || failure 0d6c6c0c
+                                                                                                                                    find "$MOUNT/plain" -mindepth 1 -type f -name "*.asc" | while read -r PLAINTEXT_FILE
+                                                                                                                                    do
+                                                                                                                                        FILE="${ builtins.concatStringsSep "" [ "$" "{" "PLAINTEXT_FILE#$MOUNT/plain/" "}" ] }
+                                                                                                                                        age --encrypt --identity "$IDENTITY" --output "$MOUNT/cipher/$FILE.age"
+                                                                                                                                        git add "$MOUNT/cipher/$FILE.age"
+                                                                                                                                    done
+                                                                                                                                    git diff --name-only --cached | while read -r STAGED_FILE
+                                                                                                                                    do
+                                                                                                                                        echo "STAGED_FILE=$STAGED_FILE"
+                                                                                                                                        case "$STAGED_FILE" in
+                                                                                                                                            dot-gnupg/ownertrust.asc.age)
+                                                                                                                                                ;;
+                                                                                                                                            dot-gnupg/secret-keys.asc.age)
+                                                                                                                                                ;;
+                                                                                                                                            dot-ssh/github/known-hosts.asc.age
+                                                                                                                                                ;;
+                                                                                                                                            dot-ssh/github/identity.asc.age)
+                                                                                                                                                ;;
+                                                                                                                                            dot-ssh/mobile/known-hosts.asc.age)
+                                                                                                                                                ;;
+                                                                                                                                            dot-ssh/mobile/identity.asc.age)
+                                                                                                                                                ;;
+                                                                                                                                            gnupg/token.asc.age)
+                                                                                                                                                ;;
+                                                                                                                                           *)
+                                                                                                                                                failure 654f86bb "$STAGED_FILE"
+                                                                                                                                        esac
+                                                                                                                                    done
+                                                                                                                                '' ;
+                                                                                                                        } ;
+                                                                                                                in "${ application }/bin/pre-commit" ;
                                                                                                         # pre-push =
                                                                                                         #     let
                                                                                                         #         application =
@@ -2104,8 +2104,8 @@
                                                                                                             ''
                                                                                                                 mkdir /mount/cipher
                                                                                                                 cd /mount/cipher
-
                                                                                                                 wrap ${ post-commit } .git/hooks/post-commit 0500 --inherit-literal MOUNT --literal-plain PATH --uuid 708e9f8d
+                                                                                                                wrap ${ pre-commit } .git/hooks/pre-commit 0500 --literal-plain PATH --uuid e7266fc5
                                                                                                                 git init 2>&1
                                                                                                                 git remote add https https://github.com/${ config.personal.secrets.organization }/${ config.personal.secrets.repository }
                                                                                                                 git remote add ssh github.com:${ config.personal.secrets.organization }/${ config.personal.secrets.repository }
