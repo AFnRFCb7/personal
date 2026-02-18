@@ -2048,10 +2048,11 @@
                                                                                                                             runtimeInputs = [ pkgs.age pkgs.findutils failure ] ;
                                                                                                                             text =
                                                                                                                                 ''
+                                                                                                                                    cd "$MOUNT/cipher"
                                                                                                                                     IDENTITY="$( age-keygen -f ${ config.personal.agenix } )" || failure 0d6c6c0c
                                                                                                                                     find "$MOUNT/plain" -mindepth 1 -type f -name "*.asc" | while read -r PLAINTEXT_FILE
                                                                                                                                     do
-                                                                                                                                        FILE="${ builtins.concatStringsSep "" [ "$" "{" "PLAINTEXT_FILE#$MOUNT/plain/" "}" ] }"
+                                                                                                                                        FILE="${ builtins.concatStringsSep "" [ "$" "{" ''PLAINTEXT_FILE#"$MOUNT"/plain/'' "}" ] }"
                                                                                                                                         age --encrypt --identity "$IDENTITY" --output "$MOUNT/cipher/$FILE.age"
                                                                                                                                         git add "$MOUNT/cipher/$FILE.age"
                                                                                                                                     done
