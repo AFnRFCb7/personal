@@ -1416,7 +1416,7 @@
                                                                                 ignore :
                                                                                     {
                                                                                         init =
-                                                                                            { pid , resources , pkgs , root , sequential , wrap } :
+                                                                                            { failure , pid , pkgs , resources , root , seed , sequential , wrap } :
                                                                                                 let
                                                                                                     application =
                                                                                                         pkgs.writeShellApplication
@@ -1467,7 +1467,7 @@
                                                                                         ignore :
                                                                                             {
                                                                                                 init =
-                                                                                                    { pid , resources , pkgs , root , sequential , wrap } :
+                                                                                                    { failure , pid , pkgs , resources , root , seed , sequential , wrap } :
                                                                                                         let
                                                                                                             application =
                                                                                                                 pkgs.writeShellApplication
@@ -2046,7 +2046,7 @@
                                                                         branch : ignore :
                                                                             {
                                                                                 init =
-                                                                                    { pid , resources , pkgs , root , sequential , wrap } :
+                                                                                    { failure , pid , pkgs , resources , root , seed , sequential , wrap } :
                                                                                         let
                                                                                             application =
                                                                                                 pkgs.writeShellApplication
