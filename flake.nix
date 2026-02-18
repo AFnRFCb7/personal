@@ -2031,6 +2031,7 @@
                                                                                                                             runtimeInputs = [ pkgs.coreutils pkgs.openssh ] ;
                                                                                                                             text =
                                                                                                                                 ''
+                                                                                                                                    : "${ builtins.concatStringsSep "" [ "$" "{" "GIT_SSH_COMMAND:?GIT_SSH_COMMAND must be exported""}" ] }
                                                                                                                                     cd "$MOUNT/cipher"
                                                                                                                                     while ! git push ssh HEAD
                                                                                                                                     do
@@ -2092,11 +2093,11 @@
                                                                                                                                 ''
                                                                                                                                     if [[ -f "$MOUNT/plain/dot-ssh/mobile/identity.asc" ]]
                                                                                                                                     then
+                                                                                                                                        : "${ builtins.concatStringsSep "" [ "$" "{" "GIT_SSH_COMMAND:?GIT_SSH_COMMAND must be exported""}" ] }
                                                                                                                                         MOBILE_PUBLIC="$( ssh-keygen -y -f "$MOUNT/plain/dot-ssh/mobile/identity.asc" )" || failure 47cc9859
-                                                                                                                                        SSH="$( git config --get core.sshCommand )" || failure d10e6488
-                                                                                                                                        "$SSH" mobile "chmod 0600 ~/.ssh/authorized-keys"
-                                                                                                                                        echo "$MOBILE_PUBLIC" | "$SSH" mobile "cat >> ~/.ssh/authorized-keys"
-                                                                                                                                        "$SSH" "chmod 0400 ~/.ssh/authorized-keys"
+                                                                                                                                        "$GIT_SSH_COMMAND" mobile "chmod 0600 ~/.ssh/authorized-keys"
+                                                                                                                                        echo "$MOBILE_PUBLIC" | "$GIT_SSH_COMMAND" mobile "cat >> ~/.ssh/authorized-keys"
+                                                                                                                                        "$GIT_SSH_COMMAND" "chmod 0400 ~/.ssh/authorized-keys"
                                                                                                                                     fi
                                                                                                                                '' ;
                                                                                                                         } ;
@@ -2105,9 +2106,9 @@
                                                                                                             ''
                                                                                                                 mkdir --parents /mount/cipher
                                                                                                                 cd /mount/cipher
-                                                                                                                wrap ${ post-commit } .git/hooks/post-commit 0500 --inherit-plain MOUNT --literal-plain PATH --uuid 708e9f8d
+                                                                                                                wrap ${ post-commit } .git/hooks/post-commit 0500 --literal-brace "GIT_SSH_COMMAND:?GIT_SSH_COMMAND must be exported" --inherit-plain MOUNT --literal-plain PATH --uuid 708e9f8d
                                                                                                                 wrap ${ pre-commit } .git/hooks/pre-commit 0500 --literal-plain FILE --inherit-plain MOUNT --literal-plain PATH --literal-brace PLAINTEXT_FILE#"\$MOUNT"/plain/ --literal-plain STAGED_FILE --uuid e7266fc5
-                                                                                                                wrap ${ pre-push } .git/hooks/pre-push 0500 --literal-plain MOBILE_PUBLIC --inherit-plain MOUNT --literal-plain SSH --uuid c49c4509
+                                                                                                                wrap ${ pre-push } .git/hooks/pre-push 0500 --literal-plain GIT_SSH_COMMAND --literal-brace "GIT_SSH_COMMAND:?GIT_SSH_COMMAND must be exported" --literal-plain MOBILE_PUBLIC --inherit-plain MOUNT --uuid c49c4509
                                                                                                                 git init 2>&1
                                                                                                                 git remote add https https://github.com/${ config.personal.secrets.organization }/${ config.personal.secrets.repository }
                                                                                                                 git remote add ssh github.com:${ config.personal.secrets.organization }/${ config.personal.secrets.repository }
@@ -2593,10 +2594,10 @@
                                                                                                                 ''
                                                                                                                     DOT_SSH=${ resources__.production.dot-ssh { } }
                                                                                                                     SECRETS=${ resources__.production.secrets { } }
+                                                                                                                    export GIT_SSH_COMMAND="${ pkgs.openssh }/bin/ssh -F $DOT_SSH/config"
                                                                                                                     git -C "$SECRETS/cipher" config core.sshCommand "${ pkgs.openssh }/bin/ssh -F $DOT_SSH/config"
                                                                                                                     ssh-keygen -y -f "$SECRETS/plain/dot-ssh/mobile/identity.asc" -C "systemd recycler" -P ""
                                                                                                                     git -C "$SECRETS/cipher" commit -am "systemd recycler"
-                                                                                                                    git -C "$SECRETS/cipher" config --unset core.sshCommand
                                                                                                                 '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/ExecStart" ;
