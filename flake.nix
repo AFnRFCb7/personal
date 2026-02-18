@@ -1866,6 +1866,7 @@
                                                                                                                                                                                 UUID="$( uuidgen | sha512sum )" || failure ff7829b8
                                                                                                                                                                                 BRANCH="$( echo "scratch/$UUID" | cut --bytes 1-64 )" || failure ef1f826c
                                                                                                                                                                                 git push origin HEAD
+                                                                                                                                                                                export PROCEED
                                                                                                                                                                             '' ;
                                                                                                                                                                     } ;
                                                                                                                                                                 test =
