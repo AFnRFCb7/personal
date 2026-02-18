@@ -2106,10 +2106,7 @@
                                                                                                             ''
                                                                                                                 mkdir --parents /mount/cipher
                                                                                                                 cd /mount/cipher
-                                                                                                                wrap ${ post-commit } .git/hooks/post-commit 0500 --literal-brace "GIT_SSH_COMMAND:?GIT_SSH_COMMAND must be exported" --inherit-plain MOUNT --literal-plain PATH --uuid 708e9f8d
-                                                                                                                # shellcheck disable=SC2016
-                                                                                                                wrap ${ pre-commit } .git/hooks/pre-commit 0500 --literal-plain FILE --literal-plain IDENTITY --inherit-plain MOUNT --literal-plain PATH --literal-brace 'PLAINTEXT_FILE#"$MOUNT"/plain/' --literal-plain STAGED_FILE --uuid e7266fc5
-                                                                                                                wrap ${ pre-push } .git/hooks/pre-push 0500 --literal-plain GIT_SSH_COMMAND --literal-brace "GIT_SSH_COMMAND:?GIT_SSH_COMMAND must be exported" --literal-plain MOBILE_PUBLIC --inherit-plain MOUNT --literal-plain PATH --uuid c49c4509
+                                                                                                                cd /mount/cipher
                                                                                                                 git init 2>&1
                                                                                                                 git remote add https https://github.com/${ config.personal.secrets.organization }/${ config.personal.secrets.repository }
                                                                                                                 git remote add ssh github.com:${ config.personal.secrets.organization }/${ config.personal.secrets.repository }
@@ -2119,6 +2116,11 @@
                                                                                                                 mkdir --parents /mount/plain/dot-ssh/github
                                                                                                                 mkdir --parents /mount/plain/dot-ssh/mobile
                                                                                                                 mkdir --parents /mount/plain/github
+                                                                                                                wrap ${ post-commit } cipher/.git/hooks/post-commit 0500 --literal-brace "GIT_SSH_COMMAND:?GIT_SSH_COMMAND must be exported" --inherit-plain MOUNT --literal-plain PATH --uuid 708e9f8d
+                                                                                                                # shellcheck disable=SC2016
+                                                                                                                wrap ${ pre-commit } cipher/.git/hooks/pre-commit 0500 --literal-plain FILE --literal-plain IDENTITY --inherit-plain MOUNT --literal-plain PATH --literal-brace 'PLAINTEXT_FILE#"$MOUNT"/plain/' --literal-plain STAGED_FILE --uuid e7266fc5
+                                                                                                                wrap ${ pre-push } cipher/.git/hooks/pre-push 0500 --literal-plain GIT_SSH_COMMAND --literal-brace "GIT_SSH_COMMAND:?GIT_SSH_COMMAND must be exported" --literal-plain MOBILE_PUBLIC --inherit-plain MOUNT --literal-plain PATH --uuid c49c4509
+
                                                                                                             '' ;
                                                                                             } ;
                                                                                     in "${ application }/bin/init" ;
