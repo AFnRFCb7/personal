@@ -2019,7 +2019,7 @@
                                                                                         pkgs.writeShellApplication
                                                                                             {
                                                                                                 name = "init" ;
-                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
+                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.git wrap ] ;
                                                                                                 text =
                                                                                                     let
                                                                                                         post-commit =
@@ -2105,9 +2105,9 @@
                                                                                                             ''
                                                                                                                 mkdir --parents /mount/cipher
                                                                                                                 cd /mount/cipher
-                                                                                                                wrap ${ post-commit } .git/hooks/post-commit 0500 --inherit-literal MOUNT --literal-plain PATH --uuid 708e9f8d
-                                                                                                                wrap ${ pre-commit } .git/hooks/pre-commit 0500 --literal-plain PATH --uuid e7266fc5
-                                                                                                                wrap ${ pre-push } .git/hooks/pre-push 0500 --uuid c49c4509
+                                                                                                                wrap ${ post-commit } .git/hooks/post-commit 0500 --inherit-plain MOUNT --literal-plain PATH --uuid 708e9f8d
+                                                                                                                wrap ${ pre-commit } .git/hooks/pre-commit 0500 --literal-plain FILE --inherit-plain MOUNT --literal-plain PATH --literal-plain PLAINTEXT_FILE --literal-plain STAGED_FILE --uuid e7266fc5
+                                                                                                                wrap ${ pre-push } .git/hooks/pre-push 0500 --literal-plain MOBILE_PUBLIC --inherit-plain MOUNT --literal-plain SSH --uuid c49c4509
                                                                                                                 git init 2>&1
                                                                                                                 git remote add https https://github.com/${ config.personal.secrets.organization }/${ config.personal.secrets.repository }
                                                                                                                 git remote add ssh github.com:${ config.personal.secrets.organization }/${ config.personal.secrets.repository }
