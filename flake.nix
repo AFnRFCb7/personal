@@ -1854,9 +1854,9 @@
                                                                                                                                                                                 git commit -am "" --allow-empty --allow-empty-message
                                                                                                                                                                                 git fetch origin main
                                                                                                                                                                                 git reset --soft origin/main
-                                                                                                                                                                                read -p "ee992e0d d2f84a97" PROCEED
+                                                                                                                                                                                read -p "ee992e0d d2f84a97" -r PROCEED
                                                                                                                                                                                 git commit -a --verbose --allow-empty-message
-                                                                                                                                                                                read -p "ee992e0d 6581a7bd" PROCEED
+                                                                                                                                                                                read -p "ee992e0d 6581a7bd" -r PROCEED
                                                                                                                                                                                 git push origin HEAD
                                                                                                                                                                                 git checkout main
                                                                                                                                                                                 git rebase "$BRANCH"
