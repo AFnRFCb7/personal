@@ -1955,7 +1955,7 @@
                                                                                                                                         echo 380b7b99 b29cd747
                                                                                                                                         git submodule foreach "git push origin HEAD" 2>&1
                                                                                                                                         echo 380b7b99 a7df32c6
-                                                                                                                                        wrap ${ root }/bin/root stage/root 0500 --inherit-plain INDEX --literal-plain PATH --uuid c3aaf5d8
+                                                                                                                                        wrap ${ root }/bin/root stage/root 0500 --literal-plain DIRECTORY --inherit-plain INDEX --literal-plain PATH --literal-plain TARGET --uuid c3aaf5d8
                                                                                                                                     '' ;
                                                                                                                     } ;
                                                                                                             in "${ application }/bin/init" ;
