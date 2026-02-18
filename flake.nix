@@ -2031,7 +2031,7 @@
                                                                                                                             runtimeInputs = [ pkgs.coreutils pkgs.openssh ] ;
                                                                                                                             text =
                                                                                                                                 ''
-                                                                                                                                    : "${ builtins.concatStringsSep "" [ "$" "{" "GIT_SSH_COMMAND:?GIT_SSH_COMMAND must be exported" "}" ] }
+                                                                                                                                    : "${ builtins.concatStringsSep "" [ "$" "{" "GIT_SSH_COMMAND:?GIT_SSH_COMMAND must be exported" "}" ] }"
                                                                                                                                     cd "$MOUNT/cipher"
                                                                                                                                     while ! git push ssh HEAD
                                                                                                                                     do
@@ -2093,7 +2093,7 @@
                                                                                                                                 ''
                                                                                                                                     if [[ -f "$MOUNT/plain/dot-ssh/mobile/identity.asc" ]]
                                                                                                                                     then
-                                                                                                                                        : "${ builtins.concatStringsSep "" [ "$" "{" "GIT_SSH_COMMAND:?GIT_SSH_COMMAND must be exported" "}" ] }
+                                                                                                                                        : "${ builtins.concatStringsSep "" [ "$" "{" "GIT_SSH_COMMAND:?GIT_SSH_COMMAND must be exported" "}" ] }"
                                                                                                                                         MOBILE_PUBLIC="$( ssh-keygen -y -f "$MOUNT/plain/dot-ssh/mobile/identity.asc" )" || failure 47cc9859
                                                                                                                                         "$GIT_SSH_COMMAND" mobile "chmod 0600 ~/.ssh/authorized-keys"
                                                                                                                                         echo "$MOBILE_PUBLIC" | "$GIT_SSH_COMMAND" mobile "cat >> ~/.ssh/authorized-keys"
