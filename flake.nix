@@ -1910,9 +1910,9 @@
                                                                                                                                                                                     TOKEN="$( cat "$TOKEN_DIRECTORY/plaintext" )" || failure 6ad73063
                                                                                                                                                                                     export NIX_CONFIG="access-tokens = github.com=$TOKEN"
                                                                                                                                                                                     DOT_SSH=${ resources.production.dot-ssh { failure = 2980 ; } }
+                                                                                                                                                                                    cd "$toplevel"
                                                                                                                                                                                     ../stage/root ${ pkgs.openssh }
                                                                                                                                                                                     export GIT_SSH_COMMAND="${ pkgs.openssh }/bin/ssh -F $DOT_SSH/config"
-                                                                                                                                                                                    cd "$toplevel"
                                                                                                                                                                                     nix flake update --flake "$toplevel" "$NAME"
                                                                                                                                                                                 fi
                                                                                                                                                                             '' ;
