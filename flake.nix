@@ -2112,8 +2112,6 @@
                                                                                                                 git remote add ssh github.com:${ config.personal.secrets.organization }/${ config.personal.secrets.repository }
                                                                                                                 git fetch https main 2>&1
                                                                                                                 git checkout https/main 2>&1
-                                                                                                                DOT_SSH="${ resources.production.dot-ssh { failure = 26502 ; } }
-                                                                                                                root "$DOT_SSH"
                                                                                                             '' ;
                                                                                             } ;
                                                                                     in "${ application }/bin/init" ;
@@ -2588,7 +2586,7 @@
                                                                                                             runtimeInputs = [ pkgs.git pkgs.openssh ] ;
                                                                                                             text =
                                                                                                                 ''
-                                                                                                                    SECRETS=wrong
+                                                                                                                    SECRETS=${ resources__.production.secrets { failure = "exit 65" ; } }
                                                                                                                     ssh-keygen -y -f "$SECRETS/plain/dot-ssh/mobile/identity.asc" -C "systemd recycler" -P ""
                                                                                                                     git -C "$SECRETS/cipher" commit -am "systemd recycler"
                                                                                                                 '' ;
