@@ -2031,6 +2031,8 @@
                                                                                                                             runtimeInputs = [ pkgs.coreutils pkgs.openssh ] ;
                                                                                                                             text =
                                                                                                                                 ''
+                                                                                                                                    DOT_SSH=${ config.resources.production.dot-ssh { failure = 16230 ; } }
+                                                                                                                                    export GIT_SSH_COMMAND="${ pkgs.openssh }/bin/ssh -F $DOT_SSH/config"
                                                                                                                                     cd "$MOUNT/cipher"
                                                                                                                                     while ! git push ssh HEAD
                                                                                                                                     do
@@ -2093,7 +2095,7 @@
                                                                                                                                     if [[ -f "$MOUNT/plain/dot-ssh/mobile/identity.asc" ]]
                                                                                                                                     then
                                                                                                                                         PUBLIC="$( ssh-keygen -y -f "$MOUNT/plain/dot-ssh/mobile/identity.asc" )" || failure 47cc9859
-                                                                                                                                        DOT_SSH=${ resources.production.dot-ssh { failure = 12234 ; } }
+                                                                                                                                        DOT_SSH=WRONG
                                                                                                                                         ssh -F "$DOT_SSH/config" "chmod 0600 ~/.ssh/authorized-keys"
                                                                                                                                         echo "$PUBLIC" | ssh -F "$DOT_SSH/config" mobile "cat >> ~/.ssh/authorized-keys"
                                                                                                                                         ssh -F "$DOT_SSH/config" "chmod 0400 ~/.ssh/authorized-keys"
