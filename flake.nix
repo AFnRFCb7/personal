@@ -2287,6 +2287,7 @@
                                                             } ;
                                                         services =
                                                             {
+                                                                atd.enable = true ;
                                                                 blueman.enable = true ;
                                                                 dbus.packages = [ pkgs.gcr ] ;
                                                                 openssh =
