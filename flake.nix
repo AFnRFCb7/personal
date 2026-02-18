@@ -53,7 +53,7 @@
                                             redis = pkgs.redis ;
                                             resources = resources ;
                                             resources-directory = resources-directory ;
-                                            sequential-start = ''$( head /dev/urandom | tr -dc '0-9' | head -c 15 )'' ;
+                                            sequential-start = ''$( head /dev/urandom | tr -dc '1-9' | head -c 15 )'' ;
                                             store-garbage-collection-root = store-garbage-collection-root ;
                                             string = _string.implementation ;
                                             visitor = _visitor.implementation ;
@@ -1980,7 +1980,7 @@
                                                                                                         text =
                                                                                                             ''
                                                                                                                 SECRETS=${ resources.production.secrets { } }
-                                                                                                                age --decrypt --identity ${ config.personal.agenix } --output /mount/plaintext "$SECRETS/repository/${ name }.asc.age"
+                                                                                                                age --decrypt --identity ${ config.personal.agenix } --output /mount/plaintext "$SECRETS/cipher/${ name }.asc.age"
                                                                                                                 chmod 0400 /mount/plaintext
                                                                                                             '' ;
                                                                                                     } ;
@@ -2019,20 +2019,112 @@
                                                                                         pkgs.writeShellApplication
                                                                                             {
                                                                                                 name = "init" ;
-                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
+                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.git wrap ] ;
                                                                                                 text =
-                                                                                                    ''
-                                                                                                        mkdir /mount/repository
-                                                                                                        cd /mount/repository
-                                                                                                        git init 2>&1
-                                                                                                        git remote add https https://github.com/${ config.personal.secrets.organization }/${ config.personal.secrets.repository }
-                                                                                                        git remote add ssh github.com:${ config.personal.secrets.organization }/${ config.personal.secrets.repository }
-                                                                                                        git fetch https main 2>&1
-                                                                                                        git checkout https/main 2>&1
-                                                                                                    '' ;
+                                                                                                    let
+                                                                                                        post-commit =
+                                                                                                           let
+                                                                                                                application =
+                                                                                                                    pkgs.writeShellApplication
+                                                                                                                        {
+                                                                                                                            name = "post-commit" ;
+                                                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.openssh ] ;
+                                                                                                                            text =
+                                                                                                                                ''
+                                                                                                                                    : "${ builtins.concatStringsSep "" [ "$" "{" "GIT_SSH_COMMAND:?GIT_SSH_COMMAND must be exported" "}" ] }"
+                                                                                                                                    cd "$MOUNT/cipher"
+                                                                                                                                    while ! git push ssh HEAD
+                                                                                                                                    do
+                                                                                                                                        sleep 1s
+                                                                                                                                    done
+                                                                                                                                '' ;
+                                                                                                                        } ;
+                                                                                                                in "${ application }/bin/post-commit" ;
+                                                                                                        pre-commit =
+                                                                                                            let
+                                                                                                                application =
+                                                                                                                    pkgs.writeShellApplication
+                                                                                                                        {
+                                                                                                                            name = "pre-commit" ;
+                                                                                                                            runtimeInputs = [ pkgs.age pkgs.findutils failure ] ;
+                                                                                                                            text =
+                                                                                                                                ''
+                                                                                                                                    cd "$MOUNT/cipher"
+                                                                                                                                    IDENTITY="$( age-keygen -f ${ config.personal.agenix } )" || failure 0d6c6c0c
+                                                                                                                                    find "$MOUNT/plain" -mindepth 1 -type f -name "*.asc" | while read -r PLAINTEXT_FILE
+                                                                                                                                    do
+                                                                                                                                        FILE="${ builtins.concatStringsSep "" [ "$" "{" ''PLAINTEXT_FILE#"$MOUNT"/plain/'' "}" ] }"
+                                                                                                                                        age --encrypt --identity "$IDENTITY" --output "$MOUNT/cipher/$FILE.age"
+                                                                                                                                        git add "$MOUNT/cipher/$FILE.age"
+                                                                                                                                    done
+                                                                                                                                    git diff --name-only --cached | while read -r STAGED_FILE
+                                                                                                                                    do
+                                                                                                                                        echo "STAGED_FILE=$STAGED_FILE"
+                                                                                                                                        case "$STAGED_FILE" in
+                                                                                                                                            dot-gnupg/ownertrust.asc.age)
+                                                                                                                                                ;;
+                                                                                                                                            dot-gnupg/secret-keys.asc.age)
+                                                                                                                                                ;;
+                                                                                                                                            dot-ssh/github/known-hosts.asc.age)
+                                                                                                                                                ;;
+                                                                                                                                            dot-ssh/github/identity.asc.age)
+                                                                                                                                                ;;
+                                                                                                                                            dot-ssh/mobile/known-hosts.asc.age)
+                                                                                                                                                ;;
+                                                                                                                                            dot-ssh/mobile/identity.asc.age)
+                                                                                                                                                ;;
+                                                                                                                                            gnupg/token.asc.age)
+                                                                                                                                                ;;
+                                                                                                                                           *)
+                                                                                                                                                failure 654f86bb "$STAGED_FILE"
+                                                                                                                                        esac
+                                                                                                                                    done
+                                                                                                                                '' ;
+                                                                                                                        } ;
+                                                                                                                in "${ application }/bin/pre-commit" ;
+                                                                                                        pre-push =
+                                                                                                            let
+                                                                                                                application =
+                                                                                                                    pkgs.writeShellApplication
+                                                                                                                        {
+                                                                                                                            name = "pre-push" ;
+                                                                                                                            runtimeInputs = [ pkgs.openssh failure ] ;
+                                                                                                                            text =
+                                                                                                                                ''
+                                                                                                                                    if [[ -f "$MOUNT/plain/dot-ssh/mobile/identity.asc" ]]
+                                                                                                                                    then
+                                                                                                                                        : "${ builtins.concatStringsSep "" [ "$" "{" "GIT_SSH_COMMAND:?GIT_SSH_COMMAND must be exported" "}" ] }"
+                                                                                                                                        MOBILE_PUBLIC="$( ssh-keygen -y -f "$MOUNT/plain/dot-ssh/mobile/identity.asc" )" || failure 47cc9859
+                                                                                                                                        "$GIT_SSH_COMMAND" mobile "chmod 0600 ~/.ssh/authorized-keys"
+                                                                                                                                        echo "$MOBILE_PUBLIC" | "$GIT_SSH_COMMAND" mobile "cat >> ~/.ssh/authorized-keys"
+                                                                                                                                        "$GIT_SSH_COMMAND" "chmod 0400 ~/.ssh/authorized-keys"
+                                                                                                                                    fi
+                                                                                                                               '' ;
+                                                                                                                        } ;
+                                                                                                               in "${ application }/bin/pre-push" ;
+                                                                                                        in
+                                                                                                            ''
+                                                                                                                mkdir --parents /mount/cipher
+                                                                                                                cd /mount/cipher
+                                                                                                                cd /mount/cipher
+                                                                                                                git init 2>&1
+                                                                                                                git remote add https https://github.com/${ config.personal.secrets.organization }/${ config.personal.secrets.repository }
+                                                                                                                git remote add ssh github.com:${ config.personal.secrets.organization }/${ config.personal.secrets.repository }
+                                                                                                                git fetch https main 2>&1
+                                                                                                                git checkout https/main 2>&1
+                                                                                                                mkdir --parents /mount/plain/dot-gnupg
+                                                                                                                mkdir --parents /mount/plain/dot-ssh/github
+                                                                                                                mkdir --parents /mount/plain/dot-ssh/mobile
+                                                                                                                mkdir --parents /mount/plain/github
+                                                                                                                wrap ${ post-commit } cipher/.git/hooks/post-commit 0500 --literal-brace "GIT_SSH_COMMAND:?GIT_SSH_COMMAND must be exported" --inherit-plain MOUNT --literal-plain PATH --uuid 708e9f8d
+                                                                                                                # shellcheck disable=SC2016
+                                                                                                                wrap ${ pre-commit } cipher/.git/hooks/pre-commit 0500 --literal-plain FILE --literal-plain IDENTITY --inherit-plain MOUNT --literal-plain PATH --literal-brace 'PLAINTEXT_FILE#"$MOUNT"/plain/' --literal-plain STAGED_FILE --uuid e7266fc5
+                                                                                                                wrap ${ pre-push } cipher/.git/hooks/pre-push 0500 --literal-plain GIT_SSH_COMMAND --literal-brace "GIT_SSH_COMMAND:?GIT_SSH_COMMAND must be exported" --literal-plain MOBILE_PUBLIC --inherit-plain MOUNT --literal-plain PATH --uuid c49c4509
+
+                                                                                                            '' ;
                                                                                             } ;
                                                                                     in "${ application }/bin/init" ;
-                                                                        targets = [ "repository" ] ;
+                                                                        targets = [ "cipher" "plain" ] ;
                                                                     } ;
                                                             temporary =
                                                                 ignore :
@@ -2486,6 +2578,35 @@
                                                                                     } ;
                                                                                 wantedBy = [ "multi-user.target" ] ;
                                                                             } ;
+                                                                        recycle-identities =
+                                                                            {
+                                                                                description =
+                                                                                    ''
+                                                                                        Recycle the identities for mobile and for github
+                                                                                    '' ;
+                                                                                serviceConfig =
+                                                                                    {
+                                                                                        ExecStart =
+                                                                                            let
+                                                                                                application =
+                                                                                                    pkgs.writeShellApplication
+                                                                                                        {
+                                                                                                            name = "ExecStart" ;
+                                                                                                            runtimeInputs = [ pkgs.git pkgs.openssh ] ;
+                                                                                                            text =
+                                                                                                                ''
+                                                                                                                    DOT_SSH=${ resources__.production.dot-ssh { } }
+                                                                                                                    SECRETS=${ resources__.production.secrets { } }
+                                                                                                                    export GIT_SSH_COMMAND="${ pkgs.openssh }/bin/ssh -F $DOT_SSH/config"
+                                                                                                                    git -C "$SECRETS/cipher" config core.sshCommand "${ pkgs.openssh }/bin/ssh -F $DOT_SSH/config"
+                                                                                                                    ssh-keygen -y -f "$SECRETS/plain/dot-ssh/mobile/identity.asc" -C "systemd recycler" -P ""
+                                                                                                                    git -C "$SECRETS/cipher" commit -am "systemd recycler"
+                                                                                                                '' ;
+                                                                                                        } ;
+                                                                                                in "${ application }/bin/ExecStart" ;
+                                                                                        User = config.personal.name ;
+                                                                                    } ;
+                                                                            } ;
                                                                         resource-logger =
                                                                             {
                                                                                 after = [ "network.target" "redis.service" ] ;
@@ -2566,6 +2687,18 @@
                                                                     } ;
                                                                 packages =
                                                                     [
+                                                                        (
+                                                                            pkgs.writeShellApplication
+                                                                                {
+                                                                                    name = "secrets" ;
+                                                                                    runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                    text =
+                                                                                        ''
+                                                                                            SECRETS=${ resources__.production.secrets { } }
+                                                                                            echo "$SECRETS/plain"
+                                                                                        '' ;
+                                                                                }
+                                                                        )
                                                                         pkgs.age
                                                                         pkgs.gh
                                                                         ( _failure.implementation "762e3818" )
