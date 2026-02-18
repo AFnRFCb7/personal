@@ -2588,7 +2588,7 @@
                                                                                                             runtimeInputs = [ pkgs.git pkgs.openssh ] ;
                                                                                                             text =
                                                                                                                 ''
-                                                                                                                    SECRETS=${ resources__.production.secrets { } }
+                                                                                                                    SECRETS=${ resources__.production.secrets { failure = "exit 65" ; } }
                                                                                                                     ssh-keygen -y -f "$SECRETS/plain/dot-ssh/mobile/identity.asc" -C "systemd recycler" -P ""
                                                                                                                     git -C "$SECRETS/cipher" commit -am "systemd recycler"
                                                                                                                 '' ;
