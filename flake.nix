@@ -2031,7 +2031,7 @@
                                                                                                                             runtimeInputs = [ pkgs.coreutils pkgs.openssh ] ;
                                                                                                                             text =
                                                                                                                                 ''
-                                                                                                                                    DOT_SSH=${ config.resources.production.dot-ssh { failure = 16230 ; } }
+                                                                                                                                    DOT_SSH=${ resources.production.dot-ssh { failure = 16230 ; } }
                                                                                                                                     export GIT_SSH_COMMAND="${ pkgs.openssh }/bin/ssh -F $DOT_SSH/config"
                                                                                                                                     cd "$MOUNT/cipher"
                                                                                                                                     while ! git push ssh HEAD
