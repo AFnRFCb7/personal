@@ -2022,23 +2022,23 @@
                                                                                                 runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
                                                                                                 text =
                                                                                                     let
-                                                                                                        # post-commit =
-                                                                                                        #    let
-                                                                                                        #         application =
-                                                                                                        #             pkgs.writeShellApplication
-                                                                                                        #                 {
-                                                                                                        #                     name = "post-commit" ;
-                                                                                                        #                     runtimeInputs = [ pkgs.coreutils pkgs.openssh ] ;
-                                                                                                        #                     text =
-                                                                                                        #                         ''
-                                                                                                        #                             cd "$MOUNT/cipher"
-                                                                                                        #                             while ! git push ssh HEAD
-                                                                                                        #                             do
-                                                                                                        #                                 sleep 1s
-                                                                                                        #                             done
-                                                                                                        #                         '' ;
-                                                                                                        #                 } ;
-                                                                                                        #         in "${ application }/bin/post-commit" ;
+                                                                                                        post-commit =
+                                                                                                           let
+                                                                                                                application =
+                                                                                                                    pkgs.writeShellApplication
+                                                                                                                        {
+                                                                                                                            name = "post-commit" ;
+                                                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.openssh ] ;
+                                                                                                                            text =
+                                                                                                                                ''
+                                                                                                                                    cd "$MOUNT/cipher"
+                                                                                                                                    while ! git push ssh HEAD
+                                                                                                                                    do
+                                                                                                                                        sleep 1s
+                                                                                                                                    done
+                                                                                                                                '' ;
+                                                                                                                        } ;
+                                                                                                                in "${ application }/bin/post-commit" ;
                                                                                                         # pre-commit =
                                                                                                         #     let
                                                                                                         #         application =
@@ -2104,6 +2104,8 @@
                                                                                                             ''
                                                                                                                 mkdir /mount/cipher
                                                                                                                 cd /mount/cipher
+
+                                                                                                                wrap ${ post-commit } .git/hooks/post-commit 0500 --inherit-literal MOUNT --literal-plain PATH --uuid 708e9f8d
                                                                                                                 git init 2>&1
                                                                                                                 git remote add https https://github.com/${ config.personal.secrets.organization }/${ config.personal.secrets.repository }
                                                                                                                 git remote add ssh github.com:${ config.personal.secrets.organization }/${ config.personal.secrets.repository }
