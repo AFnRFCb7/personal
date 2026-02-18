@@ -284,7 +284,7 @@
                                                                                                                         in "${ application }/bin/unlock" ;
                                                                                                                 in
                                                                                                                     ''
-                                                                                                                        wrap ${ unlock } bin/unlock 0500 --literal-plain DOT_GNUPG --literal-plain GNUPGHOME --literal-plain DOT_GNUPG --literal-plain PATH
+                                                                                                                        wrap ${ unlock } bin/unlock 0500 --literal-plain DOT_GNUPG --literal-plain GNUPGHOME --literal-plain DOT_GNUPG --literal-plain PATH --uuid 1c39417f
                                                                                                                     '' ;
                                                                                                     } ;
                                                                                                 in "${ application }/bin/init" ;
@@ -435,7 +435,7 @@
                                                                                                                         in "${ application }/bin/${ name }" ;
                                                                                                                 in
                                                                                                                     ''
-                                                                                                                        wrap ${ bin } ${ name } 0500 --literal-plain PATH ${ builtins.concatStringsSep "" ( builtins.map ( value : " --literal-plain ${ value }" ) ( builtins.attrNames variables ) ) }
+                                                                                                                        wrap ${ bin } ${ name } 0500 --literal-plain PATH ${ builtins.concatStringsSep "" ( builtins.map ( value : " --literal-plain ${ value }" ) ( builtins.attrNames variables ) ) } --uuid 3d888900
                                                                                                                     '' ;
                                                                                                     } ;
                                                                                             in "${ application }/bin/init" ;
@@ -1371,7 +1371,7 @@
                                                                                                             in "${ application }/bin/post-commit" ;
                                                                                                     in
                                                                                                         ''
-                                                                                                            wrap ${ post-commit} repository/.git/hooks/post-commit 0500 --literal-plain PATH
+                                                                                                            wrap ${ post-commit} repository/.git/hooks/post-commit 0500 --literal-plain PATH --uuid 9ed6a1d0
                                                                                                         '' ;
                                                                                         } ;
                                                                                 in "${ application }/bin/post-commit" ;
@@ -1403,7 +1403,7 @@
                                                                                                     in
                                                                                                         ''
                                                                                                             git config core.sshCommand "$MOUNT/stage/ssh/command"
-                                                                                                            wrap ${ application }/bin/ssh stage/ssh/command 0500 --literal-plain "@" --inherit-plain MOUNT --literal-plain PATH
+                                                                                                            wrap ${ application }/bin/ssh stage/ssh/command 0500 --literal-plain "@" --inherit-plain MOUNT --literal-plain PATH --uuid 90c5bc0c
                                                                                                             DOT_SSH=${ resources.production.dot-ssh { } }
                                                                                                             root "$DOT_SSH"
                                                                                                             wrap "$DOT_SSH/config" stage/ssh/config 0400
@@ -1749,7 +1749,7 @@
                                                                                                                                 in
                                                                                                                                     ''
                                                                                                                                         # initialize a read write copy of main
-                                                                                                                                        wrap ${ root }/bin/root bin/root 0500 --literal-plain DIRECTORY --inherit-plain INDEX --literal-plain PATH --literal-plain TARGET --uuid 608bd8f9
+                                                                                                                                        wrap ${ root }/bin/root bin/root 0500 --inherit-plain INDEX --literal-plain PATH --uuid 608bd8f9
                                                                                                                                         wrap ${ studio } bin/studio 0500 --inherit-plain MOUNT --literal-plain PATH --literal-plain SEQUENCE --inherit-plain SETUP --literal-plain STUDIO --uuid 79a37900
                                                                                                                                         mkdir --parents /mount/repository
                                                                                                                                         cd /mount/repository
@@ -2090,7 +2090,7 @@
                                                                                                                                 gh auth logout 2>&1
                                                                                                                                 git checkout -b ${ builtins.hashString "sha512" branch } 2>&1
                                                                                                                                 git-crypt init 2>&1
-                                                                                                                                wrap ${ gitattributes } .gitattributes 0400
+                                                                                                                                wrap ${ gitattributes } .gitattributes 0400 --uuid 2a75750b
                                                                                                                                 git-crypt add-gpg-user "${ config.personal.volume.email }" 2>&1
                                                                                                                                 mkdir secret
                                                                                                                                 git lfs install
@@ -2106,7 +2106,7 @@
                                                                                                                             gh auth logout 2>&1
                                                                                                                             git checkout -b ${ builtins.hashString "sha512" branch } 2>&1
                                                                                                                             git-crypt init 2>&1
-                                                                                                                            wrap ${ gitattributes } .gitattributes 0400
+                                                                                                                            wrap ${ gitattributes } .gitattributes 0400 --uuid 3ad5c843
                                                                                                                             git-crypt add-gpg-user "${ config.personal.volume.email }" 2>&1
                                                                                                                             mkdir secret
                                                                                                                             git lfs install
