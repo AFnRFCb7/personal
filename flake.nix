@@ -1,4 +1,4 @@
-# 08fd13c8
+# 616a7f1f
 {
     inputs =
         {
@@ -284,7 +284,7 @@
                                                                                                                         in "${ application }/bin/unlock" ;
                                                                                                                 in
                                                                                                                     ''
-                                                                                                                        wrap ${ unlock } bin/unlock 0500 --literal-plain DOT_GNUPG --literal-plain GNUPGHOME --literal-plain DOT_GNUPG --literal-plain PATH
+                                                                                                                        wrap ${ unlock } bin/unlock 0500 --literal-plain DOT_GNUPG --literal-plain GNUPGHOME --literal-plain DOT_GNUPG --literal-plain PATH --uuid 1c39417f
                                                                                                                     '' ;
                                                                                                     } ;
                                                                                                 in "${ application }/bin/init" ;
@@ -435,7 +435,7 @@
                                                                                                                         in "${ application }/bin/${ name }" ;
                                                                                                                 in
                                                                                                                     ''
-                                                                                                                        wrap ${ bin } ${ name } 0500 --literal-plain PATH ${ builtins.concatStringsSep "" ( builtins.map ( value : " --literal-plain ${ value }" ) ( builtins.attrNames variables ) ) }
+                                                                                                                        wrap ${ bin } ${ name } 0500 --literal-plain PATH ${ builtins.concatStringsSep "" ( builtins.map ( value : " --literal-plain ${ value }" ) ( builtins.attrNames variables ) ) } --uuid 3d888900
                                                                                                                     '' ;
                                                                                                     } ;
                                                                                             in "${ application }/bin/init" ;
@@ -1371,7 +1371,7 @@
                                                                                                             in "${ application }/bin/post-commit" ;
                                                                                                     in
                                                                                                         ''
-                                                                                                            wrap ${ post-commit} repository/.git/hooks/post-commit 0500 --literal-plain PATH
+                                                                                                            wrap ${ post-commit} repository/.git/hooks/post-commit 0500 --literal-plain PATH --uuid 9ed6a1d0
                                                                                                         '' ;
                                                                                         } ;
                                                                                 in "${ application }/bin/post-commit" ;
@@ -1403,7 +1403,7 @@
                                                                                                     in
                                                                                                         ''
                                                                                                             git config core.sshCommand "$MOUNT/stage/ssh/command"
-                                                                                                            wrap ${ application }/bin/ssh stage/ssh/command 0500 --literal-plain "@" --inherit-plain MOUNT --literal-plain PATH
+                                                                                                            wrap ${ application }/bin/ssh stage/ssh/command 0500 --literal-plain "@" --inherit-plain MOUNT --literal-plain PATH --uuid 90c5bc0c
                                                                                                             DOT_SSH=${ resources.production.dot-ssh { } }
                                                                                                             root "$DOT_SSH"
                                                                                                             wrap "$DOT_SSH/config" stage/ssh/config 0400
@@ -1617,7 +1617,7 @@
                                                                                                                                                                                 git submodule foreach 'git config --get core.sshCommand'
                                                                                                                                                                                 git submodule foreach '${ scripts.submodule.reset }'
                                                                                                                                                                                 git fetch origin main
-                                                                                                                                                                                if ! git diff --quiet origin/main || git diff --quiet --cache origin/main
+                                                                                                                                                                                if ! git diff --quiet origin/main || git diff --quiet --cached origin/main
                                                                                                                                                                                 then
                                                                                                                                                                                     UUID="$( sequential | sha512sum )" || failure 15ff04d3
                                                                                                                                                                                     BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure c7dc3ee2
@@ -1786,7 +1786,7 @@
                                                                                                                 pkgs.writeShellApplication
                                                                                                                     {
                                                                                                                         name = "init" ;
-                                                                                                                        runtimeInputs = [ pkgs.git ] ;
+                                                                                                                        runtimeInputs = [ pkgs.git sequential wrap ] ;
                                                                                                                         text =
                                                                                                                             let
                                                                                                                                 scripts =
@@ -1801,7 +1801,7 @@
                                                                                                                                                                 runtimeInputs = runtimeInputs ;
                                                                                                                                                                 text = text ;
                                                                                                                                                             } ;
-                                                                                                                                                    in "${ application }/bin/name" ;
+                                                                                                                                                    in "${ application }/bin/${ name }" ;
                                                                                                                                         in
                                                                                                                                             {
                                                                                                                                                 root =
@@ -1815,10 +1815,11 @@
                                                                                                                                                                             REPOSITORY="$( git rev-parse --show-toplevel )" || failure 06532bae
                                                                                                                                                                             cd "$REPOSITORY"
                                                                                                                                                                             cd "../stage/artifacts/${ vm }"
-                                                                                                                                                                            nixos-rebuild ${ vm } --flake "$MOUNT/repository#user"
-                                                                                                                                                                            export SHARED_DIR="$MOUNT/stage/artifacts/${ vm }/shared"
-                                                                                                                                                                            echo "$MOUNT/stage/artifacts/${ vm }/result/bin/run-nixos-vm"
-                                                                                                                                                                            "$MOUNT/stage/artifacts/${ vm }/result/bin/run-nixos-vm"
+                                                                                                                                                                            nixos-rebuild ${ vm } --flake "$REPOSITORY#user"
+                                                                                                                                                                            PRESENT_WORKING_DIRECTORY="$( pwd )" || failure 2ca1d683
+                                                                                                                                                                            export SHARED_DIR="$PRESENT_WORKING_DIRECTORY/shared"
+                                                                                                                                                                            echo "$PRESENT_WORKING_DIRECTORY/result/bin/run-nixos-vm"
+                                                                                                                                                                            "$PRESENT_WORKING_DIRECTORY/result/bin/run-nixos-vm"
                                                                                                                                                                         '' ;
                                                                                                                                                                 } ;
                                                                                                                                                         set =
@@ -1832,8 +1833,8 @@
                                                                                                                                                                             ''
                                                                                                                                                                                 REPOSITORY="$( git rev-parse --show-toplevel )" || failure 62f13008
                                                                                                                                                                                 cd "$REPOSITORY"
-                                                                                                                                                                                echo nix flake check "$MOUNT/repository" >&2
-                                                                                                                                                                                nix flake check "$MOUNT/repository"
+                                                                                                                                                                                echo nix flake check "$REPOSITORY" >&2
+                                                                                                                                                                                nix flake check "$REPOSITORY"
                                                                                                                                                                             '' ;
                                                                                                                                                                     } ;
                                                                                                                                                                 switch =
@@ -1843,21 +1844,25 @@
                                                                                                                                                                             ''
                                                                                                                                                                                 REPOSITORY="$( git rev-parse --show-toplevel )" || failure 31943c1f
                                                                                                                                                                                 cd "$REPOSITORY"
+                                                                                                                                                                                DOT_SSH=${ resources.production.dot-ssh { failure = 9624 ; } }
+                                                                                                                                                                                export GIT_SSH_COMMAND="${ pkgs.openssh }/bin/ssh -F $DOT_SSH/config"
                                                                                                                                                                                 cd "../stage/artifacts/switch"
-                                                                                                                                                                                git -C "$MOUNT/repository" submodule foreach '${ scripts.submodule.switch }'
+                                                                                                                                                                                git -C "$REPOSITORY" submodule foreach '${ scripts.submodule.switch }'
                                                                                                                                                                                 UUID="$( uuidgen | sha512sum )" || failure 0f1227b6
                                                                                                                                                                                 BRANCH="$( echo "scratch/$UUID" | cut --bytes 1-64 )" || failure d5910859
-                                                                                                                                                                                git -C "$MOUNT/repository" checkout -b "$BRANCH"
-                                                                                                                                                                                git -C "$MOUNT/repository" commit -am "" --allow-empty --allow-empty-message
-                                                                                                                                                                                git -C "$MOUNT/repository" fetch origin main
-                                                                                                                                                                                git -C "$MOUNT/repository" reset --soft origin/main
-                                                                                                                                                                                git -C "$MOUNT/repository" commit -a --verbose --allow-empty-message
-                                                                                                                                                                                git -C "$MOUNT/repository" push origin HEAD
-                                                                                                                                                                                git -C "$MOUNT/repository" checkout main
-                                                                                                                                                                                git -C "$MOUNT/repository" rebase "$BRANCH"
-                                                                                                                                                                                git -C "$MOUNT/repository" push origin main
-                                                                                                                                                                                echo nixos-rebuild switch --flake "$MOUNT/repository#user" --show-trace
-                                                                                                                                                                                nixos-rebuild switch --flake "$MOUNT/repository#user" --show-trace
+                                                                                                                                                                                git -C "$REPOSITORY"  checkout -b "$BRANCH"
+                                                                                                                                                                                git -C "$REPOSITORY"  commit -am "" --allow-empty --allow-empty-message
+                                                                                                                                                                                git -C "$REPOSITORY"  fetch origin main
+                                                                                                                                                                                git -C "$REPOSITORY"  reset --soft origin/main
+                                                                                                                                                                                git -C "$REPOSITORY"  commit -a --verbose --allow-empty-message
+                                                                                                                                                                                git -C "$REPOSITORY"  push origin HEAD
+                                                                                                                                                                                git -C "$REPOSITORY"  checkout main
+                                                                                                                                                                                git -C "$REPOSITORY"  rebase "$BRANCH"
+                                                                                                                                                                                echo nixos-rebuild switch --flake "$REPOSITORY#user" --show-trace
+                                                                                                                                                                                nixos-rebuild switch --flake "$REPOSITORY#user" --show-trace
+                                                                                                                                                                                UUID="$( uuidgen | sha512sum )" || failure ff7829b8
+                                                                                                                                                                                BRANCH="$( echo "scratch/$UUID" | cut --bytes 1-64 )" || failure ef1f826c
+                                                                                                                                                                                git -C "$REPOSITORY"  push origin HEAD
                                                                                                                                                                             '' ;
                                                                                                                                                                     } ;
                                                                                                                                                                 test =
@@ -1865,9 +1870,11 @@
                                                                                                                                                                         runtimeInputs = [ ( password-less-wrap pkgs.nixos-rebuild "nixos-rebuild" ) ] ;
                                                                                                                                                                         text =
                                                                                                                                                                             ''
-                                                                                                                                                                                cd "$MOUNT/stage/artifacts/test"
-                                                                                                                                                                                echo "$MOUNT/repository/result/bin/run-nixos-vm"
-                                                                                                                                                                                nixos-rebuild test --flake "$MOUNT/repository#user"
+                                                                                                                                                                                REPOSITORY="$( git rev-parse --show-toplevel )" || failure 2402a278
+                                                                                                                                                                                cd "$REPOSITORY"
+                                                                                                                                                                                cd ../stage/artifacts/test
+                                                                                                                                                                                echo nixos-rebuild test --flake "$REPOSITORY#user"
+                                                                                                                                                                                nixos-rebuild test --flake "$REPOSITORY#user"
                                                                                                                                                                             '' ;
                                                                                                                                                                     } ;
                                                                                                                                                             } ;
@@ -1903,7 +1910,7 @@
                                                                                                                                                                                     TOKEN="$( cat "$TOKEN_DIRECTORY/plaintext" )" || failure 6ad73063
                                                                                                                                                                                     export NIX_CONFIG="access-tokens = github.com=$TOKEN"
                                                                                                                                                                                     DOT_SSH=${ resources.production.dot-ssh { failure = 2980 ; } }
-                                                                                                                                                                                    root ${ pkgs.openssh }
+                                                                                                                                                                                    ../stage/root ${ pkgs.openssh }
                                                                                                                                                                                     export GIT_SSH_COMMAND="${ pkgs.openssh }/bin/ssh -F $DOT_SSH/config"
                                                                                                                                                                                     cd "$toplevel"
                                                                                                                                                                                     nix flake update --flake "$toplevel" "$NAME"
@@ -1917,11 +1924,16 @@
                                                                                                                                     ''
                                                                                                                                         OLD_BRANCH="$1"
                                                                                                                                         COMMIT="$2"
+                                                                                                                                        mkdir --parents /mount/repository
+                                                                                                                                        cd /mount/repository
+                                                                                                                                        git init 2>&1
                                                                                                                                         ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''git config alias.mutable-${ name } "!${ value }"'' ) scripts.root ) ) }
                                                                                                                                         root ${ pkgs.openssh }
                                                                                                                                         DOT_SSH=${ resources.production.dot-ssh { failure = 7513 ; } }
                                                                                                                                         root "$DOT_SSH"
-                                                                                                                                        git config core.sshCommand "${ pkgs.openssh }/bin/ssh -F $DOT_SSH/config"
+                                                                                                                                        export GIT_SSH_COMMAND="${ pkgs.openssh }/bin/ssh -F $DOT_SSH/config"
+                                                                                                                                        root ${ pkgs.git }
+                                                                                                                                        git config core.sshCommand "$GIT_SSH_COMMAND"
                                                                                                                                         git config user.email "${ config.personal.email }"
                                                                                                                                         git config user.name "${ config.personal.description }"
                                                                                                                                         git remote add origin "${ config.personal.repository.private.remote }"
@@ -1931,14 +1943,24 @@
                                                                                                                                         mkdir --parents /mount/stage/artifacts/build-vm-with-bootloader/shared
                                                                                                                                         mkdir --parents /mount/stage/artifacts/test
                                                                                                                                         mkdir --parents /mount/stage/artifacts/switch
-                                                                                                                                        export GIT_SSH_COMMAND=/mount/stage/ssh/command
                                                                                                                                         git submodule sync 2>&1
                                                                                                                                         git submodule update --init --recursive 2>&1
-                                                                                                                                        git submodule foreach "submodule" 2>&1
+                                                                                                                                        echo 380b7b99 cb5fe1a6
+                                                                                                                                        git submodule foreach "git config core.sshCommand \"$GIT_SSH_COMMAND\"" 2>&1
+                                                                                                                                        echo 380b7b99 b4542105
+                                                                                                                                        UUID="$( sequential | sha512sum )" || failure 2ecf55e5
+                                                                                                                                        echo 380b7b99 fb8ae5e7
+                                                                                                                                        BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure ee625965
+                                                                                                                                        echo 380b7b99 2bb86aa3
+                                                                                                                                        git submodule foreach "git checkout -b $BRANCH" 2>&1
+                                                                                                                                        echo 380b7b99 b29cd747
+                                                                                                                                        git submodule foreach "git push origin HEAD" 2>&1
+                                                                                                                                        echo 380b7b99 a7df32c6
+                                                                                                                                        wrap ${ root }/bin/root stage/root 0500 --literal-plain DIRECTORY --inherit-plain INDEX --literal-plain PATH --literal-plain TARGET --uuid c3aaf5d8
                                                                                                                                     '' ;
                                                                                                                     } ;
                                                                                                             in "${ application }/bin/init" ;
-                                                                                                targets = [ "repository" ] ;
+                                                                                                targets = [ "repository" "stage" ] ;
                                                                                             } ;
                                                                                 } ;
                                                                         } ;
@@ -2069,7 +2091,7 @@
                                                                                                                                 gh auth logout 2>&1
                                                                                                                                 git checkout -b ${ builtins.hashString "sha512" branch } 2>&1
                                                                                                                                 git-crypt init 2>&1
-                                                                                                                                wrap ${ gitattributes } .gitattributes 0400
+                                                                                                                                wrap ${ gitattributes } .gitattributes 0400 --uuid 2a75750b
                                                                                                                                 git-crypt add-gpg-user "${ config.personal.volume.email }" 2>&1
                                                                                                                                 mkdir secret
                                                                                                                                 git lfs install
@@ -2085,7 +2107,7 @@
                                                                                                                             gh auth logout 2>&1
                                                                                                                             git checkout -b ${ builtins.hashString "sha512" branch } 2>&1
                                                                                                                             git-crypt init 2>&1
-                                                                                                                            wrap ${ gitattributes } .gitattributes 0400
+                                                                                                                            wrap ${ gitattributes } .gitattributes 0400 --uuid 3ad5c843
                                                                                                                             git-crypt add-gpg-user "${ config.personal.volume.email }" 2>&1
                                                                                                                             mkdir secret
                                                                                                                             git lfs install
@@ -2266,6 +2288,7 @@
                                                             } ;
                                                         services =
                                                             {
+                                                                atd.enable = true ;
                                                                 blueman.enable = true ;
                                                                 dbus.packages = [ pkgs.gcr ] ;
                                                                 openssh =
