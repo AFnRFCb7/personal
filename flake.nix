@@ -2657,7 +2657,7 @@
                                                                                                                                                                             ${ double-quotes } ;
                                                                                                                                                                     }
                                                                                                                                                         EOF
-                                                                                                                                                        cat > /home/${ config.personal.name }/shells/${ builtins.concatStringsSep "/" path }/shell.nix <<EOF
+                                                                                                                                                        cat > /home/${ config.personal.name }/shells/${ builtins.concatStringsSep "/" path }/.envrc <<EOF
                                                                                                                                                         use nix
                                                                                                                                                         EOF
                                                                                                                                                         mkdir --parents /home/${ config.personal.name }/pads/${ builtins.concatStringsSep "/" path }
