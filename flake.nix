@@ -421,7 +421,6 @@
                                                                                                                                                 ''
                                                                                                                                                     ${ builtins.concatStringsSep "\n" ( builtins.map ( value : "${ value.name }=${ value.string } # ${ builtins.toString value.oid }" ) sorted ) }
                                                                                                                                                     ${ builtins.concatStringsSep "\n" ( builtins.map ( name : ''export ${ name }="${ builtins.concatStringsSep "" [ "$" name ] }"'' ) environment ) }
-                                                                                                                                                    ${ builtins.concatStringsSep "\n" ( builtins.map ( value : "root ${ value }" ) rooted ) }
                                                                                                                                                     if [[ -t 0 ]]
                                                                                                                                                     then
                                                                                                                                                         ${ script }
