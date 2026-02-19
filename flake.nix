@@ -26,7 +26,6 @@
                             _failure = failure.lib { coreutils = pkgs.coreutils ; jq = pkgs.jq ; mkDerivation = pkgs.stdenv.mkDerivation ; visitor = visitor ; writeShellApplication = pkgs.writeShellApplication ; yq-go = pkgs.yq-go ; } ;
                             __failure = _failure.implementation "7fef1fe4" ;
                             ___failure = uuid : "${ __failure }/bin/failure ${ uuid }" ;
-                            _fixture = fixture.lib { age = pkgs.age ; coreutils = pkgs.coreutils ; failure = _failure.implementation "6bf7303d" ; gnupg = pkgs.gnupg ; libuuid = pkgs.libuuid ; mkDerivation = pkgs.stdenv.mkDerivation ; writeShellApplication = pkgs.writeShellApplication ; } ;
                             _private-reporter = private-reporter.lib { failure = _failure.implementation "8e2eb1d7" ; pkgs = pkgs ; } ;
                             _resource =
                                 {
@@ -606,32 +605,6 @@
                                                                                     in "${ application }/bin/init" ;
                                                                         targets = [ "config" ] ;
                                                                     } ;
-                                                            fixture =
-                                                                {
-                                                                    laptop =
-                                                                            ignore :
-                                                                                {
-                                                                                    init =
-                                                                                        { failure , pid , pkgs , resources , root , seed , sequential , wrap } :
-                                                                                            let
-                                                                                                application =
-                                                                                                    pkgs.writeShellApplication
-                                                                                                        {
-                                                                                                            name = "init" ;
-                                                                                                            runtimeInputs = [ pkgs.coreutils ] ;
-                                                                                                            text =
-                                                                                                                ''
-                                                                                                                    cat ${ identity }/identity > /mount/identity
-                                                                                                                    cat ${ identity }/identity.pub > /mount/identity.pub
-                                                                                                                    chmod 0400 /mount/identity /mount/identity.pub
-                                                                                                                    touch /mount/known-hosts
-                                                                                                                    chmod 0600 /mount/known-hosts
-                                                                                                                '' ;
-                                                                                                        } ;
-                                                                                                in "${ application }/bin/init" ;
-                                                                                    targets = [ "identity" "identity.pub" "known-hosts" ] ;
-                                                                                } ;
-                                                                } ;
                                                             flake =
                                                                 {
                                                                     build-vm =
@@ -2931,12 +2904,6 @@
                                                                                 branch = lib.mkOption { default = "main" ; type = lib.types.str ; } ;
                                                                                 organization = lib.mkOption { default = "AFnRFCb7" ; type = lib.types.str ; } ;
                                                                                 repository = lib.mkOption { default = "failure" ; type = lib.types.str ; } ;
-                                                                            } ;
-                                                                        fixture =
-                                                                            {
-                                                                                branch = lib.mkOption { default = "main" ; type = lib.types.str ; } ;
-                                                                                organization = lib.mkOption { default = "AFnRFCb7" ; type = lib.types.str ; } ;
-                                                                                repository = lib.mkOption { default = "fixture" ; type = lib.types.str ; } ;
                                                                             } ;
                                                                         git-repository =
                                                                             {
