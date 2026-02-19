@@ -2181,6 +2181,7 @@
                                                                                             } ;
                                                                                     in "${ application }/bin/init" ;
                                                                         targets = [ "cipher" "plain" ] ;
+                                                                        transient = true ;
                                                                     } ;
                                                             temporary =
                                                                 ignore :
