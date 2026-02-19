@@ -378,8 +378,8 @@
                                                                                                 "dot-ssh/mobile/identity"
                                                                                                 "github/token"
                                                                                             )
-
-                                                                                            COMPREPLY=($(compgen -W "${ builtins.concatStringsSep "" [ "$" "{" "allowed[*]" "}" ] }" -- "$cur"))
+                                                                                        COMPREPLY=()
+                                                                                        mapfile -t COMPREPLY < <(compgen -W "${builtins.concatStringsSep "" [ "$" "{" "allowed[*]" "}" ] }" -- "$cur")
                                                                                     '' ;
                                                                             silly =
                                                                                  autocomplete
