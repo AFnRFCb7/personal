@@ -3003,6 +3003,7 @@
                                                                                                         ( resources__.production.man.ssh { failure = ___failure "6d01304d" ; } )
                                                                                                     ] ;
                                                                                             } ;
+                                                                                    career = { } ;
                                                                                     home =
                                                                                         ignore :
                                                                                             {
