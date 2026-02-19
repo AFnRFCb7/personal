@@ -361,6 +361,26 @@
                                                                                         source ${ pkgs.pass }/share/bash-completion/completions/pass
                                                                                         _pass "$@"
                                                                                     '' ;
+                                                                            secrets =
+                                                                                autocomplete
+                                                                                    "secrets"
+                                                                                    ''
+                                                                                            local cur
+                                                                                            cur="${ builtins.concatStringsSep "" [ "$" "{" "COMP_WORDS[COMP_CWORD]" "}" ] }"
+
+                                                                                            # list of allowed names
+                                                                                            local allowed=(
+                                                                                                "dot-gnupg/ownertrust"
+                                                                                                "dot-gnupg/secret-keys"
+                                                                                                "dot-ssh/github/known-hosts"
+                                                                                                "dot-ssh/github/identity"
+                                                                                                "dot-ssh/mobile/known-hosts"
+                                                                                                "dot-ssh/mobile/identity"
+                                                                                                "github/token"
+                                                                                            )
+                                                                                        COMPREPLY=()
+                                                                                        mapfile -t COMPREPLY < <(compgen -W "${builtins.concatStringsSep "" [ "$" "{" "allowed[*]" "}" ] }" -- "$cur")
+                                                                                    '' ;
                                                                             silly =
                                                                                  autocomplete
                                                                                      "silly"
@@ -390,7 +410,7 @@
                                                                                                                             pkgs.writeShellApplication
                                                                                                                                 {
                                                                                                                                     name = name ;
-                                                                                                                                    runtimeInputs = runtimeInputs pkgs ;
+                                                                                                                                    runtimeInputs = builtins.concatLists [ ( runtimeInputs pkgs ) [ failure ] ] ;
                                                                                                                                     text =
                                                                                                                                         let
                                                                                                                                             list =
@@ -420,13 +440,12 @@
                                                                                                                                             in
                                                                                                                                                 ''
                                                                                                                                                     ${ builtins.concatStringsSep "\n" ( builtins.map ( value : "${ value.name }=${ value.string } # ${ builtins.toString value.oid }" ) sorted ) }
-                                                                                                                                                    # ${ builtins.concatStringsSep "\n" ( builtins.map ( value : "${ value.name }=${ value.string } # ${ builtins.toString value.oid }" ) list ) }
-                                                                                                                                                    # ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : "${ name }=${ value resources }" ) variables ) ) }
                                                                                                                                                     ${ builtins.concatStringsSep "\n" ( builtins.map ( name : ''export ${ name }="${ builtins.concatStringsSep "" [ "$" name ] }"'' ) environment ) }
                                                                                                                                                     if [[ -t 0 ]]
                                                                                                                                                     then
                                                                                                                                                         ${ script }
                                                                                                                                                     else
+                                                                                                                                                        # shellcheck disable=SC2216
                                                                                                                                                         ${ pkgs.coreutils }/bin/cat | ${ script }
                                                                                                                                                     fi
                                                                                                                                                 '' ;
@@ -506,6 +525,42 @@
                                                                                                 RESOURCE = resources : resources.production.repository.pass { failure = ___failure "cf87710c" ; } ;
                                                                                                 PASSWORD_STORE_GPG_OPTS = resources : ''"--homedir $DOT_GNUPG/dot-gnupg"'' ;
                                                                                                 PASSWORD_STORE_DIR = resources : "$RESOURCE/repository " ;
+                                                                                            } ;
+                                                                                    } ;
+                                                                            secrets =
+                                                                                bin
+                                                                                    {
+                                                                                        environment = [ "DOT_SSH" "SECRETS" ] ;
+                                                                                        name = "secrets" ;
+                                                                                        runtimeInputs = pkgs : [ pkgs.coreutils ] ;
+                                                                                        script =
+                                                                                            let
+                                                                                                secret =
+                                                                                                    let
+                                                                                                        application =
+                                                                                                            pkgs.writeShellApplication
+                                                                                                                {
+                                                                                                                    name = "secret" ;
+                                                                                                                    runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                                    text =
+                                                                                                                        ''
+                                                                                                                            NAME="$1"
+                                                                                                                            ALLOWED=( "dot-gnupg/ownertrust" "dot-gnupg/secret-keys" "dot-ssh/github/known-hosts" "dot-ssh/github/identity" "dot-ssh/mobile/known-hosts" "dot-ssh/mobile/identity" "github/token" )
+                                                                                                                            if [[ ! "${ builtins.concatStringsSep "" [ "$" "{" "ALLOWED[*]" "}" ] }" =~ $NAME ]]
+                                                                                                                            then
+                                                                                                                                failure da86aba0 "NAME=$NAME"
+                                                                                                                            fi
+                                                                                                                            cat > "$SECRETS/plain/$NAME.asc.age"
+                                                                                                                            export GIT_SSH_COMMAND="${ pkgs.openssh }/bin/ssh -F $DOT_SSH/config"
+                                                                                                                            git -C "$SECRETS/cipher" commit --verbose
+                                                                                                                        '' ;
+                                                                                                                } ;
+                                                                                                        in "${ application }/bin/secret" ;
+                                                                                                in ''${ secret } "$@"'' ;
+                                                                                        variables =
+                                                                                            {
+                                                                                                DOT_SSH = resources : resources.production.dot-ssh { failure = 24402 ; } ;
+                                                                                                SECRETS = resources : resources.production.secrets { failure = 13166 ; } ;
                                                                                             } ;
                                                                                     } ;
                                                                             ssh =
@@ -1156,6 +1211,68 @@
 
                                                                                                 .SH AUTHOR
                                                                                                 Written by Jason A. Donenfeld and contributors to the **pass** project.
+                                                                                            '' ;
+                                                                                    } ;
+                                                                            secrets =
+                                                                                man
+                                                                                    "secrets"
+                                                                                    {
+                                                                                        user =
+                                                                                            ''
+
+
+                                                                                                .TH SECRETS 1 "February 2026" "v1.0" "User Commands"
+                                                                                                .SH NAME
+                                                                                                secrets \- securely write and commit secrets to the repository
+                                                                                                .SH SYNOPSIS
+                                                                                                .B secrets
+                                                                                                .RI "<name>"
+                                                                                                .SH DESCRIPTION
+                                                                                                The
+                                                                                                .B secrets
+                                                                                                script writes a secret to the repository and commits it to Git. The secret is read from standard input and stored encrypted in the appropriate location.
+
+                                                                                                Only a predefined set of secret names is allowed. Using any other name will cause the script to fail.
+                                                                                                .SH ALLOWED NAMES
+                                                                                                .nf
+                                                                                                dot-gnupg/ownertrust
+                                                                                                dot-gnupg/secret-keys
+                                                                                                dot-ssh/github/known-hosts
+                                                                                                dot-ssh/github/identity
+                                                                                                dot-ssh/mobile/known-hosts
+                                                                                                dot-ssh/mobile/identity
+                                                                                                github/token
+                                                                                                .fi
+                                                                                                .SH ENVIRONMENT
+                                                                                                .TP
+                                                                                                SECRETS
+                                                                                                Root path of the secrets repository.
+                                                                                                .TP
+                                                                                                DOT_SSH
+                                                                                                Path to the directory containing SSH configuration files.
+                                                                                                .TP
+                                                                                                pkgs.openssh
+                                                                                                Path to the OpenSSH binary used by Git for committing.
+                                                                                                .SH EXIT STATUS
+                                                                                                The script exits with a non-zero status if:
+                                                                                                .RS
+                                                                                                - The provided NAME is not in the allowed list.
+                                                                                                - Any command fails (writing the secret or committing).
+                                                                                                .RE
+                                                                                                It exits with zero on successful write and commit.
+                                                                                                .SH EXAMPLES
+                                                                                                Write a GitHub identity secret:
+                                                                                                .nf
+                                                                                                $ echo "my-ssh-key" | secrets dot-ssh/github/identity
+                                                                                                .fi
+                                                                                                Commit the mobile known-hosts secret:
+                                                                                                .nf
+                                                                                                $ cat mobile-known-hosts.txt | secrets dot-ssh/mobile/known-hosts
+                                                                                                .fi
+                                                                                                .SH AUTHOR
+                                                                                                Written by Emory Merryman.
+                                                                                                .SH SEE ALSO
+                                                                                                git(1)
                                                                                             '' ;
                                                                                     } ;
                                                                             ssh =
@@ -2101,6 +2218,7 @@
                                                                                             } ;
                                                                                     in "${ application }/bin/init" ;
                                                                         targets = [ "cipher" "plain" ] ;
+                                                                        transient = true ;
                                                                     } ;
                                                             temporary =
                                                                 ignore :
@@ -2646,7 +2764,12 @@
                                                                     {
                                                                         recycle-identities =
                                                                             {
-                                                                                timerConfig.OnCalendar = "daily" ;
+                                                                                enable = true ;
+                                                                                timerConfig =
+                                                                                    {
+                                                                                        OnCalendar = "daily" ;
+                                                                                        Persistent = true ;
+                                                                                    } ;
                                                                             } ;
                                                                     } ;
                                                             } ;
@@ -2842,6 +2965,7 @@
                                                                                                         ( resources__.production.bin.gpg { failure = ___failure "7386330c" ; } )
                                                                                                         ( resources__.production.bin.idea-community { failure = ___failure "7eba8454" ; } )
                                                                                                         ( resources__.production.bin.pass { failure = ___failure "c055f2a0" ; } )
+                                                                                                        ( resources__.production.bin.secrets { } )
                                                                                                         ( resources__.production.bin.ssh { failure = ___failure "c055f2a0" ; } )
                                                                                                     ] ;
                                                                                                 man =
@@ -2850,6 +2974,7 @@
                                                                                                         ( resources__.production.man.gpg { failure = ___failure "aa1f5c38" ; } )
                                                                                                         ( resources__.production.man.idea-community { failure = ___failure "f5992d47" ; } )
                                                                                                         ( resources__.production.man.pass { failure = ___failure "4a4c361e" ; } )
+                                                                                                        ( resources__.production.man.secrets { } )
                                                                                                         ( resources__.production.man.ssh { failure = ___failure "6d01304d" ; } )
                                                                                                     ] ;
                                                                                             } ;
@@ -2875,6 +3000,37 @@
                                                                                                         ( resources__.production.man.gpg { failure = ___failure "aa1f5c38" ; } )
                                                                                                         ( resources__.production.man.idea-community { failure = ___failure "f5992d47" ; } )
                                                                                                         ( resources__.production.man.pass { failure = ___failure "4a4c361e" ; } )
+                                                                                                        ( resources__.production.man.ssh { failure = ___failure "6d01304d" ; } )
+                                                                                                    ] ;
+                                                                                            } ;
+                                                                                    career = { } ;
+                                                                                    home =
+                                                                                        ignore :
+                                                                                            {
+                                                                                                autocomplete =
+                                                                                                    [
+                                                                                                        ( resources__.production.autocomplete.pass { failure = ___failure "28ecf633" ; } )
+                                                                                                        ( resources__.production.autocomplete.secrets { } )
+                                                                                                        ( resources__.production.autocomplete.silly { failure = ___failure "f15371a4" ; } )
+                                                                                                    ] ;
+                                                                                                bin =
+                                                                                                    [
+                                                                                                        "${ pkgs.coreutils }/bin"
+                                                                                                        "${ pkgs.which }/bin"
+                                                                                                        ( resources__.production.bin.chromium { failure = ___failure "1954d2c7" ; } )
+                                                                                                        ( resources__.production.bin.gpg { failure = ___failure "7386330c" ; } )
+                                                                                                        ( resources__.production.bin.idea-community { failure = ___failure "7eba8454" ; } )
+                                                                                                        ( resources__.production.bin.pass { failure = ___failure "c055f2a0" ; } )
+                                                                                                        ( resources__.production.bin.secrets { } )
+                                                                                                        ( resources__.production.bin.ssh { failure = ___failure "c055f2a0" ; } )
+                                                                                                    ] ;
+                                                                                                man =
+                                                                                                    [
+                                                                                                        ( resources__.production.man.chromium { failure = ___failure "967ea0e1" ; } )
+                                                                                                        ( resources__.production.man.gpg { failure = ___failure "aa1f5c38" ; } )
+                                                                                                        ( resources__.production.man.idea-community { failure = ___failure "f5992d47" ; } )
+                                                                                                        ( resources__.production.man.pass { failure = ___failure "4a4c361e" ; } )
+                                                                                                        ( resources__.production.man.secrets { } )
                                                                                                         ( resources__.production.man.ssh { failure = ___failure "6d01304d" ; } )
                                                                                                     ] ;
                                                                                             } ;
