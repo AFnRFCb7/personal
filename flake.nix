@@ -526,13 +526,13 @@
                                                                                                                         ''
                                                                                                                             NAME="$1"
                                                                                                                             ALLOWED=( "dot-gnupg/ownertrust" "dot-gnupg/secret-keys" "dot-ssh/github/known-hosts" "dot-ssh/github/identity" "dot-ssh/mobile/known-hosts" "dot-ssh/mobile/identity" "github/token" )
-                                                                                                                            if [[ ! " ${ builtins.concatStringsSep "" [ "$" "{" "ALLOWED[*]" "}" ] }" =~ "$NAME" ]]
+                                                                                                                            if [[ ! "${ builtins.concatStringsSep "" [ "$" "{" "ALLOWED[*]" "}" ] }" =~ $NAME ]]
                                                                                                                             then
                                                                                                                                 failure da86aba0 "NAME=$NAME"
                                                                                                                             fi
-                                                                                                                            cat > "$SECRETS/$NAME.asc.age"
+                                                                                                                            cat > "$SECRETS/plain/$NAME.asc.age"
                                                                                                                             export GIT_SSH_COMMAND="${ pkgs.openssh }/bin/ssh -F $DOT_SSH/config"
-                                                                                                                            git commit --verbose
+                                                                                                                            git -C "$SECRETS/cipher" commit --verbose
                                                                                                                         '' ;
                                                                                                                 } ;
                                                                                                         in "${ application }/bin/secret" ;
