@@ -513,7 +513,7 @@
                                                                                     {
                                                                                         environment = [ ] ;
                                                                                         name = "secrets" ;
-                                                                                        runtimeInputs = pkgs [ pkgs.coreutils ] ;
+                                                                                        runtimeInputs = pkgs : [ pkgs.coreutils ] ;
                                                                                         script = ''echo "$SECRETS/plain'' ;
                                                                                         variables =
                                                                                             {
