@@ -379,7 +379,7 @@
                                                                                                 "github/token"
                                                                                             )
 
-                                                                                            COMPREPLY=($(compgen -W "${ builtins.concatStringsSep "" [ "$" "allowed[*]" "}" ] }" -- "$cur"))
+                                                                                            COMPREPLY=($(compgen -W ${ builtins.concatStringsSep "" [ "$" "{" "allowed[*]" "}" ] } -- "$cur"))
                                                                                     '' ;
                                                                             silly =
                                                                                  autocomplete
