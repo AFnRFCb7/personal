@@ -541,7 +541,7 @@
                                                                                                             pkgs.writeShellApplication
                                                                                                                 {
                                                                                                                     name = "secret" ;
-                                                                                                                    runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                                    runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
                                                                                                                     text =
                                                                                                                         ''
                                                                                                                             NAME="$1"
@@ -2656,6 +2656,9 @@
                                                                                                                                                                                 source ${ autocomplete }
                                                                                                                                                                             ${ double-quotes } ;
                                                                                                                                                                     }
+                                                                                                                                                        EOF
+                                                                                                                                                        cat > /home/${ config.personal.name }/shells/${ builtins.concatStringsSep "/" path }/shell.nix <<EOF
+                                                                                                                                                        use nix
                                                                                                                                                         EOF
                                                                                                                                                         mkdir --parents /home/${ config.personal.name }/pads/${ builtins.concatStringsSep "/" path }
                                                                                                                                                         ln --symbolic --force ${ envrc } /home/${ config.personal.name }/pads/${ builtins.concatStringsSep "/" path }/.envrc
