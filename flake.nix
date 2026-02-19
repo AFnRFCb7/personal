@@ -427,6 +427,7 @@
                                                                                                                                                     then
                                                                                                                                                         ${ script }
                                                                                                                                                     else
+                                                                                                                                                        # shellcheck disable=SC2216
                                                                                                                                                         ${ pkgs.coreutils }/bin/cat | ${ script }
                                                                                                                                                     fi
                                                                                                                                                 '' ;
