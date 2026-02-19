@@ -2592,6 +2592,7 @@
                                                                                                                                             in
                                                                                                                                                 [
                                                                                                                                                     ''
+                                                                                                                                                        rm --recursive --force /home/${ config.personal.name }/shells
                                                                                                                                                         mkdir --parents /home/${ config.personal.name }/shells/${ builtins.concatStringsSep "/" path }
                                                                                                                                                         cat > /home/${ config.personal.name }/shells/${ builtins.concatStringsSep "/" path }/shell.nix <<EOF
                                                                                                                                                             { pkgs ? import <nixpkgs> {} } :
@@ -2604,6 +2605,7 @@
                                                                                                                                                                             ${ double-quotes } ;
                                                                                                                                                                     }
                                                                                                                                                         EOF
+                                                                                                                                                        rm --recursive --force /home/${ config.personal.name }/pads
                                                                                                                                                         mkdir --parents /home/${ config.personal.name }/pads/${ builtins.concatStringsSep "/" path }
                                                                                                                                                         ln --symbolic --force ${ envrc } /home/${ config.personal.name }/pads/${ builtins.concatStringsSep "/" path }/.envrc
                                                                                                                                                     ''
@@ -2713,6 +2715,7 @@
                                                                             {
                                                                                 timerConfig.OnCalendar = "daily" ;
                                                                             } ;
+                                                                        wantedBy = [ "timers.target" ] ;
                                                                     } ;
                                                             } ;
                                                         time.timeZone = "America/New_York" ;
@@ -2942,6 +2945,33 @@
                                                                                                         ( resources__.production.man.gpg { failure = ___failure "aa1f5c38" ; } )
                                                                                                         ( resources__.production.man.idea-community { failure = ___failure "f5992d47" ; } )
                                                                                                         ( resources__.production.man.pass { failure = ___failure "4a4c361e" ; } )
+                                                                                                        ( resources__.production.man.ssh { failure = ___failure "6d01304d" ; } )
+                                                                                                    ] ;
+                                                                                            } ;
+                                                                                    home =
+                                                                                        ignore :
+                                                                                            {
+                                                                                                autocomplete =
+                                                                                                    [
+                                                                                                        ( resources__.production.autocomplete.pass { failure = ___failure "28ecf633" ; } )
+                                                                                                        ( resources__.production.autocomplete.silly { failure = ___failure "f15371a4" ; } )
+                                                                                                    ] ;
+                                                                                                bin =
+                                                                                                    [
+                                                                                                        ( resources__.production.bin.chromium { failure = ___failure "1954d2c7" ; } )
+                                                                                                        ( resources__.production.bin.gpg { failure = ___failure "7386330c" ; } )
+                                                                                                        ( resources__.production.bin.idea-community { failure = ___failure "7eba8454" ; } )
+                                                                                                        ( resources__.production.bin.pass { failure = ___failure "c055f2a0" ; } )
+                                                                                                        ( resources__.production.bin.secrets { } )
+                                                                                                        ( resources__.production.bin.ssh { failure = ___failure "c055f2a0" ; } )
+                                                                                                    ] ;
+                                                                                                man =
+                                                                                                    [
+                                                                                                        ( resources__.production.man.chromium { failure = ___failure "967ea0e1" ; } )
+                                                                                                        ( resources__.production.man.gpg { failure = ___failure "aa1f5c38" ; } )
+                                                                                                        ( resources__.production.man.idea-community { failure = ___failure "f5992d47" ; } )
+                                                                                                        ( resources__.production.man.pass { failure = ___failure "4a4c361e" ; } )
+                                                                                                        ( resources__.production.man.secrets { } )
                                                                                                         ( resources__.production.man.ssh { failure = ___failure "6d01304d" ; } )
                                                                                                     ] ;
                                                                                             } ;
