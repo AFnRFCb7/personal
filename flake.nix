@@ -526,7 +526,7 @@
                                                                                                                         ''
                                                                                                                             NAME="$1"
                                                                                                                             ALLOWED=( "dot-gnupg/ownertrust" "dot-gnupg/secret-keys" "dot-ssh/github/known-hosts" "dot-ssh/github/identity" "dot-ssh/mobile/known-hosts" "dot-ssh/mobile/identity" "github/token" )
-                                                                                                                            if [[ ! " ${ builtins.concatStringsSep "" [ "$" "{" "ALLOWED[*]" "}" ] }" =~ " $NAME " ]]
+                                                                                                                            if [[ ! " ${ builtins.concatStringsSep "" [ "$" "{" "ALLOWED[*]" "}" ] }" =~ "$NAME" ]]
                                                                                                                             then
                                                                                                                                 failure da86aba0 "NAME=$NAME"
                                                                                                                             fi
