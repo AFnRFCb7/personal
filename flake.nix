@@ -372,7 +372,7 @@
                                                             bin =
                                                                 let
                                                                     bin =
-                                                                        { name , environment , runtimeInputs , script , variables } : ignore :
+                                                                        { name , environment , runtimeInputs , script , rooted ? [ ] , variables } : ignore :
                                                                             {
                                                                                 init =
                                                                                     { failure , pid , pkgs , resources , root , seed , sequential , wrap } :
@@ -390,7 +390,7 @@
                                                                                                                             pkgs.writeShellApplication
                                                                                                                                 {
                                                                                                                                     name = name ;
-                                                                                                                                    runtimeInputs = runtimeInputs pkgs ;
+                                                                                                                                    runtimeInputs = builtins.concatLists [ ( runtimeInputs pkgs ) [ root ] ] ;
                                                                                                                                     text =
                                                                                                                                         let
                                                                                                                                             list =
@@ -423,6 +423,7 @@
                                                                                                                                                     # ${ builtins.concatStringsSep "\n" ( builtins.map ( value : "${ value.name }=${ value.string } # ${ builtins.toString value.oid }" ) list ) }
                                                                                                                                                     # ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : "${ name }=${ value resources }" ) variables ) ) }
                                                                                                                                                     ${ builtins.concatStringsSep "\n" ( builtins.map ( name : ''export ${ name }="${ builtins.concatStringsSep "" [ "$" name ] }"'' ) environment ) }
+                                                                                                                                                    ${ builtins.concatStringsSep "\n" ( builtins.map ( value : "root ${ value }" ) rooted ) }
                                                                                                                                                     if [[ -t 0 ]]
                                                                                                                                                     then
                                                                                                                                                         ${ script }
@@ -515,6 +516,7 @@
                                                                                         environment = [ ] ;
                                                                                         name = "secrets" ;
                                                                                         runtimeInputs = pkgs : [ pkgs.coreutils ] ;
+                                                                                        rooted = [ "$SECRETS" ] ;
                                                                                         script = ''echo "$SECRETS/plain"'' ;
                                                                                         variables =
                                                                                             {
