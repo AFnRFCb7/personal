@@ -516,7 +516,7 @@
                                                                                         environment = [ ] ;
                                                                                         name = "secrets" ;
                                                                                         runtimeInputs = pkgs : [ pkgs.coreutils ] ;
-                                                                                        rooted = [ "$SECRETS" ] ;
+                                                                                        rooted = [ ''"$SECRETS"'' ] ;
                                                                                         script = ''echo "$SECRETS/plain"'' ;
                                                                                         variables =
                                                                                             {
