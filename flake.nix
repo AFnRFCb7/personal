@@ -2977,8 +2977,8 @@
                                                                                                     ] ;
                                                                                                 bin =
                                                                                                     [
-                                                                                                        ( builtins.toString pkgs.coreutils )
-                                                                                                        ( builtins.toString pkgs.which )
+                                                                                                        "${ pkgs.coreutils }/bin"
+                                                                                                        "${ pkgs.which }/bin"
                                                                                                         ( resources__.production.bin.chromium { failure = ___failure "1954d2c7" ; } )
                                                                                                         ( resources__.production.bin.gpg { failure = ___failure "7386330c" ; } )
                                                                                                         ( resources__.production.bin.idea-community { failure = ___failure "7eba8454" ; } )
