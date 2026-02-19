@@ -380,7 +380,7 @@
                                                                                                 "github/token"
                                                                                             )
 
-                                                                                            COMPREPLY=($(compgen -W "${allowed[*]}" -- "$cur"))
+                                                                                            COMPREPLY=($(compgen -W "${ builtins.concatStringsSep "" [ "$" "allowed[*]" "}" ] }" -- "$cur"))
                                                                                         }
                                                                                     '' ;
                                                                             silly =
