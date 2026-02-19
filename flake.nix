@@ -521,7 +521,7 @@
                                                                                                             pkgs.writeShellApplication
                                                                                                                 {
                                                                                                                     name = "secret" ;
-                                                                                                                    runtimeInputs = [ pkgs.coreutils failure ] ;
+                                                                                                                    runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                                     text =
                                                                                                                         ''
                                                                                                                             NAME="$1"
