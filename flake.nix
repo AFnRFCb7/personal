@@ -3013,7 +3013,7 @@
                                                                                                 autocomplete =
                                                                                                     [
                                                                                                         ( resources__.production.autocomplete.pass { failure = ___failure "28ecf633" ; } )
-                                                                                                        ( resources__.production.autocomplete.secrets { } )
+                                                                                                        # ( resources__.production.autocomplete.secrets { } )
                                                                                                         ( resources__.production.autocomplete.silly { failure = ___failure "f15371a4" ; } )
                                                                                                     ] ;
                                                                                                 bin =
