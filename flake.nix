@@ -361,6 +361,28 @@
                                                                                         source ${ pkgs.pass }/share/bash-completion/completions/pass
                                                                                         _pass "$@"
                                                                                     '' ;
+                                                                            secrets =
+                                                                                autocomplete
+                                                                                    "secrets"
+                                                                                    ''
+                                                                                        _secrets_autocomplete() {
+                                                                                            local cur
+                                                                                            cur="${COMP_WORDS[COMP_CWORD]}"
+
+                                                                                            # list of allowed names
+                                                                                            local allowed=(
+                                                                                                "dot-gnupg/ownertrust"
+                                                                                                "dot-gnupg/secret-keys"
+                                                                                                "dot-ssh/github/known-hosts"
+                                                                                                "dot-ssh/github/identity"
+                                                                                                "dot-ssh/mobile/known-hosts"
+                                                                                                "dot-ssh/mobile/identity"
+                                                                                                "github/token"
+                                                                                            )
+
+                                                                                            COMPREPLY=($(compgen -W "${allowed[*]}" -- "$cur"))
+                                                                                        }
+                                                                                    '' ;
                                                                             silly =
                                                                                  autocomplete
                                                                                      "silly"
@@ -1199,48 +1221,60 @@
                                                                                     {
                                                                                         user =
                                                                                             ''
+
+
                                                                                                 .TH SECRETS 1 "February 2026" "v1.0" "User Commands"
                                                                                                 .SH NAME
-                                                                                                secrets \- open your secret repository
+                                                                                                secrets \- securely write and commit secrets to the repository
                                                                                                 .SH SYNOPSIS
                                                                                                 .B secrets
-                                                                                                .RI [ options ]
+                                                                                                .RI "<name>"
                                                                                                 .SH DESCRIPTION
                                                                                                 The
                                                                                                 .B secrets
-                                                                                                command opens your configured secret repository. It is a convenience tool for quickly accessing your secrets without manually navigating to the repository.
+                                                                                                script writes a secret to the repository and commits it to Git. The secret is read from standard input and stored encrypted in the appropriate location.
 
-                                                                                                .SH OPTIONS
-                                                                                                Currently,
-                                                                                                .B secrets
-                                                                                                does not support any command-line options.
-
-                                                                                                .SH EXAMPLES
-                                                                                                Open the secret repository:
-
+                                                                                                Only a predefined set of secret names is allowed. Using any other name will cause the script to fail.
+                                                                                                .SH ALLOWED NAMES
                                                                                                 .nf
-                                                                                                $ secrets
+                                                                                                dot-gnupg/ownertrust
+                                                                                                dot-gnupg/secret-keys
+                                                                                                dot-ssh/github/known-hosts
+                                                                                                dot-ssh/github/identity
+                                                                                                dot-ssh/mobile/known-hosts
+                                                                                                dot-ssh/mobile/identity
+                                                                                                github/token
                                                                                                 .fi
-
                                                                                                 .SH ENVIRONMENT
-                                                                                                The
-                                                                                                .B secrets
-                                                                                                application may rely on environment variables for repository location:
-
                                                                                                 .TP
-                                                                                                WORK_DIR
-                                                                                                Specifies the path where the secret repository is mounted.
-
+                                                                                                SECRETS
+                                                                                                Root path of the secrets repository.
+                                                                                                .TP
+                                                                                                DOT_SSH
+                                                                                                Path to the directory containing SSH configuration files.
+                                                                                                .TP
+                                                                                                pkgs.openssh
+                                                                                                Path to the OpenSSH binary used by Git for committing.
                                                                                                 .SH EXIT STATUS
-                                                                                                .B secrets
-                                                                                                returns 0 on success. Any failure to open the repository will return a non-zero exit status.
-
+                                                                                                The script exits with a non-zero status if:
+                                                                                                .RS
+                                                                                                - The provided NAME is not in the allowed list.
+                                                                                                - Any command fails (writing the secret or committing).
+                                                                                                .RE
+                                                                                                It exits with zero on successful write and commit.
+                                                                                                .SH EXAMPLES
+                                                                                                Write a GitHub identity secret:
+                                                                                                .nf
+                                                                                                $ echo "my-ssh-key" | secrets dot-ssh/github/identity
+                                                                                                .fi
+                                                                                                Commit the mobile known-hosts secret:
+                                                                                                .nf
+                                                                                                $ cat mobile-known-hosts.txt | secrets dot-ssh/mobile/known-hosts
+                                                                                                .fi
                                                                                                 .SH AUTHOR
                                                                                                 Written by Emory Merryman.
-
                                                                                                 .SH SEE ALSO
-                                                                                                git(1), gh(1)
-
+                                                                                                git(1)
                                                                                             '' ;
                                                                                     } ;
                                                                             ssh =
@@ -2977,6 +3011,7 @@
                                                                                                 autocomplete =
                                                                                                     [
                                                                                                         ( resources__.production.autocomplete.pass { failure = ___failure "28ecf633" ; } )
+                                                                                                        ( resources__.production.autocomplete.secrets { } )
                                                                                                         ( resources__.production.autocomplete.silly { failure = ___failure "f15371a4" ; } )
                                                                                                     ] ;
                                                                                                 bin =
