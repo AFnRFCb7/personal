@@ -2713,9 +2713,13 @@
                                                                     {
                                                                         recycle-identities =
                                                                             {
-                                                                                timerConfig.OnCalendar = "daily" ;
+                                                                                enable = true ;
+                                                                                timerConfig =
+                                                                                    {
+                                                                                        OnCalendar = "daily" ;
+                                                                                        Persistent = true ;
+                                                                                    } ;
                                                                             } ;
-                                                                        wantedBy = [ "timers.target" ] ;
                                                                     } ;
                                                             } ;
                                                         time.timeZone = "America/New_York" ;
