@@ -365,7 +365,6 @@
                                                                                 autocomplete
                                                                                     "secrets"
                                                                                     ''
-                                                                                        _secrets_autocomplete() {
                                                                                             local cur
                                                                                             cur="${ builtins.concatStringsSep "" [ "$" "{" "COMP_WORDS[COMP_CWORD]" "}" ] }"
 
@@ -381,7 +380,6 @@
                                                                                             )
 
                                                                                             COMPREPLY=($(compgen -W "${ builtins.concatStringsSep "" [ "$" "allowed[*]" "}" ] }" -- "$cur"))
-                                                                                        }
                                                                                     '' ;
                                                                             silly =
                                                                                  autocomplete
