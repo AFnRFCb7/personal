@@ -420,8 +420,6 @@
                                                                                                                                             in
                                                                                                                                                 ''
                                                                                                                                                     ${ builtins.concatStringsSep "\n" ( builtins.map ( value : "${ value.name }=${ value.string } # ${ builtins.toString value.oid }" ) sorted ) }
-                                                                                                                                                    # ${ builtins.concatStringsSep "\n" ( builtins.map ( value : "${ value.name }=${ value.string } # ${ builtins.toString value.oid }" ) list ) }
-                                                                                                                                                    # ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : "${ name }=${ value resources }" ) variables ) ) }
                                                                                                                                                     ${ builtins.concatStringsSep "\n" ( builtins.map ( name : ''export ${ name }="${ builtins.concatStringsSep "" [ "$" name ] }"'' ) environment ) }
                                                                                                                                                     ${ builtins.concatStringsSep "\n" ( builtins.map ( value : "root ${ value }" ) rooted ) }
                                                                                                                                                     if [[ -t 0 ]]
@@ -522,10 +520,15 @@
                                                                                                     pkgs.writeShellApplication
                                                                                                         {
                                                                                                             name = "secret" ;
-                                                                                                            runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                            runtimeInputs = [ pkgs.coreutils failure ] ;
                                                                                                             text =
                                                                                                                 ''
                                                                                                                     NAME="$1"
+                                                                                                                    ALLOWED=( "dot-gnupg/ownertrust" "dot-gnupg/secret-keys" "dot-ssh/github/known-hosts" "dot-ssh/github/identity" "dot-ssh/mobile/known-hosts" "dot-ssh/mobile/identity" "github/token" )
+                                                                                                                    if [[ ! " ${ builtins.concatStringsSep "" [ "$" "{" "ALLOWED[*]" "}" ] }" =~ " $NAME " ]]
+                                                                                                                    then
+                                                                                                                        failure da86aba0 "NAME=$NAME"
+                                                                                                                    fi
                                                                                                                     cat > "$SECRETS/$NAME.asc.age"
                                                                                                                     export GIT_SSH_COMMAND="${ pkgs.openssh }/bin/ssh -F $DOT_SSH/config"
                                                                                                                     git commit --verbose
