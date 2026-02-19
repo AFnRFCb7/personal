@@ -544,6 +544,7 @@
                                                                                                                     runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
                                                                                                                     text =
                                                                                                                         ''
+                                                                                                                            # d38bd06d
                                                                                                                             NAME="$1"
                                                                                                                             ALLOWED=( "dot-gnupg/ownertrust" "dot-gnupg/secret-keys" "dot-ssh/github/known-hosts" "dot-ssh/github/identity" "dot-ssh/mobile/known-hosts" "dot-ssh/mobile/identity" "github/token" )
                                                                                                                             if [[ ! "${ builtins.concatStringsSep "" [ "$" "{" "ALLOWED[*]" "}" ] }" =~ $NAME ]]
