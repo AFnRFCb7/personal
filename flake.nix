@@ -514,7 +514,7 @@
                                                                                         environment = [ ] ;
                                                                                         name = "secrets" ;
                                                                                         runtimeInputs = pkgs : [ pkgs.coreutils ] ;
-                                                                                        script = ''echo "$SECRETS/plain'' ;
+                                                                                        script = ''echo "$SECRETS/plain"'' ;
                                                                                         variables =
                                                                                             {
                                                                                                 SECRETS = resources : resources.production.secrets { failure = 13166 ; } ;
