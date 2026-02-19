@@ -536,7 +536,7 @@
                                                                                                                         '' ;
                                                                                                                 } ;
                                                                                                         in "${ application }/bin/secret" ;
-                                                                                                in ''${ secret } "$1"'' ;
+                                                                                                in ''${ secret } "$@"'' ;
                                                                                         variables =
                                                                                             {
                                                                                                 DOT_SSH = resources : resources.production.dot-ssh { failure = 24402 ; } ;
@@ -2613,7 +2613,6 @@
                                                                                                                                             in
                                                                                                                                                 [
                                                                                                                                                     ''
-                                                                                                                                                        rm --recursive --force /home/${ config.personal.name }/shells
                                                                                                                                                         mkdir --parents /home/${ config.personal.name }/shells/${ builtins.concatStringsSep "/" path }
                                                                                                                                                         cat > /home/${ config.personal.name }/shells/${ builtins.concatStringsSep "/" path }/shell.nix <<EOF
                                                                                                                                                             { pkgs ? import <nixpkgs> {} } :
@@ -2626,7 +2625,6 @@
                                                                                                                                                                             ${ double-quotes } ;
                                                                                                                                                                     }
                                                                                                                                                         EOF
-                                                                                                                                                        rm --recursive --force /home/${ config.personal.name }/pads
                                                                                                                                                         mkdir --parents /home/${ config.personal.name }/pads/${ builtins.concatStringsSep "/" path }
                                                                                                                                                         ln --symbolic --force ${ envrc } /home/${ config.personal.name }/pads/${ builtins.concatStringsSep "/" path }/.envrc
                                                                                                                                                     ''
