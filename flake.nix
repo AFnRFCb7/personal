@@ -367,7 +367,7 @@
                                                                                     ''
                                                                                         _secrets_autocomplete() {
                                                                                             local cur
-                                                                                            cur="${COMP_WORDS[COMP_CWORD]}"
+                                                                                            cur="${ builtins.concatStringsSep "" [ "$" "{" "COMP_WORDS[COMP_CWORD]" "}" ] }"
 
                                                                                             # list of allowed names
                                                                                             local allowed=(
