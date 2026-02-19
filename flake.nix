@@ -513,13 +513,28 @@
                                                                             secrets =
                                                                                 bin
                                                                                     {
-                                                                                        environment = [ ] ;
+                                                                                        environment = [ "DOT_SSH" "SECRETS" ] ;
                                                                                         name = "secrets" ;
                                                                                         runtimeInputs = pkgs : [ pkgs.coreutils ] ;
-                                                                                        rooted = [ ''"$SECRETS"'' ] ;
-                                                                                        script = ''echo "$SECRETS/plain"'' ;
+                                                                                        script =
+                                                                                            let
+                                                                                                secret =
+                                                                                                    pkgs.writeShellApplication
+                                                                                                        {
+                                                                                                            name = "secret" ;
+                                                                                                            runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                            text =
+                                                                                                                ''
+                                                                                                                    NAME="$1"
+                                                                                                                    cat > "$SECRETS/$NAME.asc.age"
+                                                                                                                    export GIT_SSH_COMMAND="${ pkgs.openssh }/bin/ssh -F $DOT_SSH/config"
+                                                                                                                    git commit --verbose
+                                                                                                                '' ;
+                                                                                                        } ;
+                                                                                                in ''echo "$SECRETS/plain"'' ;
                                                                                         variables =
                                                                                             {
+                                                                                                DOT_SSH = resources : resources.production.dot-ssh { failure = 24402 ; } ;
                                                                                                 SECRETS = resources : resources.production.secrets { failure = 13166 ; } ;
                                                                                             } ;
                                                                                     } ;
