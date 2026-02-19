@@ -508,6 +508,18 @@
                                                                                                 PASSWORD_STORE_DIR = resources : "$RESOURCE/repository " ;
                                                                                             } ;
                                                                                     } ;
+                                                                            secrets =
+                                                                                bin
+                                                                                    {
+                                                                                        environment = [ ] ;
+                                                                                        name = "secrets" ;
+                                                                                        runtimeInputs = pkgs [ pkgs.coreutils ] ;
+                                                                                        script = ''echo "$SECRETS/plain'' ;
+                                                                                        variables =
+                                                                                            {
+                                                                                                SECRETS = resources : resources.production.secrets { failure = 13166 ; } ;
+                                                                                            } ;
+                                                                                    } ;
                                                                             ssh =
                                                                                 bin
                                                                                     {
@@ -1156,6 +1168,56 @@
 
                                                                                                 .SH AUTHOR
                                                                                                 Written by Jason A. Donenfeld and contributors to the **pass** project.
+                                                                                            '' ;
+                                                                                    } ;
+                                                                            secrets =
+                                                                                man
+                                                                                    "secrets"
+                                                                                    {
+                                                                                        user =
+                                                                                            ''
+                                                                                                .TH SECRETS 1 "February 2026" "v1.0" "User Commands"
+                                                                                                .SH NAME
+                                                                                                secrets \- open your secret repository
+                                                                                                .SH SYNOPSIS
+                                                                                                .B secrets
+                                                                                                .RI [ options ]
+                                                                                                .SH DESCRIPTION
+                                                                                                The
+                                                                                                .B secrets
+                                                                                                command opens your configured secret repository. It is a convenience tool for quickly accessing your secrets without manually navigating to the repository.
+
+                                                                                                .SH OPTIONS
+                                                                                                Currently,
+                                                                                                .B secrets
+                                                                                                does not support any command-line options.
+
+                                                                                                .SH EXAMPLES
+                                                                                                Open the secret repository:
+
+                                                                                                .nf
+                                                                                                $ secrets
+                                                                                                .fi
+
+                                                                                                .SH ENVIRONMENT
+                                                                                                The
+                                                                                                .B secrets
+                                                                                                application may rely on environment variables for repository location:
+
+                                                                                                .TP
+                                                                                                WORK_DIR
+                                                                                                Specifies the path where the secret repository is mounted.
+
+                                                                                                .SH EXIT STATUS
+                                                                                                .B secrets
+                                                                                                returns 0 on success. Any failure to open the repository will return a non-zero exit status.
+
+                                                                                                .SH AUTHOR
+                                                                                                Written by Emory Merryman.
+
+                                                                                                .SH SEE ALSO
+                                                                                                git(1), gh(1)
+
                                                                                             '' ;
                                                                                     } ;
                                                                             ssh =
@@ -2842,6 +2904,7 @@
                                                                                                         ( resources__.production.bin.gpg { failure = ___failure "7386330c" ; } )
                                                                                                         ( resources__.production.bin.idea-community { failure = ___failure "7eba8454" ; } )
                                                                                                         ( resources__.production.bin.pass { failure = ___failure "c055f2a0" ; } )
+                                                                                                        ( resources__.production.bin.secrets { } )
                                                                                                         ( resources__.production.bin.ssh { failure = ___failure "c055f2a0" ; } )
                                                                                                     ] ;
                                                                                                 man =
@@ -2850,6 +2913,7 @@
                                                                                                         ( resources__.production.man.gpg { failure = ___failure "aa1f5c38" ; } )
                                                                                                         ( resources__.production.man.idea-community { failure = ___failure "f5992d47" ; } )
                                                                                                         ( resources__.production.man.pass { failure = ___failure "4a4c361e" ; } )
+                                                                                                        ( resources__.production.man.secrets { } )
                                                                                                         ( resources__.production.man.ssh { failure = ___failure "6d01304d" ; } )
                                                                                                     ] ;
                                                                                             } ;
