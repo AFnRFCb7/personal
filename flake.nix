@@ -372,7 +372,7 @@
                                                             bin =
                                                                 let
                                                                     bin =
-                                                                        { name , environment , runtimeInputs , script , rooted ? [ ] , variables } : ignore :
+                                                                        { name , environment , runtimeInputs , script , variables } : ignore :
                                                                             {
                                                                                 init =
                                                                                     { failure , pid , pkgs , resources , root , seed , sequential , wrap } :
