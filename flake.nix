@@ -3243,7 +3243,7 @@
                                                    ] ;
                                            } ;
                                     private-reporter = _private-reporter.check { expected = "/nix/store/jpbp14585f0z5bl3s8vg60j0rxiqhwsq-private-reporter/bin/private-reporter" ; } ;
-                                    resource-happy =
+                                    resource =
                                         let
                                             factory =
                                                 _resource
@@ -3273,33 +3273,7 @@
                                                     {
                                                         arguments = [ "ceb405a144a10b8efca63d9d950ce2b92bb2997ab44a9588ca740b3540a9a532a6b959a0d990dd469a63b16eb7600991bb7a1ef2b79d697b43e17134cbccec6c" "cdca67397f32d23a379284468e099b96c5b53d62659faf4d48dfc650bea444d6bc450b7eefee9b273c12672b9008fa6a077b15efb676b35f9912de977f54724d" ] ;
                                                         diffutils = pkgs.diffutils ;
-                                                        expected-index = "0000000311691948" ;
-                                                        expected-originator-pid = 45 ;
-                                                        expected-provenance = "new" ;
-                                                        expected-standard-error = "" ;
-                                                        expected-standard-output =
-                                                            ''
-                                                                 _________________________________________
-                                                                / f83f1836809a4c2148e7c4d4b3dc543d2d36808 \
-                                                                | 5d786a49366fd8b36cd730d93502da258b69d16 |
-                                                                | 94f2a437efa86666cf44a72e2c574a452044062 |
-                                                                \ 1e8dc2a9fc8                             /
-                                                                 -----------------------------------------
-                                                                        \   ^__^
-                                                                         \  (oo)\_______
-                                                                            (__)\       )\/\
-                                                                                ||----w |
-                                                                                ||     ||
-                                                                resources = 5a4c4b30e8f8199aa21f472a633c5eb45e7b530f6d327babb477f67a1e7b2e6c42686f75ebf54ee29b4c48c1ceda5a84a1d192b8953a8362ebce397788934df7
-                                                                mount = /build/resources/mounts/0000000311691948
-                                                            '' ;
-                                                        expected-status = 0 ;
-                                                        expected-targets =
-                                                                [
-                                                                    "e070e8bd478692185ce2719cc2710a19cb7a8155f15f8df7cc3f7dfa0545c2e0054ed82f9ca817198fea290d4438a7445a739e7d280bcf1b55693d8629768ba4"
-                                                                ] ;
-                                                        expected-transient = -1 ;
-                                                        expected-type = "valid" ;
+                                                        expected = { } ;
                                                         init =
                                                             { failure , pid , pkgs , resources , root , seed , sequential , wrap } :
                                                                 let
@@ -3320,6 +3294,7 @@
                                                                                     '' ;
                                                                             } ;
                                                                     in "${ application }/bin/init" ;
+                                                        jd = pkgs.jd ;
                                                         resources-directory-fixture =
                                                             resources-directory :
                                                                 ''
@@ -3336,118 +3311,6 @@
                                                             ] ;
                                                         transient = false ;
                                                   } ;
-                                    resource-sad =
-                                       let
-                                           factory =
-                                               _resource
-                                                   {
-                                                       channel = "7410b4a734c6e9ffad193874e22750a93798cbedf60c356b56d4ead212851f3b71f091197f2c4835e99be38af552d7d6818786e09ccaae2380c062c24d3d248a" ;
-                                                       resources-directory = "/build/resources" ;
-                                                       resources =
-                                                           {
-                                                               fd8e39c7a8bb3055daa71667bb0f21120642956a6ea043d0fb28c48cddba6ed8acac09c4e130da9a5e638ea8553b6fa2f45bcdef92fe62c40b70d257cc19a379 =
-                                                                   let
-                                                                       application =
-                                                                           pkgs.writeShellApplication
-                                                                               {
-                                                                                   name = "5552fc1d63b863ab116115819c2f0f2f2fb7e47fc59fd4ef3e99651b982f54b050afa38207f9d74d18a7f6e167debc1c9aad4962b22340091c45878cc1abd75c" ;
-                                                                                   runtimeInputs = [ pkgs.coreutils ] ;
-                                                                                   text =
-                                                                                       ''
-                                                                                           echo resources = 798a6b1ff7e250f4ad9224d0fd80c642bf4f346971e35455213a03a494e1612871572b3e7996c4306edbbdebf766e81a7d2ca86efb75249718477220f45d6fa1
-                                                                                       '' ;
-                                                                               } ;
-                                                                       in "${ application }/bin/5552fc1d63b863ab116115819c2f0f2f2fb7e47fc59fd4ef3e99651b982f54b050afa38207f9d74d18a7f6e167debc1c9aad4962b22340091c45878cc1abd75c" ;
-                                                           } ;
-                                                       store-garbage-collection-root = "/build/gc-roots" ;
-                                                   } ;
-                                         in
-                                             factory.check
-                                                 {
-                                                     arguments = [ "ceb405a144a10b8efca63d9d950ce2b92bb2997ab44a9588ca740b3540a9a532a6b959a0d990dd469a63b16eb7600991bb7a1ef2b79d697b43e17134cbccec6c" "cdca67397f32d23a379284468e099b96c5b53d62659faf4d48dfc650bea444d6bc450b7eefee9b273c12672b9008fa6a077b15efb676b35f9912de977f54724d" ] ;
-                                                     diffutils = pkgs.diffutils ;
-                                                     expected-index = "0000000437766789" ;
-                                                     expected-originator-pid = 45 ;
-                                                     expected-provenance = "new" ;
-                                                     expected-standard-error = "ae7afb90a11109a5cb07209ec48fa2d376ca0338c14c9c505f465c7cb658091549ae5344378e229674606ff46fcaf3db24b2d2b0870587d67bcad79b358ec2b9" ;
-                                                     expected-standard-output =
-                                                           ''
-                                                                 _________________________________________
-                                                                / cfb1a86984144d2e4c03594b4299585aa6ec2f5 \
-                                                                | 03a7b39b1385a5338c9fc314fd87bd904d01188 |
-                                                                | b301b3cf641c4158b28852778515eba52ad7e4b |
-                                                                \ 148f216d1d5                             /
-                                                                 -----------------------------------------
-                                                                        \   ^__^
-                                                                         \  (oo)\_______
-                                                                            (__)\       )\/\
-                                                                                ||----w |
-                                                                                ||     ||
-                                                                resources = 798a6b1ff7e250f4ad9224d0fd80c642bf4f346971e35455213a03a494e1612871572b3e7996c4306edbbdebf766e81a7d2ca86efb75249718477220f45d6fa1
-                                                                mount = /build/resources/mounts/0000000437766789
-                                                           '' ;
-                                                     expected-status = 70 ;
-                                                     expected-targets =
-                                                         [
-                                                             "3e30e86404135fc6036abb77e19e8cf73bb32074c07b3273a45e1262bb308f68d420d3549624ee2a44030ba23147465ed85b2c320d0661b1835627aeec050289"
-                                                         ] ;
-                                                     expected-transient = -1 ;
-                                                     expected-type = "invalid-init" ;
-                                                     init =
-                                                         { failure , pid , pkgs , resources , root , seed , sequential , wrap } :
-                                                             let
-                                                                 application =
-                                                                     pkgs.writeShellApplication
-                                                                         {
-                                                                             name = "init" ;
-                                                                             runtimeInputs = [ pkgs.coreutils pkgs.cowsay root ] ;
-                                                                             text =
-                                                                                 ''
-                                                                                     cowsay cfb1a86984144d2e4c03594b4299585aa6ec2f503a7b39b1385a5338c9fc314fd87bd904d01188b301b3cf641c4158b28852778515eba52ad7e4b148f216d1d5
-                                                                                     ${ resources.fd8e39c7a8bb3055daa71667bb0f21120642956a6ea043d0fb28c48cddba6ed8acac09c4e130da9a5e638ea8553b6fa2f45bcdef92fe62c40b70d257cc19a379 }
-                                                                                     echo "mount = $MOUNT"
-                                                                                     echo ae7afb90a11109a5cb07209ec48fa2d376ca0338c14c9c505f465c7cb658091549ae5344378e229674606ff46fcaf3db24b2d2b0870587d67bcad79b358ec2b9 >&2
-                                                                                     echo 97d4fec983cd3fd46ce371f0cff6f660f066924c8bd57704e2382fb0df84eb7c03e667cfb6837c2c3638dd6b5aea4f4b1c8e4fd8944de89c458313f31afa2d5b > /mount/3e30e86404135fc6036abb77e19e8cf73bb32074c07b3273a45e1262bb308f68d420d3549624ee2a44030ba23147465ed85b2c320d0661b1835627aeec050289
-                                                                                     echo 8393b1c1c760a903ea3a17d3c5831b1ed7b16bbb6ff6d9ccb751406e1fbe7c416a39fc440baf1b4a660dd928e1c060c0c05220cae8028ffde038dba033d25046 > /scratch/ea7c5d3879f282c8d3a0a2c85c464d129bc9a034d2fc9287b6588a96d1659c46a04f0e5e23f4bddd67425cee44043e421420eed8ba7cf7d2d3ecb9d8efab9f37
-                                                                                     root ${ resources.fd8e39c7a8bb3055daa71667bb0f21120642956a6ea043d0fb28c48cddba6ed8acac09c4e130da9a5e638ea8553b6fa2f45bcdef92fe62c40b70d257cc19a379 }
-                                                                                     exit 70
-                                                                                 '' ;
-                                                                         } ;
-                                                                 in "${ application }/bin/init" ;
-                                                     resources-directory-fixture =
-                                                         resources-directory :
-                                                             ''
-                                                                 mkdir --parents ${ resources-directory }/sequential
-                                                                 echo 437766789 > ${ resources-directory }/sequential/sequential.counter
-                                                             '' ;
-                                                    seed = "4259572168968d95098b9a5a8572c6ecfabe61a2522103e4c75b1317ea9cf43f96f7a135d144d2184739b6c4bd7fad1fb13a117dabbc9e58f4d4edbc26cf34f5" ;
-                                                    standard-input = "5433bd8482be1f2e1c1db4fa9268ed6e7bb02285083decb86a6166eea2df77f7e2d7524541549a3ee73d03ae955d8ec0714a959944962e8fe18f343fe108ff9f" ;
-                                                     standard-error =
-                                                         ''
-                                                            compile-time-arguments:
-                                                              path: []
-                                                              type: string
-                                                              value: f135add3
-                                                            run-time-arguments:
-                                                              - a05ad0c3
-                                                              - ae7afb90a11109a5cb07209ec48fa2d376ca0338c14c9c505f465c7cb658091549ae5344378e229674606ff46fcaf3db24b2d2b0870587d67bcad79b358ec2b9
-                                                              - "70"
-                                                              - '['
-                                                              - '  "ceb405a144a10b8efca63d9d950ce2b92bb2997ab44a9588ca740b3540a9a532a6b959a0d990dd469a63b16eb7600991bb7a1ef2b79d697b43e17134cbccec6c",'
-                                                              - '  "cdca67397f32d23a379284468e099b96c5b53d62659faf4d48dfc650bea444d6bc450b7eefee9b273c12672b9008fa6a077b15efb676b35f9912de977f54724d"'
-                                                              - ']'
-                                                              - '['
-                                                              - '  "3e30e86404135fc6036abb77e19e8cf73bb32074c07b3273a45e1262bb308f68d420d3549624ee2a44030ba23147465ed85b2c320d0661b1835627aeec050289"'
-                                                              - ']'
-                                                         '' ;
-                                                     standard-output = "" ;
-                                                     status = 64 ;
-                                                       targets =
-                                                           [
-                                                               "20828320279b5890d7dccda8c6572b676c7954280559beb66be87ab7d2aeb060dd65c81053766fda24c36ed1ab5db40af70a420e913e16501c3b965d2d99c7e6"
-                                                           ] ;
-                                                       transient = false ;
-                                                 } ;
                                         resource-logger = _resource-logger.check { expected = "/nix/store/16wiqsx2y97x3dn8xrsj575s14bvipdc-resource-logger/bin/resource-logger" ; } ;
                                         resource-releaser = _resource-releaser.check { expected = "/nix/store/nay3i58fbin3xv49isc5bd2hrnfd5kig-resource-releaser/bin/resource-releaser" ; } ;
                                         resource-reporter = _resource-reporter.check { expected = "/nix/store/nn3aj176h78zd4nbbwbvbkj85dw43lqf-resource-reporter/bin/resource-reporter" ; } ;
