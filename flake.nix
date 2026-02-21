@@ -3333,7 +3333,7 @@
         d154b4d928d4df6e2f281414a142e96351ca55b7487330ce64fa596d0f64fb5147fc9acc7617a58701542c934b50466c6fe97805d01e357bcaae550862bd6266 = /nix/store/v4zimpdhzirhm1a9ky8hgm29wh735z8l-f70dbffba5f85b11de293ea0f9383ff05f210b1bcca0443f79657db645a2187594511f7ce158302a8c7f249e8dc47128baa17302e96b3be43b6e33d26e822a77/bin/f70dbffba5f85b11de293ea0f9383ff05f210b1bcca0443f79657db645a2187594511f7ce158302a8c7f249e8dc47128baa17302e96b3be43b6e33d26e822a77;
       };
       resources-directory = /build/resources;
-      sequential-start = $( head /dev/urandom | tr -dc 1-9 | head -c 15 );
+      sequential-start = "$( head /dev/urandom | tr -dc 1-9 | head -c 15 )" ;
       store-garbage-collection-root = /build/gc-roots;
       string = null;
       visitor = null;
