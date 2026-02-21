@@ -3295,7 +3295,7 @@
                                                                                     '' ;
                                                                             } ;
                                                                     in "${ application }/bin/init" ;
-                                                        jd = pkgs.jd ;
+                                                        jdiff-patch = pkgs.jdiff-patch ;
                                                         resources-directory-fixture =
                                                             resources-directory :
                                                                 ''
