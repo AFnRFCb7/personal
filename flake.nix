@@ -32,7 +32,7 @@
                                     channel ,
                                     resources-directory ,
                                     resources ,
-                                    store-garbage-collection-root
+                                    root-directory
                                 } :
                                     resource.lib
                                         {
