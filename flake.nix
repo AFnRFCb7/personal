@@ -53,7 +53,6 @@
                                             resources-directory = resources-directory ;
                                             sequential-start = ''$( head /dev/urandom | tr -dc '1-9' | head -c 15 )'' ;
                                             root-directory = root-directory ;
-                                            string = _string.implementation ;
                                             visitor = _visitor.implementation ;
                                             writeShellApplication = pkgs.writeShellApplication ;
                                             yq-go = pkgs.yq-go ;

@@ -3,7 +3,7 @@
     "ceb405a144a10b8efca63d9d950ce2b92bb2997ab44a9588ca740b3540a9a532a6b959a0d990dd469a63b16eb7600991bb7a1ef2b79d697b43e17134cbccec6c",
     "cdca67397f32d23a379284468e099b96c5b53d62659faf4d48dfc650bea444d6bc450b7eefee9b273c12672b9008fa6a077b15efb676b35f9912de977f54724d"
   ],
-  "hash": "df07d410eb3e1daeba464d72c895989803a1646082c8f1d1b9cf7dcdfa7fa25ce05d5fc08d471da5444bb03d27050485cc820b11f7eaa5f76c1dc334df6ba12d",
+  "hash": "d2c9a7c44909e90b3e82150e96c4d477b6a4f08947ee8a64d32330c8aa68830d03247a383f0d4a92d51bf89bce89b7486fb01e2131d736d9da6b9a9beec679e5",
   "index": "0000000311691948",
   "init-script": "/nix/store/q51nwp3rm31f5bwcr1azh7hqqmvzc9r2-init/bin/init",
   "has-standard-input": "true",
@@ -73,7 +73,6 @@
       "resources-directory": "/build/resources",
       "root-directory": "/build/gc-roots",
       "sequential-start": "$( head /dev/urandom | tr -dc 1-9 | head -c 15 )",
-      "string": null,
       "visitor": null,
       "writeShellApplication": null,
       "yq-go": "/nix/store/hyccshqrkd4br8p0ybgwj5knnmr5ckyq-yq-go-4.44.3"
