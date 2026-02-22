@@ -3,17 +3,19 @@
     "ceb405a144a10b8efca63d9d950ce2b92bb2997ab44a9588ca740b3540a9a532a6b959a0d990dd469a63b16eb7600991bb7a1ef2b79d697b43e17134cbccec6c",
     "cdca67397f32d23a379284468e099b96c5b53d62659faf4d48dfc650bea444d6bc450b7eefee9b273c12672b9008fa6a077b15efb676b35f9912de977f54724d"
   ],
-  "hash": "624142d74fdbcc5663f03060e6c190bd0a3fb26063553b2799825843d1dce2113011e01e938cd044ef6b9238a12f275579e810c0d9274f2fc445b82e24f70f3b",
+  "hash": "d2c9a7c44909e90b3e82150e96c4d477b6a4f08947ee8a64d32330c8aa68830d03247a383f0d4a92d51bf89bce89b7486fb01e2131d736d9da6b9a9beec679e5",
   "index": "0000000311691948",
-  "init-script": "/nix/store/dx7fs2dafh3lkhrja4v352jv252l3frx-init/bin/init",
+  "init-script": "/nix/store/q51nwp3rm31f5bwcr1azh7hqqmvzc9r2-init/bin/init",
   "has-standard-input": "true",
   "originator-pid": "45",
   "provenance": "new",
   "standard-error": "",
   "standard-input": "5433bd8482be1f2e1c1db4fa9268ed6e7bb02285083decb86a6166eea2df77f7e2d7524541549a3ee73d03ae955d8ec0714a959944962e8fe18f343fe108ff9f",
-  "standard-output": "",
+  "standard-output": " _________________________________________\n/ f83f1836809a4c2148e7c4d4b3dc543d2d36808 \\\n| 5d786a49366fd8b36cd730d93502da258b69d16 |\n| 94f2a437efa86666cf44a72e2c574a452044062 |\n\\ 1e8dc2a9fc8                             /\n -----------------------------------------\n        \\   ^__^\n         \\  (oo)\\_______\n            (__)\\       )\\/\\\n                ||----w |\n                ||     ||\nresources = 5a4c4b30e8f8199aa21f472a633c5eb45e7b530f6d327babb477f67a1e7b2e6c42686f75ebf54ee29b4c48c1ceda5a84a1d192b8953a8362ebce397788934df7\nmount = /build/resources/mounts/0000000311691948",
   "status": "0",
-  "targets": [],
+  "targets": [
+    "e070e8bd478692185ce2719cc2710a19cb7a8155f15f8df7cc3f7dfa0545c2e0054ed82f9ca817198fea290d4438a7445a739e7d280bcf1b55693d8629768ba4"
+  ],
   "transient": "-1",
   "type": "valid",
   "description": {
@@ -78,7 +80,9 @@
     "secondary": {
       "init": null,
       "seed": "4259572168968d95098b9a5a8572c6ecfabe61a2522103e4c75b1317ea9cf43f96f7a135d144d2184739b6c4bd7fad1fb13a117dabbc9e58f4d4edbc26cf34f5",
-      "targets": [],
+      "targets": [
+        "e070e8bd478692185ce2719cc2710a19cb7a8155f15f8df7cc3f7dfa0545c2e0054ed82f9ca817198fea290d4438a7445a739e7d280bcf1b55693d8629768ba4"
+      ],
       "transient": false
     }
   }
