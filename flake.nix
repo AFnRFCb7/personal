@@ -107,6 +107,9 @@
                                                                         r.implementation
                                                                             {
                                                                                 init = point.init or null ;
+                                                                                init-resolutions = point.init-resolutions or null ;
+                                                                                release = point.release or null ;
+                                                                                release-resolutions = point.release-resolutions or null ;
                                                                                 seed =
                                                                                     ( point.seed or { } ) //
                                                                                     {
