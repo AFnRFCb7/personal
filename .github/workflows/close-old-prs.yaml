@@ -14,6 +14,7 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
+            const core = require('@actions/core');
             const maxAgeDays = 35; // age threshold
             const cutoff = new Date(Date.now() - maxAgeDays*24*60*60*1000);
 
@@ -28,7 +29,7 @@ jobs:
             for (const pr of prs.data) {
               const createdAt = new Date(pr.created_at);
               if (createdAt < cutoff) {
-                console.log(`Closing PR #${pr.number} (created at ${pr.created_at})`);
+                core.info(`Closing PR #${pr.number} (created at ${pr.created_at})`);
                 await github.rest.pulls.update({
                   owner: context.repo.owner,
                   repo: context.repo.repo,
