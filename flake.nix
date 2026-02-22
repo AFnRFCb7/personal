@@ -43,7 +43,6 @@
                                             findutils = pkgs.findutils ;
                                             flock = pkgs.flock ;
                                             jq = pkgs.jq ;
-                                            makeBinPath = pkgs.lib.makeBinPath ;
                                             makeWrapper = pkgs.makeWrapper ;
                                             mkDerivation = pkgs.stdenv.mkDerivation ;
                                             nix = pkgs.nix ;
@@ -53,7 +52,7 @@
                                             resources = resources ;
                                             resources-directory = resources-directory ;
                                             sequential-start = ''$( head /dev/urandom | tr -dc '1-9' | head -c 15 )'' ;
-                                            store-garbage-collection-root = store-garbage-collection-root ;
+                                            root-directory = root-directory ;
                                             string = _string.implementation ;
                                             visitor = _visitor.implementation ;
                                             writeShellApplication = pkgs.writeShellApplication ;
@@ -105,7 +104,7 @@
                                                                             channel = config.personal.channel ;
                                                                             resources = resources__ ;
                                                                             resources-directory = "/home/${ config.personal.name }/resources" ;
-                                                                            store-garbage-collection-root = "/home/${ config.personal.name }/.gc-roots" ;
+                                                                            root-directory = "/home/${ config.personal.name }/.gc-roots" ;
                                                                         } ;
                                                                     in
                                                                         r.implementation
@@ -3195,32 +3194,6 @@
                         {
                             checks =
                                 {
-                                    acme =
-                                        pkgs.stdenv.mkDerivation
-                                            {
-                                                installPhase = ''execute-install-phase "$out"'' ;
-                                                name = "check" ;
-                                                nativeBuildInputs =
-                                                    [
-                                                        (
-                                                            pkgs.writeShellApplication
-                                                                {
-                                                                    name = "execute-install-phase" ;
-                                                                    runtimeInputs =
-                                                                        [
-                                                                            pkgs.bash
-                                                                            pkgs.coreutils
-                                                                        ] ;
-                                                                    text =
-                                                                        ''
-                                                                            OUT="$1"
-                                                                            mkdir --parents "$OUT"
-                                                                        '' ;
-                                                                }
-                                                        )
-                                                    ] ;
-                                                src = ./. ;
-                                            } ;
                                    failure =
                                        _failure.check
                                            {
@@ -3266,7 +3239,7 @@
                                                                                 } ;
                                                                         in "${ application }/bin/f70dbffba5f85b11de293ea0f9383ff05f210b1bcca0443f79657db645a2187594511f7ce158302a8c7f249e8dc47128baa17302e96b3be43b6e33d26e822a77" ;
                                                             } ;
-                                                        store-garbage-collection-root = "/build/gc-roots" ;
+                                                        root-directory = "/build/gc-roots" ;
                                                     } ;
                                             in
                                                 factory.check
@@ -3274,10 +3247,6 @@
                                                         arguments = [ "ceb405a144a10b8efca63d9d950ce2b92bb2997ab44a9588ca740b3540a9a532a6b959a0d990dd469a63b16eb7600991bb7a1ef2b79d697b43e17134cbccec6c" "cdca67397f32d23a379284468e099b96c5b53d62659faf4d48dfc650bea444d6bc450b7eefee9b273c12672b9008fa6a077b15efb676b35f9912de977f54724d" ] ;
                                                         diffutils = pkgs.diffutils ;
                                                         expected = ./resource.json ;
-
-
-
-
                                                         expected-resource = "/build/resources/mounts/0000000311691948" ;
                                                         init =
                                                             { failure , pid , pkgs , resources , root , seed , sequential , wrap } :
