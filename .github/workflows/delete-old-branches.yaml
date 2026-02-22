@@ -12,6 +12,7 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
+            const core = require('@actions/core');
             const maxAgeDays = 35; // age threshold
             const cutoff = new Date(Date.now() - maxAgeDays*24*60*60*1000);
             console.log(`Cutoff date: ${cutoff.toISOString()}`);
@@ -36,7 +37,7 @@ jobs:
               });
               const commitDate = new Date(commit.data.commit.author.date);
               if (commitDate < cutoff) {
-                console.log(`Deleting branch ${branchName} (last commit ${commitDate.toISOString()})`);
+                core.info(`Deleting branch ${branchName} (last commit ${commitDate.toISOString()})`);
                 await github.rest.git.deleteRef({
                   owner: context.repo.owner,
                   repo: context.repo.repo,
