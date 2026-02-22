@@ -744,34 +744,20 @@
                                                                                                         runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                         text =
                                                                                                             ''
-                                                                                                                echo cda80013 >&2
                                                                                                                 mkdir --parents /mount/man1
-                                                                                                                echo 242b5a03 >&2
                                                                                                                 ${ if builtins.typeOf user == "string" then "ln --symbolic ${ builtins.toFile "man" user } /mount/man1/${ name }.1" else "#" }
-                                                                                                                echo 77b49cc8 >&2
                                                                                                                 mkdir --parents /mount/man2
-                                                                                                                echo ef3d8640 >&2
                                                                                                                 ${ if builtins.typeOf system == "string" then "ln --symbolic ${ builtins.toFile "man" system } /mount/man2/${ name }.2" else "#" }
-                                                                                                                echo e925c4bf >&2
                                                                                                                 mkdir --parents /mount/man3
-                                                                                                                echo 4e33e139 >&2
                                                                                                                 ${ if builtins.typeOf library == "string" then "ln --symbolic ${ builtins.toFile "man" library } /mount/man3/${ name }.3" else "#" }
-                                                                                                                echo bd68a26b >&2
                                                                                                                 mkdir --parents /mount/man4
-                                                                                                                echo b6524a6f >&2
                                                                                                                 ${ if builtins.typeOf special == "string" then "ln --symbolic ${ builtins.toFile "man" special } /mount/man4/${ name }.4" else "#" }
-                                                                                                                echo a70de2f6 >&2
                                                                                                                 mkdir --parents /mount/man5
                                                                                                                 ${ if builtins.typeOf format == "string" then "ln --symbolic ${ builtins.toFile "man" format } /mount/man5/${ name }.5" else "#" }
-                                                                                                                echo 7cb061e8 >&2
                                                                                                                 mkdir --parents /mount/man6
-                                                                                                                echo f17b33b3 >&2
                                                                                                                 ${ if builtins.typeOf games == "string" then "ln --symbolic ${ builtins.toFile "man" games } /mount/man6/${ name }.6" else "#" }
-                                                                                                                echo d682fde3 >&2
                                                                                                                 mkdir --parents /mount/man7
-                                                                                                                echo 83b10613 >&2
                                                                                                                 mkdir --parents /mount/man8
-                                                                                                                echo ea5fe619 >&2
                                                                                                             '' ;
                                                                                                     } ;
                                                                                             in "${ application }/bin/init" ;
