@@ -3,7 +3,7 @@
     "ceb405a144a10b8efca63d9d950ce2b92bb2997ab44a9588ca740b3540a9a532a6b959a0d990dd469a63b16eb7600991bb7a1ef2b79d697b43e17134cbccec6c",
     "cdca67397f32d23a379284468e099b96c5b53d62659faf4d48dfc650bea444d6bc450b7eefee9b273c12672b9008fa6a077b15efb676b35f9912de977f54724d"
   ],
-  "hash": "8088cb06c3bb4e6adc87825eb0e49731c5908d4ac0df1794dbf7b1011afb672babeac98fcf1cfd6282401c23aa917c024232c88fc3a2eda0af926f9f861a88fa",
+  "hash": "df07d410eb3e1daeba464d72c895989803a1646082c8f1d1b9cf7dcdfa7fa25ce05d5fc08d471da5444bb03d27050485cc820b11f7eaa5f76c1dc334df6ba12d",
   "index": "0000000311691948",
   "init-script": "/nix/store/q51nwp3rm31f5bwcr1azh7hqqmvzc9r2-init/bin/init",
   "has-standard-input": "true",
@@ -61,7 +61,6 @@
       "findutils": "/nix/store/0lgw02xh80qnvbrhwjjvw0vp6384sgjs-findutils-4.10.0",
       "flock": "/nix/store/ka2xxzrj7p2ba7qj7j3qiwdlmbjc6j32-flock-0.4.0",
       "jq": "/nix/store/0q85yfxd70aq8iv4n43hqcmh2dbyb80z-jq-1.7.1-bin",
-      "makeBinPath": null,
       "makeWrapper": "/nix/store/nmlyrgn3klrc349b24k8yascjy62687p-make-shell-wrapper-hook",
       "mkDerivation": null,
       "nix": "/nix/store/dlzcxfyhwpvbwi907qsamgsqvi09gvd2-nix-2.24.14",
@@ -72,8 +71,8 @@
         "d154b4d928d4df6e2f281414a142e96351ca55b7487330ce64fa596d0f64fb5147fc9acc7617a58701542c934b50466c6fe97805d01e357bcaae550862bd6266": "/nix/store/v4zimpdhzirhm1a9ky8hgm29wh735z8l-f70dbffba5f85b11de293ea0f9383ff05f210b1bcca0443f79657db645a2187594511f7ce158302a8c7f249e8dc47128baa17302e96b3be43b6e33d26e822a77/bin/f70dbffba5f85b11de293ea0f9383ff05f210b1bcca0443f79657db645a2187594511f7ce158302a8c7f249e8dc47128baa17302e96b3be43b6e33d26e822a77"
       },
       "resources-directory": "/build/resources",
+      "root-directory": "/build/gc-roots",
       "sequential-start": "$( head /dev/urandom | tr -dc 1-9 | head -c 15 )",
-      "store-garbage-collection-root": "/build/gc-roots",
       "string": null,
       "visitor": null,
       "writeShellApplication": null,
