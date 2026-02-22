@@ -3276,10 +3276,7 @@
                                                         expected =
                                                             let
                                                                 base = { } ;
-                                                                in
-                                                                    ''
-                                                                        jq "." ${ builtins.toFile "base.json" ( builtins.toJSON base ) }
-                                                                    '' ;
+                                                                in ''jq "." ${ builtins.toFile "base.json" ( builtins.toJSON base ) }'' ;
 
 
 
