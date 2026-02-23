@@ -2050,6 +2050,20 @@
                                                                                                                                     '' ;
                                                                                                                     } ;
                                                                                                             in "${ application }/bin/init" ;
+                                                                                                release =
+                                                                                                    { failure , pkgs , resources , sequential } :
+                                                                                                        let
+                                                                                                            application =
+                                                                                                                pkgs.writeShellApplication
+                                                                                                                    {
+                                                                                                                        name = "release" ;
+                                                                                                                        runtimeInputs = [ ] ;
+                                                                                                                        text =
+                                                                                                                            ''
+                                                                                                                                echo RELEASE
+                                                                                                                            '' ;
+                                                                                                                    } ;
+                                                                                                            in "${ application }/bin/release" ;
                                                                                                 targets = [ "repository" "stage" ] ;
                                                                                             } ;
                                                                                 } ;
