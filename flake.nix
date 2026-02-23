@@ -12,12 +12,7 @@
                         fixture ,
                         nixpkgs ,
                         private ,
-                        private-reporter ,
                         resource ,
-                        resource-logger ,
-                        resource-releaser ,
-                        resource-reporter ,
-                        resource-resolver ,
                         system ,
                         visitor
                     } @primary :
