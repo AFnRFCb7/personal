@@ -2051,7 +2051,7 @@
                                                                                                                     } ;
                                                                                                             in "${ application }/bin/init" ;
                                                                                                 release =
-                                                                                                    { failure , pkgs , resources , sequential } :
+                                                                                                    { failure , pkgs , resources , seed , sequential } :
                                                                                                         let
                                                                                                             application =
                                                                                                                 pkgs.writeShellApplication
