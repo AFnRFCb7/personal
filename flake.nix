@@ -56,10 +56,6 @@
                                             writeShellApplication = pkgs.writeShellApplication ;
                                             yq-go = pkgs.yq-go ;
                                         } ;
-                            _resource-logger = resource-logger.lib { failure = _failure.implementation "2aedf93a" ; pkgs = pkgs ; } ;
-                            _resource-reporter = resource-reporter.lib { failure = _failure.implementation "029cbc4c" ; pkgs = pkgs ; } ;
-                            _resource-releaser = resource-releaser.lib { failure = _failure.implementation "6dd07d42" ; pkgs = pkgs ; } ;
-                            _resource-resolver = resource-resolver.lib { failure = _failure.implementation "4321b4b8" ; pkgs = pkgs ; } ;
                             _visitor = visitor.lib { } ;
                             identity =
                                 pkgs.stdenv.mkDerivation
@@ -2721,61 +2717,6 @@
                                                                                         User = config.personal.name ;
                                                                                     } ;
                                                                             } ;
-                                                                        resource-logger =
-                                                                            {
-                                                                                after = [ "network.target" "redis.service" ] ;
-                                                                                description =
-                                                                                    ''
-                                                                                        Logs JSON payloads from Redis resource channel into a YAML list
-                                                                                    '' ;
-                                                                                serviceConfig =
-                                                                                    {
-                                                                                        ExecStart =
-                                                                                            _resource-logger.implementation
-                                                                                                {
-                                                                                                    log-directory = "/home/${ config.personal.name }/resources/log" ;
-                                                                                                } ;
-                                                                                        User = config.personal.name ;
-                                                                                    } ;
-                                                                                wantedBy = [ "multi-user.target" ] ;
-                                                                            } ;
-                                                                        resource-releaser =
-                                                                            {
-                                                                                after = [ "network.target" "redis.service" ] ;
-                                                                                enable = true ;
-                                                                                serviceConfig =
-                                                                                    {
-                                                                                        ExecStart =
-                                                                                            _resource-releaser.implementation
-                                                                                                {
-                                                                                                    channel = config.personal.channel ;
-                                                                                                    gc-roots-directory = "/home/${ config.personal.name }/.gc-roots" ;
-                                                                                                    locks-directory = "/home/${ config.personal.name }/resources/locks" ;
-                                                                                                    mounts-directory = "/home/${ config.personal.name }/resources/mounts" ;
-                                                                                                    quarantine-directory = "/home/${ config.personal.name }/resources/quarantine" ;
-                                                                                                } ;
-                                                                                            User = config.personal.name ;
-                                                                                    } ;
-                                                                                wantedBy = [ "multi-user.target" ] ;
-                                                                            } ;
-                                                                        resource-resolver =
-                                                                            {
-                                                                                after = [ "network.target" "redis.service" ] ;
-                                                                                description =
-                                                                                    ''
-                                                                                        Resolves either invalid-init or invalid-release.  It creates a quarantine directory with a yaml log file and one or more resolution programs.
-                                                                                    '' ;
-                                                                                serviceConfig =
-                                                                                    {
-                                                                                        ExecStart =
-                                                                                            _resource-resolver.implementation
-                                                                                                {
-                                                                                                    quarantine-directory = "/home/${ config.personal.name }/resources/quarantine" ;
-                                                                                                } ;
-                                                                                        User = config.personal.name ;
-                                                                                    } ;
-                                                                                wantedBy = [ "multi-user.target" ] ;
-                                                                            } ;
                                                                     } ;
                                                                 timers =
                                                                     {
@@ -3299,10 +3240,6 @@
                                                             ] ;
                                                         transient = false ;
                                                   } ;
-                                        resource-logger = _resource-logger.check { expected = "/nix/store/16wiqsx2y97x3dn8xrsj575s14bvipdc-resource-logger/bin/resource-logger" ; } ;
-                                        resource-releaser = _resource-releaser.check { expected = "/nix/store/nay3i58fbin3xv49isc5bd2hrnfd5kig-resource-releaser/bin/resource-releaser" ; } ;
-                                        resource-reporter = _resource-reporter.check { expected = "/nix/store/nn3aj176h78zd4nbbwbvbkj85dw43lqf-resource-reporter/bin/resource-reporter" ; } ;
-                                        resource-resolver = _resource-resolver.check { expected = "/nix/store/mvdxn8ral6206d6cagin17f3sl6l5i1z-resource-resolver/bin/resource-resolver" ; } ;
                                         visitor-happy =
                                             _visitor.check
                                                 {
