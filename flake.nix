@@ -35,6 +35,7 @@
                                             failure = _failure.implementation "f135add3" ;
                                             findutils = pkgs.findutils ;
                                             flock = pkgs.flock ;
+                                            inotify-tools = pkgs.inotify-tools ;
                                             jq = pkgs.jq ;
                                             makeWrapper = pkgs.makeWrapper ;
                                             mkDerivation = pkgs.stdenv.mkDerivation ;
