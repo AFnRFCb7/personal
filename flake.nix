@@ -123,7 +123,7 @@
                                                                                         pkgs.writeShellApplication
                                                                                             {
                                                                                                 name = "init" ;
-                                                                                                runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                runtimeInputs = [ wrap ] ;
                                                                                                 text =
                                                                                                     let
                                                                                                         bin =
