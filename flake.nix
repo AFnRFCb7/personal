@@ -3025,7 +3025,7 @@
                                                                                         ignore :
                                                                                             {
                                                                                                 autocomplete = [ ] ;
-                                                                                                bin = [ ( resources__.foobar.bin { } ) ] ;
+                                                                                                bin = [ ] ;
                                                                                                 man = [ ] ;
                                                                                             } ;
                                                                                 } ;
