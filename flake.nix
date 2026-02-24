@@ -2991,7 +2991,7 @@
                                                                                         ignore :
                                                                                             {
                                                                                                 autocomplete = [ ] ;
-                                                                                                bin = [ ( resources__.production.ssh { } ) ] ;
+                                                                                                bin = [ ( resources__.production.bin.ssh { } ) ] ;
                                                                                                 man = [ ] ;
                                                                                             } ;
                                                                                 } ;
