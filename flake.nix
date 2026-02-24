@@ -2988,9 +2988,12 @@
                                                                                                     ] ;
                                                                                             } ;
                                                                                     testing =
-                                                                                        {
-                                                                                            resource = { } ;
-                                                                                        } ;
+                                                                                        ignore :
+                                                                                            {
+                                                                                                autocomplete = [ ] ;
+                                                                                                bin = [ ( resources__.production.ssh { } ) ] ;
+                                                                                                man = [ ] ;
+                                                                                            } ;
                                                                                 } ;
                                                                         } ;
                                                                 password = lib.mkOption { type = lib.types.str ; } ;
