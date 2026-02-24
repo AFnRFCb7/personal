@@ -113,6 +113,40 @@
                                                 {
                                                     foobar =
                                                         {
+                                                            bin =
+                                                                ignore :
+                                                                    {
+                                                                        init =
+                                                                            { failure , pid , pkgs , resources , root , seed , sequential , wrap } :
+                                                                                let
+                                                                                    application =
+                                                                                        pkgs.writeShellApplication
+                                                                                            {
+                                                                                                name = "init" ;
+                                                                                                runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                text =
+                                                                                                    let
+                                                                                                        bin =
+                                                                                                            let
+                                                                                                                application =
+                                                                                                                    pkgs.writeShellApplication
+                                                                                                                        {
+                                                                                                                            name = "bin" ;
+                                                                                                                            runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                                            text =
+                                                                                                                                ''
+                                                                                                                                    echo bin
+                                                                                                                                '' ;
+                                                                                                                        } ;
+                                                                                                                in "${ application }/bin/bin" ;
+                                                                                                        in
+                                                                                                            ''
+                                                                                                                wrap ${ bin } bin 0500 --literal-plain PATH
+                                                                                                            '' ;
+                                                                                            } ;
+                                                                                    in "${ application }/bin/init" ;
+                                                                        targets = "bin" ;
+                                                                    } ;
                                                             foobar =
                                                                 ignore :
                                                                     {
@@ -2991,7 +3025,7 @@
                                                                                         ignore :
                                                                                             {
                                                                                                 autocomplete = [ ] ;
-                                                                                                bin = [ ( resources__.production.bin.ssh { } ) ] ;
+                                                                                                bin = [ ( resources__.foobar.bin { } ) ] ;
                                                                                                 man = [ ] ;
                                                                                             } ;
                                                                                 } ;
