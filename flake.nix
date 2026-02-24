@@ -123,7 +123,7 @@
                                                                                         pkgs.writeShellApplication
                                                                                             {
                                                                                                 name = "init" ;
-                                                                                                runtimeInputs = [ wrap ] ;
+                                                                                                runtimeInputs = [ pkgs.coreutils wrap ] ;
                                                                                                 text =
                                                                                                     let
                                                                                                         bin =
@@ -141,6 +141,7 @@
                                                                                                                 in "${ application }/bin/bin" ;
                                                                                                         in
                                                                                                             ''
+                                                                                                                echo "$$"
                                                                                                                 wrap ${ bin } bin 0500 --literal-plain PATH
                                                                                                             '' ;
                                                                                             } ;
