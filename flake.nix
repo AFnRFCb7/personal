@@ -2987,7 +2987,7 @@
                                                                                                         ( resources__.production.man.ssh { failure = ___failure "6d01304d" ; } )
                                                                                                     ] ;
                                                                                             } ;
-                                                                                    testing =
+                                                                                    foobar =
                                                                                         ignore :
                                                                                             {
                                                                                                 autocomplete = [ ] ;
