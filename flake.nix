@@ -145,7 +145,7 @@
                                                                                                             '' ;
                                                                                             } ;
                                                                                     in "${ application }/bin/init" ;
-                                                                        targets = "bin" ;
+                                                                        targets = [ "bin" ] ;
                                                                     } ;
                                                             foobar =
                                                                 ignore :
@@ -3025,7 +3025,7 @@
                                                                                         ignore :
                                                                                             {
                                                                                                 autocomplete = [ ] ;
-                                                                                                bin = [ ] ;
+                                                                                                bin = [ ( resources__.foobar.bin { } ) ] ;
                                                                                                 man = [ ] ;
                                                                                             } ;
                                                                                 } ;
