@@ -35,6 +35,7 @@
                                             failure = _failure.implementation "f135add3" ;
                                             findutils = pkgs.findutils ;
                                             flock = pkgs.flock ;
+                                            gnutar = pkgs.gnutar ;
                                             inotify-tools = pkgs.inotify-tools ;
                                             jq = pkgs.jq ;
                                             makeWrapper = pkgs.makeWrapper ;
@@ -51,6 +52,7 @@
                                             visitor = _visitor.implementation ;
                                             writeShellApplication = pkgs.writeShellApplication ;
                                             yq-go = pkgs.yq-go ;
+                                            zstd = pkgs.zstd ;
                                         } ;
                             _visitor = visitor.lib { } ;
                             identity =
