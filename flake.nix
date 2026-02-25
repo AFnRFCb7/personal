@@ -100,6 +100,7 @@
                                                                     in
                                                                         r.implementation
                                                                             {
+                                                                                depth = point.depth or 0 ;
                                                                                 init = point.init or null ;
                                                                                 init-resolutions = point.init-resolutions or null ;
                                                                                 release = point.release or null ;
@@ -345,6 +346,7 @@
                                                                                  hash = builtins.hashString "sha512" "${ name }${ value }" ;
                                                                                  in
                                                                                      {
+                                                                                        depth = 1 ;
                                                                                          init =
                                                                                              { failure , pid , pkgs , resources , root , seed , sequential , wrap } :
                                                                                                  let
@@ -422,6 +424,7 @@
                                                                     bin =
                                                                         { name , environment , runtimeInputs , script , variables } : ignore :
                                                                             {
+                                                                                depth = 1 ;
                                                                                 init =
                                                                                     { failure , pid , pkgs , resources , root , seed , sequential , wrap } :
                                                                                         let
@@ -763,6 +766,7 @@
                                                                             administration ? null
                                                                         } : ignore :
                                                                             {
+                                                                                depth = 1 ;
                                                                                 init =
                                                                                     { failure , pid , pkgs , resources , root , seed , sequential , wrap } :
                                                                                         let
