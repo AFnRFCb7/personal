@@ -581,7 +581,7 @@
                                                                                                                             fi
                                                                                                                             cat > "$SECRETS/plain/$NAME.asc.age"
                                                                                                                             export GIT_SSH_COMMAND="${ pkgs.openssh }/bin/ssh -F $DOT_SSH/config"
-                                                                                                                            git -C "$SECRETS/cipher" commit --verbose
+                                                                                                                            git -C "$SECRETS/cipher" commit --allow-empty --verbose
                                                                                                                         '' ;
                                                                                                                 } ;
                                                                                                         in "${ application }/bin/secret" ;
