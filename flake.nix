@@ -1565,7 +1565,7 @@
                                                                                                                             ''
                                                                                                                                 mkdir --parents /mount/repository
                                                                                                                                 cd /mount/repository
-                                                                                                                                git init
+                                                                                                                                git init 2>&1
                                                                                                                                 root ${ pkgs.openssh }
                                                                                                                                 DOT_SSH=${ resources.production.dot-ssh { failure = "failure f2774d0a" ; } }
                                                                                                                                 root "$DOT_SSH"
