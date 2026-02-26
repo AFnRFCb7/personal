@@ -569,7 +569,7 @@
                                                                                                             pkgs.writeShellApplication
                                                                                                                 {
                                                                                                                     name = "secret" ;
-                                                                                                                    runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
+                                                                                                                    runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.nano ] ;
                                                                                                                     text =
                                                                                                                         ''
                                                                                                                             # d38bd06d
