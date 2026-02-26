@@ -2254,6 +2254,8 @@
                                                                                                                 mkdir --parents /mount/plain/dot-ssh/github
                                                                                                                 mkdir --parents /mount/plain/dot-ssh/mobile
                                                                                                                 mkdir --parents /mount/plain/github
+                                                                                                                git config user.email "${ config.personal.repository.private.email }"
+                                                                                                                git config user.name "${ config.personal.repository.private.name }"
                                                                                                                 wrap ${ post-commit } cipher/.git/hooks/post-commit 0500 --literal-brace "GIT_SSH_COMMAND:?GIT_SSH_COMMAND must be exported" --inherit-plain MOUNT --literal-plain PATH --uuid 708e9f8d
                                                                                                                 # shellcheck disable=SC2016
                                                                                                                 wrap ${ pre-commit } cipher/.git/hooks/pre-commit 0500 --literal-plain FILE --literal-plain IDENTITY --inherit-plain MOUNT --literal-plain PATH --literal-brace 'PLAINTEXT_FILE#"$MOUNT"/plain/' --literal-plain STAGED_FILE --uuid e7266fc5
