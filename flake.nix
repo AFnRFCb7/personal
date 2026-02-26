@@ -2180,11 +2180,12 @@
                                                                                                                     pkgs.writeShellApplication
                                                                                                                         {
                                                                                                                             name = "pre-commit" ;
-                                                                                                                            runtimeInputs = [ pkgs.age pkgs.findutils failure ] ;
+                                                                                                                            runtimeInputs = [ pkgs.age pkgs.findutils pkgs.gnugrep failure ] ;
                                                                                                                             text =
                                                                                                                                 ''
                                                                                                                                     cd "$MOUNT/cipher"
-                                                                                                                                    IDENTITY="$( age-keygen --identity ${ config.personal.agenix } --pub )" || failure 0d6c6c0c "$0"
+                                                                                                                                    PRIVATE_KEY="$(cat "${CONFIG_PERSONAL_AGENIX}")"
+                                                                                                                                    IDENTITY="$( echo "$PRIVATE_KEY" | grep '^AGE-SECRET-KEY' | cut -d' ' -f2 | age-keygen -y )" || failure cf83e135
                                                                                                                                     find "$MOUNT/plain" -mindepth 1 -type f -name "*.asc" | while read -r PLAINTEXT_FILE
                                                                                                                                     do
                                                                                                                                         FILE="${ builtins.concatStringsSep "" [ "$" "{" ''PLAINTEXT_FILE#"$MOUNT"/plain/'' "}" ] }"
