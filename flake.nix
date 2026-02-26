@@ -2476,23 +2476,6 @@
                                                                                 in
                                                                                     ''
                                                                                         eval "$( ${ pkgs.direnv }/bin/direnv hook bash )"
-
-                                                                                        _myscript_completions() {
-                                                                                            local cur dir
-                                                                                            cur="${ builtins.concatStringsSep "" [ "$" "{" "COMP_WORDS[COMP_CWORD]" "}" ] }"
-                                                                                            dir="$( pwd )" || ${ _failure.implementation "2a281015" }/bin/failure  a767929d
-                                                                                            if [[ "$dir" == "/home/${ config.personal.name }/pad" ]]
-                                                                                            then
-                                                                                                if [[ $COMP_CWORD -eq 1 ]]
-                                                                                                then
-                                                                                                    NEXT="$( compgen -W "production.age production.application.chromium production.application.mutable production.repository.pass production.repository.secrets.read-only production.repository.secrets.read-write production.dot-gnupg production.dot-ssh archaic" -- "$cur" )" || failure 6bb37017
-                                                                                                    COMPREPLY=( $NEXT )
-                                                                                                fi
-                                                                                            else
-                                                                                                COMPREPLY=()
-                                                                                            fi
-                                                                                        }
-                                                                                        complete -F _myscript_completions resource
                                                                                     '' ;
                                                                     } ;
                                                                 dconf.enable = true ;
