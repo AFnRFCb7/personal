@@ -2184,8 +2184,7 @@
                                                                                                                             text =
                                                                                                                                 ''
                                                                                                                                     cd "$MOUNT/cipher"
-                                                                                                                                    PRIVATE_KEY="$(cat "${CONFIG_PERSONAL_AGENIX}")"
-                                                                                                                                    IDENTITY="$( echo "$PRIVATE_KEY" | grep '^AGE-SECRET-KEY' | cut -d' ' -f2 | age-keygen -y )" || failure cf83e135
+                                                                                                                                    IDENTITY="$( grep '^AGE-SECRET-KEY' ${ config.personal.agenix } | cut -d' ' -f2 | age-keygen -y )" || failure cf83e135
                                                                                                                                     find "$MOUNT/plain" -mindepth 1 -type f -name "*.asc" | while read -r PLAINTEXT_FILE
                                                                                                                                     do
                                                                                                                                         FILE="${ builtins.concatStringsSep "" [ "$" "{" ''PLAINTEXT_FILE#"$MOUNT"/plain/'' "}" ] }"
