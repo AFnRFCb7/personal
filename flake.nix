@@ -2188,8 +2188,8 @@
                                                                                                                                     find "$MOUNT/plain" -mindepth 1 -type f -name "*.asc" | while read -r PLAINTEXT_FILE
                                                                                                                                     do
                                                                                                                                         FILE="${ builtins.concatStringsSep "" [ "$" "{" ''PLAINTEXT_FILE#"$MOUNT"/plain/'' "}" ] }"
-                                                                                                                                        age --encrypt --identity "$IDENTITY" --output "$MOUNT/cipher/$FILE.age"
-                                                                                                                                        git add "$MOUNT/cipher/$FILE.age"
+                                                                                                                                        CIPHERTEXT_FILE="$MOUNT/cipher/$FILE.age"
+                                                                                                                                        age --encrypt --identity "$IDENTITY" --output "$CIPHERTEXT_FILE" "$PLAINTEXT_FILE"                                                                                                                                        git add "$MOUNT/cipher/$FILE.age"
                                                                                                                                     done
                                                                                                                                     git diff --name-only --cached | while read -r STAGED_FILE
                                                                                                                                     do
