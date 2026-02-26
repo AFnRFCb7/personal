@@ -18,7 +18,6 @@
                     } @primary :
                         let
                             _failure = failure.lib { coreutils = pkgs.coreutils ; jq = pkgs.jq ; mkDerivation = pkgs.stdenv.mkDerivation ; visitor = visitor ; writeShellApplication = pkgs.writeShellApplication ; yq-go = pkgs.yq-go ; } ;
-                            __failure = _failure.implementation "7fef1fe4" ;
                             _resource =
                                 {
                                     channel ,
@@ -242,7 +241,7 @@
                                                                                                 pkgs.writeShellApplication
                                                                                                     {
                                                                                                         name = "init" ;
-                                                                                                        runtimeInputs = [ root __failure ] ;
+                                                                                                        runtimeInputs = [ root failure ] ;
                                                                                                         text =
                                                                                                             ''
                                                                                                                 CONFIG=${ resources.production.repository.pads.home.chromium.data { failure = "failure 0c755ed8" ; } }
@@ -2477,23 +2476,6 @@
                                                                                 in
                                                                                     ''
                                                                                         eval "$( ${ pkgs.direnv }/bin/direnv hook bash )"
-
-                                                                                        _myscript_completions() {
-                                                                                            local cur dir
-                                                                                            cur="${ builtins.concatStringsSep "" [ "$" "{" "COMP_WORDS[COMP_CWORD]" "}" ] }"
-                                                                                            dir="$(pwd)" || "${ __failure }/bin/failure 5e9268bf"
-                                                                                            if [[ "$dir" == "/home/${ config.personal.name }/pad" ]]
-                                                                                            then
-                                                                                                if [[ $COMP_CWORD -eq 1 ]]
-                                                                                                then
-                                                                                                    NEXT="$( compgen -W "production.age production.application.chromium production.application.mutable production.repository.pass production.repository.secrets.read-only production.repository.secrets.read-write production.dot-gnupg production.dot-ssh archaic" -- "$cur" )" || failure 6bb37017
-                                                                                                    COMPREPLY=( $NEXT )
-                                                                                                fi
-                                                                                            else
-                                                                                                COMPREPLY=()
-                                                                                            fi
-                                                                                        }
-                                                                                        complete -F _myscript_completions resource
                                                                                     '' ;
                                                                     } ;
                                                                 dconf.enable = true ;
