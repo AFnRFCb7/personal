@@ -19,7 +19,6 @@
                         let
                             _failure = failure.lib { coreutils = pkgs.coreutils ; jq = pkgs.jq ; mkDerivation = pkgs.stdenv.mkDerivation ; visitor = visitor ; writeShellApplication = pkgs.writeShellApplication ; yq-go = pkgs.yq-go ; } ;
                             __failure = _failure.implementation "7fef1fe4" ;
-                            ___failure = uuid : "${ __failure }/bin/failure ${ uuid }" ;
                             _resource =
                                 {
                                     channel ,
@@ -504,8 +503,8 @@
                                                                                         script = ''chromium "$@"'' ;
                                                                                         variables =
                                                                                             {
-                                                                                                XDG_CONFIG_HOME_RESOURCE = resources : resources.production.volume.chromium.config { failure = ___failure "a9192261" ; } ;
-                                                                                                XDG_DATA_HOME_RESOURCE = resources : resources.production.volume.chromium.data { failure = ___failure "e55856e2" ; } ;
+                                                                                                XDG_CONFIG_HOME_RESOURCE = resources : resources.production.volume.chromium.config { } ;
+                                                                                                XDG_DATA_HOME_RESOURCE = resources : resources.production.volume.chromium.data { } ;
                                                                                                 XDG_CONFIG_HOME = resources : "$XDG_CONFIG_HOME_RESOURCE/secret" ;
                                                                                                 XDG_DATA_HOME = resources : "$XDG_DATA_HOME_RESOURCE/secret" ;
                                                                                             } ;
@@ -522,7 +521,7 @@
                                                                                         script = ''gpg --homedir "$GNUPGHOME" "$@"'' ;
                                                                                         variables =
                                                                                             {
-                                                                                                DOT_GNUPG = resources : resources.production.dot-gnupg { failure = ___failure "44eb225c" ; } ;
+                                                                                                DOT_GNUPG = resources : resources.production.dot-gnupg { } ;
                                                                                                 GNUPGHOME = resources : "$DOT_GNUPG/dot-gnupg" ;
                                                                                             } ;
                                                                                     } ;
@@ -535,7 +534,7 @@
                                                                                         script = ''idea-community "$RESOURCE/repository" "$@"'' ;
                                                                                         variables =
                                                                                             {
-                                                                                                RESOURCE = resources : resources.production.repository.studio.entry { failure = ___failure "560f61b9" ; } ;
+                                                                                                RESOURCE = resources : resources.production.repository.studio.entry { } ;
                                                                                             } ;
                                                                                     } ;
                                                                             pass =
@@ -551,8 +550,8 @@
                                                                                         script = ''pass "$@"'' ;
                                                                                         variables =
                                                                                             {
-                                                                                                DOT_GNUPG = resources : resources.production.dot-gnupg { failure = ___failure "f68dcf20" ; } ;
-                                                                                                RESOURCE = resources : resources.production.repository.pass { failure = ___failure "cf87710c" ; } ;
+                                                                                                DOT_GNUPG = resources : resources.production.dot-gnupg { } ;
+                                                                                                RESOURCE = resources : resources.production.repository.pass { } ;
                                                                                                 PASSWORD_STORE_GPG_OPTS = resources : ''"--homedir $DOT_GNUPG/dot-gnupg"'' ;
                                                                                                 PASSWORD_STORE_DIR = resources : "$RESOURCE/repository " ;
                                                                                             } ;
@@ -603,7 +602,7 @@
                                                                                         script = ''ssh -F "$DOT_SSH/config" "$@"'' ;
                                                                                         variables =
                                                                                             {
-                                                                                                DOT_SSH = resources : resources.production.dot-ssh { failure = ___failure "73be674b" ; } ;
+                                                                                                DOT_SSH = resources : resources.production.dot-ssh { } ;
                                                                                             } ;
                                                                                     } ;
                                                                         } ;
@@ -618,7 +617,7 @@
                                                                                         pkgs.writeShellApplication
                                                                                             {
                                                                                                 name = "init" ;
-                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.gnupg ( ___failure "428d8579" ) ] ;
+                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.gnupg failure ] ;
                                                                                                 text =
                                                                                                     ''
                                                                                                         OWNERTRUST=${ resources.production.secret.dot-gnupg.ownertrust { failure = "failure 4f690149" ; } }
@@ -645,7 +644,7 @@
                                                                                         pkgs.writeShellApplication
                                                                                             {
                                                                                                 name = "init" ;
-                                                                                                runtimeInputs = [ root wrap ( ___failure "ff7d31ef" )] ;
+                                                                                                runtimeInputs = [ root wrap failure ] ;
                                                                                                 text =
                                                                                                     let
                                                                                                         ssh-config =
@@ -2304,7 +2303,7 @@
                                                                                                                         git config user.email "${ config.personal.volume.email }"
                                                                                                                         git config user.name "${ config.personal.volume.name }"
                                                                                                                         git remote add origin git@github.com:${ config.personal.volume.organization }/${ config.personal.volume.repository }
-                                                                                                                        DOT_GNUPG=${ resources.production.dot-gnupg { failure = ___failure "9eea13ac" ; } }
+                                                                                                                        DOT_GNUPG=${ resources.production.dot-gnupg { } }
                                                                                                                         export GNUPGHOME="$DOT_GNUPG/dot-gnupg"
                                                                                                                         SECRETS=${ resources.production.secret.github.token { failure = "failure ba4fc2f1" ; } }
                                                                                                                         gh auth login --with-token < "$SECRETS/plaintext"
@@ -2648,7 +2647,7 @@
                                                                                                                                                         pkgs.writeShellApplication
                                                                                                                                                             {
                                                                                                                                                                 name = "autocomplete" ;
-                                                                                                                                                                runtimeInputs = [ pkgs.findutils ( ___failure "973bcfd8" ) ] ;
+                                                                                                                                                                runtimeInputs = [ pkgs.findutils failure ] ;
                                                                                                                                                                 text =
                                                                                                                                                                     let
                                                                                                                                                                         mapper =
@@ -2950,26 +2949,26 @@
                                                                                             {
                                                                                                 autocomplete =
                                                                                                     [
-                                                                                                        ( resources__.production.autocomplete.pass { failure = ___failure "28ecf633" ; } )
-                                                                                                        ( resources__.production.autocomplete.silly { failure = ___failure "f15371a4" ; } )
+                                                                                                        ( resources__.production.autocomplete.pass { } )
+                                                                                                        ( resources__.production.autocomplete.silly { } )
                                                                                                     ] ;
                                                                                                 bin =
                                                                                                     [
-                                                                                                        ( resources__.production.bin.chromium { failure = ___failure "1954d2c7" ; } )
-                                                                                                        ( resources__.production.bin.gpg { failure = ___failure "7386330c" ; } )
-                                                                                                        ( resources__.production.bin.idea-community { failure = ___failure "7eba8454" ; } )
-                                                                                                        ( resources__.production.bin.pass { failure = ___failure "c055f2a0" ; } )
+                                                                                                        ( resources__.production.bin.chromium { } )
+                                                                                                        ( resources__.production.bin.gpg { } )
+                                                                                                        ( resources__.production.bin.idea-community { } )
+                                                                                                        ( resources__.production.bin.pass { } )
                                                                                                         ( resources__.production.bin.secrets { } )
-                                                                                                        ( resources__.production.bin.ssh { failure = ___failure "c055f2a0" ; } )
+                                                                                                        ( resources__.production.bin.ssh { } )
                                                                                                     ] ;
                                                                                                 man =
                                                                                                     [
-                                                                                                        ( resources__.production.man.chromium { failure = ___failure "967ea0e1" ; } )
-                                                                                                        ( resources__.production.man.gpg { failure = ___failure "aa1f5c38" ; } )
-                                                                                                        ( resources__.production.man.idea-community { failure = ___failure "f5992d47" ; } )
-                                                                                                        ( resources__.production.man.pass { failure = ___failure "4a4c361e" ; } )
+                                                                                                        ( resources__.production.man.chromium { } )
+                                                                                                        ( resources__.production.man.gpg { } )
+                                                                                                        ( resources__.production.man.idea-community { } )
+                                                                                                        ( resources__.production.man.pass { } )
                                                                                                         ( resources__.production.man.secrets { } )
-                                                                                                        ( resources__.production.man.ssh { failure = ___failure "6d01304d" ; } )
+                                                                                                        ( resources__.production.man.ssh { } )
                                                                                                     ] ;
                                                                                             } ;
                                                                                     beta =
@@ -2977,24 +2976,24 @@
                                                                                             {
                                                                                                 autocomplete =
                                                                                                     [
-                                                                                                        ( resources__.production.autocomplete.pass { failure = ___failure "28ecf633" ; } )
-                                                                                                        ( resources__.production.autocomplete.silly { failure = ___failure "f15371a4" ; } )
+                                                                                                        ( resources__.production.autocomplete.pass { } )
+                                                                                                        ( resources__.production.autocomplete.silly { } )
                                                                                                     ] ;
                                                                                                 bin =
                                                                                                     [
-                                                                                                        ( resources__.production.bin.chromium { failure = ___failure "1954d2c7" ; } )
-                                                                                                        ( resources__.production.bin.gpg { failure = ___failure "7386330c" ; } )
-                                                                                                        ( resources__.production.bin.idea-community { failure = ___failure "7eba8454" ; } )
-                                                                                                        ( resources__.production.bin.pass { failure = ___failure "c055f2a0" ; } )
-                                                                                                        ( resources__.production.bin.ssh { failure = ___failure "c055f2a0" ; } )
+                                                                                                        ( resources__.production.bin.chromium { } )
+                                                                                                        ( resources__.production.bin.gpg { } )
+                                                                                                        ( resources__.production.bin.idea-community { } )
+                                                                                                        ( resources__.production.bin.pass { } )
+                                                                                                        ( resources__.production.bin.ssh { } )
                                                                                                     ] ;
                                                                                                 man =
                                                                                                     [
-                                                                                                        ( resources__.production.man.chromium { failure = ___failure "967ea0e1" ; } )
-                                                                                                        ( resources__.production.man.gpg { failure = ___failure "aa1f5c38" ; } )
-                                                                                                        ( resources__.production.man.idea-community { failure = ___failure "f5992d47" ; } )
-                                                                                                        ( resources__.production.man.pass { failure = ___failure "4a4c361e" ; } )
-                                                                                                        ( resources__.production.man.ssh { failure = ___failure "6d01304d" ; } )
+                                                                                                        ( resources__.production.man.chromium { } )
+                                                                                                        ( resources__.production.man.gpg { } )
+                                                                                                        ( resources__.production.man.idea-community { } )
+                                                                                                        ( resources__.production.man.pass { } )
+                                                                                                        ( resources__.production.man.ssh { } )
                                                                                                     ] ;
                                                                                             } ;
                                                                                     career = { } ;
@@ -3003,29 +3002,29 @@
                                                                                             {
                                                                                                 autocomplete =
                                                                                                     [
-                                                                                                        ( resources__.production.autocomplete.pass { failure = ___failure "28ecf633" ; } )
+                                                                                                        ( resources__.production.autocomplete.pass { } )
                                                                                                         # ( resources__.production.autocomplete.secrets { } )
-                                                                                                        ( resources__.production.autocomplete.silly { failure = ___failure "f15371a4" ; } )
+                                                                                                        ( resources__.production.autocomplete.silly { } )
                                                                                                     ] ;
                                                                                                 bin =
                                                                                                     [
                                                                                                         "${ pkgs.coreutils }/bin"
                                                                                                         "${ pkgs.which }/bin"
-                                                                                                        ( resources__.production.bin.chromium { failure = ___failure "1954d2c7" ; } )
-                                                                                                        ( resources__.production.bin.gpg { failure = ___failure "7386330c" ; } )
-                                                                                                        ( resources__.production.bin.idea-community { failure = ___failure "7eba8454" ; } )
-                                                                                                        ( resources__.production.bin.pass { failure = ___failure "c055f2a0" ; } )
+                                                                                                        ( resources__.production.bin.chromium { } )
+                                                                                                        ( resources__.production.bin.gpg { } )
+                                                                                                        ( resources__.production.bin.idea-community { } )
+                                                                                                        ( resources__.production.bin.pass { } )
                                                                                                         ( resources__.production.bin.secrets { } )
-                                                                                                        ( resources__.production.bin.ssh { failure = ___failure "c055f2a0" ; } )
+                                                                                                        ( resources__.production.bin.ssh { } )
                                                                                                     ] ;
                                                                                                 man =
                                                                                                     [
-                                                                                                        ( resources__.production.man.chromium { failure = ___failure "967ea0e1" ; } )
-                                                                                                        ( resources__.production.man.gpg { failure = ___failure "aa1f5c38" ; } )
-                                                                                                        ( resources__.production.man.idea-community { failure = ___failure "f5992d47" ; } )
-                                                                                                        ( resources__.production.man.pass { failure = ___failure "4a4c361e" ; } )
+                                                                                                        ( resources__.production.man.chromium { } )
+                                                                                                        ( resources__.production.man.gpg { } )
+                                                                                                        ( resources__.production.man.idea-community { } )
+                                                                                                        ( resources__.production.man.pass { } )
                                                                                                         ( resources__.production.man.secrets { } )
-                                                                                                        ( resources__.production.man.ssh { failure = ___failure "6d01304d" ; } )
+                                                                                                        ( resources__.production.man.ssh { } )
                                                                                                     ] ;
                                                                                             } ;
                                                                                     foobar =
