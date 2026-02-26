@@ -2184,7 +2184,7 @@
                                                                                                                             text =
                                                                                                                                 ''
                                                                                                                                     cd "$MOUNT/cipher"
-                                                                                                                                    IDENTITY="$( age-keygen --identity ${ config.personal.agenix } --pub )" || failure 0d6c6c0c
+                                                                                                                                    IDENTITY="$( age-keygen --identity ${ config.personal.agenix } --pub )" || failure 0d6c6c0c "$0"
                                                                                                                                     find "$MOUNT/plain" -mindepth 1 -type f -name "*.asc" | while read -r PLAINTEXT_FILE
                                                                                                                                     do
                                                                                                                                         FILE="${ builtins.concatStringsSep "" [ "$" "{" ''PLAINTEXT_FILE#"$MOUNT"/plain/'' "}" ] }"
