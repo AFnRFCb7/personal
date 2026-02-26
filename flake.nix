@@ -101,9 +101,9 @@
                                                                             {
                                                                                 depth = point.depth or 0 ;
                                                                                 init = point.init or null ;
-                                                                                init-resolutions = point.init-resolutions or null ;
+                                                                                init-resolutions = point.init-resolutions or [ ] ;
                                                                                 release = point.release or null ;
-                                                                                release-resolutions = point.release-resolutions or null ;
+                                                                                release-resolutions = point.release-resolutions or [ ] ;
                                                                                 seed =
                                                                                     ( point.seed or { } ) //
                                                                                     {
