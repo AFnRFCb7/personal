@@ -79,7 +79,7 @@
                             user =
                                 { config , lib , pkgs , ... } :
                                     let
-                                        resources__ =
+                                        resources =
                                             _visitor.implementation
                                                 {
                                                     lambda =
@@ -90,7 +90,7 @@
                                                                     _resource
                                                                         {
                                                                             channel = config.personal.channel ;
-                                                                            resources = resources__ ;
+                                                                            resources = resources ;
                                                                             resources-directory = "/home/${ config.personal.name }/resources" ;
                                                                             root-directory = "/home/${ config.personal.name }/.gc-roots" ;
                                                                         } ;
@@ -301,7 +301,7 @@
                                                                                                                                     runtimeInputs = [ pkgs.gnupg ] ;
                                                                                                                                     text =
                                                                                                                                         ''
-                                                                                                                                            DOT_GNUPG=${ resources__.production.dot-gnupg { failure = "failure 75dc4165" ; } }
+                                                                                                                                            DOT_GNUPG=${ resources.production.dot-gnupg { failure = "failure 75dc4165" ; } }
                                                                                                                                             export GNUPGHOME="$DOT_GNUPG/dot-gnupg"
                                                                                                                                             gpg --homedir "$GNUPGHOME" --sign --local-user ${ config.personal.chromium.home.data.email } --dry-run
                                                                                                                                         '' ;
@@ -382,7 +382,7 @@
                                                                                 autocomplete
                                                                                     "pass"
                                                                                     ''
-                                                                                        RESOURCE=${ resources__.production.repository.pass { } }
+                                                                                        RESOURCE=${ resources.production.repository.pass { } }
                                                                                         export PASSWORD_STORE_DIR="$RESOURCE/repository"
                                                                                         # shellcheck disable=SC1091
                                                                                         source ${ pkgs.pass }/share/bash-completion/completions/pass
@@ -2719,10 +2719,10 @@
                                                                                                             runtimeInputs = [ pkgs.gh pkgs.git pkgs.openssh ] ;
                                                                                                             text =
                                                                                                                 ''
-                                                                                                                    TOKEN=${ resources__.production.secret.github.token { } }
+                                                                                                                    TOKEN=${ resources.production.secret.github.token { } }
                                                                                                                     gh auth login --with-token < "$TOKEN/plaintext"
-                                                                                                                    DOT_SSH=${ resources__.production.dot-ssh { } }
-                                                                                                                    SECRETS=${ resources__.production.secrets { } }
+                                                                                                                    DOT_SSH=${ resources.production.dot-ssh { } }
+                                                                                                                    SECRETS=${ resources.production.secrets { } }
                                                                                                                     export GIT_SSH_COMMAND="${ pkgs.openssh }/bin/ssh -F $DOT_SSH/config"
                                                                                                                     git -C "$SECRETS/cipher" config core.sshCommand "${ pkgs.openssh }/bin/ssh -F $DOT_SSH/config"
                                                                                                                     ssh-keygen -y -f "$SECRETS/plain/dot-ssh/mobile/identity.asc" -C "systemd recycler" -P ""
@@ -2771,7 +2771,7 @@
                                                                                     runtimeInputs = [ pkgs.coreutils ] ;
                                                                                     text =
                                                                                         ''
-                                                                                            SECRETS=${ resources__.production.secrets { } }
+                                                                                            SECRETS=${ resources.production.secrets { } }
                                                                                             echo "$SECRETS/plain"
                                                                                         '' ;
                                                                                 }
@@ -2794,7 +2794,7 @@
                                                                                                 HAS_ARGUMENTS=false
                                                                                                 ARGUMENTS=
                                                                                             fi
-                                                                                            STUDIO=${ resources__.production.repository.studio.entry { setup = setup : ''${ setup } "$HAS_ARGUMENTS" "$ARGUMENTS"'' ; } }
+                                                                                            STUDIO=${ resources.production.repository.studio.entry { setup = setup : ''${ setup } "$HAS_ARGUMENTS" "$ARGUMENTS"'' ; } }
                                                                                             if $HAS_ARGUMENTS
                                                                                             then
                                                                                                 echo "$STUDIO/repository"
@@ -2815,7 +2815,7 @@
                                                                                     runtimeInputs = [ ] ;
                                                                                     text =
                                                                                         ''
-                                                                                            FOOBAR=${ resources__.foobar.foobar { setup = setup : ''${ setup } "$@"'' ; failure = "failure 175470c8" ; } }
+                                                                                            FOOBAR=${ resources.foobar.foobar { setup = setup : ''${ setup } "$@"'' ; failure = "failure 175470c8" ; } }
                                                                                             echo "$FOOBAR"
                                                                                         '' ;
                                                                                 }
@@ -2931,26 +2931,26 @@
                                                                                             {
                                                                                                 autocomplete =
                                                                                                     [
-                                                                                                        ( resources__.production.autocomplete.pass { } )
-                                                                                                        ( resources__.production.autocomplete.silly { } )
+                                                                                                        ( resources.production.autocomplete.pass { } )
+                                                                                                        ( resources.production.autocomplete.silly { } )
                                                                                                     ] ;
                                                                                                 bin =
                                                                                                     [
-                                                                                                        ( resources__.production.bin.chromium { } )
-                                                                                                        ( resources__.production.bin.gpg { } )
-                                                                                                        ( resources__.production.bin.idea-community { } )
-                                                                                                        ( resources__.production.bin.pass { } )
-                                                                                                        ( resources__.production.bin.secrets { } )
-                                                                                                        ( resources__.production.bin.ssh { } )
+                                                                                                        ( resources.production.bin.chromium { } )
+                                                                                                        ( resources.production.bin.gpg { } )
+                                                                                                        ( resources.production.bin.idea-community { } )
+                                                                                                        ( resources.production.bin.pass { } )
+                                                                                                        ( resources.production.bin.secrets { } )
+                                                                                                        ( resources.production.bin.ssh { } )
                                                                                                     ] ;
                                                                                                 man =
                                                                                                     [
-                                                                                                        ( resources__.production.man.chromium { } )
-                                                                                                        ( resources__.production.man.gpg { } )
-                                                                                                        ( resources__.production.man.idea-community { } )
-                                                                                                        ( resources__.production.man.pass { } )
-                                                                                                        ( resources__.production.man.secrets { } )
-                                                                                                        ( resources__.production.man.ssh { } )
+                                                                                                        ( resources.production.man.chromium { } )
+                                                                                                        ( resources.production.man.gpg { } )
+                                                                                                        ( resources.production.man.idea-community { } )
+                                                                                                        ( resources.production.man.pass { } )
+                                                                                                        ( resources.production.man.secrets { } )
+                                                                                                        ( resources.production.man.ssh { } )
                                                                                                     ] ;
                                                                                             } ;
                                                                                     beta =
@@ -2958,24 +2958,24 @@
                                                                                             {
                                                                                                 autocomplete =
                                                                                                     [
-                                                                                                        ( resources__.production.autocomplete.pass { } )
-                                                                                                        ( resources__.production.autocomplete.silly { } )
+                                                                                                        ( resources.production.autocomplete.pass { } )
+                                                                                                        ( resources.production.autocomplete.silly { } )
                                                                                                     ] ;
                                                                                                 bin =
                                                                                                     [
-                                                                                                        ( resources__.production.bin.chromium { } )
-                                                                                                        ( resources__.production.bin.gpg { } )
-                                                                                                        ( resources__.production.bin.idea-community { } )
-                                                                                                        ( resources__.production.bin.pass { } )
-                                                                                                        ( resources__.production.bin.ssh { } )
+                                                                                                        ( resources.production.bin.chromium { } )
+                                                                                                        ( resources.production.bin.gpg { } )
+                                                                                                        ( resources.production.bin.idea-community { } )
+                                                                                                        ( resources.production.bin.pass { } )
+                                                                                                        ( resources.production.bin.ssh { } )
                                                                                                     ] ;
                                                                                                 man =
                                                                                                     [
-                                                                                                        ( resources__.production.man.chromium { } )
-                                                                                                        ( resources__.production.man.gpg { } )
-                                                                                                        ( resources__.production.man.idea-community { } )
-                                                                                                        ( resources__.production.man.pass { } )
-                                                                                                        ( resources__.production.man.ssh { } )
+                                                                                                        ( resources.production.man.chromium { } )
+                                                                                                        ( resources.production.man.gpg { } )
+                                                                                                        ( resources.production.man.idea-community { } )
+                                                                                                        ( resources.production.man.pass { } )
+                                                                                                        ( resources.production.man.ssh { } )
                                                                                                     ] ;
                                                                                             } ;
                                                                                     career = { } ;
@@ -2984,36 +2984,36 @@
                                                                                             {
                                                                                                 autocomplete =
                                                                                                     [
-                                                                                                        ( resources__.production.autocomplete.pass { } )
-                                                                                                        # ( resources__.production.autocomplete.secrets { } )
-                                                                                                        ( resources__.production.autocomplete.silly { } )
+                                                                                                        ( resources.production.autocomplete.pass { } )
+                                                                                                        # ( resources.production.autocomplete.secrets { } )
+                                                                                                        ( resources.production.autocomplete.silly { } )
                                                                                                     ] ;
                                                                                                 bin =
                                                                                                     [
                                                                                                         "${ pkgs.coreutils }/bin"
                                                                                                         "${ pkgs.which }/bin"
-                                                                                                        ( resources__.production.bin.chromium { } )
-                                                                                                        ( resources__.production.bin.gpg { } )
-                                                                                                        ( resources__.production.bin.idea-community { } )
-                                                                                                        ( resources__.production.bin.pass { } )
-                                                                                                        ( resources__.production.bin.secrets { } )
-                                                                                                        ( resources__.production.bin.ssh { } )
+                                                                                                        ( resources.production.bin.chromium { } )
+                                                                                                        ( resources.production.bin.gpg { } )
+                                                                                                        ( resources.production.bin.idea-community { } )
+                                                                                                        ( resources.production.bin.pass { } )
+                                                                                                        ( resources.production.bin.secrets { } )
+                                                                                                        ( resources.production.bin.ssh { } )
                                                                                                     ] ;
                                                                                                 man =
                                                                                                     [
-                                                                                                        ( resources__.production.man.chromium { } )
-                                                                                                        ( resources__.production.man.gpg { } )
-                                                                                                        ( resources__.production.man.idea-community { } )
-                                                                                                        ( resources__.production.man.pass { } )
-                                                                                                        ( resources__.production.man.secrets { } )
-                                                                                                        ( resources__.production.man.ssh { } )
+                                                                                                        ( resources.production.man.chromium { } )
+                                                                                                        ( resources.production.man.gpg { } )
+                                                                                                        ( resources.production.man.idea-community { } )
+                                                                                                        ( resources.production.man.pass { } )
+                                                                                                        ( resources.production.man.secrets { } )
+                                                                                                        ( resources.production.man.ssh { } )
                                                                                                     ] ;
                                                                                             } ;
                                                                                     foobar =
                                                                                         ignore :
                                                                                             {
                                                                                                 autocomplete = [ ] ;
-                                                                                                bin = [ ( resources__.foobar.bin { } ) ] ;
+                                                                                                bin = [ ( resources.foobar.bin { } ) ] ;
                                                                                                 man = [ ] ;
                                                                                             } ;
                                                                                 } ;
