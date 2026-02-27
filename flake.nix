@@ -472,11 +472,11 @@
                                                                                                                                                     if [[ -t 0 ]]
                                                                                                                                                     then
                                                                                                                                                         echo 7e1212fd ee3a2148 >> /tmp/DEBUG
-                                                                                                                                                        ${ script }
+                                                                                                                                                        exec ${ script }
                                                                                                                                                     else
                                                                                                                                                         echo 7e1212fd c6a127c3 >> /tmp/DEBUG
                                                                                                                                                         # shellcheck disable=SC2216
-                                                                                                                                                        ${ script }
+                                                                                                                                                        exec ${ script }
                                                                                                                                                     fi
                                                                                                                                                 '' ;
                                                                                                                                 } ;
