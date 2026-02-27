@@ -479,12 +479,11 @@
                                                                                                                                                     ${ builtins.concatStringsSep "\n" ( builtins.map ( name : ''export ${ name }="${ builtins.concatStringsSep "" [ "$" name ] }"'' ) environment ) }
                                                                                                                                                     if "$HAS_STANDARD_INPUT"
                                                                                                                                                     then
+                                                                                                                                                        echo 7e1212fd c6a127c3 >> /tmp/DEBUG
+                                                                                                                                                        exec ${ script } <<< "$STANDARD_INPUT"
+                                                                                                                                                    else
                                                                                                                                                         echo 7e1212fd ee3a2148 >> /tmp/DEBUG
                                                                                                                                                         exec ${ script }
-                                                                                                                                                    else
-                                                                                                                                                        echo 7e1212fd c6a127c3 >> /tmp/DEBUG
-                                                                                                                                                        # shellcheck disable=SC2216
-                                                                                                                                                        exec ${ script } <<< "$STANDARD_INPUT"
                                                                                                                                                     fi
                                                                                                                                                 '' ;
                                                                                                                                 } ;
