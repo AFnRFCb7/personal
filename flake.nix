@@ -480,7 +480,7 @@
                                                                                                                                                     if "$HAS_STANDARD_INPUT"
                                                                                                                                                     then
                                                                                                                                                         echo 7e1212fd c6a127c3 >> /tmp/DEBUG
-                                                                                                                                                        ${ script } <<< "$STANDARD_INPUT"
+                                                                                                                                                        echo "$STANDARD_INPUT" | ${ script }
                                                                                                                                                     else
                                                                                                                                                         echo 7e1212fd ee3a2148 >> /tmp/DEBUG
                                                                                                                                                         ${ script }
