@@ -2250,6 +2250,7 @@
                                                                                                                 git remote add ssh github.com:${ config.personal.secrets.organization }/${ config.personal.secrets.repository }
                                                                                                                 git fetch https main 2>&1
                                                                                                                 git checkout https/main 2>&1
+                                                                                                                git checkout -b main 2>&1
                                                                                                                 mkdir --parents /mount/plain/dot-gnupg
                                                                                                                 mkdir --parents /mount/plain/dot-ssh/github
                                                                                                                 mkdir --parents /mount/plain/dot-ssh/mobile
