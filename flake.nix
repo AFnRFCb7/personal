@@ -470,10 +470,10 @@
                                                                                                                                                     if [[ -t 0 ]]
                                                                                                                                                     then
                                                                                                                                                         HAS_STANDARD_INPUT=true
-                                                                                                                                                        HAS_STANDARD_INPUT="$( cat )" || failure nc2a57f68
+                                                                                                                                                        STANDARD_INPUT="$( cat )" || failure nc2a57f68
                                                                                                                                                     else
-                                                                                                                                                        ${ has-standard-input }=false
-                                                                                                                                                        ${ standard-input }=
+                                                                                                                                                        HAS_STANDARD_INPUT=false
+                                                                                                                                                        STANDARD_INPUT=
                                                                                                                                                     fi
                                                                                                                                                     ${ builtins.concatStringsSep "\n" ( builtins.map ( value : "${ value.name }=${ value.string } # ${ builtins.toString value.oid }" ) sorted ) }
                                                                                                                                                     ${ builtins.concatStringsSep "\n" ( builtins.map ( name : ''export ${ name }="${ builtins.concatStringsSep "" [ "$" name ] }"'' ) environment ) }
