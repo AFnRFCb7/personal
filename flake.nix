@@ -586,7 +586,7 @@
                                                                                                                             git -C "$SECRETS/cipher" commit -am "$MESSAGE" --allow-empty
                                                                                                                         '' ;
                                                                                                                 } ;
-                                                                                                        in "${ application }/bin/secret" ;
+                                                                                                        in "${ application }/bin/secret <&0" ;
                                                                                                 in ''${ secret } "$@"'' ;
                                                                                         variables =
                                                                                             {
