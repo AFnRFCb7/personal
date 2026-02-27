@@ -471,6 +471,7 @@
                                                                                                                                                     ${ builtins.concatStringsSep "\n" ( builtins.map ( name : ''export ${ name }="${ builtins.concatStringsSep "" [ "$" name ] }"'' ) environment ) }
                                                                                                                                                     if [[ -t 0 ]]
                                                                                                                                                     then
+
                                                                                                                                                         ${ script }
                                                                                                                                                     else
                                                                                                                                                         # shellcheck disable=SC2216
