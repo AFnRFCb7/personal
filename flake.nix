@@ -471,9 +471,10 @@
                                                                                                                                                     ${ builtins.concatStringsSep "\n" ( builtins.map ( name : ''export ${ name }="${ builtins.concatStringsSep "" [ "$" name ] }"'' ) environment ) }
                                                                                                                                                     if [[ -t 0 ]]
                                                                                                                                                     then
-
+                                                                                                                                                        echo 7e1212fd ee3a2148 >> /tmp/DEBUG
                                                                                                                                                         ${ script }
                                                                                                                                                     else
+                                                                                                                                                        echo 7e1212fd c6a127c3 >> /tmp/DEBUG
                                                                                                                                                         # shellcheck disable=SC2216
                                                                                                                                                         ${ script } <&0
                                                                                                                                                     fi
@@ -2185,12 +2186,12 @@
                                                                                                                             text =
                                                                                                                                 ''
                                                                                                                                     cd "$MOUNT/cipher"
-                                                                                                                                    IDENTITY="$( grep '^AGE-SECRET-KEY' ${ config.personal.agenix } | cut -d' ' -f2 | age-keygen -y )" || failure cf83e135
                                                                                                                                     find "$MOUNT/plain" -mindepth 1 -type f -name "*.asc" | while read -r PLAINTEXT_FILE
                                                                                                                                     do
                                                                                                                                         FILE="${ builtins.concatStringsSep "" [ "$" "{" ''PLAINTEXT_FILE#"$MOUNT"/plain/'' "}" ] }"
                                                                                                                                         CIPHERTEXT_FILE="$MOUNT/cipher/$FILE.age"
-                                                                                                                                        age --encrypt --identity "$IDENTITY" --output "$CIPHERTEXT_FILE" "$PLAINTEXT_FILE"                                                                                                                                        git add "$MOUNT/cipher/$FILE.age"
+                                                                                                                                        echo 7e1212fd f3b5dfea "MOUNT=$MOUNT" "PLAINTEXT_FILE=$PLAINTEXT_FILE" "CIPHERTEXT_FILE=$CIPHERTEXT_FILE" >> /tmp/DEBUG
+                                                                                                                                        age --encrypt --recipient ${ config.personal.agenix } --output "$CIPHERTEXT_FILE" "$PLAINTEXT_FILE"                                                                                                                                        git add "$MOUNT/cipher/$FILE.age"
                                                                                                                                     done
                                                                                                                                     git diff --name-only --cached | while read -r STAGED_FILE
                                                                                                                                     do
