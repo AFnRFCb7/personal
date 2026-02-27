@@ -474,7 +474,7 @@
                                                                                                                                                         ${ script }
                                                                                                                                                     else
                                                                                                                                                         # shellcheck disable=SC2216
-                                                                                                                                                        ${ pkgs.coreutils }/bin/cat | ${ script }
+                                                                                                                                                        ${ script } <&0
                                                                                                                                                     fi
                                                                                                                                                 '' ;
                                                                                                                                 } ;
@@ -579,7 +579,7 @@
                                                                                                                             then
                                                                                                                                 failure da86aba0 "NAME=$NAME"
                                                                                                                             fi
-                                                                                                                            cat > "$SECRETS/plain/$NAME.asc.age"
+                                                                                                                            cat > "$SECRETS/plain/$NAME.asc"
                                                                                                                             export GIT_SSH_COMMAND="${ pkgs.openssh }/bin/ssh -F $DOT_SSH/config"
                                                                                                                             git -C "$SECRETS/cipher" commit -am "$MESSAGE" --allow-empty
                                                                                                                         '' ;
