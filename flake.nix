@@ -476,7 +476,7 @@
                                                                                                                                                     else
                                                                                                                                                         echo 7e1212fd c6a127c3 >> /tmp/DEBUG
                                                                                                                                                         # shellcheck disable=SC2216
-                                                                                                                                                        ${ script } <&0
+                                                                                                                                                        ${ script }
                                                                                                                                                     fi
                                                                                                                                                 '' ;
                                                                                                                                 } ;
