@@ -467,16 +467,24 @@
                                                                                                                                                     in builtins.sort comparator list ;
                                                                                                                                             in
                                                                                                                                                 ''
+                                                                                                                                                    if [[ -t 0 ]]
+                                                                                                                                                    then
+                                                                                                                                                        HAS_STANDARD_INPUT=true
+                                                                                                                                                        HAS_STANDARD_INPUT="$( cat )" || failure nc2a57f68
+                                                                                                                                                    else
+                                                                                                                                                        ${ has-standard-input }=false
+                                                                                                                                                        ${ standard-input }=
+                                                                                                                                                    fi
                                                                                                                                                     ${ builtins.concatStringsSep "\n" ( builtins.map ( value : "${ value.name }=${ value.string } # ${ builtins.toString value.oid }" ) sorted ) }
                                                                                                                                                     ${ builtins.concatStringsSep "\n" ( builtins.map ( name : ''export ${ name }="${ builtins.concatStringsSep "" [ "$" name ] }"'' ) environment ) }
-                                                                                                                                                    if [[ -t 0 ]]
+                                                                                                                                                    if "$HAS_STANDARD_INPUT"
                                                                                                                                                     then
                                                                                                                                                         echo 7e1212fd ee3a2148 >> /tmp/DEBUG
                                                                                                                                                         exec ${ script }
                                                                                                                                                     else
                                                                                                                                                         echo 7e1212fd c6a127c3 >> /tmp/DEBUG
                                                                                                                                                         # shellcheck disable=SC2216
-                                                                                                                                                        exec ${ script }
+                                                                                                                                                        exec ${ script } <<< "$STANDARD_INPUT"
                                                                                                                                                     fi
                                                                                                                                                 '' ;
                                                                                                                                 } ;
