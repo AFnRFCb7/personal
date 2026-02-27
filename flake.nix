@@ -572,8 +572,8 @@
                                                                                                                     runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.nano ] ;
                                                                                                                     text =
                                                                                                                         ''
-                                                                                                                            # d38bd06d
                                                                                                                             NAME="$1"
+                                                                                                                            MESSAGE="$2"
                                                                                                                             ALLOWED=( "dot-gnupg/ownertrust" "dot-gnupg/secret-keys" "dot-ssh/github/known-hosts" "dot-ssh/github/identity" "dot-ssh/mobile/known-hosts" "dot-ssh/mobile/identity" "github/token" )
                                                                                                                             if [[ ! "${ builtins.concatStringsSep "" [ "$" "{" "ALLOWED[*]" "}" ] }" =~ $NAME ]]
                                                                                                                             then
@@ -581,7 +581,7 @@
                                                                                                                             fi
                                                                                                                             cat > "$SECRETS/plain/$NAME.asc.age"
                                                                                                                             export GIT_SSH_COMMAND="${ pkgs.openssh }/bin/ssh -F $DOT_SSH/config"
-                                                                                                                            git -C "$SECRETS/cipher" commit --allow-empty --verbose
+                                                                                                                            git -C "$SECRETS/cipher" commit -am "$MESSAGE" --allow-empty
                                                                                                                         '' ;
                                                                                                                 } ;
                                                                                                         in "${ application }/bin/secret" ;
