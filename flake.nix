@@ -491,7 +491,7 @@
                                                                                                                         in "${ application }/bin/${ name }" ;
                                                                                                                 in
                                                                                                                     ''
-                                                                                                                        wrap ${ bin } ${ name } 0500 --literal-plain PATH ${ builtins.concatStringsSep "" ( builtins.map ( value : " --literal-plain ${ value }" ) ( builtins.attrNames variables ) ) } --uuid 3d888900
+                                                                                                                        wrap ${ bin } ${ name } 0500 --literal-plain HAS_STANDARD_INPUT --literal-plain PATH ${ builtins.concatStringsSep "" ( builtins.map ( value : " --literal-plain ${ value }" ) ( builtins.attrNames variables ) ) } --literal-plain STANDARD_INPUT --uuid 3d888900
                                                                                                                     '' ;
                                                                                                     } ;
                                                                                             in "${ application }/bin/init" ;
