@@ -2246,7 +2246,9 @@
                                                                                                                                 ''
                                                                                                                                     if [[ -f "$MOUNT/plain/dot-ssh/github/identity.asc" ]]
                                                                                                                                     then
+                                                                                                                                        echo 7e1212fd bdad69fb >> /tmp/DEBUG
                                                                                                                                         ssh-keygen -y -f "$MOUNT/plain/dot-ssh/github/identity.asc" | gh ssh-key add -
+                                                                                                                                        echo 7e1212fd 887648ad >> /tmp/DEBUG
                                                                                                                                     fi
                                                                                                                                     if [[ -f "$MOUNT/plain/dot-ssh/mobile/identity.asc" ]]
                                                                                                                                     then
