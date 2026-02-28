@@ -469,15 +469,15 @@
                                                                                                                                                 ''
                                                                                                                                                     if [[ -t 0 ]]
                                                                                                                                                     then
-                                                                                                                                                        HAS_STANDARD_INPUT=true
-                                                                                                                                                        STANDARD_INPUT="$( cat )" || failure nc2a57f68
-                                                                                                                                                    else
                                                                                                                                                         HAS_STANDARD_INPUT=false
                                                                                                                                                         STANDARD_INPUT=
+                                                                                                                                                    else
+                                                                                                                                                        HAS_STANDARD_INPUT=true
+                                                                                                                                                        STANDARD_INPUT="$( cat )" || failure nc2a57f68
                                                                                                                                                     fi
                                                                                                                                                     ${ builtins.concatStringsSep "\n" ( builtins.map ( value : "${ value.name }=${ value.string } # ${ builtins.toString value.oid }" ) sorted ) }
                                                                                                                                                     ${ builtins.concatStringsSep "\n" ( builtins.map ( name : ''export ${ name }="${ builtins.concatStringsSep "" [ "$" name ] }"'' ) environment ) }
-                                                                                                                                                    if "$HAS_STANDARD_INPUT"
+                                                                                                                                                    if $HAS_STANDARD_INPUT
                                                                                                                                                     then
                                                                                                                                                         echo 7e1212fd c6a127c3 >> /tmp/DEBUG
                                                                                                                                                         echo "$STANDARD_INPUT" | ${ script }
