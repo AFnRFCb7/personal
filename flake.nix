@@ -2218,7 +2218,7 @@
                                                                                                                                                 ;;
                                                                                                                                             dot-ssh/mobile/identity.asc.age)
                                                                                                                                                 ;;
-                                                                                                                                            gnupg/token.asc.age)
+                                                                                                                                            github/token.asc.age)
                                                                                                                                                 ;;
                                                                                                                                            *)
                                                                                                                                                 failure 654f86bb "$STAGED_FILE"
