@@ -136,6 +136,9 @@
                                                                                                                             runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                                             text =
                                                                                                                                 ''
+                                                                                                                                    TOKEN=${ resources.production.secret.github.token { failure = 9408 ; } }
+                                                                                                                                    echo "TOKEN=$TOKEN/plaintext"
+                                                                                                                                    cat "$TOKEN/plaintext"
                                                                                                                                     echo bin
                                                                                                                                 '' ;
                                                                                                                         } ;
