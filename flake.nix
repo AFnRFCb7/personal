@@ -141,7 +141,6 @@
                                                                                                                                     cat "$TOKEN/plaintext"
                                                                                                                                     echo bin
                                                                                                                                 '' ;
-                                                                                                                                '' ;
                                                                                                                         } ;
                                                                                                                 in "${ application }/bin/bin" ;
                                                                                                         in
