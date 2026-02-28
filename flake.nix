@@ -2030,7 +2030,7 @@
                                                                                                                                                                                     TOKEN=${ resources.production.secret.github.token { failure = "failure 271f8c4f" ; } }
                                                                                                                                                                                     cat >> /tmp/DEBUG <<EOF
                                                                                                                                                                                     gh auth login --with-token < "$TOKEN/plaintext"
-                                                                                                                                                                                    EOF
+                                                                                                                                                                                EOF
                                                                                                                                                                                     gh auth login --with-token < "$TOKEN/plaintext"
                                                                                                                                                                                     if ! gh label list --json name --jq '.[].name' | grep -qx snapshot
                                                                                                                                                                                     then
