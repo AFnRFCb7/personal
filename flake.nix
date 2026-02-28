@@ -53,7 +53,7 @@
                                             zstd = pkgs.zstd ;
                                         } ;
                             _resource-logger =
-                                resource
+                                resource.lib
                                     {
                                         failure = failure ;
                                         pkgs = pkgs ;
