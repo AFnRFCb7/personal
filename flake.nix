@@ -2794,7 +2794,7 @@
                                                                                                                     } ;
                                                                                                         } ;
                                                                                                     in "${ application }/bin/ExecStart" ;
-                                                                                        user = config.personal.name ;
+                                                                                        User = config.personal.name ;
                                                                                     } ;
                                                                             } ;
                                                                     } ;
