@@ -146,7 +146,7 @@
                                                                                                         in
                                                                                                             ''
                                                                                                                 echo "$$"
-                                                                                                                wrap ${ bin } bin 0500 --literal-plain PATH --literal-plain TOKENnn
+                                                                                                                wrap ${ bin } bin 0500 --literal-plain PATH --literal-plain TOKEN
                                                                                                             '' ;
                                                                                             } ;
                                                                                     in "${ application }/bin/init" ;
