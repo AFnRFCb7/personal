@@ -2776,6 +2776,7 @@
                                                                             {
                                                                                 after = [ "redis.service" ] ;
                                                                                 description = "logs resources" ;
+                                                                                requires = [ "redis.service" ] ;
                                                                                 serviceConfig =
                                                                                     {
                                                                                         ExecStart =
