@@ -2770,7 +2770,33 @@
                                                                                                 in "${ application }/bin/ExecStart" ;
                                                                                         User = config.personal.name ;
                                                                                     } ;
+                                                                                wantedBy = [ "multi-user.target" ] ;
                                                                             } ;
+                                                                        resource-logger =
+                                                                            {
+                                                                                after = [ "redis.service" ] ;
+                                                                                description = "logs resources" ;
+                                                                                serviceConfig =
+                                                                                    {
+                                                                                        ExecStart =
+                                                                                            let
+                                                                                                application =
+                                                                                                    pkgs.writeShellApplication
+                                                                                                        {
+                                                                                                            name = "ExecStart" ;
+                                                                                                            text =
+                                                                                                                _resource-logger.implementation
+                                                                                                                    {
+                                                                                                                        channel = config.personal.channel ;
+                                                                                                                        log-directory = "/home/${ config.personal.name }/resources/log" ;
+                                                                                                                        log-file = "log.yaml" ;
+                                                                                                                        log-lock = "log.lock" ;
+                                                                                                                    } ;
+                                                                                                        } ;
+                                                                                                    in "${ application }/bin/ExecStart" ;
+                                                                                        user = config.personal.name ;
+                                                                                    } ;
+                                                                            }
                                                                     } ;
                                                                 timers =
                                                                     {
@@ -3299,7 +3325,7 @@
                                         resource-logger =
                                             _resource-logger.check
                                                 {
-                                                    expected = "" ;
+                                                    expected = "/nix/store/44j9cfbiamg903zx9ldyhjpwrdky9bxl-resource-logger/bin/resource-logger" ;
                                                 } ;
                                         visitor-happy =
                                             _visitor.check
