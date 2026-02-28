@@ -3296,6 +3296,11 @@
                                                             ] ;
                                                         transient = false ;
                                                   } ;
+                                        resource-logger =
+                                            _resource-logger.check
+                                                {
+                                                    expected = "" ;
+                                                } ;
                                         visitor-happy =
                                             _visitor.check
                                                 {
