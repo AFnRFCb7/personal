@@ -1,4 +1,4 @@
-# 616a7f1f
+# 727688ed
 {
     inputs =
         {
@@ -18,8 +18,6 @@
                     } @primary :
                         let
                             _failure = failure.lib { coreutils = pkgs.coreutils ; jq = pkgs.jq ; mkDerivation = pkgs.stdenv.mkDerivation ; visitor = visitor ; writeShellApplication = pkgs.writeShellApplication ; yq-go = pkgs.yq-go ; } ;
-                            __failure = _failure.implementation "7fef1fe4" ;
-                            ___failure = uuid : "${ __failure }/bin/failure ${ uuid }" ;
                             _resource =
                                 {
                                     channel ,
@@ -35,20 +33,23 @@
                                             failure = _failure.implementation "f135add3" ;
                                             findutils = pkgs.findutils ;
                                             flock = pkgs.flock ;
+                                            gnutar = pkgs.gnutar ;
+                                            inotify-tools = pkgs.inotify-tools ;
                                             jq = pkgs.jq ;
                                             makeWrapper = pkgs.makeWrapper ;
                                             mkDerivation = pkgs.stdenv.mkDerivation ;
                                             nix = pkgs.nix ;
-                                            originator-pid-variable = "c8f5d41a0628fd3c396fe940332263f7cd53f0caa6b656e12466dfdcb4173a6c0537736ab0bc1a37344a748febdd1eab5cc65c20493218afb606dc4c74b4e38d" ;
                                             ps = pkgs.ps ;
                                             redis = pkgs.redis ;
                                             resources = resources ;
                                             resources-directory = resources-directory ;
                                             sequential-start = ''$( head /dev/urandom | tr -dc '1-9' | head -c 15 )'' ;
                                             root-directory = root-directory ;
+                                            util-linux = pkgs.util-linux ;
                                             visitor = _visitor.implementation ;
                                             writeShellApplication = pkgs.writeShellApplication ;
                                             yq-go = pkgs.yq-go ;
+                                            zstd = pkgs.zstd ;
                                         } ;
                             _visitor = visitor.lib { } ;
                             identity =
@@ -78,7 +79,7 @@
                             user =
                                 { config , lib , pkgs , ... } :
                                     let
-                                        resources__ =
+                                        resources =
                                             _visitor.implementation
                                                 {
                                                     lambda =
@@ -89,17 +90,18 @@
                                                                     _resource
                                                                         {
                                                                             channel = config.personal.channel ;
-                                                                            resources = resources__ ;
+                                                                            resources = resources ;
                                                                             resources-directory = "/home/${ config.personal.name }/resources" ;
                                                                             root-directory = "/home/${ config.personal.name }/.gc-roots" ;
                                                                         } ;
                                                                     in
                                                                         r.implementation
                                                                             {
+                                                                                depth = point.depth or 0 ;
                                                                                 init = point.init or null ;
-                                                                                init-resolutions = point.init-resolutions or null ;
+                                                                                init-resolutions = point.init-resolutions or [ ] ;
                                                                                 release = point.release or null ;
-                                                                                release-resolutions = point.release-resolutions or null ;
+                                                                                release-resolutions = point.release-resolutions or [ ] ;
                                                                                 seed =
                                                                                     ( point.seed or { } ) //
                                                                                     {
@@ -112,11 +114,49 @@
                                                 {
                                                     foobar =
                                                         {
+                                                            bin =
+                                                                ignore :
+                                                                    {
+                                                                        init =
+                                                                            { failure , pkgs , resources , root , seed , sequential , wrap } :
+                                                                                let
+                                                                                    application =
+                                                                                        pkgs.writeShellApplication
+                                                                                            {
+                                                                                                name = "init" ;
+                                                                                                runtimeInputs = [ pkgs.coreutils wrap ] ;
+                                                                                                text =
+                                                                                                    let
+                                                                                                        bin =
+                                                                                                            let
+                                                                                                                application =
+                                                                                                                    pkgs.writeShellApplication
+                                                                                                                        {
+                                                                                                                            name = "bin" ;
+                                                                                                                            runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                                            text =
+                                                                                                                                ''
+                                                                                                                                    TOKEN=${ resources.production.secret.github.token { failure = 9408 ; } }
+                                                                                                                                    echo "TOKEN=$TOKEN/plaintext"
+                                                                                                                                    cat "$TOKEN/plaintext"
+                                                                                                                                    echo bin
+                                                                                                                                '' ;
+                                                                                                                        } ;
+                                                                                                                in "${ application }/bin/bin" ;
+                                                                                                        in
+                                                                                                            ''
+                                                                                                                echo "$$"
+                                                                                                                wrap ${ bin } bin 0500 --literal-plain PATH --literal-plain TOKEN
+                                                                                                            '' ;
+                                                                                            } ;
+                                                                                    in "${ application }/bin/init" ;
+                                                                        targets = [ "bin" ] ;
+                                                                    } ;
                                                             foobar =
                                                                 ignore :
                                                                     {
                                                                         init =
-                                                                            { failure , pid , pkgs , resources , root , seed , sequential , wrap } :
+                                                                            { failure , pkgs , resources , root , seed , sequential , wrap } :
                                                                                 let
                                                                                     application =
                                                                                         pkgs.writeShellApplication
@@ -176,7 +216,7 @@
                                                                 ignore :
                                                                     {
                                                                         init =
-                                                                            { failure , pid , pkgs , resources , root , seed , sequential , wrap } :
+                                                                            { failure , pkgs , resources , root , seed , sequential , wrap } :
                                                                                 let
                                                                                     application =
                                                                                         pkgs.writeShellApplication
@@ -198,13 +238,13 @@
                                                                         ignore :
                                                                             {
                                                                                 init =
-                                                                                    { failure , pid , pkgs , resources , root , seed , sequential , wrap } :
+                                                                                    { failure , pkgs , resources , root , seed , sequential , wrap } :
                                                                                         let
                                                                                             application =
                                                                                                 pkgs.writeShellApplication
                                                                                                     {
                                                                                                         name = "init" ;
-                                                                                                        runtimeInputs = [ root __failure ] ;
+                                                                                                        runtimeInputs = [ root failure ] ;
                                                                                                         text =
                                                                                                             ''
                                                                                                                 CONFIG=${ resources.production.repository.pads.home.chromium.data { failure = "failure 0c755ed8" ; } }
@@ -226,7 +266,7 @@
                                                                         ignore :
                                                                             {
                                                                                 init =
-                                                                                    { failure , pid , pkgs , resources , root , seed , sequential , wrap } :
+                                                                                    { failure , pkgs , resources , root , seed , sequential , wrap } :
                                                                                         let
                                                                                             application =
                                                                                                 pkgs.writeShellApplication
@@ -246,7 +286,7 @@
                                                                         ignore :
                                                                             {
                                                                                 init =
-                                                                                    { failure , pid , pkgs , resources , root , seed , sequential , wrap } :
+                                                                                    { failure , pkgs , resources , root , seed , sequential , wrap } :
                                                                                         let
                                                                                             application =
                                                                                                 pkgs.writeShellApplication
@@ -264,7 +304,7 @@
                                                                                                                                     runtimeInputs = [ pkgs.gnupg ] ;
                                                                                                                                     text =
                                                                                                                                         ''
-                                                                                                                                            DOT_GNUPG=${ resources__.production.dot-gnupg { failure = "failure 75dc4165" ; } }
+                                                                                                                                            DOT_GNUPG=${ resources.production.dot-gnupg { failure = "failure 75dc4165" ; } }
                                                                                                                                             export GNUPGHOME="$DOT_GNUPG/dot-gnupg"
                                                                                                                                             gpg --homedir "$GNUPGHOME" --sign --local-user ${ config.personal.chromium.home.data.email } --dry-run
                                                                                                                                         '' ;
@@ -283,7 +323,7 @@
                                                                 ignore :
                                                                     {
                                                                         init =
-                                                                            { failure , pid , pkgs , resources , root , seed , sequential , wrap } :
+                                                                            { failure , pkgs , resources , root , seed , sequential , wrap } :
                                                                                 let
                                                                                     application =
                                                                                         pkgs.writeShellApplication
@@ -306,8 +346,9 @@
                                                                                  hash = builtins.hashString "sha512" "${ name }${ value }" ;
                                                                                  in
                                                                                      {
+                                                                                        depth = 1 ;
                                                                                          init =
-                                                                                             { failure , pid , pkgs , resources , root , seed , sequential , wrap } :
+                                                                                             { failure , pkgs , resources , root , seed , sequential , wrap } :
                                                                                                  let
                                                                                                      application =
                                                                                                          pkgs.writeShellApplication
@@ -344,7 +385,7 @@
                                                                                 autocomplete
                                                                                     "pass"
                                                                                     ''
-                                                                                        RESOURCE=${ resources__.production.repository.pass { } }
+                                                                                        RESOURCE=${ resources.production.repository.pass { } }
                                                                                         export PASSWORD_STORE_DIR="$RESOURCE/repository"
                                                                                         # shellcheck disable=SC1091
                                                                                         source ${ pkgs.pass }/share/bash-completion/completions/pass
@@ -383,8 +424,9 @@
                                                                     bin =
                                                                         { name , environment , runtimeInputs , script , variables } : ignore :
                                                                             {
+                                                                                depth = 1 ;
                                                                                 init =
-                                                                                    { failure , pid , pkgs , resources , root , seed , sequential , wrap } :
+                                                                                    { failure , pkgs , resources , root , seed , sequential , wrap } :
                                                                                         let
                                                                                             application =
                                                                                                 pkgs.writeShellApplication
@@ -428,21 +470,28 @@
                                                                                                                                                     in builtins.sort comparator list ;
                                                                                                                                             in
                                                                                                                                                 ''
-                                                                                                                                                    ${ builtins.concatStringsSep "\n" ( builtins.map ( value : "${ value.name }=${ value.string } # ${ builtins.toString value.oid }" ) sorted ) }
-                                                                                                                                                    ${ builtins.concatStringsSep "\n" ( builtins.map ( name : ''export ${ name }="${ builtins.concatStringsSep "" [ "$" name ] }"'' ) environment ) }
                                                                                                                                                     if [[ -t 0 ]]
                                                                                                                                                     then
-                                                                                                                                                        ${ script }
+                                                                                                                                                        HAS_STANDARD_INPUT=false
+                                                                                                                                                        STANDARD_INPUT=
                                                                                                                                                     else
-                                                                                                                                                        # shellcheck disable=SC2216
-                                                                                                                                                        ${ pkgs.coreutils }/bin/cat | ${ script }
+                                                                                                                                                        HAS_STANDARD_INPUT=true
+                                                                                                                                                        STANDARD_INPUT="$( cat )" || failure nc2a57f68
+                                                                                                                                                    fi
+                                                                                                                                                    ${ builtins.concatStringsSep "\n" ( builtins.map ( value : "${ value.name }=${ value.string } # ${ builtins.toString value.oid }" ) sorted ) }
+                                                                                                                                                    ${ builtins.concatStringsSep "\n" ( builtins.map ( name : ''export ${ name }="${ builtins.concatStringsSep "" [ "$" name ] }"'' ) environment ) }
+                                                                                                                                                    if $HAS_STANDARD_INPUT
+                                                                                                                                                    then
+                                                                                                                                                        echo "$STANDARD_INPUT" | ${ script }
+                                                                                                                                                    else
+                                                                                                                                                        ${ script }
                                                                                                                                                     fi
                                                                                                                                                 '' ;
                                                                                                                                 } ;
                                                                                                                         in "${ application }/bin/${ name }" ;
                                                                                                                 in
                                                                                                                     ''
-                                                                                                                        wrap ${ bin } ${ name } 0500 --literal-plain PATH ${ builtins.concatStringsSep "" ( builtins.map ( value : " --literal-plain ${ value }" ) ( builtins.attrNames variables ) ) } --uuid 3d888900
+                                                                                                                        wrap ${ bin } ${ name } 0500 --literal-plain HAS_STANDARD_INPUT --literal-plain PATH ${ builtins.concatStringsSep "" ( builtins.map ( value : " --literal-plain ${ value }" ) ( builtins.attrNames variables ) ) } --literal-plain STANDARD_INPUT --uuid 3d888900
                                                                                                                     '' ;
                                                                                                     } ;
                                                                                             in "${ application }/bin/init" ;
@@ -463,8 +512,8 @@
                                                                                         script = ''chromium "$@"'' ;
                                                                                         variables =
                                                                                             {
-                                                                                                XDG_CONFIG_HOME_RESOURCE = resources : resources.production.volume.chromium.config { failure = ___failure "a9192261" ; } ;
-                                                                                                XDG_DATA_HOME_RESOURCE = resources : resources.production.volume.chromium.data { failure = ___failure "e55856e2" ; } ;
+                                                                                                XDG_CONFIG_HOME_RESOURCE = resources : resources.production.volume.chromium.config { } ;
+                                                                                                XDG_DATA_HOME_RESOURCE = resources : resources.production.volume.chromium.data { } ;
                                                                                                 XDG_CONFIG_HOME = resources : "$XDG_CONFIG_HOME_RESOURCE/secret" ;
                                                                                                 XDG_DATA_HOME = resources : "$XDG_DATA_HOME_RESOURCE/secret" ;
                                                                                             } ;
@@ -481,7 +530,7 @@
                                                                                         script = ''gpg --homedir "$GNUPGHOME" "$@"'' ;
                                                                                         variables =
                                                                                             {
-                                                                                                DOT_GNUPG = resources : resources.production.dot-gnupg { failure = ___failure "44eb225c" ; } ;
+                                                                                                DOT_GNUPG = resources : resources.production.dot-gnupg { } ;
                                                                                                 GNUPGHOME = resources : "$DOT_GNUPG/dot-gnupg" ;
                                                                                             } ;
                                                                                     } ;
@@ -494,7 +543,7 @@
                                                                                         script = ''idea-community "$RESOURCE/repository" "$@"'' ;
                                                                                         variables =
                                                                                             {
-                                                                                                RESOURCE = resources : resources.production.repository.studio.entry { failure = ___failure "560f61b9" ; } ;
+                                                                                                RESOURCE = resources : resources.production.repository.studio.entry { } ;
                                                                                             } ;
                                                                                     } ;
                                                                             pass =
@@ -510,8 +559,8 @@
                                                                                         script = ''pass "$@"'' ;
                                                                                         variables =
                                                                                             {
-                                                                                                DOT_GNUPG = resources : resources.production.dot-gnupg { failure = ___failure "f68dcf20" ; } ;
-                                                                                                RESOURCE = resources : resources.production.repository.pass { failure = ___failure "cf87710c" ; } ;
+                                                                                                DOT_GNUPG = resources : resources.production.dot-gnupg { } ;
+                                                                                                RESOURCE = resources : resources.production.repository.pass { } ;
                                                                                                 PASSWORD_STORE_GPG_OPTS = resources : ''"--homedir $DOT_GNUPG/dot-gnupg"'' ;
                                                                                                 PASSWORD_STORE_DIR = resources : "$RESOURCE/repository " ;
                                                                                             } ;
@@ -530,19 +579,19 @@
                                                                                                             pkgs.writeShellApplication
                                                                                                                 {
                                                                                                                     name = "secret" ;
-                                                                                                                    runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
+                                                                                                                    runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.nano ] ;
                                                                                                                     text =
                                                                                                                         ''
-                                                                                                                            # d38bd06d
                                                                                                                             NAME="$1"
+                                                                                                                            MESSAGE="$2"
                                                                                                                             ALLOWED=( "dot-gnupg/ownertrust" "dot-gnupg/secret-keys" "dot-ssh/github/known-hosts" "dot-ssh/github/identity" "dot-ssh/mobile/known-hosts" "dot-ssh/mobile/identity" "github/token" )
                                                                                                                             if [[ ! "${ builtins.concatStringsSep "" [ "$" "{" "ALLOWED[*]" "}" ] }" =~ $NAME ]]
                                                                                                                             then
                                                                                                                                 failure da86aba0 "NAME=$NAME"
                                                                                                                             fi
-                                                                                                                            cat > "$SECRETS/plain/$NAME.asc.age"
+                                                                                                                            cat > "$SECRETS/plain/$NAME.asc"
                                                                                                                             export GIT_SSH_COMMAND="${ pkgs.openssh }/bin/ssh -F $DOT_SSH/config"
-                                                                                                                            git -C "$SECRETS/cipher" commit --verbose
+                                                                                                                            git -C "$SECRETS/cipher" commit -am "$MESSAGE" --allow-empty
                                                                                                                         '' ;
                                                                                                                 } ;
                                                                                                         in "${ application }/bin/secret" ;
@@ -562,7 +611,7 @@
                                                                                         script = ''ssh -F "$DOT_SSH/config" "$@"'' ;
                                                                                         variables =
                                                                                             {
-                                                                                                DOT_SSH = resources : resources.production.dot-ssh { failure = ___failure "73be674b" ; } ;
+                                                                                                DOT_SSH = resources : resources.production.dot-ssh { } ;
                                                                                             } ;
                                                                                     } ;
                                                                         } ;
@@ -571,13 +620,13 @@
                                                                 ignore :
                                                                     {
                                                                         init =
-                                                                            { failure , pid , pkgs , resources , root , seed , sequential , wrap } :
+                                                                            { failure , pkgs , resources , root , seed , sequential , wrap } :
                                                                                 let
                                                                                     application =
                                                                                         pkgs.writeShellApplication
                                                                                             {
                                                                                                 name = "init" ;
-                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.gnupg ( ___failure "428d8579" ) ] ;
+                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.gnupg failure ] ;
                                                                                                 text =
                                                                                                     ''
                                                                                                         OWNERTRUST=${ resources.production.secret.dot-gnupg.ownertrust { failure = "failure 4f690149" ; } }
@@ -598,13 +647,13 @@
                                                                 ignore :
                                                                     {
                                                                         init =
-                                                                            { failure , pid , pkgs , resources , root , seed , sequential , wrap } :
+                                                                            { failure , pkgs , resources , root , seed , sequential , wrap } :
                                                                                 let
                                                                                     application =
                                                                                         pkgs.writeShellApplication
                                                                                             {
                                                                                                 name = "init" ;
-                                                                                                runtimeInputs = [ root wrap ( ___failure "ff7d31ef" )] ;
+                                                                                                runtimeInputs = [ root wrap failure ] ;
                                                                                                 text =
                                                                                                     let
                                                                                                         ssh-config =
@@ -656,7 +705,7 @@
                                                                         ignore :
                                                                             {
                                                                                 init =
-                                                                                    { failure , pid , pkgs , resources , root , seed , sequential , wrap } :
+                                                                                    { failure , pkgs , resources , root , seed , sequential , wrap } :
                                                                                         let
                                                                                             application =
                                                                                                 pkgs.writeShellApplication
@@ -684,7 +733,7 @@
                                                                         ignore :
                                                                             {
                                                                                 init =
-                                                                                    { failure , pid , pkgs , resources , root , seed , sequential , wrap } :
+                                                                                    { failure , pkgs , resources , root , seed , sequential , wrap } :
                                                                                         let
                                                                                             application =
                                                                                                 pkgs.writeShellApplication
@@ -724,8 +773,9 @@
                                                                             administration ? null
                                                                         } : ignore :
                                                                             {
+                                                                                depth = 1 ;
                                                                                 init =
-                                                                                    { failure , pid , pkgs , resources , root , seed , sequential , wrap } :
+                                                                                    { failure , pkgs , resources , root , seed , sequential , wrap } :
                                                                                         let
                                                                                             application =
                                                                                                 pkgs.writeShellApplication
@@ -1496,7 +1546,7 @@
                                                                                 ignore :
                                                                                     {
                                                                                         init =
-                                                                                            { failure , pid , pkgs , resources , root , seed , sequential , wrap } :
+                                                                                            { failure , pkgs , resources , root , seed , sequential , wrap } :
                                                                                                 let
                                                                                                     application =
                                                                                                         pkgs.writeShellApplication
@@ -1525,7 +1575,7 @@
                                                                                                                             ''
                                                                                                                                 mkdir --parents /mount/repository
                                                                                                                                 cd /mount/repository
-                                                                                                                                git init
+                                                                                                                                git init 2>&1
                                                                                                                                 root ${ pkgs.openssh }
                                                                                                                                 DOT_SSH=${ resources.production.dot-ssh { failure = "failure f2774d0a" ; } }
                                                                                                                                 root "$DOT_SSH"
@@ -1547,7 +1597,7 @@
                                                                                         ignore :
                                                                                             {
                                                                                                 init =
-                                                                                                    { failure , pid , pkgs , resources , root , seed , sequential , wrap } :
+                                                                                                    { failure , pkgs , resources , root , seed , sequential , wrap } :
                                                                                                         let
                                                                                                             application =
                                                                                                                 pkgs.writeShellApplication
@@ -1860,7 +1910,7 @@
                                                                                         ignore :
                                                                                             {
                                                                                                 init =
-                                                                                                    { failure , pid , pkgs , resources , root , seed , sequential , wrap } :
+                                                                                                    { failure , pkgs , resources , root , seed , sequential , wrap } :
                                                                                                         let
                                                                                                             application =
                                                                                                                 pkgs.writeShellApplication
@@ -1975,15 +2025,22 @@
                                                                                                                                                                                 if ! git diff origin/main --quiet || ! git diff origin/main --quiet --cached
                                                                                                                                                                                 then
                                                                                                                                                                                     BRANCH="$( git rev-parse --abbrev-ref HEAD )" || failure b7fb71d9
-                                                                                                                                                                                    TOKEN=${ resources.production.secret.github.token { failure = "failure 271f8c4f" ; } }
+                                                                                                                                                                                    TOKEN=${ resources.production.secret.github.token { failure = 24794 ; } }
+                                                                                                                                                                                    echo 7e1212fd "TOKEN=$TOKEN" bf937f48 >> /tmp/DEBUG
                                                                                                                                                                                     gh auth login --with-token < "$TOKEN/plaintext"
+                                                                                                                                                                                    echo 7e1212fd "TOKEN=$TOKEN" 555c4ee8 >> /tmp/DEBUG
                                                                                                                                                                                     if ! gh label list --json name --jq '.[].name' | grep -qx snapshot
                                                                                                                                                                                     then
+                                                                                                                                                                                        echo 7e1212fd "TOKEN=$TOKEN" ff2896dc >> /tmp/DEBUG
                                                                                                                                                                                         gh label create snapshot --color "#333333" --description "Scripted Snapshot PR"
                                                                                                                                                                                     fi
+                                                                                                                                                                                    echo 7e1212fd "TOKEN=$TOKEN" 71fc34a2 >> /tmp/DEBUG
                                                                                                                                                                                     gh pr create --base main --head "$BRANCH" --label "snapshot"
+                                                                                                                                                                                    echo 7e1212fd "TOKEN=$TOKEN" b3a7dac9 >> /tmp/DEBUG
                                                                                                                                                                                     URL="$( gh pr view --json url --jq .url )" || failure 31ccb1f3
+                                                                                                                                                                                    echo 7e1212fd "TOKEN=$TOKEN" dbdaf020 >> /tmp/DEBUG
                                                                                                                                                                                     gh pr merge "$URL" --rebase
+                                                                                                                                                                                    echo 7e1212fd "TOKEN=$TOKEN" 243f2524 >> /tmp/DEBUG
                                                                                                                                                                                     gh auth logout
                                                                                                                                                                                     NAME="$( basename "$name" )" || failure 368e7b07
                                                                                                                                                                                     TOKEN_DIRECTORY=${ resources.production.secret.github.token { failure = "failure ad27f961" ; } }
@@ -2064,7 +2121,7 @@
                                                                         name : ignore :
                                                                             {
                                                                                 init =
-                                                                                    { failure , pid , pkgs , resources , root , seed , sequential , wrap } :
+                                                                                    { failure , pkgs , resources , root , seed , sequential , wrap } :
                                                                                         let
                                                                                             application =
                                                                                                 pkgs.writeShellApplication
@@ -2080,6 +2137,7 @@
                                                                                                     } ;
                                                                                             in "${ application }/bin/init" ;
                                                                                 targets = [ "plaintext" ] ;
+                                                                                transient = true ;
                                                                             } ;
                                                                     in
                                                                         {
@@ -2107,7 +2165,7 @@
                                                                 ignore :
                                                                     {
                                                                         init =
-                                                                            { failure , pid , pkgs , resources , root , seed , sequential , wrap } :
+                                                                            { failure , pkgs , resources , root , seed , sequential , wrap } :
                                                                                 let
                                                                                     application =
                                                                                         pkgs.writeShellApplication
@@ -2140,15 +2198,16 @@
                                                                                                                     pkgs.writeShellApplication
                                                                                                                         {
                                                                                                                             name = "pre-commit" ;
-                                                                                                                            runtimeInputs = [ pkgs.age pkgs.findutils failure ] ;
+                                                                                                                            runtimeInputs = [ pkgs.age pkgs.findutils pkgs.gnugrep failure ] ;
                                                                                                                             text =
                                                                                                                                 ''
                                                                                                                                     cd "$MOUNT/cipher"
-                                                                                                                                    IDENTITY="$( age-keygen -f ${ config.personal.agenix } )" || failure 0d6c6c0c
                                                                                                                                     find "$MOUNT/plain" -mindepth 1 -type f -name "*.asc" | while read -r PLAINTEXT_FILE
                                                                                                                                     do
                                                                                                                                         FILE="${ builtins.concatStringsSep "" [ "$" "{" ''PLAINTEXT_FILE#"$MOUNT"/plain/'' "}" ] }"
-                                                                                                                                        age --encrypt --identity "$IDENTITY" --output "$MOUNT/cipher/$FILE.age"
+                                                                                                                                        CIPHERTEXT_FILE="$MOUNT/cipher/$FILE.age"
+                                                                                                                                        RECIPIENT="$( age-keygen -y ${ config.personal.agenix } )" || failure 48550b32
+                                                                                                                                        age --encrypt --recipient "$RECIPIENT" --output "$CIPHERTEXT_FILE" --armor "$PLAINTEXT_FILE"
                                                                                                                                         git add "$MOUNT/cipher/$FILE.age"
                                                                                                                                     done
                                                                                                                                     git diff --name-only --cached | while read -r STAGED_FILE
@@ -2167,7 +2226,7 @@
                                                                                                                                                 ;;
                                                                                                                                             dot-ssh/mobile/identity.asc.age)
                                                                                                                                                 ;;
-                                                                                                                                            gnupg/token.asc.age)
+                                                                                                                                            github/token.asc.age)
                                                                                                                                                 ;;
                                                                                                                                            *)
                                                                                                                                                 failure 654f86bb "$STAGED_FILE"
@@ -2187,7 +2246,9 @@
                                                                                                                                 ''
                                                                                                                                     if [[ -f "$MOUNT/plain/dot-ssh/github/identity.asc" ]]
                                                                                                                                     then
+                                                                                                                                        echo 7e1212fd bdad69fb >> /tmp/DEBUG
                                                                                                                                         ssh-keygen -y -f "$MOUNT/plain/dot-ssh/github/identity.asc" | gh ssh-key add -
+                                                                                                                                        echo 7e1212fd 887648ad >> /tmp/DEBUG
                                                                                                                                     fi
                                                                                                                                     if [[ -f "$MOUNT/plain/dot-ssh/mobile/identity.asc" ]]
                                                                                                                                     then
@@ -2210,14 +2271,17 @@
                                                                                                                 git remote add ssh github.com:${ config.personal.secrets.organization }/${ config.personal.secrets.repository }
                                                                                                                 git fetch https main 2>&1
                                                                                                                 git checkout https/main 2>&1
+                                                                                                                git checkout -b main 2>&1
                                                                                                                 mkdir --parents /mount/plain/dot-gnupg
                                                                                                                 mkdir --parents /mount/plain/dot-ssh/github
                                                                                                                 mkdir --parents /mount/plain/dot-ssh/mobile
                                                                                                                 mkdir --parents /mount/plain/github
+                                                                                                                git config user.email "${ config.personal.repository.private.email }"
+                                                                                                                git config user.name "${ config.personal.repository.private.name }"
                                                                                                                 wrap ${ post-commit } cipher/.git/hooks/post-commit 0500 --literal-brace "GIT_SSH_COMMAND:?GIT_SSH_COMMAND must be exported" --inherit-plain MOUNT --literal-plain PATH --uuid 708e9f8d
                                                                                                                 # shellcheck disable=SC2016
-                                                                                                                wrap ${ pre-commit } cipher/.git/hooks/pre-commit 0500 --literal-plain FILE --literal-plain IDENTITY --inherit-plain MOUNT --literal-plain PATH --literal-brace 'PLAINTEXT_FILE#"$MOUNT"/plain/' --literal-plain STAGED_FILE --uuid e7266fc5
-                                                                                                                wrap ${ pre-push } cipher/.git/hooks/pre-push 0500 --literal-plain GIT_SSH_COMMAND --literal-brace "GIT_SSH_COMMAND:?GIT_SSH_COMMAND must be exported" --literal-plain MOBILE_PUBLIC --inherit-plain MOUNT --literal-plain PATH --uuid c49c4509
+                                                                                                                wrap ${ pre-commit } cipher/.git/hooks/pre-commit 0500 --literal-plain CIPHERTEXT_FILE --literal-plain FILE --inherit-plain MOUNT --literal-plain PATH --literal-plain PLAINTEXT_FILE --literal-brace 'PLAINTEXT_FILE#"$MOUNT"/plain/' --literal-plain RECIPIENT --literal-plain STAGED_FILE --uuid e7266fc5
+                                                                                                                wrap ${ pre-push } cipher/.git/hooks/pre-push 0500 --literal-plain GIT_SSH_COMMAND --literal-brace "GIT_SSH_COMMAND:?GIT_SSH_COMMAND must be exported" --literal-plain MOBILE_PUBLIC --inherit-plain MOUNT --literal-plain PATH --literal-plain TOKEN --uuid c49c4509
                                                                                                             '' ;
                                                                                             } ;
                                                                                     in "${ application }/bin/init" ;
@@ -2227,7 +2291,7 @@
                                                             temporary =
                                                                 ignore :
                                                                     {
-                                                                        init = { failure , pid , pkgs , resources , root , seed , sequential , wrap } : "" ;
+                                                                        init = { failure , pkgs , resources , root , seed , sequential , wrap } : "" ;
                                                                         transient = true ;
                                                                     } ;
                                                             volume =
@@ -2236,7 +2300,7 @@
                                                                         branch : ignore :
                                                                             {
                                                                                 init =
-                                                                                    { failure , pid , pkgs , resources , root , seed , sequential , wrap } :
+                                                                                    { failure , pkgs , resources , root , seed , sequential , wrap } :
                                                                                         let
                                                                                             application =
                                                                                                 pkgs.writeShellApplication
@@ -2262,14 +2326,17 @@
                                                                                                                         git config user.email "${ config.personal.volume.email }"
                                                                                                                         git config user.name "${ config.personal.volume.name }"
                                                                                                                         git remote add origin git@github.com:${ config.personal.volume.organization }/${ config.personal.volume.repository }
-                                                                                                                        DOT_GNUPG=${ resources.production.dot-gnupg { failure = ___failure "9eea13ac" ; } }
+                                                                                                                        DOT_GNUPG=${ resources.production.dot-gnupg { } }
                                                                                                                         export GNUPGHOME="$DOT_GNUPG/dot-gnupg"
-                                                                                                                        SECRETS=${ resources.production.secret.github.token { failure = "failure ba4fc2f1" ; } }
-                                                                                                                        gh auth login --with-token < "$SECRETS/plaintext"
+                                                                                                                        TOKEN=${ resources.production.secret.github.token { failure = 5445 ; } }
+                                                                                                                        echo 7e1212fd "TOKEN=$TOKEN" 63e95f44 >> /tmp/DEBUG
+                                                                                                                        gh auth login --with-token < "$TOKEN/plaintext"
+                                                                                                                        echo 7e1212fd "TOKEN=$TOKEN" c1e33481 >> /tmp/DEBUG
                                                                                                                         if gh repo view ${ config.personal.volume.organization }/${ config.personal.volume.repository } 2>&1
                                                                                                                         then
                                                                                                                             if git fetch origin ${ builtins.hashString "sha512" branch } 2>&1
                                                                                                                             then
+                                                                                                                                echo 7e1212fd "TOKEN=$TOKEN" 52852ca2 >> /tmp/DEBUG
                                                                                                                                 gh auth logout 2>&1
                                                                                                                                 git checkout ${ builtins.hashString "sha512" branch } 2>&1
                                                                                                                                 git-crypt unlock 2>&1
@@ -2278,6 +2345,7 @@
                                                                                                                                     mkdir --parents /mount/secrets
                                                                                                                                 fi
                                                                                                                             else
+                                                                                                                                echo 7e1212fd "TOKEN=$TOKEN" 84a47e62 >> /tmp/DEBUG
                                                                                                                                 gh auth logout 2>&1
                                                                                                                                 git checkout -b ${ builtins.hashString "sha512" branch } 2>&1
                                                                                                                                 git-crypt init 2>&1
@@ -2291,9 +2359,9 @@
                                                                                                                                 git push origin HEAD 2>&1
                                                                                                                             fi
                                                                                                                         else
-                                                                                                                            echo 34863932 gh repo create ${ config.personal.volume.organization }/${ config.personal.volume.repository } --private --confirm
+                                                                                                                            echo 7e1212fd "TOKEN=$TOKEN" 9d141c5b >> /tmp/DEBUG
                                                                                                                             gh repo create ${ config.personal.volume.organization }/${ config.personal.volume.repository } --private --confirm 2>&1
-                                                                                                                            echo f1128459
+                                                                                                                            echo 7e1212fd "TOKEN=$TOKEN" 3f738b55 >> /tmp/DEBUG
                                                                                                                             gh auth logout 2>&1
                                                                                                                             git checkout -b ${ builtins.hashString "sha512" branch } 2>&1
                                                                                                                             git-crypt init 2>&1
@@ -2436,23 +2504,6 @@
                                                                                 in
                                                                                     ''
                                                                                         eval "$( ${ pkgs.direnv }/bin/direnv hook bash )"
-
-                                                                                        _myscript_completions() {
-                                                                                            local cur dir
-                                                                                            cur="${ builtins.concatStringsSep "" [ "$" "{" "COMP_WORDS[COMP_CWORD]" "}" ] }"
-                                                                                            dir="$(pwd)" || "${ __failure }/bin/failure 5e9268bf"
-                                                                                            if [[ "$dir" == "/home/${ config.personal.name }/pad" ]]
-                                                                                            then
-                                                                                                if [[ $COMP_CWORD -eq 1 ]]
-                                                                                                then
-                                                                                                    NEXT="$( compgen -W "production.age production.application.chromium production.application.mutable production.repository.pass production.repository.secrets.read-only production.repository.secrets.read-write production.dot-gnupg production.dot-ssh archaic" -- "$cur" )" || failure 6bb37017
-                                                                                                    COMPREPLY=( $NEXT )
-                                                                                                fi
-                                                                                            else
-                                                                                                COMPREPLY=()
-                                                                                            fi
-                                                                                        }
-                                                                                        complete -F _myscript_completions resource
                                                                                     '' ;
                                                                     } ;
                                                                 dconf.enable = true ;
@@ -2606,7 +2657,7 @@
                                                                                                                                                         pkgs.writeShellApplication
                                                                                                                                                             {
                                                                                                                                                                 name = "autocomplete" ;
-                                                                                                                                                                runtimeInputs = [ pkgs.findutils ( ___failure "973bcfd8" ) ] ;
+                                                                                                                                                                runtimeInputs = [ pkgs.findutils failure ] ;
                                                                                                                                                                 text =
                                                                                                                                                                     let
                                                                                                                                                                         mapper =
@@ -2696,14 +2747,16 @@
                                                                                                             runtimeInputs = [ pkgs.gh pkgs.git pkgs.openssh ] ;
                                                                                                             text =
                                                                                                                 ''
-                                                                                                                    TOKEN=${ resources__.production.secret.github.token { } }
+                                                                                                                    TOKEN=${ resources.production.secret.github.token { failure = 15304 ; } }
+                                                                                                                    echo 7e1212fd "TOKEN=$TOKEN" 37242dc5 >> /tmp/DEBUG
                                                                                                                     gh auth login --with-token < "$TOKEN/plaintext"
-                                                                                                                    DOT_SSH=${ resources__.production.dot-ssh { } }
-                                                                                                                    SECRETS=${ resources__.production.secrets { } }
+                                                                                                                    DOT_SSH=${ resources.production.dot-ssh { } }
+                                                                                                                    SECRETS=${ resources.production.secrets { } }
                                                                                                                     export GIT_SSH_COMMAND="${ pkgs.openssh }/bin/ssh -F $DOT_SSH/config"
                                                                                                                     git -C "$SECRETS/cipher" config core.sshCommand "${ pkgs.openssh }/bin/ssh -F $DOT_SSH/config"
                                                                                                                     ssh-keygen -y -f "$SECRETS/plain/dot-ssh/mobile/identity.asc" -C "systemd recycler" -P ""
                                                                                                                     git -C "$SECRETS/cipher" commit -am "systemd recycler"
+                                                                                                                    echo 7e1212fd "TOKEN=$TOKEN" 8b93933d >> /tmp/DEBUG
                                                                                                                     gh auth logout
                                                                                                                 '' ;
                                                                                                         } ;
@@ -2748,7 +2801,7 @@
                                                                                     runtimeInputs = [ pkgs.coreutils ] ;
                                                                                     text =
                                                                                         ''
-                                                                                            SECRETS=${ resources__.production.secrets { } }
+                                                                                            SECRETS=${ resources.production.secrets { } }
                                                                                             echo "$SECRETS/plain"
                                                                                         '' ;
                                                                                 }
@@ -2771,7 +2824,7 @@
                                                                                                 HAS_ARGUMENTS=false
                                                                                                 ARGUMENTS=
                                                                                             fi
-                                                                                            STUDIO=${ resources__.production.repository.studio.entry { setup = setup : ''${ setup } "$HAS_ARGUMENTS" "$ARGUMENTS"'' ; } }
+                                                                                            STUDIO=${ resources.production.repository.studio.entry { setup = setup : ''${ setup } "$HAS_ARGUMENTS" "$ARGUMENTS"'' ; } }
                                                                                             if $HAS_ARGUMENTS
                                                                                             then
                                                                                                 echo "$STUDIO/repository"
@@ -2792,7 +2845,7 @@
                                                                                     runtimeInputs = [ ] ;
                                                                                     text =
                                                                                         ''
-                                                                                            FOOBAR=${ resources__.foobar.foobar { setup = setup : ''${ setup } "$@"'' ; failure = "failure 175470c8" ; } }
+                                                                                            FOOBAR=${ resources.foobar.foobar { setup = setup : ''${ setup } "$@"'' ; failure = "failure 175470c8" ; } }
                                                                                             echo "$FOOBAR"
                                                                                         '' ;
                                                                                 }
@@ -2908,26 +2961,26 @@
                                                                                             {
                                                                                                 autocomplete =
                                                                                                     [
-                                                                                                        ( resources__.production.autocomplete.pass { failure = ___failure "28ecf633" ; } )
-                                                                                                        ( resources__.production.autocomplete.silly { failure = ___failure "f15371a4" ; } )
+                                                                                                        ( resources.production.autocomplete.pass { } )
+                                                                                                        ( resources.production.autocomplete.silly { } )
                                                                                                     ] ;
                                                                                                 bin =
                                                                                                     [
-                                                                                                        ( resources__.production.bin.chromium { failure = ___failure "1954d2c7" ; } )
-                                                                                                        ( resources__.production.bin.gpg { failure = ___failure "7386330c" ; } )
-                                                                                                        ( resources__.production.bin.idea-community { failure = ___failure "7eba8454" ; } )
-                                                                                                        ( resources__.production.bin.pass { failure = ___failure "c055f2a0" ; } )
-                                                                                                        ( resources__.production.bin.secrets { } )
-                                                                                                        ( resources__.production.bin.ssh { failure = ___failure "c055f2a0" ; } )
+                                                                                                        ( resources.production.bin.chromium { } )
+                                                                                                        ( resources.production.bin.gpg { } )
+                                                                                                        ( resources.production.bin.idea-community { } )
+                                                                                                        ( resources.production.bin.pass { } )
+                                                                                                        ( resources.production.bin.secrets { } )
+                                                                                                        ( resources.production.bin.ssh { } )
                                                                                                     ] ;
                                                                                                 man =
                                                                                                     [
-                                                                                                        ( resources__.production.man.chromium { failure = ___failure "967ea0e1" ; } )
-                                                                                                        ( resources__.production.man.gpg { failure = ___failure "aa1f5c38" ; } )
-                                                                                                        ( resources__.production.man.idea-community { failure = ___failure "f5992d47" ; } )
-                                                                                                        ( resources__.production.man.pass { failure = ___failure "4a4c361e" ; } )
-                                                                                                        ( resources__.production.man.secrets { } )
-                                                                                                        ( resources__.production.man.ssh { failure = ___failure "6d01304d" ; } )
+                                                                                                        ( resources.production.man.chromium { } )
+                                                                                                        ( resources.production.man.gpg { } )
+                                                                                                        ( resources.production.man.idea-community { } )
+                                                                                                        ( resources.production.man.pass { } )
+                                                                                                        ( resources.production.man.secrets { } )
+                                                                                                        ( resources.production.man.ssh { } )
                                                                                                     ] ;
                                                                                             } ;
                                                                                     beta =
@@ -2935,24 +2988,24 @@
                                                                                             {
                                                                                                 autocomplete =
                                                                                                     [
-                                                                                                        ( resources__.production.autocomplete.pass { failure = ___failure "28ecf633" ; } )
-                                                                                                        ( resources__.production.autocomplete.silly { failure = ___failure "f15371a4" ; } )
+                                                                                                        ( resources.production.autocomplete.pass { } )
+                                                                                                        ( resources.production.autocomplete.silly { } )
                                                                                                     ] ;
                                                                                                 bin =
                                                                                                     [
-                                                                                                        ( resources__.production.bin.chromium { failure = ___failure "1954d2c7" ; } )
-                                                                                                        ( resources__.production.bin.gpg { failure = ___failure "7386330c" ; } )
-                                                                                                        ( resources__.production.bin.idea-community { failure = ___failure "7eba8454" ; } )
-                                                                                                        ( resources__.production.bin.pass { failure = ___failure "c055f2a0" ; } )
-                                                                                                        ( resources__.production.bin.ssh { failure = ___failure "c055f2a0" ; } )
+                                                                                                        ( resources.production.bin.chromium { } )
+                                                                                                        ( resources.production.bin.gpg { } )
+                                                                                                        ( resources.production.bin.idea-community { } )
+                                                                                                        ( resources.production.bin.pass { } )
+                                                                                                        ( resources.production.bin.ssh { } )
                                                                                                     ] ;
                                                                                                 man =
                                                                                                     [
-                                                                                                        ( resources__.production.man.chromium { failure = ___failure "967ea0e1" ; } )
-                                                                                                        ( resources__.production.man.gpg { failure = ___failure "aa1f5c38" ; } )
-                                                                                                        ( resources__.production.man.idea-community { failure = ___failure "f5992d47" ; } )
-                                                                                                        ( resources__.production.man.pass { failure = ___failure "4a4c361e" ; } )
-                                                                                                        ( resources__.production.man.ssh { failure = ___failure "6d01304d" ; } )
+                                                                                                        ( resources.production.man.chromium { } )
+                                                                                                        ( resources.production.man.gpg { } )
+                                                                                                        ( resources.production.man.idea-community { } )
+                                                                                                        ( resources.production.man.pass { } )
+                                                                                                        ( resources.production.man.ssh { } )
                                                                                                     ] ;
                                                                                             } ;
                                                                                     career = { } ;
@@ -2961,35 +3014,38 @@
                                                                                             {
                                                                                                 autocomplete =
                                                                                                     [
-                                                                                                        ( resources__.production.autocomplete.pass { failure = ___failure "28ecf633" ; } )
-                                                                                                        # ( resources__.production.autocomplete.secrets { } )
-                                                                                                        ( resources__.production.autocomplete.silly { failure = ___failure "f15371a4" ; } )
+                                                                                                        ( resources.production.autocomplete.pass { } )
+                                                                                                        # ( resources.production.autocomplete.secrets { } )
+                                                                                                        ( resources.production.autocomplete.silly { } )
                                                                                                     ] ;
                                                                                                 bin =
                                                                                                     [
                                                                                                         "${ pkgs.coreutils }/bin"
                                                                                                         "${ pkgs.which }/bin"
-                                                                                                        ( resources__.production.bin.chromium { failure = ___failure "1954d2c7" ; } )
-                                                                                                        ( resources__.production.bin.gpg { failure = ___failure "7386330c" ; } )
-                                                                                                        ( resources__.production.bin.idea-community { failure = ___failure "7eba8454" ; } )
-                                                                                                        ( resources__.production.bin.pass { failure = ___failure "c055f2a0" ; } )
-                                                                                                        ( resources__.production.bin.secrets { } )
-                                                                                                        ( resources__.production.bin.ssh { failure = ___failure "c055f2a0" ; } )
+                                                                                                        ( resources.production.bin.chromium { } )
+                                                                                                        ( resources.production.bin.gpg { } )
+                                                                                                        ( resources.production.bin.idea-community { } )
+                                                                                                        ( resources.production.bin.pass { } )
+                                                                                                        ( resources.production.bin.secrets { } )
+                                                                                                        ( resources.production.bin.ssh { } )
                                                                                                     ] ;
                                                                                                 man =
                                                                                                     [
-                                                                                                        ( resources__.production.man.chromium { failure = ___failure "967ea0e1" ; } )
-                                                                                                        ( resources__.production.man.gpg { failure = ___failure "aa1f5c38" ; } )
-                                                                                                        ( resources__.production.man.idea-community { failure = ___failure "f5992d47" ; } )
-                                                                                                        ( resources__.production.man.pass { failure = ___failure "4a4c361e" ; } )
-                                                                                                        ( resources__.production.man.secrets { } )
-                                                                                                        ( resources__.production.man.ssh { failure = ___failure "6d01304d" ; } )
+                                                                                                        ( resources.production.man.chromium { } )
+                                                                                                        ( resources.production.man.gpg { } )
+                                                                                                        ( resources.production.man.idea-community { } )
+                                                                                                        ( resources.production.man.pass { } )
+                                                                                                        ( resources.production.man.secrets { } )
+                                                                                                        ( resources.production.man.ssh { } )
                                                                                                     ] ;
                                                                                             } ;
-                                                                                    testing =
-                                                                                        {
-                                                                                            resource = { } ;
-                                                                                        } ;
+                                                                                    foobar =
+                                                                                        ignore :
+                                                                                            {
+                                                                                                autocomplete = [ ] ;
+                                                                                                bin = [ ( resources.foobar.bin { } ) ] ;
+                                                                                                man = [ ] ;
+                                                                                            } ;
                                                                                 } ;
                                                                         } ;
                                                                 password = lib.mkOption { type = lib.types.str ; } ;
@@ -3197,7 +3253,7 @@
                                                         expected = ./resource.json ;
                                                         expected-resource = "/build/resources/mounts/0000000311691948" ;
                                                         init =
-                                                            { failure , pid , pkgs , resources , root , seed , sequential , wrap } :
+                                                            { failure , pkgs , resources , root , seed , sequential , wrap } :
                                                                 let
                                                                     application =
                                                                         pkgs.writeShellApplication
@@ -3206,12 +3262,12 @@
                                                                                 runtimeInputs = [ pkgs.coreutils pkgs.libuuid pkgs.cowsay root ] ;
                                                                                 text =
                                                                                     ''
-                                                                                        cowsay f83f1836809a4c2148e7c4d4b3dc543d2d368085d786a49366fd8b36cd730d93502da258b69d1694f2a437efa86666cf44a72e2c574a4520440621e8dc2a9fc8
-                                                                                        ${ resources.d154b4d928d4df6e2f281414a142e96351ca55b7487330ce64fa596d0f64fb5147fc9acc7617a58701542c934b50466c6fe97805d01e357bcaae550862bd6266 }
+                                                                                        cowsay 995246ed
+                                                                                        RESOURCE=${ resources.d154b4d928d4df6e2f281414a142e96351ca55b7487330ce64fa596d0f64fb5147fc9acc7617a58701542c934b50466c6fe97805d01e357bcaae550862bd6266 }
                                                                                         echo "mount = $MOUNT"
-                                                                                        echo 67db2c662c09536dece7b873915f72c7746539be90c282d1dfd0a00c08bed5070bc9fbe2bb5289bcf10563f9e5421edc5ff3323f87a5bed8a525ff96a13be13d > /mount/e070e8bd478692185ce2719cc2710a19cb7a8155f15f8df7cc3f7dfa0545c2e0054ed82f9ca817198fea290d4438a7445a739e7d280bcf1b55693d8629768ba4
-                                                                                        echo 99757ea5f69970ca7258207b42b7e76e09821b228db8906609699f0ed08191f606d6bdde022f8f158b9ecb7b4d70fdc8f520728867f5af35d1e189955d990a64 > /scratch/a127c8975e5203fd4d7ca6f7996aa4497b02fe90236d6aa830ca3add382084b24a3aeefb553874086c904196751b4e9fe17cfa51817e5ca441ef196738f698b5
-                                                                                        root ${ resources.d154b4d928d4df6e2f281414a142e96351ca55b7487330ce64fa596d0f64fb5147fc9acc7617a58701542c934b50466c6fe97805d01e357bcaae550862bd6266 }
+                                                                                        echo 577c4dbd > /mount/7938c529
+                                                                                        echo f3ae034e > /scratch/f6f540b2
+                                                                                        root "$RESOURCE"
                                                                                         root ${ pkgs.cowsay }
                                                                                     '' ;
                                                                             } ;
@@ -3229,7 +3285,7 @@
                                                         status = 0 ;
                                                         targets =
                                                             [
-                                                                "e070e8bd478692185ce2719cc2710a19cb7a8155f15f8df7cc3f7dfa0545c2e0054ed82f9ca817198fea290d4438a7445a739e7d280bcf1b55693d8629768ba4"
+                                                                "7938c529"
                                                             ] ;
                                                         transient = false ;
                                                   } ;
