@@ -2129,6 +2129,7 @@
                                                                                                     } ;
                                                                                             in "${ application }/bin/init" ;
                                                                                 targets = [ "plaintext" ] ;
+                                                                                transient = true ;
                                                                             } ;
                                                                     in
                                                                         {
@@ -2318,8 +2319,8 @@
                                                                                                                         git remote add origin git@github.com:${ config.personal.volume.organization }/${ config.personal.volume.repository }
                                                                                                                         DOT_GNUPG=${ resources.production.dot-gnupg { } }
                                                                                                                         export GNUPGHOME="$DOT_GNUPG/dot-gnupg"
-                                                                                                                        SECRETS=${ resources.production.secret.github.token { failure = "failure ba4fc2f1" ; } }
-                                                                                                                        gh auth login --with-token < "$SECRETS/plaintext"
+                                                                                                                        TOKEN=${ resources.production.secret.github.token { failure = "failure ba4fc2f1" ; } }
+                                                                                                                        gh auth login --with-token < "$TOKEN/plaintext"
                                                                                                                         if gh repo view ${ config.personal.volume.organization }/${ config.personal.volume.repository } 2>&1
                                                                                                                         then
                                                                                                                             if git fetch origin ${ builtins.hashString "sha512" branch } 2>&1
