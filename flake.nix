@@ -55,7 +55,7 @@
                             _resource-logger =
                                 resource-logger.lib
                                     {
-                                        failure = _failure ;
+                                        failure = _failure.implementation "88fe77a0" ;
                                         pkgs = pkgs ;
                                     } ;
                             _visitor = visitor.lib { } ;
