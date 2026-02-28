@@ -2771,33 +2771,7 @@
                                                                                         User = config.personal.name ;
                                                                                     } ;
                                                                             } ;
-                                                                        resource-logger =
-                                                                            {
-                                                                                description =
-                                                                                    ''
-                                                                                        logs resources
-                                                                                    '' ;
-                                                                                serviceConfig =
-                                                                                    {
-                                                                                        ExecStart =
-                                                                                            let
-                                                                                                application =
-                                                                                                    pkgs.writeShellApplication
-                                                                                                        {
-                                                                                                            name = "ExecStart" ;
-                                                                                                            text =
-                                                                                                                _resource-logger.implementation
-                                                                                                                     {
-                                                                                                                           channel = config.personal.channel ;
-                                                                                                                           log-directory = "/home/${ config.personal.name }/resources/logs" ;
-                                                                                                                           log-file = "log.yaml" ;
-                                                                                                                           log-lock = "lock.lock" ;
-                                                                                                                       } ;
-                                                                                                        } ;
-                                                                                                    in "${ application }/bin/ExecStart" ;
-                                                                                        User = config.personal.name ;
-                                                                                    } ;
-                                                                            } ;
+
                                                                     } ;
                                                                 timers =
                                                                     {
