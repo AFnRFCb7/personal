@@ -3323,8 +3323,8 @@
                                                             ] ;
                                                         transient = false ;
                                                   } ;
-                                        resources-logger =
-                                            _resources-logger.check
+                                        resource-logger =
+                                            _resource-logger.check
                                                 {
                                                     expected = "" ;
                                                 } ;
