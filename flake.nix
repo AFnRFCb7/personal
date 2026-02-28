@@ -2246,10 +2246,7 @@
                                                                                                                                 ''
                                                                                                                                     if [[ -f "$MOUNT/plain/dot-ssh/github/identity.asc" ]]
                                                                                                                                     then
-                                                                                                                                        TOKEN=${ resources.production.secret.github.token { failure = 27944 ; } }
-                                                                                                                                        gh auth login --with-token < "$TOKEN/plaintext"
                                                                                                                                         ssh-keygen -y -f "$MOUNT/plain/dot-ssh/github/identity.asc" | gh ssh-key add -
-                                                                                                                                        gh auth logout
                                                                                                                                     fi
                                                                                                                                     if [[ -f "$MOUNT/plain/dot-ssh/mobile/identity.asc" ]]
                                                                                                                                     then
