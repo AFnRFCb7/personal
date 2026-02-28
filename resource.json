@@ -1,3 +1,105 @@
 {
-  "test": true
+  "applications": {
+    "init": {
+      "application": "/nix/store/3pqrg8aj0v4msvqsqknzv0k986ankxky-init",
+      "resolutions": []
+    },
+    "release": {
+      "application": true,
+      "resolutions": []
+    }
+  },
+  "arguments": [
+    "ceb405a144a10b8efca63d9d950ce2b92bb2997ab44a9588ca740b3540a9a532a6b959a0d990dd469a63b16eb7600991bb7a1ef2b79d697b43e17134cbccec6c",
+    "cdca67397f32d23a379284468e099b96c5b53d62659faf4d48dfc650bea444d6bc450b7eefee9b273c12672b9008fa6a077b15efb676b35f9912de977f54724d"
+  ],
+  "hash": "96dd4f6dc8596a4308d80de02305fccb37e6bbd4024a6fbce510ca9a9bc0e5eb52b1b7620358c9df9c2acbb51e90c1a0457f1253bfd70be71da437265e0f515d",
+  "index": "0000000311691948",
+  "has-standard-input": "true",
+  "provenance": "new",
+  "scripts": "{\"init\":{\"application\":\"/nix/store/mahp55yg8jjqy5ivhf72r6diq86djgng-application\",\"resolutions\":[]},\"release\":{\"application\":null,\"resolutions\":[]}}",
+  "standard-error": "",
+  "standard-input": "5433bd8482be1f2e1c1db4fa9268ed6e7bb02285083decb86a6166eea2df77f7e2d7524541549a3ee73d03ae955d8ec0714a959944962e8fe18f343fe108ff9f",
+  "standard-output": " __________\n< 995246ed >\n ----------\n        \\   ^__^\n         \\  (oo)\\_______\n            (__)\\       )\\/\\\n                ||----w |\n                ||     ||\nmount = /build/resources/mounts/0000000311691948",
+  "status": "0",
+  "targets": [
+    "7938c529"
+  ],
+  "transient": "-1",
+  "type": "valid",
+  "description": {
+    "primary": {
+      "buildFHSUserEnv": {
+        "__functionArgs": {
+          "dieWithParent": true,
+          "extraBwrapArgs": true,
+          "extraInstallCommands": true,
+          "extraPreBwrapCmds": true,
+          "meta": true,
+          "nativeBuildInputs": true,
+          "passthru": true,
+          "privateTmp": true,
+          "runScript": true,
+          "unshareCgroup": true,
+          "unshareIpc": true,
+          "unshareNet": true,
+          "unsharePid": true,
+          "unshareUser": true,
+          "unshareUts": true
+        },
+        "__functor": null,
+        "override": {
+          "__functionArgs": {
+            "bubblewrap": false,
+            "callPackage": false,
+            "coreutils": false,
+            "glibc": false,
+            "lib": false,
+            "pkgsi686Linux": false,
+            "runCommandCC": false,
+            "runCommandLocal": false,
+            "stdenv": false,
+            "writeShellScript": false
+          },
+          "__functor": null
+        }
+      },
+      "channel": "58c7d369b0ce01c248dc06747e2414e64190b49ec8b54ab8b5d20f96a2033759636788d718be578255e47ea0ab95810bfe7e027b8bd7f7eb4c1d3bfb5e682480",
+      "coreutils": "/nix/store/f8bb29v1w8mhkkxc15xan6mxvbkcbg3s-coreutils-9.5",
+      "failure": "/nix/store/xir6v0gin64yd9q0spy7vlabfzcbiybq-failure",
+      "findutils": "/nix/store/0lgw02xh80qnvbrhwjjvw0vp6384sgjs-findutils-4.10.0",
+      "flock": "/nix/store/ka2xxzrj7p2ba7qj7j3qiwdlmbjc6j32-flock-0.4.0",
+      "gnutar": "/nix/store/gvpbq82xln2cm1wz2gr0isyxvispqmcg-gnutar-1.35",
+      "inotify-tools": "/nix/store/z957rbdrwjfgwxksjsfd4ainxd590w6p-inotify-tools-4.23.9.0",
+      "jq": "/nix/store/0q85yfxd70aq8iv4n43hqcmh2dbyb80z-jq-1.7.1-bin",
+      "makeWrapper": "/nix/store/nmlyrgn3klrc349b24k8yascjy62687p-make-shell-wrapper-hook",
+      "mkDerivation": null,
+      "nix": "/nix/store/dlzcxfyhwpvbwi907qsamgsqvi09gvd2-nix-2.24.14",
+      "ps": "/nix/store/14lksafm0k57pg2j48c9fi09159smf1s-ps-procps-4.0.4",
+      "redis": "/nix/store/9ap0znk8zci1j8cp06wysciy253yxk7c-redis-7.2.7",
+      "resources": {
+        "d154b4d928d4df6e2f281414a142e96351ca55b7487330ce64fa596d0f64fb5147fc9acc7617a58701542c934b50466c6fe97805d01e357bcaae550862bd6266": "/nix/store/v4zimpdhzirhm1a9ky8hgm29wh735z8l-f70dbffba5f85b11de293ea0f9383ff05f210b1bcca0443f79657db645a2187594511f7ce158302a8c7f249e8dc47128baa17302e96b3be43b6e33d26e822a77/bin/f70dbffba5f85b11de293ea0f9383ff05f210b1bcca0443f79657db645a2187594511f7ce158302a8c7f249e8dc47128baa17302e96b3be43b6e33d26e822a77"
+      },
+      "resources-directory": "/build/resources",
+      "root-directory": "/build/gc-roots",
+      "sequential-start": "$( head /dev/urandom | tr -dc 1-9 | head -c 15 )",
+      "util-linux": "/nix/store/1jasg83hbsd6m0gymnc6c740v0jl7mg8-util-linux-2.39.4-bin",
+      "visitor": null,
+      "writeShellApplication": null,
+      "yq-go": "/nix/store/hyccshqrkd4br8p0ybgwj5knnmr5ckyq-yq-go-4.44.3",
+      "zstd": "/nix/store/cj5v7mmz54s8jpmb2i5vp6zwjxzwmkqz-zstd-1.5.6-bin"
+    },
+    "secondary": {
+      "depth": 0,
+      "init": null,
+      "init-resolutions": [],
+      "release": null,
+      "release-resolutions": [],
+      "seed": "4259572168968d95098b9a5a8572c6ecfabe61a2522103e4c75b1317ea9cf43f96f7a135d144d2184739b6c4bd7fad1fb13a117dabbc9e58f4d4edbc26cf34f5",
+      "targets": [
+        "7938c529"
+      ],
+      "transient": false
+    }
+  }
 }
