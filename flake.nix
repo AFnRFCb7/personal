@@ -2198,7 +2198,8 @@
                                                                                                                                         FILE="${ builtins.concatStringsSep "" [ "$" "{" ''PLAINTEXT_FILE#"$MOUNT"/plain/'' "}" ] }"
                                                                                                                                         CIPHERTEXT_FILE="$MOUNT/cipher/$FILE.age"
                                                                                                                                         echo 7e1212fd f3b5dfea "MOUNT=$MOUNT" "PLAINTEXT_FILE=$PLAINTEXT_FILE" "CIPHERTEXT_FILE=$CIPHERTEXT_FILE" >> /tmp/DEBUG
-                                                                                                                                        age --encrypt --recipients-file ${ config.personal.agenix } --output "$CIPHERTEXT_FILE" --armor "$PLAINTEXT_FILE"
+                                                                                                                                        RECIPIENTS="$( age-keygen --export-public-key --identity ${ config.personal.agenix } )" || failure 48550b32
+                                                                                                                                        age --encrypt --recipients "$RECIPIENTS" --output "$CIPHERTEXT_FILE" --armor "$PLAINTEXT_FILE"
                                                                                                                                         git add "$MOUNT/cipher/$FILE.age"
                                                                                                                                     done
                                                                                                                                     git diff --name-only --cached | while read -r STAGED_FILE
