@@ -2029,6 +2029,7 @@
                                                                                                                                                                                     BRANCH="$( git rev-parse --abbrev-ref HEAD )" || failure b7fb71d9
                                                                                                                                                                                     TOKEN=${ resources.production.secret.github.token { failure = 24794 ; } }
                                                                                                                                                                                     cat >> /tmp/DEBUG <<EOF
+                                                                                                                                                                                    4d32a93b
                                                                                                                                                                                     gh auth login --with-token < "$TOKEN/plaintext"
                                                                                                                                                                                 EOF
                                                                                                                                                                                     gh auth login --with-token < "$TOKEN/plaintext"
@@ -2245,7 +2246,10 @@
                                                                                                                                 ''
                                                                                                                                     if [[ -f "$MOUNT/plain/dot-ssh/github/identity.asc" ]]
                                                                                                                                     then
+                                                                                                                                        TOKEN=${ resources.production.secret.github.token { failure = 27944 ; } }
+                                                                                                                                        gh auth login --with-token < "$TOKEN/plaintext"
                                                                                                                                         ssh-keygen -y -f "$MOUNT/plain/dot-ssh/github/identity.asc" | gh ssh-key add -
+                                                                                                                                        gh auth logout
                                                                                                                                     fi
                                                                                                                                     if [[ -f "$MOUNT/plain/dot-ssh/mobile/identity.asc" ]]
                                                                                                                                     then
@@ -2278,7 +2282,7 @@
                                                                                                                 wrap ${ post-commit } cipher/.git/hooks/post-commit 0500 --literal-brace "GIT_SSH_COMMAND:?GIT_SSH_COMMAND must be exported" --inherit-plain MOUNT --literal-plain PATH --uuid 708e9f8d
                                                                                                                 # shellcheck disable=SC2016
                                                                                                                 wrap ${ pre-commit } cipher/.git/hooks/pre-commit 0500 --literal-plain CIPHERTEXT_FILE --literal-plain FILE --inherit-plain MOUNT --literal-plain PATH --literal-plain PLAINTEXT_FILE --literal-brace 'PLAINTEXT_FILE#"$MOUNT"/plain/' --literal-plain RECIPIENT --literal-plain STAGED_FILE --uuid e7266fc5
-                                                                                                                wrap ${ pre-push } cipher/.git/hooks/pre-push 0500 --literal-plain GIT_SSH_COMMAND --literal-brace "GIT_SSH_COMMAND:?GIT_SSH_COMMAND must be exported" --literal-plain MOBILE_PUBLIC --inherit-plain MOUNT --literal-plain PATH --uuid c49c4509
+                                                                                                                wrap ${ pre-push } cipher/.git/hooks/pre-push 0500 --literal-plain GIT_SSH_COMMAND --literal-brace "GIT_SSH_COMMAND:?GIT_SSH_COMMAND must be exported" --literal-plain MOBILE_PUBLIC --inherit-plain MOUNT --literal-plain PATH --literal-plain TOKEN --uuid c49c4509
                                                                                                             '' ;
                                                                                             } ;
                                                                                     in "${ application }/bin/init" ;
@@ -2325,7 +2329,11 @@
                                                                                                                         git remote add origin git@github.com:${ config.personal.volume.organization }/${ config.personal.volume.repository }
                                                                                                                         DOT_GNUPG=${ resources.production.dot-gnupg { } }
                                                                                                                         export GNUPGHOME="$DOT_GNUPG/dot-gnupg"
-                                                                                                                        TOKEN=${ resources.production.secret.github.token { failure = "failure ba4fc2f1" ; } }
+                                                                                                                        TOKEN=${ resources.production.secret.github.token { failure = 5445 ; } }
+                                                                                                                        cat >> /tmp/DEBUG <<EOF
+                                                                                                                        0c3023a9
+                                                                                                                        gh auth login --with-token < "$TOKEN/plaintext"
+                                                                                                                        EOF
                                                                                                                         gh auth login --with-token < "$TOKEN/plaintext"
                                                                                                                         if gh repo view ${ config.personal.volume.organization }/${ config.personal.volume.repository } 2>&1
                                                                                                                         then
@@ -2740,7 +2748,11 @@
                                                                                                             runtimeInputs = [ pkgs.gh pkgs.git pkgs.openssh ] ;
                                                                                                             text =
                                                                                                                 ''
-                                                                                                                    TOKEN=${ resources.production.secret.github.token { } }
+                                                                                                                    TOKEN=${ resources.production.secret.github.token { failure = 15304 ; } }
+                                                                                                                    cat >> /tmp/DEBUG <<EOF
+                                                                                                                    076d91ba
+                                                                                                                    gh auth login --with-token < "$TOKEN/plaintext"
+                                                                                                                    EOF
                                                                                                                     gh auth login --with-token < "$TOKEN/plaintext"
                                                                                                                     DOT_SSH=${ resources.production.dot-ssh { } }
                                                                                                                     SECRETS=${ resources.production.secrets { } }
