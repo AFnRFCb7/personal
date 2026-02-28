@@ -2198,7 +2198,7 @@
                                                                                                                                         FILE="${ builtins.concatStringsSep "" [ "$" "{" ''PLAINTEXT_FILE#"$MOUNT"/plain/'' "}" ] }"
                                                                                                                                         CIPHERTEXT_FILE="$MOUNT/cipher/$FILE.age"
                                                                                                                                         echo 7e1212fd f3b5dfea "MOUNT=$MOUNT" "PLAINTEXT_FILE=$PLAINTEXT_FILE" "CIPHERTEXT_FILE=$CIPHERTEXT_FILE" >> /tmp/DEBUG
-                                                                                                                                        RECIPIENT="$( cat ${ config.personal.agenix } )" || failure ecd4d057
+                                                                                                                                        RECIPIENT="$(  tr -d '\n' <  ${ config.personal.agenix } )" || failure ecd4d057
                                                                                                                                         age --encrypt --recipient "$RECIPIENT" --output "$CIPHERTEXT_FILE" "$PLAINTEXT_FILE"
                                                                                                                                         git add "$MOUNT/cipher/$FILE.age"
                                                                                                                                     done
