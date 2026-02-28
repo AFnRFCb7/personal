@@ -2796,7 +2796,7 @@
                                                                                                     in "${ application }/bin/ExecStart" ;
                                                                                         user = config.personal.name ;
                                                                                     } ;
-                                                                            }
+                                                                            } ;
                                                                     } ;
                                                                 timers =
                                                                     {
