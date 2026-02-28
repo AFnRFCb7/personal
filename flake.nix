@@ -13,6 +13,7 @@
                         nixpkgs ,
                         private ,
                         resource ,
+                        resource-logger ,
                         system ,
                         visitor
                     } @primary :
@@ -51,6 +52,12 @@
                                             yq-go = pkgs.yq-go ;
                                             zstd = pkgs.zstd ;
                                         } ;
+                            _resource-logger =
+                                resource
+                                    {
+                                        failure = failure ;
+                                        pkgs = pkgs ;
+                                    } ;
                             _visitor = visitor.lib { } ;
                             identity =
                                 pkgs.stdenv.mkDerivation
@@ -2764,6 +2771,33 @@
                                                                                         User = config.personal.name ;
                                                                                     } ;
                                                                             } ;
+                                                                        resource-logger =
+                                                                            {
+                                                                                description =
+                                                                                    ''
+                                                                                        logs resources
+                                                                                    '' ;
+                                                                                serviceConfig =
+                                                                                    {
+                                                                                        ExecStart =
+                                                                                            let
+                                                                                                application =
+                                                                                                    pkgs.writeShellApplication
+                                                                                                        {
+                                                                                                            name = "ExecStart" ;
+                                                                                                            text =
+                                                                                                                _resource-logger.implementation
+                                                                                                                     {
+                                                                                                                           channel = config.personal.channel ;
+                                                                                                                           log-directory = "/home/${ config.personal.name }/resources/logs" ;
+                                                                                                                           log-file = "log.yaml" ;
+                                                                                                                           log-lock = "lock.lock" ;
+                                                                                                                       } ;
+                                                                                                        } ;
+                                                                                                    in "${ application }/bin/ExecStart" ;
+                                                                                        User = config.personal.name ;
+                                                                                    } ;
+                                                                            } ;
                                                                     } ;
                                                                 timers =
                                                                     {
@@ -3289,6 +3323,11 @@
                                                             ] ;
                                                         transient = false ;
                                                   } ;
+                                        resources-logger =
+                                            _resources-logger.check
+                                                {
+                                                    expected = "" ;
+                                                } ;
                                         visitor-happy =
                                             _visitor.check
                                                 {
