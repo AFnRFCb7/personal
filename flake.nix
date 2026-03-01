@@ -1662,7 +1662,7 @@
                                                                                                                                                                                 UUID="$( sequential )" || failure b3329fb1
                                                                                                                                                                                 TARGET_BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 0fbafe21
                                                                                                                                                                                 git checkout -b "$TARGET_BRANCH"
-                                                                                                                                                                                git submodule deinit -f .
+                                                                                                                                                                                git submodule deinit -f --all
                                                                                                                                                                                 git submodule update --init --recursive
                                                                                                                                                                             '' ;
                                                                                                                                                                     } ;
