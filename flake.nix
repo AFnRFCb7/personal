@@ -3417,10 +3417,23 @@
                                                                     } ;
                                                             } ;
                                                     testScript =
-                                                        ''
-                                                            machine.wait_for_unit("multi-user.target")
-                                                            machine.succeed("studio $(uuidgen)")
-                                                        '' ;
+                                                        let
+                                                            test =
+                                                                let
+                                                                    application =
+                                                                        pkgs.writeShellApplication
+                                                                            {
+                                                                                name = "test" ;
+                                                                                text =
+                                                                                    ''
+                                                                                    '' ;
+                                                                            } ;
+                                                                    in "${ application }/bin/test" ;
+                                                            in
+                                                                ''
+                                                                    machine.wait_for_unit("multi-user.target")
+                                                                    machine.succeed("su - testuser ${ test }")
+                                                                '' ;
                                                 } ;
                                         resource-logger = _resource-logger.check { expected = "/nix/store/44j9cfbiamg903zx9ldyhjpwrdky9bxl-resource-logger/bin/resource-logger" ; } ;
                                         resource-releaser = _resource-releaser.check { expected = "/nix/store/vq0pmkgyvx8zbm6fg3n3ajg5jbs5iakn-resource-releaser/bin/resource-releaser" ;} ;
