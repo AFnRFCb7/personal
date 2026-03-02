@@ -3449,29 +3449,33 @@
                                                             } ;
                                                     testScript =
                                                         let
-                                                            init =
+                                                            time-0 =
                                                                 let
                                                                     application =
                                                                         pkgs.writeShellApplication
                                                                             {
-                                                                                name = "init" ;
+                                                                                name = "time-0" ;
                                                                                 text =
                                                                                     ''
                                                                                         cd /pads/checks
                                                                                         direnv allow
                                                                                         RESOURCE_1="$( true-true )" || failure f09bd890
                                                                                         RESOURCE_2="$( true-true )" || failure c3b743a2
+                                                                                        if [[ "$RESOURCE_1" != "" ]]
+                                                                                        then
+                                                                                            failure 5e5fd71b "RESOURCE_1=$RESOURCE_1"
+                                                                                        fi
                                                                                         if [[ "$RESOURCE_1" != "$RESOURCE_2" ]]
                                                                                         then
                                                                                             failure 7946f3fc "RESOURCE_1=$RESOURCE_1" "RESOURCE_2=$RESOURCE_2"
                                                                                         fi
                                                                                     '' ;
                                                                             } ;
-                                                                    in "${ application }/bin/init" ;
+                                                                    in "${ application }/bin/time-0" ;
                                                             in
                                                                 ''
                                                                     machine.wait_for_unit("multi-user.target")
-                                                                    machine.succeed("su - testuser -c 'init")
+                                                                    machine.succeed("su - testuser -c 'time-0'")
                                                                 '' ;
                                                 } ;
                                         resource-logger = _resource-logger.check { expected = "/nix/store/44j9cfbiamg903zx9ldyhjpwrdky9bxl-resource-logger/bin/resource-logger" ; } ;
