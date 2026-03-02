@@ -3402,7 +3402,18 @@
                                             pkgs.nixosTest
                                                 {
                                                     name = "resource-true-true" ;
-                                                    nodes.machine = { config , pkgs , ... } : { } ;
+                                                    nodes.machine =
+                                                        { config , pkgs , ... } :
+                                                            {
+                                                                config =
+                                                                    {
+                                                                        personal =
+                                                                            {
+                                                                                channel = "test-channel" ;
+                                                                                name = "test-channel" ;
+                                                                            } ;
+                                                                    } ;
+                                                            } ;
                                                     testScript =
                                                         let
                                                             init =
@@ -3418,7 +3429,7 @@
                                                                                             resource.lib
                                                                                                 {
                                                                                                     buildFHSUserEnv = pkgs.buildFHSUserEnv ;
-                                                                                                    channel = "redis" ;
+                                                                                                    channel = "test-channel" ;
                                                                                                     coreutils = pkgs.coreutils ;
                                                                                                     failure = _failure.implementation "77d82ffa" ;
                                                                                                     findutils = pkgs.findutils ;
@@ -3432,9 +3443,9 @@
                                                                                                     ps = pkgs.ps ;
                                                                                                     redis = pkgs.redis ;
                                                                                                     resources = null ;
-                                                                                                    resources-directory = "/home/emory/resources" ;
+                                                                                                    resources-directory = "/home/test-user/resources" ;
                                                                                                     sequential-start = ''$( head /dev/urandom | tr -dc '1-9' | head -c 15 )'' ;
-                                                                                                    root-directory = "/home/emory/.gc-roots" ;
+                                                                                                    root-directory = "/home/test-user/.gc-roots" ;
                                                                                                     util-linux = pkgs.util-linux ;
                                                                                                     visitor = _visitor.implementation ;
                                                                                                     writeShellApplication = pkgs.writeShellApplication ;
