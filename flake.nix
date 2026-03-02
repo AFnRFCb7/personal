@@ -3401,14 +3401,16 @@
                                         resource-true-true =
                                             pkgs.nixosTest
                                                 {
+                                                    imports = [ user ] ;
                                                     name = "resource-true-true" ;
                                                     nodes.machine =
-                                                        { config , pkgs , ... } :
+                                                        { pkgs , ... } :
                                                             {
                                                                 personal =
                                                                     {
                                                                         channel = "test-channel" ;
                                                                         name = "test-channel" ;
+                                                                        password = "FakeP@ssword!2026" ;
                                                                     } ;
                                                             } ;
                                                     testScript =
@@ -3465,7 +3467,6 @@
                                                                                                                                         echo "$SETUP" > /mount/setup
                                                                                                                                         wrap ${ failure } failure 0400 --uuid 8c8cc897
                                                                                                                                         wrap ${ root } root 0400 --uuid 25a956d9
-                                                                                                                                        wrap ${ seed } seed 0400 --uuid 28ae8994
                                                                                                                                         wrap ${ sequential } sequential 0400 --uuid 25c81f48
                                                                                                                                         wrap ${ wrap } wrap 0400 --uuid 2286e3b8
                                                                                                                                     '' ;
@@ -3484,7 +3485,7 @@
                                                                                                                     in "${ application }/bin/release" ;
                                                                                                         release-resolutions = null ;
                                                                                                         seed = null ;
-                                                                                                        targets = [ "failure" "root" "seed" "sequential" "wrap" ] ;
+                                                                                                        targets = [ "failure" "root" "setup" "sequential" "wrap" ] ;
                                                                                                         transient = false ;
                                                                                                     } ;
 
