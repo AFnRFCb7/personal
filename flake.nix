@@ -138,14 +138,15 @@
                                                                                         pkgs.writeShellApplication
                                                                                             {
                                                                                                 name = "init" ;
-                                                                                                runtimeInputs = [ wrap ] ;
+                                                                                                runtimeInputs = [ pkgs.cowsay pkgs.fortune wrap ] ;
                                                                                                 text =
                                                                                                     ''
-                                                                                                        echo ${ builtins.elemAt seed.path 3 } > /mount/standard-output
+                                                                                                        cowsay ${ builtins.elemAt seed.path 3 } > /mount/standard-output
+                                                                                                        root ${ pkgs.fortune }
                                                                                                         wrap ${ failure }/bin/failure failure 0400 --literal-plain PATH --uuid 05ef9d07
                                                                                                         wrap ${ root }/bin/root root 0400 --literal-plain DIRECTORY --literal-plain INDEX --literal-plain PATH --literal-plain TARGET --uuid 064c5b11
                                                                                                         wrap ${ sequential }/bin/sequential sequential 0400 --literal-plain CURRENT --literal-plain NEXT --literal-plain PATH --uuid 8637555f
-                                                                                                        wrap ${ wrap }/bin/wrap wrap 0400 --literal-plain dir --literal-plain DISPLAY --literal-plain display_nr --inherit-plain MOUNT --literal-plain path --uuid 72fecbff
+                                                                                                        wrap ${ wrap }/bin/wrap wrap 0400 --literal-plain dir --literal-plain DISPLAY --literal-plain display_nr --literal-plain i --literal-plain local_socket --inherit-plain MOUNT --literal-plain path --uuid 72fecbff
                                                                                                         exit ${ if builtins.elemAt seed.path 1 == "true" then "0" else "65" }
                                                                                                     '' ;
                                                                                             } ;
@@ -157,11 +158,12 @@
                                                                                             pkgs.writeShellApplication
                                                                                                 {
                                                                                                     name = "release" ;
-                                                                                                    runtimeInputs = [ pkgs.diffutils ] ;
+                                                                                                    runtimeInputs = [ pkgs.nix pkgs.diffutils ] ;
                                                                                                     text =
                                                                                                         ''
                                                                                                             diff -s ${ failure }/bin/failure /mount/failure
                                                                                                             diff -s ${ sequential }/bin/sequential /mount/sequential
+                                                                                                            nix-collect-garbage
                                                                                                             exit ${ if builtins.elemAt seed.path 2 == "true" then "0" else "65" }
                                                                                                         '' ;
                                                                                                 } ;
