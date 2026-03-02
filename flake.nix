@@ -3419,7 +3419,7 @@
                                                     testScript =
                                                         ''
                                                             machine.wait_for_unit("multi-user.target")
-                                                            machine.run_as_user("testuser","studio $(uuidgen)")
+                                                            machine.succeed("studio $(uuidgen)")
                                                         '' ;
                                                 } ;
                                         resource-logger = _resource-logger.check { expected = "/nix/store/44j9cfbiamg903zx9ldyhjpwrdky9bxl-resource-logger/bin/resource-logger" ; } ;
