@@ -1768,7 +1768,7 @@
                                                                                                                                                                                 echo 7e1212fd 49144c77
                                                                                                                                                                                 cd "$REPOSITORY"
                                                                                                                                                                                 echo 7e1212fd 5331d409
-                                                                                                                                                                                git submodule foreach 'git config --get core.sshCommand'
+                                                                                                                                                                                export GIT_SSH_COMMAND="$( git config --get core.sshCommand )" || failure fb0cc50b
                                                                                                                                                                                 echo 7e1212fd fb61288c
                                                                                                                                                                                 git submodule foreach '${ scripts.submodule.reset }'
                                                                                                                                                                                 echo 7e1212fd c2164dac
