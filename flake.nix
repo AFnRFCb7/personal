@@ -174,7 +174,7 @@
                                                                     } ;
                                                             in
                                                                 {
-                                                                    target = ignore { } ;
+                                                                    target = ignore : { } ;
                                                                     true =
                                                                         {
                                                                             true =
