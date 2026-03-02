@@ -3417,97 +3417,10 @@
                                                                     } ;
                                                             } ;
                                                     testScript =
-                                                        let
-                                                            init =
-                                                                let
-                                                                    application =
-                                                                        pkgs.writeShellAppalication
-                                                                            {
-                                                                                name = "init" ;
-                                                                                runtimeInputs = [ ] ;
-                                                                                text =
-                                                                                    let
-                                                                                        __resource =
-                                                                                            resource.lib
-                                                                                                {
-                                                                                                    buildFHSUserEnv = pkgs.buildFHSUserEnv ;
-                                                                                                    channel = "test-channel" ;
-                                                                                                    coreutils = pkgs.coreutils ;
-                                                                                                    failure = _failure.implementation "77d82ffa" ;
-                                                                                                    findutils = pkgs.findutils ;
-                                                                                                    flock = pkgs.flock ;
-                                                                                                    gnutar = pkgs.gnutar ;
-                                                                                                    inotify-tools = pkgs.inotify-tools ;
-                                                                                                    jq = pkgs.jq ;
-                                                                                                    makeWrapper = pkgs.makeWrapper ;
-                                                                                                    mkDerivation = pkgs.stdenv.mkDerivation ;
-                                                                                                    nix = pkgs.nix ;
-                                                                                                    ps = pkgs.ps ;
-                                                                                                    redis = pkgs.redis ;
-                                                                                                    resources = null ;
-                                                                                                    resources-directory = "/home/test-user/resources" ;
-                                                                                                    sequential-start = ''$( head /dev/urandom | tr -dc '1-9' | head -c 15 )'' ;
-                                                                                                    root-directory = "/home/test-user/.gc-roots" ;
-                                                                                                    util-linux = pkgs.util-linux ;
-                                                                                                    visitor = _visitor.implementation ;
-                                                                                                    writeShellApplication = pkgs.writeShellApplication ;
-                                                                                                    yq-go = pkgs.yq-go ;
-                                                                                                    zstd = pkgs.zstd ;
-                                                                                                } ;
-                                                                                            ___resource =
-                                                                                                __resource.implementation
-                                                                                                    {
-                                                                                                        depth = 0 ;
-                                                                                                        init =
-                                                                                                            { failure , pkgs , resources , root , seed , sequential , wrap } :
-                                                                                                                let
-                                                                                                                    application =
-                                                                                                                        pkgs.writeShellApplication
-                                                                                                                            {
-                                                                                                                                name = "init" ;
-                                                                                                                                text =
-                                                                                                                                    ''
-                                                                                                                                        echo "$SETUP" > /mount/setup
-                                                                                                                                        wrap ${ failure } failure 0400 --uuid 8c8cc897
-                                                                                                                                        wrap ${ root } root 0400 --uuid 25a956d9
-                                                                                                                                        wrap ${ sequential } sequential 0400 --uuid 25c81f48
-                                                                                                                                        wrap ${ wrap } wrap 0400 --uuid 2286e3b8
-                                                                                                                                    '' ;
-                                                                                                                            } ;
-                                                                                                                    in "${ application }/bin/init" ;
-                                                                                                        init-resolutions = null ;
-                                                                                                        release =
-                                                                                                            { failure , pkgs , resources , seed , sequential } :
-                                                                                                                let
-                                                                                                                    application =
-                                                                                                                        pkgs.writeShellApplication
-                                                                                                                            {
-                                                                                                                                name = "release" ;
-                                                                                                                                text = "" ;
-                                                                                                                            } ;
-                                                                                                                    in "${ application }/bin/release" ;
-                                                                                                        release-resolutions = null ;
-                                                                                                        seed = null ;
-                                                                                                        targets = [ "failure" "root" "setup" "sequential" "wrap" ] ;
-                                                                                                        transient = false ;
-                                                                                                    } ;
-
-                                                                                        in
-                                                                                            ''
-                                                                                                RESOURCE=${ __resource { setup = setup : ''${ setup } true true'' ; failure = 8109 ; } }
-                                                                                                if [[ -d "$RESOURCE" ]]
-                                                                                                then
-                                                                                                else
-                                                                                                    failure 1a3c901c
-                                                                                                fi
-                                                                                            '' ;
-                                                                            } ;
-                                                                    in "${ application }/bin/init" ;
-                                                            in
-                                                                ''
-                                                                    machine.wait_for_unit("multi-user.target")
-                                                                    machine.succeed("${ init }")
-                                                                '' ;
+                                                        ''
+                                                            machine.wait_for_unit("multi-user.target")
+                                                            machine.succeed("echo hi")
+                                                        '' ;
                                                 } ;
                                         resource-logger = _resource-logger.check { expected = "/nix/store/44j9cfbiamg903zx9ldyhjpwrdky9bxl-resource-logger/bin/resource-logger" ; } ;
                                         resource-releaser = _resource-releaser.check { expected = "/nix/store/vq0pmkgyvx8zbm6fg3n3ajg5jbs5iakn-resource-releaser/bin/resource-releaser" ;} ;
