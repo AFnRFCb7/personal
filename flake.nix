@@ -3457,7 +3457,8 @@
                                                                                 name = "time-0" ;
                                                                                 text =
                                                                                     ''
-                                                                                        cd ~/pads/checks
+                                                                                        cd "/home/testuser/pads/checks"
+                                                                                        export DIRENV_LOG_FORMAT=""
                                                                                         direnv allow
                                                                                         eval "$(direnv export bash)"
                                                                                         echo "$PATH"
