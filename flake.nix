@@ -3475,7 +3475,7 @@
                                                             in
                                                                 ''
                                                                     machine.wait_for_unit("multi-user.target")
-                                                                    machine.succeed("su - testuser -c 'time-0'")
+                                                                    machine.succeed("su - testuser -c '${ time-0 }'")
                                                                 '' ;
                                                 } ;
                                         resource-logger = _resource-logger.check { expected = "/nix/store/44j9cfbiamg903zx9ldyhjpwrdky9bxl-resource-logger/bin/resource-logger" ; } ;
