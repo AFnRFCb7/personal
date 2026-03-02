@@ -3408,6 +3408,7 @@
                                                                 imports = [ user ] ;
                                                                 personal =
                                                                     {
+                                                                        agenix = ./. ;
                                                                         channel = "test-channel" ;
                                                                         name = "test-channel" ;
                                                                         password = "FakeP@ssword!2026" ;
