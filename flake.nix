@@ -3478,9 +3478,9 @@
                                                             in
                                                                 ''
                                                                     machine.wait_for_unit("multi-user.target")
-                                                                    machine.succeed("su - testuser -c 'which direnv'")
-                                                                    machine.succeed("su - testuser -c 'direnv version'")
-                                                                    machine.succeed("su - testuser -c 'ls -la ~/pads/checks'")
+                                                                    machine.succeed("runuser testuser -- which direnv")
+                                                                    machine.succeed("runuser testuser -- direnv version")
+                                                                    machine.succeed("runuser testuser -- ls -la ~/pads/checks")
                                                                     machine.succeed("exit 66")
                                                                 '' ;
                                                 } ;
