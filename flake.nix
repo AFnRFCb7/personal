@@ -161,7 +161,7 @@
                                                                                                     runtimeInputs = [ pkgs.nix pkgs.diffutils ] ;
                                                                                                     text =
                                                                                                         ''
-                                                                                                            FORTUNE="$( nix eval nixpkgs#figlet.outPath )" || failure 99aea466
+                                                                                                            FIGLET="$( nix eval nixpkgs#figlet.outPath )" || failure 99aea466
                                                                                                             "$FIGLET" ${ builtins.elemAt seed.path 3 }
                                                                                                             diff -s ${ failure }/bin/failure /mount/failure
                                                                                                             diff -s ${ sequential }/bin/sequential /mount/sequential
@@ -174,6 +174,7 @@
                                                                     } ;
                                                             in
                                                                 {
+                                                                    target = ignore { } ;
                                                                     true =
                                                                         {
                                                                             true =
