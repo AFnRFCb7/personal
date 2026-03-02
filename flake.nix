@@ -3449,12 +3449,12 @@
                                                             } ;
                                                     testScript =
                                                         let
-                                                            test =
+                                                            init =
                                                                 let
                                                                     application =
                                                                         pkgs.writeShellApplication
                                                                             {
-                                                                                name = "test" ;
+                                                                                name = "init" ;
                                                                                 text =
                                                                                     ''
                                                                                         cd /pads/checks
@@ -3464,13 +3464,14 @@
                                                                                         if [[ "$RESOURCE_1" != "$RESOURCE_2" ]]
                                                                                         then
                                                                                             failure 7946f3fc "RESOURCE_1=$RESOURCE_1" "RESOURCE_2=$RESOURCE_2"
+                                                                                        fi
                                                                                     '' ;
                                                                             } ;
-                                                                    in "${ application }/bin/test" ;
+                                                                    in "${ application }/bin/init" ;
                                                             in
                                                                 ''
                                                                     machine.wait_for_unit("multi-user.target")
-                                                                    machine.succeed("su - testuser -c 'echo hi'")
+                                                                    machine.succeed("su - testuser -c 'init")
                                                                 '' ;
                                                 } ;
                                         resource-logger = _resource-logger.check { expected = "/nix/store/44j9cfbiamg903zx9ldyhjpwrdky9bxl-resource-logger/bin/resource-logger" ; } ;
