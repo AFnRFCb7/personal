@@ -13,6 +13,7 @@
                         nixpkgs ,
                         private ,
                         resource ,
+                        resource-logger ,
                         system ,
                         visitor
                     } @primary :
@@ -51,6 +52,12 @@
                                             yq-go = pkgs.yq-go ;
                                             zstd = pkgs.zstd ;
                                         } ;
+                            _resource-logger =
+                                resource-logger.lib
+                                    {
+                                        failure = _failure.implementation "88fe77a0" ;
+                                        pkgs = pkgs ;
+                                    } ;
                             _visitor = visitor.lib { } ;
                             identity =
                                 pkgs.stdenv.mkDerivation
@@ -1650,12 +1657,14 @@
                                                                                                                                                                                 SOURCE_BRANCH="$1"
                                                                                                                                                                                 REPOSITORY="$( git rev-parse --show-toplevel )" || failure f82885fe
                                                                                                                                                                                 cd "$REPOSITORY"
+                                                                                                                                                                                GIT_SSH_COMMAND="$( git config --get core.sshCommand )" || failure 29341
+                                                                                                                                                                                export GIT_SSH_COMMAND
                                                                                                                                                                                 git fetch origin "$SOURCE_BRANCH"
                                                                                                                                                                                 git checkout "origin/$SOURCE_BRANCH"
                                                                                                                                                                                 UUID="$( sequential )" || failure b3329fb1
                                                                                                                                                                                 TARGET_BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 0fbafe21
                                                                                                                                                                                 git checkout -b "$TARGET_BRANCH"
-                                                                                                                                                                                git submodule deinit -f .
+                                                                                                                                                                                git submodule deinit -f --all
                                                                                                                                                                                 git submodule update --init --recursive
                                                                                                                                                                             '' ;
                                                                                                                                                                     } ;
@@ -1709,29 +1718,42 @@
                                                                                                                                                                                 INDEX="${ builtins.concatStringsSep "" [ "$" "{" "1:-2" "}" ] }"
                                                                                                                                                                                 REPOSITORY="${ builtins.concatStringsSep "" [ "$" "{" ''2:-"$( git rev-parse --show-toplevel )"'' "}" ] }" || failure c9ca5124
                                                                                                                                                                                 BRANCH="${ builtins.concatStringsSep "" [ "$" "{" "3:-" "}" ] }"
+                                                                                                                                                                                echo 7e1212fd aaca2e34 "INDEX=$INDEX" "REPOSITORY=$REPOSITORY" "BRANCH=$BRANCH"
                                                                                                                                                                                 cd "$REPOSITORY"
+                                                                                                                                                                                echo 7e1212fd 7cc78d36
                                                                                                                                                                                 if [[ -n "$BRANCH" ]]
                                                                                                                                                                                 then
+                                                                                                                                                                                    echo 7e1212fd e0464ef9
                                                                                                                                                                                     git mutable-mirror "$BRANCH"
+                                                                                                                                                                                    echo 7e1212fd 28843fa5
                                                                                                                                                                                 fi
                                                                                                                                                                                 if [[ "$INDEX" == 0 ]]
                                                                                                                                                                                 then
+                                                                                                                                                                                    echo 7e1212fd 9911010b
                                                                                                                                                                                     git mutable-reset
+                                                                                                                                                                                    echo 7e1212fd b5c69247
                                                                                                                                                                                 fi
                                                                                                                                                                                 git mutable-check
                                                                                                                                                                                 git mutable-build-vm
                                                                                                                                                                                 prompt "mutable-build-vm $INDEX"
                                                                                                                                                                                 git mutable-test
                                                                                                                                                                                 prompt "mutable-test $INDEX"
+                                                                                                                                                                                echo 7e1212fd a338b730 "$INDEX"
                                                                                                                                                                                 if [[ "$INDEX" == 0 ]]
                                                                                                                                                                                 then
+                                                                                                                                                                                    echo 7e1212fd 0b784f4e
                                                                                                                                                                                     git mutable-switch
                                                                                                                                                                                     prompt "mutable-switch"
                                                                                                                                                                                 else
+                                                                                                                                                                                    echo 7e1212fd e1a606bc
                                                                                                                                                                                     NEXT_INDEX=$(( INDEX - 1 ))
+                                                                                                                                                                                    echo 7e1212fd 94a1dcc2 "NEXT_INDEX=$NEXT_INDEX"
                                                                                                                                                                                     NEXT_REPOSITORY="$( git mutable-studio )" || failure 00b2b3fb
+                                                                                                                                                                                    echo 7e1212fd 2c357870 "NEXT_REPOSITORY=$NEXT_REPOSITORY"
                                                                                                                                                                                     NEXT_BRANCH="$( git rev-parse --abbrev-ref HEAD )" || failure 9cf16a4e
+                                                                                                                                                                                    echo 7e1212fd d78279e5 "NEXT_BRANCH=$NEXT_BRANCH"
                                                                                                                                                                                     git mutable-promote "$NEXT_INDEX" "$NEXT_REPOSITORY" "$NEXT_BRANCH"
+                                                                                                                                                                                    echo 7e1212fd 39b0c4d3
                                                                                                                                                                                 fi
                                                                                                                                                                             '' ;
                                                                                                                                                                     } ;
@@ -1740,15 +1762,22 @@
                                                                                                                                                                         runtimeInputs = [ pkgs.git sequential ] ;
                                                                                                                                                                         text =
                                                                                                                                                                             ''
-
                                                                                                                                                                                 # reset this to main, squashing all comments to one; iteratively do the same for submodules
+                                                                                                                                                                                echo 7e1212fd 5b710c4f
                                                                                                                                                                                 REPOSITORY="$( git rev-parse --show-toplevel )" || failure 3b2b98e3
+                                                                                                                                                                                echo 7e1212fd 49144c77
                                                                                                                                                                                 cd "$REPOSITORY"
-                                                                                                                                                                                git submodule foreach 'git config --get core.sshCommand'
+                                                                                                                                                                                echo 7e1212fd 5331d409
+                                                                                                                                                                                GIT_SSH_COMMAND="$( git config --get core.sshCommand )" || failure fb0cc50b
+                                                                                                                                                                                export GIT_SSH_COMMAND
+                                                                                                                                                                                echo 7e1212fd fb61288c
                                                                                                                                                                                 git submodule foreach '${ scripts.submodule.reset }'
+                                                                                                                                                                                echo 7e1212fd c2164dac
                                                                                                                                                                                 git fetch origin main
+                                                                                                                                                                                echo 7e1212fd 2f6892c5
                                                                                                                                                                                 if ! git diff --quiet origin/main || git diff --quiet --cached origin/main
                                                                                                                                                                                 then
+                                                                                                                                                                                    echo 7e1212fd f53126b8
                                                                                                                                                                                     UUID="$( sequential | sha512sum )" || failure 15ff04d3
                                                                                                                                                                                     BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure c7dc3ee2
                                                                                                                                                                                     git checkout -b "$BRANCH"
@@ -1977,7 +2006,9 @@
                                                                                                                                                                                 DOT_SSH=${ resources.production.dot-ssh { failure = 9624 ; } }
                                                                                                                                                                                 export GIT_SSH_COMMAND="${ pkgs.openssh }/bin/ssh -F $DOT_SSH/config"
                                                                                                                                                                                 cd "../stage/artifacts/switch"
+                                                                                                                                                                                echo 7e1212fd 76cd421a
                                                                                                                                                                                 git -C "$REPOSITORY" submodule foreach '${ scripts.submodule.switch }'
+                                                                                                                                                                                echo 7e1212fd 59aa8693
                                                                                                                                                                                 UUID="$( uuidgen | sha512sum )" || failure 0f1227b6
                                                                                                                                                                                 BRANCH="$( echo "scratch/$UUID" | cut --bytes 1-64 )" || failure d5910859
                                                                                                                                                                                 git -C "$REPOSITORY"  checkout -b "$BRANCH"
@@ -2020,6 +2051,7 @@
                                                                                                                                                                             ''
                                                                                                                                                                                 : "${ builtins.concatStringsSep "" [ "$" "{" "toplevel:?this script must be run via git submodule foreach which will export toplevel" "}" ] }"
                                                                                                                                                                                 : "${ builtins.concatStringsSep "" [ "$" "{" "name:?this script must be run via git submodule foreach which will export name" "}" ] }"
+                                                                                                                                                                                echo 7e1212fd 1fcca264 "$toplevel/$name"
                                                                                                                                                                                 cd "$toplevel/$name"
                                                                                                                                                                                 git fetch origin main
                                                                                                                                                                                 if ! git diff origin/main --quiet || ! git diff origin/main --quiet --cached
@@ -2034,7 +2066,7 @@
                                                                                                                                                                                         echo 7e1212fd "TOKEN=$TOKEN" ff2896dc >> /tmp/DEBUG
                                                                                                                                                                                         gh label create snapshot --color "#333333" --description "Scripted Snapshot PR"
                                                                                                                                                                                     fi
-                                                                                                                                                                                    echo 7e1212fd "TOKEN=$TOKEN" 71fc34a2 >> /tmp/DEBUG
+                                                                                                                                                                                    echo echo 7e1212fd 0b784f4 "TOKEN=$TOKEN" 71fc34a2 >> /tmp/DEBUG
                                                                                                                                                                                     gh pr create --base main --head "$BRANCH" --label "snapshot"
                                                                                                                                                                                     echo 7e1212fd "TOKEN=$TOKEN" b3a7dac9 >> /tmp/DEBUG
                                                                                                                                                                                     URL="$( gh pr view --json url --jq .url )" || failure 31ccb1f3
@@ -2281,7 +2313,7 @@
                                                                                                                 wrap ${ post-commit } cipher/.git/hooks/post-commit 0500 --literal-brace "GIT_SSH_COMMAND:?GIT_SSH_COMMAND must be exported" --inherit-plain MOUNT --literal-plain PATH --uuid 708e9f8d
                                                                                                                 # shellcheck disable=SC2016
                                                                                                                 wrap ${ pre-commit } cipher/.git/hooks/pre-commit 0500 --literal-plain CIPHERTEXT_FILE --literal-plain FILE --inherit-plain MOUNT --literal-plain PATH --literal-plain PLAINTEXT_FILE --literal-brace 'PLAINTEXT_FILE#"$MOUNT"/plain/' --literal-plain RECIPIENT --literal-plain STAGED_FILE --uuid e7266fc5
-                                                                                                                wrap ${ pre-push } cipher/.git/hooks/pre-push 0500 --literal-plain GIT_SSH_COMMAND --literal-brace "GIT_SSH_COMMAND:?GIT_SSH_COMMAND must be exported" --literal-plain MOBILE_PUBLIC --inherit-plain MOUNT --literal-plain PATH --literal-plain TOKEN --uuid c49c4509
+                                                                                                                wrap ${ pre-push } cipher/.git/hooks/pre-push 0500 --literal-plain GIT_SSH_COMMAND --literal-brace "GIT_SSH_COMMAND:?GIT_SSH_COMMAND must be exported" --literal-plain MOBILE_PUBLIC --inherit-plain MOUNT --literal-plain PATH --uuid c49c4509
                                                                                                             '' ;
                                                                                             } ;
                                                                                     in "${ application }/bin/init" ;
@@ -2761,6 +2793,33 @@
                                                                                                                 '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/ExecStart" ;
+                                                                                        User = config.personal.name ;
+                                                                                    } ;
+                                                                                wantedBy = [ "multi-user.target" ] ;
+                                                                            } ;
+                                                                        resource-logger =
+                                                                            {
+                                                                                after = [ "redis.service" ] ;
+                                                                                description = "logs resources" ;
+                                                                                requires = [ "redis.service" ] ;
+                                                                                serviceConfig =
+                                                                                    {
+                                                                                        ExecStart =
+                                                                                            let
+                                                                                                application =
+                                                                                                    pkgs.writeShellApplication
+                                                                                                        {
+                                                                                                            name = "ExecStart" ;
+                                                                                                            text =
+                                                                                                                _resource-logger.implementation
+                                                                                                                    {
+                                                                                                                        channel = config.personal.channel ;
+                                                                                                                        log-directory = "/home/${ config.personal.name }/resources/log" ;
+                                                                                                                        log-file = "log.yaml" ;
+                                                                                                                        log-lock = "log.lock" ;
+                                                                                                                    } ;
+                                                                                                        } ;
+                                                                                                    in "${ application }/bin/ExecStart" ;
                                                                                         User = config.personal.name ;
                                                                                     } ;
                                                                             } ;
@@ -3289,6 +3348,11 @@
                                                             ] ;
                                                         transient = false ;
                                                   } ;
+                                        resource-logger =
+                                            _resource-logger.check
+                                                {
+                                                    expected = "/nix/store/44j9cfbiamg903zx9ldyhjpwrdky9bxl-resource-logger/bin/resource-logger" ;
+                                                } ;
                                         visitor-happy =
                                             _visitor.check
                                                 {
