@@ -3478,10 +3478,7 @@
                                                             in
                                                                 ''
                                                                     machine.wait_for_unit("multi-user.target")
-                                                                    machine.succeed("runuser testuser -- which direnv")
-                                                                    machine.succeed("runuser testuser -- direnv version")
-                                                                    machine.succeed("runuser testuser -- ls -la ~/pads/checks")
-                                                                    machine.succeed("exit 66")
+                                                                    machine.succeed("runuser testuser -- ${ time-0 }")
                                                                 '' ;
                                                 } ;
                                         resource-logger = _resource-logger.check { expected = "/nix/store/44j9cfbiamg903zx9ldyhjpwrdky9bxl-resource-logger/bin/resource-logger" ; } ;
