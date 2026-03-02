@@ -3434,7 +3434,7 @@
                                                                                                     resources = null ;
                                                                                                     resources-directory = "/home/emory/resources" ;
                                                                                                     sequential-start = ''$( head /dev/urandom | tr -dc '1-9' | head -c 15 )'' ;
-                                                                                                    root-directory = root-directory ;
+                                                                                                    root-directory = "/home/emory/.gc-roots" ;
                                                                                                     util-linux = pkgs.util-linux ;
                                                                                                     visitor = _visitor.implementation ;
                                                                                                     writeShellApplication = pkgs.writeShellApplication ;
