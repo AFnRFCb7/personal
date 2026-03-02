@@ -3431,7 +3431,7 @@
                                                                                                     nix = pkgs.nix ;
                                                                                                     ps = pkgs.ps ;
                                                                                                     redis = pkgs.redis ;
-                                                                                                    resources = resources ;
+                                                                                                    resources = null ;
                                                                                                     resources-directory = "/home/emory/resources" ;
                                                                                                     sequential-start = ''$( head /dev/urandom | tr -dc '1-9' | head -c 15 )'' ;
                                                                                                     root-directory = root-directory ;
