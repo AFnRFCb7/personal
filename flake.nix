@@ -3405,13 +3405,10 @@
                                                     nodes.machine =
                                                         { config , pkgs , ... } :
                                                             {
-                                                                config =
+                                                                personal =
                                                                     {
-                                                                        personal =
-                                                                            {
-                                                                                channel = "test-channel" ;
-                                                                                name = "test-channel" ;
-                                                                            } ;
+                                                                        channel = "test-channel" ;
+                                                                        name = "test-channel" ;
                                                                     } ;
                                                             } ;
                                                     testScript =
