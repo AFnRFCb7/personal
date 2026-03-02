@@ -3457,7 +3457,7 @@
                                                                                 name = "time-0" ;
                                                                                 text =
                                                                                     ''
-                                                                                        cd /pads/checks
+                                                                                        cd ~/pads/checks
                                                                                         direnv allow
                                                                                         RESOURCE_1="$( true-true )" || failure f09bd890
                                                                                         RESOURCE_2="$( true-true )" || failure c3b743a2
