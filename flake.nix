@@ -141,9 +141,9 @@
                                                                                                 runtimeInputs = [ pkgs.cowsay pkgs.figlet root wrap ] ;
                                                                                                 text =
                                                                                                     ''
-                                                                                                        RESOURCE_A=${ resources.checks.target { failure = 20903 ; setup = setup : ''${ setup } alpha'' ; } }
-                                                                                                        RESOURCE_B=${ resources.checks.target { failure = 24248 ; setup = setup : ''${ setup } alpha'' ; } }
-                                                                                                        RESOURCE_C=${ resources.checks.target { failure = 20903 ; setup = setup : ''${ setup } beta'' ; } }
+                                                                                                        RESOURCE_A=${ resources.checks.target { failure = 20903 ; } }
+                                                                                                        RESOURCE_B=${ resources.checks.target { failure = 24248 ; } }
+                                                                                                        RESOURCE_C=${ resources.checks.target { failure = 20903 ; } }
                                                                                                         if [[ "$RESOURCE_A" != "$RESOURCE_B" ]]
                                                                                                         then
                                                                                                             failure 734d8fe2
@@ -3493,12 +3493,12 @@
                                                             } ;
                                                     testScript =
                                                         let
-                                                            time-0 =
+                                                            pre =
                                                                 let
                                                                     application =
                                                                         pkgs.writeShellApplication
                                                                             {
-                                                                                name = "time-0" ;
+                                                                                name = "pre" ;
                                                                                 text =
                                                                                     ''
                                                                                         cd "/home/testuser/pads/checks"
@@ -3518,11 +3518,11 @@
                                                                                         fi
                                                                                     '' ;
                                                                             } ;
-                                                                    in "${ application }/bin/time-0" ;
+                                                                    in "${ application }/bin/pre" ;
                                                             in
                                                                 ''
                                                                     machine.wait_for_unit("multi-user.target")
-                                                                    machine.succeed("runuser testuser -- ${ time-0 }")
+                                                                    machine.succeed("runuser testuser -- ${ pre }")
                                                                 '' ;
                                                 } ;
                                         resource-logger = _resource-logger.check { expected = "/nix/store/44j9cfbiamg903zx9ldyhjpwrdky9bxl-resource-logger/bin/resource-logger" ; } ;
