@@ -145,24 +145,24 @@
                                                                                                         wrap ${ root }/bin/root root 0400 --uuid 064c5b11
                                                                                                         wrap ${ sequential }/bin/sequential sequential 0400 --uuid 8637555f
                                                                                                         wrap ${ wrap }/bin/wrap wrap 0400 --uuid 72fecbff
-                                                                                                        exit ${ if builtins.elemAt seed.path 2 == "true" then "0" else "65" }
+                                                                                                        exit ${ if builtins.elemAt seed.path 1 == "true" then "0" else "65" }
                                                                                                     '' ;
                                                                                             } ;
                                                                                     in "${ application }/bin/init" ;
                                                                             release =
-                                                                            { failure , pkgs , resources , seed , sequential } :
-                                                                                let
-                                                                                    application =
-                                                                                        pkgs.writeShellApplication
-                                                                                            {
-                                                                                                name = "init" ;
-                                                                                                runtimeInputs = [ ] ;
-                                                                                                text =
-                                                                                                    ''
-                                                                                                        exit ${ if builtins.elemAt seed.path 3 == "true" then "0" else "65" }
-                                                                                                    '' ;
-                                                                                            } ;
-                                                                                    in "${ application }/bin/init" ;
+                                                                                { failure , pkgs , resources , seed , sequential } :
+                                                                                    let
+                                                                                        application =
+                                                                                            pkgs.writeShellApplication
+                                                                                                {
+                                                                                                    name = "init" ;
+                                                                                                    runtimeInputs = [ ] ;
+                                                                                                    text =
+                                                                                                        ''
+                                                                                                            exit ${ if builtins.elemAt seed.path 2 == "true" then "0" else "65" }
+                                                                                                        '' ;
+                                                                                                } ;
+                                                                                        in "${ application }/bin/init" ;
                                                                             targets = [ "failure" "root" "sequential" "wrap" ] ;
                                                                     } ;
                                                             in
