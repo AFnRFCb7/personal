@@ -3401,11 +3401,11 @@
                                         resource-true-true =
                                             pkgs.nixosTest
                                                 {
-                                                    imports = [ user ] ;
                                                     name = "resource-true-true" ;
                                                     nodes.machine =
                                                         { pkgs , ... } :
                                                             {
+                                                                imports = [ user ] ;
                                                                 personal =
                                                                     {
                                                                         channel = "test-channel" ;
