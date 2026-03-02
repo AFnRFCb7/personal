@@ -157,7 +157,7 @@
                                                                                             pkgs.writeShellApplication
                                                                                                 {
                                                                                                     name = "release" ;
-                                                                                                    runtimeInputs = [ ] ;
+                                                                                                    runtimeInputs = [ pkgs.diffutils ] ;
                                                                                                     text =
                                                                                                         ''
                                                                                                             diff -s ${ failure }/bin/failure /mount/failure
