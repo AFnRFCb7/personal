@@ -143,7 +143,7 @@
                                                                                                     ''
                                                                                                         wrap ${ failure }/bin/failure failure 0400 --literal-plain PATH --uuid 05ef9d07
                                                                                                         wrap ${ root }/bin/root root 0400 --literal-plain DIRECTORY --literal-plain INDEX --literal-plain PATH --literal-plain TARGET --uuid 064c5b11
-                                                                                                        wrap ${ sequential }/bin/sequential sequential 0400 --literal-plain PATH --uuid 8637555f
+                                                                                                        wrap ${ sequential }/bin/sequential sequential 0400 --literal-plain CURRENT --literal-plain NEXT --literal-plain PATH --uuid 8637555f
                                                                                                         wrap ${ wrap }/bin/wrap wrap 0400 --literal-plain PATH --uuid 72fecbff
                                                                                                         exit ${ if builtins.elemAt seed.path 1 == "true" then "0" else "65" }
                                                                                                     '' ;
