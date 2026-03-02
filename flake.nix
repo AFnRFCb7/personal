@@ -138,11 +138,11 @@
                                                                                         pkgs.writeShellApplication
                                                                                             {
                                                                                                 name = "init" ;
-                                                                                                runtimeInputs = [ pkgs.cowsay pkgs.fortune root wrap ] ;
+                                                                                                runtimeInputs = [ pkgs.cowsay pkgs.figlet root wrap ] ;
                                                                                                 text =
                                                                                                     ''
                                                                                                         cowsay ${ builtins.elemAt seed.path 3 } > /mount/standard-output
-                                                                                                        root ${ pkgs.fortune }
+                                                                                                        root ${ pkgs.figlet }
                                                                                                         wrap ${ failure }/bin/failure failure 0400 --literal-plain PATH --uuid 05ef9d07
                                                                                                         wrap ${ root }/bin/root root 0400 --literal-plain DIRECTORY --literal-plain INDEX --literal-plain PATH --literal-plain TARGET --uuid 064c5b11
                                                                                                         wrap ${ sequential }/bin/sequential sequential 0400 --literal-plain CURRENT --literal-plain NEXT --literal-plain PATH --uuid 8637555f
@@ -161,7 +161,8 @@
                                                                                                     runtimeInputs = [ pkgs.nix pkgs.diffutils ] ;
                                                                                                     text =
                                                                                                         ''
-                                                                                                            FORTUNE="$( nix eval nixpkgs#fortune.outPath )" || failure 99aea466
+                                                                                                            FORTUNE="$( nix eval nixpkgs#figlet.outPath )" || failure 99aea466
+                                                                                                            "$FIGLET" ${ builtins.elemAt seed.path 3 }
                                                                                                             diff -s ${ failure }/bin/failure /mount/failure
                                                                                                             diff -s ${ sequential }/bin/sequential /mount/sequential
                                                                                                             nix-collect-garbage
