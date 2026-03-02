@@ -3457,33 +3457,48 @@
                                                                                                     {
                                                                                                         depth = 0 ;
                                                                                                         init =
-                                                                                                            let
-                                                                                                                application =
-                                                                                                                    pkgs.writeShellApplication
-                                                                                                                        {
-                                                                                                                            name = "init" ;
-                                                                                                                            text = "" ;
-                                                                                                                        } ;
-                                                                                                                in "${ application }/bin/init" ;
+                                                                                                            { failure , pkgs , resources , root , seed , sequential , wrap } :
+                                                                                                                let
+                                                                                                                    application =
+                                                                                                                        pkgs.writeShellApplication
+                                                                                                                            {
+                                                                                                                                name = "init" ;
+                                                                                                                                text =
+                                                                                                                                    ''
+                                                                                                                                        echo "$SETUP" > /mount/setup
+                                                                                                                                        wrap ${ failure } failure 0400 --uuid 8c8cc897
+                                                                                                                                        wrap ${ root } root 0400 --uuid 25a956d9
+                                                                                                                                        wrap ${ seed } seed 0400 --uuid 28ae8994
+                                                                                                                                        wrap ${ sequential } sequential 0400 --uuid 25c81f48
+                                                                                                                                        wrap ${ wrap } wrap 0400 --uuid 2286e3b8
+                                                                                                                                    '' ;
+                                                                                                                            } ;
+                                                                                                                    in "${ application }/bin/init" ;
                                                                                                         init-resolutions = null ;
                                                                                                         release =
-                                                                                                            let
-                                                                                                                application =
-                                                                                                                    pkgs.writeShellApplication
-                                                                                                                        {
-                                                                                                                            name = "release" ;
-                                                                                                                            text = "" ;
-                                                                                                                        } ;
-                                                                                                                in "${ application }/bin/release" ;
+                                                                                                            { failure , pkgs , resources , seed , sequential } :
+                                                                                                                let
+                                                                                                                    application =
+                                                                                                                        pkgs.writeShellApplication
+                                                                                                                            {
+                                                                                                                                name = "release" ;
+                                                                                                                                text = "" ;
+                                                                                                                            } ;
+                                                                                                                    in "${ application }/bin/release" ;
                                                                                                         release-resolutions = null ;
                                                                                                         seed = null ;
-                                                                                                        targets = [ ] ;
+                                                                                                        targets = [ "failure" "root" "seed" "sequential" "wrap" ] ;
                                                                                                         transient = false ;
                                                                                                     } ;
 
                                                                                         in
                                                                                             ''
                                                                                                 RESOURCE=${ __resource { setup = setup : ''${ setup } true true'' ; failure = 8109 ; } }
+                                                                                                if [[ -d "$RESOURCE" ]]
+                                                                                                then
+                                                                                                else
+                                                                                                    failure 1a3c901c
+                                                                                                fi
                                                                                             '' ;
                                                                             } ;
                                                                     in "${ application }/bin/init" ;
