@@ -14,6 +14,7 @@
                         private ,
                         resource ,
                         resource-logger ,
+                        resource-releaser ,
                         system ,
                         visitor
                     } @primary :
@@ -56,6 +57,12 @@
                                 resource-logger.lib
                                     {
                                         failure = _failure.implementation "88fe77a0" ;
+                                        pkgs = pkgs ;
+                                    } ;
+                            _resource-releaser =
+                                resource-releaser.lib
+                                    {
+                                        failure = _failure.implementation "0a13879f" ;
                                         pkgs = pkgs ;
                                     } ;
                             _visitor = visitor.lib { } ;
