@@ -1902,7 +1902,7 @@
                                                                                                                                                                                         failure 10ce8944
                                                                                                                                                                                     fi
                                                                                                                                                                                     USER_EMAIL="$( git config --get user.email )" || failure e9471d87
-                                                                                                                                                                                    if [[ -z "USER_EMAIL" ]]
+                                                                                                                                                                                    if [[ -z "$USER_EMAIL" ]]
                                                                                                                                                                                     then
                                                                                                                                                                                         failure a328a496
                                                                                                                                                                                     fi
@@ -3419,7 +3419,7 @@
                                                     testScript =
                                                         ''
                                                             machine.wait_for_unit("multi-user.target")
-                                                            machine.succeed("echo hi")
+                                                            machine.run-as-user("testuser","studio $(uuidgen)")
                                                         '' ;
                                                 } ;
                                         resource-logger = _resource-logger.check { expected = "/nix/store/44j9cfbiamg903zx9ldyhjpwrdky9bxl-resource-logger/bin/resource-logger" ; } ;
