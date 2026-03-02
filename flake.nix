@@ -3415,16 +3415,64 @@
                                                                                 text =
                                                                                     let
                                                                                         __resource =
-                                                                                            _resources
+                                                                                            resource.lib
                                                                                                 {
-                                                                                                    channel = config.personal.channel ;
-                                                                                                    resources-directory = "/home/${ config.personal.name }/resources" ;
-                                                                                                    resources = null ;
-                                                                                                    root-directory = "/home/${ config.personal.name }/.gc-root" ;
+                                                                                                    buildFHSUserEnv = pkgs.buildFHSUserEnv ;
+                                                                                                    channel = channel ;
+                                                                                                    coreutils = pkgs.coreutils ;
+                                                                                                    failure = _failure.implementation "77d82ffa" ;
+                                                                                                    findutils = pkgs.findutils ;
+                                                                                                    flock = pkgs.flock ;
+                                                                                                    gnutar = pkgs.gnutar ;
+                                                                                                    inotify-tools = pkgs.inotify-tools ;
+                                                                                                    jq = pkgs.jq ;
+                                                                                                    makeWrapper = pkgs.makeWrapper ;
+                                                                                                    mkDerivation = pkgs.stdenv.mkDerivation ;
+                                                                                                    nix = pkgs.nix ;
+                                                                                                    ps = pkgs.ps ;
+                                                                                                    redis = pkgs.redis ;
+                                                                                                    resources = resources ;
+                                                                                                    resources-directory = resources-directory ;
+                                                                                                    sequential-start = ''$( head /dev/urandom | tr -dc '1-9' | head -c 15 )'' ;
+                                                                                                    root-directory = root-directory ;
+                                                                                                    util-linux = pkgs.util-linux ;
+                                                                                                    visitor = _visitor.implementation ;
+                                                                                                    writeShellApplication = pkgs.writeShellApplication ;
+                                                                                                    yq-go = pkgs.yq-go ;
+                                                                                                    zstd = pkgs.zstd ;
                                                                                                 } ;
+                                                                                            ___resource =
+                                                                                                __resource.implementation
+                                                                                                    {
+                                                                                                        depth = 0 ;
+                                                                                                        init =
+                                                                                                            let
+                                                                                                                application =
+                                                                                                                    pkgs.writeShellApplication
+                                                                                                                        {
+                                                                                                                            name = "init" ;
+                                                                                                                            text = "" ;
+                                                                                                                        } ;
+                                                                                                                in "${ application }/bin/init" ;
+                                                                                                        init-resolutions = null ;
+                                                                                                        release =
+                                                                                                            let
+                                                                                                                application =
+                                                                                                                    pkgs.writeShellApplication
+                                                                                                                        {
+                                                                                                                            name = "release" ;
+                                                                                                                            text = "" ;
+                                                                                                                        } ;
+                                                                                                                in "${ application }/bin/release" ;
+                                                                                                        release-resolutions = null ;
+                                                                                                        seed = null ;
+                                                                                                        targets = [ ] ;
+                                                                                                        transient = false ;
+                                                                                                    } ;
+
                                                                                         in
                                                                                             ''
-                                                                                                RESOURCE=${ __resources { setup = setup : ''${ setup } true true'' ; failure = 8109 ; } }
+                                                                                                RESOURCE=${ __resource { setup = setup : ''${ setup } true true'' ; failure = 8109 ; } }
                                                                                             '' ;
                                                                             } ;
                                                                     in "${ application }/bin/init" ;
