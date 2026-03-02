@@ -169,7 +169,10 @@
                                                                 {
                                                                     true =
                                                                         {
-                                                                            true = checks ;
+                                                                            true =
+                                                                                {
+                                                                                    true-true = checks ;
+                                                                                } ;
                                                                         } ;
                                                                 } ;
                                                     foobar =
@@ -3142,7 +3145,7 @@
                                                                                                 autocomplete = [ ] ;
                                                                                                 bin =
                                                                                                     [
-                                                                                                        ( resources.checks.true.true { } )
+                                                                                                        ( resources.checks.true.true.true-true { } )
                                                                                                     ] ;
                                                                                                 man = [ ] ;
                                                                                             } ;
@@ -3454,8 +3457,13 @@
                                                                                 name = "test" ;
                                                                                 text =
                                                                                     ''
-                                                                                        cd /pads/test
+                                                                                        cd /pads/checks
                                                                                         direnv allow
+                                                                                        RESOURCE_1="$( true-true )" || failure f09bd890
+                                                                                        RESOURCE_2="$( true-true )" || failure c3b743a2
+                                                                                        if [[ "$RESOURCE_1" != "$RESOURCE_2" ]]
+                                                                                        then
+                                                                                            failure 7946f3fc "RESOURCE_1=$RESOURCE_1" "RESOURCE_2=$RESOURCE_2"
                                                                                     '' ;
                                                                             } ;
                                                                     in "${ application }/bin/test" ;
