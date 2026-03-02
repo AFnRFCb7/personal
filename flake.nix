@@ -3370,6 +3370,17 @@
                                                             ] ;
                                                         transient = false ;
                                                   } ;
+                                        resource-true-true =
+                                            pkgs.nixosTest
+                                                {
+                                                    name = "resource-true-true" ;
+                                                    nodes.machine = { pkgs , ... } : { } ;
+                                                    testScript =
+                                                        ''
+                                                            machine.wait_for_unit("multi-user.target")
+                                                            machine.succeed("echo hello")
+                                                        '' ;
+                                                } ;
                                         resource-logger = _resource-logger.check { expected = "/nix/store/44j9cfbiamg903zx9ldyhjpwrdky9bxl-resource-logger/bin/resource-logger" ; } ;
                                         resource-releaser = _resource-releaser.check { expected = "/nix/store/sfp1lgjf7wkb3wkqj6v3vxq4v7lwgby3-resource-releaser/bin/resource-releaser" ;} ;
                                         visitor-happy =
