@@ -3418,7 +3418,7 @@
                                                                                             resource.lib
                                                                                                 {
                                                                                                     buildFHSUserEnv = pkgs.buildFHSUserEnv ;
-                                                                                                    channel = config.personalchannel ;
+                                                                                                    channel = "redis" ;
                                                                                                     coreutils = pkgs.coreutils ;
                                                                                                     failure = _failure.implementation "77d82ffa" ;
                                                                                                     findutils = pkgs.findutils ;
