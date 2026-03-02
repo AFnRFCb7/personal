@@ -138,7 +138,7 @@
                                                                                         pkgs.writeShellApplication
                                                                                             {
                                                                                                 name = "init" ;
-                                                                                                runtimeInputs = [ pkgs.cowsay pkgs.fortune wrap ] ;
+                                                                                                runtimeInputs = [ pkgs.cowsay pkgs.fortune root wrap ] ;
                                                                                                 text =
                                                                                                     ''
                                                                                                         cowsay ${ builtins.elemAt seed.path 3 } > /mount/standard-output
@@ -161,6 +161,7 @@
                                                                                                     runtimeInputs = [ pkgs.nix pkgs.diffutils ] ;
                                                                                                     text =
                                                                                                         ''
+                                                                                                            FORTUNE="$( nix eval nixpkgs#fortune.outPath )" || failure 99aea466
                                                                                                             diff -s ${ failure }/bin/failure /mount/failure
                                                                                                             diff -s ${ sequential }/bin/sequential /mount/sequential
                                                                                                             nix-collect-garbage
