@@ -1718,14 +1718,20 @@
                                                                                                                                                                                 INDEX="${ builtins.concatStringsSep "" [ "$" "{" "1:-2" "}" ] }"
                                                                                                                                                                                 REPOSITORY="${ builtins.concatStringsSep "" [ "$" "{" ''2:-"$( git rev-parse --show-toplevel )"'' "}" ] }" || failure c9ca5124
                                                                                                                                                                                 BRANCH="${ builtins.concatStringsSep "" [ "$" "{" "3:-" "}" ] }"
+                                                                                                                                                                                echo 7e1212fd aaca2e34 "INDEX=$INDEX" "REPOSITORY=$REPOSITORY" "BRANCH=$BRANCH"
                                                                                                                                                                                 cd "$REPOSITORY"
+                                                                                                                                                                                echo 7e1212fd 7cc78d36
                                                                                                                                                                                 if [[ -n "$BRANCH" ]]
                                                                                                                                                                                 then
+                                                                                                                                                                                    echo 7e1212fd e0464ef9
                                                                                                                                                                                     git mutable-mirror "$BRANCH"
+                                                                                                                                                                                    echo 7e1212fd 28843fa5
                                                                                                                                                                                 fi
                                                                                                                                                                                 if [[ "$INDEX" == 0 ]]
                                                                                                                                                                                 then
+                                                                                                                                                                                    echo 7e1212fd 9911010b
                                                                                                                                                                                     git mutable-reset
+                                                                                                                                                                                    echo 7e1212fd b5c69247
                                                                                                                                                                                 fi
                                                                                                                                                                                 git mutable-check
                                                                                                                                                                                 git mutable-build-vm
@@ -1756,15 +1762,21 @@
                                                                                                                                                                         runtimeInputs = [ pkgs.git sequential ] ;
                                                                                                                                                                         text =
                                                                                                                                                                             ''
-
                                                                                                                                                                                 # reset this to main, squashing all comments to one; iteratively do the same for submodules
+                                                                                                                                                                                echo 7e1212fd 5b710c4f
                                                                                                                                                                                 REPOSITORY="$( git rev-parse --show-toplevel )" || failure 3b2b98e3
+                                                                                                                                                                                echo 7e1212fd 49144c77
                                                                                                                                                                                 cd "$REPOSITORY"
+                                                                                                                                                                                echo 7e1212fd 5331d409
                                                                                                                                                                                 git submodule foreach 'git config --get core.sshCommand'
+                                                                                                                                                                                echo 7e1212fd fb61288c
                                                                                                                                                                                 git submodule foreach '${ scripts.submodule.reset }'
+                                                                                                                                                                                echo 7e1212fd c2164dac
                                                                                                                                                                                 git fetch origin main
+                                                                                                                                                                                echo 7e1212fd 2f6892c5
                                                                                                                                                                                 if ! git diff --quiet origin/main || git diff --quiet --cached origin/main
                                                                                                                                                                                 then
+                                                                                                                                                                                    echo 7e1212fd f53126b8
                                                                                                                                                                                     UUID="$( sequential | sha512sum )" || failure 15ff04d3
                                                                                                                                                                                     BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure c7dc3ee2
                                                                                                                                                                                     git checkout -b "$BRANCH"
