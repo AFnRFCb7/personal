@@ -3410,7 +3410,7 @@
                                                                     {
                                                                         agenix = ./. ;
                                                                         channel = "test-channel" ;
-                                                                        descriptioin = "Test User" ;
+                                                                        description = "Test User" ;
                                                                         email = "testuser@example.com" ;
                                                                         name = "testuser" ;
                                                                         password = "FakeP@ssword!2026" ;
