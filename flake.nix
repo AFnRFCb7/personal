@@ -3360,6 +3360,7 @@
                                                 {
                                                     expected = "/nix/store/44j9cfbiamg903zx9ldyhjpwrdky9bxl-resource-logger/bin/resource-logger" ;
                                                 } ;
+                                        resource-releaser = _resource-releaser.check { } ;
                                         visitor-happy =
                                             _visitor.check
                                                 {
