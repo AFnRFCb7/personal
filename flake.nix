@@ -3410,7 +3410,7 @@
                                                                     application =
                                                                         pkgs.writeShellAppalication
                                                                             {
-                                                           __res                     name = "init" ;
+                                                                                name = "init" ;
                                                                                 runtimeInputs = [ ] ;
                                                                                 text =
                                                                                     let
