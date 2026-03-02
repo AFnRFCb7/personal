@@ -3459,6 +3459,7 @@
                                                                                     ''
                                                                                         cd ~/pads/checks
                                                                                         direnv allow
+                                                                                        echo "$PATH"
                                                                                         RESOURCE_1="$( true-true )" || failure f09bd890
                                                                                         RESOURCE_2="$( true-true )" || failure c3b743a2
                                                                                         if [[ "$RESOURCE_1" != "" ]]
