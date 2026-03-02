@@ -127,33 +127,51 @@
                                                 }
                                                 {
                                                     checks =
-                                                        ignore :
-                                                            {
-                                                                init =
-                                                                    { failure , pkgs , resources , root , seed , sequential , wrap } :
-                                                                        let
-                                                                            application =
-                                                                                pkgs.writeShellApplication
-                                                                                    {
-                                                                                        name = "init" ;
-                                                                                        runtimeInputs = [ ] ;
-                                                                                        text =
-                                                                                            ''
-                                                                                                INIT="$1"
-                                                                                                RELEASE="2"
-                                                                                                echo "$INIT" > /mount/init
-                                                                                                echo "$RELEASE" > /mount/release
-                                                                                                if $INIT
-                                                                                                then
-                                                                                                    exit 0
-                                                                                                else
-                                                                                                    exit 65
-                                                                                                fi
-                                                                                            '' ;
-                                                                                    } ;
-                                                                            in "${ application }/bin/init" ;
-                                                                targets = [ "init" "release" ] ;
-                                                            } ;
+                                                        let
+                                                            checks =
+                                                                ignore :
+                                                                    {
+                                                                        init =
+                                                                            { failure , pkgs , resources , root , seed , sequential , wrap } :
+                                                                                let
+                                                                                    application =
+                                                                                        pkgs.writeShellApplication
+                                                                                            {
+                                                                                                name = "init" ;
+                                                                                                runtimeInputs = [ wrap ] ;
+                                                                                                text =
+                                                                                                    ''
+                                                                                                        wrap ${ failure }/bin/failure failure 0400 --uuid 05ef9d07
+                                                                                                        wrap ${ root }/bin/root root 0400 --uuid 064c5b11
+                                                                                                        wrap ${ sequential }/bin/sequential sequential 0400 --uuid 8637555f
+                                                                                                        wrap ${ wrap }/bin/wrap wrap 0400 --uuid 72fecbff
+                                                                                                        exit ${ if builtins.elemAt seed.path 2 == "true" then "0" else "65" }
+                                                                                                    '' ;
+                                                                                            } ;
+                                                                                    in "${ application }/bin/init" ;
+                                                                            release =
+                                                                            { failure , pkgs , resources , seed , sequential } :
+                                                                                let
+                                                                                    application =
+                                                                                        pkgs.writeShellApplication
+                                                                                            {
+                                                                                                name = "init" ;
+                                                                                                runtimeInputs = [ ] ;
+                                                                                                text =
+                                                                                                    ''
+                                                                                                        exit ${ if builtins.elemAt seed.path 3 == "true" then "0" else "65" }
+                                                                                                    '' ;
+                                                                                            } ;
+                                                                                    in "${ application }/bin/init" ;
+                                                                            targets = [ "failure" "root" "sequential" "wrap" ] ;
+                                                                    } ;
+                                                            in
+                                                                {
+                                                                    true =
+                                                                        {
+                                                                            true = checks ;
+                                                                        } ;
+                                                                } ;
                                                     foobar =
                                                         {
                                                             bin =
@@ -3118,6 +3136,16 @@
                                                                                                     ] ;
                                                                                             } ;
                                                                                     career = { } ;
+                                                                                    checks =
+                                                                                        ignore :
+                                                                                            {
+                                                                                                autocomplete = [ ] ;
+                                                                                                bin =
+                                                                                                    [
+                                                                                                        ( resources.checks.true.true { } )
+                                                                                                    ] ;
+                                                                                                man = [ ] ;
+                                                                                            } ;
                                                                                     home =
                                                                                         ignore :
                                                                                             {
@@ -3426,6 +3454,9 @@
                                                                                 name = "test" ;
                                                                                 text =
                                                                                     ''
+                                                                                        cd /pads/test
+                                                                                        direnv allow
+
                                                                                     '' ;
                                                                             } ;
                                                                     in "${ application }/bin/test" ;
