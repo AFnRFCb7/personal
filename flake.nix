@@ -139,10 +139,20 @@
                                                                                         runtimeInputs = [ ] ;
                                                                                         text =
                                                                                             ''
+                                                                                                INIT="$1"
+                                                                                                RELEASE="2"
+                                                                                                echo "$INIT" > /mount/init
+                                                                                                echo "$RELEASE" > /mount/release
+                                                                                                if $INIT
+                                                                                                then
+                                                                                                    exit 0
+                                                                                                else
+                                                                                                    exit 65
+                                                                                                fi
                                                                                             '' ;
                                                                                     } ;
                                                                             in "${ application }/bin/init" ;
-                                                                targets = [ ] ;
+                                                                targets = [ "init" "release" ] ;
                                                             } ;
                                                     foobar =
                                                         {
@@ -3392,7 +3402,7 @@
                                             pkgs.nixosTest
                                                 {
                                                     name = "resource-true-true" ;
-                                                    nodes.machine = { pkgs , ... } : { } ;
+                                                    nodes.machine = { config , pkgs , ... } : { } ;
                                                     testScript =
                                                         let
                                                             init =
@@ -3400,12 +3410,22 @@
                                                                     application =
                                                                         pkgs.writeShellAppalication
                                                                             {
-                                                                                name = "init" ;
+                                                           __res                     name = "init" ;
                                                                                 runtimeInputs = [ ] ;
                                                                                 text =
-                                                                                    ''
-                                                                                        RESOURCE=${ resources.checks { setup = setup : ''${ setup } true true'' ; failure = 8109 ; } }
-                                                                                    '' ;
+                                                                                    let
+                                                                                        __resource =
+                                                                                            _resources
+                                                                                                {
+                                                                                                    channel = config.personal.channel ;
+                                                                                                    resources-directory = "/home/${ config.personal.name }/resources" ;
+                                                                                                    resources = null ;
+                                                                                                    root-directory = "/home/${ config.personal.name }/.gc-root" ;
+                                                                                                } ;
+                                                                                        in
+                                                                                            ''
+                                                                                                RESOURCE=${ __resources { setup = setup : ''${ setup } true true'' ; failure = 8109 ; } }
+                                                                                            '' ;
                                                                             } ;
                                                                     in "${ application }/bin/init" ;
                                                             in
