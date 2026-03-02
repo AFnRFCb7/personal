@@ -145,7 +145,7 @@
                                                                                                         wrap ${ failure }/bin/failure failure 0400 --literal-plain PATH --uuid 05ef9d07
                                                                                                         wrap ${ root }/bin/root root 0400 --literal-plain DIRECTORY --literal-plain INDEX --literal-plain PATH --literal-plain TARGET --uuid 064c5b11
                                                                                                         wrap ${ sequential }/bin/sequential sequential 0400 --literal-plain CURRENT --literal-plain NEXT --literal-plain PATH --uuid 8637555f
-                                                                                                        wrap ${ wrap }/bin/wrap wrap 0400 --literal-plain dir --literal-plain DISPLAY --literal-plain display_nr --literal-plain local-socket --inherit-plain MOUNT --literal-plain path --uuid 72fecbff
+                                                                                                        wrap ${ wrap }/bin/wrap wrap 0400 --literal-plain dir --literal-plain DISPLAY --literal-plain display_nr --inherit-plain MOUNT --literal-plain path --uuid 72fecbff
                                                                                                         exit ${ if builtins.elemAt seed.path 1 == "true" then "0" else "65" }
                                                                                                     '' ;
                                                                                             } ;
@@ -156,10 +156,12 @@
                                                                                         application =
                                                                                             pkgs.writeShellApplication
                                                                                                 {
-                                                                                                    name = "init" ;
+                                                                                                    name = "release" ;
                                                                                                     runtimeInputs = [ ] ;
                                                                                                     text =
                                                                                                         ''
+                                                                                                            diff -s ${ failure }/bin/failure /mount/failure
+                                                                                                            diff -s ${ sequential }/bin/sequential /mount/sequential
                                                                                                             exit ${ if builtins.elemAt seed.path 2 == "true" then "0" else "65" }
                                                                                                         '' ;
                                                                                                 } ;
