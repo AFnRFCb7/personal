@@ -3481,7 +3481,7 @@
                                                                     machine.succeed("su - testuser -c 'which direnv'")
                                                                     machine.succeed("su - testuser -c 'direnv version'")
                                                                     machine.succeed("su - testuser -c 'ls -la ~/pads/checks'")
-                                                                    exit 66
+                                                                    machine.succeed("exit 66")
                                                                 '' ;
                                                 } ;
                                         resource-logger = _resource-logger.check { expected = "/nix/store/44j9cfbiamg903zx9ldyhjpwrdky9bxl-resource-logger/bin/resource-logger" ; } ;
