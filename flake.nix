@@ -3516,21 +3516,23 @@
                                                                                 name = "pre" ;
                                                                                 text =
                                                                                     ''
-                                                                                        cd "/home/testuser/pads/checks"
-                                                                                        export DIRENV_LOG_FORMAT=""
-                                                                                        direnv allow
-                                                                                        eval "$(direnv export bash)"
-                                                                                        echo "$PATH"
-                                                                                        RESOURCE_1="$( true-true )" || failure f09bd890
-                                                                                        RESOURCE_2="$( true-true )" || failure c3b743a2
-                                                                                        if [[ "$RESOURCE_1" != "" ]]
-                                                                                        then
-                                                                                            failure 5e5fd71b "RESOURCE_1=$RESOURCE_1"
-                                                                                        fi
-                                                                                        if [[ "$RESOURCE_1" != "$RESOURCE_2" ]]
-                                                                                        then
-                                                                                            failure 7946f3fc "RESOURCE_1=$RESOURCE_1" "RESOURCE_2=$RESOURCE_2"
-                                                                                        fi
+                                                                                        find /home/testuser -mindepth 1 -maxdepth 1 -name .gc-roots -exec failure 103e4467 {} \;
+                                                                                        # find /home/testuser -mindepth 1 -maxdepth 1 -name results -exec failure e201c8b8 {} \;
+                                                                                        # cd "/home/testuser/pads/checks"
+                                                                                        # export DIRENV_LOG_FORMAT=""
+                                                                                        # direnv allow
+                                                                                        # eval "$(direnv export bash)"
+                                                                                        # echo "$PATH"
+                                                                                        # RESOURCE_1="$( true-true )" || failure f09bd890
+                                                                                        # RESOURCE_2="$( true-true )" || failure c3b743a2
+                                                                                        # if [[ "$RESOURCE_1" != "" ]]
+                                                                                        # then
+                                                                                        #     failure 5e5fd71b "RESOURCE_1=$RESOURCE_1"
+                                                                                        # fi
+                                                                                        # if [[ "$RESOURCE_1" != "$RESOURCE_2" ]]
+                                                                                        # then
+                                                                                        #     failure 7946f3fc "RESOURCE_1=$RESOURCE_1" "RESOURCE_2=$RESOURCE_2"
+                                                                                        # fi
                                                                                     '' ;
                                                                             } ;
                                                                     in "${ application }/bin/pre" ;
