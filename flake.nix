@@ -3519,7 +3519,7 @@
                                                                                     ''
                                                                                         find /home/testuser -mindepth 1 -maxdepth 1 -name .gc-roots -exec failure 103e4467 {} \;
                                                                                         find /home/testuser -mindepth 1 -maxdepth 1 -name results -exec failure e201c8b8 {} \;
-                                                                                        mkdir --parents /home/test-user/resources/sequential
+                                                                                        mkdir --parents /home/testuser/resources/sequential
                                                                                         cd "/home/testuser/pads/checks"
                                                                                         export DIRENV_LOG_FORMAT=""
                                                                                         direnv allow
