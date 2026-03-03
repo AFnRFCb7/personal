@@ -3481,6 +3481,7 @@
                                                                                             echo d94d5d11 WAIT for .envrc >&2
                                                                                            sleep 1
                                                                                         done
+                                                                                        cat /home/testuser/pads/checks/envrc
                                                                                         cd "/home/testuser/pads/checks"
                                                                                         export DIRENV_LOG_FORMAT=""
                                                                                         direnv allow
