@@ -3158,7 +3158,7 @@
                                                                                                 autocomplete = [ ] ;
                                                                                                 bin =
                                                                                                     [
-                                                                                                        ( resources.bin.checks.true.true.true-true { } )
+                                                                                                        ( resources.bin.checks.true.true.true-true { failure = 17466 ; } )
                                                                                                     ] ;
                                                                                                 man = [ ] ;
                                                                                             } ;
