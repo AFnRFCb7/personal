@@ -3472,11 +3472,11 @@
                                                                         pkgs.writeShellApplication
                                                                             {
                                                                                 name = "pre" ;
-                                                                                runtimeInputs = [ pkgs.direnv pkgs.inotifytools ( _failure.implementation "59d475a8" ) ] ;
+                                                                                runtimeInputs = [ pkgs.direnv pkgs.inotify-tools ( _failure.implementation "59d475a8" ) ] ;
                                                                                 text =
                                                                                     ''
-                                                                                        inotify-wait --event create /home/testuser/pads
-                                                                                        inotify-wait --event create /home/testuser/pads/.envrc
+                                                                                        inotifywait --event create /home/testuser/pads
+                                                                                        inotifywait --event create /home/testuser/pads/.envrc
                                                                                         cd "/home/testuser/pads/checks"
                                                                                         export DIRENV_LOG_FORMAT=""
                                                                                         direnv allow
