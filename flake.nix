@@ -3475,6 +3475,7 @@
                                                                                 runtimeInputs = [ pkgs.coreutils pkgs.direnv ( _failure.implementation "59d475a8" ) ] ;
                                                                                 text =
                                                                                     ''
+                                                                                        sleep 20s
                                                                                         ${ pkgs.findutils }/bin/find /home/testuser >&2
                                                                                         # while [[ ! -f /home/testuser/resources/log/log.yaml ]]
                                                                                         # do
