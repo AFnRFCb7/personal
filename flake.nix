@@ -3477,12 +3477,11 @@
                                                                                     ''
                                                                                         find /home/testuser -mindepth 1 -maxdepth 1 -name .gc-roots -exec failure 103e4467 {} \;
                                                                                         find /home/testuser -mindepth 1 -maxdepth 1 -name results -exec failure e201c8b8 {} \;
-                                                                                        mkdir --parents /home/testuser/resources/sequential
-                                                                                        echo 353555171753392 > /home/testuser/resources/sequential/sequential.counter
                                                                                         cd "/home/testuser/pads/checks"
                                                                                         export DIRENV_LOG_FORMAT=""
                                                                                         direnv allow
-                                                                                        eval "$(direnv export bash)"
+                                                                                        ENVRC="$( direnv export bash )" || failure d25301f0
+                                                                                        eval "$ENVRC"
                                                                                         echo "$PATH"
                                                                                         RESOURCE_1="$( true-true )" || failure f09bd890
                                                                                         if [[ "$RESOURCE_1" != "" ]]
