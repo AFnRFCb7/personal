@@ -141,7 +141,7 @@
                                                                                                 runtimeInputs = [ pkgs.cowsay pkgs.figlet root wrap ] ;
                                                                                                 text =
                                                                                                     ''
-                                                                                                        RESOURCE_A=ALPHA
+                                                                                                        RESOURCE_A=${ resources.checks.target { failure = 32736 ; }  }
                                                                                                         RESOURCE_B=ALPHA
                                                                                                         RESOURCE_C=ALPHA
                                                                                                         if [[ "$RESOURCE_A" != "$RESOURCE_B" ]]
