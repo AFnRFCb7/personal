@@ -45,7 +45,7 @@
                                             redis = pkgs.redis ;
                                             resources = resources ;
                                             resources-directory = resources-directory ;
-                                            sequential-start = ''$( head /dev/urandom | tr -dc '1-9' | head -c 15 )'' ;
+                                            sequential-start = config.personal.sequential-start ;
                                             root-directory = root-directory ;
                                             util-linux = pkgs.util-linux ;
                                             visitor = _visitor.implementation ;
@@ -3313,6 +3313,7 @@
                                                                         repository = lib.mkOption { default = "9ebf9ebc" ; type = lib.types.str ; } ;
                                                                         branch = lib.mkOption { default = "main" ; type = lib.types.str ; } ;
                                                                     } ;
+                                                                sequential-start = lib.mkOption { default = "$( head /dev/urandom | tr -dc '1-9' | head -c 15 )" ; type = lib.types.str ; } ;
                                                                 temporary =
                                                                     {
                                                                         ssh =
@@ -3457,6 +3458,7 @@
                                                                         email = "testuser@example.com" ;
                                                                         name = "testuser" ;
                                                                         password = "FakeP@ssword!2026" ;
+                                                                        sequential-start = "842877237311395" ;
                                                                     } ;
                                                             } ;
                                                     testScript =
