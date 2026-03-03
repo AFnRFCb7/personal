@@ -3525,10 +3525,10 @@
                                                                                         eval "$(direnv export bash)"
                                                                                         RESOURCE_1="$( true-true )" || failure f09bd890
                                                                                         # RESOURCE_2="$( true-true )" || failure c3b743a2
-                                                                                        # if [[ "$RESOURCE_1" != "" ]]
-                                                                                        # then
-                                                                                        #     failure 5e5fd71b "RESOURCE_1=$RESOURCE_1"
-                                                                                        # fi
+                                                                                        if [[ "$RESOURCE_1" != "" ]]
+                                                                                        then
+                                                                                            failure 5e5fd71b "RESOURCE_1=$RESOURCE_1"
+                                                                                        fi
                                                                                         # if [[ "$RESOURCE_1" != "$RESOURCE_2" ]]
                                                                                         # then
                                                                                         #     failure 7946f3fc "RESOURCE_1=$RESOURCE_1" "RESOURCE_2=$RESOURCE_2"
