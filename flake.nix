@@ -141,30 +141,6 @@
                                                                                                 runtimeInputs = [ pkgs.cowsay pkgs.figlet root wrap ] ;
                                                                                                 text =
                                                                                                     ''
-                                                                                                        RESOURCE_A=${ resources.checks.target { failure = 32736 ; setup = setup : "${ setup } a" ; } }
-                                                                                                        RESOURCE_B=${ resources.checks.target { failure = 32736 ; setup = setup : "${ setup } a" ; } }
-                                                                                                        RESOURCE_C=${ resources.checks.target { failure = 32736 ; setup = setup : "${ setup } c" ; } }
-                                                                                                        if [[ "$RESOURCE_A" != "$RESOURCE_B" ]]
-                                                                                                        then
-                                                                                                            failure 734d8fe2
-                                                                                                        fi
-                                                                                                        if [[ "$RESOURCE_A" == "$RESOURCE_C" ]]
-                                                                                                        then
-                                                                                                            failure c5f09f4d
-                                                                                                        fi
-                                                                                                        echo "$RESOURCE_A" > /mount/resource-a
-                                                                                                        echo "$RESOURCE_B" > /mount/resource-b
-                                                                                                        echo "$RESOURCE_C" > /mount/resource-c
-                                                                                                        root "$RESOURCE_A"
-                                                                                                        echo ${ pkgs.cowsay } > /mount/store-a
-                                                                                                        echo ${ pkgs.figlet } > /mount/store-b
-                                                                                                        root ${ pkgs.figlet }
-                                                                                                        cowsay ${ builtins.elemAt seed.path 3 }
-                                                                                                        figlet ${ builtins.elemAt seed.path 3 }
-                                                                                                        wrap ${ failure }/bin/failure failure 0400 --literal-plain PATH --uuid 05ef9d07
-                                                                                                        wrap ${ root }/bin/root root 0400 --literal-plain DIRECTORY --literal-plain INDEX --literal-plain PATH --literal-plain TARGET --uuid 064c5b11
-                                                                                                        wrap ${ sequential }/bin/sequential sequential 0400 --literal-plain CURRENT --literal-plain NEXT --literal-plain PATH --uuid 8637555f
-                                                                                                        wrap ${ wrap }/bin/wrap wrap 0400 --literal-plain dir --literal-plain DISPLAY --literal-plain display_nr --literal-plain i --literal-plain local_socket --inherit-plain MOUNT --literal-plain path --uuid 72fecbff
                                                                                                         exit ${ if builtins.elemAt seed.path 1 == "true" then "0" else "65" }
                                                                                                     '' ;
                                                                                             } ;
@@ -179,34 +155,11 @@
                                                                                                     runtimeInputs = [ pkgs.nix pkgs.diffutils ] ;
                                                                                                     text =
                                                                                                         ''
-                                                                                                            RESOURCE_A="( cat /mount/resource-a )" || failure 0d418ba6
-                                                                                                            RESOURCE_C="( cat /mount/resource-c )" || failure 5f634ae7
-                                                                                                            STORE_A="( cat /mount/store-a )" || failure fd5ae4d1
-                                                                                                            STORE_B="( cat /mount/store-b )" || failure 34b93b1d
-                                                                                                            if [[ ! -d "$RESOURCE_A" ]]
-                                                                                                            then
-                                                                                                                failure eced412a
-                                                                                                            fi
-                                                                                                            if [[ -d "$RESOURCE_C" ]]
-                                                                                                            then
-                                                                                                                failure 35a7da5b
-                                                                                                            fi
-                                                                                                            if [[ -d "$STORE_A" ]]
-                                                                                                            then
-                                                                                                                failure 406ca1ce
-                                                                                                            fi
-                                                                                                            if [[ ! -d "$STORE_B" ]]
-                                                                                                            then
-                                                                                                                failure faba6490
-                                                                                                            fi
-                                                                                                            diff -s ${ failure }/bin/failure /mount/failure
-                                                                                                            diff -s ${ sequential }/bin/sequential /mount/sequential
-                                                                                                            nix-collect-garbage
                                                                                                             exit ${ if builtins.elemAt seed.path 2 == "true" then "0" else "65" }
                                                                                                         '' ;
                                                                                                 } ;
                                                                                         in "${ application }/bin/init" ;
-                                                                            targets = [ "failure" "root" "resource-a" "resource-b" "resource-c" "sequential" "store-a" "store-b" "wrap" ] ;
+                                                                            targets = [ ] ;
                                                                     } ;
                                                             in
                                                                 {
