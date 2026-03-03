@@ -3514,7 +3514,7 @@
                                                                         pkgs.writeShellApplication
                                                                             {
                                                                                 name = "pre" ;
-                                                                                runtimeInputs = [ pkgs.direnv pkgs.findutils ( _failure.implementation "59d475a8" ) ] ;
+                                                                                runtimeInputs = [ pkgs.coreutil pkgs.direnv pkgs.findutils ( _failure.implementation "59d475a8" ) ] ;
                                                                                 text =
                                                                                     ''
                                                                                         find /home/testuser -mindepth 1 -maxdepth 1 -name .gc-roots -exec failure 103e4467 {} \;
@@ -3526,11 +3526,11 @@
                                                                                         mkdir --parents /home/test-user/resources/sequential
                                                                                         echo 353555171753392 > /home/test-user/resources/sequential/sequential.counter
                                                                                         # RESOURCE_1="$( true-true )" || failure f09bd890
-                                                                                        # RESOURCE_2="$( true-true )" || failure c3b743a2
                                                                                         # if [[ "$RESOURCE_1" != "" ]]
                                                                                         # then
                                                                                         #     failure 5e5fd71b "RESOURCE_1=$RESOURCE_1"
                                                                                         # fi
+                                                                                        # RESOURCE_2="$( true-true )" || failure c3b743a2
                                                                                         # if [[ "$RESOURCE_1" != "$RESOURCE_2" ]]
                                                                                         # then
                                                                                         #     failure 7946f3fc "RESOURCE_1=$RESOURCE_1" "RESOURCE_2=$RESOURCE_2"
