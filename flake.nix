@@ -143,24 +143,11 @@
                                                                                                 runtimeInputs = [ pkgs.cowsay pkgs.figlet root wrap ] ;
                                                                                                 text =
                                                                                                     ''
+                                                                                                        mkdir --parents /mount
                                                                                                         exit ${ if builtins.elemAt seed.path 1 == "true" then "0" else "65" }
                                                                                                     '' ;
                                                                                             } ;
                                                                                     in "${ application }/bin/init" ;
-                                                                            release =
-                                                                                { failure , pkgs , resources , seed , sequential } :
-                                                                                    let
-                                                                                        application =
-                                                                                            pkgs.writeShellApplication
-                                                                                                {
-                                                                                                    name = "release" ;
-                                                                                                    runtimeInputs = [ pkgs.nix pkgs.diffutils ] ;
-                                                                                                    text =
-                                                                                                        ''
-                                                                                                            exit ${ if builtins.elemAt seed.path 2 == "true" then "0" else "65" }
-                                                                                                        '' ;
-                                                                                                } ;
-                                                                                        in "${ application }/bin/init" ;
                                                                             targets = [ ] ;
                                                                     } ;
                                                             in
