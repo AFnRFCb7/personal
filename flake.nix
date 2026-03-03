@@ -3523,6 +3523,7 @@
                                                                                         export DIRENV_LOG_FORMAT=""
                                                                                         direnv allow
                                                                                         eval "$(direnv export bash)"
+                                                                                        mkdir --parents /home/test-user/resources/sequential
                                                                                         echo 353555171753392 > /home/test-user/resources/sequential/sequential.counter
                                                                                         # RESOURCE_1="$( true-true )" || failure f09bd890
                                                                                         # RESOURCE_2="$( true-true )" || failure c3b743a2
