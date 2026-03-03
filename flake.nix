@@ -3525,11 +3525,11 @@
                                                                                         export DIRENV_LOG_FORMAT=""
                                                                                         direnv allow
                                                                                         eval "$(direnv export bash)"
-                                                                                        # RESOURCE_1="$( true-true )" || failure f09bd890
-                                                                                        # if [[ "$RESOURCE_1" != "" ]]
-                                                                                        # then
-                                                                                        #     failure 5e5fd71b "RESOURCE_1=$RESOURCE_1"
-                                                                                        # fi
+                                                                                        RESOURCE_1="$( true-true )" || failure f09bd890
+                                                                                        if [[ "$RESOURCE_1" != "" ]]
+                                                                                        then
+                                                                                            failure 5e5fd71b "RESOURCE_1=$RESOURCE_1"
+                                                                                        fi
                                                                                         # RESOURCE_2="$( true-true )" || failure c3b743a2
                                                                                         # if [[ "$RESOURCE_1" != "$RESOURCE_2" ]]
                                                                                         # then
