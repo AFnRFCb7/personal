@@ -3475,11 +3475,12 @@
                                                                                 runtimeInputs = [ pkgs.coreutils pkgs.direnv ( _failure.implementation "59d475a8" ) ] ;
                                                                                 text =
                                                                                     ''
-                                                                                        # while [[ ! -f /home/testuser/resources/log/log.yaml ]]
-                                                                                        # do
-                                                                                        #     echo ec296290 WAIT for log.yaml
-                                                                                        #     sleep 1
-                                                                                        # done
+                                                                                        while [[ ! -f /home/testuser/resources/log/log.yaml ]]
+                                                                                        do
+                                                                                            echo ec296290 WAIT for log.yaml
+                                                                                            sleep 1
+                                                                                        done
+                                                                                        cp /home/testuser/resources/log/log.yaml /tmp/31e30bcb
                                                                                         # while [[ ! -f /home/testuser/pads/checks/.envrc ]]
                                                                                         # do
                                                                                         #     echo d94d5d11 WAIT for .envrc
@@ -3510,6 +3511,7 @@
                                                                 ''
                                                                     machine.wait_for_unit("multi-user.target")
                                                                     machine.succeed("runuser testuser -- ${ pre }")
+                                                                    machine.succeed("ls /tmp/31e30bcb")
                                                                 '' ;
                                                 } ;
                                         resource-logger = _resource-logger.check { expected = "/nix/store/44j9cfbiamg903zx9ldyhjpwrdky9bxl-resource-logger/bin/resource-logger" ; } ;
