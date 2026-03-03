@@ -3472,10 +3472,11 @@
                                                                         pkgs.writeShellApplication
                                                                             {
                                                                                 name = "pre" ;
-                                                                                runtimeInputs = [ pkgs.direnv ( _failure.implementation "59d475a8" ) ] ;
+                                                                                runtimeInputs = [ pkgs.direnv pkgs.inotifytools ( _failure.implementation "59d475a8" ) ] ;
                                                                                 text =
                                                                                     ''
-
+                                                                                        inotify-wait --event create /home/testuser/pads
+                                                                                        inotify-wait --event create /home/testuser/pads/.envrc
                                                                                         cd "/home/testuser/pads/checks"
                                                                                         export DIRENV_LOG_FORMAT=""
                                                                                         direnv allow
@@ -3499,7 +3500,6 @@
                                                             in
                                                                 ''
                                                                     machine.wait_for_unit("multi-user.target")
-                                                                    machine.wait_for_success("pads.target")
                                                                     machine.wait_for_unit("resource-logger.target")
                                                                     machine.succeed("runuser testuser -- ${ pre }")
                                                                 '' ;
