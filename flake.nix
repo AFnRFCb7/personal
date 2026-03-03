@@ -3498,8 +3498,8 @@
                                                             in
                                                                 ''
                                                                     machine.wait_for_unit("multi-user.target")
-                                                                    machine.wait_for("pads.target")
-                                                                    machine.wait_for("resource-logger.target")
+                                                                    machine.wait_for_unit("pads.target")
+                                                                    machine.wait_for_unit("resource-logger.target")
                                                                     machine.succeed("runuser testuser -- ${ pre }")
                                                                 '' ;
                                                 } ;
