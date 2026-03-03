@@ -210,7 +210,21 @@
                                                                     } ;
                                                             in
                                                                 {
-                                                                    target = ignore : { } ;
+                                                                    target =
+                                                                        ignore :
+                                                                            {
+                                                                                ignore =
+                                                                                    { failure , pkgs , resources , root , seed , sequential , wrap } :
+                                                                                        let
+                                                                                            application =
+                                                                                                pkgs.writeShellApplication
+                                                                                                    {
+                                                                                                        name = "init" ;
+                                                                                                        runtimeInit = [ ] ;
+                                                                                                        text = "" ;
+                                                                                                    } ;
+                                                                                            in "${ application }/bin/init" ;
+                                                                            } ;
                                                                     true =
                                                                         {
                                                                             true =
