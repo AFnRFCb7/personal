@@ -3476,15 +3476,15 @@
                                                                                 text =
                                                                                     ''
                                                                                         ${ pkgs.findutils }/bin/find /home/testuser >&2
-                                                                                        while [[ ! -f /home/testuser/resources/log/log.yaml ]]
-                                                                                        do
-                                                                                            echo ec296290 WAIT for log.yaml >&2
-                                                                                            sleep 1
-                                                                                        done
-                                                                                        cp /home/testuser/resources/log/log.yaml /tmp/31e30bcb
+                                                                                        # while [[ ! -f /home/testuser/resources/log/log.yaml ]]
+                                                                                        # do
+                                                                                        #     echo ec296290 WAIT for log.yaml >&2
+                                                                                        #     sleep 1
+                                                                                        # done
+                                                                                        # cp /home/testuser/resources/log/log.yaml /tmp/31e30bcb
                                                                                         # while [[ ! -f /home/testuser/pads/checks/.envrc ]]
                                                                                         # do
-                                                                                        #     echo d94d5d11 WAIT for .envrc
+                                                                                        #     echo d94d5d11 WAIT for .envrc >&2
                                                                                         #    sleep 1
                                                                                         # done
                                                                                         exit 99
