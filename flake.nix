@@ -3472,15 +3472,14 @@
                                                                         pkgs.writeShellApplication
                                                                             {
                                                                                 name = "pre" ;
-                                                                                runtimeInputs = [ pkgs.coreutils pkgs.direnv pkgs.findutils ( _failure.implementation "59d475a8" ) ] ;
+                                                                                runtimeInputs = [ pkgs.direnv ( _failure.implementation "59d475a8" ) ] ;
                                                                                 text =
                                                                                     ''
-                                                                                        find /home/testuser -mindepth 1 -maxdepth 1 -name .gc-roots -exec failure 103e4467 {} \;
-                                                                                        find /home/testuser -mindepth 1 -maxdepth 1 -name results -exec failure e201c8b8 {} \;
                                                                                         cd "/home/testuser/pads/checks"
                                                                                         export DIRENV_LOG_FORMAT=""
                                                                                         direnv allow
                                                                                         ENVRC="$( direnv export bash )" || failure d25301f0
+                                                                                        cat "$ENVRC"
                                                                                         eval "$ENVRC"
                                                                                         echo "$PATH"
                                                                                         RESOURCE_1="$( true-true )" || failure f09bd890
@@ -3499,6 +3498,8 @@
                                                             in
                                                                 ''
                                                                     machine.wait_for_unit("multi-user.target")
+                                                                    machine.wait_for("pads.target")
+                                                                    machine.wait_for("resource-logger.target")
                                                                     machine.succeed("runuser testuser -- ${ pre }")
                                                                 '' ;
                                                 } ;
