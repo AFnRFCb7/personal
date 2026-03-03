@@ -3485,8 +3485,7 @@
                                                                                         export DIRENV_LOG_FORMAT=""
                                                                                         direnv allow
                                                                                         ENVRC="$( direnv export bash )" || failure d25301f0
-                                                                                        cat "$ENVRC"
-                                                                                        # eval "$ENVRC"
+                                                                                        eval "$ENVRC"
                                                                                         # echo "$PATH"
                                                                                         # RESOURCE_1="$( true-true )" || failure f09bd890
                                                                                         # if [[ "$RESOURCE_1" != "" ]]
