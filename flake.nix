@@ -213,7 +213,7 @@
                                                                     target =
                                                                         ignore :
                                                                             {
-                                                                                ignore =
+                                                                                init =
                                                                                     { failure , pkgs , resources , root , seed , sequential , wrap } :
                                                                                         let
                                                                                             application =
