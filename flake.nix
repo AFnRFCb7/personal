@@ -563,6 +563,18 @@
                                                                             } ;
                                                                     in
                                                                         {
+                                                                            checks =
+                                                                                bin
+                                                                                    {
+                                                                                        environment = [ ] ;
+                                                                                        name = "true-true" ;
+                                                                                        runtimeInputs = pkgs : [ ] ;
+                                                                                        script = ''echo "$CHECK"'' ;
+                                                                                        variables =
+                                                                                            {
+                                                                                                CHECK = resources : resources.checks.true.true.true-true { failure = 12601 ; } ;
+                                                                                            } ;
+                                                                                    } ;
                                                                             chromium =
                                                                                 bin
                                                                                     {
