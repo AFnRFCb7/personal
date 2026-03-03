@@ -3483,10 +3483,7 @@
                                                                                         done
                                                                                         cat /home/testuser/pads/checks/.envrc
                                                                                         cd "/home/testuser/pads/checks"
-                                                                                        export DIRENV_LOG_FORMAT=""
-                                                                                        direnv allow
-                                                                                        ENVRC="$( direnv export bash )" || failure d25301f0
-                                                                                        eval "$ENVRC"
+                                                                                        eval "/home/testuser/pads/checks/.envrc"
                                                                                         RESOURCE_1="$( true-true )" || failure f09bd890
                                                                                         if [[ "$RESOURCE_1" != "" ]]
                                                                                         then
