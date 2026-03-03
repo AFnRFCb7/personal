@@ -3475,9 +3475,10 @@
                                                                                 runtimeInputs = [ pkgs.coreutils pkgs.direnv ( _failure.implementation "59d475a8" ) ] ;
                                                                                 text =
                                                                                     ''
+                                                                                        ${ pkgs.findutils }/bin/find /home/testuser >&2
                                                                                         while [[ ! -f /home/testuser/resources/log/log.yaml ]]
                                                                                         do
-                                                                                            echo ec296290 WAIT for log.yaml
+                                                                                            echo ec296290 WAIT for log.yaml >&2
                                                                                             sleep 1
                                                                                         done
                                                                                         cp /home/testuser/resources/log/log.yaml /tmp/31e30bcb
@@ -3510,7 +3511,7 @@
                                                             in
                                                                 ''
                                                                     machine.wait_for_unit("multi-user.target")
-                                                                    machine.succeed("while [[ ! -f /home/testuser/logs/resources/log/log.yaml ]] ; do echo 9271fd5c wait for log.yaml >&2 ; sleep 1 ; done")
+                                                                    # machine.succeed("while [[ ! -f /home/testuser/logs/resources/log/log.yaml ]] ; do echo 9271fd5c wait for log.yaml >&2 ; sleep 1 ; done")
                                                                     machine.succeed("runuser testuser -- ${ pre }")
                                                                     machine.succeed("ls /tmp/31e30bcb")
                                                                 '' ;
