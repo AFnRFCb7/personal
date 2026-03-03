@@ -3472,11 +3472,17 @@
                                                                         pkgs.writeShellApplication
                                                                             {
                                                                                 name = "pre" ;
-                                                                                runtimeInputs = [ pkgs.direnv pkgs.inotify-tools ( _failure.implementation "59d475a8" ) ] ;
+                                                                                runtimeInputs = [ pkgs.coreutils pkgs.direnv ( _failure.implementation "59d475a8" ) ] ;
                                                                                 text =
                                                                                     ''
-                                                                                        inotifywait --event create /home/testuser/pads
-                                                                                        inotifywait --event create /home/testuser/pads/.envrc
+                                                                                        while [[ ! -f /home/testuser/resources/log/log.yaml ]]
+                                                                                        do
+                                                                                            sleep 1
+                                                                                        done
+                                                                                        while [[ ! -f /home/testuser/pads/checks/.envrc ]]
+                                                                                        do
+                                                                                            sleep 1
+                                                                                        done
                                                                                         cd "/home/testuser/pads/checks"
                                                                                         export DIRENV_LOG_FORMAT=""
                                                                                         direnv allow
@@ -3500,7 +3506,6 @@
                                                             in
                                                                 ''
                                                                     machine.wait_for_unit("multi-user.target")
-                                                                    machine.wait_for_unit("resource-logger.target")
                                                                     machine.succeed("runuser testuser -- ${ pre }")
                                                                 '' ;
                                                 } ;
