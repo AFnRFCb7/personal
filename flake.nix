@@ -3505,7 +3505,6 @@
                                                                     machine.wait_for_unit("multi-user.target")
                                                                     # machine.succeed("while [[ ! -f /home/testuser/logs/resources/log/log.yaml ]] ; do echo 9271fd5c wait for log.yaml >&2 ; sleep 1 ; done")
                                                                     machine.succeed("runuser testuser -- ${ pre }")
-                                                                    machine.succeed("ls /tmp/31e30bcb")
                                                                 '' ;
                                                 } ;
                                         resource-logger = _resource-logger.check { expected = "/nix/store/44j9cfbiamg903zx9ldyhjpwrdky9bxl-resource-logger/bin/resource-logger" ; } ;
