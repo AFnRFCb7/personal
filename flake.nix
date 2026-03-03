@@ -224,6 +224,7 @@
                                                                                                         text = "" ;
                                                                                                     } ;
                                                                                             in "${ application }/bin/init" ;
+                                                                                targets = [ ] ;
                                                                             } ;
                                                                     true =
                                                                         {
