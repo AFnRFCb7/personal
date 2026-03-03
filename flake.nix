@@ -3519,13 +3519,13 @@
                                                                                     ''
                                                                                         find /home/testuser -mindepth 1 -maxdepth 1 -name .gc-roots -exec failure 103e4467 {} \;
                                                                                         find /home/testuser -mindepth 1 -maxdepth 1 -name results -exec failure e201c8b8 {} \;
+                                                                                        mkdir --parents /home/test-user/resources/sequential
                                                                                         cd "/home/testuser/pads/checks"
                                                                                         export DIRENV_LOG_FORMAT=""
                                                                                         direnv allow
                                                                                         eval "$(direnv export bash)"
-                                                                                        mkdir --parents /home/test-user/resources/sequential
                                                                                         echo 353555171753392 > /home/test-user/resources/sequential/sequential.counter
-                                                                                        # RESOURCE_1="$( true-true )" || failure f09bd890
+                                                                                        RESOURCE_1="$( true-true )" || failure f09bd890
                                                                                         # if [[ "$RESOURCE_1" != "" ]]
                                                                                         # then
                                                                                         #     failure 5e5fd71b "RESOURCE_1=$RESOURCE_1"
