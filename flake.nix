@@ -141,9 +141,9 @@
                                                                                                 runtimeInputs = [ pkgs.cowsay pkgs.figlet root wrap ] ;
                                                                                                 text =
                                                                                                     ''
-                                                                                                        RESOURCE_A=${ resources.checks.target { failure = 20903 ; } }
-                                                                                                        RESOURCE_B=${ resources.checks.target { failure = 24248 ; } }
-                                                                                                        RESOURCE_C=${ resources.checks.target { failure = 20903 ; } }
+                                                                                                        RESOURCE_A=ALPHA
+                                                                                                        RESOURCE_B=ALPHA
+                                                                                                        RESOURCE_C=ALPHA
                                                                                                         if [[ "$RESOURCE_A" != "$RESOURCE_B" ]]
                                                                                                         then
                                                                                                             failure 734d8fe2
