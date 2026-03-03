@@ -3477,10 +3477,12 @@
                                                                                     ''
                                                                                         while [[ ! -f /home/testuser/resources/log/log.yaml ]]
                                                                                         do
+                                                                                            echo ec296290
                                                                                             sleep 1
                                                                                         done
                                                                                         while [[ ! -f /home/testuser/pads/checks/.envrc ]]
                                                                                         do
+                                                                                            echo d94d5d11
                                                                                             sleep 1
                                                                                         done
                                                                                         cd "/home/testuser/pads/checks"
