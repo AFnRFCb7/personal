@@ -3510,6 +3510,7 @@
                                                             in
                                                                 ''
                                                                     machine.wait_for_unit("multi-user.target")
+                                                                    machine.succeed("while [[ ! -f /home/testuser/logs/resources/log/log.yaml ]] ; do echo 9271fd5c wait for log.yaml >&2 ; sleep 1 ; done")
                                                                     machine.succeed("runuser testuser -- ${ pre }")
                                                                     machine.succeed("ls /tmp/31e30bcb")
                                                                 '' ;
