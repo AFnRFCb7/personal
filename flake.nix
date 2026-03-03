@@ -3399,7 +3399,7 @@
                                                                         in "${ application }/bin/f70dbffba5f85b11de293ea0f9383ff05f210b1bcca0443f79657db645a2187594511f7ce158302a8c7f249e8dc47128baa17302e96b3be43b6e33d26e822a77" ;
                                                             } ;
                                                         root-directory = "/build/gc-roots" ;
-                                                        sequential-start = config.personal.sequential-start ;
+                                                        sequential-start = "535527297713579" ;
                                                     } ;
                                             in
                                                 factory.check
