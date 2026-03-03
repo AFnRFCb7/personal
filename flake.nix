@@ -46,7 +46,7 @@
                                             redis = pkgs.redis ;
                                             resources = resources ;
                                             resources-directory = resources-directory ;
-                                            sequential-start = config.personal.sequential-start ;
+                                            sequential-start = sequential-start ;
                                             root-directory = root-directory ;
                                             util-linux = pkgs.util-linux ;
                                             visitor = _visitor.implementation ;
