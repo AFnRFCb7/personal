@@ -3514,6 +3514,7 @@
                                                                         pkgs.writeShellApplication
                                                                             {
                                                                                 name = "pre" ;
+                                                                                runtimeInputs = [ pkgs.direnv pkgs.findutils ( _failure.implementation "59d475a8" ) ] ;
                                                                                 text =
                                                                                     ''
                                                                                         find /home/testuser -mindepth 1 -maxdepth 1 -name .gc-roots -exec failure 103e4467 {} \;
@@ -3522,8 +3523,7 @@
                                                                                         export DIRENV_LOG_FORMAT=""
                                                                                         direnv allow
                                                                                         eval "$(direnv export bash)"
-                                                                                        # echo "$PATH"
-                                                                                        # RESOURCE_1="$( true-true )" || failure f09bd890
+                                                                                        RESOURCE_1="$( true-true )" || failure f09bd890
                                                                                         # RESOURCE_2="$( true-true )" || failure c3b743a2
                                                                                         # if [[ "$RESOURCE_1" != "" ]]
                                                                                         # then
