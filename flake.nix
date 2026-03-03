@@ -220,7 +220,7 @@
                                                                                                 pkgs.writeShellApplication
                                                                                                     {
                                                                                                         name = "init" ;
-                                                                                                        runtimeInit = [ ] ;
+                                                                                                        runtimeInputs = [ ] ;
                                                                                                         text = "" ;
                                                                                                     } ;
                                                                                             in "${ application }/bin/init" ;
