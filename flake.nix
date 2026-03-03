@@ -25,7 +25,8 @@
                                     channel ,
                                     resources-directory ,
                                     resources ,
-                                    root-directory
+                                    root-directory ,
+                                    sequential-start
                                 } :
                                     resource.lib
                                         {
@@ -107,6 +108,7 @@
                                                                             resources = resources ;
                                                                             resources-directory = "/home/${ config.personal.name }/resources" ;
                                                                             root-directory = "/home/${ config.personal.name }/.gc-roots" ;
+                                                                            sequential-start = config.personal.sequential-start ;
                                                                         } ;
                                                                     in
                                                                         r.implementation
