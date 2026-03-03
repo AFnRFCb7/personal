@@ -3475,16 +3475,17 @@
                                                                                 runtimeInputs = [ pkgs.coreutils pkgs.direnv ( _failure.implementation "59d475a8" ) ] ;
                                                                                 text =
                                                                                     ''
-                                                                                        while [[ ! -f /home/testuser/resources/log/log.yaml ]]
-                                                                                        do
-                                                                                            echo ec296290
-                                                                                            sleep 1
-                                                                                        done
-                                                                                        while [[ ! -f /home/testuser/pads/checks/.envrc ]]
-                                                                                        do
-                                                                                            echo d94d5d11
-                                                                                            sleep 1
-                                                                                        done
+                                                                                        # while [[ ! -f /home/testuser/resources/log/log.yaml ]]
+                                                                                        # do
+                                                                                        #     echo ec296290 WAIT for log.yaml
+                                                                                        #     sleep 1
+                                                                                        # done
+                                                                                        # while [[ ! -f /home/testuser/pads/checks/.envrc ]]
+                                                                                        # do
+                                                                                        #     echo d94d5d11 WAIT for .envrc
+                                                                                        #    sleep 1
+                                                                                        # done
+                                                                                        exit 99
                                                                                         cd "/home/testuser/pads/checks"
                                                                                         export DIRENV_LOG_FORMAT=""
                                                                                         direnv allow
