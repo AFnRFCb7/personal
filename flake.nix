@@ -3525,8 +3525,8 @@
                                                                                         export DIRENV_LOG_FORMAT=""
                                                                                         direnv allow
                                                                                         eval "$(direnv export bash)"
-                                                                                        RESOURCE_1="$( true-true )" || failure f09bd890
                                                                                         echo "$PATH"
+                                                                                        RESOURCE_1="$( true-true )" || failure f09bd890
                                                                                         if [[ "$RESOURCE_1" != "" ]]
                                                                                         then
                                                                                             failure 5e5fd71b "RESOURCE_1=$RESOURCE_1"
