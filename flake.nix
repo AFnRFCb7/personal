@@ -3514,7 +3514,7 @@
                                                                         pkgs.writeShellApplication
                                                                             {
                                                                                 name = "pre" ;
-                                                                                runtimeInputs = [ pkgs.coreutil pkgs.direnv pkgs.findutils ( _failure.implementation "59d475a8" ) ] ;
+                                                                                runtimeInputs = [ pkgs.coreutils pkgs.direnv pkgs.findutils ( _failure.implementation "59d475a8" ) ] ;
                                                                                 text =
                                                                                     ''
                                                                                         find /home/testuser -mindepth 1 -maxdepth 1 -name .gc-roots -exec failure 103e4467 {} \;
