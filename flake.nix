@@ -3585,6 +3585,10 @@
                                                                                         RESOURCE_2="$( true-true )" || failure c3b743a2
                                                                                         if [[ "$RESOURCE_1" != "$RESOURCE_2" ]]
                                                                                         then
+                                                                                            echo 7e1212fd 5052e66c >&2
+                                                                                            systemctl journal -u resource-logger.servce >&2
+                                                                                            echo 7e1212fd 5052e66c >&2
+                                                                                            systemctl journal -u resource-releaser.service >&2
                                                                                             failure 7946f3fc "RESOURCE_1=$RESOURCE_1" "RESOURCE_2=$RESOURCE_2"
                                                                                         fi
                                                                                         echo "$RESOURCE_2" > resource-2
