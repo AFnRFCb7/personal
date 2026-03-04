@@ -17,7 +17,16 @@
   "index": "0000000311691948",
   "has-standard-input": "true",
   "provenance": "new",
-  "scripts": "{\"init\":{\"application\":\"/nix/store/mahp55yg8jjqy5ivhf72r6diq86djgng-application\",\"resolutions\":[]},\"release\":{\"application\":null,\"resolutions\":[]}}",
+  "scripts": {
+    "init": {
+      "application": "/nix/store/mahp55yg8jjqy5ivhf72r6diq86djgng-application",
+      "resolutions": []
+    },
+    "release": {
+      "application": null,
+      "resolutions": []
+    }
+  },
   "standard-error": "",
   "standard-input": "5433bd8482be1f2e1c1db4fa9268ed6e7bb02285083decb86a6166eea2df77f7e2d7524541549a3ee73d03ae955d8ec0714a959944962e8fe18f343fe108ff9f",
   "standard-output": " __________\n< 995246ed >\n ----------\n        \\   ^__^\n         \\  (oo)\\_______\n            (__)\\       )\\/\\\n                ||----w |\n                ||     ||\nmount = /build/resources/mounts/0000000311691948",
