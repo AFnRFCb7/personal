@@ -177,7 +177,7 @@
                                                                                                     {
                                                                                                         name = "init" ;
                                                                                                         runtimeInputs = [ ] ;
-                                                                                                        text = "" ;
+                                                                                                        text = "echo 7e1212fd 5b722b70" ;
                                                                                                     } ;
                                                                                             in "${ application }/bin/init" ;
                                                                                 release =
@@ -188,7 +188,7 @@
                                                                                                     {
                                                                                                         name = "release" ;
                                                                                                         runtimeInputs = [ ] ;
-                                                                                                        text = "" ;
+                                                                                                        text = "echo 7e1212fd 061b99f9" ;
                                                                                                     } ;
                                                                                             in "${ application }/bin/release" ;
                                                                                 targets = [ ] ;
