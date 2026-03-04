@@ -564,17 +564,20 @@
                                                                     in
                                                                         {
                                                                             checks =
-                                                                                bin
-                                                                                    {
-                                                                                        environment = [ ] ;
-                                                                                        name = "true-true" ;
-                                                                                        runtimeInputs = pkgs : [ ] ;
-                                                                                        script = ''echo "$CHECK"'' ;
-                                                                                        variables =
+                                                                                {
+                                                                                    true-true =
+                                                                                        bin
                                                                                             {
-                                                                                                CHECK = resources : resources.checks.true.true.true-true { failure = 12601 ; } ;
+                                                                                                environment = [ ] ;
+                                                                                                name = "true-true" ;
+                                                                                                runtimeInputs = pkgs : [ ] ;
+                                                                                                script = ''echo "$CHECK"'' ;
+                                                                                                variables =
+                                                                                                    {
+                                                                                                        CHECK = resources : resources.checks.true.true.true-true { failure = 12601 ; setup = setup : ''${ setup } true true'' ; } ;
+                                                                                                    } ;
                                                                                             } ;
-                                                                                    } ;
+                                                                                } ;
                                                                             chromium =
                                                                                 bin
                                                                                     {
@@ -3158,7 +3161,7 @@
                                                                                                 autocomplete = [ ] ;
                                                                                                 bin =
                                                                                                     [
-                                                                                                        ( resources.production.bin.checks.true.true.true-true { failure = 17466 ; } )
+                                                                                                        ( resources.production.bin.checks.true-true { failure = 17466 ; } )
                                                                                                     ] ;
                                                                                                 man = [ ] ;
                                                                                             } ;
