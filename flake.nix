@@ -3594,7 +3594,7 @@
                                                             in
                                                                 ''
                                                                     machine.wait_for_unit("multi-user.target")
-                                                                    machine.succeed("runuser testuser -- ${ pre }")
+                                                                    machine.succeed("runuser testuser -- ${ pkgs.bash }/bin/bash ${ pre }")
                                                                     machine.succeed("sleep 10s")
                                                                     machine.succeed("runuser testuser -- ${ post }")
                                                                 '' ;
