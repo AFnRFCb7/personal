@@ -3592,8 +3592,8 @@
                                                             in
                                                                 ''
                                                                     machine.wait_for_unit("multi-user.target")
-                                                                    machine.succeed("runuser testuser -- bash -c '${ pre }'")
-                                                                    machine.succeed("runuser testuser -- bash -c '${ post }'")
+                                                                    machine.succeed("runuser testuser -- ${ pre }")
+                                                                    machine.succeed("runuser testuser -- ${ post }")
                                                                 '' ;
                                                 } ;
                                         resource-logger = _resource-logger.check { expected = "/nix/store/44j9cfbiamg903zx9ldyhjpwrdky9bxl-resource-logger/bin/resource-logger" ; } ;
