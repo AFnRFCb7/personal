@@ -3490,23 +3490,22 @@
                                                                                         # shellcheck disable=SC1091
                                                                                         source "/home/testuser/pads/checks/.envrc"
                                                                                         RESOURCE_1="$( true-true )" || failure f09bd890
-                                                                                        if [[ "$RESOURCE_1" != "" ]]
+                                                                                        if [[ "$RESOURCE_1" != "/home/testuser/resources/mounts/0842877237311396" ]]
                                                                                         then
                                                                                             echo failure 5e5fd71b "RESOURCE_1=$RESOURCE_1" >&2
                                                                                             exit 99
                                                                                         fi
-                                                                                        # RESOURCE_2="$( true-true )" || failure c3b743a2
-                                                                                        # if [[ "$RESOURCE_1" != "$RESOURCE_2" ]]
-                                                                                        # then
-                                                                                        #     failure 7946f3fc "RESOURCE_1=$RESOURCE_1" "RESOURCE_2=$RESOURCE_2"
-                                                                                        # fi
+                                                                                        RESOURCE_2="$( true-true )" || failure c3b743a2
+                                                                                        if [[ "$RESOURCE_1" != "$RESOURCE_2" ]]
+                                                                                        then
+                                                                                            failure 7946f3fc "RESOURCE_1=$RESOURCE_1" "RESOURCE_2=$RESOURCE_2"
+                                                                                        fi
                                                                                     '' ;
                                                                             } ;
                                                                     in "${ application }/bin/pre" ;
                                                             in
                                                                 ''
                                                                     machine.wait_for_unit("multi-user.target")
-                                                                    # machine.succeed("while [[ ! -f /home/testuser/logs/resources/log/log.yaml ]] ; do echo 9271fd5c wait for log.yaml >&2 ; sleep 1 ; done")
                                                                     machine.succeed("runuser testuser -- ${ pre }")
                                                                 '' ;
                                                 } ;
