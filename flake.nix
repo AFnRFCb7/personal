@@ -3546,7 +3546,7 @@
                                                                                 runtimeInputs = [ pkgs.coreutils ( _failure.implementation "0865461" ) ] ;
                                                                                 text =
                                                                                     ''
-                                                                                        echo "POST \$$=$$"
+                                                                                        echo "POST \$$=$$" >&2
                                                                                         RESOURCE_1="$( cat /home/testuser/pads/checks/resource-1 )" || failure 1e199d03
                                                                                         if [[ -e "$RESOURCE_1" ]]
                                                                                         then
@@ -3564,7 +3564,7 @@
                                                                                 runtimeInputs = [ pkgs.coreutils pkgs.direnv ( _failure.implementation "59d475a8" ) ] ;
                                                                                 text =
                                                                                     ''
-                                                                                        echo "PRE \$$=$$"
+                                                                                        echo "PRE \$$=$$" >&2
                                                                                         ### WTF log.yaml should exist but does not
                                                                                         while [[ ! -f /home/testuser/pads/checks/.envrc ]]
                                                                                         do
