@@ -166,6 +166,17 @@
                                                                                                         text = "" ;
                                                                                                     } ;
                                                                                             in "${ application }/bin/init" ;
+                                                                                release =
+                                                                                    { failure , pkgs , resources , seed , sequential , } :
+                                                                                        let
+                                                                                            application =
+                                                                                                pkgs.writeShellApplication
+                                                                                                    {
+                                                                                                        name = "release" ;
+                                                                                                        runtimeInputs = [ ] ;
+                                                                                                        text = "" ;
+                                                                                                    } ;
+                                                                                            in "${ application }/bin/release" ;
                                                                                 targets = [ ] ;
                                                                             } ;
                                                                     true =
