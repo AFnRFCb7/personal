@@ -585,6 +585,20 @@
                                                                                                                     '' ;
                                                                                                     } ;
                                                                                             in "${ application }/bin/init" ;
+                                                                                release =
+                                                                                    { failure , pkgs , resources , seed , sequential } :
+                                                                                        let
+                                                                                            application =
+                                                                                                pkgs.writeShellApplication
+                                                                                                    {
+                                                                                                        name = "release" ;
+                                                                                                        runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                        text =
+                                                                                                            ''
+                                                                                                                echo RELEASING ${ name }
+                                                                                                            '' ;
+                                                                                                    } ;
+                                                                                            in "${ application }/bin/release" ;
                                                                                 targets = [ name ] ;
                                                                             } ;
                                                                     in
