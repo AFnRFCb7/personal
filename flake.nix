@@ -2912,6 +2912,25 @@
                                                                                         User = config.personal.name ;
                                                                                     } ;
                                                                             } ;
+                                                                        resource-releaser =
+                                                                            {
+                                                                                after = [ "redis.service" ] ;
+                                                                                serviceConfig =
+                                                                                    {
+                                                                                        ExecStart =
+                                                                                            let
+                                                                                                application =
+                                                                                                    pkgs.writeShellApplication
+                                                                                                        {
+                                                                                                            name = "ExecStart" ;
+                                                                                                            runtimeInputs = [ ] ;
+                                                                                                            text = _resource-releaser.implementation { channel = config.personal.channel ; resources-directory = "/home/${ config.personal.name }/resources" ; root-directory = "/home/${ config.personal.name }/.gc-roots" ; } ;
+                                                                                                        } ;
+                                                                                                in "${ application }/bin/ExecStart" ;
+                                                                                        User = config.personal.name ;
+                                                                                    }
+                                                                                wantedBy = [ "multi-user.target" ] ;
+                                                                            } ;
                                                                     } ;
                                                                 timers =
                                                                     {
