@@ -581,6 +581,7 @@
                                                                                                                         in "${ application }/bin/${ name }" ;
                                                                                                                 in
                                                                                                                     ''
+                                                                                                                        echo 7e1212fd 9c61617b
                                                                                                                         wrap ${ bin } ${ name } 0500 --literal-plain HAS_STANDARD_INPUT --literal-plain PATH ${ builtins.concatStringsSep "" ( builtins.map ( value : " --literal-plain ${ value }" ) ( builtins.attrNames variables ) ) } --literal-plain STANDARD_INPUT --uuid 3d888900
                                                                                                                     '' ;
                                                                                                     } ;
@@ -595,6 +596,7 @@
                                                                                                         runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                         text =
                                                                                                             ''
+                                                                                                                echo 7e1212fd e6278bb8
                                                                                                                 echo RELEASING ${ name }
                                                                                                             '' ;
                                                                                                     } ;
