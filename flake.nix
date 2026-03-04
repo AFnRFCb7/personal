@@ -155,7 +155,7 @@
                                                                                         pkgs.writeShellApplication
                                                                                             {
                                                                                                 name = "release" ;
-                                                                                                runtimeInputs = [ pkgs.cowsay pkgs.figlet root wrap ] ;
+                                                                                                runtimeInputs = [ pkgs.cowsay pkgs.figlet ] ;
                                                                                                 text =
                                                                                                     ''
                                                                                                         exit ${ if builtins.elemAt seed.path 2 == "true" then "0" else "65" }
