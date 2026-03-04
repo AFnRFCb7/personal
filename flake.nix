@@ -3458,7 +3458,7 @@
                                                                 imports = [ user ] ;
                                                                 personal =
                                                                     {
-                                                                        agenix = ./. ;
+                                                                        agenix = config.personal.agenix ;
                                                                         channel = "test-channel" ;
                                                                         description = "Test User" ;
                                                                         email = "testuser@example.com" ;
