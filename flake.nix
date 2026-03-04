@@ -2922,6 +2922,7 @@
                                                                                                     in "${ application }/bin/ExecStart" ;
                                                                                         User = config.personal.name ;
                                                                                     } ;
+                                                                                wantedBy = [ "multi-user.target" ] ;
                                                                             } ;
                                                                         resource-releaser =
                                                                             {
