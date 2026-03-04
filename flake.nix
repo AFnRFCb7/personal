@@ -3566,7 +3566,7 @@
                                                                                         ### WTF log.yaml should exist but does not
                                                                                         while [[ ! -f /home/testuser/pads/checks/.envrc ]]
                                                                                         do
-                                                                                            echo d94d5d11 WAIT for .envrc >&2
+                                                                                           echo d94d5d11 WAIT for .envrc >&2
                                                                                            sleep 1
                                                                                         done
                                                                                         cat /home/testuser/pads/checks/.envrc >&2
@@ -3593,6 +3593,7 @@
                                                                 ''
                                                                     machine.wait_for_unit("multi-user.target")
                                                                     machine.succeed("runuser testuser -- ${ pre }")
+                                                                    machine.succeed("sleep 10s")
                                                                     machine.succeed("runuser testuser -- ${ post }")
                                                                 '' ;
                                                 } ;
