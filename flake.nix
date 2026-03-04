@@ -3485,7 +3485,7 @@
                                                                                             echo d94d5d11 WAIT for .envrc >&2
                                                                                            sleep 1
                                                                                         done
-                                                                                        cat /home/testuser/pads/checks/.envrc
+                                                                                        cat /home/testuser/pads/checks/.envrc >&2
                                                                                         cd "/home/testuser/pads/checks"
                                                                                         eval "/home/testuser/pads/checks/.envrc"
                                                                                         RESOURCE_1="$( true-true )" || failure f09bd890
