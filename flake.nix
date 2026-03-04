@@ -3470,6 +3470,23 @@
                                                             } ;
                                                     testScript =
                                                         let
+                                                            post =
+                                                                let
+                                                                    application =
+                                                                        pkgs.writeShellApplication
+                                                                            {
+                                                                                name = "post" ;
+                                                                                runtimeInputs = [ pkgs.coreutils ( _failure.implementation "0865461" ) ] ;
+                                                                                text =
+                                                                                    ''
+                                                                                        RESOURCE_1="$( cat /home/testuser/pads/checks/resource-1 )" || failure 1e199d03
+                                                                                        if [[ -e "$RESOURCE_1" ]]
+                                                                                        then
+                                                                                            failure 21ce2ba2 "RESOURCE_1=$RESOURCE_1"
+                                                                                        fi
+                                                                                    '' ;
+                                                                            } ;
+                                                                    in "${ application }/bin/post" ;
                                                             pre =
                                                                 let
                                                                     application =
@@ -3495,11 +3512,13 @@
                                                                                             echo failure 5e5fd71b "RESOURCE_1=$RESOURCE_1" >&2
                                                                                             exit 99
                                                                                         fi
+                                                                                        echo "$RESOURCE_1" > resource-1
                                                                                         RESOURCE_2="$( true-true )" || failure c3b743a2
                                                                                         if [[ "$RESOURCE_1" != "$RESOURCE_2" ]]
                                                                                         then
                                                                                             failure 7946f3fc "RESOURCE_1=$RESOURCE_1" "RESOURCE_2=$RESOURCE_2"
                                                                                         fi
+                                                                                        echo "$RESOURCE_2" > resource-2
                                                                                     '' ;
                                                                             } ;
                                                                     in "${ application }/bin/pre" ;
@@ -3507,6 +3526,7 @@
                                                                 ''
                                                                     machine.wait_for_unit("multi-user.target")
                                                                     machine.succeed("runuser testuser -- ${ pre }")
+                                                                    machine.succeed("runuser testuser -- ${ post }")
                                                                 '' ;
                                                 } ;
                                         resource-logger = _resource-logger.check { expected = "/nix/store/44j9cfbiamg903zx9ldyhjpwrdky9bxl-resource-logger/bin/resource-logger" ; } ;
