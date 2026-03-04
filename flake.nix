@@ -546,6 +546,7 @@
                                                                                                                                                     ${ builtins.concatStringsSep "\n" ( builtins.map ( name : ''export ${ name }="${ builtins.concatStringsSep "" [ "$" name ] }"'' ) environment ) }
                                                                                                                                                     if $HAS_STANDARD_INPUT
                                                                                                                                                     then
+                                                                                                                                                        # shellcheck disable=SC2216
                                                                                                                                                         echo "$STANDARD_INPUT" | ${ script }
                                                                                                                                                     else
                                                                                                                                                         ${ script }
