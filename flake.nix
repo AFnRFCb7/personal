@@ -2920,7 +2920,6 @@
                                                                                         ExecStart =
                                                                                             let
                                                                                                 application =
-                                                                                                application =
                                                                                                     pkgs.writeShellApplication
                                                                                                         {
                                                                                                             name = "ExecStart" ;
