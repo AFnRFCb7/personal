@@ -3487,7 +3487,7 @@
                                                                                         done
                                                                                         cat /home/testuser/pads/checks/.envrc >&2
                                                                                         cd "/home/testuser/pads/checks"
-                                                                                        eval "/home/testuser/pads/checks/.envrc"
+                                                                                        source "/home/testuser/pads/checks/.envrc"
                                                                                         RESOURCE_1="$( true-true )" || failure f09bd890
                                                                                         if [[ "$RESOURCE_1" != "" ]]
                                                                                         then
