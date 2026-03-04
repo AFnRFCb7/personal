@@ -2856,6 +2856,7 @@
                                                                                     ''
                                                                                         Recycle the identities for mobile and for github
                                                                                     '' ;
+                                                                                enable = false ;
                                                                                 serviceConfig =
                                                                                     {
                                                                                         ExecStart =
@@ -3458,7 +3459,7 @@
                                                                 imports = [ user ] ;
                                                                 personal =
                                                                     {
-                                                                        agenix = config.personal.agenix ;
+                                                                        agenix = ./. ;
                                                                         channel = "test-channel" ;
                                                                         description = "Test User" ;
                                                                         email = "testuser@example.com" ;
