@@ -3487,6 +3487,7 @@
                                                                                         done
                                                                                         cat /home/testuser/pads/checks/.envrc >&2
                                                                                         cd "/home/testuser/pads/checks"
+                                                                                        # shellcheck disable=SC1091
                                                                                         source "/home/testuser/pads/checks/.envrc"
                                                                                         RESOURCE_1="$( true-true )" || failure f09bd890
                                                                                         if [[ "$RESOURCE_1" != "" ]]
