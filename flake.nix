@@ -2238,6 +2238,8 @@
                                                                                                                                         git submodule update --init --recursive 2>&1
                                                                                                                                         echo 380b7b99 cb5fe1a6
                                                                                                                                         git submodule foreach "git config core.sshCommand \"$GIT_SSH_COMMAND\"" 2>&1
+                                                                                                                                        git submodule foreach 'git config user.email "${ config.personal.email }"'
+                                                                                                                                        git submodule foreach 'git config user.name "${ config.personal.description }"'
                                                                                                                                         echo 380b7b99 b4542105
                                                                                                                                         UUID="$( sequential | sha512sum )" || failure 2ecf55e5
                                                                                                                                         echo 380b7b99 fb8ae5e7
