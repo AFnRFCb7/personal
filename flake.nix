@@ -3550,6 +3550,7 @@
                                                                                         RESOURCE_1="$( cat /home/testuser/pads/checks/resource-1 )" || failure 1e199d03
                                                                                         if [[ -e "$RESOURCE_1" ]]
                                                                                         then
+                                                                                            journalctl -u resource-releaser.service >&2
                                                                                             failure 21ce2ba2 "RESOURCE_1=$RESOURCE_1"
                                                                                         fi
                                                                                     '' ;
