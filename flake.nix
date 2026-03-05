@@ -2187,21 +2187,14 @@
                                                                                                                                                                                 then
                                                                                                                                                                                     BRANCH="$( git rev-parse --abbrev-ref HEAD )" || failure b7fb71d9
                                                                                                                                                                                     TOKEN=${ resources.production.secret.github.token { failure = 24794 ; } }
-                                                                                                                                                                                    echo 7e1212fd "TOKEN=$TOKEN" bf937f48 >> /tmp/DEBUG
                                                                                                                                                                                     gh auth login --with-token < "$TOKEN/plaintext"
-                                                                                                                                                                                    echo 7e1212fd "TOKEN=$TOKEN" 555c4ee8 >> /tmp/DEBUG
                                                                                                                                                                                     if ! gh label list --json name --jq '.[].name' | grep -qx snapshot
                                                                                                                                                                                     then
-                                                                                                                                                                                        echo 7e1212fd "TOKEN=$TOKEN" ff2896dc >> /tmp/DEBUG
                                                                                                                                                                                         gh label create snapshot --color "#333333" --description "Scripted Snapshot PR"
                                                                                                                                                                                     fi
-                                                                                                                                                                                    echo echo 7e1212fd 0b784f4 "TOKEN=$TOKEN" 71fc34a2 >> /tmp/DEBUG
                                                                                                                                                                                     gh pr create --base main --head "$BRANCH" --label "snapshot"
-                                                                                                                                                                                    echo 7e1212fd "TOKEN=$TOKEN" b3a7dac9 >> /tmp/DEBUG
                                                                                                                                                                                     URL="$( gh pr view --json url --jq .url )" || failure 31ccb1f3
-                                                                                                                                                                                    echo 7e1212fd "TOKEN=$TOKEN" dbdaf020 >> /tmp/DEBUG
                                                                                                                                                                                     gh pr merge "$URL" --rebase
-                                                                                                                                                                                    echo 7e1212fd "TOKEN=$TOKEN" 243f2524 >> /tmp/DEBUG
                                                                                                                                                                                     gh auth logout
                                                                                                                                                                                     NAME="$( basename "$name" )" || failure 368e7b07
                                                                                                                                                                                     TOKEN_DIRECTORY=${ resources.production.secret.github.token { failure = "failure ad27f961" ; } }
@@ -2407,9 +2400,7 @@
                                                                                                                                 ''
                                                                                                                                     if [[ -f "$MOUNT/plain/dot-ssh/github/identity.asc" ]]
                                                                                                                                     then
-                                                                                                                                        echo 7e1212fd bdad69fb >> /tmp/DEBUG
                                                                                                                                         ssh-keygen -y -f "$MOUNT/plain/dot-ssh/github/identity.asc" | gh ssh-key add -
-                                                                                                                                        echo 7e1212fd 887648ad >> /tmp/DEBUG
                                                                                                                                     fi
                                                                                                                                     if [[ -f "$MOUNT/plain/dot-ssh/mobile/identity.asc" ]]
                                                                                                                                     then
@@ -2490,14 +2481,11 @@
                                                                                                                         DOT_GNUPG=${ resources.production.dot-gnupg { } }
                                                                                                                         export GNUPGHOME="$DOT_GNUPG/dot-gnupg"
                                                                                                                         TOKEN=${ resources.production.secret.github.token { failure = 5445 ; } }
-                                                                                                                        echo 7e1212fd "TOKEN=$TOKEN" 63e95f44 >> /tmp/DEBUG
                                                                                                                         gh auth login --with-token < "$TOKEN/plaintext"
-                                                                                                                        echo 7e1212fd "TOKEN=$TOKEN" c1e33481 >> /tmp/DEBUG
                                                                                                                         if gh repo view ${ config.personal.volume.organization }/${ config.personal.volume.repository } 2>&1
                                                                                                                         then
                                                                                                                             if git fetch origin ${ builtins.hashString "sha512" branch } 2>&1
                                                                                                                             then
-                                                                                                                                echo 7e1212fd "TOKEN=$TOKEN" 52852ca2 >> /tmp/DEBUG
                                                                                                                                 gh auth logout 2>&1
                                                                                                                                 git checkout ${ builtins.hashString "sha512" branch } 2>&1
                                                                                                                                 git-crypt unlock 2>&1
@@ -2506,7 +2494,6 @@
                                                                                                                                     mkdir --parents /mount/secrets
                                                                                                                                 fi
                                                                                                                             else
-                                                                                                                                echo 7e1212fd "TOKEN=$TOKEN" 84a47e62 >> /tmp/DEBUG
                                                                                                                                 gh auth logout 2>&1
                                                                                                                                 git checkout -b ${ builtins.hashString "sha512" branch } 2>&1
                                                                                                                                 git-crypt init 2>&1
@@ -2520,9 +2507,7 @@
                                                                                                                                 git push origin HEAD 2>&1
                                                                                                                             fi
                                                                                                                         else
-                                                                                                                            echo 7e1212fd "TOKEN=$TOKEN" 9d141c5b >> /tmp/DEBUG
                                                                                                                             gh repo create ${ config.personal.volume.organization }/${ config.personal.volume.repository } --private --confirm 2>&1
-                                                                                                                            echo 7e1212fd "TOKEN=$TOKEN" 3f738b55 >> /tmp/DEBUG
                                                                                                                             gh auth logout 2>&1
                                                                                                                             git checkout -b ${ builtins.hashString "sha512" branch } 2>&1
                                                                                                                             git-crypt init 2>&1
@@ -2910,7 +2895,6 @@
                                                                                                             text =
                                                                                                                 ''
                                                                                                                     TOKEN=${ resources.production.secret.github.token { failure = 15304 ; } }
-                                                                                                                    echo 7e1212fd "TOKEN=$TOKEN" 37242dc5 >> /tmp/DEBUG
                                                                                                                     gh auth login --with-token < "$TOKEN/plaintext"
                                                                                                                     DOT_SSH=${ resources.production.dot-ssh { } }
                                                                                                                     SECRETS=${ resources.production.secrets { } }
@@ -2918,7 +2902,6 @@
                                                                                                                     git -C "$SECRETS/cipher" config core.sshCommand "${ pkgs.openssh }/bin/ssh -F $DOT_SSH/config"
                                                                                                                     ssh-keygen -y -f "$SECRETS/plain/dot-ssh/mobile/identity.asc" -C "systemd recycler" -P ""
                                                                                                                     git -C "$SECRETS/cipher" commit -am "systemd recycler"
-                                                                                                                    echo 7e1212fd "TOKEN=$TOKEN" 8b93933d >> /tmp/DEBUG
                                                                                                                     gh auth logout
                                                                                                                 '' ;
                                                                                                         } ;
