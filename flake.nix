@@ -3557,8 +3557,8 @@
                                                                                             echo 7e1212fd 8301b9cb >&2
                                                                                             journalctl -u resource-releaser.service >&2
                                                                                             echo 7e1212fd cfef540a >&2
-                                                                                            yq eval --prettyPrint ".[-1]" ~/resources/log/log.yaml >&2
-                                                                                            echo 7e1212fd 4210e6fc >&2
+                                                                                            # yq eval --prettyPrint ".[-1]" ~/resources/log/log.yaml >&2
+                                                                                            # echo 7e1212fd 4210e6fc >&2
                                                                                             failure 21ce2ba2 "RESOURCE_1=$RESOURCE_1"
                                                                                         fi
                                                                                     '' ;
