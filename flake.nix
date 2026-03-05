@@ -3556,7 +3556,7 @@
                                                                                             find ~/resources
                                                                                             echo 7e1212fd 8301b9cb
                                                                                             journalctl -u resource-releaser.serviceq
-                                                                                            failure 21ce2ba2 "RESOURCE_1=$RESOURCE_q1"
+                                                                                            failure 21ce2ba2 "RESOURCE_1=$RESOURCE_1"
                                                                                         fi
                                                                                     '' ;
                                                                             } ;
