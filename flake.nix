@@ -3543,7 +3543,7 @@
                                                                         pkgs.writeShellApplication
                                                                             {
                                                                                 name = "post" ;
-                                                                                runtimeInputs = [ pkgs.coreutils pkgs.findutils pkgs.systemd ( _failure.implementation "0865461" ) ] ;
+                                                                                runtimeInputs = [ pkgs.coreutils pkgs.findutils pkgs.systemd pkgs.yg-go ( _failure.implementation "0865461" ) ] ;
                                                                                 text =
                                                                                     ''
                                                                                         echo "POST \$$=$$" >&2
