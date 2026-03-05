@@ -1780,6 +1780,9 @@
                                                                                                                                                                                 git checkout -b "$TARGET_BRANCH"
                                                                                                                                                                                 git submodule deinit -f --all
                                                                                                                                                                                 git submodule update --init --recursive
+                                                                                                                                                                                git submodule foreach "git config core.sshCommand $GIT_SSH_COMMAND"
+                                                                                                                                                                                git submodule foreach 'git config user.email "${ config.personal.repository.private.email }"'
+                                                                                                                                                                                git submodule foreach 'git config user.name "${ config.personal.repository.private.name }"'
                                                                                                                                                                             '' ;
                                                                                                                                                                     } ;
                                                                                                                                                                 promote =
