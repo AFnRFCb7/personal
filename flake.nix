@@ -3622,7 +3622,7 @@
                                                                 '' ;
                                                 } ;
                                         resource-logger = _resource-logger.check { expected = "/nix/store/44j9cfbiamg903zx9ldyhjpwrdky9bxl-resource-logger/bin/resource-logger" ; } ;
-                                        resource-releaser = _resource-releaser.check { expected = "/nix/store/8pigj0qdaybd7vjdyriyb558sisivdvz-resource-releaser/bin/resource-releaser" ; } ;
+                                        resource-releaser = _resource-releaser.check { expected = "/nix/store/hw908l5yjpbzfal74ljqnh1hg2zq8hpj-resource-releaser/bin/resource-releaser" ; } ;
                                         visitor-happy =
                                             _visitor.check
                                                 {
