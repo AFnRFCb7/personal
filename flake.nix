@@ -3555,6 +3555,19 @@
                                                                                     '' ;
                                                                             } ;
                                                                     in "${ application }/bin/post" ;
+                                                            pre1 =
+                                                                let
+                                                                    application =
+                                                                        pkgs.writeShellApplication
+                                                                            {
+                                                                                name = "pre1" ;
+                                                                                runtimeInputs = [ pkgs.bash ] ;
+                                                                                text =
+                                                                                    ''
+                                                                                        bash -c ${ pre }
+                                                                                    '' ;
+                                                                            } ;
+                                                                    in "${ application }/bin/pre1" ;
                                                             pre =
                                                                 let
                                                                     application =
@@ -3598,7 +3611,7 @@
                                                             in
                                                                 ''
                                                                     machine.wait_for_unit("multi-user.target")
-                                                                    machine.succeed("bash -c 'runuser testuser -- ${ pre }'")
+                                                                    machine.succeed("bash 'runuser testuser -- ${ pre1 }'")
                                                                     machine.succeed("sleep 10s")
                                                                     machine.succeed("runuser testuser -- ${ post }")
                                                                 '' ;
