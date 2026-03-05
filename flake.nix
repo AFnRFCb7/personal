@@ -14,6 +14,7 @@
                         private ,
                         resource ,
                         resource-logger ,
+                        resource-releaser ,
                         system ,
                         visitor
                     } @primary :
@@ -24,7 +25,8 @@
                                     channel ,
                                     resources-directory ,
                                     resources ,
-                                    root-directory
+                                    root-directory ,
+                                    sequential-start
                                 } :
                                     resource.lib
                                         {
@@ -44,7 +46,7 @@
                                             redis = pkgs.redis ;
                                             resources = resources ;
                                             resources-directory = resources-directory ;
-                                            sequential-start = ''$( head /dev/urandom | tr -dc '1-9' | head -c 15 )'' ;
+                                            sequential-start = sequential-start ;
                                             root-directory = root-directory ;
                                             util-linux = pkgs.util-linux ;
                                             visitor = _visitor.implementation ;
@@ -56,6 +58,12 @@
                                 resource-logger.lib
                                     {
                                         failure = _failure.implementation "88fe77a0" ;
+                                        pkgs = pkgs ;
+                                    } ;
+                            _resource-releaser =
+                                resource-releaser.lib
+                                    {
+                                        failure = _failure.implementation "0a13879f" ;
                                         pkgs = pkgs ;
                                     } ;
                             _visitor = visitor.lib { } ;
@@ -100,6 +108,7 @@
                                                                             resources = resources ;
                                                                             resources-directory = "/home/${ config.personal.name }/resources" ;
                                                                             root-directory = "/home/${ config.personal.name }/.gc-roots" ;
+                                                                            sequential-start = config.personal.sequential-start ;
                                                                         } ;
                                                                     in
                                                                         r.implementation
@@ -119,6 +128,79 @@
                                                                             } ;
                                                 }
                                                 {
+                                                    checks =
+                                                        let
+                                                            checks =
+                                                                ignore :
+                                                                    {
+                                                                        init =
+                                                                            { failure , pkgs , resources , root , seed , sequential , wrap } :
+                                                                                let
+                                                                                    application =
+                                                                                        pkgs.writeShellApplication
+                                                                                            {
+                                                                                                name = "init" ;
+                                                                                                runtimeInputs = [ pkgs.cowsay pkgs.figlet root wrap ] ;
+                                                                                                text =
+                                                                                                    ''
+                                                                                                        mkdir --parents /mount
+                                                                                                        exit ${ if builtins.elemAt seed.path 1 == "true" then "0" else "65" }
+                                                                                                    '' ;
+                                                                                            } ;
+                                                                                    in "${ application }/bin/init" ;
+                                                                        release =
+                                                                            { failure , pkgs , resources , seed , sequential } :
+                                                                                let
+                                                                                    application =
+                                                                                        pkgs.writeShellApplication
+                                                                                            {
+                                                                                                name = "release" ;
+                                                                                                runtimeInputs = [ pkgs.cowsay pkgs.figlet ] ;
+                                                                                                text =
+                                                                                                    ''
+                                                                                                        exit ${ if builtins.elemAt seed.path 2 == "true" then "0" else "65" }
+                                                                                                    '' ;
+                                                                                            } ;
+                                                                                    in "${ application }/bin/release" ;
+                                                                            targets = [ ] ;
+                                                                    } ;
+                                                            in
+                                                                {
+                                                                    target =
+                                                                        ignore :
+                                                                            {
+                                                                                init =
+                                                                                    { failure , pkgs , resources , root , seed , sequential , wrap } :
+                                                                                        let
+                                                                                            application =
+                                                                                                pkgs.writeShellApplication
+                                                                                                    {
+                                                                                                        name = "init" ;
+                                                                                                        runtimeInputs = [ ] ;
+                                                                                                        text = "echo 7e1212fd 5b722b70" ;
+                                                                                                    } ;
+                                                                                            in "${ application }/bin/init" ;
+                                                                                release =
+                                                                                    { failure , pkgs , resources , seed , sequential } :
+                                                                                        let
+                                                                                            application =
+                                                                                                pkgs.writeShellApplication
+                                                                                                    {
+                                                                                                        name = "release" ;
+                                                                                                        runtimeInputs = [ ] ;
+                                                                                                        text = "echo 7e1212fd 061b99f9" ;
+                                                                                                    } ;
+                                                                                            in "${ application }/bin/release" ;
+                                                                                targets = [ ] ;
+                                                                            } ;
+                                                                    true =
+                                                                        {
+                                                                            true =
+                                                                                {
+                                                                                    true-true = checks ;
+                                                                                } ;
+                                                                        } ;
+                                                                } ;
                                                     foobar =
                                                         {
                                                             bin =
@@ -489,6 +571,7 @@
                                                                                                                                                     ${ builtins.concatStringsSep "\n" ( builtins.map ( name : ''export ${ name }="${ builtins.concatStringsSep "" [ "$" name ] }"'' ) environment ) }
                                                                                                                                                     if $HAS_STANDARD_INPUT
                                                                                                                                                     then
+                                                                                                                                                        # shellcheck disable=SC2216
                                                                                                                                                         echo "$STANDARD_INPUT" | ${ script }
                                                                                                                                                     else
                                                                                                                                                         ${ script }
@@ -498,14 +581,45 @@
                                                                                                                         in "${ application }/bin/${ name }" ;
                                                                                                                 in
                                                                                                                     ''
+                                                                                                                        echo 7e1212fd 9c61617b
                                                                                                                         wrap ${ bin } ${ name } 0500 --literal-plain HAS_STANDARD_INPUT --literal-plain PATH ${ builtins.concatStringsSep "" ( builtins.map ( value : " --literal-plain ${ value }" ) ( builtins.attrNames variables ) ) } --literal-plain STANDARD_INPUT --uuid 3d888900
                                                                                                                     '' ;
                                                                                                     } ;
                                                                                             in "${ application }/bin/init" ;
+                                                                                release =
+                                                                                    { failure , pkgs , resources , seed , sequential } :
+                                                                                        let
+                                                                                            application =
+                                                                                                pkgs.writeShellApplication
+                                                                                                    {
+                                                                                                        name = "release" ;
+                                                                                                        runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                        text =
+                                                                                                            ''
+                                                                                                                echo 7e1212fd e6278bb8
+                                                                                                                echo RELEASING ${ name }
+                                                                                                            '' ;
+                                                                                                    } ;
+                                                                                            in "${ application }/bin/release" ;
                                                                                 targets = [ name ] ;
                                                                             } ;
                                                                     in
                                                                         {
+                                                                            checks =
+                                                                                {
+                                                                                    true-true =
+                                                                                        bin
+                                                                                            {
+                                                                                                environment = [ ] ;
+                                                                                                name = "true-true" ;
+                                                                                                runtimeInputs = pkgs : [ ] ;
+                                                                                                script = ''echo "$CHECK"'' ;
+                                                                                                variables =
+                                                                                                    {
+                                                                                                        CHECK = resources : resources.checks.true.true.true-true { failure = 12601 ; setup = setup : ''${ setup } true true'' ; } ;
+                                                                                                    } ;
+                                                                                            } ;
+                                                                                } ;
                                                                             chromium =
                                                                                 bin
                                                                                     {
@@ -1861,6 +1975,21 @@
                                                                                                                                                                                 cd "$toplevel/$name"
                                                                                                                                                                                 if ! git diff --quiet || ! git diff --quiet --cached
                                                                                                                                                                                 then
+                                                                                                                                                                                    GIT_SSH_COMMAND="$( git config --get core.sshCommand )" || failure c55a7d2f
+                                                                                                                                                                                    if [[ -z "$GIT_SSH_COMMAND" ]]
+                                                                                                                                                                                    then
+                                                                                                                                                                                        failure 10ce8944
+                                                                                                                                                                                    fi
+                                                                                                                                                                                    USER_EMAIL="$( git config --get user.email )" || failure e9471d87
+                                                                                                                                                                                    if [[ -z "$USER_EMAIL" ]]
+                                                                                                                                                                                    then
+                                                                                                                                                                                        failure a328a496
+                                                                                                                                                                                    fi
+                                                                                                                                                                                    USER_NAME="$( git config --get user.name )" || failure 6cd6c5b8
+                                                                                                                                                                                    if [[ -z "$USER_NAME" ]]
+                                                                                                                                                                                    then
+                                                                                                                                                                                        failure d980340a
+                                                                                                                                                                                    fi
                                                                                                                                                                                     UUID="$( sequential | sha512sum )" || failure e2e7dad7
                                                                                                                                                                                     BRANCH="$( echo "scratch/$UUID" | cut --characters 1-64 )" || failure 20b63f59
                                                                                                                                                                                     git checkout -b "$BRANCH"
@@ -2058,21 +2187,14 @@
                                                                                                                                                                                 then
                                                                                                                                                                                     BRANCH="$( git rev-parse --abbrev-ref HEAD )" || failure b7fb71d9
                                                                                                                                                                                     TOKEN=${ resources.production.secret.github.token { failure = 24794 ; } }
-                                                                                                                                                                                    echo 7e1212fd "TOKEN=$TOKEN" bf937f48 >> /tmp/DEBUG
                                                                                                                                                                                     gh auth login --with-token < "$TOKEN/plaintext"
-                                                                                                                                                                                    echo 7e1212fd "TOKEN=$TOKEN" 555c4ee8 >> /tmp/DEBUG
                                                                                                                                                                                     if ! gh label list --json name --jq '.[].name' | grep -qx snapshot
                                                                                                                                                                                     then
-                                                                                                                                                                                        echo 7e1212fd "TOKEN=$TOKEN" ff2896dc >> /tmp/DEBUG
                                                                                                                                                                                         gh label create snapshot --color "#333333" --description "Scripted Snapshot PR"
                                                                                                                                                                                     fi
-                                                                                                                                                                                    echo echo 7e1212fd 0b784f4 "TOKEN=$TOKEN" 71fc34a2 >> /tmp/DEBUG
                                                                                                                                                                                     gh pr create --base main --head "$BRANCH" --label "snapshot"
-                                                                                                                                                                                    echo 7e1212fd "TOKEN=$TOKEN" b3a7dac9 >> /tmp/DEBUG
                                                                                                                                                                                     URL="$( gh pr view --json url --jq .url )" || failure 31ccb1f3
-                                                                                                                                                                                    echo 7e1212fd "TOKEN=$TOKEN" dbdaf020 >> /tmp/DEBUG
                                                                                                                                                                                     gh pr merge "$URL" --rebase
-                                                                                                                                                                                    echo 7e1212fd "TOKEN=$TOKEN" 243f2524 >> /tmp/DEBUG
                                                                                                                                                                                     gh auth logout
                                                                                                                                                                                     NAME="$( basename "$name" )" || failure 368e7b07
                                                                                                                                                                                     TOKEN_DIRECTORY=${ resources.production.secret.github.token { failure = "failure ad27f961" ; } }
@@ -2116,6 +2238,8 @@
                                                                                                                                         git submodule update --init --recursive 2>&1
                                                                                                                                         echo 380b7b99 cb5fe1a6
                                                                                                                                         git submodule foreach "git config core.sshCommand \"$GIT_SSH_COMMAND\"" 2>&1
+                                                                                                                                        git submodule foreach 'git config user.email "${ config.personal.email }"'
+                                                                                                                                        git submodule foreach 'git config user.name "${ config.personal.description }"'
                                                                                                                                         echo 380b7b99 b4542105
                                                                                                                                         UUID="$( sequential | sha512sum )" || failure 2ecf55e5
                                                                                                                                         echo 380b7b99 fb8ae5e7
@@ -2278,9 +2402,7 @@
                                                                                                                                 ''
                                                                                                                                     if [[ -f "$MOUNT/plain/dot-ssh/github/identity.asc" ]]
                                                                                                                                     then
-                                                                                                                                        echo 7e1212fd bdad69fb >> /tmp/DEBUG
                                                                                                                                         ssh-keygen -y -f "$MOUNT/plain/dot-ssh/github/identity.asc" | gh ssh-key add -
-                                                                                                                                        echo 7e1212fd 887648ad >> /tmp/DEBUG
                                                                                                                                     fi
                                                                                                                                     if [[ -f "$MOUNT/plain/dot-ssh/mobile/identity.asc" ]]
                                                                                                                                     then
@@ -2361,14 +2483,11 @@
                                                                                                                         DOT_GNUPG=${ resources.production.dot-gnupg { } }
                                                                                                                         export GNUPGHOME="$DOT_GNUPG/dot-gnupg"
                                                                                                                         TOKEN=${ resources.production.secret.github.token { failure = 5445 ; } }
-                                                                                                                        echo 7e1212fd "TOKEN=$TOKEN" 63e95f44 >> /tmp/DEBUG
                                                                                                                         gh auth login --with-token < "$TOKEN/plaintext"
-                                                                                                                        echo 7e1212fd "TOKEN=$TOKEN" c1e33481 >> /tmp/DEBUG
                                                                                                                         if gh repo view ${ config.personal.volume.organization }/${ config.personal.volume.repository } 2>&1
                                                                                                                         then
                                                                                                                             if git fetch origin ${ builtins.hashString "sha512" branch } 2>&1
                                                                                                                             then
-                                                                                                                                echo 7e1212fd "TOKEN=$TOKEN" 52852ca2 >> /tmp/DEBUG
                                                                                                                                 gh auth logout 2>&1
                                                                                                                                 git checkout ${ builtins.hashString "sha512" branch } 2>&1
                                                                                                                                 git-crypt unlock 2>&1
@@ -2377,7 +2496,6 @@
                                                                                                                                     mkdir --parents /mount/secrets
                                                                                                                                 fi
                                                                                                                             else
-                                                                                                                                echo 7e1212fd "TOKEN=$TOKEN" 84a47e62 >> /tmp/DEBUG
                                                                                                                                 gh auth logout 2>&1
                                                                                                                                 git checkout -b ${ builtins.hashString "sha512" branch } 2>&1
                                                                                                                                 git-crypt init 2>&1
@@ -2391,9 +2509,7 @@
                                                                                                                                 git push origin HEAD 2>&1
                                                                                                                             fi
                                                                                                                         else
-                                                                                                                            echo 7e1212fd "TOKEN=$TOKEN" 9d141c5b >> /tmp/DEBUG
                                                                                                                             gh repo create ${ config.personal.volume.organization }/${ config.personal.volume.repository } --private --confirm 2>&1
-                                                                                                                            echo 7e1212fd "TOKEN=$TOKEN" 3f738b55 >> /tmp/DEBUG
                                                                                                                             gh auth logout 2>&1
                                                                                                                             git checkout -b ${ builtins.hashString "sha512" branch } 2>&1
                                                                                                                             git-crypt init 2>&1
@@ -2768,6 +2884,7 @@
                                                                                     ''
                                                                                         Recycle the identities for mobile and for github
                                                                                     '' ;
+                                                                                enable = false ;
                                                                                 serviceConfig =
                                                                                     {
                                                                                         ExecStart =
@@ -2780,7 +2897,6 @@
                                                                                                             text =
                                                                                                                 ''
                                                                                                                     TOKEN=${ resources.production.secret.github.token { failure = 15304 ; } }
-                                                                                                                    echo 7e1212fd "TOKEN=$TOKEN" 37242dc5 >> /tmp/DEBUG
                                                                                                                     gh auth login --with-token < "$TOKEN/plaintext"
                                                                                                                     DOT_SSH=${ resources.production.dot-ssh { } }
                                                                                                                     SECRETS=${ resources.production.secrets { } }
@@ -2788,7 +2904,6 @@
                                                                                                                     git -C "$SECRETS/cipher" config core.sshCommand "${ pkgs.openssh }/bin/ssh -F $DOT_SSH/config"
                                                                                                                     ssh-keygen -y -f "$SECRETS/plain/dot-ssh/mobile/identity.asc" -C "systemd recycler" -P ""
                                                                                                                     git -C "$SECRETS/cipher" commit -am "systemd recycler"
-                                                                                                                    echo 7e1212fd "TOKEN=$TOKEN" 8b93933d >> /tmp/DEBUG
                                                                                                                     gh auth logout
                                                                                                                 '' ;
                                                                                                         } ;
@@ -2822,6 +2937,32 @@
                                                                                                     in "${ application }/bin/ExecStart" ;
                                                                                         User = config.personal.name ;
                                                                                     } ;
+                                                                                wantedBy = [ "multi-user.target" ] ;
+                                                                            } ;
+                                                                        resource-releaser =
+                                                                            {
+                                                                                after = [ "redis.service" ] ;
+                                                                                serviceConfig =
+                                                                                    {
+                                                                                        ExecStart =
+                                                                                            let
+                                                                                                application =
+                                                                                                    pkgs.writeShellApplication
+                                                                                                        {
+                                                                                                            name = "ExecStart" ;
+                                                                                                            runtimeInputs = [ ] ;
+                                                                                                            text =
+                                                                                                                _resource-releaser.implementation
+                                                                                                                    {
+                                                                                                                        channel = config.personal.channel ;
+                                                                                                                        resources-directory = "/home/${ config.personal.name }/resources" ;
+                                                                                                                        root-directory = "/home/${ config.personal.name }/.gc-roots" ;
+                                                                                                                    } ;
+                                                                                                        } ;
+                                                                                                in "${ application }/bin/ExecStart" ;
+                                                                                        User = config.personal.name ;
+                                                                                    } ;
+                                                                                wantedBy = [ "multi-user.target" ] ;
                                                                             } ;
                                                                     } ;
                                                                 timers =
@@ -3068,6 +3209,16 @@
                                                                                                     ] ;
                                                                                             } ;
                                                                                     career = { } ;
+                                                                                    checks =
+                                                                                        ignore :
+                                                                                            {
+                                                                                                autocomplete = [ ] ;
+                                                                                                bin =
+                                                                                                    [
+                                                                                                        ( resources.production.bin.checks.true-true { failure = 17466 ; } )
+                                                                                                    ] ;
+                                                                                                man = [ ] ;
+                                                                                            } ;
                                                                                     home =
                                                                                         ignore :
                                                                                             {
@@ -3220,6 +3371,7 @@
                                                                         repository = lib.mkOption { default = "9ebf9ebc" ; type = lib.types.str ; } ;
                                                                         branch = lib.mkOption { default = "main" ; type = lib.types.str ; } ;
                                                                     } ;
+                                                                sequential-start = lib.mkOption { default = "$( head /dev/urandom | tr -dc '1-9' | head -c 15 )" ; type = lib.types.str ; } ;
                                                                 temporary =
                                                                     {
                                                                         ssh =
@@ -3303,6 +3455,7 @@
                                                                         in "${ application }/bin/f70dbffba5f85b11de293ea0f9383ff05f210b1bcca0443f79657db645a2187594511f7ce158302a8c7f249e8dc47128baa17302e96b3be43b6e33d26e822a77" ;
                                                             } ;
                                                         root-directory = "/build/gc-roots" ;
+                                                        sequential-start = "535527297713579" ;
                                                     } ;
                                             in
                                                 factory.check
@@ -3348,11 +3501,130 @@
                                                             ] ;
                                                         transient = false ;
                                                   } ;
-                                        resource-logger =
-                                            _resource-logger.check
+                                        resource-true-true =
+                                            pkgs.nixosTest
                                                 {
-                                                    expected = "/nix/store/44j9cfbiamg903zx9ldyhjpwrdky9bxl-resource-logger/bin/resource-logger" ;
+                                                    name = "resource-true-true" ;
+                                                    nodes.machine =
+                                                        { pkgs , ... } :
+                                                            {
+                                                                imports = [ user ] ;
+                                                                personal =
+                                                                    {
+                                                                        agenix = ./. ;
+                                                                        channel = "test-channel" ;
+                                                                        description = "Test User" ;
+                                                                        email = "testuser@example.com" ;
+                                                                        name = "testuser" ;
+                                                                        password = "FakeP@ssword!2026" ;
+                                                                        sequential-start = "842877237311395" ;
+                                                                    } ;
+                                                            } ;
+                                                    testScript =
+                                                        let
+                                                            post =
+                                                                let
+                                                                    application =
+                                                                        pkgs.writeShellApplication
+                                                                            {
+                                                                                name = "post" ;
+                                                                                runtimeInputs = [ pkgs.coreutils pkgs.findutils pkgs.systemd pkgs.yq-go ( _failure.implementation "0865461" ) ] ;
+                                                                                text =
+                                                                                    ''
+                                                                                        echo "POST \$$=$$" >&2
+                                                                                        RESOURCE_1="$( cat /home/testuser/pads/checks/resource-1 )" || failure 1e199d03
+                                                                                        if [[ -e "$RESOURCE_1" ]]
+                                                                                        then
+                                                                                            echo 7e1212fd 9933f5ce >&2
+                                                                                            echo "RESOURCE_1=$RESOURCE_1" >&2
+                                                                                            echo 7e1212fd d4229a0d >&2
+                                                                                            find ~/resources >&2
+                                                                                            echo 7e1212fd 8301b9cb >&2
+                                                                                            journalctl -u resource-releaser.service >&2
+                                                                                            echo 7e1212fd cfef540a >&2
+                                                                                            # yq eval --prettyPrint ".[-1]" ~/resources/log/log.yaml >&2
+                                                                                            # echo 7e1212fd 4210e6fc >&2
+                                                                                            failure 21ce2ba2 "RESOURCE_1=$RESOURCE_1"
+                                                                                        fi
+                                                                                    '' ;
+                                                                            } ;
+                                                                    in "${ application }/bin/post" ;
+                                                            pre2 =
+                                                                let
+                                                                    application =
+                                                                        pkgs.writeShellApplication
+                                                                            {
+                                                                                name = "pre2" ;
+                                                                                runtimeInputs = [ pkgs.bash ] ;
+                                                                                text =
+                                                                                    ''
+                                                                                        bash -c ${ pre1 }
+                                                                                    '' ;
+                                                                            } ;
+                                                                    in "${ application }/bin/pre2" ;
+                                                            pre1 =
+                                                                let
+                                                                    application =
+                                                                        pkgs.writeShellApplication
+                                                                            {
+                                                                                name = "pre1" ;
+                                                                                runtimeInputs = [ pkgs.bash ] ;
+                                                                                text =
+                                                                                    ''
+                                                                                        bash -c ${ pre }
+                                                                                    '' ;
+                                                                            } ;
+                                                                    in "${ application }/bin/pre1" ;
+                                                            pre =
+                                                                let
+                                                                    application =
+                                                                        pkgs.writeShellApplication
+                                                                            {
+                                                                                name = "pre" ;
+                                                                                runtimeInputs = [ pkgs.coreutils pkgs.direnv ( _failure.implementation "59d475a8" ) ] ;
+                                                                                text =
+                                                                                    ''
+                                                                                        echo "PRE \$$=$$" >&2
+                                                                                        ### WTF log.yaml should exist but does not
+                                                                                        while [[ ! -f /home/testuser/pads/checks/.envrc ]]
+                                                                                        do
+                                                                                           echo d94d5d11 WAIT for .envrc >&2
+                                                                                           sleep 1
+                                                                                        done
+                                                                                        cat /home/testuser/pads/checks/.envrc >&2
+                                                                                        cd "/home/testuser/pads/checks"
+                                                                                        # shellcheck disable=SC1091
+                                                                                        source "/home/testuser/pads/checks/.envrc"
+                                                                                        RESOURCE_1="$( true-true )" || failure f09bd890
+                                                                                        if [[ "$RESOURCE_1" != "/home/testuser/resources/mounts/0842877237311396" ]]
+                                                                                        then
+                                                                                            echo failure 5e5fd71b "RESOURCE_1=$RESOURCE_1" >&2
+                                                                                            exit 99
+                                                                                        fi
+                                                                                        echo "$RESOURCE_1" > resource-1
+                                                                                        RESOURCE_2="$( true-true )" || failure c3b743a2
+                                                                                        if [[ "$RESOURCE_1" != "$RESOURCE_2" ]]
+                                                                                        then
+                                                                                            echo 7e1212fd 5052e66c >&2
+                                                                                            systemctl journal -u resource-logger.service >&2
+                                                                                            echo 7e1212fd 5052e66c >&2
+                                                                                            systemctl journal -u resource-releaser.service >&2
+                                                                                            failure 7946f3fc "RESOURCE_1=$RESOURCE_1" "RESOURCE_2=$RESOURCE_2"
+                                                                                        fi
+                                                                                        echo "$RESOURCE_2" > resource-2
+                                                                                    '' ;
+                                                                            } ;
+                                                                    in "${ application }/bin/pre" ;
+                                                            in
+                                                                ''
+                                                                    machine.wait_for_unit("multi-user.target")
+                                                                    machine.succeed("bash -c 'runuser testuser -- ${ pre2 }'")
+                                                                    machine.succeed("sleep 10s")
+                                                                    machine.succeed("runuser testuser -- ${ post }")
+                                                                '' ;
                                                 } ;
+                                        resource-logger = _resource-logger.check { expected = "/nix/store/44j9cfbiamg903zx9ldyhjpwrdky9bxl-resource-logger/bin/resource-logger" ; } ;
+                                        resource-releaser = _resource-releaser.check { expected = "/nix/store/063w2h06hzd4asm92ihqmalbirbyqj6n-resource-releaser/bin/resource-releaser" ; } ;
                                         visitor-happy =
                                             _visitor.check
                                                 {
