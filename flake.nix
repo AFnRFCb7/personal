@@ -3611,7 +3611,7 @@
                                                             in
                                                                 ''
                                                                     machine.wait_for_unit("multi-user.target")
-                                                                    machine.succeed("bash 'runuser testuser -- ${ pre1 }'")
+                                                                    machine.succeed("bash -c 'runuser testuser -- ${ pre1 }'")
                                                                     machine.succeed("sleep 10s")
                                                                     machine.succeed("runuser testuser -- ${ post }")
                                                                 '' ;
