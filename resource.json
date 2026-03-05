@@ -1,7 +1,7 @@
 {
   "applications": {
     "init": {
-      "application": "/nix/store/3pqrg8aj0v4msvqsqknzv0k986ankxky-init",
+      "application": "/nix/store/rrsn44xkc8x6nxz1avhcdfvims7q85pr-init",
       "resolutions": []
     },
     "release": {
@@ -13,7 +13,7 @@
     "ceb405a144a10b8efca63d9d950ce2b92bb2997ab44a9588ca740b3540a9a532a6b959a0d990dd469a63b16eb7600991bb7a1ef2b79d697b43e17134cbccec6c",
     "cdca67397f32d23a379284468e099b96c5b53d62659faf4d48dfc650bea444d6bc450b7eefee9b273c12672b9008fa6a077b15efb676b35f9912de977f54724d"
   ],
-  "hash": "d5ff9c6d5da77ae01c72c0f604376edc5ebf90f9451aaf5f82402af5eb19c27207b8fac5d864585543e1779355708ca93e702a699db96240273557ff16d1884c",
+  "hash": "45119d79d0638f3716100c35b82c71577de548d526bfe64acbd0eddea67ecb0fecb1ac322ad224a197218fcd9c8e819f5c8f374ec726a1d4b387c1c9328fa195",
   "index": "0000000311691948",
   "has-standard-input": "true",
   "provenance": "new",
