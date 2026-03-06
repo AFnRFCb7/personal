@@ -639,7 +639,7 @@
                                                                                                                             runtimeInputs = [ pkgs.git ] ;
                                                                                                                             text =
                                                                                                                                 ''
-                                                                                                                                    cd "$STUDIO"
+                                                                                                                                    cd "$STUDIO/repository"
                                                                                                                                     git fetch origin
                                                                                                                                     LATEST_COMMIT="$( git log -n 1 --all --pretty=format:"%H" )" || exit 64
                                                                                                                                     BRANCH="$( git branch --contains "$LATEST_COMMIT" --format="%(refname:short)" | head -n 1 )" || exit 64
