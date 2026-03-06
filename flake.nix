@@ -649,7 +649,7 @@
                                                                                                                                     git mutable-snapshot
                                                                                                                                 '' ;
                                                                                                                         } ;
-                                                                                                                in "${ applicationstudio = }/bin/application" ;
+                                                                                                                in "${ application }/bin/application" ;
                                                                                                         in
                                                                                                             ''
                                                                                                                 ${ application }
