@@ -622,14 +622,6 @@
                                                                         {
                                                                             checks =
                                                                                 {
-                                                                                    failure =
-                                                                                        bin
-                                                                                            {
-                                                                                                environment = [ ] ;
-                                                                                                name = "failure" ;
-                                                                                                runtimeInputs = pkgs : [ ] ;
-                                                                                                script = "exit 64" ;
-                                                                                            } ;
                                                                                     studio =
                                                                                         bin
                                                                                             {
@@ -657,7 +649,7 @@
                                                                                                                                     git mutable-snapshot
                                                                                                                                 '' ;
                                                                                                                         } ;
-                                                                                                                in "${ application }/bin/application" ;
+                                                                                                                in "${ applicationstudio = }/bin/application" ;
                                                                                                         in
                                                                                                             ''
                                                                                                                 ${ application }
@@ -3310,6 +3302,7 @@
                                                                                                 autocomplete = [ ] ;
                                                                                                 bin =
                                                                                                     [
+                                                                                                        ( resources.production.bin.checks.studio { failure = 28568 ; } )
                                                                                                         ( resources.production.bin.checks.true-true { failure = 17466 ; } )
                                                                                                     ] ;
                                                                                                 man = [ ] ;
