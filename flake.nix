@@ -645,6 +645,7 @@
                                                                                                                                     BRANCH="$( git branch --contains "$LATEST_COMMIT" --format="%(refname:short)" | head -n 1 )" || exit 64
                                                                                                                                     git mutable-mirror "$BRANCH"
                                                                                                                                     MUTABLE_STUDIO="$( git mutable-studio )" || exit 64
+                                                                                                                                    cd "$MUTABLE_STUDIO"
                                                                                                                                     git mutable-mirror "$BRANCH"
                                                                                                                                     git mutable-snapshot
                                                                                                                                 '' ;
