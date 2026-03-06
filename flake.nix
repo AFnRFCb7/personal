@@ -625,13 +625,38 @@
                                                                                     studio =
                                                                                         bin
                                                                                             {
-                                                                                                environment = [ ] ;
+                                                                                                environment = [ "STUDIO" ] ;
                                                                                                 name = "true-true" ;
                                                                                                 runtimeInputs = pkgs : [ ] ;
-                                                                                                script = ''echo "$CHECK"'' ;
+                                                                                                script =
+                                                                                                    let
+                                                                                                        application =
+                                                                                                            let
+                                                                                                                application =
+                                                                                                                    pkgs.writeShellApplication
+                                                                                                                        {
+                                                                                                                            name = "application" ;
+                                                                                                                            runtimeInputs = [ pkgs.git ] ;
+                                                                                                                            text =
+                                                                                                                                ''
+                                                                                                                                    cd "$STUDIO"
+                                                                                                                                    git fetch origin
+                                                                                                                                    LATEST_COMMIT="$( git log -n 1 --all --pretty=format:"%H" )" || exit 64
+                                                                                                                                    BRANCH="$( git branch --contains "$LATEST_COMMIT" --format="%(refname:short)" | head -n 1 )" || exit 64
+                                                                                                                                    git mutable-mirror "$BRANCH"
+                                                                                                                                    MUTABLE_STUDIO="$( git mutable-studio )" || exit 64
+                                                                                                                                    git mutable-mirror "$BRANCH"
+                                                                                                                                    git mutable-snapshot
+                                                                                                                                '' ;
+                                                                                                                        } ;
+                                                                                                                in "${ application }/bin/application" ;
+                                                                                                        in
+                                                                                                            ''
+                                                                                                                ${ application }
+                                                                                                            '' ;
                                                                                                 variables =
                                                                                                     {
-                                                                                                        CHECK = resources : resources.checks.true.true.true-true { failure = 12601 ; setup = setup : ''${ setup } true true'' ; } ;
+                                                                                                        STUDIO = resources : resources.productions.repository.studio.entry { } ;
                                                                                                     } ;
                                                                                             } ;
                                                                                     true-true =
