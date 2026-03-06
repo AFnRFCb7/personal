@@ -320,30 +320,33 @@
                                                                 {
                                                                     studio =
                                                                         ignore :
-                                                                            { failure , pkgs , resources , root , seed , sequential , wrap } :
-                                                                                let
-                                                                                    application =
-                                                                                        pkgs.writeShellApplication
-                                                                                            {
-                                                                                                name = "init" ;
-                                                                                                runtimeInputs = [ pkgs.git sequential ] ;
-                                                                                                text =
-                                                                                                    ''
-                                                                                                        UUID="$( sequential )" || failure 4016
-                                                                                                        STUDIO=${ resources.production.studio.entry { failure = 12812 ; setup = setup : ''${ setup } "$UUID"'' ; } }
-                                                                                                        cd "$STUDIO/repository"
-                                                                                                        git fetch origin
-                                                                                                        LATEST_COMMIT="$( git log -n 1 --all --pretty=format:"%H" )" || failure 4316
-                                                                                                        BRANCH="$( git branch --contains "$LATEST_COMMIT" --format="%(refname:short)" | head -n 1 )" || failure 32162
-                                                                                                        git mutable-mirror "$BRANCH"
-                                                                                                        MUTABLE_STUDIO="$( git mutable-studio )" || failure 24497
-                                                                                                        cd "$MUTABLE_STUDIO"
-                                                                                                        git mutable-mirror "$BRANCH"
-                                                                                                        git mutable-snapshot
-                                                                                                    '' ;
-                                                                                            } ;
-                                                                                    in "${ application }/bin/init" ;
-                                                                            targets = [ ] ;
+                                                                            {
+                                                                                init =
+                                                                                    { failure , pkgs , resources , root , seed , sequential , wrap } :
+                                                                                        let
+                                                                                            application =
+                                                                                                pkgs.writeShellApplication
+                                                                                                    {
+                                                                                                        name = "init" ;
+                                                                                                        runtimeInputs = [ pkgs.git sequential ] ;
+                                                                                                        text =
+                                                                                                            ''
+                                                                                                                UUID="$( sequential )" || failure 4016
+                                                                                                                STUDIO=${ resources.production.studio.entry { failure = 12812 ; setup = setup : ''${ setup } "$UUID"'' ; } }
+                                                                                                                cd "$STUDIO/repository"
+                                                                                                                git fetch origin
+                                                                                                                LATEST_COMMIT="$( git log -n 1 --all --pretty=format:"%H" )" || failure 4316
+                                                                                                                BRANCH="$( git branch --contains "$LATEST_COMMIT" --format="%(refname:short)" | head -n 1 )" || failure 32162
+                                                                                                                git mutable-mirror "$BRANCH"
+                                                                                                                MUTABLE_STUDIO="$( git mutable-studio )" || failure 24497
+                                                                                                                cd "$MUTABLE_STUDIO"
+                                                                                                                git mutable-mirror "$BRANCH"
+                                                                                                                git mutable-snapshot
+                                                                                                            '' ;
+                                                                                                    } ;
+                                                                                            in "${ application }/bin/init" ;
+                                                                                targets = [ ] ;
+                                                                            } ;
                                                                 } ;
                                                             age =
                                                                 ignore :
