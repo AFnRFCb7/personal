@@ -13,11 +13,20 @@
     "ceb405a144a10b8efca63d9d950ce2b92bb2997ab44a9588ca740b3540a9a532a6b959a0d990dd469a63b16eb7600991bb7a1ef2b79d697b43e17134cbccec6c",
     "cdca67397f32d23a379284468e099b96c5b53d62659faf4d48dfc650bea444d6bc450b7eefee9b273c12672b9008fa6a077b15efb676b35f9912de977f54724d"
   ],
-  "hash": "96dd4f6dc8596a4308d80de02305fccb37e6bbd4024a6fbce510ca9a9bc0e5eb52b1b7620358c9df9c2acbb51e90c1a0457f1253bfd70be71da437265e0f515d",
+  "hash": "d5ff9c6d5da77ae01c72c0f604376edc5ebf90f9451aaf5f82402af5eb19c27207b8fac5d864585543e1779355708ca93e702a699db96240273557ff16d1884c",
   "index": "0000000311691948",
   "has-standard-input": "true",
   "provenance": "new",
-  "scripts": "{\"init\":{\"application\":\"/nix/store/mahp55yg8jjqy5ivhf72r6diq86djgng-application\",\"resolutions\":[]},\"release\":{\"application\":null,\"resolutions\":[]}}",
+  "scripts": {
+    "init": {
+      "application": "/nix/store/mahp55yg8jjqy5ivhf72r6diq86djgng-application",
+      "resolutions": []
+    },
+    "release": {
+      "application": null,
+      "resolutions": []
+    }
+  },
   "standard-error": "",
   "standard-input": "5433bd8482be1f2e1c1db4fa9268ed6e7bb02285083decb86a6166eea2df77f7e2d7524541549a3ee73d03ae955d8ec0714a959944962e8fe18f343fe108ff9f",
   "standard-output": " __________\n< 995246ed >\n ----------\n        \\   ^__^\n         \\  (oo)\\_______\n            (__)\\       )\\/\\\n                ||----w |\n                ||     ||\nmount = /build/resources/mounts/0000000311691948",
@@ -26,7 +35,7 @@
     "7938c529"
   ],
   "transient": "-1",
-  "type": "valid",
+  "type": "valid-init",
   "description": {
     "primary": {
       "buildFHSUserEnv": {
@@ -82,7 +91,7 @@
       },
       "resources-directory": "/build/resources",
       "root-directory": "/build/gc-roots",
-      "sequential-start": "$( head /dev/urandom | tr -dc 1-9 | head -c 15 )",
+      "sequential-start": "535527297713579",
       "util-linux": "/nix/store/1jasg83hbsd6m0gymnc6c740v0jl7mg8-util-linux-2.39.4-bin",
       "visitor": null,
       "writeShellApplication": null,
