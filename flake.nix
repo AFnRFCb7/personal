@@ -622,6 +622,14 @@
                                                                         {
                                                                             checks =
                                                                                 {
+                                                                                    failure =
+                                                                                        bin
+                                                                                            {
+                                                                                                environment = [ ] ;
+                                                                                                name = "failure" ;
+                                                                                                runtimeInputs = pkgs : [ ] ;
+                                                                                                script = "exit 64" ;
+                                                                                            } ;
                                                                                     studio =
                                                                                         bin
                                                                                             {
