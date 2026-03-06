@@ -3699,7 +3699,7 @@
                                                                                         # shellcheck disable=SC1091
                                                                                         source "/home/testuser/pads/checks/.envrc"
                                                                                         RESOURCE_1="$( true-true )" || failure f09bd890
-                                                                                        if [[ "$RESOURCE_1" != "/home/testuser/resources/mounts/0842877237311396" ]]
+                                                                                        if [[ "$RESOURCE_1" != "/home/testuser/resources/mounts/0842877237311397" ]]
                                                                                         then
                                                                                             echo failure 5e5fd71b "RESOURCE_1=$RESOURCE_1" >&2
                                                                                             exit 99
