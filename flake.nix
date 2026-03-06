@@ -626,7 +626,7 @@
                                                                                         bin
                                                                                             {
                                                                                                 environment = [ "STUDIO" ] ;
-                                                                                                name = "true-true" ;
+                                                                                                name = "studio" ;
                                                                                                 runtimeInputs = pkgs : [ ] ;
                                                                                                 script =
                                                                                                     let
