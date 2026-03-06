@@ -342,7 +342,7 @@
                                                                                                                     echo WE ARE ROBUST TO THIS FAILURE
                                                                                                                 fi
                                                                                                                 LATEST_COMMIT="$( git log -n 1 --all --pretty=format:"%H" )" || failure 4316
-                                                                                                                BRANCH="$( git branch --contains "$LATEST_COMMIT" --format="%(refname:short)" | head -n 1 )" || failure 32162
+                                                                                                                BRANCH="$( git branch -a --contains "$LATEST_COMMIT" --format="%(refname:short)" | head -n 1 )" || failure 32162
                                                                                                                 echo 7e1212fd ed9460af "BRANCH=$BRANCH"
                                                                                                                 git mutable-mirror "$BRANCH" 2>&1
                                                                                                                 MUTABLE_STUDIO="$( git mutable-studio )" || failure 24497
