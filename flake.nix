@@ -3046,6 +3046,19 @@
                                                                         (
                                                                             pkgs.writeShellApplication
                                                                                 {
+                                                                                    name = "archive-resources" ;
+                                                                                    runtimeInputs = [ pkgs.coreutils pkgs.gnutar pkgs.nix pkgs.zstd ] ;
+                                                                                    runtimeInputs =
+                                                                                        ''
+                                                                                            ARCHIVE="$( mktemp --suffix ".tar.xz" )" || exit 63
+                                                                                            tar --create --file "$ARCHIVE" --remove-files /home/${ config.personal.name }/.gc-roots /home/${ config.personal.name }/resources
+                                                                                            nix-collect-garbage
+                                                                                        '' ;
+                                                                                }
+                                                                        )
+                                                                        (
+                                                                            pkgs.writeShellApplication
+                                                                                {
                                                                                     name = "secrets" ;
                                                                                     runtimeInputs = [ pkgs.coreutils ] ;
                                                                                     text =
