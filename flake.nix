@@ -656,7 +656,7 @@
                                                                                                             '' ;
                                                                                                 variables =
                                                                                                     {
-                                                                                                        STUDIO = resources : resources.productions.repository.studio.entry { } ;
+                                                                                                        STUDIO = resources : resources.production.repository.studio.entry { } ;
                                                                                                     } ;
                                                                                             } ;
                                                                                     true-true =
