@@ -3746,8 +3746,9 @@
                                                                                            sleep 1
                                                                                         done
                                                                                         cat /home/testuser/pads/checks/.envrc >&2
-                                                                                        cd "/home/testuser/pads/checks"
+                                                                                        cd /home/testuser/pads/checks
                                                                                         # shellcheck disable=SC1091
+                                                                                        source /home/testuser/pads/checks/.envrc
                                                                                         studio
                                                                                     '' ;
                                                                             } ;
