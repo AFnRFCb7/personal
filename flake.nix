@@ -622,6 +622,11 @@
                                                                         {
                                                                             checks =
                                                                                 {
+                                                                                    studio =
+                                                                                        bin
+                                                                                            {
+
+                                                                                            } ;
                                                                                     true-true =
                                                                                         bin
                                                                                             {
