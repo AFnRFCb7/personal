@@ -335,7 +335,12 @@
                                                                                                                 echo "$UUID"
                                                                                                                 STUDIO=${ resources.production.repository.studio.entry { failure = 12812 ; setup = setup : ''${ setup }'' ; } }
                                                                                                                 cd "$STUDIO/repository"
-                                                                                                                git fetch origin 2>&1
+                                                                                                                if git fetch origin 2>&1
+                                                                                                                then
+                                                                                                                    echo GREAT
+                                                                                                                else
+                                                                                                                    echo WE ARE ROBUST TO THIS FAILURE
+                                                                                                                fi
                                                                                                                 LATEST_COMMIT="$( git log -n 1 --all --pretty=format:"%H" )" || failure 4316
                                                                                                                 BRANCH="$( git branch --contains "$LATEST_COMMIT" --format="%(refname:short)" | head -n 1 )" || failure 32162
                                                                                                                 git mutable-mirror "$BRANCH" 2>&1
