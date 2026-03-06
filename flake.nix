@@ -333,7 +333,7 @@
                                                                                                             ''
                                                                                                                 UUID="$( sequential )" || failure 4016
                                                                                                                 echo "$UUID"
-                                                                                                                STUDIO=${ resources.production.repository.studio.entry { failure = 12812 ; setup = setup : ''${ setup }'' ; } }
+                                                                                                                STUDIO=${ resources.production.repository.studio.entry { failure = 12812 ; setup = setup : ''${ setup } "$UUID"'' ; } }
                                                                                                                 cd "$STUDIO/repository"
                                                                                                                 if git fetch origin 2>&1
                                                                                                                 then
@@ -349,7 +349,7 @@
                                                                                                                 MUTABLE_STUDIO="$( git mutable-studio )" || failure 24497
                                                                                                                 cd "$MUTABLE_STUDIO"
                                                                                                                 git mutable-mirror "$BRANCH" 2>&1
-                                                                                                                git mutable-snapshot
+                                                                                                                git mutable-snapshot 2>&1
                                                                                                             '' ;
                                                                                                     } ;
                                                                                             in "${ application }/bin/init" ;
