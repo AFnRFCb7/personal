@@ -332,7 +332,7 @@
                                                                                                         text =
                                                                                                             ''
                                                                                                                 UUID="$( sequential )" || failure 4016
-                                                                                                                STUDIO=${ resources.production.repository.studio.entry { failure = 12812 ; setup = setup : ''${ setup } "$UUID"'' ; } }
+                                                                                                                STUDIO=${ resources.production.repository.studio.entry { failure = 12812 ; setup = setup : ''${ setup }'' ; } }
                                                                                                                 cd "$STUDIO/repository"
                                                                                                                 git fetch origin
                                                                                                                 LATEST_COMMIT="$( git log -n 1 --all --pretty=format:"%H" )" || failure 4316
