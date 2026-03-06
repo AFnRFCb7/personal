@@ -332,6 +332,7 @@
                                                                                                         text =
                                                                                                             ''
                                                                                                                 UUID="$( sequential )" || failure 4016
+                                                                                                                echo "$UUID"
                                                                                                                 STUDIO=${ resources.production.repository.studio.entry { failure = 12812 ; setup = setup : ''${ setup }'' ; } }
                                                                                                                 cd "$STUDIO/repository"
                                                                                                                 git fetch origin
