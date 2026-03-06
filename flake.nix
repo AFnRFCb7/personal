@@ -193,8 +193,23 @@
                                                                                             in "${ application }/bin/release" ;
                                                                                 targets = [ ] ;
                                                                             } ;
+                                                                    false =
+                                                                        {
+                                                                            false =
+                                                                                {
+                                                                                    false-false = checks ;
+                                                                                } ;
+                                                                            true =
+                                                                                {
+                                                                                    false-true = checks ;
+                                                                                } ;
+                                                                        } ;
                                                                     true =
                                                                         {
+                                                                            false =
+                                                                                {
+                                                                                    true-false = checks ;
+                                                                                } ;
                                                                             true =
                                                                                 {
                                                                                     true-true = checks ;
