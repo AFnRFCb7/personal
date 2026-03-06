@@ -335,13 +335,13 @@
                                                                                                                 echo "$UUID"
                                                                                                                 STUDIO=${ resources.production.repository.studio.entry { failure = 12812 ; setup = setup : ''${ setup }'' ; } }
                                                                                                                 cd "$STUDIO/repository"
-                                                                                                                git fetch origin
+                                                                                                                git fetch origin 2>&1
                                                                                                                 LATEST_COMMIT="$( git log -n 1 --all --pretty=format:"%H" )" || failure 4316
                                                                                                                 BRANCH="$( git branch --contains "$LATEST_COMMIT" --format="%(refname:short)" | head -n 1 )" || failure 32162
-                                                                                                                git mutable-mirror "$BRANCH"
+                                                                                                                git mutable-mirror "$BRANCH" 2>&1
                                                                                                                 MUTABLE_STUDIO="$( git mutable-studio )" || failure 24497
                                                                                                                 cd "$MUTABLE_STUDIO"
-                                                                                                                git mutable-mirror "$BRANCH"
+                                                                                                                git mutable-mirror "$BRANCH" 2>&1
                                                                                                                 git mutable-snapshot
                                                                                                             '' ;
                                                                                                     } ;
