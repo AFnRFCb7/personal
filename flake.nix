@@ -3691,8 +3691,8 @@
                                                                                             source "$HOME/pads/checks/.envrc"
                                                                                             RESOURCE_1="$( true-true )" || failure f09bd890
                                                                                             COUNTER="$( ${ pkgs.coreutils }/bin/cat "$HOME/resources/sequential/sequential.counter" )" || failure 5616
-                                                                                            CURRENT=$(( COUNTER - 1 )) 6025
-                                                                                            SEQUENCE="$( printf "%016d\n" "$CURRENT" )" || failure
+                                                                                            CURRENT=$(( COUNTER - 1 ))
+                                                                                            SEQUENCE="$( printf "%016d\n" "$CURRENT" )" || failure 6025
                                                                                             if [[ "$RESOURCE_1" != "$HOME/resources/mounts/$SEQUENCE" ]]
                                                                                             then
                                                                                                 echo failure 5e5fd71b "COUNTER=$COUNTER" "CURRENT=$CURRENT" "SEQUENCE=$SEQUENCE" "RESOURCE_1=$RESOURCE_1" >&2
