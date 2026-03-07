@@ -3690,7 +3690,9 @@
                                                                                             # shellcheck disable=SC1091
                                                                                             source "$HOME/pads/checks/.envrc"
                                                                                             RESOURCE_1="$( true-true )" || failure f09bd890
-                                                                                            if [[ "$RESOURCE_1" != "$HOME/resources/mounts/0842877237311397" ]]
+                                                                                            COUNTER="$( cat "$HOME/resources/sequential/sequential.counter" )" || failure 5616
+                                                                                            SEQUENCE=$(( COUNTER - 1 ))
+                                                                                            if [[ "$RESOURCE_1" != "$HOME/resources/mounts/$SEQUENCE" ]]
                                                                                             then
                                                                                                 echo failure 5e5fd71b "RESOURCE_1=$RESOURCE_1" >&2
                                                                                                 exit 99
