@@ -3612,7 +3612,7 @@
                                                         nodes.machine =
                                                             { pkgs , ... } :
                                                                 {
-                                                                    imports = builtins.concatLists [ [ user ] privateii ] ;
+                                                                    imports = builtins.concatLists [ [ user ] private ] ;
                                                                 } ;
                                                         testScript =
                                                             let
