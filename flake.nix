@@ -627,9 +627,9 @@
                                                                                                                                                     if $HAS_STANDARD_INPUT
                                                                                                                                                     then
                                                                                                                                                         # shellcheck disable=SC2216
-                                                                                                                                                        echo "$STANDARD_INPUT" | ${ script }
+                                                                                                                                                        echo "$STANDARD_INPUT" | ${ script } "$@"
                                                                                                                                                     else
-                                                                                                                                                        ${ script }
+                                                                                                                                                        ${ script } "$@"
                                                                                                                                                     fi
                                                                                                                                                 '' ;
                                                                                                                                 } ;
