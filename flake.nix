@@ -3512,7 +3512,7 @@
                     in
                         {
                             checks =
-                                private : testuser
+                                private : testuser :
                                     {
                                        failure =
                                            _failure.check
