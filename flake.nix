@@ -3763,7 +3763,7 @@
                                                                                         done
                                                                                         # shellcheck disable=SC1091
                                                                                         source /home/testuser/pads/checks/.envrc
-                                                                                        # studio
+                                                                                        studio
                                                                                     '' ;
                                                                             } ;
                                                                         in "${ application }/bin/testScript" ;
