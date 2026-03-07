@@ -193,8 +193,23 @@
                                                                                             in "${ application }/bin/release" ;
                                                                                 targets = [ ] ;
                                                                             } ;
+                                                                    false =
+                                                                        {
+                                                                            false =
+                                                                                {
+                                                                                    false-false = checks ;
+                                                                                } ;
+                                                                            true =
+                                                                                {
+                                                                                    false-true = checks ;
+                                                                                } ;
+                                                                        } ;
                                                                     true =
                                                                         {
+                                                                            false =
+                                                                                {
+                                                                                    true-false = checks ;
+                                                                                } ;
                                                                             true =
                                                                                 {
                                                                                     true-true = checks ;
@@ -301,6 +316,46 @@
                                                         } ;
                                                     production =
                                                         {
+                                                            checks =
+                                                                {
+                                                                    studio =
+                                                                        ignore :
+                                                                            {
+                                                                                init =
+                                                                                    { failure , pkgs , resources , root , seed , sequential , wrap } :
+                                                                                        let
+                                                                                            application =
+                                                                                                pkgs.writeShellApplication
+                                                                                                    {
+                                                                                                        name = "init" ;
+                                                                                                        runtimeInputs = [ pkgs.git sequential ] ;
+                                                                                                        text =
+                                                                                                            ''
+                                                                                                                UUID="$( sequential )" || failure 4016
+                                                                                                                echo "$UUID"
+                                                                                                                STUDIO=${ resources.production.repository.studio.entry { failure = 12812 ; setup = setup : ''${ setup } "$UUID"'' ; } }
+                                                                                                                cd "$STUDIO/repository"
+                                                                                                                if git fetch origin 2>&1
+                                                                                                                then
+                                                                                                                    echo GREAT
+                                                                                                                else
+                                                                                                                    echo WE ARE ROBUST TO THIS FAILURE
+                                                                                                                fi
+                                                                                                                LATEST_COMMIT="$( git log -n 1 --all --pretty=format:"%H" )" || failure 4316
+                                                                                                                FULL_BRANCH="$( git branch -a --contains "$LATEST_COMMIT" --format="%(refname:short)" | head -n 1 )" || failure 32162
+                                                                                                                BRANCH="${ builtins.concatStringsSep "" [ "$" "{" "FULL_BRANCH#origin/" "}" ] }"
+                                                                                                                echo 7e1212fd ed9460af "BRANCH=$BRANCH"
+                                                                                                                git mutable-mirror "$BRANCH" 2>&1
+                                                                                                                MUTABLE_STUDIO="$( git mutable-studio )" || failure 24497
+                                                                                                                cd "$MUTABLE_STUDIO"
+                                                                                                                git mutable-mirror "$BRANCH" 2>&1
+                                                                                                                git mutable-snapshot 2>&1
+                                                                                                            '' ;
+                                                                                                    } ;
+                                                                                            in "${ application }/bin/init" ;
+                                                                                targets = [ ] ;
+                                                                            } ;
+                                                                } ;
                                                             age =
                                                                 ignore :
                                                                     {
@@ -607,6 +662,18 @@
                                                                         {
                                                                             checks =
                                                                                 {
+                                                                                    studio =
+                                                                                        bin
+                                                                                            {
+                                                                                                environment = [ "STUDIO" ] ;
+                                                                                                name = "studio" ;
+                                                                                                runtimeInputs = pkgs : [ ] ;
+                                                                                                script = ''echo "$STUDIO"'' ;
+                                                                                                variables =
+                                                                                                    {
+                                                                                                        STUDIO = resources : resources.production.checks.studio { } ;
+                                                                                                    } ;
+                                                                                            } ;
                                                                                     true-true =
                                                                                         bin
                                                                                             {
@@ -3019,6 +3086,19 @@
                                                                         (
                                                                             pkgs.writeShellApplication
                                                                                 {
+                                                                                    name = "archive-resources" ;
+                                                                                    runtimeInputs = [ pkgs.coreutils pkgs.gnutar pkgs.nix pkgs.zstd ] ;
+                                                                                    text =
+                                                                                        ''
+                                                                                            ARCHIVE="$( mktemp --suffix ".tar.xz" )" || exit 63
+                                                                                            tar --create --file "$ARCHIVE" --remove-files /home/${ config.personal.name }/.gc-roots /home/${ config.personal.name }/resources
+                                                                                            nix-collect-garbage
+                                                                                        '' ;
+                                                                                }
+                                                                        )
+                                                                        (
+                                                                            pkgs.writeShellApplication
+                                                                                {
                                                                                     name = "secrets" ;
                                                                                     runtimeInputs = [ pkgs.coreutils ] ;
                                                                                     text =
@@ -3237,6 +3317,7 @@
                                                                                                 autocomplete = [ ] ;
                                                                                                 bin =
                                                                                                     [
+                                                                                                        ( resources.production.bin.checks.studio { failure = 28568 ; } )
                                                                                                         ( resources.production.bin.checks.true-true { failure = 17466 ; } )
                                                                                                     ] ;
                                                                                                 man = [ ] ;
@@ -3618,7 +3699,7 @@
                                                                                         # shellcheck disable=SC1091
                                                                                         source "/home/testuser/pads/checks/.envrc"
                                                                                         RESOURCE_1="$( true-true )" || failure f09bd890
-                                                                                        if [[ "$RESOURCE_1" != "/home/testuser/resources/mounts/0842877237311396" ]]
+                                                                                        if [[ "$RESOURCE_1" != "/home/testuser/resources/mounts/0842877237311397" ]]
                                                                                         then
                                                                                             echo failure 5e5fd71b "RESOURCE_1=$RESOURCE_1" >&2
                                                                                             exit 99
