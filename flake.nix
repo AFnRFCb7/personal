@@ -149,7 +149,7 @@
                                                                                             } ;
                                                                                     in "${ application }/bin/init" ;
                                                                         release =
-                                                                            { failure , pkgs , resources , seed , sequential } :
+                                                                            { collect , failure , pkgs , resources , seed , sequential , trace } :
                                                                                 let
                                                                                     application =
                                                                                         pkgs.writeShellApplication
@@ -181,7 +181,7 @@
                                                                                                     } ;
                                                                                             in "${ application }/bin/init" ;
                                                                                 release =
-                                                                                    { failure , pkgs , resources , seed , sequential } :
+                                                                                    { collect , failure , pkgs , resources , seed , sequential , trace } :
                                                                                         let
                                                                                             application =
                                                                                                 pkgs.writeShellApplication
@@ -642,7 +642,7 @@
                                                                                                     } ;
                                                                                             in "${ application }/bin/init" ;
                                                                                 release =
-                                                                                    { failure , pkgs , resources , seed , sequential } :
+                                                                                    { collect , failure , pkgs , resources , seed , sequential , trace } :
                                                                                         let
                                                                                             application =
                                                                                                 pkgs.writeShellApplication
@@ -2352,7 +2352,7 @@
                                                                                                                     } ;
                                                                                                             in "${ application }/bin/init" ;
                                                                                                 release =
-                                                                                                    { failure , pkgs , resources , seed , sequential } :
+                                                                                                    { collect , failure , pkgs , resources , seed , sequential , trace } :
                                                                                                         let
                                                                                                             application =
                                                                                                                 pkgs.writeShellApplication
