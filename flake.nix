@@ -627,9 +627,9 @@
                                                                                                                                                     if $HAS_STANDARD_INPUT
                                                                                                                                                     then
                                                                                                                                                         # shellcheck disable=SC2216
-                                                                                                                                                        echo "$STANDARD_INPUT" | ${ script }
+                                                                                                                                                        echo "$STANDARD_INPUT" | ${ script } "$@"
                                                                                                                                                     else
-                                                                                                                                                        ${ script }
+                                                                                                                                                        ${ script } "$@"
                                                                                                                                                     fi
                                                                                                                                                 '' ;
                                                                                                                                 } ;
@@ -662,6 +662,15 @@
                                                                         {
                                                                             checks =
                                                                                 {
+                                                                                    cat =
+                                                                                        bin
+                                                                                            {
+                                                                                                environment = [ ] ;
+                                                                                                name = "cat" ;
+                                                                                                runtimeInputs = pkgs : [ pkgs.coreutils ] ;
+                                                                                                script = ''cat'' ;
+                                                                                                variables = { } ;
+                                                                                            } ;
                                                                                     studio =
                                                                                         bin
                                                                                             {
@@ -2973,7 +2982,7 @@
                                                                                     ''
                                                                                         Recycle the identities for mobile and for github
                                                                                     '' ;
-                                                                                enable = false ;
+                                                                                enable = true ;
                                                                                 serviceConfig =
                                                                                     {
                                                                                         ExecStart =
@@ -3317,6 +3326,7 @@
                                                                                                 autocomplete = [ ] ;
                                                                                                 bin =
                                                                                                     [
+                                                                                                        ( resources.production.bin.checks.cat { failure = 11150 ; } )
                                                                                                         ( resources.production.bin.checks.studio { failure = 28568 ; } )
                                                                                                         ( resources.production.bin.checks.true-true { failure = 17466 ; } )
                                                                                                     ] ;
@@ -3512,403 +3522,397 @@
                     in
                         {
                             checks =
-                                {
-                                   failure =
-                                       _failure.check
-                                           {
-                                               compile-time-arguments = "469c07cdbb13c65f1435bb0b9b7eb5ed2c14d70bc111d12fda44c2cd47c23e99aed06672fec7e138bfa11de61184774d7b2dd2d33aa5958d9df49a4c55e6a8e3" ;
-                                               diffutil = pkgs.diffutil ;
-                                               expected-standard-error =
-                                                   ''
-                                                       compile-time-arguments:
-                                                         path: []
-                                                         type: string
-                                                         value: 469c07cdbb13c65f1435bb0b9b7eb5ed2c14d70bc111d12fda44c2cd47c23e99aed06672fec7e138bfa11de61184774d7b2dd2d33aa5958d9df49a4c55e6a8e3
-                                                       run-time-arguments:
-                                                         - ba02df6c2bf44bb25e7a23fe02dac230baaabda128f463ce26af83e7787bc16de9260f56beaacdef75743665eededeaae997f50892983be4f40453ef6e817f4f
-                                                         - b026466b770b22f738c176f6130e1d5daaca7cbffee8605eeb9f3cb2c9c7a65eb3af44cc202745bc168a7b19e2fc87a909762516f697b7dee855f5454b90c39b
-                                                    '' ;
-                                               run-time-arguments =
-                                                   [
-                                                       "ba02df6c2bf44bb25e7a23fe02dac230baaabda128f463ce26af83e7787bc16de9260f56beaacdef75743665eededeaae997f50892983be4f40453ef6e817f4f"
-                                                       "b026466b770b22f738c176f6130e1d5daaca7cbffee8605eeb9f3cb2c9c7a65eb3af44cc202745bc168a7b19e2fc87a909762516f697b7dee855f5454b90c39b"
-                                                   ] ;
-                                           } ;
-                                    resource =
-                                        let
-                                            factory =
-                                                _resource
-                                                    {
-                                                        channel = "58c7d369b0ce01c248dc06747e2414e64190b49ec8b54ab8b5d20f96a2033759636788d718be578255e47ea0ab95810bfe7e027b8bd7f7eb4c1d3bfb5e682480" ;
-                                                        resources-directory = "/build/resources" ;
-                                                        resources =
-                                                            {
-                                                                d154b4d928d4df6e2f281414a142e96351ca55b7487330ce64fa596d0f64fb5147fc9acc7617a58701542c934b50466c6fe97805d01e357bcaae550862bd6266 =
+                                private : testuser :
+                                    {
+                                       failure =
+                                           _failure.check
+                                               {
+                                                   compile-time-arguments = "469c07cdbb13c65f1435bb0b9b7eb5ed2c14d70bc111d12fda44c2cd47c23e99aed06672fec7e138bfa11de61184774d7b2dd2d33aa5958d9df49a4c55e6a8e3" ;
+                                                   diffutil = pkgs.diffutil ;
+                                                   expected-standard-error =
+                                                       ''
+                                                           compile-time-arguments:
+                                                             path: []
+                                                             type: string
+                                                             value: 469c07cdbb13c65f1435bb0b9b7eb5ed2c14d70bc111d12fda44c2cd47c23e99aed06672fec7e138bfa11de61184774d7b2dd2d33aa5958d9df49a4c55e6a8e3
+                                                           run-time-arguments:
+                                                             - ba02df6c2bf44bb25e7a23fe02dac230baaabda128f463ce26af83e7787bc16de9260f56beaacdef75743665eededeaae997f50892983be4f40453ef6e817f4f
+                                                             - b026466b770b22f738c176f6130e1d5daaca7cbffee8605eeb9f3cb2c9c7a65eb3af44cc202745bc168a7b19e2fc87a909762516f697b7dee855f5454b90c39b
+                                                        '' ;
+                                                   run-time-arguments =
+                                                       [
+                                                           "ba02df6c2bf44bb25e7a23fe02dac230baaabda128f463ce26af83e7787bc16de9260f56beaacdef75743665eededeaae997f50892983be4f40453ef6e817f4f"
+                                                           "b026466b770b22f738c176f6130e1d5daaca7cbffee8605eeb9f3cb2c9c7a65eb3af44cc202745bc168a7b19e2fc87a909762516f697b7dee855f5454b90c39b"
+                                                       ] ;
+                                               } ;
+                                        resource =
+                                            let
+                                                factory =
+                                                    _resource
+                                                        {
+                                                            channel = "58c7d369b0ce01c248dc06747e2414e64190b49ec8b54ab8b5d20f96a2033759636788d718be578255e47ea0ab95810bfe7e027b8bd7f7eb4c1d3bfb5e682480" ;
+                                                            resources-directory = "/build/resources" ;
+                                                            resources =
+                                                                {
+                                                                    d154b4d928d4df6e2f281414a142e96351ca55b7487330ce64fa596d0f64fb5147fc9acc7617a58701542c934b50466c6fe97805d01e357bcaae550862bd6266 =
+                                                                        let
+                                                                            application =
+                                                                                pkgs.writeShellApplication
+                                                                                    {
+                                                                                        name = "f70dbffba5f85b11de293ea0f9383ff05f210b1bcca0443f79657db645a2187594511f7ce158302a8c7f249e8dc47128baa17302e96b3be43b6e33d26e822a77" ;
+                                                                                        runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                        text =
+                                                                                            ''
+                                                                                                echo resources = 5a4c4b30e8f8199aa21f472a633c5eb45e7b530f6d327babb477f67a1e7b2e6c42686f75ebf54ee29b4c48c1ceda5a84a1d192b8953a8362ebce397788934df7
+                                                                                            '' ;
+                                                                                    } ;
+                                                                            in "${ application }/bin/f70dbffba5f85b11de293ea0f9383ff05f210b1bcca0443f79657db645a2187594511f7ce158302a8c7f249e8dc47128baa17302e96b3be43b6e33d26e822a77" ;
+                                                                } ;
+                                                            root-directory = "/build/gc-roots" ;
+                                                            sequential-start = "535527297713579" ;
+                                                        } ;
+                                                in
+                                                    factory.check
+                                                        {
+                                                            arguments = [ "ceb405a144a10b8efca63d9d950ce2b92bb2997ab44a9588ca740b3540a9a532a6b959a0d990dd469a63b16eb7600991bb7a1ef2b79d697b43e17134cbccec6c" "cdca67397f32d23a379284468e099b96c5b53d62659faf4d48dfc650bea444d6bc450b7eefee9b273c12672b9008fa6a077b15efb676b35f9912de977f54724d" ] ;
+                                                            diffutils = pkgs.diffutils ;
+                                                            expected = ./resource.json ;
+                                                            expected-resource = "/build/resources/mounts/0000000311691948" ;
+                                                            init =
+                                                                { failure , pkgs , resources , root , seed , sequential , wrap } :
                                                                     let
                                                                         application =
                                                                             pkgs.writeShellApplication
                                                                                 {
-                                                                                    name = "f70dbffba5f85b11de293ea0f9383ff05f210b1bcca0443f79657db645a2187594511f7ce158302a8c7f249e8dc47128baa17302e96b3be43b6e33d26e822a77" ;
-                                                                                    runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                    name = "init" ;
+                                                                                    runtimeInputs = [ pkgs.coreutils pkgs.libuuid pkgs.cowsay root ] ;
                                                                                     text =
                                                                                         ''
-                                                                                            echo resources = 5a4c4b30e8f8199aa21f472a633c5eb45e7b530f6d327babb477f67a1e7b2e6c42686f75ebf54ee29b4c48c1ceda5a84a1d192b8953a8362ebce397788934df7
+                                                                                            cowsay 995246ed
+                                                                                            RESOURCE=${ resources.d154b4d928d4df6e2f281414a142e96351ca55b7487330ce64fa596d0f64fb5147fc9acc7617a58701542c934b50466c6fe97805d01e357bcaae550862bd6266 }
+                                                                                            echo "mount = $MOUNT"
+                                                                                            echo 577c4dbd > /mount/7938c529
+                                                                                            echo f3ae034e > /scratch/f6f540b2
+                                                                                            root "$RESOURCE"
+                                                                                            root ${ pkgs.cowsay }
                                                                                         '' ;
                                                                                 } ;
-                                                                        in "${ application }/bin/f70dbffba5f85b11de293ea0f9383ff05f210b1bcca0443f79657db645a2187594511f7ce158302a8c7f249e8dc47128baa17302e96b3be43b6e33d26e822a77" ;
-                                                            } ;
-                                                        root-directory = "/build/gc-roots" ;
-                                                        sequential-start = "535527297713579" ;
-                                                    } ;
-                                            in
-                                                factory.check
+                                                                        in "${ application }/bin/init" ;
+                                                            jd-diff-patch = pkgs.jd-diff-patch ;
+                                                            resources-directory-fixture =
+                                                                resources-directory :
+                                                                    ''
+                                                                        mkdir --parents ${ resources-directory }/sequential
+                                                                        echo 311691948 > ${ resources-directory }/sequential/sequential.counter
+                                                                    '' ;
+                                                            seed = "4259572168968d95098b9a5a8572c6ecfabe61a2522103e4c75b1317ea9cf43f96f7a135d144d2184739b6c4bd7fad1fb13a117dabbc9e58f4d4edbc26cf34f5" ;
+                                                            standard-input = "5433bd8482be1f2e1c1db4fa9268ed6e7bb02285083decb86a6166eea2df77f7e2d7524541549a3ee73d03ae955d8ec0714a959944962e8fe18f343fe108ff9f" ;
+                                                            standard-output = "/build/resources/mounts/0000000311691948" ;
+                                                            status = 0 ;
+                                                            targets =
+                                                                [
+                                                                    "7938c529"
+                                                                ] ;
+                                                            transient = false ;
+                                                      } ;
+                                            resource-true-true =
+                                                pkgs.nixosTest
                                                     {
-                                                        arguments = [ "ceb405a144a10b8efca63d9d950ce2b92bb2997ab44a9588ca740b3540a9a532a6b959a0d990dd469a63b16eb7600991bb7a1ef2b79d697b43e17134cbccec6c" "cdca67397f32d23a379284468e099b96c5b53d62659faf4d48dfc650bea444d6bc450b7eefee9b273c12672b9008fa6a077b15efb676b35f9912de977f54724d" ] ;
-                                                        diffutils = pkgs.diffutils ;
-                                                        expected = ./resource.json ;
-                                                        expected-resource = "/build/resources/mounts/0000000311691948" ;
-                                                        init =
-                                                            { failure , pkgs , resources , root , seed , sequential , wrap } :
-                                                                let
-                                                                    application =
-                                                                        pkgs.writeShellApplication
-                                                                            {
-                                                                                name = "init" ;
-                                                                                runtimeInputs = [ pkgs.coreutils pkgs.libuuid pkgs.cowsay root ] ;
-                                                                                text =
-                                                                                    ''
-                                                                                        cowsay 995246ed
-                                                                                        RESOURCE=${ resources.d154b4d928d4df6e2f281414a142e96351ca55b7487330ce64fa596d0f64fb5147fc9acc7617a58701542c934b50466c6fe97805d01e357bcaae550862bd6266 }
-                                                                                        echo "mount = $MOUNT"
-                                                                                        echo 577c4dbd > /mount/7938c529
-                                                                                        echo f3ae034e > /scratch/f6f540b2
-                                                                                        root "$RESOURCE"
-                                                                                        root ${ pkgs.cowsay }
-                                                                                    '' ;
-                                                                            } ;
-                                                                    in "${ application }/bin/init" ;
-                                                        jd-diff-patch = pkgs.jd-diff-patch ;
-                                                        resources-directory-fixture =
-                                                            resources-directory :
-                                                                ''
-                                                                    mkdir --parents ${ resources-directory }/sequential
-                                                                    echo 311691948 > ${ resources-directory }/sequential/sequential.counter
-                                                                '' ;
-                                                        seed = "4259572168968d95098b9a5a8572c6ecfabe61a2522103e4c75b1317ea9cf43f96f7a135d144d2184739b6c4bd7fad1fb13a117dabbc9e58f4d4edbc26cf34f5" ;
-                                                        standard-input = "5433bd8482be1f2e1c1db4fa9268ed6e7bb02285083decb86a6166eea2df77f7e2d7524541549a3ee73d03ae955d8ec0714a959944962e8fe18f343fe108ff9f" ;
-                                                        standard-output = "/build/resources/mounts/0000000311691948" ;
-                                                        status = 0 ;
-                                                        targets =
-                                                            [
-                                                                "7938c529"
-                                                            ] ;
-                                                        transient = false ;
-                                                  } ;
-                                        resource-true-true =
-                                            pkgs.nixosTest
-                                                {
-                                                    name = "resource-true-true" ;
-                                                    nodes.machine =
-                                                        { pkgs , ... } :
+                                                        name = "resource-true-true" ;
+                                                        nodes.machine =
+                                                            { pkgs , ... } :
+                                                                {
+                                                                    imports = builtins.concatLists [ [ user ] private ] ;
+                                                                } ;
+                                                        testScript =
+                                                            let
+                                                                post =
+                                                                    let
+                                                                        application =
+                                                                            pkgs.writeShellApplication
+                                                                                {
+                                                                                    name = "post" ;
+                                                                                    runtimeInputs = [ pkgs.coreutils pkgs.findutils pkgs.systemd pkgs.yq-go ( _failure.implementation "0865461" ) ] ;
+                                                                                    text =
+                                                                                        ''
+                                                                                            echo "POST \$$=$$" >&2
+                                                                                            RESOURCE_1="$( cat "$HOME"/pads/checks/resource-1 )" || failure 1e199d03
+                                                                                            if [[ -e "$RESOURCE_1" ]]
+                                                                                            then
+                                                                                                echo 7e1212fd 9933f5ce >&2
+                                                                                                echo "RESOURCE_1=$RESOURCE_1" >&2
+                                                                                                echo 7e1212fd d4229a0d >&2
+                                                                                                find ~/resources >&2
+                                                                                                echo 7e1212fd 8301b9cb >&2
+                                                                                                journalctl -u resource-releaser.service >&2
+                                                                                                echo 7e1212fd cfef540a >&2
+                                                                                                # yq eval --prettyPrint ".[-1]" ~/resources/log/log.yaml >&2
+                                                                                                # echo 7e1212fd 4210e6fc >&2
+                                                                                                failure 21ce2ba2 "RESOURCE_1=$RESOURCE_1"
+                                                                                            fi
+                                                                                        '' ;
+                                                                                } ;
+                                                                        in "${ application }/bin/post" ;
+                                                                pre2 =
+                                                                    let
+                                                                        application =
+                                                                            pkgs.writeShellApplication
+                                                                                {
+                                                                                    name = "pre2" ;
+                                                                                    runtimeInputs = [ pkgs.bash ] ;
+                                                                                    text =
+                                                                                        ''
+                                                                                            bash -c ${ pre1 }
+                                                                                        '' ;
+                                                                                } ;
+                                                                        in "${ application }/bin/pre2" ;
+                                                                pre1 =
+                                                                    let
+                                                                        application =
+                                                                            pkgs.writeShellApplication
+                                                                                {
+                                                                                    name = "pre1" ;
+                                                                                    runtimeInputs = [ pkgs.bash ] ;
+                                                                                    text =
+                                                                                        ''
+                                                                                            bash -c ${ pre }
+                                                                                        '' ;
+                                                                                } ;
+                                                                        in "${ application }/bin/pre1" ;
+                                                                pre =
+                                                                    let
+                                                                        application =
+                                                                            pkgs.writeShellApplication
+                                                                                {
+                                                                                    name = "pre" ;
+                                                                                    runtimeInputs = [ pkgs.coreutils pkgs.direnv ( _failure.implementation "59d475a8" ) ] ;
+                                                                                    text =
+                                                                                        ''
+                                                                                            echo "PRE \$$=$$" >&2
+                                                                                            ### WTF log.yaml should exist but does not
+                                                                                            while [[ ! -f "$HOME/pads/checks/.envrc" ]]
+                                                                                            do
+                                                                                               echo d94d5d11 WAIT for .envrc >&2
+                                                                                               sleep 1
+                                                                                            done
+                                                                                            cat "$HOME/pads/checks/.envrc" >&2
+                                                                                            cd "$HOME/pads/checks"
+                                                                                            # shellcheck disable=SC1091
+                                                                                            source "$HOME/pads/checks/.envrc"
+                                                                                            RESOURCE_1="$( true-true )" || failure f09bd890
+                                                                                            COUNTER="$( cat "$HOME/resources/sequential/sequential.counter" )" || failure 5616
+                                                                                            CURRENT=$(( COUNTER - 1 ))
+                                                                                            SEQUENCE="$( ${ pkgs.coreutils }/bin/printf "%016d\n" "$CURRENT" )" || failure 6025
+                                                                                            if [[ "$RESOURCE_1" != "$HOME/resources/mounts/$SEQUENCE" ]]
+                                                                                            then
+                                                                                                echo failure 5e5fd71b "COUNTER=$COUNTER" "CURRENT=$CURRENT" "SEQUENCE=$SEQUENCE" "RESOURCE_1=$RESOURCE_1" >&2
+                                                                                                exit 99
+                                                                                            fi
+                                                                                            echo "$RESOURCE_1" > resource-1
+                                                                                            RESOURCE_2="$( true-true )" || failure c3b743a2
+                                                                                            if [[ "$RESOURCE_1" != "$RESOURCE_2" ]]
+                                                                                            then
+                                                                                                echo 7e1212fd 5052e66c >&2
+                                                                                                systemctl journal -u resource-logger.service >&2
+                                                                                                echo 7e1212fd 5052e66c >&2
+                                                                                                systemctl journal -u resource-releaser.service >&2
+                                                                                                failure 7946f3fc "RESOURCE_1=$RESOURCE_1" "RESOURCE_2=$RESOURCE_2"
+                                                                                            fi
+                                                                                            echo "$RESOURCE_2" > resource-2
+                                                                                        '' ;
+                                                                                } ;
+                                                                        in "${ application }/bin/pre" ;
+                                                                in
+                                                                    ''
+                                                                        machine.wait_for_unit("multi-user.target")
+                                                                        machine.succeed("bash -c 'runuser ${ testuser } -- ${ pre2 }'")
+                                                                        machine.succeed("sleep 10s")
+                                                                        machine.succeed("runuser ${ testuser } -- ${ post }")
+                                                                    '' ;
+                                                    } ;
+                                            resource-logger = _resource-logger.check { expected = "/nix/store/44j9cfbiamg903zx9ldyhjpwrdky9bxl-resource-logger/bin/resource-logger" ; } ;
+                                            resource-releaser = _resource-releaser.check { expected = "/nix/store/063w2h06hzd4asm92ihqmalbirbyqj6n-resource-releaser/bin/resource-releaser" ; } ;
+                                            visitor-happy =
+                                                _visitor.check
+                                                    {
+                                                        coreutils = pkgs.coreutils ;
+                                                        diffutil = pkgs.diffutil ;
+                                                        expected =
                                                             {
-                                                                imports = [ user ] ;
-                                                                personal =
-                                                                    {
-                                                                        agenix = ./. ;
-                                                                        channel = "test-channel" ;
-                                                                        description = "Test User" ;
-                                                                        email = "testuser@example.com" ;
-                                                                        name = "testuser" ;
-                                                                        password = "FakeP@ssword!2026" ;
-                                                                        sequential-start = "842877237311395" ;
-                                                                    } ;
-                                                            } ;
-                                                    testScript =
-                                                        let
-                                                            post =
-                                                                let
-                                                                    application =
-                                                                        pkgs.writeShellApplication
-                                                                            {
-                                                                                name = "post" ;
-                                                                                runtimeInputs = [ pkgs.coreutils pkgs.findutils pkgs.systemd pkgs.yq-go ( _failure.implementation "0865461" ) ] ;
-                                                                                text =
-                                                                                    ''
-                                                                                        echo "POST \$$=$$" >&2
-                                                                                        RESOURCE_1="$( cat /home/testuser/pads/checks/resource-1 )" || failure 1e199d03
-                                                                                        if [[ -e "$RESOURCE_1" ]]
-                                                                                        then
-                                                                                            echo 7e1212fd 9933f5ce >&2
-                                                                                            echo "RESOURCE_1=$RESOURCE_1" >&2
-                                                                                            echo 7e1212fd d4229a0d >&2
-                                                                                            find ~/resources >&2
-                                                                                            echo 7e1212fd 8301b9cb >&2
-                                                                                            journalctl -u resource-releaser.service >&2
-                                                                                            echo 7e1212fd cfef540a >&2
-                                                                                            # yq eval --prettyPrint ".[-1]" ~/resources/log/log.yaml >&2
-                                                                                            # echo 7e1212fd 4210e6fc >&2
-                                                                                            failure 21ce2ba2 "RESOURCE_1=$RESOURCE_1"
-                                                                                        fi
-                                                                                    '' ;
-                                                                            } ;
-                                                                    in "${ application }/bin/post" ;
-                                                            pre2 =
-                                                                let
-                                                                    application =
-                                                                        pkgs.writeShellApplication
-                                                                            {
-                                                                                name = "pre2" ;
-                                                                                runtimeInputs = [ pkgs.bash ] ;
-                                                                                text =
-                                                                                    ''
-                                                                                        bash -c ${ pre1 }
-                                                                                    '' ;
-                                                                            } ;
-                                                                    in "${ application }/bin/pre2" ;
-                                                            pre1 =
-                                                                let
-                                                                    application =
-                                                                        pkgs.writeShellApplication
-                                                                            {
-                                                                                name = "pre1" ;
-                                                                                runtimeInputs = [ pkgs.bash ] ;
-                                                                                text =
-                                                                                    ''
-                                                                                        bash -c ${ pre }
-                                                                                    '' ;
-                                                                            } ;
-                                                                    in "${ application }/bin/pre1" ;
-                                                            pre =
-                                                                let
-                                                                    application =
-                                                                        pkgs.writeShellApplication
-                                                                            {
-                                                                                name = "pre" ;
-                                                                                runtimeInputs = [ pkgs.coreutils pkgs.direnv ( _failure.implementation "59d475a8" ) ] ;
-                                                                                text =
-                                                                                    ''
-                                                                                        echo "PRE \$$=$$" >&2
-                                                                                        ### WTF log.yaml should exist but does not
-                                                                                        while [[ ! -f /home/testuser/pads/checks/.envrc ]]
-                                                                                        do
-                                                                                           echo d94d5d11 WAIT for .envrc >&2
-                                                                                           sleep 1
-                                                                                        done
-                                                                                        cat /home/testuser/pads/checks/.envrc >&2
-                                                                                        cd "/home/testuser/pads/checks"
-                                                                                        # shellcheck disable=SC1091
-                                                                                        source "/home/testuser/pads/checks/.envrc"
-                                                                                        RESOURCE_1="$( true-true )" || failure f09bd890
-                                                                                        if [[ "$RESOURCE_1" != "/home/testuser/resources/mounts/0842877237311397" ]]
-                                                                                        then
-                                                                                            echo failure 5e5fd71b "RESOURCE_1=$RESOURCE_1" >&2
-                                                                                            exit 99
-                                                                                        fi
-                                                                                        echo "$RESOURCE_1" > resource-1
-                                                                                        RESOURCE_2="$( true-true )" || failure c3b743a2
-                                                                                        if [[ "$RESOURCE_1" != "$RESOURCE_2" ]]
-                                                                                        then
-                                                                                            echo 7e1212fd 5052e66c >&2
-                                                                                            systemctl journal -u resource-logger.service >&2
-                                                                                            echo 7e1212fd 5052e66c >&2
-                                                                                            systemctl journal -u resource-releaser.service >&2
-                                                                                            failure 7946f3fc "RESOURCE_1=$RESOURCE_1" "RESOURCE_2=$RESOURCE_2"
-                                                                                        fi
-                                                                                        echo "$RESOURCE_2" > resource-2
-                                                                                    '' ;
-                                                                            } ;
-                                                                    in "${ application }/bin/pre" ;
-                                                            in
-                                                                ''
-                                                                    machine.wait_for_unit("multi-user.target")
-                                                                    machine.succeed("bash -c 'runuser testuser -- ${ pre2 }'")
-                                                                    machine.succeed("sleep 10s")
-                                                                    machine.succeed("runuser testuser -- ${ post }")
-                                                                '' ;
-                                                } ;
-                                        resource-logger = _resource-logger.check { expected = "/nix/store/44j9cfbiamg903zx9ldyhjpwrdky9bxl-resource-logger/bin/resource-logger" ; } ;
-                                        resource-releaser = _resource-releaser.check { expected = "/nix/store/063w2h06hzd4asm92ihqmalbirbyqj6n-resource-releaser/bin/resource-releaser" ; } ;
-                                        visitor-happy =
-                                            _visitor.check
-                                                {
-                                                    coreutils = pkgs.coreutils ;
-                                                    diffutil = pkgs.diffutil ;
-                                                    expected =
-                                                        {
-                                                            bool =
-                                                                [
-                                                                    {
-                                                                        path = [ "bool" ] ;
-                                                                        type = "bool" ;
-                                                                        value = true ;
-                                                                    }
-                                                                ] ;
-                                                            float =
-                                                                [
-                                                                    {
-                                                                        path = [ "float" ] ;
-                                                                        type = "float" ;
-                                                                        value = 1.0 ;
-                                                                    }
-                                                                ] ;
-                                                            int =
-                                                                [
-                                                                    {
-                                                                        path = [ "int" ] ;
-                                                                        type = "int" ;
-                                                                        value = 1 ;
-                                                                    }
-                                                                ] ;
-                                                            lambda =
-                                                                [
-                                                                    {
-                                                                        path = [ "lambda" ] ;
-                                                                        type = "lambda" ;
-                                                                        value = null ;
-                                                                    }
-                                                                ] ;
-                                                            list =
-                                                                [
+                                                                bool =
                                                                     [
                                                                         {
-                                                                            path = [ "list" 0 ] ;
+                                                                            path = [ "bool" ] ;
+                                                                            type = "bool" ;
+                                                                            value = true ;
+                                                                        }
+                                                                    ] ;
+                                                                float =
+                                                                    [
+                                                                        {
+                                                                            path = [ "float" ] ;
+                                                                            type = "float" ;
+                                                                            value = 1.0 ;
+                                                                        }
+                                                                    ] ;
+                                                                int =
+                                                                    [
+                                                                        {
+                                                                            path = [ "int" ] ;
                                                                             type = "int" ;
                                                                             value = 1 ;
                                                                         }
-                                                                    ]
-                                                                ] ;
-                                                            null =
-                                                                [
-                                                                    {
-                                                                        path = [ "null" ] ;
-                                                                        type = "null" ;
-                                                                        value = null ;
-                                                                    }
-                                                                ] ;
-                                                            path =
-                                                                [
-                                                                    {
-                                                                        path = [ "path" ] ;
-                                                                        type = "path" ;
-                                                                        value = ./. ;
-                                                                    }
-                                                                ] ;
-                                                            set =
-                                                                {
-                                                                    one =
+                                                                    ] ;
+                                                                lambda =
+                                                                    [
+                                                                        {
+                                                                            path = [ "lambda" ] ;
+                                                                            type = "lambda" ;
+                                                                            value = null ;
+                                                                        }
+                                                                    ] ;
+                                                                list =
+                                                                    [
                                                                         [
                                                                             {
-                                                                                path = [ "set" "one" ] ;
+                                                                                path = [ "list" 0 ] ;
                                                                                 type = "int" ;
                                                                                 value = 1 ;
                                                                             }
-                                                                        ] ;
-                                                                    recur =
+                                                                        ]
+                                                                    ] ;
+                                                                null =
+                                                                    [
                                                                         {
-                                                                            int =
-                                                                                [
-                                                                                    {
-                                                                                        path = [ "set" "recur" "int" ] ;
-                                                                                        type = "int" ;
-                                                                                        value = 1 ;
-                                                                                    }
-                                                                                ] ;
-                                                                            lambda =
-                                                                                [
-                                                                                    {
-                                                                                        path = [ "set" "recur" "lambda" ] ;
-                                                                                        type = "lambda" ;
-                                                                                        value = null ;
-                                                                                    }
-                                                                                ] ;
-                                                                        } ;
-                                                                } ;
-                                                            string =
-                                                                [
+                                                                            path = [ "null" ] ;
+                                                                            type = "null" ;
+                                                                            value = null ;
+                                                                        }
+                                                                    ] ;
+                                                                path =
+                                                                    [
+                                                                        {
+                                                                            path = [ "path" ] ;
+                                                                            type = "path" ;
+                                                                            value = ./. ;
+                                                                        }
+                                                                    ] ;
+                                                                set =
                                                                     {
-                                                                        path = [ "string" ] ;
-                                                                        type = "string" ;
-                                                                        value = "1" ;
-                                                                    }
-                                                                ] ;
-                                                        } ;
-                                                    mkDerivation = pkgs.stdenv.mkDerivation ;
-                                                    success = true ;
-                                                    value =
-                                                        {
-                                                            bool = true ;
-                                                            float = 1.0 ;
-                                                            int = 1 ;
-                                                            lambda = i : i ;
-                                                            list = [ 1 ] ;
-                                                            null = null ;
-                                                            path = ./. ;
-                                                            set = { one = 1 ; recur = { int = 1 ; lambda = i : i ; } ; } ;
-                                                            string = "1" ;
-                                                        } ;
-                                                    visitors =
-                                                        let
-                                                            string = path : value : let type = builtins.typeOf value ; in [ { path = path ; type = type ; value = if type == "lambda" then null else value ; } ] ;
-                                                            in
-                                                                {
-                                                                    bool = string ;
-                                                                    float = string ;
-                                                                    int = string ;
-                                                                    lambda = string ;
-                                                                    null = string ;
-                                                                    path = string ;
-                                                                    string = string ;
-                                                                } ;
-                                                    writeShellApplication = pkgs.writeShellApplication ;
-                                                    yq-go = pkgs.yq-go ;
+                                                                        one =
+                                                                            [
+                                                                                {
+                                                                                    path = [ "set" "one" ] ;
+                                                                                    type = "int" ;
+                                                                                    value = 1 ;
+                                                                                }
+                                                                            ] ;
+                                                                        recur =
+                                                                            {
+                                                                                int =
+                                                                                    [
+                                                                                        {
+                                                                                            path = [ "set" "recur" "int" ] ;
+                                                                                            type = "int" ;
+                                                                                            value = 1 ;
+                                                                                        }
+                                                                                    ] ;
+                                                                                lambda =
+                                                                                    [
+                                                                                        {
+                                                                                            path = [ "set" "recur" "lambda" ] ;
+                                                                                            type = "lambda" ;
+                                                                                            value = null ;
+                                                                                        }
+                                                                                    ] ;
+                                                                            } ;
+                                                                    } ;
+                                                                string =
+                                                                    [
+                                                                        {
+                                                                            path = [ "string" ] ;
+                                                                            type = "string" ;
+                                                                            value = "1" ;
+                                                                        }
+                                                                    ] ;
+                                                            } ;
+                                                        mkDerivation = pkgs.stdenv.mkDerivation ;
+                                                        success = true ;
+                                                        value =
+                                                            {
+                                                                bool = true ;
+                                                                float = 1.0 ;
+                                                                int = 1 ;
+                                                                lambda = i : i ;
+                                                                list = [ 1 ] ;
+                                                                null = null ;
+                                                                path = ./. ;
+                                                                set = { one = 1 ; recur = { int = 1 ; lambda = i : i ; } ; } ;
+                                                                string = "1" ;
+                                                            } ;
+                                                        visitors =
+                                                            let
+                                                                string = path : value : let type = builtins.typeOf value ; in [ { path = path ; type = type ; value = if type == "lambda" then null else value ; } ] ;
+                                                                in
+                                                                    {
+                                                                        bool = string ;
+                                                                        float = string ;
+                                                                        int = string ;
+                                                                        lambda = string ;
+                                                                        null = string ;
+                                                                        path = string ;
+                                                                        string = string ;
+                                                                    } ;
+                                                        writeShellApplication = pkgs.writeShellApplication ;
+                                                        yq-go = pkgs.yq-go ;
+                                                    } ;
+                                            visitor-set =
+                                                _visitor.check
+                                                    {
+                                                        coreutils = pkgs.coreutils ;
+                                                        diffutil = pkgs.diffutil ;
+                                                        expected = [ "bool,float,int,lambda,list,null,path,set,string" ] ;
+                                                        mkDerivation = pkgs.stdenv.mkDerivation ;
+                                                        success = true ;
+                                                        value =
+                                                            {
+                                                                bool = true ;
+                                                                float = 1.0 ;
+                                                                int = 1 ;
+                                                                lambda = i : i ;
+                                                                list = [ 1 ] ;
+                                                                null = null ;
+                                                                path = ./. ;
+                                                                set = { one = 1 ; recur = { int = 1 ; lambda = i : i ; } ; } ;
+                                                                string = "1" ;
+                                                            } ;
+                                                        visitors =
+                                                            let
+                                                                string = path : value : let type = builtins.typeOf value ; in [ { path = path ; type = type ; value = if type == "lambda" then null else value ; } ] ;
+                                                                in
+                                                                    {
+                                                                        bool = string ;
+                                                                        float = string ;
+                                                                        int = string ;
+                                                                        lambda = string ;
+                                                                        null = string ;
+                                                                        path = string ;
+                                                                        set = path : set : [ ( builtins.concatStringsSep "," ( builtins.attrNames set ) ) ] ;
+                                                                        string = string ;
+                                                                    } ;
+                                                        writeShellApplication = pkgs.writeShellApplication ;
+                                                        yq-go = pkgs.yq-go ;
+                                                    } ;
+                                            visitor-sad =
+                                                _visitor.check
+                                                    {
+                                                        coreutils = pkgs.coreutils ;
+                                                        diffutil = pkgs.diffutil ;
+                                                        mkDerivation = pkgs.stdenv.mkDerivation ;
+                                                        writeShellApplication = pkgs.writeShellApplication ;
+                                                        yq-go = pkgs.yq-go ;
+                                                    } ;
                                                 } ;
-                                        visitor-set =
-                                            _visitor.check
-                                                {
-                                                    coreutils = pkgs.coreutils ;
-                                                    diffutil = pkgs.diffutil ;
-                                                    expected = [ "bool,float,int,lambda,list,null,path,set,string" ] ;
-                                                    mkDerivation = pkgs.stdenv.mkDerivation ;
-                                                    success = true ;
-                                                    value =
-                                                        {
-                                                            bool = true ;
-                                                            float = 1.0 ;
-                                                            int = 1 ;
-                                                            lambda = i : i ;
-                                                            list = [ 1 ] ;
-                                                            null = null ;
-                                                            path = ./. ;
-                                                            set = { one = 1 ; recur = { int = 1 ; lambda = i : i ; } ; } ;
-                                                            string = "1" ;
-                                                        } ;
-                                                    visitors =
-                                                        let
-                                                            string = path : value : let type = builtins.typeOf value ; in [ { path = path ; type = type ; value = if type == "lambda" then null else value ; } ] ;
-                                                            in
-                                                                {
-                                                                    bool = string ;
-                                                                    float = string ;
-                                                                    int = string ;
-                                                                    lambda = string ;
-                                                                    null = string ;
-                                                                    path = string ;
-                                                                    set = path : set : [ ( builtins.concatStringsSep "," ( builtins.attrNames set ) ) ] ;
-                                                                    string = string ;
-                                                                } ;
-                                                    writeShellApplication = pkgs.writeShellApplication ;
-                                                    yq-go = pkgs.yq-go ;
-                                                } ;
-                                        visitor-sad =
-                                            _visitor.check
-                                                {
-                                                    coreutils = pkgs.coreutils ;
-                                                    diffutil = pkgs.diffutil ;
-                                                    mkDerivation = pkgs.stdenv.mkDerivation ;
-                                                    writeShellApplication = pkgs.writeShellApplication ;
-                                                    yq-go = pkgs.yq-go ;
-                                                } ;
-                                            } ;
                                     modules =
                                         {
                                             user = user ;
