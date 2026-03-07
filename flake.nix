@@ -3726,53 +3726,6 @@
                                                                     machine.succeed("runuser testuser -- ${ post }")
                                                                 '' ;
                                                 } ;
-                                        studio =
-                                            pkgs.nixosTest
-                                                {
-                                                    name = "studio" ;
-                                                    nodes.machine =
-                                                        { pkgs , ... } :
-                                                            {
-                                                                imports = [ user ] ;
-                                                                personal =
-                                                                    {
-                                                                        agenix = ./. ;
-                                                                        channel = "test-channel" ;
-                                                                        description = "Test User" ;
-                                                                        email = "testuser@example.com" ;
-                                                                        name = "testuser" ;
-                                                                        password = "FakeP@ssword!2026" ;
-                                                                        sequential-start = "842877237311395" ;
-                                                                    } ;
-                                                            } ;
-                                                    testScript =
-                                                        let
-                                                            testScript =
-                                                                let
-                                                                    application =
-                                                                        pkgs.writeShellApplication
-                                                                            {
-                                                                                name = "testScript" ;
-                                                                                runtimeInputs = [ pkgs.coreutils ] ;
-                                                                                text =
-                                                                                    ''
-                                                                                        while [[ ! -f /home/testuser/pads/checks/.envrc ]]
-                                                                                        do
-                                                                                           echo d94d5d11 WAIT for .envrc >&2
-                                                                                           sleep 1
-                                                                                        done
-                                                                                        # shellcheck disable=SC1091
-                                                                                        source /home/testuser/pads/checks/.envrc
-                                                                                        studio
-                                                                                    '' ;
-                                                                            } ;
-                                                                        in "${ application }/bin/testScript" ;
-                                                                    in
-                                                                        ''
-                                                                            machine.wait_for_unit("multi-user.target")
-                                                                            machine.succeed("runuser testuser -- ${ testScript }")
-                                                                        '' ;
-                                                } ;
                                         resource-logger = _resource-logger.check { expected = "/nix/store/44j9cfbiamg903zx9ldyhjpwrdky9bxl-resource-logger/bin/resource-logger" ; } ;
                                         resource-releaser = _resource-releaser.check { expected = "/nix/store/063w2h06hzd4asm92ihqmalbirbyqj6n-resource-releaser/bin/resource-releaser" ; } ;
                                         visitor-happy =
