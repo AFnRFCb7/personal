@@ -3653,19 +3653,6 @@
                                                                                         '' ;
                                                                                 } ;
                                                                         in "${ application }/bin/post" ;
-                                                                pre2 =
-                                                                    let
-                                                                        application =
-                                                                            pkgs.writeShellApplication
-                                                                                {
-                                                                                    name = "pre2" ;
-                                                                                    runtimeInputs = [ pkgs.bash ] ;
-                                                                                    text =
-                                                                                        ''
-                                                                                            bash -c ${ pre1 }
-                                                                                        '' ;
-                                                                                } ;
-                                                                        in "${ application }/bin/pre2" ;
                                                                 pre1 =
                                                                     let
                                                                         application =
@@ -3688,14 +3675,11 @@
                                                                                     runtimeInputs = [ pkgs.coreutils pkgs.direnv ( _failure.implementation "59d475a8" ) ] ;
                                                                                     text =
                                                                                         ''
-                                                                                            echo "PRE \$$=$$" >&2
-                                                                                            ### WTF log.yaml should exist but does not
                                                                                             while [[ ! -f "$HOME/pads/checks/.envrc" ]]
                                                                                             do
                                                                                                echo d94d5d11 WAIT for .envrc >&2
                                                                                                sleep 1
                                                                                             done
-                                                                                            cat "$HOME/pads/checks/.envrc" >&2
                                                                                             cd "$HOME/pads/checks"
                                                                                             # shellcheck disable=SC1091
                                                                                             source "$HOME/pads/checks/.envrc"
@@ -3712,10 +3696,6 @@
                                                                                             RESOURCE_2="$( true-true )" || failure c3b743a2
                                                                                             if [[ "$RESOURCE_1" != "$RESOURCE_2" ]]
                                                                                             then
-                                                                                                echo 7e1212fd 5052e66c >&2
-                                                                                                systemctl journal -u resource-logger.service >&2
-                                                                                                echo 7e1212fd 5052e66c >&2
-                                                                                                systemctl journal -u resource-releaser.service >&2
                                                                                                 failure 7946f3fc "RESOURCE_1=$RESOURCE_1" "RESOURCE_2=$RESOURCE_2"
                                                                                             fi
                                                                                             echo "$RESOURCE_2" > resource-2
@@ -3725,7 +3705,7 @@
                                                                 in
                                                                     ''
                                                                         machine.wait_for_unit("multi-user.target")
-                                                                        machine.succeed("bash -c 'runuser ${ testuser } -- ${ pre1 }'")
+                                                                        machine.succeed("bash -c 'runuser ${ testuser } -- ${ pre }'")
                                                                         machine.succeed("sleep 10s")
                                                                         machine.succeed("runuser ${ testuser } -- ${ post }")
                                                                     '' ;
