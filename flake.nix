@@ -662,6 +662,15 @@
                                                                         {
                                                                             checks =
                                                                                 {
+                                                                                    cat =
+                                                                                        bin
+                                                                                            {
+                                                                                                environment = [ ] ;
+                                                                                                name = "cat" ;
+                                                                                                runtimeInputs = pkgs : [ pkgs.coreutils ] ;
+                                                                                                script = ''cat'' ;
+                                                                                                variables = { } ;
+                                                                                            } ;
                                                                                     studio =
                                                                                         bin
                                                                                             {
@@ -3317,6 +3326,7 @@
                                                                                                 autocomplete = [ ] ;
                                                                                                 bin =
                                                                                                     [
+                                                                                                        ( resources.production.bin.checks.cat { failure = 11150 ; } )
                                                                                                         ( resources.production.bin.checks.studio { failure = 28568 ; } )
                                                                                                         ( resources.production.bin.checks.true-true { failure = 17466 ; } )
                                                                                                     ] ;
