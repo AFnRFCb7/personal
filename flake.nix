@@ -3512,7 +3512,7 @@
                     in
                         {
                             checks =
-                                private :
+                                private : testuser
                                     {
                                        failure =
                                            _failure.check
@@ -3626,7 +3626,7 @@
                                                                                     text =
                                                                                         ''
                                                                                             echo "POST \$$=$$" >&2
-                                                                                            RESOURCE_1="$( cat /home/testuser/pads/checks/resource-1 )" || failure 1e199d03
+                                                                                            RESOURCE_1="$( cat "$HOME"/pads/checks/resource-1 )" || failure 1e199d03
                                                                                             if [[ -e "$RESOURCE_1" ]]
                                                                                             then
                                                                                                 echo 7e1212fd 9933f5ce >&2
@@ -3680,17 +3680,17 @@
                                                                                         ''
                                                                                             echo "PRE \$$=$$" >&2
                                                                                             ### WTF log.yaml should exist but does not
-                                                                                            while [[ ! -f /home/testuser/pads/checks/.envrc ]]
+                                                                                            while [[ ! -f "$HOME/pads/checks/.envrc" ]]
                                                                                             do
                                                                                                echo d94d5d11 WAIT for .envrc >&2
                                                                                                sleep 1
                                                                                             done
-                                                                                            cat /home/testuser/pads/checks/.envrc >&2
-                                                                                            cd "/home/testuser/pads/checks"
+                                                                                            cat "$HOME/pads/checks/.envrc" >&2
+                                                                                            cd "$HOME/pads/checks"
                                                                                             # shellcheck disable=SC1091
-                                                                                            source "/home/testuser/pads/checks/.envrc"
+                                                                                            source "$HOME/pads/checks/.envrc"
                                                                                             RESOURCE_1="$( true-true )" || failure f09bd890
-                                                                                            if [[ "$RESOURCE_1" != "/home/testuser/resources/mounts/0842877237311397" ]]
+                                                                                            if [[ "$RESOURCE_1" != "$HOME/resources/mounts/0842877237311397" ]]
                                                                                             then
                                                                                                 echo failure 5e5fd71b "RESOURCE_1=$RESOURCE_1" >&2
                                                                                                 exit 99
@@ -3712,9 +3712,9 @@
                                                                 in
                                                                     ''
                                                                         machine.wait_for_unit("multi-user.target")
-                                                                        machine.succeed("bash -c 'runuser testuser -- ${ pre2 }'")
+                                                                        machine.succeed("bash -c 'runuser ${ testuser } -- ${ pre2 }'")
                                                                         machine.succeed("sleep 10s")
-                                                                        machine.succeed("runuser testuser -- ${ post }")
+                                                                        machine.succeed("runuser ${ testuser } -- ${ post }")
                                                                     '' ;
                                                     } ;
                                             resource-logger = _resource-logger.check { expected = "/nix/store/44j9cfbiamg903zx9ldyhjpwrdky9bxl-resource-logger/bin/resource-logger" ; } ;
