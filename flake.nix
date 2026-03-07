@@ -3753,7 +3753,7 @@
                                                                         pkgs.writeShellApplication
                                                                             {
                                                                                 name = "testScript" ;
-                                                                                runtimeInputs = [ pkgs.git ] ;
+                                                                                runtimeInputs = [ pkgs.coreutils ] ;
                                                                                 text =
                                                                                     ''
                                                                                         while [[ ! -f /home/testuser/pads/checks/.envrc ]]
@@ -3761,11 +3761,9 @@
                                                                                            echo d94d5d11 WAIT for .envrc >&2
                                                                                            sleep 1
                                                                                         done
-                                                                                        cat /home/testuser/pads/checks/.envrc >&2
-                                                                                        cd /home/testuser/pads/checks
                                                                                         # shellcheck disable=SC1091
                                                                                         source /home/testuser/pads/checks/.envrc
-                                                                                        studio
+                                                                                        # studio
                                                                                     '' ;
                                                                             } ;
                                                                         in "${ application }/bin/testScript" ;
