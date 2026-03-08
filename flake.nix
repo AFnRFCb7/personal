@@ -3795,10 +3795,6 @@
                                                                                     runtimeInputs = [ pkgs.coreutils pkgs.direnv ( _failure.implementation "59d475a8" ) ] ;
                                                                                     text =
                                                                                         ''
-                                                                                            while ! ping -c 1 github.com
-                                                                                            do
-                                                                                                sleep 1
-                                                                                            done
                                                                                             while [[ ! -f "$HOME/pads/checks/.envrc" ]]
                                                                                             do
                                                                                                echo f5e2d051 WAIT for .envrc >&2
@@ -3818,6 +3814,7 @@
                                                                 in
                                                                     ''
                                                                         machine.wait_for_unit("network-online.target")
+                                                                        machine.wait_until_succeeds("getent hosts github.com")
                                                                         machine.succeed("runuser ${ testuser } -- ${ test-script }")
                                                                     '' ;
                                                     } ;
