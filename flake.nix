@@ -3760,6 +3760,11 @@
                                                                                             cd "$HOME/pads/checks"
                                                                                             # shellcheck disable=SC1091
                                                                                             source "$HOME/pads/checks/.envrc"
+                                                                                            if ! studio
+                                                                                            then
+                                                                                                cat "$HOME/resources/log/trace.log" >&2
+                                                                                                failure 0dcbe30c
+                                                                                            fi
                                                                                         '' ;
                                                                                 } ;
                                                                         in "${ application }/bin/test-script" ;
