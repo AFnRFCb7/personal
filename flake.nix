@@ -3811,15 +3811,15 @@
                                             #                                             '' ;
                                             #                                     } ;
                                             #                             in "${ application }/bin/test-script" ;
-                                                                in
-                                                                    ''
-                                                                        machine.wait_for_unit("multi-user.target")
-                                                                        machine.wait_for_unit("network-online.target")
-                                                                        machine.wait_until_succeeds("ping -c1 -w5 8.8.8.8")
-                                                                        machine.wait_until_succeeds("timeout 30s getent hosts github.com")
-                                                                        machine.succeed("runuser ${ testuser } -- ${ test-script }")
-                                                                    '' ;
-                                                    } ;
+                                            #                     in
+                                            #                         ''
+                                            #                             machine.wait_for_unit("multi-user.target")
+                                            #                             machine.wait_for_unit("network-online.target")
+                                            #                             machine.wait_until_succeeds("ping -c1 -w5 8.8.8.8")
+                                            #                             machine.wait_until_succeeds("timeout 30s getent hosts github.com")
+                                            #                             machine.succeed("runuser ${ testuser } -- ${ test-script }")
+                                            #                         '' ;
+                                            #         } ;
                                             visitor-happy =
                                                 _visitor.check
                                                     {
