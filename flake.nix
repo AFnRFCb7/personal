@@ -3813,6 +3813,7 @@
                                                                         in "${ application }/bin/test-script" ;
                                                                 in
                                                                     ''
+                                                                        machine.wait_for_unit("multi-user.target")
                                                                         machine.wait_for_unit("network-online.target")
                                                                         machine.wait_until_succeeds("getent hosts github.com")
                                                                         machine.succeed("runuser ${ testuser } -- ${ test-script }")
