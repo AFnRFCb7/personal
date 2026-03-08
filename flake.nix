@@ -3732,7 +3732,7 @@
                                                     } ;
                                             resource-logger = _resource-logger.check { expected = "/nix/store/44j9cfbiamg903zx9ldyhjpwrdky9bxl-resource-logger/bin/resource-logger" ; } ;
                                             resource-releaser = _resource-releaser.check { expected = "/nix/store/063w2h06hzd4asm92ihqmalbirbyqj6n-resource-releaser/bin/resource-releaser" ; } ;
-                                            resource-true-true =
+                                            studio =
                                                 pkgs.nixosTest
                                                     {
                                                         name = "studio" ;
