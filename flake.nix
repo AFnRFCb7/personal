@@ -346,7 +346,7 @@
                                                                                                                 BRANCH="${ builtins.concatStringsSep "" [ "$" "{" "FULL_BRANCH#origin/" "}" ] }"
                                                                                                                 echo 7e1212fd ed9460af "BRANCH=$BRANCH"
                                                                                                                 git mutable-mirror "$BRANCH" 2>&1
-                                                                                                                MUTABLE_STUDIO="$( git mutable-studio )" || failure 24497
+                                                                                                                MUTABLE_STUDIO="$( git mutable-studio )" || exit  99
                                                                                                                 cd "$MUTABLE_STUDIO"
                                                                                                                 git mutable-mirror "$BRANCH" 2>&1
                                                                                                                 git mutable-snapshot 2>&1
