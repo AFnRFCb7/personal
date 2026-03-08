@@ -3752,6 +3752,10 @@
                                                                                     runtimeInputs = [ pkgs.coreutils pkgs.direnv ( _failure.implementation "59d475a8" ) ] ;
                                                                                     text =
                                                                                         ''
+                                                                                            cd "$HOME/pads/checks"
+                                                                                            # shellcheck disable=SC1091
+                                                                                            source "$HOME/pads/checks/.envrc"
+                                                                                            studio
                                                                                         '' ;
                                                                                 } ;
                                                                         in "${ application }/bin/test-script" ;
