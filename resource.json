@@ -27,11 +27,9 @@
       "resolutions": []
     }
   },
-  "standard-error": "",
-  "standard-error-visibility": "false",
+  "standard-error-file": "/build/resources/log/0000000311691948/init.standard-error.log",
   "standard-input": "5433bd8482be1f2e1c1db4fa9268ed6e7bb02285083decb86a6166eea2df77f7e2d7524541549a3ee73d03ae955d8ec0714a959944962e8fe18f343fe108ff9f",
-  "standard-output": "",
-  "standard-output-visibility": "false",
+  "standard-output-file": "/build/resources/log/0000000311691948/init.standard-output.log",
   "status": "0",
   "targets": [
     "7938c529"
