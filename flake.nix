@@ -3775,7 +3775,51 @@
                                                     } ;
                                             resource-logger = _resource-logger.check { expected = "/nix/store/44j9cfbiamg903zx9ldyhjpwrdky9bxl-resource-logger/bin/resource-logger" ; } ;
                                             resource-releaser = _resource-releaser.check { expected = "/nix/store/063w2h06hzd4asm92ihqmalbirbyqj6n-resource-releaser/bin/resource-releaser" ; } ;
-
+                                            studio =
+                                                pkgs.nixosTest
+                                                    {
+                                                        name = "studio" ;
+                                                        nodes.machine =
+                                                            { pkgs , ... } :
+                                                                {
+                                                                    imports = builtins.concatLists [ [ user ] private ] ;
+                                                                } ;
+                                                        testScript =
+                                                            let
+                                                                test-script =
+                                                                    let
+                                                                        application =
+                                                                            pkgs.writeShellApplication
+                                                                                {
+                                                                                    name = "test-script" ;
+                                                                                    runtimeInputs = [ pkgs.coreutils pkgs.direnv ( _failure.implementation "59d475a8" ) ] ;
+                                                                                    text =
+                                                                                        ''
+                                                                                            while [[ ! -f "$HOME/pads/checks/.envrc" ]]
+                                                                                            do
+                                                                                               echo f5e2d051 WAIT for .envrc >&2
+                                                                                               sleep 1
+                                                                                            done
+                                                                                            cd "$HOME/pads/checks"
+                                                                                            # shellcheck disable=SC1091
+                                                                                            source "$HOME/pads/checks/.envrc"
+                                                                                            if ! studio
+                                                                                            then
+                                                                                                cat "$HOME/resources/log/trace.log" >&2
+                                                                                                exit 99
+                                                                                            fi
+                                                                                        '' ;
+                                                                                } ;
+                                                                        in "${ application }/bin/test-script" ;
+                                                                in
+                                                                    ''
+                                                                        machine.wait_for_unit("multi-user.target")
+                                                                        machine.wait_for_unit("network-online.target")
+                                                                        machine.wait_until_succeeds("ping -c1 8.8.8.8")
+                                                                        machine.wait_until_succeeds("timeout 30s getent hosts github.com")
+                                                                        machine.succeed("runuser ${ testuser } -- ${ test-script }")
+                                                                    '' ;
+                                                    } ;
                                             visitor-happy =
                                                 _visitor.check
                                                     {
