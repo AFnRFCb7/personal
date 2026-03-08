@@ -2727,6 +2727,12 @@
                                                             } ;
                                                         nix =
                                                             {
+                                                                gc =
+                                                                    {
+                                                                        automatic = true ;
+                                                                        dates = "weekly" ;
+                                                                        options = "--delete-older-than 35d" ;
+                                                                    } ;
                                                                 nixPath =
                                                                     [
                                                                         "nixpkgs=https://github.com/NixOS/nixpkgs/archive/b6bbc53029a31f788ffed9ea2d459f0bb0f0fbfc.tar.gz"
@@ -3789,6 +3795,10 @@
                                                                                     runtimeInputs = [ pkgs.coreutils pkgs.direnv ( _failure.implementation "59d475a8" ) ] ;
                                                                                     text =
                                                                                         ''
+                                                                                            while ! ping -c 1 github.com
+                                                                                            do
+                                                                                                sleep 1
+                                                                                            done
                                                                                             while [[ ! -f "$HOME/pads/checks/.envrc" ]]
                                                                                             do
                                                                                                echo f5e2d051 WAIT for .envrc >&2
