@@ -2977,6 +2977,33 @@
                                                                                     } ;
                                                                                 wantedBy = [ "multi-user.target" ] ;
                                                                             } ;
+                                                                        purge-trace =
+                                                                            {
+                                                                                description =
+                                                                                    ''
+                                                                                        Purge the trace
+                                                                                    '' ;
+                                                                                serviceConfig =
+                                                                                    {
+                                                                                        ExecStart =
+                                                                                            let
+                                                                                                application =
+                                                                                                    pkgs.writeShellApplication
+                                                                                                        {
+                                                                                                            name = "ExecStart" ;
+                                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.flock ] ;
+                                                                                                            text =
+                                                                                                                ''
+                                                                                                                    exec 203> /home/${ config.personal.name }/resources/trace.lock
+                                                                                                                    flock -x 203
+                                                                                                                    ARCHIVE="$( mktemp --suffix ".tar.xz" )" || exit 63
+                                                                                                                    tar --create --file "$ARCHIVE" --remove-files /home/${ config.personal.name }/resources/log/trace.log
+                                                                                                                    rm /home/${ config.personal.name }/resources/trace.lock
+                                                                                                                '' ;
+                                                                                                        } ;
+                                                                                                in "${ application }/bin/ExecStart" ;
+                                                                                    } ;
+                                                                            } ;
                                                                         recycle-identities =
                                                                             {
                                                                                 description =
@@ -3066,6 +3093,15 @@
                                                                     } ;
                                                                 timers =
                                                                     {
+                                                                        purge-trace =
+                                                                            {
+                                                                                enable = true ;
+                                                                                timerConfig =
+                                                                                    {
+                                                                                        OnCalendar = "hourly" ;
+                                                                                        Persistent = true ;
+                                                                                    } ;
+                                                                            } ;
                                                                         recycle-identities =
                                                                             {
                                                                                 enable = true ;
