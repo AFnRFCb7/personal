@@ -324,15 +324,8 @@
                                                                                 init =
                                                                                     { failure , pkgs , resources , root , seed , sequential , wrap } :
                                                                                         let
-                                                                                            application =
-                                                                                                pkgs.writeShellApplication
-                                                                                                    {
-                                                                                                        name = "init" ;
-                                                                                                        runtimeInputs = [ pkgs.git failure sequential ] ;
-                                                                                                        text =
-                                                                                                            ''
-                                                                                                                UUID="$( sequential )" || failure 4016
-                                                                                                                echo "$UUID"
+                                                                                            _wtf =
+                                                                                                ''
                                                                                                                 STUDIO=${ resources.production.repository.studio.entry { failure = 12812 ; setup = setup : ''${ setup } "$UUID"'' ; } }
                                                                                                                 cd "$STUDIO/repository"
                                                                                                                 if git fetch origin 2>&1
@@ -350,6 +343,17 @@
                                                                                                                 cd "$MUTABLE_STUDIO"
                                                                                                                 git mutable-mirror "$BRANCH" 2>&1
                                                                                                                 git mutable-snapshot 2>&1
+                                                                                                '' ;
+                                                                                            application =
+                                                                                                pkgs.writeShellApplication
+                                                                                                    {
+                                                                                                        name = "init" ;
+                                                                                                        runtimeInputs = [ pkgs.git failure sequential ] ;
+                                                                                                        text =
+                                                                                                            ''
+                                                                                                                UUID="$( sequential )" || failure 4016
+                                                                                                                echo "$UUID"
+
                                                                                                             '' ;
                                                                                                     } ;
                                                                                             in "${ application }/bin/init" ;
