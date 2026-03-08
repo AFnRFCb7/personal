@@ -3732,6 +3732,35 @@
                                                     } ;
                                             resource-logger = _resource-logger.check { expected = "/nix/store/44j9cfbiamg903zx9ldyhjpwrdky9bxl-resource-logger/bin/resource-logger" ; } ;
                                             resource-releaser = _resource-releaser.check { expected = "/nix/store/063w2h06hzd4asm92ihqmalbirbyqj6n-resource-releaser/bin/resource-releaser" ; } ;
+                                            studio =
+                                                pkgs.nixosTest
+                                                    {
+                                                        name = "resource-true-true" ;
+                                                        nodes.machine =
+                                                            { pkgs , ... } :
+                                                                {
+                                                                    imports = builtins.concatLists [ [ user ] private ] ;
+                                                                } ;
+                                                        testScript =
+                                                            let
+                                                                test-script =
+                                                                    let
+                                                                        application =
+                                                                            pkgs.writeShellApplication
+                                                                                {
+                                                                                    name = "test-script" ;
+                                                                                    runtimeInputs = [ pkgs.coreutils pkgs.direnv ( _failure.implementation "59d475a8" ) ] ;
+                                                                                    text =
+                                                                                        ''
+                                                                                        '' ;
+                                                                                } ;
+                                                                        in "${ application }/bin/test-script" ;
+                                                                in
+                                                                    ''
+                                                                        machine.wait_for_unit("multi-user.target")
+                                                                        machine.succeed("runuser ${ testuser } -- ${ test-script }")
+                                                                    '' ;
+                                                    } ;
                                             visitor-happy =
                                                 _visitor.check
                                                     {
