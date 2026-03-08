@@ -328,7 +328,7 @@
                                                                                                 pkgs.writeShellApplication
                                                                                                     {
                                                                                                         name = "init" ;
-                                                                                                        runtimeInputs = [ pkgs.git sequential ] ;
+                                                                                                        runtimeInputs = [ pkgs.git failure sequential ] ;
                                                                                                         text =
                                                                                                             ''
                                                                                                                 UUID="$( sequential )" || failure 4016
