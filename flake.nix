@@ -128,94 +128,6 @@
                                                                             } ;
                                                 }
                                                 {
-                                                    checks =
-                                                        let
-                                                            checks =
-                                                                ignore :
-                                                                    {
-                                                                        init =
-                                                                            { failure , pkgs , resources , root , seed , sequential , wrap } :
-                                                                                let
-                                                                                    application =
-                                                                                        pkgs.writeShellApplication
-                                                                                            {
-                                                                                                name = "init" ;
-                                                                                                runtimeInputs = [ pkgs.cowsay pkgs.figlet root wrap ] ;
-                                                                                                text =
-                                                                                                    ''
-                                                                                                        mkdir --parents /mount
-                                                                                                        exit ${ if builtins.elemAt seed.path 1 == "true" then "0" else "65" }
-                                                                                                    '' ;
-                                                                                            } ;
-                                                                                    in "${ application }/bin/init" ;
-                                                                        release =
-                                                                            { failure , pkgs , resources , seed , sequential } :
-                                                                                let
-                                                                                    application =
-                                                                                        pkgs.writeShellApplication
-                                                                                            {
-                                                                                                name = "release" ;
-                                                                                                runtimeInputs = [ pkgs.cowsay pkgs.figlet ] ;
-                                                                                                text =
-                                                                                                    ''
-                                                                                                        exit ${ if builtins.elemAt seed.path 2 == "true" then "0" else "65" }
-                                                                                                    '' ;
-                                                                                            } ;
-                                                                                    in "${ application }/bin/release" ;
-                                                                            targets = [ ] ;
-                                                                    } ;
-                                                            in
-                                                                {
-                                                                    target =
-                                                                        ignore :
-                                                                            {
-                                                                                init =
-                                                                                    { failure , pkgs , resources , root , seed , sequential , wrap } :
-                                                                                        let
-                                                                                            application =
-                                                                                                pkgs.writeShellApplication
-                                                                                                    {
-                                                                                                        name = "init" ;
-                                                                                                        runtimeInputs = [ ] ;
-                                                                                                        text = "echo 7e1212fd 5b722b70" ;
-                                                                                                    } ;
-                                                                                            in "${ application }/bin/init" ;
-                                                                                release =
-                                                                                    { failure , pkgs , resources , seed , sequential } :
-                                                                                        let
-                                                                                            application =
-                                                                                                pkgs.writeShellApplication
-                                                                                                    {
-                                                                                                        name = "release" ;
-                                                                                                        runtimeInputs = [ ] ;
-                                                                                                        text = "echo 7e1212fd 061b99f9" ;
-                                                                                                    } ;
-                                                                                            in "${ application }/bin/release" ;
-                                                                                targets = [ ] ;
-                                                                            } ;
-                                                                    false =
-                                                                        {
-                                                                            false =
-                                                                                {
-                                                                                    false-false = checks ;
-                                                                                } ;
-                                                                            true =
-                                                                                {
-                                                                                    false-true = checks ;
-                                                                                } ;
-                                                                        } ;
-                                                                    true =
-                                                                        {
-                                                                            false =
-                                                                                {
-                                                                                    true-false = checks ;
-                                                                                } ;
-                                                                            true =
-                                                                                {
-                                                                                    true-true = checks ;
-                                                                                } ;
-                                                                        } ;
-                                                                } ;
                                                     foobar =
                                                         {
                                                             bin =
@@ -318,44 +230,137 @@
                                                         {
                                                             checks =
                                                                 {
-                                                                    studio =
-                                                                        ignore :
-                                                                            {
-                                                                                init =
-                                                                                    { failure , pkgs , resources , root , seed , sequential , wrap } :
-                                                                                        let
-                                                                                            application =
-                                                                                                pkgs.writeShellApplication
+                                                                    automatic =
+                                                                        let
+                                                                            checks =
+                                                                                let
+                                                                                    checks =
+                                                                                        ignore :
+                                                                                            {
+                                                                                                init =
+                                                                                                    { failure , pkgs , resources , root , seed , sequential , wrap } :
+                                                                                                        let
+                                                                                                            application =
+                                                                                                                pkgs.writeShellApplication
+                                                                                                                    {
+                                                                                                                        name = "init" ;
+                                                                                                                        runtimeInputs = [ pkgs.cowsay pkgs.figlet root wrap ] ;
+                                                                                                                        text =
+                                                                                                                            ''
+                                                                                                                                mkdir --parents /mount
+                                                                                                                                exit ${ if builtins.elemAt seed.path 1 == "true" then "0" else "65" }
+                                                                                                                            '' ;
+                                                                                                                    } ;
+                                                                                                            in "${ application }/bin/init" ;
+                                                                                                release =
+                                                                                                    { failure , pkgs , resources , seed , sequential } :
+                                                                                                        let
+                                                                                                            application =
+                                                                                                                pkgs.writeShellApplication
+                                                                                                                    {
+                                                                                                                        name = "release" ;
+                                                                                                                        runtimeInputs = [ pkgs.cowsay pkgs.figlet ] ;
+                                                                                                                        text =
+                                                                                                                            ''
+                                                                                                                                exit ${ if builtins.elemAt seed.path 2 == "true" then "0" else "65" }
+                                                                                                                            '' ;
+                                                                                                                    } ;
+                                                                                                            in "${ application }/bin/release" ;
+                                                                                                    targets = [ ] ;
+                                                                                            } ;
+                                                                                    in
+                                                                                        {
+                                                                                            target =
+                                                                                                ignore :
                                                                                                     {
-                                                                                                        name = "init" ;
-                                                                                                        runtimeInputs = [ pkgs.git sequential ] ;
-                                                                                                        text =
-                                                                                                            ''
-                                                                                                                UUID="$( sequential )" || failure 4016
-                                                                                                                echo "$UUID"
-                                                                                                                STUDIO=${ resources.production.repository.studio.entry { failure = 12812 ; setup = setup : ''${ setup } "$UUID"'' ; } }
-                                                                                                                cd "$STUDIO/repository"
-                                                                                                                if git fetch origin 2>&1
-                                                                                                                then
-                                                                                                                    echo GREAT
-                                                                                                                else
-                                                                                                                    echo WE ARE ROBUST TO THIS FAILURE
-                                                                                                                fi
-                                                                                                                LATEST_COMMIT="$( git log -n 1 --all --pretty=format:"%H" )" || failure 4316
-                                                                                                                FULL_BRANCH="$( git branch -a --contains "$LATEST_COMMIT" --format="%(refname:short)" | head -n 1 )" || failure 32162
-                                                                                                                BRANCH="${ builtins.concatStringsSep "" [ "$" "{" "FULL_BRANCH#origin/" "}" ] }"
-                                                                                                                echo 7e1212fd ed9460af "BRANCH=$BRANCH"
-                                                                                                                git mutable-mirror "$BRANCH" 2>&1
-                                                                                                                MUTABLE_STUDIO="$( git mutable-studio )" || exit  99
-                                                                                                                cd "$MUTABLE_STUDIO"
-                                                                                                                git mutable-mirror "$BRANCH" 2>&1
-                                                                                                                git mutable-snapshot 2>&1
-                                                                                                                mkdir --parents /mount/foobar
-                                                                                                            '' ;
+                                                                                                        init =
+                                                                                                            { failure , pkgs , resources , root , seed , sequential , wrap } :
+                                                                                                                let
+                                                                                                                    application =
+                                                                                                                        pkgs.writeShellApplication
+                                                                                                                            {
+                                                                                                                                name = "init" ;
+                                                                                                                                runtimeInputs = [ ] ;
+                                                                                                                                text = "echo 7e1212fd 5b722b70" ;
+                                                                                                                            } ;
+                                                                                                                    in "${ application }/bin/init" ;
+                                                                                                        release =
+                                                                                                            { failure , pkgs , resources , seed , sequential } :
+                                                                                                                let
+                                                                                                                    application =
+                                                                                                                        pkgs.writeShellApplication
+                                                                                                                            {
+                                                                                                                                name = "release" ;
+                                                                                                                                runtimeInputs = [ ] ;
+                                                                                                                                text = "echo 7e1212fd 061b99f9" ;
+                                                                                                                            } ;
+                                                                                                                    in "${ application }/bin/release" ;
+                                                                                                        targets = [ ] ;
                                                                                                     } ;
-                                                                                            in "${ application }/bin/init" ;
-                                                                                targets = [ "foobar" ] ;
-                                                                            } ;
+                                                                                            false =
+                                                                                                {
+                                                                                                    false =
+                                                                                                        {
+                                                                                                            false-false = checks ;
+                                                                                                        } ;
+                                                                                                    true =
+                                                                                                        {
+                                                                                                            false-true = checks ;
+                                                                                                        } ;
+                                                                                                } ;
+                                                                                            true =
+                                                                                                {
+                                                                                                    false =
+                                                                                                        {
+                                                                                                            true-false = checks ;
+                                                                                                        } ;
+                                                                                                    true =
+                                                                                                        {
+                                                                                                            true-true = checks ;
+                                                                                                        } ;
+                                                                                                } ;
+                                                                                        } ;
+                                                                    manual =
+                                                                        {
+                                                                            studio =
+                                                                                ignore :
+                                                                                    {
+                                                                                        init =
+                                                                                            { failure , pkgs , resources , root , seed , sequential , wrap } :
+                                                                                                let
+                                                                                                    application =
+                                                                                                        pkgs.writeShellApplication
+                                                                                                            {
+                                                                                                                name = "init" ;
+                                                                                                                runtimeInputs = [ pkgs.git sequential ] ;
+                                                                                                                text =
+                                                                                                                    ''
+                                                                                                                        UUID="$( sequential )" || failure 4016
+                                                                                                                        echo "$UUID"
+                                                                                                                        STUDIO=${ resources.production.repository.studio.entry { failure = 12812 ; setup = setup : ''${ setup } "$UUID"'' ; } }
+                                                                                                                        cd "$STUDIO/repository"
+                                                                                                                        if git fetch origin 2>&1
+                                                                                                                        then
+                                                                                                                            echo GREAT
+                                                                                                                        else
+                                                                                                                            echo WE ARE ROBUST TO THIS FAILURE
+                                                                                                                        fi
+                                                                                                                        LATEST_COMMIT="$( git log -n 1 --all --pretty=format:"%H" )" || failure 4316
+                                                                                                                        FULL_BRANCH="$( git branch -a --contains "$LATEST_COMMIT" --format="%(refname:short)" | head -n 1 )" || failure 32162
+                                                                                                                        BRANCH="${ builtins.concatStringsSep "" [ "$" "{" "FULL_BRANCH#origin/" "}" ] }"
+                                                                                                                        echo 7e1212fd ed9460af "BRANCH=$BRANCH"
+                                                                                                                        git mutable-mirror "$BRANCH" 2>&1
+                                                                                                                        MUTABLE_STUDIO="$( git mutable-studio )" || exit  99
+                                                                                                                        cd "$MUTABLE_STUDIO"
+                                                                                                                        git mutable-mirror "$BRANCH" 2>&1
+                                                                                                                        git mutable-snapshot 2>&1
+                                                                                                                        mkdir --parents /mount/foobar
+                                                                                                                    '' ;
+                                                                                                            } ;
+                                                                                                    in "${ application }/bin/init" ;
+                                                                                        targets = [ "foobar" ] ;
+                                                                                    } ;
+                                                                        } ;
                                                                 } ;
                                                             age =
                                                                 ignore :
@@ -681,7 +686,7 @@
                                                                                                 script = ''echo "$STUDIO"'' ;
                                                                                                 variables =
                                                                                                     {
-                                                                                                        STUDIO = resources : resources.production.checks.studio { } ;
+                                                                                                        STUDIO = resources : resources.production.checks.manual.studio { } ;
                                                                                                     } ;
                                                                                             } ;
                                                                                     true-true =
@@ -693,7 +698,7 @@
                                                                                                 script = ''echo "$CHECK"'' ;
                                                                                                 variables =
                                                                                                     {
-                                                                                                        CHECK = resources : resources.checks.true.true.true-true { failure = 12601 ; setup = setup : ''${ setup } true true'' ; } ;
+                                                                                                        CHECK = resources : resources.production.checks.automatic.true.true.true-true { failure = 12601 ; setup = setup : ''${ setup } true true'' ; } ;
                                                                                                     } ;
                                                                                             } ;
                                                                                 } ;
