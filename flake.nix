@@ -3768,6 +3768,7 @@
                                                                         machine.wait_for_unit("multi-user.target")
                                                                         machine.succeed("runuser ${ testuser } -- ${ test-script }")
                                                                     '' ;
+                                                    } ;
                                             visitor-happy =
                                                 _visitor.check
                                                     {
