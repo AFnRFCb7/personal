@@ -346,14 +346,15 @@
                                                                                                                 BRANCH="${ builtins.concatStringsSep "" [ "$" "{" "FULL_BRANCH#origin/" "}" ] }"
                                                                                                                 echo 7e1212fd ed9460af "BRANCH=$BRANCH"
                                                                                                                 git mutable-mirror "$BRANCH" 2>&1
-                                                                                                                MUTABLE_STUDIO="$( git mutable-studio )" || failure 24497
+                                                                                                                MUTABLE_STUDIO="$( git mutable-studio )" || exit  99
                                                                                                                 cd "$MUTABLE_STUDIO"
                                                                                                                 git mutable-mirror "$BRANCH" 2>&1
                                                                                                                 git mutable-snapshot 2>&1
+                                                                                                                mkdir --parents /mount/foobar
                                                                                                             '' ;
                                                                                                     } ;
                                                                                             in "${ application }/bin/init" ;
-                                                                                targets = [ ] ;
+                                                                                targets = [ "foobar" ] ;
                                                                             } ;
                                                                 } ;
                                                             age =
@@ -2726,6 +2727,12 @@
                                                             } ;
                                                         nix =
                                                             {
+                                                                gc =
+                                                                    {
+                                                                        automatic = true ;
+                                                                        dates = "weekly" ;
+                                                                        options = "--delete-older-than 35d" ;
+                                                                    } ;
                                                                 nixPath =
                                                                     [
                                                                         "nixpkgs=https://github.com/NixOS/nixpkgs/archive/b6bbc53029a31f788ffed9ea2d459f0bb0f0fbfc.tar.gz"
@@ -2976,6 +2983,33 @@
                                                                                     } ;
                                                                                 wantedBy = [ "multi-user.target" ] ;
                                                                             } ;
+                                                                        purge-trace =
+                                                                            {
+                                                                                description =
+                                                                                    ''
+                                                                                        Purge the trace
+                                                                                    '' ;
+                                                                                serviceConfig =
+                                                                                    {
+                                                                                        ExecStart =
+                                                                                            let
+                                                                                                application =
+                                                                                                    pkgs.writeShellApplication
+                                                                                                        {
+                                                                                                            name = "ExecStart" ;
+                                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.flock ] ;
+                                                                                                            text =
+                                                                                                                ''
+                                                                                                                    exec 203> /home/${ config.personal.name }/resources/trace.lock
+                                                                                                                    flock -x 203
+                                                                                                                    ARCHIVE="$( mktemp --suffix ".tar.xz" )" || exit 63
+                                                                                                                    tar --create --file "$ARCHIVE" --remove-files /home/${ config.personal.name }/resources/log/trace.log
+                                                                                                                    rm /home/${ config.personal.name }/resources/trace.lock
+                                                                                                                '' ;
+                                                                                                        } ;
+                                                                                                in "${ application }/bin/ExecStart" ;
+                                                                                    } ;
+                                                                            } ;
                                                                         recycle-identities =
                                                                             {
                                                                                 description =
@@ -3065,6 +3099,15 @@
                                                                     } ;
                                                                 timers =
                                                                     {
+                                                                        purge-trace =
+                                                                            {
+                                                                                enable = true ;
+                                                                                timerConfig =
+                                                                                    {
+                                                                                        OnCalendar = "hourly" ;
+                                                                                        Persistent = true ;
+                                                                                    } ;
+                                                                            } ;
                                                                         recycle-identities =
                                                                             {
                                                                                 enable = true ;
@@ -3732,6 +3775,51 @@
                                                     } ;
                                             resource-logger = _resource-logger.check { expected = "/nix/store/44j9cfbiamg903zx9ldyhjpwrdky9bxl-resource-logger/bin/resource-logger" ; } ;
                                             resource-releaser = _resource-releaser.check { expected = "/nix/store/063w2h06hzd4asm92ihqmalbirbyqj6n-resource-releaser/bin/resource-releaser" ; } ;
+                                            # studio =
+                                            #     pkgs.nixosTest
+                                            #         {
+                                            #             name = "studio" ;
+                                            #             nodes.machine =
+                                            #                 { pkgs , ... } :
+                                            #                     {
+                                            #                         imports = builtins.concatLists [ [ user ] private ] ;
+                                            #                     } ;
+                                            #             testScript =
+                                            #                 let
+                                            #                     test-script =
+                                            #                         let
+                                            #                             application =
+                                            #                                 pkgs.writeShellApplication
+                                            #                                     {
+                                            #                                         name = "test-script" ;
+                                            #                                         runtimeInputs = [ pkgs.coreutils pkgs.direnv ( _failure.implementation "59d475a8" ) ] ;
+                                            #                                         text =
+                                            #                                             ''
+                                            #                                                 while [[ ! -f "$HOME/pads/checks/.envrc" ]]
+                                            #                                                 do
+                                            #                                                    echo f5e2d051 WAIT for .envrc >&2
+                                            #                                                    sleep 1
+                                            #                                                 done
+                                            #                                                 cd "$HOME/pads/checks"
+                                            #                                                 # shellcheck disable=SC1091
+                                            #                                                 source "$HOME/pads/checks/.envrc"
+                                            #                                                 if ! studio
+                                            #                                                 then
+                                            #                                                     cat "$HOME/resources/log/trace.log" >&2
+                                            #                                                     exit 99
+                                            #                                                 fi
+                                            #                                             '' ;
+                                            #                                     } ;
+                                            #                             in "${ application }/bin/test-script" ;
+                                            #                     in
+                                            #                         ''
+                                            #                             machine.wait_for_unit("multi-user.target")
+                                            #                             machine.wait_for_unit("network-online.target")
+                                            #                             machine.wait_until_succeeds("ping -c1 -w5 8.8.8.8")
+                                            #                             machine.wait_until_succeeds("timeout 30s getent hosts github.com")
+                                            #                             machine.succeed("runuser ${ testuser } -- ${ test-script }")
+                                            #                         '' ;
+                                            #         } ;
                                             visitor-happy =
                                                 _visitor.check
                                                     {
