@@ -350,10 +350,11 @@
                                                                                                                 cd "$MUTABLE_STUDIO"
                                                                                                                 git mutable-mirror "$BRANCH" 2>&1
                                                                                                                 git mutable-snapshot 2>&1
+                                                                                                                mkdir --parents /mount/foobar
                                                                                                             '' ;
                                                                                                     } ;
                                                                                             in "${ application }/bin/init" ;
-                                                                                targets = [ ] ;
+                                                                                targets = [ "foobar" ] ;
                                                                             } ;
                                                                 } ;
                                                             age =
