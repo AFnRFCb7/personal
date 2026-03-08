@@ -3764,7 +3764,7 @@
                                                                                             if ! studio
                                                                                             then
                                                                                                 cat "$HOME/resources/log/trace.log" >&2
-                                                                                                failure 0dcbe30c
+                                                                                                exit 99
                                                                                             fi
                                                                                         '' ;
                                                                                 } ;
