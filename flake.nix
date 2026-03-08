@@ -3807,7 +3807,7 @@
                                                                         in "${ application }/bin/test-script" ;
                                                                 in
                                                                     ''
-                                                                        machine.wait_for_unit("network-online.target"")
+                                                                        machine.wait_for_unit("network-online.target")
                                                                         machine.succeed("runuser ${ testuser } -- ${ test-script }")
                                                                     '' ;
                                                     } ;
