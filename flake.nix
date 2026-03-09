@@ -3735,17 +3735,6 @@
                                                                                             then
                                                                                                 exit 99
                                                                                             fi
-                                                                                            SEQUENTIAL="$( cat "$HOME/resources/sequential/sequential.counter" )" || exit 99
-                                                                                            INDEX_1=$(( SEQUENTIAL - 1 ))
-                                                                                            INDEX_2="$( printf "%016d\n" "$INDEX_1 )" || exit 99
-                                                                                            if [[ ! -f "$HOME/resources/quarantine.init/$INDEX_2/log.yaml" ]]
-                                                                                            then
-                                                                                                exit 99
-                                                                                            fi
-                                                                                            if [[ ! -f "$HOME/resources/quarantine.init/$INDEX_2/resolvers/.sh" ]]
-                                                                                            then
-                                                                                                exit 99
-                                                                                            fi
                                                                                         '' ;
                                                                                 } ;
                                                                         in "${ application }/bin/pre-test" ;
