@@ -3038,6 +3038,59 @@
                                                                                     } ;
                                                                                 wantedBy = [ "multi-user.target" ] ;
                                                                             } ;
+                                                                        resolve-null =
+                                                                            {
+                                                                                after = [ "network.target" ] ;
+                                                                                description =
+                                                                                    ''
+                                                                                        Resolves issues with inaction.
+                                                                                    '' ;
+                                                                                serviceConfig =
+                                                                                    {
+                                                                                        ExecStart =
+                                                                                            let
+                                                                                                application =
+                                                                                                    pkgs.writeShellApplication
+                                                                                                        {
+                                                                                                            name = "ExecStart" ;
+                                                                                                            runtimeInputs =
+                                                                                                                [
+                                                                                                                    pkgs.coreutils
+                                                                                                                    pkgs.redis
+                                                                                                                    (
+                                                                                                                        pkgs.writeShellApplication
+                                                                                                                            {
+                                                                                                                                name = "iteration" ;
+                                                                                                                                runtimeInputs = [ ] ;
+                                                                                                                                text =
+                                                                                                                                    ''
+                                                                                                                                        PAYLOAD="$1"
+                                                                                                                                        TYPE="$( yq eval ".type" <<< "$PAYLOAD" - )" || failure 2ee1309a
+                                                                                                                                        if [[ "$TYPE" == "resolved-init" ]]
+                                                                                                                                        then
+                                                                                                                                            JSON="$( jq --compact-output ".type = "valid-init" )" || failure 7053
+                                                                                                                                            redis-cli SEND ${ config.personal.channel } "$JSON" > /dev/null 2>&1 || true
+                                                                                                                                        fi
+                                                                                                                                    '' ;
+                                                                                                                            }
+                                                                                                                    )
+                                                                                                                ] ;
+                                                                                                            text =
+                                                                                                                ''
+                                                                                                                    redis-cli SUBSCRIBE ${ config.personal.channel } | while true
+                                                                                                                    do
+                                                                                                                        read -r TYPE || failure c67a60c1
+                                                                                                                        read -r CHANNEL || failure deaeb31d
+                                                                                                                        read -r PAYLOAD || failure 27fe0fb0
+                                                                                                                        nohup iteration <<< "$PAYLOAD" &
+                                                                                                                    done
+                                                                                                                '' ;
+                                                                                                        } ;
+                                                                                                in "${ application }/bin/ExecStart" ;
+                                                                                        User = config.personal.name ;
+                                                                                    } ;
+                                                                                wantedBy = [ "multi-user.target" ] ;
+                                                                            } ;
                                                                         resource-logger =
                                                                             {
                                                                                 after = [ "redis.service" ] ;
