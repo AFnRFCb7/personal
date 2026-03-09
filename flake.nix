@@ -3707,6 +3707,30 @@
                                                                 ] ;
                                                             transient = false ;
                                                       } ;
+                                            resource-false-true =
+                                                pkgs.nixosTest
+                                                    {
+                                                        name = "resource-false-true" ;
+                                                        nodes.machine = { ... } : { imports = builtins.concatLists [ [user ] private ] };
+                                                        testScript =
+                                                            let
+                                                                test =
+                                                                    let
+                                                                        application =
+                                                                            pkgs.writeShellApplication
+                                                                                {
+                                                                                    name = "test" ;
+                                                                                    runtimeInputs = [ ] ;
+                                                                                    text =
+                                                                                        ''
+                                                                                        '' ;
+                                                                                } ;
+                                                                        in "${ application }/bin/test" ;
+                                                                in
+                                                                    ''
+                                                                        machine.wait_for_unit("multi-user.target")
+                                                                    '' ;
+                                                    } ;
                                             resource-true-true =
                                                 pkgs.nixosTest
                                                     {
