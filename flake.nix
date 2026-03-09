@@ -166,33 +166,6 @@
                                                                     } ;
                                                             in
                                                                 {
-                                                                    target =
-                                                                        ignore :
-                                                                            {
-                                                                                init =
-                                                                                    { failure , pkgs , resources , root , seed , sequential , wrap } :
-                                                                                        let
-                                                                                            application =
-                                                                                                pkgs.writeShellApplication
-                                                                                                    {
-                                                                                                        name = "init" ;
-                                                                                                        runtimeInputs = [ ] ;
-                                                                                                        text = "echo 7e1212fd 5b722b70" ;
-                                                                                                    } ;
-                                                                                            in "${ application }/bin/init" ;
-                                                                                release =
-                                                                                    { failure , pkgs , resources , seed , sequential } :
-                                                                                        let
-                                                                                            application =
-                                                                                                pkgs.writeShellApplication
-                                                                                                    {
-                                                                                                        name = "release" ;
-                                                                                                        runtimeInputs = [ ] ;
-                                                                                                        text = "echo 7e1212fd 061b99f9" ;
-                                                                                                    } ;
-                                                                                            in "${ application }/bin/release" ;
-                                                                                targets = [ ] ;
-                                                                            } ;
                                                                     false =
                                                                         {
                                                                             false =
@@ -697,7 +670,7 @@
                                                                                         bin
                                                                                             {
                                                                                                 environment = [ ] ;
-                                                                                                name = "true-false" ;
+                                                                                                name = "false-true" ;
                                                                                                 runtimeInputs = pkgs : [ ] ;
                                                                                                 script = ''echo "$CHECK"'' ;
                                                                                                 variables =
