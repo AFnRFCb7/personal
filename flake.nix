@@ -3068,7 +3068,7 @@
                                                                                                                                         TYPE="$( yq eval ".type" <<< "$PAYLOAD" - )" || failure 2ee1309a
                                                                                                                                         if [[ "$TYPE" == "resolved-init" ]]
                                                                                                                                         then
-                                                                                                                                            JSON="$( jq --compact-output ".type = "valid-init" )" || failure 7053
+                                                                                                                                            JSON="$( jq --compact-output ".type" = "valid-init" )" || failure 7053
                                                                                                                                             redis-cli SEND ${ config.personal.channel } "$JSON" > /dev/null 2>&1 || true
                                                                                                                                         fi
                                                                                                                                     '' ;
