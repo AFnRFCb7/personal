@@ -36,6 +36,7 @@
                                             failure = _failure.implementation "f135add3" ;
                                             findutils = pkgs.findutils ;
                                             flock = pkgs.flock ;
+                                            gnused = pkgs.gnused ;
                                             gnutar = pkgs.gnutar ;
                                             inotify-tools = pkgs.inotify-tools ;
                                             jq = pkgs.jq ;
