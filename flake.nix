@@ -3736,6 +3736,8 @@
                                                                                             then
                                                                                                 exit 99
                                                                                             fi
+                                                                                            # verify-log
+                                                                                            # verify-binary
                                                                                         '' ;
                                                                                 } ;
                                                                         in "${ application }/bin/pre-test" ;
