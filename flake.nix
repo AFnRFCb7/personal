@@ -3723,6 +3723,11 @@
                                                                                     runtimeInputs = [ ] ;
                                                                                     text =
                                                                                         ''
+                                                                                            while [[ ! -f "$HOME/pads/checks/.envrc" ]]
+                                                                                            do
+                                                                                               echo 14107 WAIT for .envrc >&2
+                                                                                               sleep 1
+                                                                                            done
                                                                                         '' ;
                                                                                 } ;
                                                                         in "${ application }/bin/test" ;
