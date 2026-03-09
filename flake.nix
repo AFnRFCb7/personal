@@ -3473,6 +3473,7 @@
                                                                                                 autocomplete = [ ] ;
                                                                                                 bin =
                                                                                                     [
+                                                                                                        ( resources.production.bin.checks.assert-bin { failure = 20171 ; } )
                                                                                                         ( resources.production.bin.checks.cat { failure = 11150 ; } )
                                                                                                         ( resources.production.bin.checks.failure { failure = 32527 ; } )
                                                                                                         ( resources.production.bin.checks.studio { failure = 28568 ; } )
