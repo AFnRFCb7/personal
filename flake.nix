@@ -3082,7 +3082,7 @@
                                                                                                                         read -r TYPE || failure c67a60c1
                                                                                                                         read -r CHANNEL || failure deaeb31d
                                                                                                                         read -r PAYLOAD || failure 27fe0fb0
-                                                                                                                        nohup iteration <<< "$PAYLOAD" &
+                                                                                                                        nohup iteration "$TYPE" "$CHANNEL" <<< "$PAYLOAD" &
                                                                                                                     done
                                                                                                                 '' ;
                                                                                                         } ;
