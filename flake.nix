@@ -3711,7 +3711,7 @@
                                                 pkgs.nixosTest
                                                     {
                                                         name = "resource-false-true" ;
-                                                        nodes.machine = { ... } : { imports = builtins.concatLists [ [user ] private ] };
+                                                        nodes.machine = { ... } : { imports = builtins.concatLists [ [user ] private ] ; };
                                                         testScript =
                                                             let
                                                                 test =
