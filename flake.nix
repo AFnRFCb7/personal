@@ -707,7 +707,7 @@
                                                                                                                         runtimeInputs = [ pkgs.findutils ] ;
                                                                                                                         text =
                                                                                                                             ''
-                                                                                                                                COUNT="$( find ${ resources-directory }/quarantine.init -name "log.yaml" | wc --line-number )" || exit 99
+                                                                                                                                COUNT="$( find /home/${ config.personal.name }/resources/quarantine.init -name "log.yaml" | wc --line-number )" || exit 99
                                                                                                                                 if [[ "$COUNT" != 1 ]]
                                                                                                                                 then
                                                                                                                                     exit 99
