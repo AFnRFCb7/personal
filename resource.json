@@ -13,7 +13,7 @@
     "ceb405a144a10b8efca63d9d950ce2b92bb2997ab44a9588ca740b3540a9a532a6b959a0d990dd469a63b16eb7600991bb7a1ef2b79d697b43e17134cbccec6c",
     "cdca67397f32d23a379284468e099b96c5b53d62659faf4d48dfc650bea444d6bc450b7eefee9b273c12672b9008fa6a077b15efb676b35f9912de977f54724d"
   ],
-  "hash": "3216d666303c9ec8c07423257ed5e8a794b60f0cee3788855bbec51cf426c70d68f34efda7e07eeaf6166900bb3108ed218236e68db364c69c63a68fb18c4f7e",
+  "hash": "bb45ccec15afd4fb231d5264f91f117e11266fbc9a4686fbe747c7cc7350f524b5817c9ae665b1c517b48221afad1a09b572b9bdfe9ce74bf62982fd7d62c778",
   "index": "0000000311691948",
   "has-standard-input": "true",
   "provenance": "new",
@@ -78,6 +78,7 @@
       "failure": "/nix/store/xir6v0gin64yd9q0spy7vlabfzcbiybq-failure",
       "findutils": "/nix/store/0lgw02xh80qnvbrhwjjvw0vp6384sgjs-findutils-4.10.0",
       "flock": "/nix/store/ka2xxzrj7p2ba7qj7j3qiwdlmbjc6j32-flock-0.4.0",
+      "gnused": "/nix/store/nw2lnn0jwp2w5xmwr93h2a99dz4d2n7w-gnused-4.9",
       "gnutar": "/nix/store/gvpbq82xln2cm1wz2gr0isyxvispqmcg-gnutar-1.35",
       "inotify-tools": "/nix/store/z957rbdrwjfgwxksjsfd4ainxd590w6p-inotify-tools-4.23.9.0",
       "jq": "/nix/store/0q85yfxd70aq8iv4n43hqcmh2dbyb80z-jq-1.7.1-bin",
