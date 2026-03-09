@@ -707,9 +707,11 @@
                                                                                                                         runtimeInputs = [ pkgs.findutils ] ;
                                                                                                                         text =
                                                                                                                             ''
-                                                                                                                                COUNT="$( find /home/${ config.personal.name }/resources/quarantine.init -name "log.yaml" | wc --line-number )" || exit 99
-                                                                                                                                if [[ "$COUNT" != 1 ]]
+                                                                                                                                EXPECTED_COUNT="$1"
+                                                                                                                                OBSERVED_COUNT="$( find /home/${ config.personal.name }/resources/quarantine.init -name "log.yaml" | wc --line-number )" || exit 99
+                                                                                                                                if [[ "$EXPECTED_COUNT" != "$OBSERVED_COUNT ]]
                                                                                                                                 then
+                                                                                                                                    echo "OBSERVED_COUNT=$OBSERVED_COUNT"
                                                                                                                                     exit 99
                                                                                                                                 fi
                                                                                                                             '' ;
