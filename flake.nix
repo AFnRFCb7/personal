@@ -3391,7 +3391,7 @@
                                                                                                 bin =
                                                                                                     [
                                                                                                         ( resources.production.bin.checks.cat { failure = 11150 ; } )
-                                                                                                        ( resources.production.bin.checks.failur { failure = 32527 ; } )
+                                                                                                        ( resources.production.bin.checks.failure { failure = 32527 ; } )
                                                                                                         ( resources.production.bin.checks.studio { failure = 28568 ; } )
                                                                                                         ( resources.production.bin.checks.false-true { failure = 18034 ; } )
                                                                                                         ( resources.production.bin.checks.true-true { failure = 17466 ; } )
