@@ -637,6 +637,32 @@
                                                                         {
                                                                             checks =
                                                                                 {
+                                                                                    assert-bin =
+                                                                                        bin
+                                                                                            {
+                                                                                                environment = [ ] ;
+                                                                                                name = "assert-bin" ;
+                                                                                                runtimeInputs =
+                                                                                                    pkgs :
+                                                                                                        [
+                                                                                                            (
+                                                                                                                pkgs.writeShellApplication
+                                                                                                                    {
+                                                                                                                        name = "assert-bin" ;
+                                                                                                                        runtimeInputs = [ pkgs.findutils ] ;
+                                                                                                                        text =
+                                                                                                                            ''
+                                                                                                                                find /home/${ config.personal.name }/resources/quarantine.init -name "*.sh" | while read -r QUARANTINE
+                                                                                                                                do
+                                                                                                                                    "$QUARANTINE"
+                                                                                                                                done
+                                                                                                                            '' ;
+                                                                                                                    }
+                                                                                                            )
+                                                                                                        ] ;
+                                                                                                script = "assert-bin" ;
+                                                                                                variables = { } ;
+                                                                                            } ;
                                                                                     cat =
                                                                                         bin
                                                                                             {
@@ -3767,8 +3793,7 @@
                                                                                             then
                                                                                                 exit 99
                                                                                             fi
-                                                                                            verify-log 1
-                                                                                            # verify-binary
+                                                                                            assert-bin
                                                                                         '' ;
                                                                                 } ;
                                                                         in "${ application }/bin/pre-test" ;
@@ -3778,10 +3803,19 @@
                                                                             pkgs.writeShellApplication
                                                                                 {
                                                                                     name = "test" ;
-                                                                                    runtimeInputs = [ ] ;
+                                                                                    runtimeInputs = [ pkgs.findutils failure ] ;
                                                                                     text =
                                                                                         ''
-
+                                                                                            OBSERVED_LOG_COUNT="$( find /home/${ config.personal.name }/resources/quarantine.init -name "log.yaml" | wc --line-count )" || failure 1236
+                                                                                            if [[ "$OBSERVED_LOG_COUNT" != 0 ]]
+                                                                                            then
+                                                                                                failure 3607 "OBSERVED_LOG_COUNT=$OBSERVED_LOG_COUNT"
+                                                                                            fi
+                                                                                            OBSERVED_BIN_COUNT="$( find /home/${ config.personal.name }/resources/quarantine.init -name "*.sh" | wc --line-count )" || failure 1236
+                                                                                            if [[ "$OBSERVED_BIN_COUNT" != 0 ]]
+                                                                                            then
+                                                                                                failure 23058 "OBSERVED_BIN_COUNT=$OBSERVED_BIN_COUNT"
+                                                                                            fi
                                                                                         '' ;
                                                                                 } ;
                                                                         in "${ application }/bin/test" ;
