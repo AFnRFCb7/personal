@@ -691,6 +691,34 @@
                                                                                                         CHECK = resources : resources.checks.true.true.true-true { failure = 12601 ; setup = setup : ''${ setup } true true'' ; } ;
                                                                                                     } ;
                                                                                             } ;
+                                                                                    verify-log =
+                                                                                        bin
+                                                                                            {
+                                                                                                environment = [ ] ;
+                                                                                                name = "verify-log" ;
+                                                                                                runtimeInputs =
+                                                                                                    pkgs :
+                                                                                                        [
+                                                                                                            pkgs.findutils
+                                                                                                            (
+                                                                                                                pkgs.writeShellApplication
+                                                                                                                    {
+                                                                                                                        name = "verify-log" ;
+                                                                                                                        runtimeInputs = [ pkgs.findutils ] ;
+                                                                                                                        text =
+                                                                                                                            ''
+                                                                                                                                COUNT="$( find ${ resources-directory }/quarantine.init -name "log.yaml" | wc --line-number )" || exit 99
+                                                                                                                                if [[ "$COUNT" != 1 ]]
+                                                                                                                                then
+                                                                                                                                    exit 99
+                                                                                                                                fi
+                                                                                                                            '' ;
+                                                                                                                    }
+                                                                                                            )
+                                                                                                        ] ;
+                                                                                                script = "verify-log" ;
+                                                                                                variables = { } ;
+                                                                                            } ;
                                                                                 } ;
                                                                             chromium =
                                                                                 bin
@@ -3422,6 +3450,7 @@
                                                                                                         ( resources.production.bin.checks.studio { failure = 28568 ; } )
                                                                                                         ( resources.production.bin.checks.false-true { failure = 18034 ; } )
                                                                                                         ( resources.production.bin.checks.true-true { failure = 17466 ; } )
+                                                                                                        ( resources.production.bin.checks.verify-log { failure = 8136 ; } )
                                                                                                     ] ;
                                                                                                 man = [ ] ;
                                                                                             } ;
@@ -3736,7 +3765,7 @@
                                                                                             then
                                                                                                 exit 99
                                                                                             fi
-                                                                                            # verify-log
+                                                                                            verify-log
                                                                                             # verify-binary
                                                                                         '' ;
                                                                                 } ;
