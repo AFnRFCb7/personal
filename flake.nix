@@ -735,7 +735,7 @@
                                                                                                                             ''
                                                                                                                                 EXPECTED_COUNT="$1"
                                                                                                                                 OBSERVED_COUNT="$( find /home/${ config.personal.name }/resources/quarantine.init -name "log.yaml" | wc --line-number )" || exit 99
-                                                                                                                                if [[ "$EXPECTED_COUNT" != "$OBSERVED_COUNT ]]
+                                                                                                                                if [[ "$EXPECTED_COUNT" != "$OBSERVED_COUNT" ]]
                                                                                                                                 then
                                                                                                                                     echo "OBSERVED_COUNT=$OBSERVED_COUNT"
                                                                                                                                     exit 99
