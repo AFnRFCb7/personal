@@ -3767,7 +3767,7 @@
                                                                                             then
                                                                                                 exit 99
                                                                                             fi
-                                                                                            verify-log
+                                                                                            verify-log 1
                                                                                             # verify-binary
                                                                                         '' ;
                                                                                 } ;
