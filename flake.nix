@@ -672,6 +672,15 @@
                                                                                                 script = ''cat'' ;
                                                                                                 variables = { } ;
                                                                                             } ;
+                                                                                    failure =
+                                                                                        bin
+                                                                                            {
+                                                                                                environment = [ ] ;
+                                                                                                name = "failure" ;
+                                                                                                runtimeInputs = pkgs : [ ] ;
+                                                                                                script = ''failure'' ;
+                                                                                                variables = { } ;
+                                                                                            } ;
                                                                                     studio =
                                                                                         bin
                                                                                             {
@@ -682,6 +691,18 @@
                                                                                                 variables =
                                                                                                     {
                                                                                                         STUDIO = resources : resources.production.checks.studio { } ;
+                                                                                                    } ;
+                                                                                            } ;
+                                                                                    false-true =
+                                                                                        bin
+                                                                                            {
+                                                                                                environment = [ ] ;
+                                                                                                name = "true-false" ;
+                                                                                                runtimeInputs = pkgs : [ ] ;
+                                                                                                script = ''echo "$CHECK"'' ;
+                                                                                                variables =
+                                                                                                    {
+                                                                                                        CHECK = resources : resources.checks.false.true.false-true { failure = 13207 ; setup = setup : ''${ setup } false true'' ; } ;
                                                                                                     } ;
                                                                                             } ;
                                                                                     true-true =
