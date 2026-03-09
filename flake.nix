@@ -3715,12 +3715,12 @@
                                                         nodes.machine = { ... } : { imports = builtins.concatLists [ [user ] private ] ; };
                                                         testScript =
                                                             let
-                                                                test =
+                                                                pre-test =
                                                                     let
                                                                         application =
                                                                             pkgs.writeShellApplication
                                                                                 {
-                                                                                    name = "test" ;
+                                                                                    name = "pre-test" ;
                                                                                     runtimeInputs = [ ] ;
                                                                                     text =
                                                                                         ''
@@ -3748,10 +3748,24 @@
                                                                                             fi
                                                                                         '' ;
                                                                                 } ;
+                                                                        in "${ application }/bin/pre-test" ;
+                                                                test =
+                                                                    let
+                                                                        application =
+                                                                            pkgs.writeShellApplication
+                                                                                {
+                                                                                    name = "test" ;
+                                                                                    runtimeInputs = [ ] ;
+                                                                                    text =
+                                                                                        ''
+                                                                                        '' ;
+                                                                                } ;
                                                                         in "${ application }/bin/test" ;
                                                                 in
                                                                     ''
                                                                         machine.wait_for_unit("multi-user.target")
+                                                                        machine.succeed("bash -c 'runuser ${ testuser } -- ${ pre-test }'")
+                                                                        machine.succeed("bash -c 'runuser ${ testuser } -- ${ test }'")
                                                                     '' ;
                                                     } ;
                                             resource-true-true =
