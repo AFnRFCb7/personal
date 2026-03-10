@@ -3829,7 +3829,10 @@
                                                                                     runtimeInputs = [ ] ;
                                                                                     text =
                                                                                         ''
-                                                                                            find "$HOME/resources/quarantine.init" -name "*.sh" -exec {} \ ;
+                                                                                            # we think that systemd scripts cause errors
+                                                                                            # we just want a clean slate
+                                                                                            # for testing
+                                                                                            find "$HOME/resources/quarantine.init" -name "*.sh" -exec {} \;
                                                                                             if [[ -d "$HOME/resources/quarantine.init" ]]
                                                                                             then
                                                                                                 find "$HOME/resources/quarantine.init"
