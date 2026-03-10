@@ -756,6 +756,15 @@
                                                                                                 script = "verify-log" ;
                                                                                                 variables = { } ;
                                                                                             } ;
+                                                                                    yq =
+                                                                                        bin
+                                                                                            {
+                                                                                                environment = [ ] ;
+                                                                                                name = "yq" ;
+                                                                                                runtimeInputs = pkgs : [ pkgs.yq-go ] ;
+                                                                                                script = ''yq'' ;
+                                                                                                variables = { } ;
+                                                                                            } ;
                                                                                 } ;
                                                                             chromium =
                                                                                 bin
@@ -3491,6 +3500,7 @@
                                                                                                         ( resources.production.bin.checks.find { failure = 21361 ; } )
                                                                                                         ( resources.production.bin.checks.true-true { failure = 17466 ; } )
                                                                                                         ( resources.production.bin.checks.verify-log { failure = 8136 ; } )
+                                                                                                        ( resources.production.bin.checks.yq { failure = 20213 ; } )
                                                                                                     ] ;
                                                                                                 man = [ ] ;
                                                                                             } ;
@@ -3832,7 +3842,7 @@
                                                                                             fi
                                                                                             # shellcheck disable=SC1091
                                                                                             source "$HOME/pads/checks/.envrc"
-                                                                                            find "$HOME/resources/quarantine.init" -name "log.yaml" -exec cat {} \;
+                                                                                            find "$HOME/resources/quarantine.init" -name "log.yaml" -exec yq eval --prettyPrint ".[].type" {} \;
                                                                                             echo BETA
                                                                                             if false-true
                                                                                             then
