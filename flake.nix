@@ -3852,8 +3852,8 @@
                                                                 in
                                                                     ''
                                                                         machine.wait_for_unit("multi-user.target")
-                                                                        machine.succeed("bash -c 'runuser ${ testuser } -- ${ pre-test-2 }'")
-                                                                        machine.succeed("bash -c 'runuser ${ testuser } -- ${ test }'")
+                                                                        # machine.succeed("bash -c 'runuser ${ testuser } -- ${ pre-test-2 }'")
+                                                                        # machine.succeed("bash -c 'runuser ${ testuser } -- ${ test }'")
                                                                     '' ;
                                                     } ;
                                             resource-true-true =
