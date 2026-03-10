@@ -3809,20 +3809,7 @@
                                                                                     runtimeInputs = [ ] ;
                                                                                     text =
                                                                                         ''
-                                                                                            # shellcheck disable=all
-                                                                                            # while [[ ! -f "$HOME/pads/checks/.envrc" ]]
-                                                                                            # do
-                                                                                            #    echo 14107 WAIT for .envrc >&2
-                                                                                            #    sleep 1
-                                                                                            # done
-                                                                                            # cd "$HOME/pads/checks"
 
-                                                                                            # source "$HOME/pads/checks/.envrc"
-                                                                                            # if false-true
-                                                                                            # then
-                                                                                            #     exit 99
-                                                                                            # fi
-                                                                                            # assert-bin
                                                                                         '' ;
                                                                                 } ;
                                                                         in "${ application }/bin/pre-test" ;
