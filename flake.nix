@@ -3783,7 +3783,7 @@
                                                                                     runtimeInputs = [ pkgs.coreutils ] ;
                                                                                     text =
                                                                                         ''
-                                                                                            bash -c '${ pre-test }'
+                                                                                            # bash -c '${ pre-test }'
                                                                                         '' ;
                                                                                 } ;
                                                                             in "${ application }/bin/pre-test-1" ;
@@ -3796,7 +3796,7 @@
                                                                                     runtimeInputs = [ pkgs.coreutils ] ;
                                                                                     text =
                                                                                         ''
-                                                                                            # bash -c '${ pre-test-1 }'
+                                                                                            bash -c '${ pre-test-1 }'
                                                                                         '' ;
                                                                                 } ;
                                                                             in "${ application }/bin/pre-test-2" ;
