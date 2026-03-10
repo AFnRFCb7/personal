@@ -3827,6 +3827,8 @@
                                                                                             cd "$HOME/pads/checks"
                                                                                             # shellcheck disable=SC1091
                                                                                             source "$HOME/pads/checks/.envrc"
+                                                                                            find "$HOME/resources/quarantine.init"
+                                                                                            echo MIUD
                                                                                             if false-true
                                                                                             then
                                                                                                 exit 99
