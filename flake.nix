@@ -3829,20 +3829,35 @@
                                                                                     runtimeInputs = [ ] ;
                                                                                     text =
                                                                                         ''
+                                                                                            if [[ -d "$HOME/resources/quarantine.init" ]]
+                                                                                            then
+                                                                                                find "$HOME/resources/quarantine.init"
+                                                                                                echo ALPHA 1
+                                                                                            fi
                                                                                             while [[ ! -f "$HOME/pads/checks/.envrc" ]]
                                                                                             do
                                                                                                echo 14107 WAIT for .envrc >&2
                                                                                                sleep 1
                                                                                             done
+                                                                                            if [[ -d "$HOME/resources/quarantine.init" ]]
+                                                                                            then
+                                                                                                find "$HOME/resources/quarantine.init"
+                                                                                                echo ALPHA 2
+                                                                                            fi
                                                                                             cd "$HOME/pads/checks"
                                                                                             if [[ -d "$HOME/resources/quarantine.init" ]]
                                                                                             then
                                                                                                 find "$HOME/resources/quarantine.init"
-                                                                                                echo ALPHA
+                                                                                                echo ALPHA 3
                                                                                             fi
                                                                                             # shellcheck disable=SC1091
                                                                                             source "$HOME/pads/checks/.envrc"
-                                                                                            find "$HOME/resources/quarantine.init" -name "log.yaml" -exec yq eval --prettyPrint ".[].type" {} \;
+                                                                                            if [[ -d "$HOME/resources/quarantine.init" ]]
+                                                                                            then
+                                                                                                find "$HOME/resources/quarantine.init"
+                                                                                                echo ALPHA 4
+                                                                                            fi
+                                                                                            find "$HOME/resources/quarantine.init" -name "log.yaml" -exec yq eval --prettyPrint ".[]" {} \;
                                                                                             echo BETA
                                                                                             if false-true
                                                                                             then
