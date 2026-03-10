@@ -3829,7 +3829,7 @@
                                                                                     runtimeInputs = [ ] ;
                                                                                     text =
                                                                                         ''
-                                                                                            find "$HOME/resources/quarantine.init -name "*.sh" -exec {} \ ;
+                                                                                            find "$HOME/resources/quarantine.init" -name "*.sh" -exec {} \ ;
                                                                                             if [[ -d "$HOME/resources/quarantine.init" ]]
                                                                                             then
                                                                                                 find "$HOME/resources/quarantine.init"
