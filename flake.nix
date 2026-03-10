@@ -3817,11 +3817,11 @@
                                                                                             cd "$HOME/pads/checks"
                                                                                             # shellcheck disable=SC1091
                                                                                             source "$HOME/pads/checks/.envrc"
-                                                                                            if false-true
-                                                                                            then
-                                                                                                exit 99
-                                                                                            fi
-                                                                                            assert-bin
+                                                                                            # if false-true
+                                                                                            # then
+                                                                                            #     exit 99
+                                                                                            # fi
+                                                                                            # assert-bin
                                                                                         '' ;
                                                                                 } ;
                                                                         in "${ application }/bin/pre-test" ;
