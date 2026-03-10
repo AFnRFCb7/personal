@@ -3796,7 +3796,7 @@
                                                                                     runtimeInputs = [ pkgs.coreutils ] ;
                                                                                     text =
                                                                                         ''
-                                                                                            bash -c '${ pre-test-1 }'
+                                                                                            # bash -c '${ pre-test-1 }'
                                                                                         '' ;
                                                                                 } ;
                                                                             in "${ application }/bin/pre-test-2" ;
@@ -3852,7 +3852,7 @@
                                                                 in
                                                                     ''
                                                                         machine.wait_for_unit("multi-user.target")
-                                                                        # machine.succeed("bash -c 'runuser ${ testuser } -- ${ pre-test-2 }'")
+                                                                        machine.succeed("bash -c 'runuser ${ testuser } -- ${ pre-test-2 }'")
                                                                         # machine.succeed("bash -c 'runuser ${ testuser } -- ${ test }'")
                                                                     '' ;
                                                     } ;
