@@ -3934,6 +3934,7 @@
                                                                                             find "$HOME/resources/quarantine.init" -name "*.sh" -exec {} \;
                                                                                             find "$HOME/resources/quarantine.init" -mindepth 1 | while read -r LOG
                                                                                             do
+                                                                                                echo "$LOG"
                                                                                                 exit 99
                                                                                             done
                                                                                         '' ;
