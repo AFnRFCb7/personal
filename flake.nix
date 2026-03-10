@@ -3807,12 +3807,12 @@
                                                                                     runtimeInputs = [ pkgs.findutils failure ] ;
                                                                                     text =
                                                                                         ''
-                                                                                            OBSERVED_LOG_COUNT="$( find /home/${ testuser }/resources/quarantine.init -name "log.yaml" | wc --lines )" || failure 1236
+                                                                                            OBSERVED_LOG_COUNT="$( find /home/${ testuser }/resources/quarantine.init -name "log.yaml" | wc --lines )" || exit 99
                                                                                             if [[ "$OBSERVED_LOG_COUNT" != 0 ]]
                                                                                             then
                                                                                                 failure 3607 "OBSERVED_LOG_COUNT=$OBSERVED_LOG_COUNT"
                                                                                             fi
-                                                                                            OBSERVED_BIN_COUNT="$( find /home/${ testuser }/resources/quarantine.init -name "*.sh" | wc --lines )" || failure 1236
+                                                                                            OBSERVED_BIN_COUNT="$( find /home/${ testuser }/resources/quarantine.init -name "*.sh" | wc --lines )" || exit 98
                                                                                             if [[ "$OBSERVED_BIN_COUNT" != 0 ]]
                                                                                             then
                                                                                                 failure 23058 "OBSERVED_BIN_COUNT=$OBSERVED_BIN_COUNT"
