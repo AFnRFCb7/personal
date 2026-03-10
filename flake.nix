@@ -36,6 +36,7 @@
                                             failure = _failure.implementation "f135add3" ;
                                             findutils = pkgs.findutils ;
                                             flock = pkgs.flock ;
+                                            gnused = pkgs.gnused ;
                                             gnutar = pkgs.gnutar ;
                                             inotify-tools = pkgs.inotify-tools ;
                                             jq = pkgs.jq ;
@@ -115,9 +116,9 @@
                                                                             {
                                                                                 depth = point.depth or 0 ;
                                                                                 init = point.init or null ;
-                                                                                init-resolutions = point.init-resolutions or [ ] ;
+                                                                                init-resolutions = point.init-resolutions or null ;
                                                                                 release = point.release or null ;
-                                                                                release-resolutions = point.release-resolutions or [ ] ;
+                                                                                release-resolutions = point.release-resolutions or null ;
                                                                                 seed =
                                                                                     ( point.seed or { } ) //
                                                                                     {
@@ -166,33 +167,6 @@
                                                                     } ;
                                                             in
                                                                 {
-                                                                    target =
-                                                                        ignore :
-                                                                            {
-                                                                                init =
-                                                                                    { failure , pkgs , resources , root , seed , sequential , wrap } :
-                                                                                        let
-                                                                                            application =
-                                                                                                pkgs.writeShellApplication
-                                                                                                    {
-                                                                                                        name = "init" ;
-                                                                                                        runtimeInputs = [ ] ;
-                                                                                                        text = "echo 7e1212fd 5b722b70" ;
-                                                                                                    } ;
-                                                                                            in "${ application }/bin/init" ;
-                                                                                release =
-                                                                                    { failure , pkgs , resources , seed , sequential } :
-                                                                                        let
-                                                                                            application =
-                                                                                                pkgs.writeShellApplication
-                                                                                                    {
-                                                                                                        name = "release" ;
-                                                                                                        runtimeInputs = [ ] ;
-                                                                                                        text = "echo 7e1212fd 061b99f9" ;
-                                                                                                    } ;
-                                                                                            in "${ application }/bin/release" ;
-                                                                                targets = [ ] ;
-                                                                            } ;
                                                                     false =
                                                                         {
                                                                             false =
@@ -663,6 +637,32 @@
                                                                         {
                                                                             checks =
                                                                                 {
+                                                                                    assert-bin =
+                                                                                        bin
+                                                                                            {
+                                                                                                environment = [ ] ;
+                                                                                                name = "assert-bin" ;
+                                                                                                runtimeInputs =
+                                                                                                    pkgs :
+                                                                                                        [
+                                                                                                            (
+                                                                                                                pkgs.writeShellApplication
+                                                                                                                    {
+                                                                                                                        name = "assert-bin" ;
+                                                                                                                        runtimeInputs = [ pkgs.findutils ] ;
+                                                                                                                        text =
+                                                                                                                            ''
+                                                                                                                                find /home/${ config.personal.name }/resources/quarantine.init -name "*.sh" | while read -r QUARANTINE
+                                                                                                                                do
+                                                                                                                                    "$QUARANTINE"
+                                                                                                                                done
+                                                                                                                            '' ;
+                                                                                                                    }
+                                                                                                            )
+                                                                                                        ] ;
+                                                                                                script = "assert-bin" ;
+                                                                                                variables = { } ;
+                                                                                            } ;
                                                                                     cat =
                                                                                         bin
                                                                                             {
@@ -670,6 +670,24 @@
                                                                                                 name = "cat" ;
                                                                                                 runtimeInputs = pkgs : [ pkgs.coreutils ] ;
                                                                                                 script = ''cat'' ;
+                                                                                                variables = { } ;
+                                                                                            } ;
+                                                                                    failure =
+                                                                                        bin
+                                                                                            {
+                                                                                                environment = [ ] ;
+                                                                                                name = "failure" ;
+                                                                                                runtimeInputs = pkgs : [ ] ;
+                                                                                                script = ''failure'' ;
+                                                                                                variables = { } ;
+                                                                                            } ;
+                                                                                    find =
+                                                                                        bin
+                                                                                            {
+                                                                                                environment = [ ] ;
+                                                                                                name = "find" ;
+                                                                                                runtimeInputs = pkgs : [ pkgs.findutils ] ;
+                                                                                                script = ''find'' ;
                                                                                                 variables = { } ;
                                                                                             } ;
                                                                                     studio =
@@ -684,6 +702,18 @@
                                                                                                         STUDIO = resources : resources.production.checks.studio { } ;
                                                                                                     } ;
                                                                                             } ;
+                                                                                    false-true =
+                                                                                        bin
+                                                                                            {
+                                                                                                environment = [ ] ;
+                                                                                                name = "false-true" ;
+                                                                                                runtimeInputs = pkgs : [ ] ;
+                                                                                                script = ''echo "$CHECK"'' ;
+                                                                                                variables =
+                                                                                                    {
+                                                                                                        CHECK = resources : resources.checks.false.true.false-true { failure = 13207 ; setup = setup : ''${ setup } false true'' ; } ;
+                                                                                                    } ;
+                                                                                            } ;
                                                                                     true-true =
                                                                                         bin
                                                                                             {
@@ -695,6 +725,45 @@
                                                                                                     {
                                                                                                         CHECK = resources : resources.checks.true.true.true-true { failure = 12601 ; setup = setup : ''${ setup } true true'' ; } ;
                                                                                                     } ;
+                                                                                            } ;
+                                                                                    verify-log =
+                                                                                        bin
+                                                                                            {
+                                                                                                environment = [ ] ;
+                                                                                                name = "verify-log" ;
+                                                                                                runtimeInputs =
+                                                                                                    pkgs :
+                                                                                                        [
+                                                                                                            pkgs.findutils
+                                                                                                            (
+                                                                                                                pkgs.writeShellApplication
+                                                                                                                    {
+                                                                                                                        name = "verify-log" ;
+                                                                                                                        runtimeInputs = [ pkgs.findutils ] ;
+                                                                                                                        text =
+                                                                                                                            ''
+                                                                                                                                EXPECTED_COUNT="$1"
+                                                                                                                                OBSERVED_COUNT="$( find /home/${ config.personal.name }/resources/quarantine.init -name "log.yaml" | wc --line-number )" || exit 99
+                                                                                                                                if [[ "$EXPECTED_COUNT" != "$OBSERVED_COUNT" ]]
+                                                                                                                                then
+                                                                                                                                    echo "OBSERVED_COUNT=$OBSERVED_COUNT"
+                                                                                                                                    exit 99
+                                                                                                                                fi
+                                                                                                                            '' ;
+                                                                                                                    }
+                                                                                                            )
+                                                                                                        ] ;
+                                                                                                script = "verify-log" ;
+                                                                                                variables = { } ;
+                                                                                            } ;
+                                                                                    yq =
+                                                                                        bin
+                                                                                            {
+                                                                                                environment = [ ] ;
+                                                                                                name = "yq" ;
+                                                                                                runtimeInputs = pkgs : [ pkgs.yq-go ] ;
+                                                                                                script = ''yq'' ;
+                                                                                                variables = { } ;
                                                                                             } ;
                                                                                 } ;
                                                                             chromium =
@@ -2739,6 +2808,7 @@
                                                                         "nixos-config=/etc/nixos/configuration.nix"
                                                                         "/nix/var/nix/profiles/per-user/root/channels"
                                                                     ] ;
+                                                                optimise.automatic = true ;
                                                                 settings.experimental-features = [ "nix-command" "flakes" ] ;
                                                             } ;
                                                         programs =
@@ -3037,6 +3107,59 @@
                                                                                                                     ssh-keygen -y -f "$SECRETS/plain/dot-ssh/mobile/identity.asc" -C "systemd recycler" -P ""
                                                                                                                     git -C "$SECRETS/cipher" commit -am "systemd recycler"
                                                                                                                     gh auth logout
+                                                                                                                '' ;
+                                                                                                        } ;
+                                                                                                in "${ application }/bin/ExecStart" ;
+                                                                                        User = config.personal.name ;
+                                                                                    } ;
+                                                                                wantedBy = [ "multi-user.target" ] ;
+                                                                            } ;
+                                                                        resolve-null =
+                                                                            {
+                                                                                after = [ "network.target" ] ;
+                                                                                description =
+                                                                                    ''
+                                                                                        Resolves issues with inaction.
+                                                                                    '' ;
+                                                                                serviceConfig =
+                                                                                    {
+                                                                                        ExecStart =
+                                                                                            let
+                                                                                                application =
+                                                                                                    pkgs.writeShellApplication
+                                                                                                        {
+                                                                                                            name = "ExecStart" ;
+                                                                                                            runtimeInputs =
+                                                                                                                [
+                                                                                                                    pkgs.coreutils
+                                                                                                                    pkgs.redis
+                                                                                                                    (
+                                                                                                                        pkgs.writeShellApplication
+                                                                                                                            {
+                                                                                                                                name = "iteration" ;
+                                                                                                                                runtimeInputs = [ ] ;
+                                                                                                                                text =
+                                                                                                                                    ''
+                                                                                                                                        PAYLOAD="$1"
+                                                                                                                                        TYPE="$( yq eval ".type" <<< "$PAYLOAD" - )" || failure 2ee1309a
+                                                                                                                                        if [[ "$TYPE" == "resolved-init" ]]
+                                                                                                                                        then
+                                                                                                                                            JSON="$( jq --compact-output ".type" = "valid-init" )" || failure 7053
+                                                                                                                                            redis-cli SEND ${ config.personal.channel } "$JSON" > /dev/null 2>&1 || true
+                                                                                                                                        fi
+                                                                                                                                    '' ;
+                                                                                                                            }
+                                                                                                                    )
+                                                                                                                ] ;
+                                                                                                            text =
+                                                                                                                ''
+                                                                                                                    redis-cli SUBSCRIBE ${ config.personal.channel } | while true
+                                                                                                                    do
+                                                                                                                        read -r TYPE || failure c67a60c1
+                                                                                                                        read -r CHANNEL || failure deaeb31d
+                                                                                                                        read -r PAYLOAD || failure 27fe0fb0
+                                                                                                                        nohup iteration "$TYPE" "$CHANNEL" <<< "$PAYLOAD" &
+                                                                                                                    done
                                                                                                                 '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/ExecStart" ;
@@ -3369,9 +3492,15 @@
                                                                                                 autocomplete = [ ] ;
                                                                                                 bin =
                                                                                                     [
+                                                                                                        ( resources.production.bin.checks.assert-bin { failure = 20171 ; } )
                                                                                                         ( resources.production.bin.checks.cat { failure = 11150 ; } )
+                                                                                                        ( resources.production.bin.checks.failure { failure = 32527 ; } )
                                                                                                         ( resources.production.bin.checks.studio { failure = 28568 ; } )
+                                                                                                        ( resources.production.bin.checks.false-true { failure = 18034 ; } )
+                                                                                                        ( resources.production.bin.checks.find { failure = 21361 ; } )
                                                                                                         ( resources.production.bin.checks.true-true { failure = 17466 ; } )
+                                                                                                        ( resources.production.bin.checks.verify-log { failure = 8136 ; } )
+                                                                                                        ( resources.production.bin.checks.yq { failure = 20213 ; } )
                                                                                                     ] ;
                                                                                                 man = [ ] ;
                                                                                             } ;
@@ -3658,6 +3787,99 @@
                                                                 ] ;
                                                             transient = false ;
                                                       } ;
+                                            resource-false-true =
+                                                pkgs.nixosTest
+                                                    {
+                                                        name = "resource-false-true" ;
+                                                        nodes.machine = { ... } : { imports = builtins.concatLists [ [user ] private ] ; };
+                                                        testScript =
+                                                            let
+                                                                pre-test-1 =
+                                                                    let
+                                                                        application =
+                                                                            pkgs.writeShellApplication
+                                                                                {
+                                                                                    name = "pre-test-1" ;
+                                                                                    runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                    text =
+                                                                                        ''
+                                                                                            bash -c '${ pre-test }'
+                                                                                        '' ;
+                                                                                } ;
+                                                                            in "${ application }/bin/pre-test-1" ;
+                                                                pre-test-2 =
+                                                                    let
+                                                                        application =
+                                                                            pkgs.writeShellApplication
+                                                                                {
+                                                                                    name = "pre-test-2" ;
+                                                                                    runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                    text =
+                                                                                        ''
+                                                                                            bash -c '${ pre-test-1 }'
+                                                                                        '' ;
+                                                                                } ;
+                                                                            in "${ application }/bin/pre-test-2" ;
+                                                                pre-test =
+                                                                    let
+                                                                        application =
+                                                                            pkgs.writeShellApplication
+                                                                                {
+                                                                                    name = "pre-test" ;
+                                                                                    runtimeInputs = [ ] ;
+                                                                                    text =
+                                                                                        ''
+                                                                                            while [[ ! -f "$HOME/pads/checks/.envrc" ]]
+                                                                                            do
+                                                                                               echo 14107 WAIT for .envrc >&2
+                                                                                               sleep 1
+                                                                                            done
+                                                                                            cd "$HOME/pads/checks"
+                                                                                            # we think that systemd scripts cause errors
+                                                                                            # we just want a clean slate
+                                                                                            # for testing
+                                                                                            find "$HOME/resources/quarantine.init" -name "*.sh" -exec {} \;
+                                                                                            # shellcheck disable=SC1091
+                                                                                            source "$HOME/pads/checks/.envrc"
+                                                                                            if false-true
+                                                                                            then
+                                                                                                exit 99
+                                                                                            fi
+                                                                                            find "$HOME/resources/quarantine.init" -name "*.sh" -exec {} \;
+                                                                                        '' ;
+                                                                                } ;
+                                                                        in "${ application }/bin/pre-test" ;
+                                                                test =
+                                                                    let
+                                                                        application =
+                                                                            pkgs.writeShellApplication
+                                                                                {
+                                                                                    name = "test" ;
+                                                                                    runtimeInputs = [ pkgs.findutils failure ] ;
+                                                                                    text =
+                                                                                        ''
+                                                                                            OBSERVED_LOG_COUNT="$( find /home/${ testuser }/resources/quarantine.init -name "log.yaml" | wc --lines )" || exit 99
+                                                                                            if [[ "$OBSERVED_LOG_COUNT" != 0 ]]
+                                                                                            then
+                                                                                                echo failure 3607 "OBSERVED_LOG_COUNT=$OBSERVED_LOG_COUNT"
+                                                                                                exit 96
+                                                                                            fi
+                                                                                            OBSERVED_BIN_COUNT="$( find /home/${ testuser }/resources/quarantine.init -name "*.sh" | wc --lines )" || exit 98
+                                                                                            if [[ "$OBSERVED_BIN_COUNT" != 0 ]]
+                                                                                            then
+                                                                                                echo failure 23058 "OBSERVED_BIN_COUNT=$OBSERVED_BIN_COUNT"
+                                                                                                exit 95
+                                                                                            fi
+                                                                                        '' ;
+                                                                                } ;
+                                                                        in "${ application }/bin/test" ;
+                                                                in
+                                                                    ''
+                                                                        machine.wait_for_unit("multi-user.target")
+                                                                        machine.succeed("bash -c 'runuser ${ testuser } -- ${ pre-test-2 }'")
+                                                                        machine.succeed("bash -c 'runuser ${ testuser } -- ${ test }'")
+                                                                    '' ;
+                                                    } ;
                                             resource-true-true =
                                                 pkgs.nixosTest
                                                     {
