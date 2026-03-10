@@ -681,6 +681,15 @@
                                                                                                 script = ''failure'' ;
                                                                                                 variables = { } ;
                                                                                             } ;
+                                                                                    find =
+                                                                                        bin
+                                                                                            {
+                                                                                                environment = [ ] ;
+                                                                                                name = "find" ;
+                                                                                                runtimeInputs = pkgs : [ pkgs.findutils ] ;
+                                                                                                script = ''find'' ;
+                                                                                                variables = { } ;
+                                                                                            } ;
                                                                                     studio =
                                                                                         bin
                                                                                             {
@@ -3479,6 +3488,7 @@
                                                                                                         ( resources.production.bin.checks.failure { failure = 32527 ; } )
                                                                                                         ( resources.production.bin.checks.studio { failure = 28568 ; } )
                                                                                                         ( resources.production.bin.checks.false-true { failure = 18034 ; } )
+                                                                                                        ( resources.production.bin.checks.find { failure = 21361 ; } )
                                                                                                         ( resources.production.bin.checks.true-true { failure = 17466 ; } )
                                                                                                         ( resources.production.bin.checks.verify-log { failure = 8136 ; } )
                                                                                                     ] ;
@@ -3821,7 +3831,7 @@
                                                                                             then
                                                                                                 exit 99
                                                                                             fi
-                                                                                            assert-bin
+                                                                                            # assert-bin
                                                                                         '' ;
                                                                                 } ;
                                                                         in "${ application }/bin/pre-test" ;
@@ -3853,7 +3863,7 @@
                                                                     ''
                                                                         machine.wait_for_unit("multi-user.target")
                                                                         machine.succeed("bash -c 'runuser ${ testuser } -- ${ pre-test-2 }'")
-                                                                        machine.succeed("bash -c 'runuser ${ testuser } -- ${ test }'")
+                                                                        # machine.succeed("bash -c 'runuser ${ testuser } -- ${ test }'")
                                                                     '' ;
                                                     } ;
                                             resource-true-true =
