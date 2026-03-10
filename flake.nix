@@ -3880,6 +3880,72 @@
                                                                         machine.succeed("bash -c 'runuser ${ testuser } -- ${ test }'")
                                                                     '' ;
                                                     } ;
+                                            resource-true-false =
+                                                pkgs.nixosText
+                                                    {
+                                                        name = "resource-true-false" ;
+                                                        nodes.machine = { ... } : { imports = builtins.concatLists [ [ user ] private ] ; } ;
+                                                        testScript =
+                                                            let
+                                                                pre-test =
+                                                                    let
+                                                                        application =
+                                                                            pkgs.writeShellApplication
+                                                                                {
+                                                                                    name = "pre-test" ;
+                                                                                    runtimeInputs = [ ] ;
+                                                                                    text =
+                                                                                        ''
+                                                                                            INDEX="$1"
+                                                                                            if [[ "$INDEX" -gt 0 ]]
+                                                                                            then
+                                                                                                NEXT=$(( INDEX - 1 ))
+                                                                                                bash -c "$0 $NEXT"
+                                                                                            else
+                                                                                                while [[ ! -f "$HOME/pads/checks/.envrc" ]]
+                                                                                                do
+                                                                                                   echo 14107 WAIT for .envrc >&2
+                                                                                                   sleep 1
+                                                                                                done
+                                                                                                cd "$HOME/pads/checks"
+                                                                                                # we think that systemd scripts cause errors
+                                                                                                # we just want a clean slate
+                                                                                                # for testing
+                                                                                                find "$HOME/resources/quarantine.init" -name "*.sh" -exec {} \;
+                                                                                                # shellcheck disable=SC1091
+                                                                                                source "$HOME/pads/checks/.envrc"
+                                                                                                if false-true
+                                                                                                then
+                                                                                                    exit 99
+                                                                                                fi
+                                                                                            fi
+                                                                                        '' ;
+                                                                                } ;
+                                                                            in "${ application }/bin/pre-test" ;
+                                                                test =
+                                                                    let
+                                                                        application =
+                                                                            pkgs.writeShellApplication
+                                                                                {
+                                                                                    name = "test" ;
+                                                                                    runtimeInputs = [ ] ;
+                                                                                    text =
+                                                                                        ''
+                                                                                            find "$HOME/resources/quarantine.init" -name "*.sh" -exec {} \;
+                                                                                            find "$HOME/resources/quarantine.init" -mindepth 1 | while read -r LOG
+                                                                                            do
+                                                                                                exit 99
+                                                                                            done
+                                                                                        '' ;
+                                                                                } ;
+                                                                        in "${ application }/bin/test" ;
+                                                                in
+                                                                    ''
+                                                                        machine.wait_for_unit("multi-user.target")
+                                                                        machine.succeed("bash -c 'runuser ${ testuser } -- ${ pre-test } 0'")
+                                                                        machine.succeed("bash -c 'runuser ${ testuser } -- ${ test }'")
+                                                                    '' ;
+                                                    } ;
                                             resource-true-true =
                                                 pkgs.nixosTest
                                                     {
