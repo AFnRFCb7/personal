@@ -3881,7 +3881,7 @@
                                                                     '' ;
                                                     } ;
                                             resource-true-false =
-                                                pkgs.nixosText
+                                                pkgs.nixosTest
                                                     {
                                                         name = "resource-true-false" ;
                                                         nodes.machine = { ... } : { imports = builtins.concatLists [ [ user ] private ] ; } ;
