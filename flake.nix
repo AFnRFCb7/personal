@@ -3831,7 +3831,8 @@
                                                                                             then
                                                                                                 exit 99
                                                                                             fi
-                                                                                            # assert-bin
+                                                                                            find "$HOME/resources/quarantine.init"
+                                                                                            exit 91
                                                                                         '' ;
                                                                                 } ;
                                                                         in "${ application }/bin/pre-test" ;
