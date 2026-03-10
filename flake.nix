@@ -3809,7 +3809,7 @@
                                                                                     runtimeInputs = [ ] ;
                                                                                     text =
                                                                                         ''
-                                                                                            true
+                                                                                            # shellcheck disable=SC1072
                                                                                             # while [[ ! -f "$HOME/pads/checks/.envrc" ]]
                                                                                             # do
                                                                                             #    echo 14107 WAIT for .envrc >&2
