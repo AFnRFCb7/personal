@@ -3837,7 +3837,6 @@
                                                                         in "${ application }/bin/test" ;
                                                                 in
                                                                     ''
-
                                                                         machine.wait_for_unit("multi-user.target")
                                                                         machine.succeed("bash -c 'runuser ${ testuser } -- ${ pre-test-1 }'")
                                                                         machine.succeed("bash -c 'runuser ${ testuser } -- ${ test }'")
