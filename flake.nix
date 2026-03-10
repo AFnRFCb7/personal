@@ -714,6 +714,30 @@
                                                                                                         CHECK = resources : resources.checks.false.true.false-true { failure = 13207 ; setup = setup : ''${ setup } false true'' ; } ;
                                                                                                     } ;
                                                                                             } ;
+                                                                                    false-false =
+                                                                                        bin
+                                                                                            {
+                                                                                                environment = [ ] ;
+                                                                                                name = "false-false" ;
+                                                                                                runtimeInputs = pkgs : [ ] ;
+                                                                                                script = ''echo "$CHECK"'' ;
+                                                                                                variables =
+                                                                                                    {
+                                                                                                        CHECK = resources : resources.checks.false.false.false-false { failure = 22411 ; setup = setup : ''${ setup } false false'' ; } ;
+                                                                                                    } ;
+                                                                                            } ;
+                                                                                    true-false =
+                                                                                        bin
+                                                                                            {
+                                                                                                environment = [ ] ;
+                                                                                                name = "true-true" ;
+                                                                                                runtimeInputs = pkgs : [ ] ;
+                                                                                                script = ''echo "$CHECK"'' ;
+                                                                                                variables =
+                                                                                                    {
+                                                                                                        CHECK = resources : resources.checks.true.false.true-false { failure = 27078 ; setup = setup : ''${ setup } true false'' ; } ;
+                                                                                                    } ;
+                                                                                            } ;
                                                                                     true-true =
                                                                                         bin
                                                                                             {
