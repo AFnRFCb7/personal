@@ -3825,10 +3825,15 @@
                                                                                                sleep 1
                                                                                             done
                                                                                             cd "$HOME/pads/checks"
+                                                                                            if [[ -d "$HOME/resources/quarantine.init" ]]
+                                                                                            then
+                                                                                                find "$HOME/resources/quarantine.init"
+                                                                                                echo ALPHA
+                                                                                            fi
                                                                                             # shellcheck disable=SC1091
                                                                                             source "$HOME/pads/checks/.envrc"
-                                                                                            find "$HOME/resources/quarantine.init"
-                                                                                            echo MIUD
+                                                                                            find "$HOME/resources/quarantine.init" -name "log.yaml" -exec cat {} \;
+                                                                                            echo BETA
                                                                                             if false-true
                                                                                             then
                                                                                                 exit 99
