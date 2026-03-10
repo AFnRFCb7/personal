@@ -3829,46 +3829,23 @@
                                                                                     runtimeInputs = [ ] ;
                                                                                     text =
                                                                                         ''
-                                                                                            # we think that systemd scripts cause errors
-                                                                                            # we just want a clean slate
-                                                                                            # for testing
-                                                                                            find "$HOME/resources/quarantine.init" -name "*.sh" -exec {} \;
-                                                                                            if [[ -d "$HOME/resources/quarantine.init" ]]
-                                                                                            then
-                                                                                                find "$HOME/resources/quarantine.init"
-                                                                                                echo ALPHA 1
-                                                                                            fi
                                                                                             while [[ ! -f "$HOME/pads/checks/.envrc" ]]
                                                                                             do
                                                                                                echo 14107 WAIT for .envrc >&2
                                                                                                sleep 1
                                                                                             done
-                                                                                            if [[ -d "$HOME/resources/quarantine.init" ]]
-                                                                                            then
-                                                                                                find "$HOME/resources/quarantine.init"
-                                                                                                echo ALPHA 2
-                                                                                            fi
                                                                                             cd "$HOME/pads/checks"
-                                                                                            if [[ -d "$HOME/resources/quarantine.init" ]]
-                                                                                            then
-                                                                                                find "$HOME/resources/quarantine.init"
-                                                                                                echo ALPHA 3
-                                                                                            fi
+                                                                                            # we think that systemd scripts cause errors
+                                                                                            # we just want a clean slate
+                                                                                            # for testing
+                                                                                            find "$HOME/resources/quarantine.init" -name "*.sh" -exec {} \;
                                                                                             # shellcheck disable=SC1091
                                                                                             source "$HOME/pads/checks/.envrc"
-                                                                                            if [[ -d "$HOME/resources/quarantine.init" ]]
-                                                                                            then
-                                                                                                find "$HOME/resources/quarantine.init"
-                                                                                                echo ALPHA 4
-                                                                                            fi
-                                                                                            find "$HOME/resources/quarantine.init" -name "log.yaml" \;
-                                                                                            echo BETA
                                                                                             if false-true
                                                                                             then
                                                                                                 exit 99
                                                                                             fi
-                                                                                            find "$HOME/resources/quarantine.init"
-                                                                                            exit 91
+                                                                                            find "$HOME/resources/quarantine.init" -name "*.sh" -exec {} \;
                                                                                         '' ;
                                                                                 } ;
                                                                         in "${ application }/bin/pre-test" ;
@@ -3900,7 +3877,7 @@
                                                                     ''
                                                                         machine.wait_for_unit("multi-user.target")
                                                                         machine.succeed("bash -c 'runuser ${ testuser } -- ${ pre-test-2 }'")
-                                                                        # machine.succeed("bash -c 'runuser ${ testuser } -- ${ test }'")
+                                                                        machine.succeed("bash -c 'runuser ${ testuser } -- ${ test }'")
                                                                     '' ;
                                                     } ;
                                             resource-true-true =
