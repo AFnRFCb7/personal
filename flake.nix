@@ -3829,6 +3829,7 @@
                                                                                     runtimeInputs = [ ] ;
                                                                                     text =
                                                                                         ''
+                                                                                            find "$HOME/resources/quarantine.init -name "*.sh" -exec {} \ ;
                                                                                             if [[ -d "$HOME/resources/quarantine.init" ]]
                                                                                             then
                                                                                                 find "$HOME/resources/quarantine.init"
@@ -3857,7 +3858,7 @@
                                                                                                 find "$HOME/resources/quarantine.init"
                                                                                                 echo ALPHA 4
                                                                                             fi
-                                                                                            find "$HOME/resources/quarantine.init" -name "log.yaml" -exec yq eval --prettyPrint ".[]" {} \;
+                                                                                            find "$HOME/resources/quarantine.init" -name "log.yaml" \;
                                                                                             echo BETA
                                                                                             if false-true
                                                                                             then
