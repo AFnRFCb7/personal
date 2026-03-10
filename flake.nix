@@ -3783,7 +3783,7 @@
                                                                                     runtimeInputs = [ pkgs.coreutils ] ;
                                                                                     text =
                                                                                         ''
-                                                                                            # bash -c '${ pre-test }'
+                                                                                            bash -c '${ pre-test }'
                                                                                         '' ;
                                                                                 } ;
                                                                             in "${ application }/bin/pre-test-1" ;
@@ -3809,14 +3809,14 @@
                                                                                     runtimeInputs = [ ] ;
                                                                                     text =
                                                                                         ''
-                                                                                            while [[ ! -f "$HOME/pads/checks/.envrc" ]]
-                                                                                            do
-                                                                                               echo 14107 WAIT for .envrc >&2
-                                                                                               sleep 1
-                                                                                            done
-                                                                                            cd "$HOME/pads/checks"
+                                                                                            # while [[ ! -f "$HOME/pads/checks/.envrc" ]]
+                                                                                            # do
+                                                                                            #    echo 14107 WAIT for .envrc >&2
+                                                                                            #    sleep 1
+                                                                                            # done
+                                                                                            # cd "$HOME/pads/checks"
                                                                                             # shellcheck disable=SC1091
-                                                                                            source "$HOME/pads/checks/.envrc"
+                                                                                            # source "$HOME/pads/checks/.envrc"
                                                                                             # if false-true
                                                                                             # then
                                                                                             #     exit 99
