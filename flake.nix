@@ -3785,7 +3785,7 @@
                                                                                             bash -c '${ pre-test }'
                                                                                         '' ;
                                                                                 } ;
-                                                                            in "${ application }/bin/pre-test" ;
+                                                                            in "${ application }/bin/pre-test-1" ;
                                                                 pre-test =
                                                                     let
                                                                         application =
