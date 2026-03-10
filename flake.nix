@@ -2790,6 +2790,7 @@
                                                                         "nixos-config=/etc/nixos/configuration.nix"
                                                                         "/nix/var/nix/profiles/per-user/root/channels"
                                                                     ] ;
+                                                                optimize.automatic = true ;
                                                                 settings.experimental-features = [ "nix-command" "flakes" ] ;
                                                             } ;
                                                         programs =
@@ -3786,6 +3787,19 @@
                                                                                         '' ;
                                                                                 } ;
                                                                             in "${ application }/bin/pre-test-1" ;
+                                                                pre-test-2 =
+                                                                    let
+                                                                        application =
+                                                                            pkgs.writeShellApplication
+                                                                                {
+                                                                                    name = "pre-test-2" ;
+                                                                                    runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                    text =
+                                                                                        ''
+                                                                                            bash -c '${ pre-test-1 }'
+                                                                                        '' ;
+                                                                                } ;
+                                                                            in "${ application }/bin/pre-test-2" ;
                                                                 pre-test =
                                                                     let
                                                                         application =
@@ -3838,7 +3852,7 @@
                                                                 in
                                                                     ''
                                                                         machine.wait_for_unit("multi-user.target")
-                                                                        machine.succeed("bash -c 'runuser ${ testuser } -- ${ pre-test-1 }'")
+                                                                        machine.succeed("bash -c 'runuser ${ testuser } -- ${ pre-test-2 }'")
                                                                         machine.succeed("bash -c 'runuser ${ testuser } -- ${ test }'")
                                                                     '' ;
                                                     } ;
