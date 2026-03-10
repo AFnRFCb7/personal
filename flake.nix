@@ -730,7 +730,7 @@
                                                                                         bin
                                                                                             {
                                                                                                 environment = [ ] ;
-                                                                                                name = "true-true" ;
+                                                                                                name = "true-false" ;
                                                                                                 runtimeInputs = pkgs : [ ] ;
                                                                                                 script = ''echo "$CHECK"'' ;
                                                                                                 variables =
