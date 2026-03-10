@@ -2790,7 +2790,7 @@
                                                                         "nixos-config=/etc/nixos/configuration.nix"
                                                                         "/nix/var/nix/profiles/per-user/root/channels"
                                                                     ] ;
-                                                                optimize.automatic = true ;
+                                                                optimise.automatic = true ;
                                                                 settings.experimental-features = [ "nix-command" "flakes" ] ;
                                                             } ;
                                                         programs =
