@@ -3809,6 +3809,7 @@
                                                                                     runtimeInputs = [ ] ;
                                                                                     text =
                                                                                         ''
+                                                                                            true
                                                                                             # while [[ ! -f "$HOME/pads/checks/.envrc" ]]
                                                                                             # do
                                                                                             #    echo 14107 WAIT for .envrc >&2
