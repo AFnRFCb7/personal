@@ -3815,7 +3815,8 @@
                                                                                                sleep 1
                                                                                             done
                                                                                             cd "$HOME/pads/checks"
-                                                                                            # source "$HOME/pads/checks/.envrc"
+                                                                                            shellcheck disable=SC1091
+                                                                                            source "$HOME/pads/checks/.envrc"
                                                                                             # if false-true
                                                                                             # then
                                                                                             #     exit 99
