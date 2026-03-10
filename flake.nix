@@ -3821,7 +3821,7 @@
                                                                                             then
                                                                                                 exit 99
                                                                                             fi
-                                                                                            # assert-bin
+                                                                                            assert-bin
                                                                                         '' ;
                                                                                 } ;
                                                                         in "${ application }/bin/pre-test" ;
