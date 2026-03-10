@@ -3814,7 +3814,7 @@
                                                                                                echo 14107 WAIT for .envrc >&2
                                                                                                sleep 1
                                                                                             done
-                                                                                            # cd "$HOME/pads/checks"
+                                                                                            cd "$HOME/pads/checks"
                                                                                             # source "$HOME/pads/checks/.envrc"
                                                                                             # if false-true
                                                                                             # then
