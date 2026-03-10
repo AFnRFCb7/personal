@@ -3773,6 +3773,19 @@
                                                         nodes.machine = { ... } : { imports = builtins.concatLists [ [user ] private ] ; };
                                                         testScript =
                                                             let
+                                                                pre-test-1 =
+                                                                    let
+                                                                        application =
+                                                                            pkgs.writeShellApplication
+                                                                                {
+                                                                                    name = "pre-test-1" ;
+                                                                                    runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                    text =
+                                                                                        ''
+                                                                                            bash -c '${ pre-test }'
+                                                                                        '' ;
+                                                                                } ;
+                                                                            in "${ application }/bin/pre-test" ;
                                                                 pre-test =
                                                                     let
                                                                         application =
@@ -3810,12 +3823,14 @@
                                                                                             OBSERVED_LOG_COUNT="$( find /home/${ testuser }/resources/quarantine.init -name "log.yaml" | wc --lines )" || exit 99
                                                                                             if [[ "$OBSERVED_LOG_COUNT" != 0 ]]
                                                                                             then
-                                                                                                failure 3607 "OBSERVED_LOG_COUNT=$OBSERVED_LOG_COUNT"
+                                                                                                echo failure 3607 "OBSERVED_LOG_COUNT=$OBSERVED_LOG_COUNT"
+                                                                                                exit 96
                                                                                             fi
                                                                                             OBSERVED_BIN_COUNT="$( find /home/${ testuser }/resources/quarantine.init -name "*.sh" | wc --lines )" || exit 98
                                                                                             if [[ "$OBSERVED_BIN_COUNT" != 0 ]]
                                                                                             then
-                                                                                                failure 23058 "OBSERVED_BIN_COUNT=$OBSERVED_BIN_COUNT"
+                                                                                                echo failure 23058 "OBSERVED_BIN_COUNT=$OBSERVED_BIN_COUNT"
+                                                                                                exit 95
                                                                                             fi
                                                                                         '' ;
                                                                                 } ;
@@ -3824,7 +3839,7 @@
                                                                     ''
 
                                                                         machine.wait_for_unit("multi-user.target")
-                                                                        machine.succeed("bash -c 'runuser ${ testuser } -- ${ pre-test }'")
+                                                                        machine.succeed("bash -c 'runuser ${ testuser } -- ${ pre-test-1 }'")
                                                                         machine.succeed("bash -c 'runuser ${ testuser } -- ${ test }'")
                                                                     '' ;
                                                     } ;
