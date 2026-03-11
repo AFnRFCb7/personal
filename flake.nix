@@ -133,7 +133,7 @@
                                                         ignore :
                                                             {
                                                                 init =
-                                                                    { failure , pkgs , resources , root , seed , sequential , wrap } :
+                                                                    { failure , pkgs , resources , root , seed , sequential , trace , wrap } :
                                                                         let
                                                                             application =
                                                                                 pkgs.writeShellApplication
@@ -183,7 +183,7 @@
                                                                 ignore :
                                                                     {
                                                                         init =
-                                                                            { failure , pkgs , resources , root , seed , sequential , wrap } :
+                                                                            { failure , pkgs , resources , root , seed , sequential , trace , wrap } :
                                                                                 let
                                                                                     application =
                                                                                         pkgs.writeShellApplication
@@ -221,7 +221,7 @@
                                                                 ignore :
                                                                     {
                                                                         init =
-                                                                            { failure , pkgs , resources , root , seed , sequential , wrap } :
+                                                                            { failure , pkgs , resources , root , seed , sequential , trace , wrap } :
                                                                                 let
                                                                                     application =
                                                                                         pkgs.writeShellApplication
@@ -281,7 +281,7 @@
                                                                 ignore :
                                                                     {
                                                                         init =
-                                                                            { failure , pkgs , resources , root , seed , sequential , wrap } :
+                                                                            { failure , pkgs , resources , root , seed , sequential , trace , wrap } :
                                                                                 let
                                                                                     application =
                                                                                         pkgs.writeShellApplication
@@ -303,7 +303,7 @@
                                                                         ignore :
                                                                             {
                                                                                 init =
-                                                                                    { failure , pkgs , resources , root , seed , sequential , wrap } :
+                                                                                    { failure , pkgs , resources , root , seed , sequential , trace , wrap } :
                                                                                         let
                                                                                             application =
                                                                                                 pkgs.writeShellApplication
@@ -331,7 +331,7 @@
                                                                         ignore :
                                                                             {
                                                                                 init =
-                                                                                    { failure , pkgs , resources , root , seed , sequential , wrap } :
+                                                                                    { failure , pkgs , resources , root , seed , sequential , trace , wrap } :
                                                                                         let
                                                                                             application =
                                                                                                 pkgs.writeShellApplication
@@ -351,7 +351,7 @@
                                                                         ignore :
                                                                             {
                                                                                 init =
-                                                                                    { failure , pkgs , resources , root , seed , sequential , wrap } :
+                                                                                    { failure , pkgs , resources , root , seed , sequential , trace , wrap } :
                                                                                         let
                                                                                             application =
                                                                                                 pkgs.writeShellApplication
@@ -388,7 +388,7 @@
                                                                 ignore :
                                                                     {
                                                                         init =
-                                                                            { failure , pkgs , resources , root , seed , sequential , wrap } :
+                                                                            { failure , pkgs , resources , root , seed , sequential , trace , wrap } :
                                                                                 let
                                                                                     application =
                                                                                         pkgs.writeShellApplication
@@ -413,7 +413,7 @@
                                                                                      {
                                                                                         depth = 1 ;
                                                                                          init =
-                                                                                             { failure , pkgs , resources , root , seed , sequential , wrap } :
+                                                                                             { failure , pkgs , resources , root , seed , sequential , trace , wrap } :
                                                                                                  let
                                                                                                      application =
                                                                                                          pkgs.writeShellApplication
@@ -491,7 +491,7 @@
                                                                             {
                                                                                 depth = 1 ;
                                                                                 init =
-                                                                                    { failure , pkgs , resources , root , seed , sequential , wrap } :
+                                                                                    { failure , pkgs , resources , root , seed , sequential , trace , wrap } :
                                                                                         let
                                                                                             application =
                                                                                                 pkgs.writeShellApplication
@@ -748,7 +748,7 @@
                                                                         ignore :
                                                                             {
                                                                                 init =
-                                                                                    { failure , pkgs , resources , root , seed , sequential , wrap } :
+                                                                                    { failure , pkgs , resources , root , seed , sequential , trace , wrap } :
                                                                                         let
                                                                                             application =
                                                                                                 pkgs.writeShellApplication
@@ -828,7 +828,7 @@
                                                                         ignore :
                                                                             {
                                                                                 init =
-                                                                                    { failure , pkgs , resources , root , seed , sequential , wrap } :
+                                                                                    { failure , pkgs , resources , root , seed , sequential , trace , wrap } :
                                                                                         let
                                                                                             application =
                                                                                                 pkgs.writeShellApplication
@@ -874,7 +874,7 @@
                                                                 ignore :
                                                                     {
                                                                         init =
-                                                                            { failure , pkgs , resources , root , seed , sequential , wrap } :
+                                                                            { failure , pkgs , resources , root , seed , sequential , trace , wrap } :
                                                                                 let
                                                                                     application =
                                                                                         pkgs.writeShellApplication
@@ -901,7 +901,7 @@
                                                                 ignore :
                                                                     {
                                                                         init =
-                                                                            { failure , pkgs , resources , root , seed , sequential , wrap } :
+                                                                            { failure , pkgs , resources , root , seed , sequential , trace , wrap } :
                                                                                 let
                                                                                     application =
                                                                                         pkgs.writeShellApplication
@@ -959,7 +959,7 @@
                                                                         ignore :
                                                                             {
                                                                                 init =
-                                                                                    { failure , pkgs , resources , root , seed , sequential , wrap } :
+                                                                                    { failure , pkgs , resources , root , seed , sequential , trace , wrap } :
                                                                                         let
                                                                                             application =
                                                                                                 pkgs.writeShellApplication
@@ -987,7 +987,7 @@
                                                                         ignore :
                                                                             {
                                                                                 init =
-                                                                                    { failure , pkgs , resources , root , seed , sequential , wrap } :
+                                                                                    { failure , pkgs , resources , root , seed , sequential , trace , wrap } :
                                                                                         let
                                                                                             application =
                                                                                                 pkgs.writeShellApplication
@@ -1029,7 +1029,7 @@
                                                                             {
                                                                                 depth = 1 ;
                                                                                 init =
-                                                                                    { failure , pkgs , resources , root , seed , sequential , wrap } :
+                                                                                    { failure , pkgs , resources , root , seed , sequential , trace , wrap } :
                                                                                         let
                                                                                             application =
                                                                                                 pkgs.writeShellApplication
@@ -1800,7 +1800,7 @@
                                                                                 ignore :
                                                                                     {
                                                                                         init =
-                                                                                            { failure , pkgs , resources , root , seed , sequential , wrap } :
+                                                                                            { failure , pkgs , resources , root , seed , sequential , trace , wrap } :
                                                                                                 let
                                                                                                     application =
                                                                                                         pkgs.writeShellApplication
@@ -1851,7 +1851,7 @@
                                                                                         ignore :
                                                                                             {
                                                                                                 init =
-                                                                                                    { failure , pkgs , resources , root , seed , sequential , wrap } :
+                                                                                                    { failure , pkgs , resources , root , seed , sequential , trace , wrap } :
                                                                                                         let
                                                                                                             application =
                                                                                                                 pkgs.writeShellApplication
@@ -2223,7 +2223,7 @@
                                                                                         ignore :
                                                                                             {
                                                                                                 init =
-                                                                                                    { failure , pkgs , resources , root , seed , sequential , wrap } :
+                                                                                                    { failure , pkgs , resources , root , seed , sequential , trace , wrap } :
                                                                                                         let
                                                                                                             application =
                                                                                                                 pkgs.writeShellApplication
@@ -2432,7 +2432,7 @@
                                                                         name : ignore :
                                                                             {
                                                                                 init =
-                                                                                    { failure , pkgs , resources , root , seed , sequential , wrap } :
+                                                                                    { failure , pkgs , resources , root , seed , sequential , trace , wrap } :
                                                                                         let
                                                                                             application =
                                                                                                 pkgs.writeShellApplication
@@ -2476,7 +2476,7 @@
                                                                 ignore :
                                                                     {
                                                                         init =
-                                                                            { failure , pkgs , resources , root , seed , sequential , wrap } :
+                                                                            { failure , pkgs , resources , root , seed , sequential , trace , wrap } :
                                                                                 let
                                                                                     application =
                                                                                         pkgs.writeShellApplication
@@ -2600,7 +2600,7 @@
                                                             temporary =
                                                                 ignore :
                                                                     {
-                                                                        init = { failure , pkgs , resources , root , seed , sequential , wrap } : "" ;
+                                                                        init = { failure , pkgs , resources , root , seed , sequential , trace , wrap } : "" ;
                                                                         transient = true ;
                                                                     } ;
                                                             volume =
@@ -2609,7 +2609,7 @@
                                                                         branch : ignore :
                                                                             {
                                                                                 init =
-                                                                                    { failure , pkgs , resources , root , seed , sequential , wrap } :
+                                                                                    { failure , pkgs , resources , root , seed , sequential , trace , wrap } :
                                                                                         let
                                                                                             application =
                                                                                                 pkgs.writeShellApplication
@@ -3733,7 +3733,7 @@
                                                             expected = ./resource.json ;
                                                             expected-resource = "/build/resources/mounts/0000000311691948" ;
                                                             init =
-                                                                { failure , pkgs , resources , root , seed , sequential , wrap } :
+                                                                { failure , pkgs , resources , root , seed , sequential , trace , wrap } :
                                                                     let
                                                                         application =
                                                                             pkgs.writeShellApplication
