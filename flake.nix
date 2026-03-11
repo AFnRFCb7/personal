@@ -812,7 +812,7 @@
                                                                                                                             fi
                                                                                                                         fi
                                                                                                                         POST_COUNT="$( find /home/${ config.personal.name }/resources/mounts -maxdepth 1 | wc --lines )" || failure 23762
-                                                                                                                        if [[ "$PRE_COUNT" != "$POST_COUNT" ]]
+                                                                                                                        if [[ $(( PRE_COUNT + 1 )) != "$POST_COUNT" ]]
                                                                                                                         then
                                                                                                                             failure 5236 "PRE_COUNT=$PRE_COUNT" "POST_COUNT=$POST_COUNT"
                                                                                                                         fi
