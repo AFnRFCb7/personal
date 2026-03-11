@@ -791,7 +791,7 @@
                                                                                                                         in "${ application }/bin/script" ;
                                                                                                                 in
                                                                                                                     ''
-                                                                                                                        trace 3310
+                                                                                                                        trace 3310 "=\$*=$*"
                                                                                                                         INIT="$1"
                                                                                                                         RELEASE="$2"
                                                                                                                         trace 14195 "INIT=$INIT" "RELEASE=$RELEASE"
