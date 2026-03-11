@@ -767,7 +767,6 @@
                                                                                                                                         ''
                                                                                                                                             INIT="$1"
                                                                                                                                             RELEASE="$2"
-                                                                                                                                            trace 27143 "INIT=$INIT" "RELEASE=$RELEASE"
                                                                                                                                             if "$INIT"
                                                                                                                                             then
                                                                                                                                                 if RESOURCE=${ resources.production.checks.pre-test { failure = 2905 ; setup = setup : ''${ setup } "$INIT" "$RELEASE"'' ; } }
@@ -837,7 +836,6 @@
                                                                                                         runtimeInputs = [ pkgs.coreutils trace ] ;
                                                                                                         text =
                                                                                                             ''
-                                                                                                                trace 27868
                                                                                                                 INIT="$1"
                                                                                                                 RELEASE="$2"
                                                                                                                 echo "$INIT" > /mount/init
