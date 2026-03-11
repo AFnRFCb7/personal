@@ -791,15 +791,18 @@
                                                                                                                     ''
                                                                                                                         INIT="$1"
                                                                                                                         RELEASE="$2"
-                                                                                                                        if [[ -d ${ resources-directory }/bin/quarantine.init ]]
+                                                                                                                        if [[ -d /home/${ config.personal.name }/resources/quarantine.init ]]
                                                                                                                         then
-                                                                                                                            find ${ resources-directory }/bin/quarantine.init -name "*.sh" -exec {} \;
+                                                                                                                            find /home/${ config.personal.name }/resources//quarantine.init -name "*.sh" -exec {} \;
                                                                                                                         fi
                                                                                                                         if ! bash -c "${ script } $INIT $RELEASE"
                                                                                                                         then
                                                                                                                             failure 7057
                                                                                                                         fi
-
+                                                                                                                        if "$INIT"
+                                                                                                                        then
+                                                                                                                            find /home/${ config.personal.name }/resources//quarantine.init -name "*.sh" -exec failure 16482 {} \;
+                                                                                                                        fi
                                                                                                                     '' ;
                                                                                                     } ;
                                                                                             in "${ application }/bin/init" ;
