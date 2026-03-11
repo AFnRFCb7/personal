@@ -763,7 +763,7 @@
                                                                                                                 then
                                                                                                                     if RESOURCE=${ resources.production.checks.pre-test { failure = 2905 ; setup = setup : ''${ setup } "$INIT" "$RELEASE"'' ; } }
                                                                                                                     then
-                                                                                                                        echo GOOD:  We were able to run the pre-test $RESOURCE
+                                                                                                                        echo "GOOD:  We were able to run the pre-test $RESOURCE"
                                                                                                                     else
                                                                                                                         failure 17957
                                                                                                                     fi
