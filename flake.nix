@@ -793,7 +793,7 @@
                                                                                                                         RELEASE="$2"
                                                                                                                         if [[ -d /home/${ config.personal.name }/resources/quarantine.init ]]
                                                                                                                         then
-                                                                                                                            find /home/${ config.personal.name }/resources//quarantine.init -name "*.sh" -exec {} \;
+                                                                                                                            find /home/${ config.personal.name }/resources/quarantine.init -name "*.sh" -exec {} \;
                                                                                                                         fi
                                                                                                                         if ! bash -c "${ script } $INIT $RELEASE"
                                                                                                                         then
@@ -801,7 +801,15 @@
                                                                                                                         fi
                                                                                                                         if "$INIT"
                                                                                                                         then
-                                                                                                                            find /home/${ config.personal.name }/resources//quarantine.init -name "*.sh" -exec failure 16482 {} \;
+                                                                                                                            find /home/${ config.personal.name }/resources/quarantine.init -name "*.sh" -exec failure 16482 {} \;
+                                                                                                                        else
+                                                                                                                            COUNT="$( find /home/${ config.personal.name }/resources/quarantine.init -name "*.sh" | wc --lines )" || failure 22471
+                                                                                                                            if [[ "$COUNT" == 1 ]]
+                                                                                                                            then
+                                                                                                                                find /home/${ config.personal.name }/resources/quarantine.init -name "*.sh" -exec {} \;
+                                                                                                                            else
+                                                                                                                                failure 6604 "COUNT=$COUNT"
+                                                                                                                            fi
                                                                                                                         fi
                                                                                                                     '' ;
                                                                                                     } ;
