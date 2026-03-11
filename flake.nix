@@ -788,9 +788,9 @@
                                                                                                                         in "${ application }/bin/script" ;
                                                                                                                 in
                                                                                                                     ''
+                                                                                                                        trace 3310
                                                                                                                         INIT="$1"
                                                                                                                         RELEASE="$2"
-                                                                                                                        trace 22629 "INIT=$INIT" "RELEASE=$RELEASE"
                                                                                                                         mkdir --parents /home/${ config.personal.name }/resources/mounts
                                                                                                                         PRE_COUNT="$( find /home/${ config.personal.name }/resources/mounts -maxdepth 1 | wc --lines )" || failure 23762
                                                                                                                         find /home/${ config.personal.name }/resources/mounts -maxdepth 1 | sort
