@@ -765,8 +765,10 @@
                                                                                                                                     runtimeInputs = [ pkgs.coreutils trace ] ;
                                                                                                                                     text =
                                                                                                                                         ''
+                                                                                                                                            trace 2710
                                                                                                                                             INIT="$1"
                                                                                                                                             RELEASE="$2"
+                                                                                                                                            trace 4702 "INIT=$INIT" "RELEASE=$RELEASE"
                                                                                                                                             if "$INIT"
                                                                                                                                             then
                                                                                                                                                 if RESOURCE=${ resources.production.checks.pre-test { failure = 2905 ; setup = setup : ''${ setup } "$INIT" "$RELEASE"'' ; } }
@@ -776,6 +778,7 @@
                                                                                                                                                     failure 17957
                                                                                                                                                 fi
                                                                                                                                             else
+
                                                                                                                                                 if RESOURCE=${ resources.production.checks.pre-test { failure = 4900 ; setup = setup : ''${ setup } "$INIT" "$RELEASE"'' ; } }
                                                                                                                                                 then
                                                                                                                                                     failure 14905 "RESOURCE=$RESOURCE"
@@ -791,6 +794,7 @@
                                                                                                                         trace 3310
                                                                                                                         INIT="$1"
                                                                                                                         RELEASE="$2"
+                                                                                                                        trace 14195 "INIT=$INIT" "RELEASE=$RELEASE"
                                                                                                                         mkdir --parents /home/${ config.personal.name }/resources/mounts
                                                                                                                         PRE_COUNT="$( find /home/${ config.personal.name }/resources/mounts -maxdepth 1 | wc --lines )" || failure 23762
                                                                                                                         find /home/${ config.personal.name }/resources/mounts -maxdepth 1 | sort
