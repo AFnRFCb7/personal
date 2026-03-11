@@ -643,7 +643,7 @@
                                                                                                 bin
                                                                                                     {
                                                                                                         environment = [ ] ;
-                                                                                                        name = "check" ;
+                                                                                                        name = "false-false" ;
                                                                                                         runtimeInputs = pkgs : [ pkgs.coreutils ] ;
                                                                                                         script = ''echo "$CHECK"'' ;
                                                                                                         variables = { CHECK = resources : resources.production.check.false.false { failure = 6405 ; } ; } ;
@@ -652,7 +652,7 @@
                                                                                                 bin
                                                                                                     {
                                                                                                         environment = [ ] ;
-                                                                                                        name = "check" ;
+                                                                                                        name = "false-true" ;
                                                                                                         runtimeInputs = pkgs : [ pkgs.coreutils ] ;
                                                                                                         script = ''echo "$CHECK"'' ;
                                                                                                         variables = { CHECK = resources : resources.production.check.false.true { failure = 21403 ; } ; } ;
@@ -664,7 +664,7 @@
                                                                                                 bin
                                                                                                     {
                                                                                                         environment = [ ] ;
-                                                                                                        name = "check" ;
+                                                                                                        name = "true-false" ;
                                                                                                         runtimeInputs = pkgs : [ pkgs.coreutils ] ;
                                                                                                         script = ''echo "$CHECK"'' ;
                                                                                                         variables = { CHECK = resources : resources.production.check.true.false { failure = 15585 ; } ; } ;
@@ -673,7 +673,7 @@
                                                                                                 bin
                                                                                                     {
                                                                                                         environment = [ ] ;
-                                                                                                        name = "check" ;
+                                                                                                        name = "true-true" ;
                                                                                                         runtimeInputs = pkgs : [ pkgs.coreutils ] ;
                                                                                                         script = ''echo "$CHECK"'' ;
                                                                                                         variables = { CHECK = resources : resources.production.check.true.true { failure = 13909 ; } ; } ;
@@ -3406,10 +3406,10 @@
                                                                                                 autocomplete = [ ] ;
                                                                                                 bin =
                                                                                                     [
-                                                                                                        ( resources.production.bin.checks.false-false { failure = 11481 ; } )
-                                                                                                        ( resources.production.bin.checks.false-true { failure = 29052 ; } )
-                                                                                                        ( resources.production.bin.checks.true-false { failure = 31162 ; } )
-                                                                                                        ( resources.production.bin.checks.true-true { failure = 14580 ; } )
+                                                                                                        ( resources.production.bin.checks.false.false { failure = 11481 ; } )
+                                                                                                        ( resources.production.bin.checks.false.true { failure = 29052 ; } )
+                                                                                                        ( resources.production.bin.checks.true.false { failure = 31162 ; } )
+                                                                                                        ( resources.production.bin.checks.true.true { failure = 14580 ; } )
                                                                                                     ] ;
                                                                                                 man = [ ] ;
                                                                                             } ;
@@ -3716,7 +3716,6 @@
                                                                                     runtimeInputs = [ ] ;
                                                                                     text =
                                                                                         ''
-                                                                                            ### WTF log.yaml should exist but does not
                                                                                             while [[ ! -f "$HOME/pads/checks/.envrc" ]]
                                                                                             do
                                                                                                echo d94d5d11 WAIT for .envrc >&2
