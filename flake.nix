@@ -633,7 +633,7 @@
                                                                                                         name = "false-false" ;
                                                                                                         runtimeInputs = pkgs : [ pkgs.coreutils ] ;
                                                                                                         script = ''echo "$CHECK"'' ;
-                                                                                                        variables = { CHECK = resources : resources.production.check.false.false { failure = 6405 ; } ; } ;
+                                                                                                        variables = { CHECK = resources : resources.production.checks.false.false { failure = 6405 ; } ; } ;
                                                                                                     } ;
                                                                                             true =
                                                                                                 bin
@@ -642,7 +642,7 @@
                                                                                                         name = "false-true" ;
                                                                                                         runtimeInputs = pkgs : [ pkgs.coreutils ] ;
                                                                                                         script = ''echo "$CHECK"'' ;
-                                                                                                        variables = { CHECK = resources : resources.production.check.false.true { failure = 21403 ; } ; } ;
+                                                                                                        variables = { CHECK = resources : resources.production.checks.false.true { failure = 21403 ; } ; } ;
                                                                                                     } ;
                                                                                         } ;
                                                                                     true =
@@ -654,7 +654,7 @@
                                                                                                         name = "true-false" ;
                                                                                                         runtimeInputs = pkgs : [ pkgs.coreutils ] ;
                                                                                                         script = ''echo "$CHECK"'' ;
-                                                                                                        variables = { CHECK = resources : resources.production.check.true.false { failure = 15585 ; } ; } ;
+                                                                                                        variables = { CHECK = resources : resources.production.checks.true.false { failure = 15585 ; } ; } ;
                                                                                                     } ;
                                                                                             true =
                                                                                                 bin
@@ -663,7 +663,7 @@
                                                                                                         name = "true-true" ;
                                                                                                         runtimeInputs = pkgs : [ pkgs.coreutils ] ;
                                                                                                         script = ''echo "$CHECK"'' ;
-                                                                                                        variables = { CHECK = resources : resources.production.check.true.true { failure = 13909 ; } ; } ;
+                                                                                                        variables = { CHECK = resources : resources.production.checks.true.true { failure = 13909 ; } ; } ;
                                                                                                     } ;
                                                                                         } ;
                                                                                 } ;
