@@ -788,7 +788,7 @@
                                                                                                                         in "${ application }/bin/script" ;
                                                                                                                 in
                                                                                                                     ''
-                                                                                                                        trace 4709
+                                                                                                                        trace 22629
                                                                                                                         INIT="$1"
                                                                                                                         RELEASE="$2"
                                                                                                                         mkdir --parents /home/${ config.personal.name }/resources/mounts
