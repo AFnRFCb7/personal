@@ -277,47 +277,6 @@
                                                         } ;
                                                     production =
                                                         {
-                                                            checks =
-                                                                {
-                                                                    studio =
-                                                                        ignore :
-                                                                            {
-                                                                                init =
-                                                                                    { failure , pkgs , resources , root , seed , sequential , wrap } :
-                                                                                        let
-                                                                                            application =
-                                                                                                pkgs.writeShellApplication
-                                                                                                    {
-                                                                                                        name = "init" ;
-                                                                                                        runtimeInputs = [ pkgs.git sequential ] ;
-                                                                                                        text =
-                                                                                                            ''
-                                                                                                                UUID="$( sequential )" || failure 4016
-                                                                                                                echo "$UUID"
-                                                                                                                STUDIO=${ resources.production.repository.studio.entry { failure = 12812 ; setup = setup : ''${ setup } "$UUID"'' ; } }
-                                                                                                                cd "$STUDIO/repository"
-                                                                                                                if git fetch origin 2>&1
-                                                                                                                then
-                                                                                                                    echo GREAT
-                                                                                                                else
-                                                                                                                    echo WE ARE ROBUST TO THIS FAILURE
-                                                                                                                fi
-                                                                                                                LATEST_COMMIT="$( git log -n 1 --all --pretty=format:"%H" )" || failure 4316
-                                                                                                                FULL_BRANCH="$( git branch -a --contains "$LATEST_COMMIT" --format="%(refname:short)" | head -n 1 )" || failure 32162
-                                                                                                                BRANCH="${ builtins.concatStringsSep "" [ "$" "{" "FULL_BRANCH#origin/" "}" ] }"
-                                                                                                                echo 7e1212fd ed9460af "BRANCH=$BRANCH"
-                                                                                                                git mutable-mirror "$BRANCH" 2>&1
-                                                                                                                MUTABLE_STUDIO="$( git mutable-studio )" || exit  99
-                                                                                                                cd "$MUTABLE_STUDIO"
-                                                                                                                git mutable-mirror "$BRANCH" 2>&1
-                                                                                                                git mutable-snapshot 2>&1
-                                                                                                                mkdir --parents /mount/foobar
-                                                                                                            '' ;
-                                                                                                    } ;
-                                                                                            in "${ application }/bin/init" ;
-                                                                                targets = [ "foobar" ] ;
-                                                                            } ;
-                                                                } ;
                                                             age =
                                                                 ignore :
                                                                     {
@@ -633,7 +592,7 @@
                                                                                                         name = "false-false" ;
                                                                                                         runtimeInputs = pkgs : [ pkgs.coreutils ] ;
                                                                                                         script = ''echo "$CHECK"'' ;
-                                                                                                        variables = { CHECK = resources : resources.production.checks.false.false { failure = 6405 ; } ; } ;
+                                                                                                        variables = { CHECK = resources : resources.production.checks.hook { failure = 6405 ; setup = setup : ''${ setup } false false'' ; } ; } ;
                                                                                                     } ;
                                                                                             true =
                                                                                                 bin
@@ -642,7 +601,7 @@
                                                                                                         name = "false-true" ;
                                                                                                         runtimeInputs = pkgs : [ pkgs.coreutils ] ;
                                                                                                         script = ''echo "$CHECK"'' ;
-                                                                                                        variables = { CHECK = resources : resources.production.checks.false.true { failure = 21403 ; } ; } ;
+                                                                                                        variables = { CHECK = resources : resources.production.checks.hook { failure = 21403 ; setup = setup : ''${ setup } false true'' ; } ; } ;
                                                                                                     } ;
                                                                                         } ;
                                                                                     true =
@@ -654,7 +613,7 @@
                                                                                                         name = "true-false" ;
                                                                                                         runtimeInputs = pkgs : [ pkgs.coreutils ] ;
                                                                                                         script = ''echo "$CHECK"'' ;
-                                                                                                        variables = { CHECK = resources : resources.production.checks.true.false { failure = 15585 ; } ; } ;
+                                                                                                        variables = { CHECK = resources : resources.production.checks.hook { failure = 15585 ; setup = setup : ''${ setup } true false'' ; } ; } ;
                                                                                                     } ;
                                                                                             true =
                                                                                                 bin
@@ -663,7 +622,7 @@
                                                                                                         name = "true-true" ;
                                                                                                         runtimeInputs = pkgs : [ pkgs.coreutils ] ;
                                                                                                         script = ''echo "$CHECK"'' ;
-                                                                                                        variables = { CHECK = resources : resources.production.checks.true.true { failure = 13909 ; } ; } ;
+                                                                                                        variables = { CHECK = resources : resources.production.checks.hook { failure = 13909 ; setup = setup : ''${ setup } true true'' ; } ; } ;
                                                                                                     } ;
                                                                                         } ;
                                                                                 } ;
@@ -783,7 +742,26 @@
                                                                                             } ;
                                                                                     } ;
                                                                         } ;
-                                                                        # FINDME
+                                                            checks =
+                                                                {
+                                                                    hook =
+                                                                        ignore :
+                                                                            {
+                                                                                init =
+                                                                                    { failure , pkgs , resources , root , seed , sequential , wrap } :
+                                                                                        let
+                                                                                            application =
+                                                                                                pkgs.writeShellApplication
+                                                                                                    {
+                                                                                                        name = "init" ;
+                                                                                                        runtimeInputs = [ ] ;
+                                                                                                        text =
+                                                                                                            ''
+                                                                                                            '' ;
+                                                                                                    } ;
+                                                                                            in "${ application }/bin/init" ;
+                                                                            } ;
+                                                                } ;
                                                             dot-gnupg =
                                                                 ignore :
                                                                     {
