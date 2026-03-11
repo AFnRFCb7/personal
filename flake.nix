@@ -64,6 +64,9 @@
                             _resource-releaser =
                                 resource-releaser.lib
                                     {
+                                        coreutils = pkgs.coreutils ;
+                                        jq = pkgs.jq ;
+                                        redis = pkgs.redis ;
                                         failure = _failure.implementation "0a13879f" ;
                                         pkgs = pkgs ;
                                     } ;
