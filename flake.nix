@@ -848,6 +848,24 @@
                                                                                                             '' ;
                                                                                                     } ;
                                                                                             in "${ application }/bin/init" ;
+                                                                                release =
+                                                                                    { failure , pkgs , resources , seed , sequential } :
+                                                                                        let
+                                                                                            application =
+                                                                                                pkgs.writeShellApplication
+                                                                                                    {
+                                                                                                        name = "release" ;
+                                                                                                        runtimeInputs = [ failure ] ;
+                                                                                                        text =
+                                                                                                            ''
+                                                                                                                RELEASE="$( cat /mount/release )" || failure 16006
+                                                                                                                if ! "$RELEASE"
+                                                                                                                then
+                                                                                                                    failure 12945
+                                                                                                                fi
+                                                                                                            '' ;
+                                                                                                    } ;
+                                                                                            in "${ application }/bin/init" ;
                                                                                 targets = [ "init" "release" ] ;
                                                                             } ;
                                                                 } ;
