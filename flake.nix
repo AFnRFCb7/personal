@@ -756,26 +756,46 @@
                                                                                                         name = "init" ;
                                                                                                         runtimeInputs = [ failure ] ;
                                                                                                         text =
-                                                                                                            ''
-                                                                                                                INIT="$1"
-                                                                                                                RELEASE="$2"
-                                                                                                                if "$INIT"
-                                                                                                                then
-                                                                                                                    if RESOURCE=${ resources.production.checks.pre-test { failure = 2905 ; setup = setup : ''${ setup } "$INIT" "$RELEASE"'' ; } }
-                                                                                                                    then
-                                                                                                                        echo "GOOD:  We were able to run the pre-test $RESOURCE"
-                                                                                                                    else
-                                                                                                                        failure 17957
-                                                                                                                    fi
-                                                                                                                else
-                                                                                                                    if RESOURCE=${ resources.production.checks.pre-test { failure = 4900 ; setup = setup : ''${ setup } "$INIT" "$RELEASE"'' ; } }
-                                                                                                                    then
-                                                                                                                        failure 14905 "RESOURCE=$RESOURCE"
-                                                                                                                    else
-                                                                                                                        echo GOOD:  We errored on the pre-test
-                                                                                                                    fi
-                                                                                                                fi
-                                                                                                            '' ;
+                                                                                                            let
+                                                                                                                script =
+                                                                                                                    let
+                                                                                                                        application =
+                                                                                                                            pkgs.writeShellApplication
+                                                                                                                                {
+                                                                                                                                    name = "script" ;
+                                                                                                                                    runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                                                    text =
+                                                                                                                                        ''
+                                                                                                                                            INIT="$1"
+                                                                                                                                            RELEASE="$2"
+                                                                                                                                            if "$INIT"
+                                                                                                                                            then
+                                                                                                                                                if RESOURCE=${ resources.production.checks.pre-test { failure = 2905 ; setup = setup : ''${ setup } "$INIT" "$RELEASE"'' ; } }
+                                                                                                                                                then
+                                                                                                                                                    echo "GOOD:  We were able to run the pre-test $RESOURCE"
+                                                                                                                                                else
+                                                                                                                                                    failure 17957
+                                                                                                                                                fi
+                                                                                                                                            else
+                                                                                                                                                if RESOURCE=${ resources.production.checks.pre-test { failure = 4900 ; setup = setup : ''${ setup } "$INIT" "$RELEASE"'' ; } }
+                                                                                                                                                then
+                                                                                                                                                    failure 14905 "RESOURCE=$RESOURCE"
+                                                                                                                                                else
+                                                                                                                                                    echo GOOD:  We errored on the pre-test
+                                                                                                                                                fi
+                                                                                                                                            fi
+                                                                                                                                        '' ;
+                                                                                                                                } ;
+                                                                                                                        in "${ application }/bin/script" ;
+                                                                                                                in
+                                                                                                                    ''
+                                                                                                                        INIT="$1"
+                                                                                                                        RELEASE="$2"
+                                                                                                                        if ! bash -c "${ script } $INIT $RELEASE"
+                                                                                                                        then
+                                                                                                                            failure
+                                                                                                                        fi
+                                                                                                                    '' ;
                                                                                                     } ;
                                                                                             in "${ application }/bin/init" ;
                                                                             } ;
