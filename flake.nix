@@ -129,67 +129,54 @@
                                                                             } ;
                                                 }
                                                 {
-                                                    checks =
-                                                        let
-                                                            checks =
-                                                                ignore :
-                                                                    {
-                                                                        init =
-                                                                            { failure , pkgs , resources , root , seed , sequential , wrap } :
-                                                                                let
-                                                                                    application =
-                                                                                        pkgs.writeShellApplication
-                                                                                            {
-                                                                                                name = "init" ;
-                                                                                                runtimeInputs = [ pkgs.cowsay pkgs.figlet root wrap ] ;
-                                                                                                text =
-                                                                                                    ''
-                                                                                                        mkdir --parents /mount
-                                                                                                        exit ${ if builtins.elemAt seed.path 1 == "true" then "0" else "65" }
-                                                                                                    '' ;
-                                                                                            } ;
-                                                                                    in "${ application }/bin/init" ;
-                                                                        release =
-                                                                            { failure , pkgs , resources , seed , sequential } :
-                                                                                let
-                                                                                    application =
-                                                                                        pkgs.writeShellApplication
-                                                                                            {
-                                                                                                name = "release" ;
-                                                                                                runtimeInputs = [ pkgs.cowsay pkgs.figlet ] ;
-                                                                                                text =
-                                                                                                    ''
-                                                                                                        exit ${ if builtins.elemAt seed.path 2 == "true" then "0" else "65" }
-                                                                                                    '' ;
-                                                                                            } ;
-                                                                                    in "${ application }/bin/release" ;
-                                                                            targets = [ ] ;
-                                                                    } ;
-                                                            in
-                                                                {
-                                                                    false =
-                                                                        {
-                                                                            false =
-                                                                                {
-                                                                                    false-false = checks ;
-                                                                                } ;
-                                                                            true =
-                                                                                {
-                                                                                    false-true = checks ;
-                                                                                } ;
-                                                                        } ;
-                                                                    true =
-                                                                        {
-                                                                            false =
-                                                                                {
-                                                                                    true-false = checks ;
-                                                                                } ;
-                                                                            true =
-                                                                                {
-                                                                                    true-true = checks ;
-                                                                                } ;
-                                                                        } ;
-                                                                } ;
+                                                    check =
+                                                        ignore :
+                                                            {
+                                                                init =
+                                                                    { failure , pkgs , resources , root , seed , sequential , wrap } :
+                                                                        let
+                                                                            application =
+                                                                                pkgs.writeShellApplication
+                                                                                    {
+                                                                                        name = "init" ;
+                                                                                        runtimeInputs = [ pkgs.coreutils failure ] ;
+                                                                                        text =
+                                                                                            ''
+                                                                                                INIT="$1"
+                                                                                                RELEASE="$2"
+                                                                                                echo "$INIT" /mount/init
+                                                                                                echo "$RELEASE" /mount/release
+                                                                                                if "$INIT"
+                                                                                                then
+                                                                                                    exit 0
+                                                                                                else
+                                                                                                    failure 14537
+                                                                                                fi
+                                                                                            '' ;
+                                                                                    } ;
+                                                                            in "${ application }/bin/init" ;
+                                                                release =
+                                                                    { failure , pkgs , resources , seed , sequential } :
+                                                                        let
+                                                                            application =
+                                                                                pkgs.writeShellApplication
+                                                                                    {
+                                                                                        name = "release" ;
+                                                                                        runtimeInputs = [ pkgs.coreutils failure ] ;
+                                                                                        text =
+                                                                                            ''
+                                                                                                RELEASE="$( cat /mount/release" )" || failure 14011
+                                                                                                if "$RELEASE"
+                                                                                                then
+                                                                                                    exit 0
+                                                                                                else
+                                                                                                    failure 29374
+                                                                                                fi
+                                                                                            '' ;
+                                                                                    } ;
+                                                                            in "${ application }/bin/release" ;
+                                                                    targets = [ "init" "release" ] ;
+                                                            } ;
                                                     foobar =
                                                         {
                                                             bin =
