@@ -156,7 +156,7 @@
                                                                                     } ;
                                                                             in "${ application }/bin/init" ;
                                                                 release =
-                                                                    { failure , pkgs , resources , seed , sequential } :
+                                                                    { failure , pkgs , resources , seed , trace , sequential } :
                                                                         let
                                                                             application =
                                                                                 pkgs.writeShellApplication
@@ -411,7 +411,6 @@
                                                                                  hash = builtins.hashString "sha512" "${ name }${ value }" ;
                                                                                  in
                                                                                      {
-                                                                                        depth = 1 ;
                                                                                          init =
                                                                                              { failure , pkgs , resources , root , seed , sequential , trace , wrap } :
                                                                                                  let
@@ -563,7 +562,7 @@
                                                                                                     } ;
                                                                                             in "${ application }/bin/init" ;
                                                                                 release =
-                                                                                    { failure , pkgs , resources , seed , sequential } :
+                                                                                    { failure , pkgs , resources , seed , trace , sequential } :
                                                                                         let
                                                                                             application =
                                                                                                 pkgs.writeShellApplication
@@ -850,7 +849,7 @@
                                                                                                     } ;
                                                                                             in "${ application }/bin/init" ;
                                                                                 release =
-                                                                                    { failure , pkgs , resources , seed , sequential } :
+                                                                                    { failure , pkgs , resources , seed , trace , sequential } :
                                                                                         let
                                                                                             application =
                                                                                                 pkgs.writeShellApplication
@@ -2409,7 +2408,7 @@
                                                                                                                     } ;
                                                                                                             in "${ application }/bin/init" ;
                                                                                                 release =
-                                                                                                    { failure , pkgs , resources , seed , sequential } :
+                                                                                                    { failure , pkgs , resources , seed , trace , sequential } :
                                                                                                         let
                                                                                                             application =
                                                                                                                 pkgs.writeShellApplication
