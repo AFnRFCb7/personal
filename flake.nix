@@ -754,12 +754,50 @@
                                                                                                 pkgs.writeShellApplication
                                                                                                     {
                                                                                                         name = "init" ;
-                                                                                                        runtimeInputs = [ ] ;
+                                                                                                        runtimeInputs = [ failure ] ;
                                                                                                         text =
                                                                                                             ''
+                                                                                                                INIT="$1"
+                                                                                                                RELEASE="$2"
+                                                                                                                if "$INIT"
+                                                                                                                then
+                                                                                                                    RESOURCE=${ resources.production.checks.pre-test { failure = 2905 ; setup = setup : ''${ setup } "$INIT" "$RELEASE"'' ; } }
+                                                                                                                else
+                                                                                                                    if RESOURCE=${ resources.production.checks.pre-test { failure = 4900 ; setup = setup : ''${ setup } "$INIT" "$RELEASE"'' ; } }
+                                                                                                                    then
+                                                                                                                        failure 14905
+                                                                                                                    fi
+                                                                                                                fi
                                                                                                             '' ;
                                                                                                     } ;
                                                                                             in "${ application }/bin/init" ;
+                                                                            } ;
+                                                                    pre-test =
+                                                                        ignore :
+                                                                            {
+                                                                                init =
+                                                                                    { failure , pkgs , resources , root , seed , sequential , wrap } :
+                                                                                        let
+                                                                                            application =
+                                                                                                pkgs.writeShellApplication
+                                                                                                    {
+                                                                                                        name = "init" ;
+                                                                                                        runtimeInputs = [ ] ;
+                                                                                                        text =
+                                                                                                            ''
+                                                                                                                INIT="$1"
+                                                                                                                RELEASE="$2"
+                                                                                                                echo "$INIT" > /mount/init
+                                                                                                                echo "$RELEASE" > /mount/release
+                                                                                                                chmod 0400 /mount/init /mount/release
+                                                                                                                if ! "$INIT"
+                                                                                                                then
+                                                                                                                    failure 12945
+                                                                                                                fi
+                                                                                                            '' ;
+                                                                                                    } ;
+                                                                                            in "${ application }/bin/init" ;
+                                                                                targets = [ "init" "release" ] ;
                                                                             } ;
                                                                 } ;
                                                             dot-gnupg =
