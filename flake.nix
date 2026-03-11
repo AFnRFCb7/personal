@@ -754,7 +754,7 @@
                                                                                                 pkgs.writeShellApplication
                                                                                                     {
                                                                                                         name = "init" ;
-                                                                                                        runtimeInputs = [ failure ] ;
+                                                                                                        runtimeInputs = [ findutils failure ] ;
                                                                                                         text =
                                                                                                             let
                                                                                                                 script =
@@ -791,10 +791,15 @@
                                                                                                                     ''
                                                                                                                         INIT="$1"
                                                                                                                         RELEASE="$2"
+                                                                                                                        if [[ -d ${ resources-directory }/bin/quarantine.init ]]
+                                                                                                                        then
+                                                                                                                            find ${ resources-directory }/bin/quarantine.init -name "*.sh" -exec {} \;
+                                                                                                                        fi
                                                                                                                         if ! bash -c "${ script } $INIT $RELEASE"
                                                                                                                         then
-                                                                                                                            failure
+                                                                                                                            failure 7057
                                                                                                                         fi
+
                                                                                                                     '' ;
                                                                                                     } ;
                                                                                             in "${ application }/bin/init" ;
