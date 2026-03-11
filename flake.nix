@@ -761,11 +761,18 @@
                                                                                                                 RELEASE="$2"
                                                                                                                 if "$INIT"
                                                                                                                 then
-                                                                                                                    RESOURCE=${ resources.production.checks.pre-test { failure = 2905 ; setup = setup : ''${ setup } "$INIT" "$RELEASE"'' ; } }
+                                                                                                                    if RESOURCE=${ resources.production.checks.pre-test { failure = 2905 ; setup = setup : ''${ setup } "$INIT" "$RELEASE"'' ; } }
+                                                                                                                    then
+                                                                                                                        echo GOOD:  We were able to run the pre-test $RESOURCE
+                                                                                                                    else
+                                                                                                                        failure 17957
+                                                                                                                    fi
                                                                                                                 else
                                                                                                                     if RESOURCE=${ resources.production.checks.pre-test { failure = 4900 ; setup = setup : ''${ setup } "$INIT" "$RELEASE"'' ; } }
                                                                                                                     then
-                                                                                                                        failure 14905
+                                                                                                                        failure 14905 "RESOURCE=$RESOURCE"
+                                                                                                                    else
+                                                                                                                        echo GOOD:  We errored on the pre-test
                                                                                                                     fi
                                                                                                                 fi
                                                                                                             '' ;
