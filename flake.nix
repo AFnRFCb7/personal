@@ -65,8 +65,10 @@
                                 resource-releaser.lib
                                     {
                                         coreutils = pkgs.coreutils ;
+                                        gnutar = pkgs.gnutar ;
                                         jq = pkgs.jq ;
                                         redis = pkgs.redis ;
+                                        zstd = pkgs.zstd ;
                                         failure = _failure.implementation "0a13879f" ;
                                         pkgs = pkgs ;
                                     } ;
