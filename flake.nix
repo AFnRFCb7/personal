@@ -754,7 +754,7 @@
                                                                                                 pkgs.writeShellApplication
                                                                                                     {
                                                                                                         name = "init" ;
-                                                                                                        runtimeInputs = [ findutils failure ] ;
+                                                                                                        runtimeInputs = [ pkgs.findutils failure ] ;
                                                                                                         text =
                                                                                                             let
                                                                                                                 script =
