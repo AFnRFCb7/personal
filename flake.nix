@@ -791,6 +791,8 @@
                                                                                                                     ''
                                                                                                                         INIT="$1"
                                                                                                                         RELEASE="$2"
+                                                                                                                        mkdir --parents /home/${ config.personal.name }/resources/mounts
+                                                                                                                        PRE_COUNT="$( find /home/${ config.personal.name }/resources/mounts | wc --lines )" || failure 23762
                                                                                                                         mkdir --parents /home/${ config.personal.name }/resources/quarantine.init
                                                                                                                         find /home/${ config.personal.name }/resources/quarantine.init -name "*.sh" -exec {} \;
                                                                                                                         if ! bash -c "${ script } $INIT $RELEASE"
@@ -808,6 +810,11 @@
                                                                                                                             else
                                                                                                                                 failure 6604 "COUNT=$COUNT"
                                                                                                                             fi
+                                                                                                                        fi
+                                                                                                                        POST_COUNT="$( find /home/${ config.personal.name }/resources/mounts | wc --lines )" || failure 23762
+                                                                                                                        if [[ "$PRE_COUNT" != "$POST_COUNT" ]]
+                                                                                                                        then
+                                                                                                                            failure 5236 "PRE_COUNT=$PRE_COUNT" "POST_COUNT=$POST_COUNT"
                                                                                                                         fi
                                                                                                                     '' ;
                                                                                                     } ;
