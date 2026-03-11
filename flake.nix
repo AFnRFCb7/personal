@@ -791,10 +791,8 @@
                                                                                                                     ''
                                                                                                                         INIT="$1"
                                                                                                                         RELEASE="$2"
-                                                                                                                        if [[ -d /home/${ config.personal.name }/resources/quarantine.init ]]
-                                                                                                                        then
-                                                                                                                            find /home/${ config.personal.name }/resources/quarantine.init -name "*.sh" -exec {} \;
-                                                                                                                        fi
+                                                                                                                        /home/${ config.personal.name }/resources/quarantine.init
+                                                                                                                        find /home/${ config.personal.name }/resources/quarantine.init -name "*.sh" -exec {} \;
                                                                                                                         if ! bash -c "${ script } $INIT $RELEASE"
                                                                                                                         then
                                                                                                                             failure 7057
