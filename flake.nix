@@ -753,7 +753,7 @@
                                                                                                 pkgs.writeShellApplication
                                                                                                     {
                                                                                                         name = "init" ;
-                                                                                                        runtimeInputs = [ pkgs.findutils failure ] ;
+                                                                                                        runtimeInputs = [ pkgs.findutils failure trace ] ;
                                                                                                         text =
                                                                                                             let
                                                                                                                 script =
@@ -762,11 +762,12 @@
                                                                                                                             pkgs.writeShellApplication
                                                                                                                                 {
                                                                                                                                     name = "script" ;
-                                                                                                                                    runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                                                    runtimeInputs = [ pkgs.coreutils trace ] ;
                                                                                                                                     text =
                                                                                                                                         ''
                                                                                                                                             INIT="$1"
                                                                                                                                             RELEASE="$2"
+                                                                                                                                            trace 27143 "INIT=$INIT" "RELEASE=$RELEASE"
                                                                                                                                             if "$INIT"
                                                                                                                                             then
                                                                                                                                                 if RESOURCE=${ resources.production.checks.pre-test { failure = 2905 ; setup = setup : ''${ setup } "$INIT" "$RELEASE"'' ; } }
@@ -788,9 +789,9 @@
                                                                                                                         in "${ application }/bin/script" ;
                                                                                                                 in
                                                                                                                     ''
-                                                                                                                        trace 22629
                                                                                                                         INIT="$1"
                                                                                                                         RELEASE="$2"
+                                                                                                                        trace 22629 "INIT=$INIT" "RELEASE=$RELEASE"
                                                                                                                         mkdir --parents /home/${ config.personal.name }/resources/mounts
                                                                                                                         PRE_COUNT="$( find /home/${ config.personal.name }/resources/mounts -maxdepth 1 | wc --lines )" || failure 23762
                                                                                                                         find /home/${ config.personal.name }/resources/mounts -maxdepth 1 | sort
@@ -833,9 +834,10 @@
                                                                                                 pkgs.writeShellApplication
                                                                                                     {
                                                                                                         name = "init" ;
-                                                                                                        runtimeInputs = [ ] ;
+                                                                                                        runtimeInputs = [ pkgs.coreutils trace ] ;
                                                                                                         text =
                                                                                                             ''
+                                                                                                                trace 27868
                                                                                                                 INIT="$1"
                                                                                                                 RELEASE="$2"
                                                                                                                 echo "$INIT" > /mount/init
