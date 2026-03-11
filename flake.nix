@@ -800,10 +800,6 @@
                                                                                                                         if "$INIT"
                                                                                                                         then
                                                                                                                             find /home/${ config.personal.name }/resources/quarantine.init -name "*.sh" -exec failure 16482 {} \;
-                                                                                                                            if [[ -d "$RESOURCE" ]]
-                                                                                                                            then
-                                                                                                                                failure 30409
-                                                                                                                            fi
                                                                                                                         else
                                                                                                                             COUNT="$( find /home/${ config.personal.name }/resources/quarantine.init -name "*.sh" | wc --lines )" || failure 22471
                                                                                                                             if [[ "$COUNT" == 1 ]]
