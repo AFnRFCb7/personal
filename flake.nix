@@ -622,7 +622,7 @@
                                                                                                         name = "true-true" ;
                                                                                                         runtimeInputs = pkgs : [ pkgs.coreutils ] ;
                                                                                                         script = ''echo "$CHECK"'' ;
-                                                                                                        variables = { CHECK = resources : resources.production.checks.hook { failure = 13909 ; setup = setup : ''${ setup } true true'' ; } ; } ;
+                                                                                                        variables = { CHECK = resources : resources.production.checks.hook { failure = 26489 ; setup = setup : ''${ setup } true true'' ; } ; } ;
                                                                                                     } ;
                                                                                         } ;
                                                                                 } ;
