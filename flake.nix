@@ -116,7 +116,7 @@
                                                                             (
                                                                                 let
                                                                                     ignore =
-                                                                                        { } :
+                                                                                        { failure , pkgs , resources , seed , trace , sequential } :
                                                                                             let
                                                                                                 application =
                                                                                                     pkgs.writeShellApplication
