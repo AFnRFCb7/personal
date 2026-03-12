@@ -113,20 +113,37 @@
                                                                         } ;
                                                                     in
                                                                         r.implementation
-                                                                            {
-                                                                                depth = point.depth or 0 ;
-                                                                                init = point.init or null ;
-                                                                                init-resolutions = point.init-resolutions or null ;
-                                                                                release = point.release or null ;
-                                                                                release-resolutions = point.release-resolutions or null ;
-                                                                                seed =
-                                                                                    ( point.seed or { } ) //
-                                                                                    {
-                                                                                        path = path ;
-                                                                                    } ;
-                                                                                targets = point.targets or [ ] ;
-                                                                                transient = point.transient or false ;
-                                                                            } ;
+                                                                            (
+                                                                                let
+                                                                                    ignore =
+                                                                                        { } :
+                                                                                            let
+                                                                                                application =
+                                                                                                    pkgs.writeShellApplication
+                                                                                                        {
+                                                                                                            name = "application" ;
+                                                                                                            runtimeInputs = [ ] ;
+                                                                                                            text =
+                                                                                                                ''
+                                                                                                                '' ;
+                                                                                                        } ;
+                                                                                                in "${ application }/bin/application" ;
+                                                                                    in
+                                                                                        {
+                                                                                            depth = point.depth or 0 ;
+                                                                                            init = point.init or null ;
+                                                                                            init-resolutions = point.init-resolutions or ignore ;
+                                                                                            release = point.release or null ;
+                                                                                            release-resolutions = point.release-resolutions or null ;
+                                                                                            seed =
+                                                                                                ( point.seed or { } ) //
+                                                                                                {
+                                                                                                    path = path ;
+                                                                                                } ;
+                                                                                            targets = point.targets or [ ] ;
+                                                                                            transient = point.transient or false ;
+                                                                                        }
+                                                                            ) ;
                                                 }
                                                 {
                                                     check =
