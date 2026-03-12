@@ -134,7 +134,7 @@
                                                                                             init = point.init or null ;
                                                                                             init-resolutions = point.init-resolutions or [ ignore ] ;
                                                                                             release = point.release or null ;
-                                                                                            release-resolutions = point.release-resolutions or null ;
+                                                                                            release-resolutions = point.release-resolutions or [ ignore ] ;
                                                                                             seed =
                                                                                                 ( point.seed or { } ) //
                                                                                                 {
