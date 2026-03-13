@@ -31,8 +31,6 @@
                                     resource.lib
                                         {
                                             buildFHSUserEnv = pkgs.buildFHSUserEnv ;
-                                            channel = channel ;
-                                            channel = channel ;
                                             coreutils = pkgs.coreutils ;
                                             failure = _failure.implementation "f135add3" ;
                                             findutils = pkgs.findutils ;
