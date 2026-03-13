@@ -42,18 +42,6 @@
                                             visitor = _visitor.implementation ;
                                             writeShellApplication = pkgs.writeShellApplication ;
                                         } ;
-                            _resource-logger =
-                                resource-logger.lib
-                                    {
-                                        failure = _failure.implementation "88fe77a0" ;
-                                        pkgs = pkgs ;
-                                    } ;
-                            _resource-releaser =
-                                resource-releaser.lib
-                                    {
-                                        failure = _failure.implementation "0a13879f" ;
-                                        pkgs = pkgs ;
-                                    } ;
                             _visitor = visitor.lib { } ;
                             identity =
                                 pkgs.stdenv.mkDerivation
@@ -3161,58 +3149,6 @@
                                                                                     } ;
                                                                                 wantedBy = [ "multi-user.target" ] ;
                                                                             } ;
-                                                                        resource-logger =
-                                                                            {
-                                                                                after = [ "redis.service" ] ;
-                                                                                description = "logs resources" ;
-                                                                                requires = [ "redis.service" ] ;
-                                                                                serviceConfig =
-                                                                                    {
-                                                                                        ExecStart =
-                                                                                            let
-                                                                                                application =
-                                                                                                    pkgs.writeShellApplication
-                                                                                                        {
-                                                                                                            name = "ExecStart" ;
-                                                                                                            text =
-                                                                                                                _resource-logger.implementation
-                                                                                                                    {
-                                                                                                                        channel = config.personal.channel ;
-                                                                                                                        log-directory = "/home/${ config.personal.name }/resources/log" ;
-                                                                                                                        log-file = "log.yaml" ;
-                                                                                                                        log-lock = "log.lock" ;
-                                                                                                                    } ;
-                                                                                                        } ;
-                                                                                                    in "${ application }/bin/ExecStart" ;
-                                                                                        User = config.personal.name ;
-                                                                                    } ;
-                                                                                wantedBy = [ "multi-user.target" ] ;
-                                                                            } ;
-                                                                        resource-releaser =
-                                                                            {
-                                                                                after = [ "redis.service" ] ;
-                                                                                serviceConfig =
-                                                                                    {
-                                                                                        ExecStart =
-                                                                                            let
-                                                                                                application =
-                                                                                                    pkgs.writeShellApplication
-                                                                                                        {
-                                                                                                            name = "ExecStart" ;
-                                                                                                            runtimeInputs = [ ] ;
-                                                                                                            text =
-                                                                                                                _resource-releaser.implementation
-                                                                                                                    {
-                                                                                                                        channel = config.personal.channel ;
-                                                                                                                        resources-directory = "/home/${ config.personal.name }/resources" ;
-                                                                                                                        root-directory = "/home/${ config.personal.name }/.gc-roots" ;
-                                                                                                                    } ;
-                                                                                                        } ;
-                                                                                                in "${ application }/bin/ExecStart" ;
-                                                                                        User = config.personal.name ;
-                                                                                    } ;
-                                                                                wantedBy = [ "multi-user.target" ] ;
-                                                                            } ;
                                                                     } ;
                                                                 timers =
                                                                     {
@@ -3814,8 +3750,6 @@
                                                                         machine.succeed("bash -c 'runuser ${ testuser } -- ${ test }'")
                                                                     '' ;
                                                     } ;
-                                            resource-logger = _resource-logger.check { expected = "/nix/store/44j9cfbiamg903zx9ldyhjpwrdky9bxl-resource-logger/bin/resource-logger" ; } ;
-                                            resource-releaser = _resource-releaser.check { expected = "/nix/store/063w2h06hzd4asm92ihqmalbirbyqj6n-resource-releaser/bin/resource-releaser" ; } ;
                                             # studio =
                                             #     pkgs.nixosTest
                                             #         {
