@@ -32,17 +32,7 @@
                                         {
                                             buildFHSUserEnv = pkgs.buildFHSUserEnv ;
                                             coreutils = pkgs.coreutils ;
-                                            failure = _failure.implementation "f135add3" ;
-                                            findutils = pkgs.findutils ;
-                                            flock = pkgs.flock ;
-                                            gnused = pkgs.gnused ;
-                                            gnutar = pkgs.gnutar ;
-                                            inotify-tools = pkgs.inotify-tools ;
                                             jq = pkgs.jq ;
-                                            makeWrapper = pkgs.makeWrapper ;
-                                            mkDerivation = pkgs.stdenv.mkDerivation ;
-                                            nix = pkgs.nix ;
-                                            ps = pkgs.ps ;
                                             redis = pkgs.redis ;
                                             resources = resources ;
                                             resources-directory = resources-directory ;
@@ -51,8 +41,6 @@
                                             util-linux = pkgs.util-linux ;
                                             visitor = _visitor.implementation ;
                                             writeShellApplication = pkgs.writeShellApplication ;
-                                            yq-go = pkgs.yq-go ;
-                                            zstd = pkgs.zstd ;
                                         } ;
                             _resource-logger =
                                 resource-logger.lib
