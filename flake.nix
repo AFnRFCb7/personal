@@ -21,20 +21,25 @@
                         let
                             _failure = failure.lib { coreutils = pkgs.coreutils ; jq = pkgs.jq ; mkDerivation = pkgs.stdenv.mkDerivation ; visitor = visitor ; writeShellApplication = pkgs.writeShellApplication ; yq-go = pkgs.yq-go ; } ;
                             _resource =
-                                resource.lib
-                                    {
-                                        buildFHSUserEnv = pkgs.buildFHSUserEnv ;
-                                        coreutils = pkgs.coreutils ;
-                                        jq = pkgs.jq ;
-                                        procps = pkgs.procps ;
-                                        redis = pkgs.redis ;
-                                        resources = resources ;
-                                        resources-directory = resources-directory ;
-                                        sequential-start = sequential-start ;
-                                        root-directory = root-directory ;
-                                        visitor = _visitor.implementation ;
-                                        writeShellApplication = pkgs.writeShellApplication ;
-                                    } ;
+                                { gc-root-directory , resources , resources-directory , sequential-start } :
+                                    resource.lib
+                                        {
+                                            buildFHSUserEnv = pkgs.buildFHSUserEnv ;
+                                            coreutils = pkgs.coreutils ;
+                                            gc-root-directory = gc-root-directory ;
+                                            invalid-init-channel = "invalid-init" ;
+                                            jq = pkgs.jq ;
+                                            procps = pkgs.procps ;
+                                            redis = pkgs.redis ;
+                                            resources = resources ;
+                                            resources-directory = resources-directory ;
+                                            sequential-start = sequential-start ;
+                                            stale-init-channel = "stale-init" ;
+                                            valid-init-channel = "valid-init" ;
+                                            root-directory = root-directory ;
+                                            visitor = _visitor.implementation ;
+                                            writeShellApplication = pkgs.writeShellApplication ;
+                                        } ;
                             _visitor = visitor.lib { } ;
                             identity =
                                 pkgs.stdenv.mkDerivation
@@ -73,10 +78,9 @@
                                                                 r =
                                                                     _resource
                                                                         {
-                                                                            channel = config.personal.channel ;
+                                                                            gc-root-directory = "/home/${ config.personal.name }/.gc-roots" ;
                                                                             resources = resources ;
                                                                             resources-directory = "/home/${ config.personal.name }/resources" ;
-                                                                            root-directory = "/home/${ config.personal.name }/.gc-roots" ;
                                                                             sequential-start = config.personal.sequential-start ;
                                                                         } ;
                                                                     in
@@ -3636,49 +3640,58 @@
                                                        ] ;
                                                } ;
                                         resource =
-                                            _resource.check
-                                                {
-                                                    arguments = [ "ceb405a144a10b8efca63d9d950ce2b92bb2997ab44a9588ca740b3540a9a532a6b959a0d990dd469a63b16eb7600991bb7a1ef2b79d697b43e17134cbccec6c" "cdca67397f32d23a379284468e099b96c5b53d62659faf4d48dfc650bea444d6bc450b7eefee9b273c12672b9008fa6a077b15efb676b35f9912de977f54724d" ] ;
-                                                    diffutils = pkgs.diffutils ;
-                                                    expected = ./resource.json ;
-                                                    expected-resource = "/build/resources/mounts/0000000311691948" ;
-                                                    init =
-                                                        { failure , pkgs , resources , root , seed , sequential , trace , wrap } :
-                                                            let
-                                                                application =
-                                                                    pkgs.writeShellApplication
-                                                                        {
-                                                                            name = "init" ;
-                                                                            runtimeInputs = [ pkgs.coreutils pkgs.libuuid pkgs.cowsay root ] ;
-                                                                            text =
-                                                                                ''
-                                                                                    cowsay 995246ed
-                                                                                    RESOURCE=${ resources.d154b4d928d4df6e2f281414a142e96351ca55b7487330ce64fa596d0f64fb5147fc9acc7617a58701542c934b50466c6fe97805d01e357bcaae550862bd6266 }
-                                                                                    echo "mount = $MOUNT"
-                                                                                    echo 577c4dbd > /mount/7938c529
-                                                                                    echo f3ae034e > /scratch/f6f540b2
-                                                                                    root "$RESOURCE"
-                                                                                    root ${ pkgs.cowsay }
-                                                                                '' ;
-                                                                        } ;
-                                                                in "${ application }/bin/init" ;
-                                                    jd-diff-patch = pkgs.jd-diff-patch ;
-                                                    resources-directory-fixture =
-                                                        resources-directory :
-                                                            ''
-                                                                mkdir --parents ${ resources-directory }/sequential
-                                                                echo 311691948 > ${ resources-directory }/sequential/sequential.counter
-                                                            '' ;
-                                                    seed = "4259572168968d95098b9a5a8572c6ecfabe61a2522103e4c75b1317ea9cf43f96f7a135d144d2184739b6c4bd7fad1fb13a117dabbc9e58f4d4edbc26cf34f5" ;
-                                                    standard-input = "5433bd8482be1f2e1c1db4fa9268ed6e7bb02285083decb86a6166eea2df77f7e2d7524541549a3ee73d03ae955d8ec0714a959944962e8fe18f343fe108ff9f" ;
-                                                    standard-output = "/build/resources/mounts/0000000311691948" ;
-                                                    status = 0 ;
-                                                    targets =
-                                                        [
-                                                            "7938c529"
-                                                        ] ;
-                                                    transient = false ;
-                                              } ;
+                                            let
+                                                factory =
+                                                    _resource
+                                                        {
+                                                            gc-root-directory = "/build/gc-root-directory" ;
+                                                            resources-directory = "/build/resources" ;
+                                                            sequential-start = "0000000000028119";
+                                                        } ;
+                                                in
+                                                    factory.check
+                                                        {
+                                                            arguments = [ "ceb405a144a10b8efca63d9d950ce2b92bb2997ab44a9588ca740b3540a9a532a6b959a0d990dd469a63b16eb7600991bb7a1ef2b79d697b43e17134cbccec6c" "cdca67397f32d23a379284468e099b96c5b53d62659faf4d48dfc650bea444d6bc450b7eefee9b273c12672b9008fa6a077b15efb676b35f9912de977f54724d" ] ;
+                                                            diffutils = pkgs.diffutils ;
+                                                            expected = ./resource.json ;
+                                                            expected-resource = "/build/resources/mounts/0000000311691948" ;
+                                                            init =
+                                                                { failure , pkgs , resources , root , seed , sequential , trace , wrap } :
+                                                                    let
+                                                                        application =
+                                                                            pkgs.writeShellApplication
+                                                                                {
+                                                                                    name = "init" ;
+                                                                                    runtimeInputs = [ pkgs.coreutils pkgs.libuuid pkgs.cowsay root ] ;
+                                                                                    text =
+                                                                                        ''
+                                                                                            cowsay 995246ed
+                                                                                            RESOURCE=${ resources.d154b4d928d4df6e2f281414a142e96351ca55b7487330ce64fa596d0f64fb5147fc9acc7617a58701542c934b50466c6fe97805d01e357bcaae550862bd6266 }
+                                                                                            echo "mount = $MOUNT"
+                                                                                            echo 577c4dbd > /mount/7938c529
+                                                                                            echo f3ae034e > /scratch/f6f540b2
+                                                                                            root "$RESOURCE"
+                                                                                            root ${ pkgs.cowsay }
+                                                                                        '' ;
+                                                                                } ;
+                                                                        in "${ application }/bin/init" ;
+                                                            jd-diff-patch = pkgs.jd-diff-patch ;
+                                                            resources-directory-fixture =
+                                                                resources-directory :
+                                                                    ''
+                                                                        mkdir --parents ${ resources-directory }/sequential
+                                                                        echo 311691948 > ${ resources-directory }/sequential/sequential.counter
+                                                                    '' ;
+                                                            seed = "4259572168968d95098b9a5a8572c6ecfabe61a2522103e4c75b1317ea9cf43f96f7a135d144d2184739b6c4bd7fad1fb13a117dabbc9e58f4d4edbc26cf34f5" ;
+                                                            standard-input = "5433bd8482be1f2e1c1db4fa9268ed6e7bb02285083decb86a6166eea2df77f7e2d7524541549a3ee73d03ae955d8ec0714a959944962e8fe18f343fe108ff9f" ;
+                                                            standard-output = "/build/resources/mounts/0000000311691948" ;
+                                                            status = 0 ;
+                                                            targets =
+                                                                [
+                                                                    "7938c529"
+                                                                ] ;
+                                                            transient = false ;
+                                                      } ;
                                             resource-true-true =
                                                 pkgs.nixosTest
                                                     {
