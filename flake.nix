@@ -899,7 +899,7 @@
                                                                                         pkgs.writeShellApplication
                                                                                             {
                                                                                                 name = "init" ;
-                                                                                                runtimeInputs = [ root wrap failure ] ;
+                                                                                                runtimeInputs = [ failure gc-root wrap ] ;
                                                                                                 text =
                                                                                                     let
                                                                                                         ssh-config =
@@ -935,10 +935,10 @@
                                                                                                                 export MOBILE_KNOWN_HOSTS
                                                                                                                 MOBILE_IDENTITY=${ resources.production.secret.dot-ssh.mobile.identity { failure = "failure 5f6b6c0d" ; } }
                                                                                                                 export MOBILE_IDENTITY
-                                                                                                                root "$GITHUB_KNOWN_HOSTS"
-                                                                                                                root "$GITHUB_IDENTITY"
-                                                                                                                root "$MOBILE_KNOWN_HOSTS"
-                                                                                                                root "$MOBILE_IDENTITY"
+                                                                                                                gc-root "$GITHUB_KNOWN_HOSTS"
+                                                                                                                gc-root "$GITHUB_IDENTITY"
+                                                                                                                gc-root "$MOBILE_KNOWN_HOSTS"
+                                                                                                                gc-root "$MOBILE_IDENTITY"
                                                                                                                 wrap ${ ssh-config } config 0400 --inherit-plain GITHUB_KNOWN_HOSTS --inherit-plain GITHUB_IDENTITY --inherit-plain MOBILE_KNOWN_HOSTS --inherit-plain MOBILE_IDENTITY --inherit-plain MOBILE_IP --inherit-plain MOBILE_PORT --uuid c4629ece
                                                                                                             '' ;
                                                                                             } ;
