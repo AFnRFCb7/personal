@@ -3639,24 +3639,24 @@
                                                            "b026466b770b22f738c176f6130e1d5daaca7cbffee8605eeb9f3cb2c9c7a65eb3af44cc202745bc168a7b19e2fc87a909762516f697b7dee855f5454b90c39b"
                                                        ] ;
                                                } ;
-                                        # resource =
-                                        #     let
-                                        #         factory =
-                                        #             _resource
-                                        #                 {
-                                        #                     gc-root-directory = "/build/gc-root-directory" ;
-                                        #                     resources = { } ;
-                                        #                     resources-directory = "/build/resources" ;
-                                        #                     sequential-start = "0000000000028119";
-                                        #                 } ;
-                                        #         in
-                                        #             factory.check
-                                        #                 {
-                                        #                     buildFHSUserEnv = pkgs.buildFHSUserEnv ;
-                                        #                     expected-valid-init = { } ;
-                                        #                     mkDerivation = pkgs.stdenv.mkDerivation ;
-                                        #                     writeShellApplication = pkgs.writeShellApplication ;
-                                        #                 } ;
+                                        resource =
+                                            let
+                                                factory =
+                                                    _resource
+                                                        {
+                                                            gc-root-directory = "/build/gc-root-directory" ;
+                                                            resources = { } ;
+                                                            resources-directory = "/build/resources" ;
+                                                            sequential-start = "0000000000028119";
+                                                        } ;
+                                                in
+                                                    factory.check
+                                                        {
+                                                            buildFHSUserEnv = pkgs.buildFHSUserEnv ;
+                                                            expected-valid-init = { } ;
+                                                            mkDerivation = pkgs.stdenv.mkDerivation ;
+                                                            writeShellApplication = pkgs.writeShellApplication ;
+                                                        } ;
                                             # resource-true-true =
                                             #     pkgs.nixosTest
                                             #         {
