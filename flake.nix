@@ -3655,6 +3655,7 @@
                                                             buildFHSUserEnv = pkgs.buildFHSUserEnv ;
                                                             expected-valid-init = { } ;
                                                             mkDerivation = pkgs.mkDerivation ;
+                                                            writeShellApplication = pkgs.writeShellApplication ;
                                                         } ;
                                             resource-true-true =
                                                 pkgs.nixosTest
