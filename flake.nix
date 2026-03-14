@@ -1798,7 +1798,7 @@
                                                                                                         pkgs.writeShellApplication
                                                                                                             {
                                                                                                                 name = "init" ;
-                                                                                                                runtimeInputs = [ pkgs.git pkgs.openssh root ] ;
+                                                                                                                runtimeInputs = [ pkgs.git pkgs.openssh gc-root ] ;
                                                                                                                 text =
                                                                                                                     let
                                                                                                                         post-commit =
@@ -1822,9 +1822,9 @@
                                                                                                                                 mkdir --parents /mount/repository
                                                                                                                                 cd /mount/repository
                                                                                                                                 git init 2>&1
-                                                                                                                                root ${ pkgs.openssh }
-                                                                                                                                DOT_SSH=${ resources.production.dot-ssh { failure = "failure f2774d0a" ; } }
-                                                                                                                                root "$DOT_SSH"
+                                                                                                                                gc-root ${ pkgs.openssh }
+                                                                                                                                DOT_SSH=${ resources.production.dot-ssh { failure = 19660 ; } }
+                                                                                                                                gc-root "$DOT_SSH"
                                                                                                                                 git config core.sshCommand "${ pkgs.openssh }/bin/ssh -F $DOT_SSH/config"
                                                                                                                                 git config user.email "${ config.personal.pass.email }"
                                                                                                                                 git config user.name "${ config.personal.pass.name }"
