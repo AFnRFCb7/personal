@@ -2607,7 +2607,7 @@
                                                                                                 pkgs.writeShellApplication
                                                                                                     {
                                                                                                         name = "init" ;
-                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.gh pkgs.git pkgs.git-lfs pkgs.git-crypt pkgs.gnupg root wrap ( _failure.implementation "8fa509de" ) ] ;
+                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.gh pkgs.git pkgs.git-lfs pkgs.git-crypt pkgs.gnupg failure gc-root wrap ] ;
                                                                                                         text =
                                                                                                             let
                                                                                                                 gitattributes =
@@ -2619,8 +2619,8 @@
                                                                                                                 in
                                                                                                                     ''
                                                                                                                         DOT_SSH=${ resources.production.dot-ssh { failure = "failure 3a5de85d" ; } }
-                                                                                                                        root "$DOT_SSH"
-                                                                                                                        root ${ pkgs.openssh }
+                                                                                                                        gc-root "$DOT_SSH"
+                                                                                                                        gc-root ${ pkgs.openssh }
                                                                                                                         cd /mount
                                                                                                                         git init 2>&1
                                                                                                                         git config core.sshCommand "${ pkgs.openssh }/bin/ssh -F $DOT_SSH/config"
