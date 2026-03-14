@@ -1849,7 +1849,7 @@
                                                                                                                 pkgs.writeShellApplication
                                                                                                                     {
                                                                                                                         name = "init" ;
-                                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.git root wrap ] ;
+                                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.git gc-root wrap ] ;
                                                                                                                         text =
                                                                                                                             let
                                                                                                                                 scripts =
@@ -2189,9 +2189,9 @@
                                                                                                                                         mkdir --parents /mount/repository
                                                                                                                                         cd /mount/repository
                                                                                                                                         git init 2>&1
-                                                                                                                                        root ${ pkgs.openssh }
+                                                                                                                                        gc-root ${ pkgs.openssh }
                                                                                                                                         DOT_SSH=${ resources.production.dot-ssh { failure = 2564 ; } }
-                                                                                                                                        root "$DOT_SSH"
+                                                                                                                                        gc-root "$DOT_SSH"
                                                                                                                                         echo "472ee5ee" GIT_SSH_COMMAND="${ pkgs.openssh }/bin/ssh -F $DOT_SSH/config"
                                                                                                                                         export GIT_SSH_COMMAND="${ pkgs.openssh }/bin/ssh -F $DOT_SSH/config"
                                                                                                                                         ${ builtins.concatStringsSep "\n" ( builtins.attrValues ( builtins.mapAttrs ( name : value : ''git config alias.mutable-${ name } "!${ value }"'' ) scripts.root ) ) }
