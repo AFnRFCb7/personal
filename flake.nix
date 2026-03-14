@@ -925,15 +925,15 @@
                                                                                                             ''
                                                                                                                 GITHUB_KNOWN_HOSTS=${ resources.production.secret.dot-ssh.github.known-hosts { failure = 1052 ; } }
                                                                                                                 export GITHUB_KNOWN_HOSTS
-                                                                                                                GITHUB_IDENTITY=${ resources.production.secret.dot-ssh.github.identity { failure = "failure 29e0e495" ; } }
+                                                                                                                GITHUB_IDENTITY=${ resources.production.secret.dot-ssh.github.identity { failure = 5152 ; } }
                                                                                                                 export GITHUB_IDENTITY
                                                                                                                 MOBILE_IP="${ config.personal.mobile.ip }"
                                                                                                                 export MOBILE_IP
                                                                                                                 MOBILE_PORT=${ builtins.toString config.personal.mobile.port }
                                                                                                                 export MOBILE_PORT
-                                                                                                                MOBILE_KNOWN_HOSTS=${ resources.production.secret.dot-ssh.mobile.known-hosts { failure = "failure 5f6b6c0d" ; } }
+                                                                                                                MOBILE_KNOWN_HOSTS=${ resources.production.secret.dot-ssh.mobile.known-hosts { failure = 18157 ; } }
                                                                                                                 export MOBILE_KNOWN_HOSTS
-                                                                                                                MOBILE_IDENTITY=${ resources.production.secret.dot-ssh.mobile.identity { failure = "failure 5f6b6c0d" ; } }
+                                                                                                                MOBILE_IDENTITY=${ resources.production.secret.dot-ssh.mobile.identity { failure = 25017 ; } }
                                                                                                                 export MOBILE_IDENTITY
                                                                                                                 gc-root "$GITHUB_KNOWN_HOSTS"
                                                                                                                 gc-root "$GITHUB_IDENTITY"
@@ -2344,7 +2344,7 @@
                                                                                                                                                                                     gh pr merge "$URL" --rebase
                                                                                                                                                                                     gh auth logout
                                                                                                                                                                                     NAME="$( basename "$name" )" || failure 368e7b07
-                                                                                                                                                                                    TOKEN_DIRECTORY=${ resources.production.secret.github.token { failure = "failure ad27f961" ; } }
+                                                                                                                                                                                    TOKEN_DIRECTORY=${ resources.production.secret.github.token { failure = 3414 ; } }
                                                                                                                                                                                     TOKEN="$( cat "$TOKEN_DIRECTORY/plaintext" )" || failure 6ad73063
                                                                                                                                                                                     export NIX_CONFIG="access-tokens = github.com=$TOKEN"
                                                                                                                                                                                     DOT_SSH=${ resources.production.dot-ssh { failure = 2980 ; } }
@@ -2618,7 +2618,7 @@
                                                                                                                         '' ;
                                                                                                                 in
                                                                                                                     ''
-                                                                                                                        DOT_SSH=${ resources.production.dot-ssh { failure = "failure 3a5de85d" ; } }
+                                                                                                                        DOT_SSH=${ resources.production.dot-ssh { failure = 10159 ; } }
                                                                                                                         gc-root "$DOT_SSH"
                                                                                                                         gc-root ${ pkgs.openssh }
                                                                                                                         cd /mount
@@ -3249,7 +3249,7 @@
                                                                                     runtimeInputs = [ ] ;
                                                                                     text =
                                                                                         ''
-                                                                                            FOOBAR=${ resources.foobar.foobar { setup = setup : ''${ setup } "$@"'' ; failure = "failure 175470c8" ; } }
+                                                                                            FOOBAR=${ resources.foobar.foobar { setup = setup : ''${ setup } "$@"'' ; failure = 6229 ; } }
                                                                                             echo "$FOOBAR"
                                                                                         '' ;
                                                                                 }
