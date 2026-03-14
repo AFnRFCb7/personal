@@ -39,7 +39,6 @@
                                             resources-directory = resources-directory ;
                                             sequential-start = sequential-start ;
                                             root-directory = root-directory ;
-                                            util-linux = pkgs.util-linux ;
                                             visitor = _visitor.implementation ;
                                             writeShellApplication = pkgs.writeShellApplication ;
                                         } ;
