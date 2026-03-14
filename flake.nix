@@ -301,12 +301,12 @@
                                                                                                         runtimeInputs = [ failure gc-root ] ;
                                                                                                         text =
                                                                                                             ''
-                                                                                                                CONFIG=${ resources.production.repository.pads.home.chromium.data { failure = "failure 0c755ed8" ; } }
+                                                                                                                CONFIG=${ resources.production.repository.pads.home.chromium.data { failure = 9230 ; } }
                                                                                                                 root "$CONFIG"
                                                                                                                 mkdir --parents /mount/etc
                                                                                                                 ln --symbolic "$CONFIG/repository/secret" /mount/etc/config
                                                                                                                 mkdir --parents /mount/bin
-                                                                                                                DATA=${ resources.production.repository.pads.home.chromium.data { failure = "fdcf6e38" ; } }
+                                                                                                                DATA=${ resources.production.repository.pads.home.chromium.data { failure = 21221 ; } }
                                                                                                                 gc-root "$DATA"
                                                                                                                 ln --symbolic "$DATA/repository/secret" /mount/etc/data
                                                                                                                 gc-root ${ pkgs.chromium }
@@ -358,7 +358,7 @@
                                                                                                                                     runtimeInputs = [ pkgs.gnupg ] ;
                                                                                                                                     text =
                                                                                                                                         ''
-                                                                                                                                            DOT_GNUPG=${ resources.production.dot-gnupg { failure = "failure 75dc4165" ; } }
+                                                                                                                                                DOT_GNUPG=${ resources.production.dot-gnupg { failure = 16736 ; } }
                                                                                                                                             export GNUPGHOME="$DOT_GNUPG/dot-gnupg"
                                                                                                                                             gpg --homedir "$GNUPGHOME" --sign --local-user ${ config.personal.chromium.home.data.email } --dry-run
                                                                                                                                         '' ;
@@ -875,8 +875,8 @@
                                                                                                 runtimeInputs = [ pkgs.coreutils pkgs.gnupg failure ] ;
                                                                                                 text =
                                                                                                     ''
-                                                                                                        OWNERTRUST=${ resources.production.secret.dot-gnupg.ownertrust { failure = "failure 4f690149" ; } }
-                                                                                                        SECRET_KEYS=${ resources.production.secret.dot-gnupg.secret-keys { failure = "failure a0e69797" ; } }
+                                                                                                        OWNERTRUST=${ resources.production.secret.dot-gnupg.ownertrust { failure = 4010 ; } }
+                                                                                                        SECRET_KEYS=${ resources.production.secret.dot-gnupg.secret-keys { failure = 23457 ; } }
                                                                                                         GNUPGHOME=/mount/dot-gnupg
                                                                                                         export GNUPGHOME
                                                                                                         mkdir --parents "$GNUPGHOME"
@@ -923,7 +923,7 @@
                                                                                                                 '' ;
                                                                                                         in
                                                                                                             ''
-                                                                                                                GITHUB_KNOWN_HOSTS=${ resources.production.secret.dot-ssh.github.known-hosts { failure = "failure 29e0e495" ; } }
+                                                                                                                GITHUB_KNOWN_HOSTS=${ resources.production.secret.dot-ssh.github.known-hosts { failure = 1052 ; } }
                                                                                                                 export GITHUB_KNOWN_HOSTS
                                                                                                                 GITHUB_IDENTITY=${ resources.production.secret.dot-ssh.github.identity { failure = "failure 29e0e495" ; } }
                                                                                                                 export GITHUB_IDENTITY
