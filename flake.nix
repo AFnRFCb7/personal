@@ -216,7 +216,7 @@
                                                                                         pkgs.writeShellApplication
                                                                                             {
                                                                                                 name = "init" ;
-                                                                                                runtimeInputs = [ pkgs.coreutils root ( _failure.implementation "fe174c03" ) ] ;
+                                                                                                runtimeInputs = [ pkgs.coreutils failure ] ;
                                                                                                 text =
                                                                                                     ''
                                                                                                         INIT_STATUS="$1"
