@@ -33,6 +33,7 @@
                                             buildFHSUserEnv = pkgs.buildFHSUserEnv ;
                                             coreutils = pkgs.coreutils ;
                                             jq = pkgs.jq ;
+                                            procps = pkgs.procps ;
                                             redis = pkgs.redis ;
                                             resources = resources ;
                                             resources-directory = resources-directory ;
