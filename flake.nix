@@ -26,6 +26,7 @@
                                         {
                                             buildFHSUserEnv = pkgs.buildFHSUserEnv ;
                                             coreutils = pkgs.coreutils ;
+                                            flock = pkgs.flock ;
                                             gc-root-directory = gc-root-directory ;
                                             invalid-init-channel = "invalid-init" ;
                                             jq = pkgs.jq ;
