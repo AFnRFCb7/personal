@@ -298,7 +298,7 @@
                                                                                                 pkgs.writeShellApplication
                                                                                                     {
                                                                                                         name = "init" ;
-                                                                                                        runtimeInputs = [ root failure ] ;
+                                                                                                        runtimeInputs = [ failure gc-root ] ;
                                                                                                         text =
                                                                                                             ''
                                                                                                                 CONFIG=${ resources.production.repository.pads.home.chromium.data { failure = "failure 0c755ed8" ; } }
@@ -307,9 +307,9 @@
                                                                                                                 ln --symbolic "$CONFIG/repository/secret" /mount/etc/config
                                                                                                                 mkdir --parents /mount/bin
                                                                                                                 DATA=${ resources.production.repository.pads.home.chromium.data { failure = "fdcf6e38" ; } }
-                                                                                                                root "$DATA"
+                                                                                                                gc-root "$DATA"
                                                                                                                 ln --symbolic "$DATA/repository/secret" /mount/etc/data
-                                                                                                                root ${ pkgs.chromium }
+                                                                                                                gc-root ${ pkgs.chromium }
                                                                                                                 ln --symbolic ${ pkgs.chromium }/bin/chromium /mount/bin/chromium
                                                                                                             '' ;
                                                                                                     } ;
