@@ -36,7 +36,6 @@
                                             sequential-start = sequential-start ;
                                             stale-init-channel = "stale-init" ;
                                             valid-init-channel = "valid-init" ;
-                                            root-directory = root-directory ;
                                             visitor = _visitor.implementation ;
                                             writeShellApplication = pkgs.writeShellApplication ;
                                         } ;
