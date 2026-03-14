@@ -3654,7 +3654,7 @@
                                                         {
                                                             buildFHSUserEnv = pkgs.buildFHSUserEnv ;
                                                             expected-valid-init = { } ;
-                                                            mkDerivation = pkgs.mkDerivation ;
+                                                            mkDerivation = pkgs.stdenv.mkDerivation ;
                                                             writeShellApplication = pkgs.writeShellApplication ;
                                                         } ;
                                             resource-true-true =
