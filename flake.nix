@@ -2061,7 +2061,7 @@
                                                                                                                                                                                 BRANCH="$( git rev-parse --abbrev-ref HEAD )" || failure d14e84bf
                                                                                                                                                                                 COMMIT="$( git rev-parse HEAD )" || failure e6fec78a
                                                                                                                                                                                 SNAPSHOT=${ resources.production.repository.studio.snapshot { failure = 8500 ; setup = setup : ''${ setup } "$BRANCH" "$COMMIT"'' ; } }
-                                                                                                                                                                                ../bin/root "$SNAPSHOT"
+                                                                                                                                                                                ../bin/gc-root "$SNAPSHOT"
                                                                                                                                                                                 echo "$SNAPSHOT/repository"
                                                                                                                                                                             '' ;
                                                                                                                                                                     } ;
@@ -2176,7 +2176,7 @@
                                                                                                                                                                 # create a studio (read write copy) of this repository and root it
                                                                                                                                                                 SEQUENCE="$( sequential )" || failure a5f58156
                                                                                                                                                                 STUDIO="$( "$SETUP" "$SEQUENCE" )" || failure 3c02f464
-                                                                                                                                                                "$MOUNT/bin/root" "$STUDIO"
+                                                                                                                                                                "$MOUNT/bin/gc-root" "$STUDIO"
                                                                                                                                                                 echo "$STUDIO/repository"
                                                                                                                                                             '' ;
                                                                                                                                                     } ;
@@ -2184,7 +2184,7 @@
                                                                                                                                 in
                                                                                                                                     ''
                                                                                                                                         # initialize a read write copy of main
-                                                                                                                                        wrap ${ root }/bin/root bin/root 0500 --literal-plain DIRECTORY --inherit-plain INDEX --literal-plain PATH --literal-plain TARGET --uuid 608bd8f9
+                                                                                                                                        wrap ${ gc-root }/bin/gc-root bin/gc-root 0500 --literal-plain DIRECTORY --inherit-plain INDEX --literal-plain PATH --literal-plain TARGET --uuid 608bd8f9
                                                                                                                                         wrap ${ studio } bin/studio 0500 --inherit-plain MOUNT --literal-plain PATH --literal-plain SEQUENCE --inherit-plain SETUP --literal-plain STUDIO --uuid 79a37900
                                                                                                                                         mkdir --parents /mount/repository
                                                                                                                                         cd /mount/repository
@@ -2396,7 +2396,7 @@
                                                                                                                                         echo 380b7b99 b29cd747
                                                                                                                                         git submodule foreach "git push origin HEAD" 2>&1
                                                                                                                                         echo 380b7b99 a7df32c6
-                                                                                                                                        wrap ${ root }/bin/root stage/root 0500 --literal-plain DIRECTORY --inherit-plain INDEX --literal-plain PATH --literal-plain TARGET --uuid c3aaf5d8
+                                                                                                                                        wrap ${ gc-root }/bin/gc-root stage/root 0500 --literal-plain DIRECTORY --inherit-plain INDEX --literal-plain PATH --literal-plain TARGET --uuid c3aaf5d8
                                                                                                                                     '' ;
                                                                                                                     } ;
                                                                                                             in "${ application }/bin/init" ;
