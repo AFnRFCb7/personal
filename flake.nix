@@ -3645,6 +3645,7 @@
                                                     _resource
                                                         {
                                                             gc-root-directory = "/build/gc-root-directory" ;
+                                                            resources = { } ;
                                                             resources-directory = "/build/resources" ;
                                                             sequential-start = "0000000000028119";
                                                         } ;
