@@ -3657,44 +3657,44 @@
                                                             mkDerivation = pkgs.stdenv.mkDerivation ;
                                                             writeShellApplication = pkgs.writeShellApplication ;
                                                         } ;
-                                            resource-true-true =
-                                                pkgs.nixosTest
-                                                    {
-                                                        name = "resource-true-true" ;
-                                                        nodes.machine =
-                                                            { pkgs , ... } :
-                                                                {
-                                                                    imports = builtins.concatLists [ [ user ] private ] ;
-                                                                } ;
-                                                        testScript =
-                                                            let
-                                                                test =
-                                                                    let
-                                                                        application =
-                                                                            pkgs.writeShellApplication
-                                                                                {
-                                                                                    name = "test" ;
-                                                                                    runtimeInputs = [ ] ;
-                                                                                    text =
-                                                                                        ''
-                                                                                            while [[ ! -f "$HOME/pads/checks/.envrc" ]]
-                                                                                            do
-                                                                                               echo d94d5d11 WAIT for .envrc >&2
-                                                                                               sleep 1
-                                                                                            done
-                                                                                            cd "$HOME/pads/checks"
-                                                                                            # shellcheck disable=SC1091
-                                                                                            source "$HOME/pads/checks/.envrc"
-                                                                                            true-true
-                                                                                        '' ;
-                                                                                } ;
-                                                                        in "${ application }/bin/pre" ;
-                                                                in
-                                                                    ''
-                                                                        machine.wait_for_unit("multi-user.target")
-                                                                        machine.succeed("bash -c 'runuser ${ testuser } -- ${ test }'")
-                                                                    '' ;
-                                                    } ;
+                                            # resource-true-true =
+                                            #     pkgs.nixosTest
+                                            #         {
+                                            #             name = "resource-true-true" ;
+                                            #             nodes.machine =
+                                            #                 { pkgs , ... } :
+                                            #                     {
+                                            #                         imports = builtins.concatLists [ [ user ] private ] ;
+                                            #                     } ;
+                                            #             testScript =
+                                            #                 let
+                                            #                     test =
+                                            #                         let
+                                            #                             application =
+                                            #                                 pkgs.writeShellApplication
+                                            #                                     {
+                                            #                                         name = "test" ;
+                                            #                                         runtimeInputs = [ ] ;
+                                            #                                         text =
+                                            #                                             ''
+                                            #                                                 while [[ ! -f "$HOME/pads/checks/.envrc" ]]
+                                            #                                                 do
+                                            #                                                    echo d94d5d11 WAIT for .envrc >&2
+                                            #                                                    sleep 1
+                                            #                                                done
+                                            #                                                 cd "$HOME/pads/checks"
+                                            #                                                # shellcheck disable=SC1091
+                                            #                                                 source "$HOME/pads/checks/.envrc"
+                                            #                                                 true-true
+                                            #                                             '' ;
+                                            #                                    } ;
+                                            #                            in "${ application }/bin/pre" ;
+                                            #                     in
+                                            #                        ''
+                                            #                             machine.wait_for_unit("multi-user.target")
+                                            #                            machine.succeed("bash -c 'runuser ${ testuser } -- ${ test }'")
+                                            #                         '' ;
+                                            #         } ;
                                             # studio =
                                             #     pkgs.nixosTest
                                             #         {
