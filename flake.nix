@@ -3663,7 +3663,7 @@
                                                                             pkgs.writeShellApplication
                                                                                 {
                                                                                     name = "init" ;
-                                                                                    runtimeInputs = [ pkgs.coreutils pkgs.libuuid pkgs.cowsay root ] ;
+                                                                                    runtimeInputs = [ pkgs.coreutils pkgs.libuuid pkgs.cowsay gc-root ] ;
                                                                                     text =
                                                                                         ''
                                                                                             cowsay 995246ed
@@ -3671,8 +3671,8 @@
                                                                                             echo "mount = $MOUNT"
                                                                                             echo 577c4dbd > /mount/7938c529
                                                                                             echo f3ae034e > /scratch/f6f540b2
-                                                                                            root "$RESOURCE"
-                                                                                            root ${ pkgs.cowsay }
+                                                                                            gc-root "$RESOURCE"
+                                                                                            gc-root ${ pkgs.cowsay }
                                                                                         '' ;
                                                                                 } ;
                                                                         in "${ application }/bin/init" ;
