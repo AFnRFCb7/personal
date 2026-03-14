@@ -3648,6 +3648,7 @@
                                                     _resource
                                                         {
                                                             channel = "58c7d369b0ce01c248dc06747e2414e64190b49ec8b54ab8b5d20f96a2033759636788d718be578255e47ea0ab95810bfe7e027b8bd7f7eb4c1d3bfb5e682480" ;
+                                                            js = pkgs.js ;
                                                             resources-directory = "/build/resources" ;
                                                             resources =
                                                                 {
