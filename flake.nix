@@ -100,8 +100,7 @@
                                             _visitor.implementation
                                                 {
                                                     string =
-                                                        path : value :
-                                                        { setup ? setup : setup } :
+                                                        path : value : { setup ? setup : setup } :
                                                             ''"$( ${ setup value } )" || ( echo There was a failure in resource ${ builtins.toString path } && exit 64 )'' ;
                                                 }
                                                 resources_ ;
@@ -119,7 +118,7 @@
                                                                             resource-directory = "/home/${ config.personal.name }/resources" ;
                                                                         } ;
                                                                 r = value : null ;
-                                                                in
+                                                                x =
                                                                     value
                                                                         {
                                                                             depth = r.depth or 0 ;
@@ -130,6 +129,7 @@
                                                                             targets = r.targets or [ ] ;
                                                                             transient = false ;
                                                                         } ;
+                                                                in ignore : { } ;
                                                 }
                                                 {
                                                     check =
@@ -3382,7 +3382,7 @@
                                                                                             {
                                                                                                 autocomplete =
                                                                                                     [
-                                                                                                        ( resources_flag.production.autocomplete.pass { } )
+                                                                                                        ( resources.production.autocomplete.pass { } )
                                                                                                         ( resources.production.autocomplete.silly { } )
                                                                                                     ] ;
                                                                                                 bin =
