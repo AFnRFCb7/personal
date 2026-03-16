@@ -3653,9 +3653,6 @@
                                                     factory.check
                                                         {
                                                             buildFHSUserEnv = pkgs.buildFHSUserEnv ;
-                                                            expected-invalid-init = ./checks/resource/invalid-init.json ;
-                                                            expected-stale-init = ./checks/resource/stale-init.json ;
-                                                            expected-valid-init = ./checks/resource/valid-init.json ;
                                                             mkDerivation = pkgs.stdenv.mkDerivation ;
                                                             writeShellApplication = pkgs.writeShellApplication ;
                                                         } ;
