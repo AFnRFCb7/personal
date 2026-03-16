@@ -1,34 +1,4 @@
 {
-    lambda =
-        path : value :
-            let
-                point = value null ;
-                r =
-                    _resource
-                        {
-                            gc-root-directory = "/home/${ config.personal.name }/.gc-roots" ;
-                            resources = resources ;
-                            resources-directory = "/home/${ config.personal.name }/resources" ;
-                            sequential-start = config.personal.sequential-start ;
-                        } ;
-                    in
-                        r.implementation
-                            {
-                                depth = point.depth or 0 ;
-                                init = point.init or null ;
-                                init-resolutions = point.init-resolutions or [ ] ;
-                                release = point.release or null ;
-                                release-resolutions = point.release-resolutions or [ ] ;
-                                seed =
-                                    ( point.seed or { } ) //
-                                    {
-                                        path = path ;
-                                    } ;
-                                targets = point.targets or [ ] ;
-                                transient = point.transient or false ;
-                            } ;
-}
-{
     check =
         ignore :
             {
