@@ -95,7 +95,6 @@
                                                         ] ;
                                                     src = ./. ;
                                                 } ;
-                                        xxx = resources ;
                                         resources =
                                             _visitor.implementation
                                                 {
@@ -119,7 +118,7 @@
                                                                         } ;
                                                                 r = value null ;
                                                                 in
-                                                                    value
+                                                                    factory
                                                                         {
                                                                             depth = r.depth or 0 ;
                                                                             init = r.init or null ;
