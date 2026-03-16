@@ -99,8 +99,8 @@
                                             _visitor.implementation
                                                 {
                                                     string =
-                                                        path : value : { setup ? setup : setup } : "WTF" ;
-                                                            # ''"$( ${ setup value } )" || ( echo There was a failure in resource ${ builtins.toString path } && exit 64 )'' ;
+                                                        path : value : { setup ? setup : setup } :
+                                                            ''"$( ${ setup value } )" || ( echo There was a failure in resource ${ builtins.toString path } && exit 64 )'' ;
                                                 }
                                                 resources_ ;
                                         resources_ =
@@ -116,7 +116,7 @@
                                                                             resources = resources ;
                                                                             resource-directory = "/home/${ config.personal.name }/resources" ;
                                                                         } ;
-                                                                r = value : null ;
+                                                                r = value null ;
                                                                 in
                                                                     value
                                                                         {
