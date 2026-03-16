@@ -137,7 +137,7 @@
                                                             bin =
                                                                 {
 
-                                                                }
+                                                                } ;
                                                         } ;
                                                 } ;
                                         password-less-core =
