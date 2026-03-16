@@ -752,12 +752,7 @@
                                                             resources-directory = "/build/resources" ;
                                                         } ;
                                                 in
-                                                    factory.check
-                                                        {
-                                                            expected = "11931" ;
-                                                            mkDerivation = pkgs.stdenv.mkDerivation ;
-                                                            writeShellApplication = pkgs.writeShellApplication ;
-                                                        } ;
+                                                    factory.check { expected = "/nix/store/gvniix1i4ss6vwibfjvf908ghpvcjxam-get-or-create" ; } ;
                                             # resource-true-true =
                                             #     pkgs.nixosTest
                                             #         {
