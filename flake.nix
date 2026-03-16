@@ -118,7 +118,7 @@
                                                                         } ;
                                                                 r = value null ;
                                                                 in
-                                                                    builtins.trace "HI" ( factory
+                                                                    builtins.trace "HI" ( factory.implementation
                                                                         {
                                                                             depth = r.depth or 0 ;
                                                                             init = r.init or null ;
