@@ -106,7 +106,7 @@
                                                                     {
                                                                         string =
                                                                             path : value : { setup ? setup : setup , failure } :
-                                                                                ''"$( ${ setup value } )"''
+                                                                                ''"$( ${ setup value } )"'' ;
                                                                     }
                                                                     resources_ ;
                                                             resources_ =
