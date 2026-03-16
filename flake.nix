@@ -104,7 +104,7 @@
                                                             ''"$( ${ setup value } )" || ( echo There was a failure in resource ${ builtins.toString path } && exit 64 )'' ;
                                                 }
                                                 resources_ ;
-                                        resources_ = { } ;
+                                        resources_ = builtins.import ( self + "/resources.nix" ) ;
                                         password-less-wrap =
                                             derivation : target :
                                                 pkgs.writeShellApplication
