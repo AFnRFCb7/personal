@@ -128,7 +128,7 @@
                                                                             seed = path ;
                                                                             targets = r.targets or [ ] ;
                                                                             transient = false ;
-                                                                        } ) ;
+                                                                        } ;
                                                 }
                                                 {
                                                     checks = { } ;
