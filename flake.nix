@@ -118,7 +118,7 @@
                                                                         } ;
                                                                 r = value null ;
                                                                 in
-                                                                    factory
+                                                                    builtins.trace "HI" ( factory
                                                                         {
                                                                             depth = r.depth or 0 ;
                                                                             init = r.init or null ;
@@ -127,7 +127,7 @@
                                                                             seed = path ;
                                                                             targets = r.targets or [ ] ;
                                                                             transient = false ;
-                                                                        } ;
+                                                                        } ) ;
                                                 }
                                                 {
                                                     checks = { } ;
