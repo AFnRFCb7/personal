@@ -138,6 +138,10 @@
                                                                 {
 
                                                                 } ;
+                                                            pads =
+                                                                {
+
+                                                                } ;
                                                         } ;
                                                 } ;
                                         password-less-core =
@@ -446,7 +450,7 @@
                                                                                     runtimeInputs = [ ] ;
                                                                                     text =
                                                                                         ''
-                                                                                            FOOBAR=${ resources.foobar.foobar { setup = setup : ''${ setup } "$@"'' ; failure = 6229 ; } }
+                                                                                            FOOBAR=${ resources.foobar.pad { } }
                                                                                             echo "$FOOBAR"
                                                                                         '' ;
                                                                                 }
