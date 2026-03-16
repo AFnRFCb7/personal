@@ -110,6 +110,14 @@
                                                     lambda =
                                                         path : value :
                                                             let
+                                                                factory =
+                                                                    _resource
+                                                                        {
+                                                                            gc-root-directory = "/home/${ config.personal.name }/.gc-root" ;
+                                                                            resources = resources ;
+                                                                            resource-directory = "/home/${ config.personal.name }/resources" ;
+                                                                            sequential-start = "$RANDOM" ;
+                                                                        } ;
                                                                 r = value : null ;
                                                                 in
                                                                     _resource
