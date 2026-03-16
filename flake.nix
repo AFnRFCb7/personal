@@ -443,7 +443,6 @@
                                                                                                              } ;
                                                                                                         in "${ application }/bin/init" ;
                                                                                          targets = [ "autocomplete.sh" ] ;
-                                                                                         wtf = true ;
                                                                                      } ;
                                                                      in
                                                                          {
@@ -606,6 +605,7 @@
                                                                                                     } ;
                                                                                     true =
                                                                                         {
+                                                                                            false =
                                                                                                 bin
                                                                                                     {
                                                                                                         environment = [ ] ;
