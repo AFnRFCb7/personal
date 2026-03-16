@@ -149,7 +149,6 @@
                                                                                                     let
                                                                                                         envrc =
                                                                                                             ''
-                                                                                                                TEMPORARY=${ resources.foobar.temporary }
                                                                                                             '' ;
                                                                                                         in
                                                                                                         ''
@@ -483,7 +482,7 @@
                                                                                     runtimeInputs = [ ] ;
                                                                                     text =
                                                                                         ''
-                                                                                            FOOBAR=${ resources.foobar.pad { } }
+                                                                                            FOOBAR=${ resources.foobar.pad }
                                                                                             echo "$FOOBAR"
                                                                                         '' ;
                                                                                 }
