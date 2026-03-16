@@ -118,7 +118,7 @@
                                                                         } ;
                                                                 r = value : null ;
                                                                 in
-                                                                    _resource
+                                                                    value
                                                                         {
                                                                             depth = r.depth or 0 ;
                                                                             init = r.init or null ;
