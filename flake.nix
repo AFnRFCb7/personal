@@ -752,7 +752,7 @@
                                                             resources-directory = "/build/resources" ;
                                                         } ;
                                                 in
-                                                    factory.check { expected = "/nix/store/gvniix1i4ss6vwibfjvf908ghpvcjxam-get-or-create" ; } ;
+                                                    factory.check { expected = "/nix/store/gvniix1i4ss6vwibfjvf908ghpvcjxam-get-or-create" ; mkDerivation = pkgs.stdenv.mkDerivation ; } ;
                                             # resource-true-true =
                                             #     pkgs.nixosTest
                                             #         {
