@@ -3651,7 +3651,7 @@
                                                 in
                                                     factory.check
                                                         {
-                                                            expected = "" ;
+                                                            expected = "11931" ;
                                                             mkDerivation = pkgs.stdenv.mkDerivation ;
                                                             writeShellApplication = pkgs.writeShellApplication ;
                                                         } ;
