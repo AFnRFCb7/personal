@@ -114,7 +114,7 @@
                                                                         {
                                                                             gc-root-directory = "/home/${ config.personal.name }/.gc-root" ;
                                                                             resources = resources ;
-                                                                            resource-directory = "/home/${ config.personal.name }/resources" ;
+                                                                            resources-directory = "/home/${ config.personal.name }/resources" ;
                                                                         } ;
                                                                 r = value null ;
                                                                 in
