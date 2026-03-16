@@ -132,7 +132,13 @@
                                                 {
                                                     checks = { } ;
                                                     foobar = { } ;
-                                                    production = { } ;
+                                                    production =
+                                                        {
+                                                            bin =
+                                                                {
+
+                                                                }
+                                                        } ;
                                                 } ;
                                         password-less-core =
                                             derivation : target :
@@ -429,32 +435,6 @@
                                                                         )
                                                                         pkgs.age
                                                                         pkgs.gh
-                                                                        ( _failure.implementation "762e3818" )
-                                                                        (
-                                                                            pkgs.writeShellApplication
-                                                                                {
-                                                                                    name = "studio" ;
-                                                                                    runtimeInputs = [ pkgs.coreutils pkgs.jetbrains.idea-community ] ;
-                                                                                    text =
-                                                                                        ''
-                                                                                            if [[ "$#" -gt 0 ]]
-                                                                                            then
-                                                                                                HAS_ARGUMENTS=true
-                                                                                                ARGUMENTS="$1"
-                                                                                            else
-                                                                                                HAS_ARGUMENTS=false
-                                                                                                ARGUMENTS=
-                                                                                            fi
-                                                                                            STUDIO=${ resources.production.repository.studio.entry { setup = setup : ''${ setup } "$HAS_ARGUMENTS" "$ARGUMENTS"'' ; } }
-                                                                                            if $HAS_ARGUMENTS
-                                                                                            then
-                                                                                                echo "$STUDIO/repository"
-                                                                                            else
-                                                                                                idea-community "$STUDIO/repository"
-                                                                                            fi
-                                                                                        '' ;
-                                                                                }
-                                                                        )
                                                                         pkgs.git
                                                                         pkgs.redis
                                                                         pkgs.yq-go
