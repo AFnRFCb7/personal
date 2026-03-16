@@ -131,7 +131,38 @@
                                                 }
                                                 {
                                                     checks = { } ;
-                                                    foobar = { } ;
+                                                    foobar =
+                                                        {
+                                                            pad =
+                                                                ignore :
+                                                                    {
+                                                                        depth = 1 ;
+                                                                        init =
+                                                                            { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
+                                                                                let
+                                                                                    application =
+                                                                                        pkgs.writeShellApplication
+                                                                                            {
+                                                                                                name = "init" ;
+                                                                                                runtimeInputs = [ ] ;
+                                                                                                text =
+                                                                                                    let
+                                                                                                        envrc =
+                                                                                                            ''
+                                                                                                            '' ;
+                                                                                                        in
+                                                                                                        ''
+                                                                                                            wrap ${ builtins.toFile "envrc" envrc } .envrc 0400
+                                                                                                        '' ;
+                                                                                            } ;
+                                                                        targets = [ ".envrc" ] ;
+                                                                    } ;
+                                                            temporary =
+                                                                ignore :
+                                                                    {
+                                                                        transient = true ;
+                                                                    } ;
+                                                        } ;
                                                     production =
                                                         {
                                                             bin =
