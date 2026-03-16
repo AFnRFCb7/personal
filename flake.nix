@@ -482,7 +482,7 @@
                                                                                     runtimeInputs = [ ] ;
                                                                                     text =
                                                                                         ''
-                                                                                            FOOBAR=${ resources.foobar.pad }
+                                                                                            FOOBAR=${ builtins.typeOf resources.foobar.pad }
                                                                                             echo "$FOOBAR"
                                                                                         '' ;
                                                                                 }
