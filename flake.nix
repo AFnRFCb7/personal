@@ -443,6 +443,7 @@
                                                                                                              } ;
                                                                                                         in "${ application }/bin/init" ;
                                                                                          targets = [ "autocomplete.sh" ] ;
+                                                                                         wtf = true ;
                                                                                      } ;
                                                                      in
                                                                          {
