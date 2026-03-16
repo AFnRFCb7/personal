@@ -100,7 +100,7 @@
                                                 {
                                                     string =
                                                         path : value : { setup ? setup : setup } :
-                                                            ''"$( ${ setup value } )" || ( echo There was a failure in resource ${ builtins.toString path } && exit 64 )'' ;
+                                                            builtins.trace "WTF" ''"$( ${ setup value } )" || ( echo There was a failure in resource ${ builtins.toString path } && exit 64 )'' ;
                                                 }
                                                 resources_ ;
                                         resources_ =
