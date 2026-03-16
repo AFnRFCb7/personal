@@ -21,7 +21,7 @@
                         let
                             _failure = failure.lib { coreutils = pkgs.coreutils ; jq = pkgs.jq ; mkDerivation = pkgs.stdenv.mkDerivation ; visitor = visitor ; writeShellApplication = pkgs.writeShellApplication ; yq-go = pkgs.yq-go ; } ;
                             _resource =
-                                { gc-root-directory , resources , resources-directory , sequential-start } :
+                                { gc-root-directory , resources , resources-directory } :
                                     resource.lib
                                         {
                                             buildFHSUserEnv = pkgs.buildFHSUserEnv ;
@@ -34,7 +34,6 @@
                                             redis = pkgs.redis ;
                                             resources = resources ;
                                             resources-directory = resources-directory ;
-                                            sequential-start = sequential-start ;
                                             stale-init-channel = "stale-init" ;
                                             valid-init-channel = "valid-init" ;
                                             visitor = _visitor.implementation ;
@@ -116,7 +115,6 @@
                                                                             gc-root-directory = "/home/${ config.personal.name }/.gc-root" ;
                                                                             resources = resources ;
                                                                             resource-directory = "/home/${ config.personal.name }/resources" ;
-                                                                            sequential-start = "$RANDOM" ;
                                                                         } ;
                                                                 r = value : null ;
                                                                 in
@@ -3595,7 +3593,6 @@
                                                                         repository = lib.mkOption { default = "9ebf9ebc" ; type = lib.types.str ; } ;
                                                                         branch = lib.mkOption { default = "main" ; type = lib.types.str ; } ;
                                                                     } ;
-                                                                sequential-start = lib.mkOption { default = "$( head /dev/urandom | tr -dc '1-9' | head -c 15 )" ; type = lib.types.str ; } ;
                                                                 temporary =
                                                                     {
                                                                         ssh =
@@ -3661,7 +3658,6 @@
                                                 factory =
                                                     _resource
                                                         {
-                                                            sequential-start = "0" ;
                                                             gc-root-directory = "/build/gc-root-directory" ;
                                                             resources = { } ;
                                                             resources-directory = "/build/resources" ;
