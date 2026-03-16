@@ -97,11 +97,11 @@
                                                     src = ./. ;
                                                 } ;
                                         resources =
-                                            visitor
+                                            _visitor.implementation
                                                 {
                                                     string =
-                                                        path : value : { setup ? setup : setup , failure } :
-                                                            ''"$( ${ setup value } )"'' ;
+                                                        path : value : { setup ? setup : setup } :
+                                                            ''"$( ${ setup value } )" || ( echo There was a failure in resource ${ builtins.toString path } && exit 64 )'' ;
                                                 }
                                                 resources_ ;
                                         resources_ = { } ;
