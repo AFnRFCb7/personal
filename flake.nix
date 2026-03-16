@@ -73,7 +73,43 @@
                                                 {
                                                     installPhase =
                                                         let
+                                                            derivation =
+                                                                pkgs.stdenv.mkDerivation
+                                                                    {
+                                                                        installPhase = "install" ;
+                                                                        name = "derivation" ;
+                                                                        nativeBuildInputs =
+                                                                            [
+                                                                                (
+                                                                                    pkgs.writeShellApplication
+                                                                                        {
+                                                                                            name = "install" ;
+                                                                                            runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                            text =
+                                                                                                let
+                                                                                                    resources =
+                                                                                                        _visitor.implementation
+                                                                                                            {
+                                                                                                                list = path : list : builtins.concatLists list ;
+                                                                                                                set = path : set : builtins.concatLists ( builtins.attrValues set ) ;
+                                                                                                                string = path : value : [ ''ln --symbolic ${ value } "$out/${ builtins.hashString "sha512" path }'' ] ;
+                                                                                                            }
+                                                                                                            resources_ ;
+                                                                                                    in builtins.concatStringsSep "\n" ( builtins.concatLists [ [ ''mkdir --parents "$out"'' ] ( resources ) ] ) ;
+                                                                                        }
+                                                                                )
+                                                                            ] ;
+                                                                        src = ./. ;
+                                                                    } ;
                                                             resources =
+                                                                visitor
+                                                                    {
+                                                                        string =
+                                                                            path : value : { setup ? setup : setup , failure } :
+                                                                                ''"$( ${ setup value } )"''
+                                                                    }
+                                                                    resources_ ;
+                                                            resources_ =
                                                                 _visitor.implementation
                                                                     {
                                                                         lambda =
