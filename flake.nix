@@ -149,12 +149,14 @@
                                                                                                     let
                                                                                                         envrc =
                                                                                                             ''
+                                                                                                                TEMPORARY=${ resources.foobar.temporary }
                                                                                                             '' ;
                                                                                                         in
                                                                                                         ''
                                                                                                             wrap ${ builtins.toFile "envrc" envrc } .envrc 0400
                                                                                                         '' ;
                                                                                             } ;
+                                                                                        in "${ application }/bin/init" ;
                                                                         targets = [ ".envrc" ] ;
                                                                     } ;
                                                             temporary =
