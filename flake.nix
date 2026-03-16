@@ -95,6 +95,7 @@
                                                         ] ;
                                                     src = ./. ;
                                                 } ;
+                                        xxx = resources ;
                                         resources =
                                             _visitor.implementation
                                                 {
@@ -482,7 +483,7 @@
                                                                                     runtimeInputs = [ ] ;
                                                                                     text =
                                                                                         ''
-                                                                                            FOOBAR="${ builtins.typeOf resources.foobar.pad }"
+                                                                                            FOOBAR="${ builtins.typeOf xxx.foobar.pad }"
                                                                                             echo "$FOOBAR"
                                                                                         '' ;
                                                                                 }
