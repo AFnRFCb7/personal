@@ -3647,12 +3647,11 @@
                                                             gc-root-directory = "/build/gc-root-directory" ;
                                                             resources = { } ;
                                                             resources-directory = "/build/resources" ;
-                                                            sequential-start = "0000000000028119";
                                                         } ;
                                                 in
                                                     factory.check
                                                         {
-                                                            buildFHSUserEnv = pkgs.buildFHSUserEnv ;
+                                                            expected = "" ;
                                                             mkDerivation = pkgs.stdenv.mkDerivation ;
                                                             writeShellApplication = pkgs.writeShellApplication ;
                                                         } ;
