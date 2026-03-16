@@ -118,7 +118,7 @@
                                                                             resource-directory = "/home/${ config.personal.name }/resources" ;
                                                                         } ;
                                                                 r = value : null ;
-                                                                x =
+                                                                in
                                                                     value
                                                                         {
                                                                             depth = r.depth or 0 ;
@@ -129,7 +129,6 @@
                                                                             targets = r.targets or [ ] ;
                                                                             transient = false ;
                                                                         } ;
-                                                                in ignore : { } ;
                                                 }
                                                 {
                                                     check =
