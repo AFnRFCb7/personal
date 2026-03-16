@@ -3644,6 +3644,7 @@
                                                 factory =
                                                     _resource
                                                         {
+                                                            sequential-start = "0" ;
                                                             gc-root-directory = "/build/gc-root-directory" ;
                                                             resources = { } ;
                                                             resources-directory = "/build/resources" ;
