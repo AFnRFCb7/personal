@@ -145,7 +145,7 @@
                                                                                         pkgs.writeShellApplication
                                                                                             {
                                                                                                 name = "init" ;
-                                                                                                runtimeInputs = [ ] ;
+                                                                                                runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                 text =
                                                                                                     let
                                                                                                         envrc =
@@ -153,7 +153,7 @@
                                                                                                             '' ;
                                                                                                         in
                                                                                                         ''
-                                                                                                            wrap ${ builtins.toFile "envrc" envrc } .envrc 0400
+                                                                                                            touch /mount/.envrc
                                                                                                         '' ;
                                                                                             } ;
                                                                                         in "${ application }/bin/init" ;
