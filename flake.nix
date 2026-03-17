@@ -483,7 +483,7 @@
                                                                                     runtimeInputs = [ ] ;
                                                                                     text =
                                                                                         ''
-                                                                                            FOOBAR="${ resources.foobar.pad { } }"
+                                                                                            FOOBAR=${ resources.foobar.pad { } }
                                                                                             echo "$FOOBAR"
                                                                                         '' ;
                                                                                 }
