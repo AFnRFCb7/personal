@@ -447,7 +447,7 @@
                                                                                                                                             STANDARD_OUTPUT_FILE="$( jq --raw-output '."standard-output-file" // empty' "$PAYLOAD" )" || failure 31273
                                                                                                                                             mkdir --parents /home/${ config.personal.name }/resources/logs
                                                                                                                                             ARGUMENTS=( )
-                                                                                                                                            if [[ -n "$SCRIPT_FILE" ]] && [[ -l "$SCRIPT_FILE" ]]
+                                                                                                                                            if [[ -n "$SCRIPT_FILE" ]] && [[ -L "$SCRIPT_FILE" ]]
                                                                                                                                             then
                                                                                                                                                 ARGUMENTS+=( --rawfile SCRIPT "$SCRIPT_FILE" )
                                                                                                                                             fi
