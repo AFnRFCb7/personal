@@ -176,6 +176,27 @@
 
                                                                 } ;
                                                         } ;
+                                                    systemd =
+                                                        {
+                                                            resource-logger =
+                                                                ignore :
+                                                                    {
+                                                                        init =
+                                                                            { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
+                                                                                let
+                                                                                    application =
+                                                                                        pkgs.writeShellApplication
+                                                                                            {
+                                                                                                name = "init" ;
+                                                                                                runtimeInputs = [ pkgs.redis ] ;
+                                                                                                text =
+                                                                                                    ''
+                                                                                                    '' ;
+                                                                                            } ;
+                                                                                    in "${ application }/bin/init" ;
+                                                                        transient = true ;
+                                                                    } ;
+                                                        } ;
                                                 } ;
                                         password-less-core =
                                             derivation : target :
@@ -391,6 +412,70 @@
                                                             {
                                                                 services =
                                                                     {
+                                                                        resource-logger =
+                                                                            {
+                                                                                after = [ "network.target" ] ;
+                                                                                serviceConfig =
+                                                                                    {
+                                                                                        ExecStart =
+                                                                                            let
+                                                                                                application =
+                                                                                                    pkgs.writeShellApplication
+                                                                                                        {
+                                                                                                            name = "ExecStart" ;
+                                                                                                            runtimeInputs =
+                                                                                                                [
+                                                                                                                    (
+                                                                                                                        pkgs.writeShellApplication
+                                                                                                                            {
+                                                                                                                                name = "iteration" ;
+                                                                                                                                runtimeInputs = [ pkgs.flock pkgs.jq pkgs.yq-go ] ;
+                                                                                                                                text =
+                                                                                                                                    ''
+                                                                                                                                        TYPE="$1"
+                                                                                                                                        CHANNEL="$2"
+                                                                                                                                        PAYLOAD="$3"
+                                                                                                                                        exec 203> ${ resources_directory }/locks/log
+                                                                                                                                        flock -x 203
+                                                                                                                                        IS_LOGGED="$( jq --raw-output '.is-logged' // false' "$PAYLOAD" )" || failure 26188
+                                                                                                                                        STANDARD_ERROR_FILE="$( jq --raw-output '."standard-error-file" // empty' "$PAYLOAD" )" || failure 18867
+                                                                                                                                        STANDARD_OUTPUT_FILE="$( jq --raw-output '."standard-output-file" // empty' "$PAYLOAD" )" || failure 31273
+                                                                                                                                        jq
+                                                                                                                                            ${ builtins.concatStringsSep "" [ "$" "{" ''STANDARD_OUTPUT_FILE:--rawfile STANDARD_OUTPUT "$STANDARD_OUTPUT_FILE"'' "}" ] } \
+                                                                                                                                            ${ builtins.concatStringsSep "" [ "$" "{" ''STANDARD_ERROR_FILE:--rawfile STANDARD_ERROR "$STANDARD_ERROR_FILE"'' "}" ] } \
+                                                                                                                                            '
+                                                                                                                                                (if has("standard-output-file") then del(."standard-output-file") | .["standard-output"] = $STANDARD_OUTPUT else . end)
+                                                                                                                                                |
+                                                                                                                                                (if has("standard-output-file") then del(."standard-output-file") | .["standard-output"] = $STANDARD_OUTPUT else . end)
+                                                                                                                                            ' "$PAYLOAD" \
+                                                                                                                                            | yq eval --prettyPrint '[.]' >> "${ resources_directory }/logs/log.yaml" || failure 31275
+                                                                                                                                        if [[ -f "$STANDARD_ERROR_FILE" ]]
+                                                                                                                                        then
+                                                                                                                                            rm -f "$STANDARD_ERROR_FILE"
+                                                                                                                                        fi
+                                                                                                                                        if [[ -f "$STANDARD_OUTPUT_FILE" ]]
+                                                                                                                                        then
+                                                                                                                                            rm -f "$STANDARD_OUTPUT_FILE"
+                                                                                                                                        fi
+                                                                                                                                    '' ;
+                                                                                                                            }
+                                                                                                                    )
+                                                                                                                    pkgs.coreutils
+                                                                                                                    pkgs.redis
+                                                                                                                ] ;
+                                                                                                            text =
+                                                                                                                ''
+                                                                                                                    while redis-cli SUBSCRIBE stale-init | while read -r type && read -r channel && read -r payload
+                                                                                                                    do
+                                                                                                                        nohup iteration "$TYPE" "$CHANNEL" "$PAYLOAD" &
+                                                                                                                    done
+                                                                                                                '' ;
+                                                                                                        } ;
+                                                                                                    in "${ application }/bin/ExecStart" ;
+                                                                                        User = config.personal.name ;
+                                                                                    } ;
+                                                                                wantedBy = [ "multi-user.target" ] ;
+                                                                            } ;
                                                                         purge-trace =
                                                                             {
                                                                                 description =
