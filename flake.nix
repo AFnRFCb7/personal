@@ -449,7 +449,7 @@
                                                                                                                                             [[ -n "$STANDARD_INPUT_FILE" ]] && ARGUMENTS+=( --rawfile STANDARD_INPUT "$STANDARD_INPUT_FILE" )
                                                                                                                                             [[ -n "$STANDARD_ERROR_FILE" ]] && ARGUMENTS+=( --rawfile STANDARD_ERROR "$STANDARD_ERROR_FILE" )
                                                                                                                                             jq \
-                                                                                                                                                ${ builtins.concatStringsSep "" [ "$" "{" "ARGUMENTS[@]" "}" ] } \
+                                                                                                                                                "${ builtins.concatStringsSep "" [ "$" "{" "ARGUMENTS[@]" "}" ] }" \
                                                                                                                                                 '
                                                                                                                                                 (if has("standard-error-file") then del(."standard-error-file") | .["standard-error"] = $STANDARD_ERROR else . end)
                                                                                                                                                 |
