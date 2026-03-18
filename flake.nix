@@ -451,9 +451,12 @@
                                                                                                                                             then
                                                                                                                                                 ARGUMENTS+=( --rawfile SCRIPT "$SCRIPT_FILE" )
                                                                                                                                             fi
+                                                                                                                                            if [[ -n "$STANDARD_ERROR_FILE" ]] && [[ -f "$STANDARD_ERROR_FILE" ]]
+                                                                                                                                            then
+                                                                                                                                                ARGUMENTS+=( --rawfile STANDARD_ERROR "STANDARD_ERROR_FILE" )
+                                                                                                                                            fi
                                                                                                                                             jq \
                                                                                                                                                 "${ builtins.concatStringsSep "" [ "$" "{" "ARGUMENTS[@]" "}" ] }" \
-                                                                                                                                                --rawfile STANDARD_ERROR "$STANDARD_ERROR_FILE" \
                                                                                                                                                 --rawfile STANDARD_INPUT "$STANDARD_INPUT_FILE" \
                                                                                                                                                 --rawfile STANDARD_OUTPUT "$STANDARD_OUTPUT_FILE" \
                                                                                                                                                 '
