@@ -441,7 +441,7 @@
                                                                                                                                             STANDARD_ERROR_FILE="$( jq --raw-output '."standard-error-file" // empty' "$PAYLOAD" )" || failure 18867
                                                                                                                                             STANDARD_INPUT_FILE="$( jq --raw-output '."standard-input-file" // empty' "$PAYLOAD" )" || failure 7805
                                                                                                                                             STANDARD_OUTPUT_FILE="$( jq --raw-output '."standard-output-file" // empty' "$PAYLOAD" )" || failure 31273
-                                                                                                                                        if "$IS_LOGGED
+                                                                                                                                        if "$IS_LOGGED"
                                                                                                                                         then
                                                                                                                                             mkdir --parents /home/${ config.personal.name }/resources/logs
                                                                                                                                             jq \
