@@ -436,7 +436,7 @@
                                                                                                                                         CHANNEL="$2"
                                                                                                                                         PAYLOAD="$3"
                                                                                                                                         ALLOWED_CHANNELS=( "stale-init" "valid-init" "invalid-init" )
-                                                                                                                                        if [[ "$TYPE" == "message" ]] && [[ ! " ${ builtins.concatStringsSep "" [ "$" "{" "ALLOWED_CHANNELS[*]" "}" ] } "  == *" $CHANNEL "*" ]]
+                                                                                                                                        if [[ "$TYPE" == "message" ]] && [[ ! " ${ builtins.concatStringsSep "" [ "$" "{" "ALLOWED_CHANNELS[*]" "}" ] } "  == *" $CHANNEL "* ]]
                                                                                                                                         then
                                                                                                                                             exec 203> /home/${ config.personal.name }/resources/locks/log
                                                                                                                                             flock -x 203
@@ -444,12 +444,10 @@
                                                                                                                                             STANDARD_INPUT_FILE="$( jq --raw-output '."standard-input-file" // empty' "$PAYLOAD" )" || failure 7805
                                                                                                                                             STANDARD_OUTPUT_FILE="$( jq --raw-output '."standard-output-file" // empty' "$PAYLOAD" )" || failure 31273
                                                                                                                                             mkdir --parents /home/${ config.personal.name }/resources/logs
-                                                                                                                                            ARGUMENTS=()
-                                                                                                                                            [[ -n "$STANDARD_OUTPUT_FILE" ]] && ARGUMENTS+=( --rawfile STANDARD_OUTPUT "$STANDARD_OUTPUT_FILE" )
-                                                                                                                                            [[ -n "$STANDARD_INPUT_FILE" ]] && ARGUMENTS+=( --rawfile STANDARD_INPUT "$STANDARD_INPUT_FILE" )
-                                                                                                                                            [[ -n "$STANDARD_ERROR_FILE" ]] && ARGUMENTS+=( --rawfile STANDARD_ERROR "$STANDARD_ERROR_FILE" )
                                                                                                                                             jq \
-                                                                                                                                                "${ builtins.concatStringsSep "" [ "$" "{" "ARGUMENTS[@]" "}" ] }" \
+                                                                                                                                                --rawfile STANDARD_ERROR "$STANDARD_ERROR_FILE" \
+                                                                                                                                                --rawfile STANDARD_INPUT "$STANDARD_INPUT_FILE" \
+                                                                                                                                                --rawfile STANDARD_OUTPUT "$STANDARD_OUTPUT_FILE" \
                                                                                                                                                 '
                                                                                                                                                 (if has("standard-error-file") then del(."standard-error-file") | .["standard-error"] = $STANDARD_ERROR else . end)
                                                                                                                                                 |
