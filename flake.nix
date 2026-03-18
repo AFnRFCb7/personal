@@ -436,19 +436,23 @@
                                                                                                                                         TYPE="$1"
                                                                                                                                         CHANNEL="$2"
                                                                                                                                         PAYLOAD="$3"
-                                                                                                                                        ALLOWED_CHANNELS=( "stale-init" "valid-init" "invalid-init" )
                                                                                                                                         echo "TYPE=$TYPE" "CHANNEL=$CHANNEL" "PAYLOAD=$PAYLOAD"
-                                                                                                                                        if [[ "$TYPE" == "message" ]] && [[ " ${ builtins.concatStringsSep "" [ "$" "{" "ALLOWED_CHANNELS[*]" "}" ] } "  == *" $CHANNEL "* ]]
+                                                                                                                                        if [[ "$TYPE" == "message" ]]
                                                                                                                                         then
                                                                                                                                             exec 203> /home/${ config.personal.name }/resources/locks/log
                                                                                                                                             flock -x 203
                                                                                                                                             SCRIPT_FILE="$( jq --raw-output '."script-file" // empty' "$PAYLOAD" )" || true
-                                                                                                                                            STANDARD_ERROR_FILE="$( jq --raw-output '."standard-error-file" // empty' "$PAYLOAD" )" || true
-                                                                                                                                            STANDARD_INPUT_FILE="$( jq --raw-output '."standard-input-file" // empty' "$PAYLOAD" )" || true
-                                                                                                                                            STANDARD_OUTPUT_FILE="$( jq --raw-output '."standard-output-file" // empty' "$PAYLOAD" )" || true
+                                                                                                                                            STANDARD_ERROR_FILE="$( jq --raw-output '."standard-error-file" // empty' "$PAYLOAD" )" || failure 18867
+                                                                                                                                            STANDARD_INPUT_FILE="$( jq --raw-output '."standard-input-file" // empty' "$PAYLOAD" )" || failure 7805
+                                                                                                                                            STANDARD_OUTPUT_FILE="$( jq --raw-output '."standard-output-file" // empty' "$PAYLOAD" )" || failure 31273
                                                                                                                                             mkdir --parents /home/${ config.personal.name }/resources/logs
+                                                                                                                                            ARGUMENTS=( )
+                                                                                                                                            if [[ -l "$SCRIPT_FILE" ]]
+                                                                                                                                            then
+                                                                                                                                                ARGUMENTS+=( --rawfile SCRIPT "$SCRIPT_FILE" )
+                                                                                                                                            fi
                                                                                                                                             jq \
-                                                                                                                                                --rawfile SCRIPT "$SCRIPT_FILE" \
+                                                                                                                                                "${ builtins.concatStringsSep "" [ "$" "{" "ARGUMENTS[@]" "}" ] }" \
                                                                                                                                                 --rawfile STANDARD_ERROR "$STANDARD_ERROR_FILE" \
                                                                                                                                                 --rawfile STANDARD_INPUT "$STANDARD_INPUT_FILE" \
                                                                                                                                                 --rawfile STANDARD_OUTPUT "$STANDARD_OUTPUT_FILE" \
