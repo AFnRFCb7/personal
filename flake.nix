@@ -441,15 +441,19 @@
                                                                                                                                         then
                                                                                                                                             exec 203> /home/${ config.personal.name }/resources/locks/log
                                                                                                                                             flock -x 203
+                                                                                                                                            SCRIPT_FILE="$( jq --raw-output '."script-file" // empty' "$PAYLOAD" )" || failure 31657
                                                                                                                                             STANDARD_ERROR_FILE="$( jq --raw-output '."standard-error-file" // empty' "$PAYLOAD" )" || failure 18867
                                                                                                                                             STANDARD_INPUT_FILE="$( jq --raw-output '."standard-input-file" // empty' "$PAYLOAD" )" || failure 7805
                                                                                                                                             STANDARD_OUTPUT_FILE="$( jq --raw-output '."standard-output-file" // empty' "$PAYLOAD" )" || failure 31273
                                                                                                                                             mkdir --parents /home/${ config.personal.name }/resources/logs
                                                                                                                                             jq \
+                                                                                                                                                --rawfile SCRIPT "$SCRIPT_FILE" \
                                                                                                                                                 --rawfile STANDARD_ERROR "$STANDARD_ERROR_FILE" \
                                                                                                                                                 --rawfile STANDARD_INPUT "$STANDARD_INPUT_FILE" \
                                                                                                                                                 --rawfile STANDARD_OUTPUT "$STANDARD_OUTPUT_FILE" \
                                                                                                                                                 '
+                                                                                                                                                (if has("script-file") then del(."script-file") | .["script"] = $SCRIPT else . end)
+                                                                                                                                                |
                                                                                                                                                 (if has("standard-error-file") then del(."standard-error-file") | .["standard-error"] = $STANDARD_ERROR else . end)
                                                                                                                                                 |
                                                                                                                                                 (if has("standard-input-file") then del(."standard-input-file") | .["standard-input"] = $STANDARD_INPUT else . end)
@@ -457,14 +461,7 @@
                                                                                                                                                 (if has("standard-output-file") then del(."standard-output-file") | .["standard-output"] = $STANDARD_OUTPUT else . end)
                                                                                                                                                 ' "$PAYLOAD" \
                                                                                                                                                 | yq eval --prettyPrint '[.]' >> "/home/${ config.personal.name }/resources/logs/log.yaml" || failure 31275
-                                                                                                                                            if [[ -f "$STANDARD_ERROR_FILE" ]]
-                                                                                                                                            then
-                                                                                                                                                rm -f "$STANDARD_ERROR_FILE"
-                                                                                                                                            fi
-                                                                                                                                            if [[ -f "$STANDARD_OUTPUT_FILE" ]]
-                                                                                                                                            then
-                                                                                                                                                rm -f "$STANDARD_OUTPUT_FILE"
-                                                                                                                                            fi
+                                                                                                                                            rm --force "$SCRIPT_FILE" "$STANDARD_ERROR_FILE" "$STANDARD_OUTPUT_FILE"
                                                                                                                                         fi
                                                                                                                                     '' ;
                                                                                                                             }
