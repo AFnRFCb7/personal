@@ -437,16 +437,15 @@
                                                                                                                                         CHANNEL="$2"
                                                                                                                                         PAYLOAD="$3"
                                                                                                                                         ALLOWED_CHANNELS=( "stale-init" "valid-init" "invalid-init" )
-                                                                                                                                        echo "0=$0" "TYPE=$TYPE" "CHANNEL=$CHANNEL" "PAYLOAD=$PAYLOAD"
+                                                                                                                                        echo "TYPE=$TYPE" "CHANNEL=$CHANNEL" "PAYLOAD=$PAYLOAD"
                                                                                                                                         if [[ "$TYPE" == "message" ]] && [[ " ${ builtins.concatStringsSep "" [ "$" "{" "ALLOWED_CHANNELS[*]" "}" ] } "  == *" $CHANNEL "* ]]
                                                                                                                                         then
-                                                                                                                                            echo 2604
                                                                                                                                             exec 203> /home/${ config.personal.name }/resources/locks/log
                                                                                                                                             flock -x 203
-                                                                                                                                            SCRIPT_FILE="$( jq --raw-output '."script-file" // empty' "$PAYLOAD" )" || failure 31657
-                                                                                                                                            STANDARD_ERROR_FILE="$( jq --raw-output '."standard-error-file" // empty' "$PAYLOAD" )" || failure 18867
-                                                                                                                                            STANDARD_INPUT_FILE="$( jq --raw-output '."standard-input-file" // empty' "$PAYLOAD" )" || failure 7805
-                                                                                                                                            STANDARD_OUTPUT_FILE="$( jq --raw-output '."standard-output-file" // empty' "$PAYLOAD" )" || failure 31273
+                                                                                                                                            SCRIPT_FILE="$( jq --raw-output '."script-file" // empty' "$PAYLOAD" )" || true
+                                                                                                                                            STANDARD_ERROR_FILE="$( jq --raw-output '."standard-error-file" // empty' "$PAYLOAD" )" || true
+                                                                                                                                            STANDARD_INPUT_FILE="$( jq --raw-output '."standard-input-file" // empty' "$PAYLOAD" )" || true
+                                                                                                                                            STANDARD_OUTPUT_FILE="$( jq --raw-output '."standard-output-file" // empty' "$PAYLOAD" )" || true
                                                                                                                                             mkdir --parents /home/${ config.personal.name }/resources/logs
                                                                                                                                             jq \
                                                                                                                                                 --rawfile SCRIPT "$SCRIPT_FILE" \
@@ -464,8 +463,6 @@
                                                                                                                                                 ' "$PAYLOAD" \
                                                                                                                                                 | yq eval --prettyPrint '[.]' >> "/home/${ config.personal.name }/resources/logs/log.yaml" || failure 31275
                                                                                                                                             rm --force "$SCRIPT_FILE" "$STANDARD_ERROR_FILE" "$STANDARD_OUTPUT_FILE"
-                                                                                                                                        else
-                                                                                                                                            echo 20200
                                                                                                                                         fi
                                                                                                                                     '' ;
                                                                                                                             }
