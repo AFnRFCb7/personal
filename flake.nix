@@ -435,35 +435,38 @@
                                                                                                                                         TYPE="$1"
                                                                                                                                         CHANNEL="$2"
                                                                                                                                         PAYLOAD="$3"
-                                                                                                                                        exec 203> /home/${ config.personal.name }/resources/locks/log
-                                                                                                                                        flock -x 203
-                                                                                                                                        STANDARD_ERROR_FILE="$( jq --raw-output '."standard-error-file" // empty' "$PAYLOAD" )" || failure 18867
-                                                                                                                                        STANDARD_INPUT_FILE="$( jq --raw-output '."standard-input-file" // empty' "$PAYLOAD" )" || failure 7805
-                                                                                                                                        STANDARD_OUTPUT_FILE="$( jq --raw-output '."standard-output-file" // empty' "$PAYLOAD" )" || failure 31273
-                                                                                                                                        mkdir --parents /home/${ config.personal.name }/resources/logs
-                                                                                                                                        jq \
-                                                                                                                                            ${ builtins.concatStringsSep "" [ "$" "{" ''STANDARD_OUTPUT_FILE:--rawfile STANDARD_OUTPUT "$STANDARD_OUTPUT_FILE"'' "}" ] } \
-                                                                                                                                            ${ builtins.concatStringsSep "" [ "$" "{" ''STANDARD_INPUT_FILE:--rawfile STANDARD_INPUT "$STANDARD_INPUT_FILE"'' "}" ] } \
-                                                                                                                                            ${ builtins.concatStringsSep "" [ "$" "{" ''STANDARD_ERROR_FILE:--rawfile STANDARD_ERROR "$STANDARD_ERROR_FILE"'' "}" ] } \
-                                                                                                                                            '
-                                                                                                                                            (if has("is-logged") then del(."is-logged") else . end)
-                                                                                                                                            |
-                                                                                                                                            (if has("standard-error-file") then del(."standard-error-file") | .["standard-error"] = $STANDARD_ERROR else . end)
-                                                                                                                                            |
-                                                                                                                                            (if has("standard-input-file") then del(."standard-input-file") | .["standard-input"] = $STANDARD_INPUT else . end)
-                                                                                                                                            |
-                                                                                                                                            (if has("standard-output-file") then del(."standard-output-file") | .["standard-output"] = $STANDARD_OUTPUT else . end)
-                                                                                                                                            ' "$PAYLOAD" \
-                                                                                                                                            | yq eval --prettyPrint '[.]' >> "/home/${ config.personal.name }/resources/logs/log.yaml" || failure 31275
-                                                                                                                                        if [[ -f "$STANDARD_ERROR_FILE" ]]
+                                                                                                                                        ALLOWED_CHANNELS=( "stale-init" "valid-init" "invalid-init" )
+                                                                                                                                        if [[ "$TYPE" == "message" ]] && [[ ! " ${ builtins.concatStringsSep "" [ "$" "{" "ALLOWED_CHANNELS[*]" "}" ] } " =~ " $CHANNEL " ]]
                                                                                                                                         then
-                                                                                                                                            rm -f "$STANDARD_ERROR_FILE"
+                                                                                                                                            exec 203> /home/${ config.personal.name }/resources/locks/log
+                                                                                                                                            flock -x 203
+                                                                                                                                            STANDARD_ERROR_FILE="$( jq --raw-output '."standard-error-file" // empty' "$PAYLOAD" )" || failure 18867
+                                                                                                                                            STANDARD_INPUT_FILE="$( jq --raw-output '."standard-input-file" // empty' "$PAYLOAD" )" || failure 7805
+                                                                                                                                            STANDARD_OUTPUT_FILE="$( jq --raw-output '."standard-output-file" // empty' "$PAYLOAD" )" || failure 31273
+                                                                                                                                            mkdir --parents /home/${ config.personal.name }/resources/logs
+                                                                                                                                            jq \
+                                                                                                                                                ${ builtins.concatStringsSep "" [ "$" "{" ''STANDARD_OUTPUT_FILE:--rawfile STANDARD_OUTPUT "$STANDARD_OUTPUT_FILE"'' "}" ] } \
+                                                                                                                                                ${ builtins.concatStringsSep "" [ "$" "{" ''STANDARD_INPUT_FILE:--rawfile STANDARD_INPUT "$STANDARD_INPUT_FILE"'' "}" ] } \
+                                                                                                                                                ${ builtins.concatStringsSep "" [ "$" "{" ''STANDARD_ERROR_FILE:--rawfile STANDARD_ERROR "$STANDARD_ERROR_FILE"'' "}" ] } \
+                                                                                                                                                '
+                                                                                                                                                (if has("is-logged") then del(."is-logged") else . end)
+                                                                                                                                                |
+                                                                                                                                                (if has("standard-error-file") then del(."standard-error-file") | .["standard-error"] = $STANDARD_ERROR else . end)
+                                                                                                                                                |
+                                                                                                                                                (if has("standard-input-file") then del(."standard-input-file") | .["standard-input"] = $STANDARD_INPUT else . end)
+                                                                                                                                                |
+                                                                                                                                                (if has("standard-output-file") then del(."standard-output-file") | .["standard-output"] = $STANDARD_OUTPUT else . end)
+                                                                                                                                                ' "$PAYLOAD" \
+                                                                                                                                                | yq eval --prettyPrint '[.]' >> "/home/${ config.personal.name }/resources/logs/log.yaml" || failure 31275
+                                                                                                                                            if [[ -f "$STANDARD_ERROR_FILE" ]]
+                                                                                                                                            then
+                                                                                                                                                rm -f "$STANDARD_ERROR_FILE"
+                                                                                                                                            fi
+                                                                                                                                            if [[ -f "$STANDARD_OUTPUT_FILE" ]]
+                                                                                                                                            then
+                                                                                                                                                rm -f "$STANDARD_OUTPUT_FILE"
+                                                                                                                                            fi
                                                                                                                                         fi
-                                                                                                                                        if [[ -f "$STANDARD_OUTPUT_FILE" ]]
-                                                                                                                                        then
-                                                                                                                                            rm -f "$STANDARD_OUTPUT_FILE"
-                                                                                                                                        fi
-                                                                                                                                        rm /home/${ config.personal.name }/resources/locks/log
                                                                                                                                     '' ;
                                                                                                                             }
                                                                                                                     )
