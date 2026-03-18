@@ -452,6 +452,7 @@
                                                                                                                                                 --rawfile STANDARD_ERROR "${ builtins.concatStringsSep "" [ "$" "{" "STANDARD_ERROR_FILE:-/dev/null" "}" ] }" \
                                                                                                                                                 --rawfile STANDARD_INPUT "$STANDARD_INPUT_FILE" \
                                                                                                                                                 --rawfile STANDARD_OUTPUT "${ builtins.concatStringsSep "" [ "$" "{" "STANDARD_OUTPUT_FILE:-/dev/null" "}" ] }" \
+                                                                                                                                                --rawfile SCRIPT "${ builtins.concatStringsSep "" [ "$" "{" "STANDARD_INPUT_FILE:-/dev/null" "}" ] }" \
                                                                                                                                                 '
                                                                                                                                                 (if has("script-file") then del(."script-file") | .["script"] = $SCRIPT else . end)
                                                                                                                                                 |
