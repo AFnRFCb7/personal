@@ -473,7 +473,7 @@
                                                                                                                 ] ;
                                                                                                             text =
                                                                                                                 ''
-                                                                                                                    redis-cli SUBSCRIBE stale-init | while read -r type && read -r channel && read -r payload
+                                                                                                                    redis-cli SUBSCRIBE stale-init valid-init invalid-init | while read -r TYPE  && read -r CHANNEL && read -r PAYLOAD
                                                                                                                     do
                                                                                                                         nohup iteration "$TYPE" "$CHANNEL" "$PAYLOAD" &
                                                                                                                     done
