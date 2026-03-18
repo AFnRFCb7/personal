@@ -437,7 +437,7 @@
                                                                                                                                         PAYLOAD="$3"
                                                                                                                                         exec 203> /home/${ config.personal.user }/resources/locks/log
                                                                                                                                         flock -x 203
-                                                                                                                                        IS_LOGGED="$( jq --raw-output '.is-logged' // false' "$PAYLOAD" )" || failure 26188
+                                                                                                                                        IS_LOGGED="$( jq --raw-output '."is-logged" // false' "$PAYLOAD" )" || failure 26188
                                                                                                                                         mkdir --parents /home/${ config.personal.user }/resources/logs
                                                                                                                                         STANDARD_ERROR_FILE="$( jq --raw-output '."standard-error-file" // empty' "$PAYLOAD" )" || failure 18867
                                                                                                                                         STANDARD_OUTPUT_FILE="$( jq --raw-output '."standard-output-file" // empty' "$PAYLOAD" )" || failure 31273
