@@ -446,22 +446,12 @@
                                                                                                                                             STANDARD_INPUT_FILE="$( jq --raw-output '."standard-input-file" // empty' "$PAYLOAD" )" || failure 7805
                                                                                                                                             STANDARD_OUTPUT_FILE="$( jq --raw-output '."standard-output-file" // empty' "$PAYLOAD" )" || failure 31273
                                                                                                                                             mkdir --parents /home/${ config.personal.name }/resources/logs
-                                                                                                                                            ARGUMENTS=( )
-                                                                                                                                            if [[ -n "$SCRIPT_FILE" ]] && [[ -L "$SCRIPT_FILE" ]]
-                                                                                                                                            then
-                                                                                                                                                ARGUMENTS+=( --rawfile SCRIPT "$SCRIPT_FILE" )
-                                                                                                                                            fi
-                                                                                                                                            if [[ -n "$STANDARD_ERROR_FILE" ]] && [[ -f "$STANDARD_ERROR_FILE" ]]
-                                                                                                                                            then
-                                                                                                                                                ARGUMENTS+=( --rawfile STANDARD_ERROR "STANDARD_ERROR_FILE" )
-                                                                                                                                            fi
-                                                                                                                                            if [[ -n "$STANDARD_OUTPUT_FILE" ]] && [[ -f "$STANDARD_OUTPUT_FILE" ]]
-                                                                                                                                            then
-                                                                                                                                                ARGUMENTS+=( --rawfile STANDARD_OUTPUT "STANDARD_OUTPUT_FILE" )
-                                                                                                                                            fi
                                                                                                                                             jq \
                                                                                                                                                 "${ builtins.concatStringsSep "" [ "$" "{" "ARGUMENTS[@]" "}" ] }" \
+                                                                                                                                                --rawfile SCRIPT "${ builtins.concatStringsSep "" [ "$" "{" "SCRIPT_FILE:-/dev/null" "}" ] }" \
+                                                                                                                                                --rawfile STANDARD_ERROR "${ builtins.concatStringsSep "" [ "$" "{" "STANDARD_ERROR_FILE:-/dev/null" "}" ] }" \
                                                                                                                                                 --rawfile STANDARD_INPUT "$STANDARD_INPUT_FILE" \
+                                                                                                                                                --rawfile STANDARD_OUTPUT "${ builtins.concatStringsSep "" [ "$" "{" "STANDARD_OUTPUT_FILE:-/dev/null" "}" ] }" \
                                                                                                                                                 '
                                                                                                                                                 (if has("script-file") then del(."script-file") | .["script"] = $SCRIPT else . end)
                                                                                                                                                 |
