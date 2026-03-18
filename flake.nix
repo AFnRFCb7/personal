@@ -440,12 +440,16 @@
                                                                                                                                         IS_LOGGED="$( jq --raw-output '."is-logged" // false' "$PAYLOAD" )" || failure 26188
                                                                                                                                         mkdir --parents /home/${ config.personal.user }/resources/logs
                                                                                                                                         STANDARD_ERROR_FILE="$( jq --raw-output '."standard-error-file" // empty' "$PAYLOAD" )" || failure 18867
+                                                                                                                                        STANDARD_INPUT_FILE="$( jq --raw-output '."standard-input-file" // empty' "$PAYLOAD" )" || failure 7805
                                                                                                                                         STANDARD_OUTPUT_FILE="$( jq --raw-output '."standard-output-file" // empty' "$PAYLOAD" )" || failure 31273
                                                                                                                                         jq
                                                                                                                                             ${ builtins.concatStringsSep "" [ "$" "{" ''STANDARD_OUTPUT_FILE:--rawfile STANDARD_OUTPUT "$STANDARD_OUTPUT_FILE"'' "}" ] } \
+                                                                                                                                            ${ builtins.concatStringsSep "" [ "$" "{" ''STANDARD_INPUT_FILE:--rawfile STANDARD_INPUT "$STANDARD_INPUT_FILE"'' "}" ] } \
                                                                                                                                             ${ builtins.concatStringsSep "" [ "$" "{" ''STANDARD_ERROR_FILE:--rawfile STANDARD_ERROR "$STANDARD_ERROR_FILE"'' "}" ] } \
                                                                                                                                             '
-                                                                                                                                                (if has("standard-output-file") then del(."standard-output-file") | .["standard-output"] = $STANDARD_OUTPUT else . end)
+                                                                                                                                                (if has("standard-error-file") then del(."standard-error-file") | .["standard-error"] = $STANDARD_ERROR else . end)
+                                                                                                                                                |
+                                                                                                                                                (if has("standard-input-file") then del(."standard-input-file") | .["standard-input"] = $STANDARD_INPUT else . end)
                                                                                                                                                 |
                                                                                                                                                 (if has("standard-output-file") then del(."standard-output-file") | .["standard-output"] = $STANDARD_OUTPUT else . end)
                                                                                                                                             ' "$PAYLOAD" \
@@ -458,7 +462,7 @@
                                                                                                                                         then
                                                                                                                                             rm -f "$STANDARD_OUTPUT_FILE"
                                                                                                                                         fi
-                                                                                                                                        rm /home/${ config.personal.namr }/resources/locks/log
+                                                                                                                                        rm /home/${ config.personal.name }/resources/locks/log
                                                                                                                                     '' ;
                                                                                                                             }
                                                                                                                     )
@@ -467,7 +471,7 @@
                                                                                                                 ] ;
                                                                                                             text =
                                                                                                                 ''
-                                                                                                                    while redis-cli SUBSCRIBE stale-init | while read -r type && read -r channel && read -r payload
+                                                                                                                    redis-cli SUBSCRIBE stale-init | while read -r type && read -r channel && read -r payload
                                                                                                                     do
                                                                                                                         nohup iteration "$TYPE" "$CHANNEL" "$PAYLOAD" &
                                                                                                                     done
