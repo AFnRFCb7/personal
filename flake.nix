@@ -414,7 +414,8 @@
                                                                     {
                                                                         resource-logger =
                                                                             {
-                                                                                after = [ "network.target" ] ;
+                                                                                after = [ "network.target" "redis.service" ] ;
+                                                                                requires = [ "redis.service" ] ;
                                                                                 serviceConfig =
                                                                                     {
                                                                                         ExecStart =
