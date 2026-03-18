@@ -441,13 +441,13 @@
                                                                                                                                         then
                                                                                                                                             exec 203> /home/${ config.personal.name }/resources/locks/log
                                                                                                                                             flock -x 203
-                                                                                                                                            SCRIPT_FILE="$( jq --raw-output '."script-file" // empty' "$PAYLOAD" )" || true
+                                                                                                                                            SCRIPT_FILE="$( jq --raw-output '."script-file" // empty' "$PAYLOAD" )" || failure 14571
                                                                                                                                             STANDARD_ERROR_FILE="$( jq --raw-output '."standard-error-file" // empty' "$PAYLOAD" )" || failure 18867
                                                                                                                                             STANDARD_INPUT_FILE="$( jq --raw-output '."standard-input-file" // empty' "$PAYLOAD" )" || failure 7805
                                                                                                                                             STANDARD_OUTPUT_FILE="$( jq --raw-output '."standard-output-file" // empty' "$PAYLOAD" )" || failure 31273
                                                                                                                                             mkdir --parents /home/${ config.personal.name }/resources/logs
                                                                                                                                             ARGUMENTS=( )
-                                                                                                                                            if [[ -l "$SCRIPT_FILE" ]]
+                                                                                                                                            if [[ -n "$SCRIPT_FILE" ]] && [[ -l "$SCRIPT_FILE" ]]
                                                                                                                                             then
                                                                                                                                                 ARGUMENTS+=( --rawfile SCRIPT "$SCRIPT_FILE" )
                                                                                                                                             fi
