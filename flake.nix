@@ -445,9 +445,9 @@
                                                                                                                                             STANDARD_OUTPUT_FILE="$( jq --raw-output '."standard-output-file" // empty' "$PAYLOAD" )" || failure 31273
                                                                                                                                             mkdir --parents /home/${ config.personal.name }/resources/logs
                                                                                                                                             ARGUMENTS=()
-                                                                                                                                            [[ -n "$STANDARD_OUTPUT_FILE" ]] && args+=( --rawfile STANDARD_OUTPUT "$STANDARD_OUTPUT_FILE" )
-                                                                                                                                            [[ -n "$STANDARD_INPUT_FILE" ]] && args+=( --rawfile STANDARD_INPUT "$STANDARD_INPUT_FILE" )
-                                                                                                                                            [[ -n "$STANDARD_ERROR_FILE" ]] && args+=( --rawfile STANDARD_ERROR "$STANDARD_ERROR_FILE" )
+                                                                                                                                            [[ -n "$STANDARD_OUTPUT_FILE" ]] && ARGUMENTS+=( --rawfile STANDARD_OUTPUT "$STANDARD_OUTPUT_FILE" )
+                                                                                                                                            [[ -n "$STANDARD_INPUT_FILE" ]] && ARGUMENTS+=( --rawfile STANDARD_INPUT "$STANDARD_INPUT_FILE" )
+                                                                                                                                            [[ -n "$STANDARD_ERROR_FILE" ]] && ARGUMENTS+=( --rawfile STANDARD_ERROR "$STANDARD_ERROR_FILE" )
                                                                                                                                             jq \
                                                                                                                                                 "${ builtins.concatStringsSep "" [ "$" "{" "ARGUMENTS[@]" "}" ] }" \
                                                                                                                                                 '
