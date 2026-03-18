@@ -169,7 +169,7 @@
                                                                                                     ''
                                                                                                     '' ;
                                                                                             } ;
-                                                                                        in "${ application }/bin/init" ;
+                                                                                        in "${ application }/bin/release" ;
                                                                         targets = [ ".envrc" ] ;
                                                                     } ;
                                                             temporary =
