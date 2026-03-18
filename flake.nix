@@ -455,10 +455,13 @@
                                                                                                                                             then
                                                                                                                                                 ARGUMENTS+=( --rawfile STANDARD_ERROR "STANDARD_ERROR_FILE" )
                                                                                                                                             fi
+                                                                                                                                            if [[ -n "$STANDARD_OUTPUT_FILE" ]] && [[ -f "$STANDARD_OUTPUT_FILE" ]]
+                                                                                                                                            then
+                                                                                                                                                ARGUMENTS+=( --rawfile STANDARD_OUTPUT "STANDARD_OUTPUT_FILE" )
+                                                                                                                                            fi
                                                                                                                                             jq \
                                                                                                                                                 "${ builtins.concatStringsSep "" [ "$" "{" "ARGUMENTS[@]" "}" ] }" \
                                                                                                                                                 --rawfile STANDARD_INPUT "$STANDARD_INPUT_FILE" \
-                                                                                                                                                --rawfile STANDARD_OUTPUT "$STANDARD_OUTPUT_FILE" \
                                                                                                                                                 '
                                                                                                                                                 (if has("script-file") then del(."script-file") | .["script"] = $SCRIPT else . end)
                                                                                                                                                 |
