@@ -157,6 +157,19 @@
                                                                                                         '' ;
                                                                                             } ;
                                                                                         in "${ application }/bin/init" ;
+                                                                        release =
+                                                                            { failure , pkgs , resources , seed , sequential , trace } :
+                                                                                let
+                                                                                    application =
+                                                                                        pkgs.writeShellApplication
+                                                                                            {
+                                                                                                name = "release" ;
+                                                                                                runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                text =
+                                                                                                    ''
+                                                                                                    '' ;
+                                                                                            } ;
+                                                                                        in "${ application }/bin/init" ;
                                                                         targets = [ ".envrc" ] ;
                                                                     } ;
                                                             temporary =
