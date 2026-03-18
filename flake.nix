@@ -435,7 +435,7 @@
                                                                                                                                         TYPE="$1"
                                                                                                                                         CHANNEL="$2"
                                                                                                                                         PAYLOAD="$3"
-                                                                                                                                        exec 203> /home/${ config.personal.user }/resources/locks/log
+                                                                                                                                        exec 203> /home/${ config.personal.name }/resources/locks/log
                                                                                                                                         flock -x 203
                                                                                                                                         IS_LOGGED="$( jq --raw-output '."is-logged" // false' "$PAYLOAD" )" || failure 26188
                                                                                                                                         mkdir --parents /home/${ config.personal.user }/resources/logs
@@ -449,7 +449,7 @@
                                                                                                                                                 |
                                                                                                                                                 (if has("standard-output-file") then del(."standard-output-file") | .["standard-output"] = $STANDARD_OUTPUT else . end)
                                                                                                                                             ' "$PAYLOAD" \
-                                                                                                                                            | yq eval --prettyPrint '[.]' >> "/home/${ config.personal.user }/resources/logs/log.yaml" || failure 31275
+                                                                                                                                            | yq eval --prettyPrint '[.]' >> "/home/${ config.personal.name }/resources/logs/log.yaml" || failure 31275
                                                                                                                                         if [[ -f "$STANDARD_ERROR_FILE" ]]
                                                                                                                                         then
                                                                                                                                             rm -f "$STANDARD_ERROR_FILE"
@@ -458,7 +458,7 @@
                                                                                                                                         then
                                                                                                                                             rm -f "$STANDARD_OUTPUT_FILE"
                                                                                                                                         fi
-                                                                                                                                        rm /home/${ config.personal.user }/resources/locks/log
+                                                                                                                                        rm /home/${ config.personal.namr }/resources/locks/log
                                                                                                                                     '' ;
                                                                                                                             }
                                                                                                                     )
