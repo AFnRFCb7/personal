@@ -437,7 +437,7 @@
                                                                                                                                         CHANNEL="$2"
                                                                                                                                         PAYLOAD="$3"
                                                                                                                                         ALLOWED_CHANNELS=( "stale-init" "valid-init" "invalid-init" )
-                                                                                                                                        echo "TRACE=$TRACE" "CHANNEL=$CHANNEL" "PAYLOAD=$PAYLOAD"
+                                                                                                                                        echo "TYPE=$TYPE" "CHANNEL=$CHANNEL" "PAYLOAD=$PAYLOAD"
                                                                                                                                         if [[ "$TYPE" == "message" ]] && [[ ! " ${ builtins.concatStringsSep "" [ "$" "{" "ALLOWED_CHANNELS[*]" "}" ] } "  == *" $CHANNEL "* ]]
                                                                                                                                         then
                                                                                                                                             exec 203> /home/${ config.personal.name }/resources/locks/log
