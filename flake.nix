@@ -445,7 +445,7 @@
                                                                                                                                             jq \
                                                                                                                                                 "${ builtins.concatStringsSep "" [ "$" "{" "ARGUMENTS[@]" "}" ] }" \
                                                                                                                                                 --rawfile SCRIPT "${ builtins.concatStringsSep "" [ "$" "{" "SCRIPT_FILE:-/dev/null" "}" ] }" \
-                                                                                                                                                --arg STAMP "$STAMP" \
+                                                                                                                                                --arg STAMP $STAMP \
                                                                                                                                                 --rawfile STANDARD_ERROR "${ builtins.concatStringsSep "" [ "$" "{" "STANDARD_ERROR_FILE:-/dev/null" "}" ] }" \
                                                                                                                                                 --rawfile STANDARD_INPUT "$STANDARD_INPUT_FILE" \
                                                                                                                                                 --rawfile STANDARD_OUTPUT "${ builtins.concatStringsSep "" [ "$" "{" "STANDARD_OUTPUT_FILE:-/dev/null" "}" ] }" \
