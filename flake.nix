@@ -137,7 +137,7 @@
                                                             pad =
                                                                 ignore :
                                                                     {
-                                                                        depth = 1 ;
+                                                                        depth = 0 ;
                                                                         init =
                                                                             { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
                                                                                 let
