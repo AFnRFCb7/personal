@@ -464,7 +464,7 @@
                                                                                                                                                 (if has("standard-output-file") then del(."standard-output-file") | .["standard-output"] = $STANDARD_OUTPUT else . end)
                                                                                                                                                 ' "$PAYLOAD" \
                                                                                                                                                 | yq eval --prettyPrint '[.]' >> "/home/${ config.personal.name }/resources/logs/log.yaml" || failure 31275
-                                                                                                                                            rm --force "$PAYLOAD" "$SCRIPT_FILE" "$STANDARD_ERROR_FILE" "$STANDARD_INPUT_FILE" "$STANDARD_OUTPUT_FILE"
+                                                                                                                                            rm --force "$SCRIPT_FILE" "$STANDARD_ERROR_FILE" "$STANDARD_INPUT_FILE" "$STANDARD_OUTPUT_FILE"
                                                                                                                                         fi
                                                                                                                                     '' ;
                                                                                                                             }
@@ -501,13 +501,35 @@
                                                                                                     pkgs.writeShellApplication
                                                                                                         {
                                                                                                             name = "ExecStart" ;
-                                                                                                            runtimeInputs = [ pkgs.jq pkgs.redis ] ;
+                                                                                                            runtimeInputs =
+                                                                                                                [
+                                                                                                                    (
+                                                                                                                        pkgs.writeShellApplication
+                                                                                                                            {
+                                                                                                                                name = "iteration" ;
+                                                                                                                                runtimeInputs = [ pkgs.jq ] ;
+                                                                                                                                text =
+                                                                                                                                    ''
+                                                                                                                                        TYPE="$1"
+                                                                                                                                        CHANNEL="$2"
+                                                                                                                                        PAYLOAD="$3"
+                                                                                                                                        if [[ "$TYPE" == "message" ]]
+                                                                                                                                        then
+                                                                                                                                            SCRIPT_FILE="$( jq --raw-output '."release" // empty' "$PAYLOAD" )" || failure 24568
+                                                                                                                                            "$SCRIPT_FILE"
+                                                                                                                                        else
+                                                                                                                                            echo "TYPE=$TYPE" "CHANNEL=$CHANNEL" "PAYLOAD=$PAYLOAD"
+                                                                                                                                        fi
+                                                                                                                                    '' ;
+                                                                                                                            }
+                                                                                                                    )
+                                                                                                                    pkgs.redis
+                                                                                                                ] ;
                                                                                                             text =
                                                                                                                 ''
                                                                                                                     redis-cli SUBSCRIBE valid-init | while read -r TYPE  && read -r CHANNEL && read -r PAYLOAD
                                                                                                                     do
-                                                                                                                        SCRIPT_FILE="$( jq --raw-output '."release" // empty' "$PAYLOAD" )" || failure 24568
-                                                                                                                        nohup "$SCRIPT_FILE" &
+                                                                                                                        nohup iteration "$TYPE" "$CHANNEL" "$PAYLOAD"
                                                                                                                     done
                                                                                                                 '' ;
                                                                                                         } ;
