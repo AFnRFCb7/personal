@@ -29,6 +29,7 @@
                                             flock = pkgs.flock ;
                                             gc-root-directory = gc-root-directory ;
                                             invalid-init-channel = "invalid-init" ;
+                                            invalid-release-channel = "invalid-release" ;
                                             jq = pkgs.jq ;
                                             procps = pkgs.procps ;
                                             redis = pkgs.redis ;
@@ -36,6 +37,7 @@
                                             resources-directory = resources-directory ;
                                             stale-init-channel = "stale-init" ;
                                             valid-init-channel = "valid-init" ;
+                                            valid-release-channel = "invalid-release" ;
                                             visitor = _visitor.implementation ;
                                             writeShellApplication = pkgs.writeShellApplication ;
                                         } ;
@@ -486,7 +488,7 @@
                                                                                                                 ] ;
                                                                                                             text =
                                                                                                                 ''
-                                                                                                                    redis-cli SUBSCRIBE stale-init valid-init invalid-init | while read -r TYPE  && read -r CHANNEL && read -r PAYLOAD
+                                                                                                                    redis-cli SUBSCRIBE stale-init valid-init valid-release invalid-init invalid-relea | while read -r TYPE  && read -r CHANNEL && read -r PAYLOAD
                                                                                                                     do
                                                                                                                         nohup iteration "$TYPE" "$CHANNEL" "$PAYLOAD" &
                                                                                                                     done
