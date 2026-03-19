@@ -443,7 +443,7 @@
                                                                                                                                             STANDARD_OUTPUT_FILE="$( jq --raw-output '."standard-output-file" // empty' "$PAYLOAD" )" || failure 31273
                                                                                                                                             mkdir --parents /home/${ config.personal.name }/resources/logs
                                                                                                                                             jq \
-                                                                                                                                                --arg CHANNEL "$CHANNEL"
+                                                                                                                                                --arg CHANNEL "$CHANNEL" \
                                                                                                                                                 --rawfile SCRIPT "${ builtins.concatStringsSep "" [ "$" "{" "SCRIPT_FILE:-/dev/null" "}" ] }" \
                                                                                                                                                 --argjson STAMP "$STAMP" \
                                                                                                                                                 --rawfile STANDARD_ERROR "${ builtins.concatStringsSep "" [ "$" "{" "STANDARD_ERROR_FILE:-/dev/null" "}" ] }" \
