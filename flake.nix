@@ -485,6 +485,37 @@
                                                                                     } ;
                                                                                 wantedBy = [ "multi-user.target" ] ;
                                                                             } ;
+                                                                        resource-releaser =
+                                                                            {
+                                                                                after = [ "network.target" "redis.service" ] ;
+                                                                                requires = [ "redis.service" ] ;
+                                                                                description =
+                                                                                    ''
+                                                                                        Releases the resources
+                                                                                    '' ;
+                                                                                serviceConfig =
+                                                                                    {
+                                                                                        ExecStart =
+                                                                                            let
+                                                                                                application =
+                                                                                                    pkgs.writeShellApplication
+                                                                                                        {
+                                                                                                            name = "ExecStart" ;
+                                                                                                            runtimeInputs = [ pkgs.jq pkgs.redis ] ;
+                                                                                                            text =
+                                                                                                                ''
+                                                                                                                    redis-cli SUBSCRIBE valid-init | while read -r TYPE  && read -r CHANNEL && read -r PAYLOAD
+                                                                                                                    do
+                                                                                                                        SCRIPT_FILE="$( jq --raw-output '."release" // empty' "$PAYLOAD" )" || failure 24568
+                                                                                                                        nohup "$SCRIPT_FILE" &
+                                                                                                                    done
+                                                                                                                '' ;
+                                                                                                        } ;
+                                                                                                    in "${ application }/bin/ExecStart" ;
+                                                                                        User = config.personal.name ;
+                                                                                    } ;
+                                                                                wantedBy = [ "multi-user.target" ] ;
+                                                                            } ;
                                                                         purge-trace =
                                                                             {
                                                                                 description =
