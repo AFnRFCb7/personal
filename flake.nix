@@ -443,7 +443,7 @@
                                                                                                                                             STANDARD_OUTPUT_FILE="$( jq --raw-output '."standard-output-file" // empty' "$PAYLOAD" )" || failure 31273
                                                                                                                                             mkdir --parents /home/${ config.personal.name }/resources/logs
                                                                                                                                             jq \
-                                                                                                                                                "${ builtins.concatStringsSep "" [ "$" "{" "ARGUMENTS[@]" "}" ] }" \
+                                                                                                                                                --arg CHANNEL "$CHANNEL"
                                                                                                                                                 --rawfile SCRIPT "${ builtins.concatStringsSep "" [ "$" "{" "SCRIPT_FILE:-/dev/null" "}" ] }" \
                                                                                                                                                 --argjson STAMP "$STAMP" \
                                                                                                                                                 --rawfile STANDARD_ERROR "${ builtins.concatStringsSep "" [ "$" "{" "STANDARD_ERROR_FILE:-/dev/null" "}" ] }" \
@@ -451,6 +451,8 @@
                                                                                                                                                 --rawfile STANDARD_OUTPUT "${ builtins.concatStringsSep "" [ "$" "{" "STANDARD_OUTPUT_FILE:-/dev/null" "}" ] }" \
                                                                                                                                                 --rawfile SCRIPT "${ builtins.concatStringsSep "" [ "$" "{" "STANDARD_INPUT_FILE:-/dev/null" "}" ] }" \
                                                                                                                                                 '
+                                                                                                                                                .["channel"] = $CHANNEL
+                                                                                                                                                |
                                                                                                                                                 (if has("script-file") then del(."script-file") | .["script"] = $SCRIPT else . end)
                                                                                                                                                 |
                                                                                                                                                 .["stamp"] = $STAMP
@@ -462,7 +464,7 @@
                                                                                                                                                 (if has("standard-output-file") then del(."standard-output-file") | .["standard-output"] = $STANDARD_OUTPUT else . end)
                                                                                                                                                 ' "$PAYLOAD" \
                                                                                                                                                 | yq eval --prettyPrint '[.]' >> "/home/${ config.personal.name }/resources/logs/log.yaml" || failure 31275
-                                                                                                                                            rm --force "$SCRIPT_FILE" "$STANDARD_ERROR_FILE" "$STANDARD_OUTPUT_FILE"
+                                                                                                                                            rm --force "$PAYLOAD" "$SCRIPT_FILE" "$STANDARD_ERROR_FILE" "$STANDARD_INPUT_FILE" "$STANDARD_OUTPUT_FILE"
                                                                                                                                         fi
                                                                                                                                     '' ;
                                                                                                                             }
