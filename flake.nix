@@ -169,6 +169,7 @@
                                                                                                 runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                 text =
                                                                                                     ''
+                                                                                                        echo 11660
                                                                                                     '' ;
                                                                                             } ;
                                                                                         in "${ application }/bin/release" ;
