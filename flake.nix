@@ -192,27 +192,6 @@
 
                                                                 } ;
                                                         } ;
-                                                    systemd =
-                                                        {
-                                                            resource-logger =
-                                                                ignore :
-                                                                    {
-                                                                        init =
-                                                                            { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
-                                                                                let
-                                                                                    application =
-                                                                                        pkgs.writeShellApplication
-                                                                                            {
-                                                                                                name = "init" ;
-                                                                                                runtimeInputs = [ pkgs.redis ] ;
-                                                                                                text =
-                                                                                                    ''
-                                                                                                    '' ;
-                                                                                            } ;
-                                                                                    in "${ application }/bin/init" ;
-                                                                        transient = true ;
-                                                                    } ;
-                                                        } ;
                                                 } ;
                                         password-less-core =
                                             derivation : target :
@@ -446,7 +425,7 @@
                                                                                                                         pkgs.writeShellApplication
                                                                                                                             {
                                                                                                                                 name = "iteration" ;
-                                                                                                                                runtimeInputs = [ pkgs.flock pkgs.jq pkgs.yq-go ] ;
+                                                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.flock pkgs.jq pkgs.yq-go ] ;
                                                                                                                                 text =
                                                                                                                                     ''
                                                                                                                                         TYPE="$1"
@@ -458,6 +437,7 @@
                                                                                                                                             exec 203> /home/${ config.personal.name }/resources/locks/log
                                                                                                                                             flock -x 203
                                                                                                                                             SCRIPT_FILE="$( jq --raw-output '."script-file" // empty' "$PAYLOAD" )" || failure 14571
+                                                                                                                                            STAMP="$( date +%s )" || failure 7521
                                                                                                                                             STANDARD_ERROR_FILE="$( jq --raw-output '."standard-error-file" // empty' "$PAYLOAD" )" || failure 18867
                                                                                                                                             STANDARD_INPUT_FILE="$( jq --raw-output '."standard-input-file" // empty' "$PAYLOAD" )" || failure 7805
                                                                                                                                             STANDARD_OUTPUT_FILE="$( jq --raw-output '."standard-output-file" // empty' "$PAYLOAD" )" || failure 31273
@@ -465,12 +445,15 @@
                                                                                                                                             jq \
                                                                                                                                                 "${ builtins.concatStringsSep "" [ "$" "{" "ARGUMENTS[@]" "}" ] }" \
                                                                                                                                                 --rawfile SCRIPT "${ builtins.concatStringsSep "" [ "$" "{" "SCRIPT_FILE:-/dev/null" "}" ] }" \
+                                                                                                                                                --arg STAMP "$STAMP" \
                                                                                                                                                 --rawfile STANDARD_ERROR "${ builtins.concatStringsSep "" [ "$" "{" "STANDARD_ERROR_FILE:-/dev/null" "}" ] }" \
                                                                                                                                                 --rawfile STANDARD_INPUT "$STANDARD_INPUT_FILE" \
                                                                                                                                                 --rawfile STANDARD_OUTPUT "${ builtins.concatStringsSep "" [ "$" "{" "STANDARD_OUTPUT_FILE:-/dev/null" "}" ] }" \
                                                                                                                                                 --rawfile SCRIPT "${ builtins.concatStringsSep "" [ "$" "{" "STANDARD_INPUT_FILE:-/dev/null" "}" ] }" \
                                                                                                                                                 '
                                                                                                                                                 (if has("script-file") then del(."script-file") | .["script"] = $SCRIPT else . end)
+                                                                                                                                                |
+                                                                                                                                                .["stamp"] = $STAMP
                                                                                                                                                 |
                                                                                                                                                 (if has("standard-error-file") then del(."standard-error-file") | .["standard-error"] = $STANDARD_ERROR else . end)
                                                                                                                                                 |
