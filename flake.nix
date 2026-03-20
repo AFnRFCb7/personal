@@ -513,7 +513,7 @@
                                                                                                                                         TYPE="$1"
                                                                                                                                         CHANNEL="$2"
                                                                                                                                         PAYLOAD="$3"
-                                                                                                                                        if [[ "$TYPE" == "message" ]]
+                                                                                                                                        if [[ "$CHANNEL" == "message" ]]
                                                                                                                                         then
                                                                                                                                             SCRIPT_FILE="$( jq --raw-output '."release" // empty' "$PAYLOAD" )" || failure 24568
                                                                                                                                             "$SCRIPT_FILE"
