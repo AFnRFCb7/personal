@@ -154,10 +154,10 @@
                                                                                                             ''
                                                                                                             '' ;
                                                                                                         in
-                                                                                                        ''
-                                                                                                            touch /mount/.envrc
-                                                                                                            echo 24545
-                                                                                                        '' ;
+                                                                                                            ''
+                                                                                                                touch /mount/.envrc
+                                                                                                                echo 24545
+                                                                                                            '' ;
                                                                                             } ;
                                                                                         in "${ application }/bin/init" ;
                                                                         release =
