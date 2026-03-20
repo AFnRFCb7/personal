@@ -537,9 +537,11 @@
                                                                                                                     echo 26792
                                                                                                                     redis-cli SUBSCRIBE valid-init | while read -r TYPE  && read -r CHANNEL && read -r PAYLOAD
                                                                                                                     do
-                                                                                                                        11350
+                                                                                                                        echo 11350
                                                                                                                         nohup iteration "$TYPE" "$CHANNEL" "$PAYLOAD"
+                                                                                                                        echo 1812
                                                                                                                     done
+                                                                                                                    echo 9122
                                                                                                                 '' ;
                                                                                                         } ;
                                                                                                     in "${ application }/bin/ExecStart" ;
