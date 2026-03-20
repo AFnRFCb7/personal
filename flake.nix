@@ -507,7 +507,7 @@
                                                                                                                         pkgs.writeShellApplication
                                                                                                                             {
                                                                                                                                 name = "iteration" ;
-                                                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.jq pkgs.time ] ;
+                                                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.jq ] ;
                                                                                                                                 text =
                                                                                                                                     ''
                                                                                                                                         TYPE="$1"
@@ -522,7 +522,7 @@
                                                                                                                                             echo 9267
                                                                                                                                             RELEASE="$( jq --raw-output '."release" // empty' "$PAYLOAD" )" || failure 24568
                                                                                                                                             echo 20583 "RELEASE=$RELEASE"
-                                                                                                                                            time timeout 10s "$RELEASE"
+                                                                                                                                            "$RELEASE"
                                                                                                                                             echo 23689
                                                                                                                                         else
                                                                                                                                             echo "TYPE=$TYPE" "CHANNEL=$CHANNEL" "PAYLOAD=$PAYLOAD"
