@@ -521,7 +521,7 @@
                                                                                                                                             jq --raw-output "." "$PAYLOAD"
                                                                                                                                             echo 9267
                                                                                                                                             SCRIPT_FILE="$( jq --raw-output '."release" // empty' "$PAYLOAD" )" || failure 24568
-                                                                                                                                            echo 20583
+                                                                                                                                            echo 20583 "SCRIPT_FILE=$SCRIPT_FILE"
                                                                                                                                             "$SCRIPT_FILE"
                                                                                                                                             echo 23689
                                                                                                                                         else
