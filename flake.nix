@@ -513,8 +513,12 @@
                                                                                                                                         TYPE="$1"
                                                                                                                                         CHANNEL="$2"
                                                                                                                                         PAYLOAD="$3"
-                                                                                                                                        if [[ "$CHANNEL" == "message" ]]
+                                                                                                                                        if [[ "$TYPE" == "message" ]]
                                                                                                                                         then
+                                                                                                                                            echo
+                                                                                                                                            echo "PAYLOAD=$PAYLOAD"
+                                                                                                                                            jq --raw-output "." "$PAYLOAD"
+                                                                                                                                            echo
                                                                                                                                             SCRIPT_FILE="$( jq --raw-output '."release" // empty' "$PAYLOAD" )" || failure 24568
                                                                                                                                             "$SCRIPT_FILE"
                                                                                                                                         else
