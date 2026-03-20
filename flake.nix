@@ -37,7 +37,7 @@
                                             resources-directory = resources-directory ;
                                             stale-init-channel = "stale-init" ;
                                             valid-init-channel = "valid-init" ;
-                                            valid-release-channel = "invalid-release" ;
+                                            valid-release-channel = "valid-release" ;
                                             visitor = _visitor.implementation ;
                                             writeShellApplication = pkgs.writeShellApplication ;
                                         } ;
