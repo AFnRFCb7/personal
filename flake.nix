@@ -522,8 +522,12 @@
                                                                                                                                             echo 9267
                                                                                                                                             RELEASE="$( jq --raw-output '."release" // empty' "$PAYLOAD" )" || failure 24568
                                                                                                                                             echo 20583 "RELEASE=$RELEASE"
-                                                                                                                                            "$RELEASE"
-                                                                                                                                            echo 23689
+                                                                                                                                            if "$RELEASE"
+                                                                                                                                            then
+                                                                                                                                                echo 23689
+                                                                                                                                            else
+                                                                                                                                                echo 17744
+                                                                                                                                            fi
                                                                                                                                         else
                                                                                                                                             echo "TYPE=$TYPE" "CHANNEL=$CHANNEL" "PAYLOAD=$PAYLOAD"
                                                                                                                                         fi
