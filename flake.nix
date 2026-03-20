@@ -515,12 +515,15 @@
                                                                                                                                         PAYLOAD="$3"
                                                                                                                                         if [[ "$TYPE" == "message" ]]
                                                                                                                                         then
-                                                                                                                                            echo
+                                                                                                                                            echo 31239
                                                                                                                                             echo "PAYLOAD=$PAYLOAD"
+                                                                                                                                            echo 1648
                                                                                                                                             jq --raw-output "." "$PAYLOAD"
-                                                                                                                                            echo
+                                                                                                                                            echo 9267
                                                                                                                                             SCRIPT_FILE="$( jq --raw-output '."release" // empty' "$PAYLOAD" )" || failure 24568
+                                                                                                                                            echo 20583
                                                                                                                                             "$SCRIPT_FILE"
+                                                                                                                                            echo 23689
                                                                                                                                         else
                                                                                                                                             echo "TYPE=$TYPE" "CHANNEL=$CHANNEL" "PAYLOAD=$PAYLOAD"
                                                                                                                                         fi
