@@ -522,7 +522,7 @@
                                                                                                                                             echo 9267
                                                                                                                                             RELEASE="$( jq --raw-output '."release" // empty' "$PAYLOAD" )" || failure 24568
                                                                                                                                             echo 20583 "RELEASE=$RELEASE"
-                                                                                                                                            exec "$RELEASE"
+                                                                                                                                            "$RELEASE"
                                                                                                                                             echo 23689
                                                                                                                                         else
                                                                                                                                             echo "TYPE=$TYPE" "CHANNEL=$CHANNEL" "PAYLOAD=$PAYLOAD"
@@ -538,7 +538,7 @@
                                                                                                                     redis-cli SUBSCRIBE valid-init | while read -r TYPE  && read -r CHANNEL && read -r PAYLOAD
                                                                                                                     do
                                                                                                                         echo 11350
-                                                                                                                        nohup iteration "$TYPE" "$CHANNEL" "$PAYLOAD"
+                                                                                                                        nohup iteration "$TYPE" "$CHANNEL" "$PAYLOAD" &
                                                                                                                         echo 1812
                                                                                                                     done
                                                                                                                     echo 9122
