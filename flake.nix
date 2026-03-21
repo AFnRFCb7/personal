@@ -515,15 +515,10 @@
                                                                                                                                         PAYLOAD="$3"
                                                                                                                                         if [[ "$TYPE" == "message" ]]
                                                                                                                                         then
-                                                                                                                                            echo 31239
                                                                                                                                             echo "PAYLOAD=$PAYLOAD"
-                                                                                                                                            echo 1648
                                                                                                                                             jq --raw-output "." "$PAYLOAD"
-                                                                                                                                            echo 9267
                                                                                                                                             RELEASE="$( jq --raw-output '."release" // empty' "$PAYLOAD" )" || failure 24568
-                                                                                                                                            echo 20583 "RELEASE=$RELEASE"
                                                                                                                                             "$RELEASE"
-                                                                                                                                            echo 23689
                                                                                                                                         else
                                                                                                                                             echo "TYPE=$TYPE" "CHANNEL=$CHANNEL" "PAYLOAD=$PAYLOAD"
                                                                                                                                         fi
