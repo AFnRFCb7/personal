@@ -102,7 +102,7 @@
                                                 {
                                                     string =
                                                         path : value : { setup ? setup : setup } :
-                                                            builtins.trace "WTF" ''"$( ${ setup value } )" || ( echo There was a failure in resource ${ builtins.toString path } && exit 64 )'' ;
+                                                            ''"$( ${ setup value } )" || ( echo There was a failure in resource ${ builtins.toString path } && exit 64 )'' ;
                                                 }
                                                 resources_ ;
                                         resources_ =
@@ -133,7 +133,127 @@
                                                                         } ;
                                                 }
                                                 {
-                                                    checks = { } ;
+                                                    checks =
+                                                        {
+                                                            hook =
+                                                                ignore :
+                                                                    {
+                                                                        init =
+                                                                            { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
+                                                                                let
+                                                                                    application =
+                                                                                        pkgs.writeShellApplication
+                                                                                            {
+                                                                                                name = "init" ;
+                                                                                                runtimeInputs = [ failure pkgs.coreutils ] ;
+                                                                                                text =
+                                                                                                    ''
+                                                                                                        DEPTH=0
+                                                                                                        EXPECTED_INIT_EXIT_CODE=0
+                                                                                                        EXPECTED_RELEASE_EXIT_CODE=0
+                                                                                                        while [[ "$#" -gt 0 ]]
+                                                                                                        do
+                                                                                                            case "$1" in
+                                                                                                                --depth)
+                                                                                                                    DEPTH="$2"
+                                                                                                                    shift 2
+                                                                                                                    ;;
+                                                                                                                --expected-init-exit-code)
+                                                                                                                    EXPECTED_INIT_EXIT_CODE="$2"
+                                                                                                                    shift 2
+                                                                                                                    ;;
+                                                                                                                --expected-release-exit-code)
+                                                                                                                    EXPECTED_RELEASE_EXIT_CODE="$2"
+                                                                                                                    shift 2
+                                                                                                                    ;;
+                                                                                                                --terminal)
+                                                                                                                    TERMINAL="$2"
+                                                                                                                    shift 2
+                                                                                                                    ;;
+                                                                                                                *)
+                                                                                                                    failure 4168
+                                                                                                            esac
+                                                                                                        done
+                                                                                                        if [[ "$DEPTH" -gt 0 ]] && "$TERMINAL"
+                                                                                                        then
+                                                                                                            NEXT=$(( DEPTH - 1 ))
+                                                                                                            HOOK="$( bash -c "${ resources.checks.hook { failure = 23986 ; setup = setup : ''${ setup } --depth "$NEXT" --init-exit-code "$INIT_EXIT_CODE" --release-exit-code "$RELEASE_EXIT_CODE" --terminal false'' ; } }" )" || failure 19270
+                                                                                                            cat "$HOOK/observed.yaml" > /mount/observed.yaml
+                                                                                                        else if [[ "$DEPTH" -gt 0 ]]
+                                                                                                        then
+                                                                                                            NEXT=$(( DEPTH - 1 ))
+                                                                                                            HOOK="$( bash -c "${ resources.checks.hook { failure = 15150 ; setup = setup : ''${ setup } --depth "$NEXT" --init-exit-code "$INIT_EXIT_CODE" --release-exit-code "$RELEASE_EXIT_CODE" --terminal false'' ; } }" )" || failure 19270
+                                                                                                            cat "$HOOK/observed.yaml" > /mount/observed.yaml
+                                                                                                        else
+                                                                                                            if RESOURCE=${ resources.checks.resource { failure = 23734 ; setup = setup : ''${ setup } --init-exit-code "$INIT_EXIT_CODE" --release-exit-code "$RELEASE_EXIT_CODE"'' ; } }
+                                                                                                            then
+                                                                                                                INIT_STATUS="$?"
+                                                                                                            else
+                                                                                                                INIT_STATUS="$?"
+                                                                                                            fi
+                                                                                                            ln --symbolic "$RESOURCE" /mount/resource
+                                                                                                            yq eval --pretty '{ "index" : .[-1].index , "status" : .[-1].status , "triggered" : false }' /home/${ config.personal.name }/logs/log.yaml > /mount/observed.yaml
+                                                                                                        fi
+                                                                                                    '' ;
+                                                                                            } ;
+                                                                                    in "${ application }/bin/init" ;
+                                                                        targets = [ "observed" "resource" ] ;
+                                                                        transient = true ;
+                                                                    } ;
+                                                            resource =
+                                                                ignore :
+                                                                    {
+                                                                        init =
+                                                                            { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
+                                                                                let
+                                                                                    application =
+                                                                                        pkgs.writeShellApplication
+                                                                                            {
+                                                                                                name = "init" ;
+                                                                                                runtimeInputs = [ ] ;
+                                                                                                text =
+                                                                                                    ''
+                                                                                                        INIT_EXIT_CODE=0
+                                                                                                        RELEASE_EXIT_CODE=0
+                                                                                                        while [[ "$#" -gt 0 ]]
+                                                                                                        do
+                                                                                                            case "$1" in
+                                                                                                                --expected-init-exit-code)
+                                                                                                                    EXPECTED_INIT_EXIT_CODE="$2"
+                                                                                                                    shift 2
+                                                                                                                    ;;
+                                                                                                                --expected-release-exit-code)
+                                                                                                                    EXPECTED_RELEASE_EXIT_CODE="$2"
+                                                                                                                    shift 2
+                                                                                                                    ;;
+                                                                                                                *)
+                                                                                                                    failure 4168
+                                                                                                            esac
+                                                                                                        done
+                                                                                                        echo "$EXPECTED_INIT_CODE" > /mount/expected-init-code
+                                                                                                        echo "$EXPECTED_RELEASE_CODE" > /mount/expected-release-code
+                                                                                                        exit "$EXPECTED_INIT_EXIT_CODE"
+                                                                                                    '' ;
+                                                                                            } ;
+                                                                                    in "${ application }/bin/init" ;
+                                                                        release =
+                                                                            { failure , pkgs , resources , seed , sequential , trace } :
+                                                                                let
+                                                                                    application =
+                                                                                        pkgs.writeShellApplication
+                                                                                            {
+                                                                                                name = "release" ;
+                                                                                                runtimeInputs = [ failure pkgs.jq ] ;
+                                                                                                text =
+                                                                                                    ''
+                                                                                                        EXPECTED_RELEASE_EXIT_CODE="$( jq ".release.exit-code" /mount/expected.json )" || failure 6270
+                                                                                                        exit "$EXPECTED_RELEASE_EXIT_CODE"
+                                                                                                    '' ;
+                                                                                            } ;
+                                                                                    in "${ application }/bin/init" ;
+                                                                        targets = [ "expected-init-code" "expected-release-code" ] ;
+                                                                    } ;
+                                                        } ;
                                                     foobar =
                                                         {
                                                             pad =
@@ -907,44 +1027,38 @@
                                                         } ;
                                                 in
                                                     factory.check { expected = "/nix/store/gvniix1i4ss6vwibfjvf908ghpvcjxam-get-or-create/bin/get-or-create" ; mkDerivation = pkgs.stdenv.mkDerivation ; } ;
-                                            # resource-true-true =
-                                            #     pkgs.nixosTest
-                                            #         {
-                                            #             name = "resource-true-true" ;
-                                            #             nodes.machine =
-                                            #                 { pkgs , ... } :
-                                            #                     {
-                                            #                         imports = builtins.concatLists [ [ user ] private ] ;
-                                            #                     } ;
-                                            #             testScript =
-                                            #                 let
-                                            #                     test =
-                                            #                         let
-                                            #                             application =
-                                            #                                 pkgs.writeShellApplication
-                                            #                                     {
-                                            #                                         name = "test" ;
-                                            #                                         runtimeInputs = [ ] ;
-                                            #                                         text =
-                                            #                                             ''
-                                            #                                                 while [[ ! -f "$HOME/pads/checks/.envrc" ]]
-                                            #                                                 do
-                                            #                                                    echo d94d5d11 WAIT for .envrc >&2
-                                            #                                                    sleep 1
-                                            #                                                done
-                                            #                                                 cd "$HOME/pads/checks"
-                                            #                                                # shellcheck disable=SC1091
-                                            #                                                 source "$HOME/pads/checks/.envrc"
-                                            #                                                 true-true
-                                            #                                             '' ;
-                                            #                                    } ;
-                                            #                            in "${ application }/bin/pre" ;
-                                            #                     in
-                                            #                        ''
-                                            #                             machine.wait_for_unit("multi-user.target")
-                                            #                            machine.succeed("bash -c 'runuser ${ testuser } -- ${ test }'")
-                                            #                         '' ;
-                                            #         } ;
+                                             resource-true-true =
+                                                 pkgs.nixosTest
+                                                     {
+                                                         name = "resource-true-true" ;
+                                                         nodes.machine =
+                                                             { pkgs , ... } :
+                                                                 {
+                                                                     imports = builtins.concatLists [ [ user ] private ] ;
+                                                                 } ;
+                                                         testScript =
+                                                             let
+                                                                 test =
+                                                                     let
+                                                                         application =
+                                                                             pkgs.writeShellApplication
+                                                                                 {
+                                                                                     name = "test" ;
+                                                                                     runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                     text =
+                                                                                         ''
+                                                                                            cd ${ resources.checks.resource { failure = 29600 ; setup = setup : ''${ setup } --expected-init-code 0 --expected-release-code 0'' ; } }
+                                                                                            cat observed.yaml
+                                                                                            exit 99
+                                                                                         '' ;
+                                                                                } ;
+                                                                        in "${ application }/bin/pre" ;
+                                                                 in
+                                                                    ''
+                                                                        machine.wait_for_unit("multi-user.target")
+                                                                        machine.succeed("bash -c 'runuser ${ testuser } -- ${ test }'")
+                                                                     '' ;
+                                                     } ;
                                             # studio =
                                             #     pkgs.nixosTest
                                             #         {
