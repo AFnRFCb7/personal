@@ -765,7 +765,12 @@
                                                                                                                     ''
                                                                                                                         if [[ "$2" -eq '${ builtins.toJSON path }' ]]
                                                                                                                         then
-                                                                                                                            RESOURCE=${ value { failure = "$FAILURE" ; setup = setup : ''${ setup } "${ builtins.concatStringsSep "" [ "$" "{" "ARGUMENTS[@]" "}" ] }"'' ; } }
+                                                                                                                            if [[ -t 0 ]]
+                                                                                                                            then
+                                                                                                                                RESOURCE=${ value { setup = setup : ''${ setup } "${ builtins.concatStringsSep "" [ "$" "{" "ARGUMENTS[@]" "}" ] }"'' ; } }
+                                                                                                                            else
+                                                                                                                                RESOURCE=${ value { setup = setup : ''${ setup } "${ builtins.concatStringsSep "" [ "$" "{" "ARGUMENTS[@]" "}" ] }" <0'' ; } }
+                                                                                                                            fi
                                                                                                                     ''
                                                                                                                 ] ;
                                                                                                         list = path : list : builtins.concatLists list ;
