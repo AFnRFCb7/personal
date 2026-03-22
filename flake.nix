@@ -763,7 +763,6 @@
                                                                                                             path : value :
                                                                                                                 [
                                                                                                                     ''
-                                                                                                                        # shellcheck disable=SC2140,SC2016
                                                                                                                         elif [[ "$2" -eq '${ builtins.toJSON path }' ]]
                                                                                                                         then
                                                                                                                             if [[ -t 0 ]]
@@ -794,7 +793,8 @@
                                                                                                                 shift 2
                                                                                                                 ;;
                                                                                                             --resource)
-                                                                                                                echo '${ builtins.concatStringsSep "\n" conditions }'
+                                                                                                                # shellcheck disable=SC2140,SC2016
+                                                                                                                ${ builtins.concatStringsSep "\n" conditions }
                                                                                                                 echo "$RESOURCE"
                                                                                                                 shift 2
                                                                                                                 ;;
