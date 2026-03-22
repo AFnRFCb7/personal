@@ -737,7 +737,7 @@
                                                                                     runtimeInputs = [ ] ;
                                                                                     text =
                                                                                         let
-                                                                                            if =
+                                                                                            clauses =
                                                                                                 builtins.concatLists
                                                                                                     [
                                                                                                         [
@@ -755,7 +755,7 @@
                                                                                                                 fi
                                                                                                             ''
                                                                                                         ]
-                                                                                                    ]
+                                                                                                    ] ;
                                                                                             resource =
                                                                                                 _visitor.implementation
                                                                                                     {
@@ -788,7 +788,7 @@
                                                                                                                 shift 2
                                                                                                                 ;;
                                                                                                             --resource)
-                                                                                                                ${ builtins.concatStringsSep "/n" if }
+                                                                                                                ${ builtins.concatStringsSep "/n" clause }
                                                                                                                 echo "$2 $RESOURCE"
                                                                                                                 shift 2
                                                                                                                 ;;
