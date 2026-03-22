@@ -744,7 +744,7 @@
                                                                                                             path : value :
                                                                                                                 [
                                                                                                                     ''
-                                                                                                                        1
+                                                                                                                        ${ builtins.toJSON path }
                                                                                                                     ''
                                                                                                                 ] ;
                                                                                                         list = path : list : builtins.concatLists list ;
@@ -768,6 +768,7 @@
                                                                                                                 ;;
                                                                                                             --resource)
                                                                                                                 RESOURCE=true
+                                                                                                                # shellcheck disable=SC2028
                                                                                                                 echo '${ builtins.toJSON resource__ }'
                                                                                                                 echo "$2 $RESOURCE"
                                                                                                                 shift 2
