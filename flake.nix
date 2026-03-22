@@ -1099,7 +1099,8 @@
                                                                                      runtimeInputs = [ pkgs.coreutils ] ;
                                                                                      text =
                                                                                          ''
-                                                                                            cd ${ resources.checks.resource { failure = 29600 ; setup = setup : ''${ setup } --expected-init-code 0 --expected-release-code 0'' ; } }
+                                                                                            RESOURCE="$( resource --argument "--expected-init-exit-code" --argument 0 --argument --expected-release-exit-code" --argument 0 --failure 26886 --resource '["checks","resource"]' )" || exit 96
+                                                                                            ls .
                                                                                             cat observed.yaml
                                                                                             exit 99
                                                                                          '' ;
