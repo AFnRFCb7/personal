@@ -230,8 +230,8 @@
                                                                                                                     failure 4168
                                                                                                             esac
                                                                                                         done
-                                                                                                        echo "$EXPECTED_INIT_CODE" > /mount/expected-init-code
-                                                                                                        echo "$EXPECTED_RELEASE_CODE" > /mount/expected-release-code
+                                                                                                        echo "$EXPECTED_INIT_CODE" > /mount/expected-init-exit-code
+                                                                                                        echo "$EXPECTED_RELEASE_EXIT_CODE" > /mount/expected-release-exit-code
                                                                                                         exit "$EXPECTED_INIT_EXIT_CODE"
                                                                                                     '' ;
                                                                                             } ;
@@ -243,15 +243,15 @@
                                                                                         pkgs.writeShellApplication
                                                                                             {
                                                                                                 name = "release" ;
-                                                                                                runtimeInputs = [ failure pkgs.jq ] ;
+                                                                                                runtimeInputs = [ failure pkgs.coreutils ] ;
                                                                                                 text =
                                                                                                     ''
-                                                                                                        EXPECTED_RELEASE_EXIT_CODE="$( jq ".release.exit-code" /mount/expected.json )" || failure 6270
+                                                                                                        EXPECTED_RELEASE_EXIT_CODE="$( cat /mount/expected-release-exit-code )" || failure 19859
                                                                                                         exit "$EXPECTED_RELEASE_EXIT_CODE"
                                                                                                     '' ;
                                                                                             } ;
                                                                                     in "${ application }/bin/init" ;
-                                                                        targets = [ "expected-init-code" "expected-release-code" ] ;
+                                                                        targets = [ "expected-init-exit-code" "expected-release-exit-code" ] ;
                                                                     } ;
                                                         } ;
                                                     foobar =
