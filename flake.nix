@@ -737,6 +737,25 @@
                                                                                     runtimeInputs = [ ] ;
                                                                                     text =
                                                                                         let
+                                                                                            if =
+                                                                                                builtins.concatLists
+                                                                                                    [
+                                                                                                        [
+                                                                                                            ''
+                                                                                                                if [[ "$#" --ne 2 ]]
+                                                                                                                then
+                                                                                                                    exit 99
+                                                                                                            ''
+                                                                                                        ]
+                                                                                                        resource
+                                                                                                        [
+                                                                                                            ''
+                                                                                                                else
+                                                                                                                    exit 98
+                                                                                                                fi
+                                                                                                            ''
+                                                                                                        ]
+                                                                                                    ]
                                                                                             resource =
                                                                                                 _visitor.implementation
                                                                                                     {
@@ -769,10 +788,7 @@
                                                                                                                 shift 2
                                                                                                                 ;;
                                                                                                             --resource)
-                                                                                                                if [[ "$#" -ne 2 ]]
-                                                                                                                then
-                                                                                                                    exit 98
-                                                                                                                fi
+                                                                                                                ${ builtins.concatStringsSep "/n" if }
                                                                                                                 echo "$2 $RESOURCE"
                                                                                                                 shift 2
                                                                                                                 ;;
