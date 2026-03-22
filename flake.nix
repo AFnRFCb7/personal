@@ -742,11 +742,15 @@
                                                                                                     {
                                                                                                         lambda =
                                                                                                             path : value :
-                                                                                                                ''
-                                                                                                                    elif [[ '${ builtins.toJSON path }' -eq "$2" ]]
-                                                                                                                    then
-                                                                                                                        RESOURCE=${ value { failure = "$FAILURE" ; setup = setup : ''${ setup } "${ builtins.concatStringsSep "" [ "$" "{" "ARGUMENTS[@]" "}" ] }"'' ; } }
-                                                                                                                '' ;
+                                                                                                                [
+                                                                                                                    ''
+                                                                                                                        elif [[ '${ builtins.toJSON path }' -eq "$2" ]]
+                                                                                                                        then
+                                                                                                                            RESOURCE=${ value { failure = "$FAILURE" ; setup = setup : ''${ setup } "${ builtins.concatStringsSep "" [ "$" "{" "ARGUMENTS[@]" "}" ] }"'' ; } }
+                                                                                                                    ''
+                                                                                                                ] ;
+                                                                                                        list = path : list : builtins.concatLists list ;
+                                                                                                        set = path : set : builtins.concatLists ( builtins.attrValues set ) ;
                                                                                                     }
                                                                                                     resources ;
                                                                                             in
@@ -768,7 +772,7 @@
                                                                                                                 if [[ "$#" -ne 2 ]]
                                                                                                                 then
                                                                                                                     exit 98
-                                                                                                                ${ resource }
+                                                                                                                ${ builtins.concatStringsSep "/n" resource }
                                                                                                                 else
                                                                                                                     exit 97
                                                                                                                 fi
