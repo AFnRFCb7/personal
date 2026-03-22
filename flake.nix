@@ -765,7 +765,7 @@
                                                                                                                     ''
                                                                                                                         elif [[ '${ builtins.toJSON path }' -eq "$2" ]]
                                                                                                                         then
-                                                                                                                            RESOURCE=${ value { failure = "$FAILURE" ; setup = setup : ''${ setup }'' ; } }
+                                                                                                                            RESOURCE=true
                                                                                                                     ''
                                                                                                                 ] ;
                                                                                                         list = path : list : builtins.concatLists list ;
