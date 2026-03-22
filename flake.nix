@@ -779,8 +779,6 @@
                                                                                                                 exit 64
                                                                                                         esac
                                                                                                     done
-                                                                                                    RESOURCE=${ resources { failure = ''"$FAILURE"'' ; setup = ''"$SETUP"'' ; } }
-                                                                                                    echo "$RESOURCE"
                                                                                                 '' ;
                                                                                 }
                                                                         )
