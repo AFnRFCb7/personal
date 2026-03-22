@@ -733,6 +733,60 @@
                                                                         (
                                                                             pkgs.writeShellApplication
                                                                                 {
+                                                                                    name = "resource" ;
+                                                                                    runtimeInputs = [ ] ;
+                                                                                    text =
+                                                                                        let
+                                                                                            resource =
+                                                                                                _visitor.implementation
+                                                                                                    {
+                                                                                                        lambda =
+                                                                                                            path : value :
+                                                                                                                ''
+                                                                                                                    elif [[ '${ builtins.toJSON path }' -eq "$2" ]]
+                                                                                                                    then
+                                                                                                                        RESOURCE=${ value { failure = "$FAILURE" ; setup = setup ''${ setup } "${ builtins.concatStringsSep "" [ "$" "{" "ARGUMENTS[@]" "}" ] }"'' ; } }
+                                                                                                                '' ;
+                                                                                                    }
+                                                                                                    resources ;
+                                                                                            in
+                                                                                                ''
+                                                                                                    ARGUMENTS=()
+                                                                                                    FAILURE=13959
+                                                                                                    while [[ "$#" -gt 0 ]]
+                                                                                                    do
+                                                                                                        case "$1" in
+                                                                                                            --argument)
+                                                                                                                ARGUMENTS+=( "$2" )
+                                                                                                                shift 2
+                                                                                                                ;;
+                                                                                                            --failure)
+                                                                                                                FAILURE="$2"
+                                                                                                                shift 2
+                                                                                                                ;;
+                                                                                                            --resource)
+                                                                                                                if [[ "$#" -ne 2 ]]
+                                                                                                                then
+                                                                                                                    exit 98
+                                                                                                                ${ resource }
+                                                                                                                else
+                                                                                                                    exit 97
+                                                                                                                fi
+                                                                                                                echo "$RESOURCE"
+                                                                                                                shift 2
+                                                                                                                ;;
+                                                                                                            *)
+                                                                                                                exit 64
+                                                                                                        esac
+                                                                                                    done
+                                                                                                    RESOURCE=${ resources { failure = ''"$FAILURE"'' ; setup = ''"$SETUP"'' ; } }
+                                                                                                    echo "$RESOURCE"
+                                                                                                '' ;
+                                                                                }
+                                                                        )
+                                                                        (
+                                                                            pkgs.writeShellApplication
+                                                                                {
                                                                                     name = "archive-resources" ;
                                                                                     runtimeInputs = [ pkgs.coreutils pkgs.gnutar pkgs.nix pkgs.zstd ] ;
                                                                                     text =
