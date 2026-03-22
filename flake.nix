@@ -113,7 +113,7 @@
                                                                                     text =
                                                                                         ''
                                                                                             # shellcheck disable=2140
-                                                                                            echo There was a failure in ${ builtins.toJSON path } >&2
+                                                                                            echo There was a failure in resource '${ builtins.toJSON path }' >&2
                                                                                             exit 64
                                                                                         '' ;
                                                                                 } ;
@@ -248,11 +248,11 @@
                                                                                                     ] ;
                                                                                                 text =
                                                                                                     ''
-                                                                                                        trace 15853
+                                                                                                        trace 15853 "$*"
                                                                                                         INIT_EXIT_CODE=0
-                                                                                                        trace 8532
+                                                                                                        trace 8532 "$*"
                                                                                                         RELEASE_EXIT_CODE=0
-                                                                                                        trace 18566
+                                                                                                        trace 18566 "$*"
                                                                                                         while [[ "$#" -gt 0 ]]
                                                                                                         do
                                                                                                             trace 30648
