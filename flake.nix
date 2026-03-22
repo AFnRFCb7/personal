@@ -149,6 +149,7 @@
                                                                                                     [
                                                                                                         pkgs.bash
                                                                                                         failure
+                                                                                                        trace
                                                                                                         (
                                                                                                             pkgs.writeShellApplication
                                                                                                                 {
@@ -231,36 +232,50 @@
                                                                                                     ] ;
                                                                                                 text =
                                                                                                     ''
-                                                                                                        trace
+                                                                                                        trace 15853
                                                                                                         INIT_EXIT_CODE=0
+                                                                                                        trace 8532
                                                                                                         RELEASE_EXIT_CODE=0
+                                                                                                        trace 18566
                                                                                                         while [[ "$#" -gt 0 ]]
                                                                                                         do
+                                                                                                            trace 30648
                                                                                                             case "$1" in
                                                                                                                 --depth)
+                                                                                                                    trace 7657
                                                                                                                     DEPTH="$2"
                                                                                                                     shift 2
                                                                                                                     ;;
                                                                                                                 --init-exit-code)
+                                                                                                                    trace 22414
                                                                                                                     INIT_EXIT_CODE="$2"
                                                                                                                     shift 2
                                                                                                                     ;;
                                                                                                                 --release-exit-code)
+                                                                                                                    trace 8458
                                                                                                                     RELEASE_EXIT_CODE="$2"
                                                                                                                     shift 2
                                                                                                                     ;;
                                                                                                                 *)
+                                                                                                                    trace 8730
                                                                                                                     failure 4168
                                                                                                             esac
                                                                                                         done
-                                                                                                        NEXT=$(( DEPTH - 2 ))
+                                                                                                        trace 11577
+                                                                                                        NEXT=$(( DEPTH - 1 ))
+                                                                                                        trace 9019
                                                                                                         bash -c "outer --depth $NEXT --init-exit-code $INIT_EXIT_CODE --release-exit-code $RELEASE_EXIT_CODE"
+                                                                                                        trace 25864
                                                                                                         mkdir --parents "/mount/observed/$DEPTH"
+                                                                                                        trace 2698
                                                                                                         # shellcheck disable=SC2016
                                                                                                         yq eval --prettyPrint '{ "channel" : .[-2].channel , "init-status" : .[-1].status }' /home/${ config.personal.name }/logs/log.yaml > "/mount/observed/$DEPTH/init.yaml"
+                                                                                                        trace 1945
                                                                                                         # shellcheck disable=SC2016
                                                                                                         yq eval --prettyPrint '{ "channel" : .[-1].channel , "release-status" : .[-1].status }' /home/${ config.personal.name }/logs/log.yaml > "/mount/observed/$DEPTH/release.yaml"
+                                                                                                        trace 29561
                                                                                                         chmod 0400 "/mount/observed/$DEPTH/init.yaml" "/mount/observed/$DEPTH/release.yaml"
+                                                                                                        trace 21501
                                                                                                     '' ;
                                                                                             } ;
                                                                                     in "${ application }/bin/init" ;
