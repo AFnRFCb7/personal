@@ -117,7 +117,7 @@
                                                                                             exit 64
                                                                                         '' ;
                                                                                 } ;
-                                                                            in "${ appliction }/bin/failure" ;
+                                                                            in "${ application }/bin/failure" ;
                                                                     in ''"$( ${ setup value } )" || ${ failure }'' ;
                                                 }
                                                 resources_ ;
