@@ -187,7 +187,7 @@
                                                                                                                                                 fi
                                                                                                                                                 mkdir --parents /mount/observed/0
                                                                                                                                                 # shellcheck disable=SC2016
-                                                                                                                                                yq eval --prettyPrint --arg SETUP_STATUS "$STATUS" '{ "channel" : .[-1].channel , "init-status" : .[-1].status , "setup-status" : $SETUP_STATUS }' /home/${ config.personal.name }/logs/log.yaml > /mount/observed/0/init.yaml
+                                                                                                                                                yq eval --prettyPrint --arg RESOURCE --arg SETUP_STATUS "$STATUS" '{ "channel" : .[-1].channel , "init-status" : .[-1].status , "resource" : $RESOURCE , "setup-status" : $SETUP_STATUS }' /home/${ config.personal.name }/logs/log.yaml > /mount/observed/0/init.yaml
                                                                                                                                                 chmod 0400 /mount/observed/0/init.yaml
                                                                                                                                             '' ;
                                                                                                                                     }
@@ -222,6 +222,7 @@
                                                                                                                                 bash -c "inner --init-exit-code $INIT_EXIT_CODE --release-exit-code $RELEASE_EXIT_CODE"
                                                                                                                             fi
                                                                                                                             mkdir --parents "/mount/observed/$DEPTH"
+                                                                                                                            # shellcheck disable=SC2016
                                                                                                                             yq eval --prettyPrint '{ "channel" : .[-1].channel , "init-status" : .[-1].status }' /home/${ config.personal.name }/logs/log.yaml > "/mount/observed/$DEPTH/init.yaml"
                                                                                                                             chmod 0400 "/mount/observed/$DEPTH/init.yaml"
                                                                                                                         '' ;
@@ -255,7 +256,9 @@
                                                                                                         NEXT=$(( DEPTH - 1 ))
                                                                                                         bash -c "outer --depth $NEXT --init-exit-code $INIT_EXIT_CODE --release-exit-code $RELEASE_EXIT_CODE"
                                                                                                         mkdir --parents "/mount/observed/$DEPTH"
+                                                                                                        # shellcheck disable=SC2016
                                                                                                         yq eval --prettyPrint '{ "channel" : .[-2].channel , "init-status" : .[-1].status }' /home/${ config.personal.name }/logs/log.yaml > "/mount/observed/$DEPTH/init.yaml"
+                                                                                                        # shellcheck disable=SC2016
                                                                                                         yq eval --prettyPrint '{ "channel" : .[-1].channel , "release-status" : .[-1].status }' /home/${ config.personal.name }/logs/log.yaml > "/mount/observed/$DEPTH/release.yaml"
                                                                                                         chmod 0400 "/mount/observed/$DEPTH/init.yaml" "/mount/observed/$DEPTH/release.yaml"
                                                                                                     '' ;
