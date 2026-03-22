@@ -876,6 +876,9 @@
                                                                                                                     ''
                                                                                                                         elif [[ "$2" == '${ builtins.toJSON path }' ]]
                                                                                                                         then
+                                                                                                                            cat <<EOF
+                                                                                                                        RESOURCE=${ value { setup = setup : ''${ setup } "${ builtins.concatStringsSep "" [ "$" "{" "ARGUMENTS[@]" "}" ] }"'' ; } }
+                                                                                                                        EOF
                                                                                                                             RESOURCE=${ value { setup = setup : ''${ setup } "${ builtins.concatStringsSep "" [ "$" "{" "ARGUMENTS[@]" "}" ] }"'' ; } }
                                                                                                                     ''
                                                                                                                 ] ;
