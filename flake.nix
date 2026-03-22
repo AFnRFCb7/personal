@@ -210,7 +210,7 @@
                                                                                         pkgs.writeShellApplication
                                                                                             {
                                                                                                 name = "init" ;
-                                                                                                runtimeInputs = [ ] ;
+                                                                                                runtimeInputs = [ failure pkgs.coreutils ] ;
                                                                                                 text =
                                                                                                     ''
                                                                                                         INIT_EXIT_CODE=0
@@ -218,21 +218,21 @@
                                                                                                         while [[ "$#" -gt 0 ]]
                                                                                                         do
                                                                                                             case "$1" in
-                                                                                                                --expected-init-exit-code)
-                                                                                                                    EXPECTED_INIT_EXIT_CODE="$2"
+                                                                                                                --init-exit-code)
+                                                                                                                    INIT_EXIT_CODE="$2"
                                                                                                                     shift 2
                                                                                                                     ;;
-                                                                                                                --expected-release-exit-code)
-                                                                                                                    EXPECTED_RELEASE_EXIT_CODE="$2"
+                                                                                                                --release-exit-code)
+                                                                                                                    RELEASE_EXIT_CODE="$2"
                                                                                                                     shift 2
                                                                                                                     ;;
                                                                                                                 *)
                                                                                                                     failure 4168
                                                                                                             esac
                                                                                                         done
-                                                                                                        echo "$EXPECTED_INIT_CODE" > /mount/expected-init-exit-code
-                                                                                                        echo "$EXPECTED_RELEASE_EXIT_CODE" > /mount/expected-release-exit-code
-                                                                                                        exit "$EXPECTED_INIT_EXIT_CODE"
+                                                                                                        echo "$INIT_EXIT_CODE" > /mount/init-exit-code
+                                                                                                        echo "$EXPECTED_EXIT_CODE" > /mount/release-exit-code
+                                                                                                        exit "$INIT_EXIT_CODE"
                                                                                                     '' ;
                                                                                             } ;
                                                                                     in "${ application }/bin/init" ;
@@ -246,12 +246,12 @@
                                                                                                 runtimeInputs = [ failure pkgs.coreutils ] ;
                                                                                                 text =
                                                                                                     ''
-                                                                                                        EXPECTED_RELEASE_EXIT_CODE="$( cat /mount/expected-release-exit-code )" || failure 19859
-                                                                                                        exit "$EXPECTED_RELEASE_EXIT_CODE"
+                                                                                                        RELEASE_EXIT_CODE="$( cat /mount/release-exit-code )" || failure 19859
+                                                                                                        exit "$RELEASE_EXIT_CODE"
                                                                                                     '' ;
                                                                                             } ;
                                                                                     in "${ application }/bin/init" ;
-                                                                        targets = [ "expected-init-exit-code" "expected-release-exit-code" ] ;
+                                                                        targets = [ "init-exit-code" "release-exit-code" ] ;
                                                                     } ;
                                                         } ;
                                                     foobar =
