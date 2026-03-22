@@ -768,7 +768,7 @@
                                                                                                                 ;;
                                                                                                             --resource)
                                                                                                                 RESOURCE=true
-                                                                                                                echo '${ builtins.toJSON resource__ }
+                                                                                                                echo '${ builtins.toJSON resource__ }'
                                                                                                                 echo "$2 $RESOURCE"
                                                                                                                 shift 2
                                                                                                                 ;;
