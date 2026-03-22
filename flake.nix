@@ -788,7 +788,7 @@
                                                                                                                 shift 2
                                                                                                                 ;;
                                                                                                             --resource)
-                                                                                                                ${ builtins.concatStringsSep "/n" clause }
+                                                                                                                ${ builtins.concatStringsSep "/n" clauses }
                                                                                                                 echo "$2 $RESOURCE"
                                                                                                                 shift 2
                                                                                                                 ;;
