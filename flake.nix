@@ -186,7 +186,7 @@
                                                                                                                                                     STATUS="$?"
                                                                                                                                                 fi
                                                                                                                                                 mkdir --parents /mount/observed/0
-                                                                                                                                                yq eval --prettyPrint "{ channel : .[-1].channel" , status : .[-1].status" } /home/${ config.personal.name }/logs/log.yaml > /mount/observed/0/init.yaml
+                                                                                                                                                yq eval --prettyPrint '{ "channel" : .[-1].channel , "status" : .[-1].status }' /home/${ config.personal.name }/logs/log.yaml > /mount/observed/0/init.yaml
                                                                                                                                                 chmod 0400 /mount/observed/0/init.yaml
                                                                                                                                             '' ;
                                                                                                                                     }
@@ -221,7 +221,7 @@
                                                                                                                                 bash -c "inner --init-exit-code $INIT_EXIT_CODE --release-exit-code $RELEASE_EXIT_CODE"
                                                                                                                             fi
                                                                                                                             mkdir --parents "/mount/observed/$DEPTH"
-                                                                                                                            yq eval --prettyPrint "{ channel : .[-1].channel" , status : .[-1].status" } /home/${ config.personal.name }/logs/log.yaml > "/mount/observed/$DEPTH/init.yaml"
+                                                                                                                            yq eval --prettyPrint '{ "channel" : .[-1].channel , "status" : .[-1].status }' /home/${ config.personal.name }/logs/log.yaml > "/mount/observed/$DEPTH/init.yaml"
                                                                                                                             chmod 0400 "/mount/observed/$DEPTH/init.yaml"
                                                                                                                         '' ;
                                                                                                                 }
@@ -254,8 +254,8 @@
                                                                                                         NEXT=$(( DEPTH - 1 ))
                                                                                                         bash -c "outer --depth $NEXT --init-exit-code $INIT_EXIT_CODE --release-exit-code $RELEASE_EXIT_CODE"
                                                                                                         mkdir --parents "/mount/observed/$DEPTH"
-                                                                                                        yq eval --prettyPrint "{ channel : .[-2].channel" , status : .[-1].status" } /home/${ config.personal.name }/logs/log.yaml > "/mount/observed/$DEPTH/init.yaml"
-                                                                                                        yq eval --prettyPrint "{ channel : .[-1].channel" , status : .[-1].status" } /home/${ config.personal.name }/logs/log.yaml > "/mount/observed/$DEPTH/release.yaml"
+                                                                                                        yq eval --prettyPrint '{ "channel" : .[-2].channel , "status" : .[-1].status }' /home/${ config.personal.name }/logs/log.yaml > "/mount/observed/$DEPTH/init.yaml"
+                                                                                                        yq eval --prettyPrint '{ "channel" : .[-1].channel , "status" : .[-1].status }' /home/${ config.personal.name }/logs/log.yaml > "/mount/observed/$DEPTH/release.yaml"
                                                                                                         chmod 0400 "/mount/observed/$DEPTH/init.yaml" "/mount/observed/$DEPTH/release.yaml"
                                                                                                     '' ;
                                                                                             } ;
