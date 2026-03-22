@@ -782,6 +782,7 @@
                                                                                                                 exit 64
                                                                                                         esac
                                                                                                     done
+                                                                                                    echo "FAILURE=$FAILURE"
                                                                                                 '' ;
                                                                                 }
                                                                         )
