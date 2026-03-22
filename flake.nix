@@ -102,7 +102,23 @@
                                                 {
                                                     string =
                                                         path : value : { setup ? setup : setup } :
-                                                            ''"$( ${ setup value } )" || ( echo There was a failure in resource ${ builtins.toJSON path } && exit 64 )'' ;
+                                                            let
+                                                                failure =
+                                                                    let
+                                                                        application =
+                                                                            pkgs.writeShellApplication
+                                                                                {
+                                                                                    name = "failure" ;
+                                                                                    runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                    text =
+                                                                                        ''
+                                                                                            # shellcheck disable=2140
+                                                                                            echo There was a failure in ${ builtins.toJSON path } >&2
+                                                                                            exit 64
+                                                                                        '' ;
+                                                                                } ;
+                                                                            in "${ appliction }/bin/failure" ;
+                                                                    in ''"$( ${ setup value } )" || ${ failure }'' ;
                                                 }
                                                 resources_ ;
                                         resources_ =
