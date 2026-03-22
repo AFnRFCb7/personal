@@ -763,7 +763,7 @@
                                                                                                             path : value :
                                                                                                                 [
                                                                                                                     ''
-                                                                                                                        elif [[ "$2" -eq '${ builtins.toJSON path }' ]]
+                                                                                                                        elif [[ "$2" == '${ builtins.toJSON path }' ]]
                                                                                                                         then
                                                                                                                             RESOURCE=${ value { setup = setup : ''${ setup } "${ builtins.concatStringsSep "" [ "$" "{" "ARGUMENTS[@]" "}" ] }"'' ; } }
                                                                                                                     ''
