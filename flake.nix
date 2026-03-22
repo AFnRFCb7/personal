@@ -788,10 +788,8 @@
                                                                                                                 shift 2
                                                                                                                 ;;
                                                                                                             --resource)
-                                                                                                                RESOURCE=true
-                                                                                                                # shellcheck disable=SC2028
-                                                                                                                echo '${ builtins.toJSON resource__ }'
-                                                                                                                echo "$2 $RESOURCE"
+                                                                                                                echo '${ builtins.concatStringsSep "\n" conditions }'
+                                                                                                                echo "$RESOURCE"
                                                                                                                 shift 2
                                                                                                                 ;;
                                                                                                             *)
