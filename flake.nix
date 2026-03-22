@@ -737,35 +737,14 @@
                                                                                     runtimeInputs = [ ] ;
                                                                                     text =
                                                                                         let
-                                                                                            clauses =
-                                                                                                builtins.concatLists
-                                                                                                    [
-                                                                                                        [
-                                                                                                            ''
-                                                                                                                if [[ "$#" --ne 2 ]]
-                                                                                                                then
-                                                                                                                    exit 99
-                                                                                                            ''
-                                                                                                        ]
-                                                                                                        resource
-                                                                                                        [
-                                                                                                            ''
-                                                                                                                else
-                                                                                                                    exit 98
-                                                                                                                fi
-                                                                                                            ''
-                                                                                                        ]
-                                                                                                    ] ;
-                                                                                            resource =
+                                                                                            resource__ =
                                                                                                 _visitor.implementation
                                                                                                     {
                                                                                                         lambda =
                                                                                                             path : value :
                                                                                                                 [
                                                                                                                     ''
-                                                                                                                        elif [[ '${ builtins.toJSON path }' -eq "$2" ]]
-                                                                                                                        then
-                                                                                                                            RESOURCE=true
+                                                                                                                        ${ builtins.toJSON path }
                                                                                                                     ''
                                                                                                                 ] ;
                                                                                                         list = path : list : builtins.concatLists list ;
@@ -788,7 +767,8 @@
                                                                                                                 shift 2
                                                                                                                 ;;
                                                                                                             --resource)
-                                                                                                                ${ builtins.concatStringsSep "/n" clauses }
+                                                                                                                RESOURCE=true
+                                                                                                                echo '${ builtins.toJSON resource__ }
                                                                                                                 echo "$2 $RESOURCE"
                                                                                                                 shift 2
                                                                                                                 ;;
