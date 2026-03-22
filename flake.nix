@@ -218,7 +218,7 @@
                                                                                                         exit "$RELEASE_EXIT_CODE"
                                                                                                     '' ;
                                                                                             } ;
-                                                                                    in "${ application }/bin/init" ;
+                                                                                    in "${ application }/bin/release" ;
                                                                         targets = [ "init-exit-code" "release-exit-code" ] ;
                                                                     } ;
                                                         } ;
@@ -743,16 +743,11 @@
                                                                                             in
                                                                                                 ''
                                                                                                     ARGUMENTS=()
-                                                                                                    FAILURE=13959
                                                                                                     while [[ "$#" -gt 0 ]]
                                                                                                     do
                                                                                                         case "$1" in
                                                                                                             --argument)
                                                                                                                 ARGUMENTS+=( "$2" )
-                                                                                                                shift 2
-                                                                                                                ;;
-                                                                                                            --failure)
-                                                                                                                FAILURE="$2"
                                                                                                                 shift 2
                                                                                                                 ;;
                                                                                                             --resource)
