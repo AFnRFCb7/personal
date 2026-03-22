@@ -150,7 +150,7 @@
                                                                                                     ''
                                                                                                         echo 8463
                                                                                                     '' ;
-                                                                                            }
+                                                                                            } ;
                                                                                     in "${ application }/bin/init" ;
                                                                         release =
                                                                             { failure , pkgs , resources , seed , sequential , trace } :
