@@ -737,14 +737,35 @@
                                                                                     runtimeInputs = [ ] ;
                                                                                     text =
                                                                                         let
-                                                                                            resource__ =
+                                                                                            conditions =
+                                                                                                builtins.concatLists
+                                                                                                    [
+                                                                                                        [
+                                                                                                            ''
+                                                                                                                if [[ "$#" -ne 2 ]]
+                                                                                                                then
+                                                                                                                    exit 99
+                                                                                                            ''
+                                                                                                        ]
+                                                                                                        resource-conditions
+                                                                                                        [
+                                                                                                            ''
+                                                                                                                else
+                                                                                                                    exit 98
+                                                                                                                fi
+                                                                                                            ''
+                                                                                                        ]
+                                                                                                    ] ;
+                                                                                            resource-conditions =
                                                                                                 _visitor.implementation
                                                                                                     {
                                                                                                         lambda =
                                                                                                             path : value :
                                                                                                                 [
                                                                                                                     ''
-                                                                                                                        ${ builtins.toJSON path }
+                                                                                                                        if [[ "$2" -eq '${ builtins.toJSON path }' ]]
+                                                                                                                        then
+                                                                                                                            RESOURCE=${ value { failure = "$FAILURE" ; setup = setup : ''${ setup } "${ builtins.concatStringsSep "" [ "$" "{" "ARGUMENTS[@]" "}" ] }"'' } }
                                                                                                                     ''
                                                                                                                 ] ;
                                                                                                         list = path : list : builtins.concatLists list ;
