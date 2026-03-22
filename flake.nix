@@ -763,7 +763,8 @@
                                                                                                             path : value :
                                                                                                                 [
                                                                                                                     ''
-                                                                                                                        if [[ "$2" -eq '${ builtins.toJSON path }' ]]
+                                                                                                                        # shellcheck disable=SC2140,SC2016
+                                                                                                                        elif [[ "$2" -eq '${ builtins.toJSON path }' ]]
                                                                                                                         then
                                                                                                                             if [[ -t 0 ]]
                                                                                                                             then
