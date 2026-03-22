@@ -102,7 +102,7 @@
                                                 {
                                                     string =
                                                         path : value : { setup ? setup : setup } :
-                                                            ''"$( ${ setup value } )" || ( echo There was a failure in resource ${ builtins.toString path } && exit 64 )'' ;
+                                                            ''"$( ${ setup value } )" || ( echo There was a failure in resource ${ builtins.toJSON path } && exit 64 )'' ;
                                                 }
                                                 resources_ ;
                                         resources_ =
@@ -231,7 +231,7 @@
                                                                                                     ] ;
                                                                                                 text =
                                                                                                     ''
-                                                                                                        echo 8463
+                                                                                                        trace
                                                                                                         INIT_EXIT_CODE=0
                                                                                                         RELEASE_EXIT_CODE=0
                                                                                                         while [[ "$#" -gt 0 ]]
@@ -253,7 +253,7 @@
                                                                                                                     failure 4168
                                                                                                             esac
                                                                                                         done
-                                                                                                        NEXT=$(( DEPTH - 1 ))
+                                                                                                        NEXT=$(( DEPTH - 2 ))
                                                                                                         bash -c "outer --depth $NEXT --init-exit-code $INIT_EXIT_CODE --release-exit-code $RELEASE_EXIT_CODE"
                                                                                                         mkdir --parents "/mount/observed/$DEPTH"
                                                                                                         # shellcheck disable=SC2016
