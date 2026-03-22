@@ -772,7 +772,6 @@
                                                                                                                 if [[ "$#" -ne 2 ]]
                                                                                                                 then
                                                                                                                     exit 98
-                                                                                                                ${ builtins.concatStringsSep "/n" resource }
                                                                                                                 else
                                                                                                                     exit 97
                                                                                                                 fi
