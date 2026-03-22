@@ -231,7 +231,7 @@
                                                                                                             esac
                                                                                                         done
                                                                                                         echo "$INIT_EXIT_CODE" > /mount/init-exit-code
-                                                                                                        echo "$EXPECTED_EXIT_CODE" > /mount/release-exit-code
+                                                                                                        echo "$RELEASE_EXIT_CODE" > /mount/release-exit-code
                                                                                                         exit "$INIT_EXIT_CODE"
                                                                                                     '' ;
                                                                                             } ;
