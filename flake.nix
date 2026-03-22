@@ -145,10 +145,118 @@
                                                                                         pkgs.writeShellApplication
                                                                                             {
                                                                                                 name = "init" ;
-                                                                                                runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                runtimeInputs =
+                                                                                                    [
+                                                                                                        pkgs.bash
+                                                                                                        failure
+                                                                                                        (
+                                                                                                            pkgs.writeShellApplication
+                                                                                                                {
+                                                                                                                    name = "outer" ;
+                                                                                                                    runtimeInputs =
+                                                                                                                        [
+                                                                                                                            pkgs.bash
+                                                                                                                            failure
+                                                                                                                            (
+                                                                                                                                pkgs.writeShellApplication
+                                                                                                                                    {
+                                                                                                                                        name = "inner" ;
+                                                                                                                                        runtimeInputs = [ failure pkgs.coreutils pkgs.yq-go ] ;
+                                                                                                                                        text =
+                                                                                                                                            ''
+                                                                                                                                                while [[ "$#" -gt 0 ]]
+                                                                                                                                                do
+                                                                                                                                                    case "$1" in
+                                                                                                                                                        --init-exit-code)
+                                                                                                                                                            INIT_EXIT_CODE="$2"
+                                                                                                                                                            shift 2
+                                                                                                                                                            ;;
+                                                                                                                                                        --release-exit-code)
+                                                                                                                                                            RELEASE_EXIT_CODE="$2"
+                                                                                                                                                            shift 2
+                                                                                                                                                            ;;
+                                                                                                                                                        *)
+                                                                                                                                                            failure 14578
+                                                                                                                                                    esac
+                                                                                                                                                done
+                                                                                                                                                if RESOURCE=${ resources.checks.resource { setup = setup : ''${ setup } --init-exit-code "$INIT_EXIT_CODE" --release-exit-code "$RELEASE_EXIT_CODE"'' ; } }
+                                                                                                                                                then
+                                                                                                                                                    STATUS="$?"
+                                                                                                                                                else
+                                                                                                                                                    STATUS="$?"
+                                                                                                                                                fi
+                                                                                                                                                mkdir --parents /mount/observed/0
+                                                                                                                                                yq eval --prettyPrint "{ channel : .[-1].channel" , status : .[-1].status" } /home/${ config.personal.name }/logs/log.yaml > /mount/observed/0/init.yaml
+                                                                                                                                                chmod 0400 /mount/observed/0/init.yaml
+                                                                                                                                            '' ;
+                                                                                                                                    }
+                                                                                                                            )
+                                                                                                                        ] ;
+                                                                                                                    text =
+                                                                                                                        ''
+                                                                                                                            while [[ "$#" -gt 0 ]]
+                                                                                                                            do
+                                                                                                                                case "$1" in
+                                                                                                                                    --depth)
+                                                                                                                                        DEPTH="$2"
+                                                                                                                                        shift 2
+                                                                                                                                        ;;
+                                                                                                                                    --init-exit-code)
+                                                                                                                                        INIT_EXIT_CODE="$2"
+                                                                                                                                        shift 2
+                                                                                                                                        ;;
+                                                                                                                                    --release-exit-code)
+                                                                                                                                        RELEASE_EXIT_CODE="$2"
+                                                                                                                                        shift 2
+                                                                                                                                        ;;
+                                                                                                                                    *)
+                                                                                                                                        failure 2846
+                                                                                                                                esac
+                                                                                                                            done
+                                                                                                                            NEXT=$(( DEPTH - 1 ))
+                                                                                                                            if [[ "$NEXT" -ge 0 ]]
+                                                                                                                            then
+                                                                                                                                bash -c "$0 --depth $DEPTH --init-exit-code $INIT_EXIT_CODE --release-exit-code $RELEASE_EXIT_CODE"
+                                                                                                                            else
+                                                                                                                                bash -c "inner --init-exit-code $INIT_EXIT_CODE --release-exit-code $RELEASE_EXIT_CODE"
+                                                                                                                            fi
+                                                                                                                            mkdir --parents "/mount/observed/$DEPTH"
+                                                                                                                            yq eval --prettyPrint "{ channel : .[-1].channel" , status : .[-1].status" } /home/${ config.personal.name }/logs/log.yaml > "/mount/observed/$DEPTH/init.yaml"
+                                                                                                                            chmod 0400 "/mount/observed/$DEPTH/init.yaml"
+                                                                                                                        '' ;
+                                                                                                                }
+                                                                                                        )
+                                                                                                    ] ;
                                                                                                 text =
                                                                                                     ''
                                                                                                         echo 8463
+                                                                                                        INIT_EXIT_CODE=0
+                                                                                                        RELEASE_EXIT_CODE=0
+                                                                                                        while [[ "$#" -gt 0 ]]
+                                                                                                        do
+                                                                                                            case "$1" in
+                                                                                                                --depth)
+                                                                                                                    DEPTH="$2"
+                                                                                                                    shift 2
+                                                                                                                    ;;
+                                                                                                                --init-exit-code)
+                                                                                                                    INIT_EXIT_CODE="$2"
+                                                                                                                    shift 2
+                                                                                                                    ;;
+                                                                                                                --release-exit-code)
+                                                                                                                    RELEASE_EXIT_CODE="$2"
+                                                                                                                    shift 2
+                                                                                                                    ;;
+                                                                                                                *)
+                                                                                                                    failure 4168
+                                                                                                            esac
+                                                                                                        done
+                                                                                                        NEXT=$(( DEPTH - 1 ))
+                                                                                                        bash -c "outer --depth $NEXT --init-exit-code $INIT_EXIT_CODE --release-exit-code $RELEASE_EXIT_CODE"
+                                                                                                        mkdir --parents "/mount/observed/$DEPTH"
+                                                                                                        yq eval --prettyPrint "{ channel : .[-2].channel" , status : .[-1].status" } /home/${ config.personal.name }/logs/log.yaml > "/mount/observed/$DEPTH/init.yaml"
+                                                                                                        yq eval --prettyPrint "{ channel : .[-1].channel" , status : .[-1].status" } /home/${ config.personal.name }/logs/log.yaml > "/mount/observed/$DEPTH/release.yaml"
+                                                                                                        chmod 0400 "/mount/observed/$DEPTH/init.yaml" "/mount/observed/$DEPTH/release.yaml"
                                                                                                     '' ;
                                                                                             } ;
                                                                                     in "${ application }/bin/init" ;
@@ -166,7 +274,7 @@
                                                                                                     '' ;
                                                                                             } ;
                                                                                         in "${ application }/bin/release" ;
-                                                                        targets = [ ] ;
+                                                                        targets = [ "observed" ] ;
                                                                     } ;
                                                             resource =
                                                                 ignore :
@@ -760,7 +868,6 @@
                                                                                                                 exit 64
                                                                                                         esac
                                                                                                     done
-                                                                                                    echo "FAILURE=$FAILURE"
                                                                                                 '' ;
                                                                                 }
                                                                         )
