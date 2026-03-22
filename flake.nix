@@ -765,7 +765,7 @@
                                                                                                                     ''
                                                                                                                         if [[ "$2" -eq '${ builtins.toJSON path }' ]]
                                                                                                                         then
-                                                                                                                            RESOURCE=${ value { failure = "$FAILURE" ; setup = setup : ''${ setup } "${ builtins.concatStringsSep "" [ "$" "{" "ARGUMENTS[@]" "}" ] }"'' } }
+                                                                                                                            RESOURCE=${ value { failure = "$FAILURE" ; setup = setup : ''${ setup } "${ builtins.concatStringsSep "" [ "$" "{" "ARGUMENTS[@]" "}" ] }"'' ; } }
                                                                                                                     ''
                                                                                                                 ] ;
                                                                                                         list = path : list : builtins.concatLists list ;
