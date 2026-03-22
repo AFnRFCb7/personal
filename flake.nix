@@ -135,71 +135,39 @@
                                                 {
                                                     checks =
                                                         {
-#                                                            hook =
-#                                                                ignore :
-#                                                                    {
-#                                                                        init =
-#                                                                            { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
-#                                                                                let
-#                                                                                    application =
-#                                                                                        pkgs.writeShellApplication
-#                                                                                            {
-#                                                                                                name = "init" ;
-#                                                                                                runtimeInputs = [ failure pkgs.coreutils ] ;
-#                                                                                                text =
-#                                                                                                    ''
-#                                                                                                        DEPTH=0
-#                                                                                                        EXPECTED_INIT_EXIT_CODE=0
-#                                                                                                        EXPECTED_RELEASE_EXIT_CODE=0
-#                                                                                                        while [[ "$#" -gt 0 ]]
-#                                                                                                        do
-#                                                                                                            case "$1" in
-#                                                                                                                --depth)
-#                                                                                                                    DEPTH="$2"
-#                                                                                                                    shift 2
-#                                                                                                                    ;;
-#                                                                                                                --expected-init-exit-code)
-#                                                                                                                    EXPECTED_INIT_EXIT_CODE="$2"
-#                                                                                                                    shift 2
-#                                                                                                                    ;;
-#                                                                                                                --expected-release-exit-code)
-#                                                                                                                    EXPECTED_RELEASE_EXIT_CODE="$2"
-#                                                                                                                    shift 2
-#                                                                                                                    ;;
-#                                                                                                                --terminal)
-#                                                                                                                    TERMINAL="$2"
-#                                                                                                                    shift 2
-#                                                                                                                    ;;
-#                                                                                                                *)
-#                                                                                                                    failure 4168
-#                                                                                                            esac
-#                                                                                                        done
-#                                                                                                        if [[ "$DEPTH" -gt 0 ]] && "$TERMINAL"
-#                                                                                                        then
-#                                                                                                            NEXT=$(( DEPTH - 1 ))
-#                                                                                                            HOOK="$( bash -c "${ resources.checks.hook { failure = 23986 ; setup = setup : ''${ setup } --depth "$NEXT" --init-exit-code "$INIT_EXIT_CODE" --release-exit-code "$RELEASE_EXIT_CODE" --terminal false'' ; } }" )" || failure 19270
-#                                                                                                            cat "$HOOK/observed.yaml" > /mount/observed.yaml
-#                                                                                                        else if [[ "$DEPTH" -gt 0 ]]
-#                                                                                                        then
-#                                                                                                            NEXT=$(( DEPTH - 1 ))
-#                                                                                                            HOOK="$( bash -c "${ resources.checks.hook { failure = 15150 ; setup = setup : ''${ setup } --depth "$NEXT" --init-exit-code "$INIT_EXIT_CODE" --release-exit-code "$RELEASE_EXIT_CODE" --terminal false'' ; } }" )" || failure 19270
-#                                                                                                            cat "$HOOK/observed.yaml" > /mount/observed.yaml
-#                                                                                                        else
-#                                                                                                            if RESOURCE=${ resources.checks.resource { failure = 23734 ; setup = setup : ''${ setup } --init-exit-code "$INIT_EXIT_CODE" --release-exit-code "$RELEASE_EXIT_CODE"'' ; } }
-#                                                                                                            then
-#                                                                                                                INIT_STATUS="$?"
-#                                                                                                            else
-#                                                                                                                INIT_STATUS="$?"
-#                                                                                                            fi
-#                                                                                                            ln --symbolic "$RESOURCE" /mount/resource
-#                                                                                                            yq eval --pretty '{ "index" : .[-1].index , "status" : .[-1].status , "triggered" : false }' /home/${ config.personal.name }/logs/log.yaml > /mount/observed.yaml
-#                                                                                                        fi
-#                                                                                                    '' ;
-#                                                                                            } ;
-#                                                                                    in "${ application }/bin/init" ;
-#                                                                        targets = [ "observed" "resource" ] ;
-#                                                                        transient = true ;
-#                                                                    } ;
+                                                            hook =
+                                                                ignore :
+                                                                    {
+                                                                        init =
+                                                                            { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
+                                                                                let
+                                                                                    application =
+                                                                                        pkgs.writeShellApplication
+                                                                                            {
+                                                                                                name = "init" ;
+                                                                                                runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                text =
+                                                                                                    ''
+                                                                                                        echo 8463
+                                                                                                    '' ;
+                                                                                            }
+                                                                                    in "${ application }/bin/init" ;
+                                                                        release =
+                                                                            { failure , pkgs , resources , seed , sequential , trace } :
+                                                                                let
+                                                                                    application =
+                                                                                        pkgs.writeShellApplication
+                                                                                            {
+                                                                                                name = "release" ;
+                                                                                                runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                text =
+                                                                                                    ''
+                                                                                                        echo 9577
+                                                                                                    '' ;
+                                                                                            } ;
+                                                                                        in "${ application }/bin/release" ;
+                                                                        targets = [ ] ;
+                                                                    } ;
                                                             resource =
                                                                 ignore :
                                                                     {
@@ -1118,10 +1086,7 @@
                                                                                      runtimeInputs = [ pkgs.coreutils ] ;
                                                                                      text =
                                                                                          ''
-                                                                                            RESOURCE="$( resource --argument "--expected-init-exit-code" --argument 0 --argument --expected-release-exit-code" --argument 0 --failure 26886 --resource '["checks","resource"]' )" || exit 96
-                                                                                            ls .
-                                                                                            cat observed.yaml
-                                                                                            exit 99
+                                                                                            RESOURCE="$( resource --argument "--init-exit-code" --argument 0 --argument --release-exit-code" --argument 0 --resource '["checks","hook"]' )" || exit 96
                                                                                          '' ;
                                                                                 } ;
                                                                         in "${ application }/bin/pre" ;
