@@ -186,6 +186,7 @@
                                                                                                                                                     STATUS="$?"
                                                                                                                                                 fi
                                                                                                                                                 mkdir --parents /mount/observed/0
+                                                                                                                                                # shellcheck disable=SC2016
                                                                                                                                                 yq eval --prettyPrint --arg SETUP_STATUS "$STATUS" '{ "channel" : .[-1].channel , "init-status" : .[-1].status , "setup-status" : $SETUP_STATUS }' /home/${ config.personal.name }/logs/log.yaml > /mount/observed/0/init.yaml
                                                                                                                                                 chmod 0400 /mount/observed/0/init.yaml
                                                                                                                                             '' ;
