@@ -744,7 +744,7 @@
                                                                                                             path : value :
                                                                                                                 [
                                                                                                                     ''
-                                                                                                                        ${ builtins.toJSON path }
+                                                                                                                        1
                                                                                                                     ''
                                                                                                                 ] ;
                                                                                                         list = path : list : builtins.concatLists list ;
