@@ -746,7 +746,7 @@
                                                                                                                     ''
                                                                                                                         elif [[ '${ builtins.toJSON path }' -eq "$2" ]]
                                                                                                                         then
-                                                                                                                            RESOURCE=${ value { failure = "$FAILURE" ; setup = setup : ''${ setup } "${ builtins.concatStringsSep "" [ "$" "{" "ARGUMENTS[@]" "}" ] }"'' ; } }
+                                                                                                                            RESOURCE=${ value { failure = "$FAILURE" ; setup = setup : ''${ setup }'' ; } }
                                                                                                                     ''
                                                                                                                 ] ;
                                                                                                         list = path : list : builtins.concatLists list ;
@@ -772,10 +772,8 @@
                                                                                                                 if [[ "$#" -ne 2 ]]
                                                                                                                 then
                                                                                                                     exit 98
-                                                                                                                else
-                                                                                                                    exit 97
                                                                                                                 fi
-                                                                                                                echo "$RESOURCE"
+                                                                                                                echo "$2 $RESOURCE"
                                                                                                                 shift 2
                                                                                                                 ;;
                                                                                                             *)
