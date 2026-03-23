@@ -181,6 +181,7 @@
                                                                                                                                         runtimeInputs = [ failure pkgs.coreutils pkgs.yq-go ] ;
                                                                                                                                         text =
                                                                                                                                             ''
+                                                                                                                                                trace INNER "$*"
                                                                                                                                                 while [[ "$#" -gt 0 ]]
                                                                                                                                                 do
                                                                                                                                                     case "$1" in
@@ -210,6 +211,7 @@
                                                                                                                         ] ;
                                                                                                                     text =
                                                                                                                         ''
+                                                                                                                            trace OUTER "$*"
                                                                                                                             while [[ "$#" -gt 0 ]]
                                                                                                                             do
                                                                                                                                 case "$1" in
@@ -244,6 +246,7 @@
                                                                                                     ] ;
                                                                                                 text =
                                                                                                     ''
+                                                                                                        trace HOOK "$*"
                                                                                                         trace 10010 "$*"
                                                                                                         INIT_EXIT_CODE=0
                                                                                                         trace 8532 "$*"
@@ -273,7 +276,7 @@
                                                                                                                     failure 4168
                                                                                                             esac
                                                                                                         done
-                                                                                                        trace 11577
+                                                                                                        trace 11577 "DEPTH=$DEPTH" "INIT_EXIT_CODE=$INIT_EXIT_CODE" "RELEASE_EXIT_CODE=$RELEASE_EXIT_CODE"
                                                                                                         NEXT=$(( DEPTH - 1 ))
                                                                                                         trace 9019
                                                                                                         bash -c "outer --depth $NEXT --init-exit-code $INIT_EXIT_CODE --release-exit-code $RELEASE_EXIT_CODE"
