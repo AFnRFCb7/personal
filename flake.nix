@@ -203,7 +203,7 @@
                                                                                                                                                     STATUS="$?"
                                                                                                                                                 fi
                                                                                                                                                 # shellcheck disable=SC2016
-                                                                                                                                                yq eval --prettyPrint --arg RESOURCE "$RESOURCE" --arg SETUP_STATUS "$STATUS" '[ { "channel" : .[-1].channel , "init-status" : .[-1].status , "resource" : $RESOURCE , "setup-status" : $SETUP_STATUS } ]' /home/${ config.personal.name }/logs/log.yaml > /mount/observed.yaml
+                                                                                                                                                yq eval --prettyPrint --arg RESOURCE "$RESOURCE" --arg SETUP_STATUS "$STATUS" '[ { "channel" : .[-1].channel , "init-status" : .[-1].status , "resource" : $RESOURCE , "setup-status" : $SETUP_STATUS } ]' /home/${ config.personal.name }/logs/log.yaml >> /mount/observed.yaml
                                                                                                                                             '' ;
                                                                                                                                     }
                                                                                                                             )
@@ -237,7 +237,7 @@
                                                                                                                                 bash -c "inner --init-exit-code $INIT_EXIT_CODE --release-exit-code $RELEASE_EXIT_CODE"
                                                                                                                             fi
                                                                                                                             # shellcheck disable=SC2016
-                                                                                                                            yq eval --prettyPrint --arg DEPTH "$DEPTH" '[ { "channel" : .[-1].channel , "depth" : $DEPTH , "init-status" : .[-1].status } ]' /home/${ config.personal.name }/logs/log.yaml > "/mount/observed/$DEPTH/init.yaml"
+                                                                                                                            yq eval --prettyPrint --arg DEPTH "$DEPTH" '[ { "channel" : .[-1].channel , "depth" : $DEPTH , "init-status" : .[-1].status } ]' /home/${ config.personal.name }/logs/log.yaml >> /mount/observed.yaml
                                                                                                                         '' ;
                                                                                                                 }
                                                                                                         )
@@ -281,13 +281,11 @@
                                                                                                         mkdir --parents "/mount/observed/$DEPTH"
                                                                                                         trace 2698
                                                                                                         # shellcheck disable=SC2016
-                                                                                                        yq eval --prettyPrint --arg DEPTH "$DEPTH" '[ { "channel" : .[-2].channel , "depth" : $DEPTH , "init-status" : .[-1].status } ]' /home/${ config.personal.name }/logs/log.yaml > "/mount/observed/$DEPTH/init.yaml"
+                                                                                                        yq eval --prettyPrint --arg DEPTH "$DEPTH" '{ "channel" : .[-2].channel , "depth" : $DEPTH , "init-status" : .[-1].status }' /home/${ config.personal.name }/logs/log.yaml > /scratch/init.yaml
                                                                                                         trace 1945
                                                                                                         # shellcheck disable=SC2016
-                                                                                                        yq eval --prettyPrint --arg DEPTH '[ { "channel" : .[-1].channel , "depth" : $DEPTH , "release-status" : .[-1].status } ]' /home/${ config.personal.name }/logs/log.yaml > "/mount/observed/$DEPTH/release.yaml"
-                                                                                                        trace 29561
-                                                                                                        chmod 0400 "/mount/observed/$DEPTH/init.yaml" "/mount/observed/$DEPTH/release.yaml"
-                                                                                                        trace 21501
+                                                                                                        yq eval --prettyPrint --arg DEPTH '{ "channel" : .[-1].channel , "depth" : $DEPTH , "release-status" : .[-1].status }' /home/${ config.personal.name }/logs/log.yaml > /scratch/release.yaml
+                                                                                                        yq eval --prettyPrint --argfile INIT /scratch/init.yaml --argfile RELEASE /scratch/release.yaml '{ "init" : $INIT , "release" : $RELEASE }' >> /mount/observed.yaml
                                                                                                     '' ;
                                                                                             } ;
                                                                                     in "${ application }/bin/init" ;
