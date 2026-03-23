@@ -793,7 +793,7 @@
                                                                                                                     exec 203> /home/${ config.personal.name }/resources/trace.lock
                                                                                                                     flock -x 203
                                                                                                                     ARCHIVE="$( mktemp --suffix ".tar.xz" )" || exit 63
-                                                                                                                    tar --create --file "$ARCHIVE" --remove-files /home/${ config.personal.name }/resources/log/trace.log
+                                                                                                                    tar --create --file "$ARCHIVE" --remove-files /home/${ config.personal.name }/resources/logs/trace.log.yaml
                                                                                                                     rm /home/${ config.personal.name }/resources/trace.lock
                                                                                                                 '' ;
                                                                                                         } ;
