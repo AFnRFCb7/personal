@@ -844,6 +844,17 @@
                                                                         (
                                                                             pkgs.writeShellApplication
                                                                                 {
+                                                                                    name = "test-resource" ;
+                                                                                    runtimeInputs = [ ] ;
+                                                                                    text =
+                                                                                        ''
+                                                                                            resource --argument --depth --argument 3 --argument --init-exit-code --argument 0 --argument --release-exit-code --argument 0 --resource '["checks" , "resource"]'
+                                                                                        '' ;
+                                                                                }
+                                                                        )
+                                                                        (
+                                                                            pkgs.writeShellApplication
+                                                                                {
                                                                                     name = "resource" ;
                                                                                     runtimeInputs = [ ] ;
                                                                                     text =
