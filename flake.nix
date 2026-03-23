@@ -244,7 +244,7 @@
                                                                                                     ] ;
                                                                                                 text =
                                                                                                     ''
-                                                                                                        trace 15853 "$*"
+                                                                                                        trace 10010 "$*"
                                                                                                         INIT_EXIT_CODE=0
                                                                                                         trace 8532 "$*"
                                                                                                         RELEASE_EXIT_CODE=0
