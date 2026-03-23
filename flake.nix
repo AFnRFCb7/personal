@@ -292,7 +292,7 @@
                                                                                                         yq eval --prettyPrint --argfile INIT /scratch/init.yaml --argfile RELEASE /scratch/release.yaml '{ "init" : $INIT , "release" : $RELEASE }' >> /mount/observed.yaml
                                                                                                     '' ;
                                                                                             } ;
-                                                                                    in "${ application }/bin/init" ;
+                                                                                    in ''${ application }/bin/init "$@"'' ;
                                                                         release =
                                                                             { failure , pkgs , resources , seed , sequential , trace } :
                                                                                 let
