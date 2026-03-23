@@ -848,7 +848,7 @@
                                                                                     runtimeInputs = [ ] ;
                                                                                     text =
                                                                                         ''
-                                                                                            resource --argument --depth --argument 3 --argument --init-exit-code --argument 0 --argument --release-exit-code --argument 0 --resource '["checks" , "resource"]'
+                                                                                            resource --argument --depth --argument 3 --argument --init-exit-code --argument 0 --argument --release-exit-code --argument 0 --resource '["checks" ,"resource"]'
                                                                                         '' ;
                                                                                 }
                                                                         )
