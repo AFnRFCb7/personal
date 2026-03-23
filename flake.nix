@@ -847,6 +847,7 @@
                                                                                     text =
                                                                                         ''
                                                                                             resource --argument --depth --argument 3 --argument --init-exit-code --argument 0 --argument --release-exit-code --argument 0 --resource '["checks","hook"]'
+                                                                                            cat "/home/${ config.personal.name }/resources/log/trace.log"
                                                                                         '' ;
                                                                                 }
                                                                         )
