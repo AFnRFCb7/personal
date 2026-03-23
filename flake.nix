@@ -202,10 +202,8 @@
                                                                                                                                                 else
                                                                                                                                                     STATUS="$?"
                                                                                                                                                 fi
-                                                                                                                                                mkdir --parents /mount/observed/0
                                                                                                                                                 # shellcheck disable=SC2016
-                                                                                                                                                yq eval --prettyPrint --arg RESOURCE "$RESOURCE" --arg SETUP_STATUS "$STATUS" '{ "channel" : .[-1].channel , "init-status" : .[-1].status , "resource" : $RESOURCE , "setup-status" : $SETUP_STATUS }' /home/${ config.personal.name }/logs/log.yaml > /mount/observed/0/init.yaml
-                                                                                                                                                chmod 0400 /mount/observed/0/init.yaml
+                                                                                                                                                yq eval --prettyPrint --arg RESOURCE "$RESOURCE" --arg SETUP_STATUS "$STATUS" '[ { "channel" : .[-1].channel , "init-status" : .[-1].status , "resource" : $RESOURCE , "setup-status" : $SETUP_STATUS } ]' /home/${ config.personal.name }/logs/log.yaml > /mount/observed.yaml
                                                                                                                                             '' ;
                                                                                                                                     }
                                                                                                                             )
@@ -238,10 +236,8 @@
                                                                                                                             else
                                                                                                                                 bash -c "inner --init-exit-code $INIT_EXIT_CODE --release-exit-code $RELEASE_EXIT_CODE"
                                                                                                                             fi
-                                                                                                                            mkdir --parents "/mount/observed/$DEPTH"
                                                                                                                             # shellcheck disable=SC2016
-                                                                                                                            yq eval --prettyPrint '{ "channel" : .[-1].channel , "init-status" : .[-1].status }' /home/${ config.personal.name }/logs/log.yaml > "/mount/observed/$DEPTH/init.yaml"
-                                                                                                                            chmod 0400 "/mount/observed/$DEPTH/init.yaml"
+                                                                                                                            yq eval --prettyPrint --arg DEPTH "$DEPTH" '[ { "channel" : .[-1].channel , "depth" : $DEPTH , "init-status" : .[-1].status } ]' /home/${ config.personal.name }/logs/log.yaml > "/mount/observed/$DEPTH/init.yaml"
                                                                                                                         '' ;
                                                                                                                 }
                                                                                                         )
@@ -285,10 +281,10 @@
                                                                                                         mkdir --parents "/mount/observed/$DEPTH"
                                                                                                         trace 2698
                                                                                                         # shellcheck disable=SC2016
-                                                                                                        yq eval --prettyPrint '{ "channel" : .[-2].channel , "init-status" : .[-1].status }' /home/${ config.personal.name }/logs/log.yaml > "/mount/observed/$DEPTH/init.yaml"
+                                                                                                        yq eval --prettyPrint --arg DEPTH "$DEPTH" '[ { "channel" : .[-2].channel , "depth" : $DEPTH , "init-status" : .[-1].status } ]' /home/${ config.personal.name }/logs/log.yaml > "/mount/observed/$DEPTH/init.yaml"
                                                                                                         trace 1945
                                                                                                         # shellcheck disable=SC2016
-                                                                                                        yq eval --prettyPrint '{ "channel" : .[-1].channel , "release-status" : .[-1].status }' /home/${ config.personal.name }/logs/log.yaml > "/mount/observed/$DEPTH/release.yaml"
+                                                                                                        yq eval --prettyPrint --arg DEPTH '[ { "channel" : .[-1].channel , "depth" : $DEPTH , "release-status" : .[-1].status } ]' /home/${ config.personal.name }/logs/log.yaml > "/mount/observed/$DEPTH/release.yaml"
                                                                                                         trace 29561
                                                                                                         chmod 0400 "/mount/observed/$DEPTH/init.yaml" "/mount/observed/$DEPTH/release.yaml"
                                                                                                         trace 21501
@@ -309,7 +305,7 @@
                                                                                                     '' ;
                                                                                             } ;
                                                                                         in "${ application }/bin/release" ;
-                                                                        targets = [ "observed" ] ;
+                                                                        targets = [ "observed.yaml" ] ;
                                                                     } ;
                                                             resource =
                                                                 ignore :
