@@ -285,6 +285,7 @@
                                                                                                         trace 1945
                                                                                                         # shellcheck disable=SC2016
                                                                                                         yq eval --prettyPrint --arg DEPTH '{ "channel" : .[-1].channel , "depth" : $DEPTH , "release-status" : .[-1].status }' /home/${ config.personal.name }/logs/log.yaml > /scratch/release.yaml
+                                                                                                        # shellcheck disable=SC2016
                                                                                                         yq eval --prettyPrint --argfile INIT /scratch/init.yaml --argfile RELEASE /scratch/release.yaml '{ "init" : $INIT , "release" : $RELEASE }' >> /mount/observed.yaml
                                                                                                     '' ;
                                                                                             } ;
