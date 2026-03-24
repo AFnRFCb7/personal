@@ -817,65 +817,65 @@
                                                                                     } ;
                                                                                 wantedBy = [ "multi-user.target" ] ;
                                                                             } ;
-                                                                        resource-releaser =
-                                                                            {
-                                                                                after = [ "network.target" "redis.service" ] ;
-                                                                                requires = [ "redis.service" ] ;
-                                                                                description =
-                                                                                    ''
-                                                                                        Releases the resources
-                                                                                    '' ;
-                                                                                serviceConfig =
-                                                                                    {
-                                                                                        ExecStart =
-                                                                                            let
-                                                                                                application =
-                                                                                                    pkgs.writeShellApplication
-                                                                                                        {
-                                                                                                            name = "ExecStart" ;
-                                                                                                            runtimeInputs =
-                                                                                                                [
-                                                                                                                    (
-                                                                                                                        pkgs.writeShellApplication
-                                                                                                                            {
-                                                                                                                                name = "iteration" ;
-                                                                                                                                runtimeInputs = [ pkgs.bash pkgs.coreutils pkgs.jq ] ;
-                                                                                                                                text =
-                                                                                                                                    ''
-                                                                                                                                        TYPE="$1"
-                                                                                                                                        CHANNEL="$2"
-                                                                                                                                        PAYLOAD="$3"
-                                                                                                                                        if [[ "$TYPE" == "message" ]]
-                                                                                                                                        then
-                                                                                                                                            echo "PAYLOAD=$PAYLOAD"
-                                                                                                                                            jq --raw-output "." "$PAYLOAD"
-                                                                                                                                            RELEASE="$( jq --raw-output '."release" // empty' "$PAYLOAD" )" || failure 24568
-                                                                                                                                            "$RELEASE"
-                                                                                                                                        else
-                                                                                                                                            echo "TYPE=$TYPE" "CHANNEL=$CHANNEL" "PAYLOAD=$PAYLOAD"
-                                                                                                                                        fi
-                                                                                                                                    '' ;
-                                                                                                                            }
-                                                                                                                    )
-                                                                                                                    pkgs.redis
-                                                                                                                ] ;
-                                                                                                            text =
-                                                                                                                ''
-                                                                                                                    echo 26792
-                                                                                                                    redis-cli SUBSCRIBE valid-init | while read -r TYPE  && read -r CHANNEL && read -r PAYLOAD
-                                                                                                                    do
-                                                                                                                        echo 11350
-                                                                                                                        nohup iteration "$TYPE" "$CHANNEL" "$PAYLOAD" &
-                                                                                                                        echo 1812
-                                                                                                                    done
-                                                                                                                    echo 9122
-                                                                                                                '' ;
-                                                                                                        } ;
-                                                                                                    in "${ application }/bin/ExecStart" ;
-                                                                                        User = config.personal.name ;
-                                                                                    } ;
-                                                                                wantedBy = [ "multi-user.target" ] ;
-                                                                            } ;
+#                                                                        resource-releaser =
+#                                                                            {
+#                                                                                after = [ "network.target" "redis.service" ] ;
+#                                                                                requires = [ "redis.service" ] ;
+#                                                                                description =
+#                                                                                    ''
+#                                                                                        Releases the resources
+#                                                                                    '' ;
+#                                                                                serviceConfig =
+#                                                                                    {
+#                                                                                        ExecStart =
+#                                                                                            let
+#                                                                                                application =
+#                                                                                                    pkgs.writeShellApplication
+#                                                                                                        {
+#                                                                                                            name = "ExecStart" ;
+#                                                                                                            runtimeInputs =
+#                                                                                                                [
+#                                                                                                                    (
+#                                                                                                                        pkgs.writeShellApplication
+#                                                                                                                            {
+#                                                                                                                                name = "iteration" ;
+#                                                                                                                                runtimeInputs = [ pkgs.bash pkgs.coreutils pkgs.jq ] ;
+#                                                                                                                                text =
+#                                                                                                                                    ''
+#                                                                                                                                        TYPE="$1"
+#                                                                                                                                        CHANNEL="$2"
+#                                                                                                                                        PAYLOAD="$3"
+#                                                                                                                                        if [[ "$TYPE" == "message" ]]
+#                                                                                                                                        then
+#                                                                                                                                            echo "PAYLOAD=$PAYLOAD"
+#                                                                                                                                            jq --raw-output "." "$PAYLOAD"
+#                                                                                                                                            RELEASE="$( jq --raw-output '."release" // empty' "$PAYLOAD" )" || failure 24568
+#                                                                                                                                            "$RELEASE"
+#                                                                                                                                        else
+#                                                                                                                                            echo "TYPE=$TYPE" "CHANNEL=$CHANNEL" "PAYLOAD=$PAYLOAD"
+#                                                                                                                                        fi
+#                                                                                                                                    '' ;
+#                                                                                                                            }
+#                                                                                                                    )
+#                                                                                                                    pkgs.redis
+#                                                                                                                ] ;
+#                                                                                                            text =
+#                                                                                                                ''
+#                                                                                                                    echo 26792
+#                                                                                                                    redis-cli SUBSCRIBE valid-init | while read -r TYPE  && read -r CHANNEL && read -r PAYLOAD
+#                                                                                                                    do
+#                                                                                                                        echo 11350
+#                                                                                                                        nohup iteration "$TYPE" "$CHANNEL" "$PAYLOAD" &
+#                                                                                                                        echo 1812
+#                                                                                                                    done
+#                                                                                                                    echo 9122
+#                                                                                                                '' ;
+#                                                                                                        } ;
+#                                                                                                    in "${ application }/bin/ExecStart" ;
+#                                                                                        User = config.personal.name ;
+#                                                                                    } ;
+#                                                                                wantedBy = [ "multi-user.target" ] ;
+#                                                                            } ;
                                                                         purge-trace =
                                                                             {
                                                                                 description =
