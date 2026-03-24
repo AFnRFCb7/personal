@@ -685,7 +685,7 @@
                                                                                                                                                                                             pkgs.writeShellApplication
                                                                                                                                                                                                 {
                                                                                                                                                                                                     name = "iteration" ;
-                                                                                                                                                                                                    runtimeInputs = [ pkgs.coreutils pkgs.flock pkgs.jq ] ;
+                                                                                                                                                                                                    runtimeInputs = [ pkgs.coreutils pkgs.flock pkgs.jq trace ] ;
                                                                                                                                                                                                     text =
                                                                                                                                                                                                         ''
                                                                                                                                                                                                             TYPE="$1"
@@ -694,8 +694,10 @@
                                                                                                                                                                                                             echo "TYPE=$TYPE" "CHANNEL=$CHANNEL" "PAYLOAD=$PAYLOAD"
                                                                                                                                                                                                             if [[ "$TYPE" == "message" ]]
                                                                                                                                                                                                             then
+                                                                                                                                                                                                                trace 8806
                                                                                                                                                                                                                 exec 203> /home/${ config.personal.name }/resources/locks/log
                                                                                                                                                                                                                 flock -x 203
+                                                                                                                                                                                                                trace 5935
                                                                                                                                                                                                                 SCRIPT_FILE="$( jq --raw-output '."script-file" // empty' "$PAYLOAD" )" || failure 14571
                                                                                                                                                                                                                 STAMP="$( date +%s )" || failure 7521
                                                                                                                                                                                                                 STANDARD_ERROR_FILE="$( jq --raw-output '."standard-error-file" // empty' "$PAYLOAD" )" || failure 18867
@@ -892,11 +894,11 @@
                                                                             pkgs.writeShellApplication
                                                                                 {
                                                                                     name = "test-resource" ;
-                                                                                    runtimeInputs = [ ] ;
+                                                                                    runtimeInputs = [ pkgs.coreutils pkgs.findutils ] ;
                                                                                     text =
                                                                                         ''
-                                                                                            resource --argument --depth --argument 3 --argument --init-exit-code --argument 0 --argument --release-exit-code --argument 0 --resource '["checks","hook"]'
-                                                                                            cat "/home/${ config.personal.name }/resources/logs/trace.log.yaml"
+                                                                                            resource --argument --depth --argument 3 --argument --init-exit-code --argument 0 --argument --release-exit-code --argument 0 --resource '["checks","resource"]'
+                                                                                            find "/home/${ config.personal.name }/resources/logs"
                                                                                         '' ;
                                                                                 }
                                                                         )
