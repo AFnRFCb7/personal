@@ -28,16 +28,11 @@
                                             coreutils = pkgs.coreutils ;
                                             flock = pkgs.flock ;
                                             gc-root-directory = gc-root-directory ;
-                                            invalid-init-channel = "invalid-init" ;
-                                            invalid-release-channel = "invalid-release" ;
                                             jq = pkgs.jq ;
                                             procps = pkgs.procps ;
                                             redis = pkgs.redis ;
                                             resources = resources ;
                                             resources-directory = resources-directory ;
-                                            stale-init-channel = "stale-init" ;
-                                            valid-init-channel = "valid-init" ;
-                                            valid-release-channel = "valid-release" ;
                                             visitor = _visitor.implementation ;
                                             writeShellApplication = pkgs.writeShellApplication ;
                                         } ;
@@ -141,11 +136,16 @@
                                                                             depth = r.depth or 0 ;
                                                                             init = r.init or null ;
                                                                             init-resolutions = r.init-resolutions or null ;
+                                                                            invalid-init-channel = "invalid-init" ;
+                                                                            invalid-release-channel = "invalid-release" ;
                                                                             release = r.release or null ;
                                                                             release-resolutions = r.release-resolutions or null ;
                                                                             seed = path ;
+                                                                            stale-init-channel = "stale-init" ;
                                                                             targets = r.targets or [ ] ;
                                                                             transient = false ;
+                                                                            valid-init-channel = "valid-init" ;
+                                                                            valid-release-channel = "valid-release" ;
                                                                         } ;
                                                 }
                                                 {
@@ -654,59 +654,98 @@
                                                                                                                     (
                                                                                                                         pkgs.writeShellApplication
                                                                                                                             {
-                                                                                                                                name = "iteration" ;
-                                                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.flock pkgs.jq pkgs.yq-go ] ;
+                                                                                                                                name = "resource" ;
                                                                                                                                 text =
-                                                                                                                                    ''
-                                                                                                                                        TYPE="$1"
-                                                                                                                                        CHANNEL="$2"
-                                                                                                                                        PAYLOAD="$3"
-                                                                                                                                        echo "TYPE=$TYPE" "CHANNEL=$CHANNEL" "PAYLOAD=$PAYLOAD"
-                                                                                                                                        if [[ "$TYPE" == "message" ]]
-                                                                                                                                        then
-                                                                                                                                            exec 203> /home/${ config.personal.name }/resources/locks/log
-                                                                                                                                            flock -x 203
-                                                                                                                                            SCRIPT_FILE="$( jq --raw-output '."script-file" // empty' "$PAYLOAD" )" || failure 14571
-                                                                                                                                            STAMP="$( date +%s )" || failure 7521
-                                                                                                                                            STANDARD_ERROR_FILE="$( jq --raw-output '."standard-error-file" // empty' "$PAYLOAD" )" || failure 18867
-                                                                                                                                            STANDARD_INPUT_FILE="$( jq --raw-output '."standard-input-file" // empty' "$PAYLOAD" )" || failure 7805
-                                                                                                                                            STANDARD_OUTPUT_FILE="$( jq --raw-output '."standard-output-file" // empty' "$PAYLOAD" )" || failure 31273
-                                                                                                                                            mkdir --parents /home/${ config.personal.name }/resources/logs
-                                                                                                                                            jq \
-                                                                                                                                                --arg CHANNEL "$CHANNEL" \
-                                                                                                                                                --rawfile SCRIPT "${ builtins.concatStringsSep "" [ "$" "{" "SCRIPT_FILE:-/dev/null" "}" ] }" \
-                                                                                                                                                --argjson STAMP "$STAMP" \
-                                                                                                                                                --rawfile STANDARD_ERROR "${ builtins.concatStringsSep "" [ "$" "{" "STANDARD_ERROR_FILE:-/dev/null" "}" ] }" \
-                                                                                                                                                --rawfile STANDARD_INPUT "${ builtins.concatStringsSep "" [ "$" "{" "STANDARD_INPUT_FILE:-/dev/null" "}" ] }" \
-                                                                                                                                                --rawfile STANDARD_OUTPUT "${ builtins.concatStringsSep "" [ "$" "{" "STANDARD_OUTPUT_FILE:-/dev/null" "}" ] }" \
-                                                                                                                                                '
-                                                                                                                                                .["channel"] = $CHANNEL
-                                                                                                                                                |
-                                                                                                                                                (if has("script-file") then del(."script-file") | .["script"] = $SCRIPT else . end)
-                                                                                                                                                |
-                                                                                                                                                .["stamp"] = $STAMP
-                                                                                                                                                |
-                                                                                                                                                (if has("standard-error-file") then del(."standard-error-file") | .["standard-error"] = $STANDARD_ERROR else . end)
-                                                                                                                                                |
-                                                                                                                                                (if has("standard-input-file") then del(."standard-input-file") | .["standard-input"] = $STANDARD_INPUT else . end)
-                                                                                                                                                |
-                                                                                                                                                (if has("standard-output-file") then del(."standard-output-file") | .["standard-output"] = $STANDARD_OUTPUT else . end)
-                                                                                                                                                ' "$PAYLOAD" \
-                                                                                                                                                | yq eval --prettyPrint '[.]' >> "/home/${ config.personal.name }/resources/logs/log.yaml" || failure 31275
-                                                                                                                                            rm --force "$SCRIPT_FILE" "$STANDARD_ERROR_FILE" "$STANDARD_INPUT_FILE" "$STANDARD_OUTPUT_FILE"
-                                                                                                                                        fi
-                                                                                                                                    '' ;
+                                                                                                                                    _resource.implementation
+                                                                                                                                        {
+                                                                                                                                            depth = 1 ;
+                                                                                                                                            init =
+                                                                                                                                                { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
+                                                                                                                                                    let
+                                                                                                                                                        application =
+                                                                                                                                                            pkgs.writeShellApplication
+                                                                                                                                                                {
+                                                                                                                                                                    name = "init" ;
+                                                                                                                                                                    runtimeInputs =
+                                                                                                                                                                        [
+                                                                                                                                                                            pkgs.redis
+                                                                                                                                                                            (
+                                                                                                                                                                                pkgs.writeShellApplication
+                                                                                                                                                                                    {
+                                                                                                                                                                                        name = "iteration" ;
+                                                                                                                                                                                        runtimeInputs =
+                                                                                                                                                                                            [
+                                                                                                                                                                                            ] ;
+                                                                                                                                                                                        text =
+                                                                                                                                                                                            ''
+                                                                                                                                                                                                TYPE="$1"
+                                                                                                                                                                                                CHANNEL="$2"
+                                                                                                                                                                                                PAYLOAD="$3"
+                                                                                                                                                                                                echo "TYPE=$TYPE" "CHANNEL=$CHANNEL" "PAYLOAD=$PAYLOAD"
+                                                                                                                                                                                                if [[ "$TYPE" == "message" ]]
+                                                                                                                                                                                                then
+                                                                                                                                                                                                    exec 203> /home/${ config.personal.name }/resources/locks/log
+                                                                                                                                                                                                    flock -x 203
+                                                                                                                                                                                                    SCRIPT_FILE="$( jq --raw-output '."script-file" // empty' "$PAYLOAD" )" || failure 14571
+                                                                                                                                                                                                    STAMP="$( date +%s )" || failure 7521
+                                                                                                                                                                                                    STANDARD_ERROR_FILE="$( jq --raw-output '."standard-error-file" // empty' "$PAYLOAD" )" || failure 18867
+                                                                                                                                                                                                    STANDARD_INPUT_FILE="$( jq --raw-output '."standard-input-file" // empty' "$PAYLOAD" )" || failure 7805
+                                                                                                                                                                                                    STANDARD_OUTPUT_FILE="$( jq --raw-output '."standard-output-file" // empty' "$PAYLOAD" )" || failure 31273
+                                                                                                                                                                                                    mkdir --parents /home/${ config.personal.name }/resources/logs
+                                                                                                                                                                                                    jq \
+                                                                                                                                                                                                        --arg CHANNEL "$CHANNEL" \
+                                                                                                                                                                                                        --rawfile SCRIPT "${ builtins.concatStringsSep "" [ "$" "{" "SCRIPT_FILE:-/dev/null" "}" ] }" \
+                                                                                                                                                                                                        --argjson STAMP "$STAMP" \
+                                                                                                                                                                                                        --rawfile STANDARD_ERROR "${ builtins.concatStringsSep "" [ "$" "{" "STANDARD_ERROR_FILE:-/dev/null" "}" ] }" \
+                                                                                                                                                                                                        --rawfile STANDARD_INPUT "${ builtins.concatStringsSep "" [ "$" "{" "STANDARD_INPUT_FILE:-/dev/null" "}" ] }" \
+                                                                                                                                                                                                        --rawfile STANDARD_OUTPUT "${ builtins.concatStringsSep "" [ "$" "{" "STANDARD_OUTPUT_FILE:-/dev/null" "}" ] }" \
+                                                                                                                                                                                                        '
+                                                                                                                                                                                                        .["channel"] = $CHANNEL
+                                                                                                                                                                                                        |
+                                                                                                                                                                                                        (if has("script-file") then del(."script-file") | .["script"] = $SCRIPT else . end)
+                                                                                                                                                                                                        |
+                                                                                                                                                                                                        .["stamp"] = $STAMP
+                                                                                                                                                                                                        |
+                                                                                                                                                                                                        (if has("standard-error-file") then del(."standard-error-file") | .["standard-error"] = $STANDARD_ERROR else . end)
+                                                                                                                                                                                                        |
+                                                                                                                                                                                                        (if has("standard-input-file") then del(."standard-input-file") | .["standard-input"] = $STANDARD_INPUT else . end)
+                                                                                                                                                                                                        |
+                                                                                                                                                                                                        (if has("standard-output-file") then del(."standard-output-file") | .["standard-output"] = $STANDARD_OUTPUT else . end)
+                                                                                                                                                                                                        ' "$PAYLOAD" \
+                                                                                                                                                                                                        | yq eval --prettyPrint '[.]' >> "/home/${ config.personal.name }/resources/logs/log.yaml" || failure 31275
+                                                                                                                                                                                                    rm --force "$SCRIPT_FILE" "$STANDARD_ERROR_FILE" "$STANDARD_INPUT_FILE" "$STANDARD_OUTPUT_FILE"
+                                                                                                                                                                                                fi
+                                                                                                                                                                                            '' ;
+                                                                                                                                                                                    }
+                                                                                                                                                                            )
+                                                                                                                                                                        ] ;
+                                                                                                                                                                    text =
+                                                                                                                                                                        ''
+                                                                                                                                                                            redis-cli SUBSCRIBE stale-init valid-init valid-release invalid-init invalid-release | while read -r TYPE  && read -r CHANNEL && read -r PAYLOAD
+                                                                                                                                                                            do
+                                                                                                                                                                                nohup iteration "$TYPE" "$CHANNEL" "$PAYLOAD" &
+                                                                                                                                                                            done
+                                                                                                                                                                        '' ;
+                                                                                                                                                                } ;
+                                                                                                                                                        in "${ application }/bin/init" ;
+                                                                                                                                            init-resolutions = null ;
+                                                                                                                                            invalid-init-channel = "null" ;
+                                                                                                                                            invalid-release-channel = "null" ;
+                                                                                                                                            release = null ;
+                                                                                                                                            release-resolutions = null ;
+                                                                                                                                            seed = null ;
+                                                                                                                                            stale-init-channel = "null" ;
+                                                                                                                                            targets = [ ] ;
+                                                                                                                                            transient = false ;
+                                                                                                                                            valid-init-channel = "null" ;
+                                                                                                                                            valid-release-channel = "null" ;
+                                                                                                                                        } ;
                                                                                                                             }
                                                                                                                     )
-                                                                                                                    pkgs.coreutils
-                                                                                                                    pkgs.redis
                                                                                                                 ] ;
                                                                                                             text =
                                                                                                                 ''
-                                                                                                                    redis-cli SUBSCRIBE stale-init valid-init valid-release invalid-init invalid-release | while read -r TYPE  && read -r CHANNEL && read -r PAYLOAD
-                                                                                                                    do
-                                                                                                                        nohup iteration "$TYPE" "$CHANNEL" "$PAYLOAD" &
-                                                                                                                    done
+                                                                                                                    resource
                                                                                                                 '' ;
                                                                                                         } ;
                                                                                                     in "${ application }/bin/ExecStart" ;
@@ -847,7 +886,7 @@
                                                                                     text =
                                                                                         ''
                                                                                             resource --argument --depth --argument 3 --argument --init-exit-code --argument 0 --argument --release-exit-code --argument 0 --resource '["checks","hook"]'
-                                                                                            cat "/home/${ config.personal.name }/resources/log/trace.log"
+                                                                                            cat "/home/${ config.personal.name }/resources/logs/trace.log.yaml"
                                                                                         '' ;
                                                                                 }
                                                                         )
