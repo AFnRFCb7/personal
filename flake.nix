@@ -677,12 +677,14 @@
                                                                                                                                                                                 name = "init" ;
                                                                                                                                                                                 runtimeInputs =
                                                                                                                                                                                     [
+                                                                                                                                                                                        pkgs.coreutils
+                                                                                                                                                                                        pkgs.procps
                                                                                                                                                                                         pkgs.redis
                                                                                                                                                                                         (
                                                                                                                                                                                             pkgs.writeShellApplication
                                                                                                                                                                                                 {
                                                                                                                                                                                                     name = "iteration" ;
-                                                                                                                                                                                                    runtimeInputs = [ pkgs.procps ] ;
+                                                                                                                                                                                                    runtimeInputs = [ pkgs.coreutils pkgs.flock pkgs.jq ] ;
                                                                                                                                                                                                     text =
                                                                                                                                                                                                         ''
                                                                                                                                                                                                             TYPE="$1"
