@@ -651,6 +651,7 @@
                                                                                                             name = "ExecStart" ;
                                                                                                             runtimeInputs =
                                                                                                                 [
+                                                                                                                    pkgs.procps
                                                                                                                     (
                                                                                                                         pkgs.writeShellApplication
                                                                                                                             {
