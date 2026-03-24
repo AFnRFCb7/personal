@@ -665,7 +665,7 @@
                                                                                                                                                     resources-directory = "/home/${ config.personal.name }/resources" ;
                                                                                                                                                 } ;
                                                                                                                                             in
-                                                                                                                                                factory.implementatioin
+                                                                                                                                                factory.implementation
                                                                                                                                                     {
                                                                                                                                                         depth = 1 ;
                                                                                                                                                         init =
