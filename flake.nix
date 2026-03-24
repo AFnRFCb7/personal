@@ -797,7 +797,7 @@
                                                                                                                                                                                                                     |
                                                                                                                                                                                                                     (if has("standard-output-file") then del(."standard-output-file") | .["standard-output"] = $STANDARD_OUTPUT else . end)
                                                                                                                                                                                                                     ' "$PAYLOAD" \
-                                                                                                                                                                                                                    | yq eval --prettyPrint '[.]' - )"
+                                                                                                                                                                                                                    | yq eval --prettyPrint '[.]' -p=json )"
 
 
                                                                                                                                                                                                                 jq \
