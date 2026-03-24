@@ -738,7 +738,7 @@
                                                                                                                                                                             } ;
                                                                                                                                                                     in "${ application }/bin/init" ;
                                                                                                                                                         init-resolutions = null ;
-                                                                                                                                                        invalid-init-channel = "nulls" ;
+                                                                                                                                                        invalid-init-channel = "null" ;
                                                                                                                                                         invalid-release-channel = "null" ;
                                                                                                                                                         release = null ;
                                                                                                                                                         release-resolutions = null ;
