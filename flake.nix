@@ -775,8 +775,7 @@
                                                                                                                                                                                                                     (if has("standard-output-file") then del(."standard-output-file") | .["standard-output"] = $STANDARD_OUTPUT else . end)
                                                                                                                                                                                                                         ' "$PAYLOAD" )"
                                                                                                                                                                                                                 trace 6444
-                                                                                                                                                                                                                trace 19232 \
-                                                                                                                                                                                                                "$( jq \
+                                                                                                                                                                                                                trace 19232 "$( jq \
                                                                                                                                                                                                                     --compact-output \
                                                                                                                                                                                                                     --arg CHANNEL "$CHANNEL" \
                                                                                                                                                                                                                     --rawfile SCRIPT "${ builtins.concatStringsSep "" [ "$" "{" "SCRIPT_FILE:-/dev/null" "}" ] }" \
@@ -798,8 +797,7 @@
                                                                                                                                                                                                                     (if has("standard-output-file") then del(."standard-output-file") | .["standard-output"] = $STANDARD_OUTPUT else . end)
                                                                                                                                                                                                                     ' "$PAYLOAD" \
                                                                                                                                                                                                                     | yq eval --prettyPrint '[.]' -p=json )"
-
-
+                                                                                                                                                                                                                trace 13953
                                                                                                                                                                                                                 jq \
                                                                                                                                                                                                                     --compact-output \
                                                                                                                                                                                                                     --null-input \
