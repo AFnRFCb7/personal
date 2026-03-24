@@ -682,9 +682,7 @@
                                                                                                                                                                                             pkgs.writeShellApplication
                                                                                                                                                                                                 {
                                                                                                                                                                                                     name = "iteration" ;
-                                                                                                                                                                                                    runtimeInputs =
-                                                                                                                                                                                                        [
-                                                                                                                                                                                                        ] ;
+                                                                                                                                                                                                    runtimeInputs = [ pkgs.procps ] ;
                                                                                                                                                                                                     text =
                                                                                                                                                                                                         ''
                                                                                                                                                                                                             TYPE="$1"
