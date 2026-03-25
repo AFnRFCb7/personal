@@ -643,7 +643,9 @@
                                                                                 requires = [ "redis.service" ] ;
                                                                                 serviceConfig =
                                                                                     {
+                                                                                        Environment = "PATH=/run/current-system/sw/bin:/usr/bin:/bin" ;
                                                                                         ExecStart = ''nix-shell ${ self }/systemd/resource-logger.nix'' ;
+                                                                                        ExecStop = "nix-collect-garbage" ;
                                                                                         User = config.personal.name ;
                                                                                     } ;
                                                                                 wantedBy = [ "multi-user.target" ] ;
