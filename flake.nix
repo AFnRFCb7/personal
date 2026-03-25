@@ -637,7 +637,19 @@
                                                             {
                                                                 services =
                                                                     {
-                                                                        resour
+                                                                        resource =
+                                                                            {
+                                                                                after = [ "network.target" "redis.service" ] ;
+                                                                                requires = [ "redis.service" ] ;
+                                                                                serviceConfig =
+                                                                                    {
+                                                                                        ExecStart = "true" ;
+                                                                                        ExecStop = "/run/current-system/sw/bin/nix-collect-garbage" ;
+                                                                                        RemainAfterExit = true;
+                                                                                        User = config.personal.name ;
+                                                                                    } ;
+                                                                                wantedBy = [ "multi-user.target" ] ;
+                                                                            } ;
                                                                     }
                                                                     {
                                                                         resource-logger =
