@@ -650,8 +650,6 @@
                                                                                     } ;
                                                                                 wantedBy = [ "multi-user.target" ] ;
                                                                             } ;
-                                                                    }
-                                                                    {
                                                                         resource-logger =
                                                                             {
                                                                                 after = [ "network.target" "redis.service" ] ;
