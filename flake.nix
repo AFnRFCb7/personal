@@ -637,6 +637,9 @@
                                                             {
                                                                 services =
                                                                     {
+                                                                        resour
+                                                                    }
+                                                                    {
                                                                         resource-logger =
                                                                             {
                                                                                 after = [ "network.target" "redis.service" ] ;

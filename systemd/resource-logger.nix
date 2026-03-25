@@ -1,5 +1,5 @@
 let
-    pkgs = import <nixpkgs> {} ;
+    pkgs = import ( builtins.fetchTarball { url = "https://github.com/NixOS/nixpkgs/archive/refs/tags/23.05.tar.gz"; } ) { } ;
     in pkgs.mkShell
         {
             buildInputs =
