@@ -8,7 +8,7 @@ let
                         pkgs.writeShellApplication
                             {
                                 name = "shellHook" ;
-                                runtimeInputs = [ pkgs.coreutils pkgs.jq pkgs.redis pkgs.yq-go ] ;
+                                runtimeInputs = [ pkgs.coreutils pkgs.jq pkgs.redis pkgs.yg-go ] ;
                                 text =
                                     ''
                                         redis-cli SUBSCRIBE stale-init valid-init valid-release invalid-init invalid-release | while read -r TYPE  && read -r CHANNEL && read -r PAYLOAD
