@@ -21,7 +21,7 @@ let
                                                 STANDARD_ERROR_FILE="$( jq --raw-output '."standard-error-file" // empty' "$PAYLOAD" )" || failure 18867
                                                 STANDARD_INPUT_FILE="$( jq --raw-output '."standard-input-file" // empty' "$PAYLOAD" )" || failure 7805
                                                 STANDARD_OUTPUT_FILE="$( jq --raw-output '."standard-output-file" // empty' "$PAYLOAD" )" || failure 31273
-                                                mkdir --parents /home/${ config.personal.name }/resources/logs
+                                                mkdir --parents "$HOME/resources/logs"
                                                 jq \
                                                     --arg CHANNEL "$CHANNEL" \
                                                     --rawfile SCRIPT "${ builtins.concatStringsSep "" [ "$" "{" "SCRIPT_FILE:-/dev/null" "}" ] }" \
@@ -42,7 +42,7 @@ let
                                                     |
                                                     (if has("standard-output-file") then del(."standard-output-file") | .["standard-output"] = $STANDARD_OUTPUT else . end)
                                                     ' "$PAYLOAD" \
-                                                    | yq eval --prettyPrint '[.]' >> "/home/${ config.personal.name }/resources/logs/log.yaml" || failure 31275
+                                                    | yq eval --prettyPrint '[.]' >> "$HOME/resources/logs/log.yaml" || failure 31275
                                             fi
                                         done
                                     '' ;

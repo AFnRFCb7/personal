@@ -645,6 +645,7 @@
                                                                                     {
                                                                                         ExecStart = ''/run/current-system/sw/bin/nix-shell ${ self }/systemd/resource-logger.nix'' ;
                                                                                         ExecStop = "/run/current-system/sw/bin/nix-collect-garbage" ;
+                                                                                        RemainAfterExit = true ;
                                                                                         User = config.personal.name ;
                                                                                     } ;
                                                                                 wantedBy = [ "multi-user.target" ] ;
