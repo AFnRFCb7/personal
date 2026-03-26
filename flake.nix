@@ -650,16 +650,16 @@
                                                                                                     runtimeInputs = [ pkgs.coreutils pkgs.findutils pkgs.inotify-tools] ;
                                                                                                     text =
                                                                                                         ''
-                                                                                                            if [[ -d /home/${ config.user.name }/resources/release ]]
+                                                                                                            if [[ -d /home/${ config.personal.name }/resources/release ]]
                                                                                                             then
-                                                                                                                find /home/${ config.user.name }/resources/release -mindepth 1 -type f | sort | while read -r FILE
+                                                                                                                find /home/${ config.personal.name }/resources/release -mindepth 1 -type f | sort | while read -r FILE
                                                                                                                 do
                                                                                                                     nohup "$FILE" &
                                                                                                                 done
-                                                                                                                find /home/${ config.user.name }/resources/release -mindepth 1 -type f -exec inotifywait --event delete-self {} \;
+                                                                                                                find /home/${ config.personal.name }/resources/release -mindepth 1 -type f -exec inotifywait --event delete-self {} \;
                                                                                                             fi
-                                                                                                            mkdir --parents /home/${config.user.name}/resources/canonical /home/${config.user.name}/resources/quarantine.init /home/${config.user.name}/resources/quarantine.release
-                                                                                                            mapfile -t PROBLEMS < <( find /home/${config.user.name}/resources/canonical /home/${config.user.name}/resources/quarantine.init /home/${config.user.name}/resources/quarantine.release -mindepth 1 -type f | sort )
+                                                                                                            mkdir --parents /home/${config.personal.name}/resources/canonical /home/${config.personal.name}/resources/quarantine.init /home/${config.personal.name}/resources/quarantine.release
+                                                                                                            mapfile -t PROBLEMS < <( find /home/${config.personal.name}/resources/canonical /home/${config.personal.name}/resources/quarantine.init /home/${config.personal.name}/resources/quarantine.release -mindepth 1 -type f | sort )
                                                                                                             if [[ "${ builtins.concatStringsSep "" [ "$" "{" "#PROBLEMS[@]" "}" ] }" -gt 0 ]]
                                                                                                             then
                                                                                                                 failure "${ builtins.concatStringsSep "" [ "$" "{" "PROBLEMS[@]" "}" ] }"
@@ -734,7 +734,7 @@
                                                                                                                             STANDARD_ERROR_FILE="$( jq --raw-output '."standard-error-file" // empty' "$PAYLOAD" )" || failure 18867
                                                                                                                             STANDARD_INPUT_FILE="$( jq --raw-output '."standard-input-file" // empty' "$PAYLOAD" )" || failure 7805
                                                                                                                             STANDARD_OUTPUT_FILE="$( jq --raw-output '."standard-output-file" // empty' "$PAYLOAD" )" || failure 31273
-                                                                                                                            mkdir --parents "$HOME/resources/logs"
+                                                                                                                            mkdir --parents "config.personal.name/resources/logs"
                                                                                                                             jq \
                                                                                                                                 --arg CHANNEL "$CHANNEL" \
                                                                                                                                 --rawfile SCRIPT "${ builtins.concatStringsSep "" [ "$" "{" "SCRIPT_FILE:-/dev/null" "}" ] }" \
@@ -755,7 +755,7 @@
                                                                                                                                 |
                                                                                                                                 (if has("standard-output-file") then del(."standard-output-file") | .["standard-output"] = $STANDARD_OUTPUT else . end)
                                                                                                                                 ' "$PAYLOAD" \
-                                                                                                                                | yq eval --prettyPrint '[.]' >> "$HOME/resources/logs/log.yaml" || failure 31275
+                                                                                                                                | yq eval --prettyPrint '[.]' >> "config.personal.name/resources/logs/log.yaml" || failure 31275
                                                                                                                         fi
                                                                                                                     done
                                                                                                                 '' ;
@@ -1318,17 +1318,17 @@
                                             #                                         runtimeInputs = [ pkgs.coreutils pkgs.direnv ( _failure.implementation "59d475a8" ) ] ;
                                             #                                         text =
                                             #                                             ''
-                                            #                                                 while [[ ! -f "$HOME/pads/checks/.envrc" ]]
+                                            #                                                 while [[ ! -f "config.personal.name/pads/checks/.envrc" ]]
                                             #                                                 do
                                             #                                                    echo f5e2d051 WAIT for .envrc >&2
                                             #                                                    sleep 1
                                             #                                                 done
-                                            #                                                 cd "$HOME/pads/checks"
+                                            #                                                 cd "config.personal.name/pads/checks"
                                             #                                                 # shellcheck disable=SC1091
-                                            #                                                 source "$HOME/pads/checks/.envrc"
+                                            #                                                 source "config.personal.name/pads/checks/.envrc"
                                             #                                                 if ! studio
                                             #                                                 then
-                                            #                                                     cat "$HOME/resources/log/trace.log" >&2
+                                            #                                                     cat "config.personal.name/resources/log/trace.log" >&2
                                             #                                                     exit 99
                                             #                                                 fi
                                             #                                             '' ;
