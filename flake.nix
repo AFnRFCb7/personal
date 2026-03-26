@@ -734,7 +734,7 @@
                                                                                                                             STANDARD_ERROR_FILE="$( jq --raw-output '."standard-error-file" // empty' "$PAYLOAD" )" || failure 18867
                                                                                                                             STANDARD_INPUT_FILE="$( jq --raw-output '."standard-input-file" // empty' "$PAYLOAD" )" || failure 7805
                                                                                                                             STANDARD_OUTPUT_FILE="$( jq --raw-output '."standard-output-file" // empty' "$PAYLOAD" )" || failure 31273
-                                                                                                                            mkdir --parents "config.personal.name/resources/logs"
+                                                                                                                            mkdir --parents "${ config.personal.name/resources/logs }"
                                                                                                                             jq \
                                                                                                                                 --arg CHANNEL "$CHANNEL" \
                                                                                                                                 --rawfile SCRIPT "${ builtins.concatStringsSep "" [ "$" "{" "SCRIPT_FILE:-/dev/null" "}" ] }" \
