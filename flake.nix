@@ -644,34 +644,32 @@
                                                                                 serviceConfig =
                                                                                     let
                                                                                         clean =
-                                                                                            let
-                                                                                                application =
-                                                                                                    pkgs.writeShellApplication
-                                                                                                        {
-                                                                                                            name = "clean" ;
-                                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.findutils pkgs.inotify-tools] ;
-                                                                                                            text =
-                                                                                                                ''
-                                                                                                                    if [[ -d /home/${ config.user.name }/resources/release ]]
-                                                                                                                    then
-                                                                                                                        find /home/${ config.user.name }/resources/release -mindepth 1 -type f | sort | while read -r FILE
-                                                                                                                        do
-                                                                                                                            nohup "$FILE" &
-                                                                                                                        done
-                                                                                                                        find /home/${ config.user.name }/resources/release -mindepth 1 -type f -exec inotifywait --event delete-self {} \;
-                                                                                                                    fi
-                                                                                                                    mkdir --parents /home/${config.user.name}/resources/canonical /home/${config.user.name}/resources/quarantine.init /home/${config.user.name}/resources/quarantine.release
-                                                                                                                    mapfile -t PROBLEMS < <( find /home/${config.user.name}/resources/canonical /home/${config.user.name}/resources/quarantine.init /home/${config.user.name}/resources/quarantine.release -mindepth 1 -type f | sort )
-                                                                                                                    if [[ "${ builtins.concatStringsSep "" [ "$" "{" "#PROBLEMS[@]" "}" ] }" -gt 0 ]]
-                                                                                                                    then
-                                                                                                                        failure "${ builtins.concatStringsSep "" [ "$" "{" "PROBLEMS[@]" "}" ] }"
-                                                                                                                    else
-                                                                                                                        ARCHIVE="$( mktemp --dry-run --suffix ".tar.xz" )" || failure 22413
-                                                                                                                        tar --create --xz --file "$ARCHIVE" /home/${ config.personal.name }/.gcroot /home/${ config.personal.name }/resources
-                                                                                                                        rm --recursive --force /home/${ config.personal.name }/.gcroot /home/${ config.personal.name }/resources
-                                                                                                                    fi
-                                                                                                                '' ;
-                                                                                                        } ;
+                                                                                            pkgs.writeShellApplication
+                                                                                                {
+                                                                                                    name = "clean" ;
+                                                                                                    runtimeInputs = [ pkgs.coreutils pkgs.findutils pkgs.inotify-tools] ;
+                                                                                                    text =
+                                                                                                        ''
+                                                                                                            if [[ -d /home/${ config.user.name }/resources/release ]]
+                                                                                                            then
+                                                                                                                find /home/${ config.user.name }/resources/release -mindepth 1 -type f | sort | while read -r FILE
+                                                                                                                do
+                                                                                                                    nohup "$FILE" &
+                                                                                                                done
+                                                                                                                find /home/${ config.user.name }/resources/release -mindepth 1 -type f -exec inotifywait --event delete-self {} \;
+                                                                                                            fi
+                                                                                                            mkdir --parents /home/${config.user.name}/resources/canonical /home/${config.user.name}/resources/quarantine.init /home/${config.user.name}/resources/quarantine.release
+                                                                                                            mapfile -t PROBLEMS < <( find /home/${config.user.name}/resources/canonical /home/${config.user.name}/resources/quarantine.init /home/${config.user.name}/resources/quarantine.release -mindepth 1 -type f | sort )
+                                                                                                            if [[ "${ builtins.concatStringsSep "" [ "$" "{" "#PROBLEMS[@]" "}" ] }" -gt 0 ]]
+                                                                                                            then
+                                                                                                                failure "${ builtins.concatStringsSep "" [ "$" "{" "PROBLEMS[@]" "}" ] }"
+                                                                                                            else
+                                                                                                                ARCHIVE="$( mktemp --dry-run --suffix ".tar.xz" )" || failure 22413
+                                                                                                                tar --create --xz --file "$ARCHIVE" /home/${ config.personal.name }/.gcroot /home/${ config.personal.name }/resources
+                                                                                                                rm --recursive --force /home/${ config.personal.name }/.gcroot /home/${ config.personal.name }/resources
+                                                                                                            fi
+                                                                                                        '' ;
+                                                                                                } ;
                                                                                         in
                                                                                             {
                                                                                                 ExecPreStart = "${ clean }/bin/clean" ;
