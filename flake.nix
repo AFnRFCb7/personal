@@ -755,7 +755,7 @@
                                                                                                                                 |
                                                                                                                                 (if has("standard-output-file") then del(."standard-output-file") | .["standard-output"] = $STANDARD_OUTPUT else . end)
                                                                                                                                 ' "$PAYLOAD" \
-                                                                                                                                | yq eval --prettyPrint '[.]' >> "config.personal.name/resources/logs/log.yaml" || failure 31275
+                                                                                                                                | yq eval --prettyPrint '[.]' >> "/home/${ config.personal.name }/resources/logs/log.yaml" || failure 31275
                                                                                                                         fi
                                                                                                                     done
                                                                                                                 '' ;
