@@ -642,18 +642,75 @@
                                                                                 after = [ "network.target" "redis.service" ] ;
                                                                                 requires = [ "redis.service" ] ;
                                                                                 serviceConfig =
-                                                                                    {
-                                                                                        ExecStart = "true" ;
-                                                                                        ExecStop = "/run/current-system/sw/bin/nix-collect-garbage" ;
-                                                                                        RemainAfterExit = true;
-                                                                                        User = config.personal.name ;
-                                                                                    } ;
+                                                                                    let
+                                                                                        clean =
+                                                                                            let
+                                                                                                application =
+                                                                                                    pkgs.writeShellApplication
+                                                                                                        {
+                                                                                                            name = "clean" ;
+                                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.findutils pkgs.inotify-tools] ;
+                                                                                                            text =
+                                                                                                                ''
+                                                                                                                    if [[ -d /home/${ config.user.name }/resources/release ]]
+                                                                                                                    then
+                                                                                                                        find /home/${ config.user.name }/resources/release -mindepth 1 -type f | sort | while read -r FILE
+                                                                                                                        do
+                                                                                                                            nohup "$FILE" &
+                                                                                                                        done
+                                                                                                                        find /home/${ config.user.name }/resources/release -mindepth 1 -type f -exec inotifywait --event delete-self {} \;
+                                                                                                                    fi
+                                                                                                                    mkdir --parents /home/${config.user.name}/resources/canonical /home/${config.user.name}/resources/quarantine.init /home/${config.user.name}/resources/quarantine.release
+                                                                                                                    mapfile -t PROBLEMS < <( find /home/${config.user.name}/resources/canonical /home/${config.user.name}/resources/quarantine.init /home/${config.user.name}/resources/quarantine.release -mindepth 1 -type f | sort )
+                                                                                                                    if [[ "${ builtins.concatStringsSep "" [ "$" "{" "#PROBLEMS[@]" "}" ] }" -gt 0 ]]
+                                                                                                                    then
+                                                                                                                        failure "${ builtins.concatStringsSep "" [ "$" "{" "PROBLEMS[@]" "}" ] }"
+                                                                                                                    else
+                                                                                                                        ARCHIVE="$( mktemp --dry-run --suffix ".tar.xz" )" || failure 22413
+                                                                                                                        tar --create --xz --file "$ARCHIVE" /home/${ config.personal.name }/.gcroot /home/${ config.personal.name }/resources
+                                                                                                                        rm --recursive --force /home/${ config.personal.name }/.gcroot /home/${ config.personal.name }/resources
+                                                                                                                    fi
+                                                                                                                '' ;
+                                                                                                        } ;
+                                                                                        in
+                                                                                            {
+                                                                                                ExecPreStart = "${ clean }/bin/clean" ;
+                                                                                                ExecStart =
+                                                                                                    let
+                                                                                                        application =
+                                                                                                            pkgs.writeShellApplication
+                                                                                                                {
+                                                                                                                    name = "ExecStart" ;
+                                                                                                                    runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                                    text =
+                                                                                                                        ''
+                                                                                                                            sleep inf
+                                                                                                                        '' ;
+                                                                                                                } ;
+                                                                                                        in "${ application }/bin/ExecStart" ;
+                                                                                                ExecStop =
+                                                                                                    let
+                                                                                                        application =
+                                                                                                            pkgs.writeShellApplication
+                                                                                                                {
+                                                                                                                    name = "ExecStop" ;
+                                                                                                                    runtimeInputs = [ clean pkgs.nix ] ;
+                                                                                                                    text =
+                                                                                                                        ''
+                                                                                                                            clean
+                                                                                                                            nix-collect-garbage
+                                                                                                                        '' ;
+                                                                                                                } ;
+                                                                                                        in "${ application }/bin/ExecStop" ;
+                                                                                                RemainAfterExit = true;
+                                                                                                User = config.personal.name ;
+                                                                                            } ;
                                                                                 wantedBy = [ "multi-user.target" ] ;
                                                                             } ;
                                                                         resource-logger =
                                                                             {
-                                                                                after = [ "network.target" "redis.service" ] ;
-                                                                                requires = [ "redis.service" ] ;
+                                                                                after = [ "network.target" "redis.service" "resource.service" ] ;
+                                                                                requires = [ "redis.service" "resource.service" ] ;
                                                                                 serviceConfig =
                                                                                     {
                                                                                         ExecStart =
@@ -665,6 +722,10 @@
                                                                                                             runtimeInputs = [ pkgs.coreutils pkgs.jq pkgs.redis pkgs.yq-go ] ;
                                                                                                             text =
                                                                                                                 ''
+                                                                                                                    failure ( ) {
+                                                                                                                        echo "$1" >&2
+                                                                                                                        exit 64
+                                                                                                                    }
                                                                                                                     redis-cli SUBSCRIBE stale-init valid-init valid-release invalid-init invalid-release | while read -r TYPE  && read -r CHANNEL && read -r PAYLOAD
                                                                                                                     do
                                                                                                                         echo "TYPE=$TYPE" "CHANNEL=$CHANNEL" "PAYLOAD=$PAYLOAD"
@@ -710,8 +771,8 @@
                                                                             } ;
                                                                         resource-releaser =
                                                                             {
-                                                                                after = [ "network.target" "redis.service" ] ;
-                                                                                requires = [ "redis.service" ] ;
+                                                                                after = [ "network.target" "redis.service" "resource.service" ] ;
+                                                                                requires = [ "redis.service" "resource.service" ] ;
                                                                                 description =
                                                                                     ''
                                                                                         Releases the resources
@@ -736,9 +797,12 @@
                                                                                                                                         TYPE="$1"
                                                                                                                                         CHANNEL="$2"
                                                                                                                                         PAYLOAD="$3"
+                                                                                                                                        failure ( ) {
+                                                                                                                                            echo "$2" >&2
+                                                                                                                                            exit 64
+                                                                                                                                        }
                                                                                                                                         if [[ "$TYPE" == "message" ]]
                                                                                                                                         then
-                                                                                                                                            echo "PAYLOAD=$PAYLOAD"
                                                                                                                                             jq --raw-output "." "$PAYLOAD"
                                                                                                                                             RELEASE="$( jq --raw-output '."release" // empty' "$PAYLOAD" )" || failure 24568
                                                                                                                                             "$RELEASE"
@@ -752,14 +816,10 @@
                                                                                                                 ] ;
                                                                                                             text =
                                                                                                                 ''
-                                                                                                                    echo 26792
                                                                                                                     redis-cli SUBSCRIBE valid-init | while read -r TYPE  && read -r CHANNEL && read -r PAYLOAD
                                                                                                                     do
-                                                                                                                        echo 11350
                                                                                                                         nohup iteration "$TYPE" "$CHANNEL" "$PAYLOAD" &
-                                                                                                                        echo 1812
                                                                                                                     done
-                                                                                                                    echo 9122
                                                                                                                 '' ;
                                                                                                         } ;
                                                                                                     in "${ application }/bin/ExecStart" ;
