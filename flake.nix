@@ -651,20 +651,23 @@
                                                                                                                     UserKnownHostFile $MOBILE_KNOWN_HOSTS
                                                                                                             '' ;
                                                                                                     in
+#                                                                                                        ''
+#                                                                                                            GITHUB_IDENTITY_RESOURCE=${ resources.production.age.plaintext.dot-ssh.github.identity { failure = 21662 ; } }
+#                                                                                                            root "$GITHUB_IDENTITY_RESOURCE"
+#                                                                                                            export GITHUB_IDENTITY_FILE="$GITHUB_IDENTITIY_RESOURCE/plaintext"
+#                                                                                                            GITHUB_KNOWN_RESOURCE=${ resources.production.age.plaintext.dot-ssh.github.known-hosts { failure = 15323 ; } }
+#                                                                                                            root "$GITHUB_KNOWN_RESOURCE"
+#                                                                                                            export GITHUB_KNOWN_HOSTS="$GITHUB_KNOWN_RESOURCE/plaintext"
+#                                                                                                            MOBILE_IDENTITY_RESOURCE=${ resources.production.age.plaintext.dot-ssh.mobile.identity { failure = 28142 ; } }
+#                                                                                                            root "$MOBILE_IDENTITY_RESOURCE"
+#                                                                                                            export MOBILE_IDENTITY_FILE="$MOBILE_IDENTITIY_RESOURCE/plaintext"
+#                                                                                                            MOBILE_KNOWN_RESOURCE=${ resources.production.age.plaintext.dot-ssh.github.identity { failure = 30122 ; } }
+#                                                                                                            root "$MOBILE_KNOWN_RESOURCE"
+#                                                                                                            export MOBILE_KNOWN_HOSTS="$MOBILE_KNOWN_RESOURCE/plaintext"
+#                                                                                                            wrap ${ config } config 0400 --inherit plain GITHUB_IDENTITY_FILE --inherit plain GITHUB_KNOWN_HOSTS --inherit plain MOBILE_IDENTITY_FILE --inherit plain MOBILE_KNOWN_HOSTS --uuid 15122
+#                                                                                                        '' ;
                                                                                                         ''
-                                                                                                            GITHUB_IDENTITY_RESOURCE=${ resources.production.age.plaintext.dot-ssh.github.identity { failure = 21662 ; } }
-                                                                                                            root "$GITHUB_IDENTITY_RESOURCE"
-                                                                                                            export GITHUB_IDENTITY_FILE="$GITHUB_IDENTITIY_RESOURCE/plaintext"
-                                                                                                            GITHUB_KNOWN_RESOURCE=${ resources.production.age.plaintext.dot-ssh.github.known-hosts { failure = 15323 ; } }
-                                                                                                            root "$GITHUB_KNOWN_RESOURCE"
-                                                                                                            export GITHUB_KNOWN_HOSTS="$GITHUB_KNOWN_RESOURCE/plaintext"
-                                                                                                            MOBILE_IDENTITY_RESOURCE=${ resources.production.age.plaintext.dot-ssh.mobile.identity { failure = 28142 ; } }
-                                                                                                            root "$MOBILE_IDENTITY_RESOURCE"
-                                                                                                            export MOBILE_IDENTITY_FILE="$MOBILE_IDENTITIY_RESOURCE/plaintext"
-                                                                                                            MOBILE_KNOWN_RESOURCE=${ resources.production.age.plaintext.dot-ssh.github.identity { failure = 30122 ; } }
-                                                                                                            root "$MOBILE_KNOWN_RESOURCE"
-                                                                                                            export MOBILE_KNOWN_HOSTS="$MOBILE_KNOWN_RESOURCE/plaintext"
-                                                                                                            wrap ${ config } config 0400 --inherit plain GITHUB_IDENTITY_FILE --inherit plain GITHUB_KNOWN_HOSTS --inherit plain MOBILE_IDENTITY_FILE --inherit plain MOBILE_KNOWN_HOSTS --uuid 15122
+                                                                                                            touch /mount/.envrc
                                                                                                         '' ;
                                                                                         } ;
                                                                                     in "${ application }/bin/init" ;
