@@ -413,129 +413,129 @@
                                                         } ;
                                                     production =
                                                         {
-                                                            age =
-                                                                {
-                                                                    ciphertext =
-                                                                        ignore :
-                                                                            {
-                                                                                init =
-                                                                                    { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
-                                                                                        let
-                                                                                            application =
-                                                                                                pkgs.writeShellApplication
-                                                                                                    {
-                                                                                                        name = "init" ;
-                                                                                                        runtimeInputs = [ pkgs.git wrap ] ;
-                                                                                                        text =
-                                                                                                            let
-                                                                                                                post-commit =
-                                                                                                                    let
-                                                                                                                        application =
-                                                                                                                            pkgs.writeShellApplication
-                                                                                                                                {
-                                                                                                                                    name = "post-commit" ;
-                                                                                                                                    runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
-                                                                                                                                    text =
-                                                                                                                                        ''
-                                                                                                                                            while ! git push ssh HEAD
-                                                                                                                                            do
-                                                                                                                                                sleep 1
-                                                                                                                                            done
-                                                                                                                                        '' ;
-                                                                                                                                } ;
-                                                                                                                            in "${ application }/bin/post-commit" ;
-                                                                                                                post-push =
-                                                                                                                    let
-                                                                                                                        application =
-                                                                                                                            pkgs.writeShellApplication
-                                                                                                                                {
-                                                                                                                                    name = "post-push" ;
-                                                                                                                                    runtimeInputs = [ ] ;
-                                                                                                                                    text =
-                                                                                                                                        ''
-                                                                                                                                        '' ;
-                                                                                                                                } ;
-                                                                                                                            in "${ application }/bin/post-push" ;
-                                                                                                                pre-commit =
-                                                                                                                    let
-                                                                                                                        application =
-                                                                                                                            pkgs.writeShellApplication
-                                                                                                                                {
-                                                                                                                                    name = "pre-commit" ;
-                                                                                                                                    runtimeInputs = [ pkgs.age failure ] ;
-                                                                                                                                    text =
-                                                                                                                                        ''
-                                                                                                                                            BASE_DIR="$( git rev-parse --show-toplevel )" || failure 2717
-                                                                                                                                            RECIPIENT="$( age-keygen -y ${ config.personal.agenix } )" || failure 11617
-                                                                                                                                            GITHUB_TOKEN=${ resources.production.age.plaintext.github.token { failure = 28323 ; } }
-                                                                                                                                            age --encrypt --recipient "$RECIPIENT" --output "$BASE_DIR/github/token" --armor "$GITHUB_TOKEN/plaintext"
-                                                                                                                                        '' ;
-                                                                                                                                } ;
-                                                                                                                            in "${ application }/bin/pre-commit" ;
-                                                                                                                in
-                                                                                                                    ''
-                                                                                                                        cd /mount
-                                                                                                                        git init >&2
-                                                                                                                        git remote add https https://github.com/${ config.personal.secrets.organization }/${ config.personal.secrets.repository }.git
-                                                                                                                        git remote add ssh git@github.com:${ config.personal.secrets.organization }/${ config.personal.secrets.repository }.git
-                                                                                                                        wrap ${ post-commit } .git/hooks/post-commit 0500
-                                                                                                                        wrap ${ post-push } .git/hooks/post-push 0500
-                                                                                                                        wrap ${ pre-commit } .git/hooks/pre-commit 0500
-                                                                                                                    '' ;
-                                                                                                    } ;
-                                                                                            in "${ application }/bin/init" ;
-                                                                                targets = [ ".git" "dot-gnupg" "dot-ssh" "github" ] ;
-                                                                            } ;
-                                                                    plaintext =
-                                                                        _visitor.implementation
-                                                                            {
-                                                                                null =
-                                                                                    path : value : ignore :
-                                                                                        {
-                                                                                            init =
-                                                                                                { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
-                                                                                                    let
-                                                                                                        application =
-                                                                                                            pkgs.writeShellApplication
-                                                                                                                {
-                                                                                                                    name = "init" ;
-                                                                                                                    runtimeInputs = [ pkgs.age ] ;
-                                                                                                                    text =
-                                                                                                                        ''
-                                                                                                                            SECRETS=${ resources.production.age.ciphertext { failure = 11236 ; } }
-                                                                                                                            git -C "$SECRETS" fetch https ${ config.personal.secrets.branch } >&2
-                                                                                                                            age --decrypt --identity ${ config.personal.agenix } --output /mount/plaintext "$SECRETS/${ builtins.concatStringsSep "/" path }.asc.age
-                                                                                                                        '' ;
-                                                                                                                } ;
-                                                                                                            in "${ application }/bin/init" ;
-                                                                                            targets = [ "plaintext" ] ;
-                                                                                        } ;
-                                                                            }
-                                                                            {
-                                                                                dot-gnupg =
-                                                                                    {
-                                                                                        ownertrust = null ;
-                                                                                        secret-keys = null ;
-                                                                                    } ;
-                                                                                dot-ssh =
-                                                                                    {
-                                                                                        github =
-                                                                                            {
-                                                                                                identity = null ;
-                                                                                                known-hosts = null ;
-                                                                                            } ;
-                                                                                        mobile =
-                                                                                            {
-                                                                                                identity = null ;
-                                                                                                known-hosts = null ;
-                                                                                            } ;
-                                                                                    } ;
-                                                                                github =
-                                                                                    {
-                                                                                        token = null ;
-                                                                                    } ;
-                                                                            } ;
-                                                                } ;
+#                                                            age =
+#                                                                {
+#                                                                    ciphertext =
+#                                                                        ignore :
+#                                                                            {
+#                                                                                init =
+#                                                                                    { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
+#                                                                                        let
+#                                                                                            application =
+#                                                                                                pkgs.writeShellApplication
+#                                                                                                    {
+#                                                                                                        name = "init" ;
+#                                                                                                        runtimeInputs = [ pkgs.git wrap ] ;
+#                                                                                                        text =
+#                                                                                                            let
+#                                                                                                                post-commit =
+#                                                                                                                    let
+#                                                                                                                        application =
+#                                                                                                                            pkgs.writeShellApplication
+#                                                                                                                                {
+#                                                                                                                                    name = "post-commit" ;
+#                                                                                                                                    runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
+#                                                                                                                                    text =
+#                                                                                                                                        ''
+#                                                                                                                                            while ! git push ssh HEAD
+#                                                                                                                                            do
+#                                                                                                                                                sleep 1
+#                                                                                                                                            done
+#                                                                                                                                        '' ;
+#                                                                                                                                } ;
+#                                                                                                                            in "${ application }/bin/post-commit" ;
+#                                                                                                                post-push =
+#                                                                                                                    let
+#                                                                                                                        application =
+#                                                                                                                            pkgs.writeShellApplication
+#                                                                                                                                {
+#                                                                                                                                    name = "post-push" ;
+#                                                                                                                                    runtimeInputs = [ ] ;
+#                                                                                                                                    text =
+#                                                                                                                                        ''
+#                                                                                                                                        '' ;
+#                                                                                                                                } ;
+#                                                                                                                            in "${ application }/bin/post-push" ;
+#                                                                                                                pre-commit =
+#                                                                                                                    let
+#                                                                                                                        application =
+#                                                                                                                            pkgs.writeShellApplication
+#                                                                                                                                {
+#                                                                                                                                    name = "pre-commit" ;
+#                                                                                                                                    runtimeInputs = [ pkgs.age failure ] ;
+#                                                                                                                                    text =
+#                                                                                                                                        ''
+#                                                                                                                                            BASE_DIR="$( git rev-parse --show-toplevel )" || failure 2717
+#                                                                                                                                            RECIPIENT="$( age-keygen -y ${ config.personal.agenix } )" || failure 11617
+#                                                                                                                                            GITHUB_TOKEN=${ resources.production.age.plaintext.github.token { failure = 28323 ; } }
+#                                                                                                                                            age --encrypt --recipient "$RECIPIENT" --output "$BASE_DIR/github/token" --armor "$GITHUB_TOKEN/plaintext"
+#                                                                                                                                        '' ;
+#                                                                                                                                } ;
+#                                                                                                                            in "${ application }/bin/pre-commit" ;
+#                                                                                                                in
+#                                                                                                                    ''
+#                                                                                                                        cd /mount
+#                                                                                                                        git init >&2
+#                                                                                                                        git remote add https https://github.com/${ config.personal.secrets.organization }/${ config.personal.secrets.repository }.git
+#                                                                                                                        git remote add ssh git@github.com:${ config.personal.secrets.organization }/${ config.personal.secrets.repository }.git
+#                                                                                                                        wrap ${ post-commit } .git/hooks/post-commit 0500
+#                                                                                                                        wrap ${ post-push } .git/hooks/post-push 0500
+#                                                                                                                        wrap ${ pre-commit } .git/hooks/pre-commit 0500
+#                                                                                                                    '' ;
+#                                                                                                    } ;
+#                                                                                            in "${ application }/bin/init" ;
+#                                                                                targets = [ ".git" "dot-gnupg" "dot-ssh" "github" ] ;
+#                                                                            } ;
+#                                                                    plaintext =
+#                                                                        _visitor.implementation
+#                                                                            {
+#                                                                                null =
+#                                                                                    path : value : ignore :
+#                                                                                        {
+#                                                                                            init =
+#                                                                                                { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
+#                                                                                                    let
+#                                                                                                        application =
+#                                                                                                            pkgs.writeShellApplication
+#                                                                                                                {
+#                                                                                                                    name = "init" ;
+#                                                                                                                    runtimeInputs = [ pkgs.age ] ;
+#                                                                                                                    text =
+#                                                                                                                        ''
+#                                                                                                                            SECRETS=${ resources.production.age.ciphertext { failure = 11236 ; } }
+#                                                                                                                            git -C "$SECRETS" fetch https ${ config.personal.secrets.branch } >&2
+#                                                                                                                            age --decrypt --identity ${ config.personal.agenix } --output /mount/plaintext "$SECRETS/${ builtins.concatStringsSep "/" path }.asc.age
+#                                                                                                                        '' ;
+#                                                                                                                } ;
+#                                                                                                            in "${ application }/bin/init" ;
+#                                                                                            targets = [ "plaintext" ] ;
+#                                                                                        } ;
+#                                                                            }
+#                                                                            {
+#                                                                                dot-gnupg =
+#                                                                                    {
+#                                                                                        ownertrust = null ;
+#                                                                                        secret-keys = null ;
+#                                                                                    } ;
+#                                                                                dot-ssh =
+#                                                                                    {
+#                                                                                        github =
+#                                                                                            {
+#                                                                                                identity = null ;
+#                                                                                                known-hosts = null ;
+#                                                                                            } ;
+#                                                                                        mobile =
+#                                                                                            {
+#                                                                                                identity = null ;
+#                                                                                                known-hosts = null ;
+#                                                                                            } ;
+#                                                                                    } ;
+#                                                                                github =
+#                                                                                    {
+#                                                                                        token = null ;
+#                                                                                    } ;
+#                                                                            } ;
+#                                                                } ;
 #                                                            bin =
 #                                                                {
 #                                                                    github-token =
