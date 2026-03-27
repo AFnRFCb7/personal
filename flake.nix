@@ -669,51 +669,51 @@
                                                                                     in "${ application }/bin/init" ;
                                                                         targets = [ "config" ] ;
                                                                     } ;
-                                                            pads =
-                                                                {
-                                                                    home =
-                                                                        ignore :
-                                                                            {
-                                                                                depth = 2 ;
-                                                                                init =
-                                                                                    { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
-                                                                                        let
-                                                                                            application =
-                                                                                                pkgs.writeShellApplication
-                                                                                                    {
-                                                                                                        name = "init" ;
-                                                                                                        runtimeInputs = [ gc-root wrap ] ;
-                                                                                                        text =
-                                                                                                            let
-                                                                                                                envrc =
-                                                                                                                    let
-                                                                                                                        application =
-                                                                                                                           pkgs.writeShellApplication
-                                                                                                                                {
-                                                                                                                                    name = "envrc" ;
-                                                                                                                                    runtimeInputs = [ ] ;
-                                                                                                                                    text =
-                                                                                                                                        ''
-                                                                                                                                            PATH=$GITHUB_TOKEN:$SSH
-                                                                                                                                        '' ;
-                                                                                                                                } ;
-                                                                                                                        in "${ application }/bin/init" ;
-                                                                                                                in
-                                                                                                                    ''
-                                                                                                                        GITHUB_TOKEN=${ resources.production.bin.github-token { failure = 22181 ; } }
-                                                                                                                        export GITHUB_TOKEN
-                                                                                                                        gc-root "$GITHUB_TOKEN"
-                                                                                                                        SSH=${ resources.production.bin.ssh { failure = 30475 ; } }
-                                                                                                                        export SSH
-                                                                                                                        gc-root "$SSH"
-                                                                                                                        wrap ${ envrc } .envrc 0500 --inherit plain GITHUB_TOKEN --inherit-plain SSH --uuid 9717
-                                                                                                                    '' ;
-                                                                                                    } ;
-                                                                                            in "${ application }/bin/init" ;
-                                                                                targets = [ ".envrc" ] ;
-                                                                            } ;
-                                                                } ;
-                                                        } ;
+#                                                            pads =
+#                                                                {
+#                                                                    home =
+#                                                                        ignore :
+#                                                                            {
+#                                                                                depth = 2 ;
+#                                                                                init =
+#                                                                                    { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
+#                                                                                        let
+#                                                                                            application =
+#                                                                                                pkgs.writeShellApplication
+#                                                                                                    {
+#                                                                                                        name = "init" ;
+#                                                                                                        runtimeInputs = [ gc-root wrap ] ;
+#                                                                                                        text =
+#                                                                                                            let
+#                                                                                                                envrc =
+#                                                                                                                    let
+#                                                                                                                        application =
+#                                                                                                                           pkgs.writeShellApplication
+#                                                                                                                                {
+#                                                                                                                                    name = "envrc" ;
+#                                                                                                                                    runtimeInputs = [ ] ;
+#                                                                                                                                    text =
+#                                                                                                                                        ''
+#                                                                                                                                            PATH=$GITHUB_TOKEN:$SSH
+#                                                                                                                                        '' ;
+#                                                                                                                                } ;
+#                                                                                                                        in "${ application }/bin/init" ;
+#                                                                                                                in
+#                                                                                                                    ''
+#                                                                                                                        GITHUB_TOKEN=${ resources.production.bin.github-token { failure = 22181 ; } }
+#                                                                                                                        export GITHUB_TOKEN
+#                                                                                                                        gc-root "$GITHUB_TOKEN"
+#                                                                                                                        SSH=${ resources.production.bin.ssh { failure = 30475 ; } }
+#                                                                                                                        export SSH
+#                                                                                                                        gc-root "$SSH"
+#                                                                                                                        wrap ${ envrc } .envrc 0500 --inherit plain GITHUB_TOKEN --inherit-plain SSH --uuid 9717
+#                                                                                                                    '' ;
+#                                                                                                    } ;
+#                                                                                            in "${ application }/bin/init" ;
+#                                                                                targets = [ ".envrc" ] ;
+#                                                                            } ;
+#                                                                } ;
+#                                                        } ;
                                                 } ;
                                         password-less-core =
                                             derivation : target :
