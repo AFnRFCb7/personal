@@ -670,7 +670,8 @@
                                                                                                             touch /mount/.envrc
                                                                                                         '' ;
                                                                                         } ;
-                                                                                    in "${ application }/bin/init" ;
+                                                                                    # in "${ application }/bin/init" ;
+                                                                                    in "touch /mount/config" ;
                                                                         targets = [ "config" ] ;
                                                                     } ;
                                                             pads =
