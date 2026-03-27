@@ -453,11 +453,6 @@
                                                                                                                                     runtimeInputs = [ ] ;
                                                                                                                                     text =
                                                                                                                                         ''
-                                                                                                                                            # DOT_SSH=${ resources.production.dot-ssh { failure = 24569 ; } }
-                                                                                                                                            # GITHUB=${ resources.production.age.dot-ssh.github.identity { failure = 20052 ; } }
-                                                                                                                                            # MOBILE=${ resources.production.age.dot-ssh.mobile.identity { failure = 26221 ; } }
-                                                                                                                                            # ssh -F "$DOT_SSH/config" mobile "cat >> ~/
-                                                                                                                                            #
                                                                                                                                         '' ;
                                                                                                                                 } ;
                                                                                                                             in "${ application }/bin/post-push" ;
