@@ -536,85 +536,85 @@
                                                                                     } ;
                                                                             } ;
                                                                 } ;
-                                                            bin =
-                                                                {
-                                                                    github-token =
-                                                                        ignore :
-                                                                            {
-                                                                                init =
-                                                                                    { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
-                                                                                        let
-                                                                                            application =
-                                                                                                pkgs.writeShellApplication
-                                                                                                    {
-                                                                                                        name = "init" ;
-                                                                                                        runtimeInputs = [ wrap ] ;
-                                                                                                        text =
-                                                                                                            let
-                                                                                                                github-token =
-                                                                                                                    pkgs.writeShellApplication
-                                                                                                                        {
-                                                                                                                            name = "token" ;
-                                                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
-                                                                                                                            text =
-                                                                                                                                ''
-                                                                                                                                    GITHUB_TOKEN=${ resources.production.age.plaintext.github.token { failure = 6011 ; } }
-                                                                                                                                    cat | "$GITHUB_TOKEN/plaintext"
-                                                                                                                                    SECRETS=${ resources.production.age.ciphertext { failure = 144434 ; } }
-                                                                                                                                    GIT_SSH_COMMAND_RESOURCE=${ resources.production.bin.ssh { failure = 10240 ; } }
-                                                                                                                                    export GIT_SSH_COMMAND="$GIT_SSH_COMMAND_RESOURCE/ssh"
-                                                                                                                                    git -C "$SECRETS" --commit --verbose --allow-empty
-                                                                                                                                '' ;
-                                                                                                                        } ;
-                                                                                                                in
-                                                                                                                    ''
-                                                                                                                        wrap ${ github-token } github-token 0500 --literal plain GITHUB_TOKEN --literal plain GIT_SSH_COMMAND_RESOURCE --literal plain GIT_SSH_COMMAND --literal plain SECRETS --uuid 7100
-                                                                                                                    '' ;
-                                                                                                    } ;
-                                                                                            in "${ application }/bin/init" ;
-                                                                                targets = [ "github-token" ] ;
-                                                                            } ;
-                                                                    ssh =
-                                                                        ignore :
-                                                                            {
-                                                                                init =
-                                                                                    { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
-                                                                                        let
-                                                                                            application =
-                                                                                                pkgs.writeShellApplication
-                                                                                                    {
-                                                                                                        name = "init" ;
-                                                                                                        runtimeInputs = [ wrap ] ;
-                                                                                                        text =
-                                                                                                            let
-                                                                                                                ssh =
-                                                                                                                    let
-                                                                                                                        application =
-                                                                                                                            pkgs.writeShellApplication
-                                                                                                                                {
-                                                                                                                                    name = "ssh" ;
-                                                                                                                                    runtimeInputs = [ pkgs.openssh ] ;
-                                                                                                                                    text =
-                                                                                                                                        ''
-                                                                                                                                            DOT_SSH=${ resources.production.dot-ssh { failure = 6733 ; } }
-                                                                                                                                            if [[ -t 0 ]]
-                                                                                                                                            then
-                                                                                                                                                ssh -F "$DOT_SSH/config" "$@"
-                                                                                                                                            else
-                                                                                                                                                ssh -F "$DOT_SSH/config" "$@" <&0
-                                                                                                                                            fi
-                                                                                                                                        '' ;
-                                                                                                                                } ;
-                                                                                                                        in "${ application }/bin/ssh" ;
-                                                                                                            in
-                                                                                                                ''
-                                                                                                                    wrap ${ ssh } ssh 0500 --literal plain DOT_SSH --literal plain @ --uuid 30907
-                                                                                                                '' ;
-                                                                                                    } ;
-                                                                                            in "${ application }/bin/init" ;
-                                                                                targets = [ "ssh" ] ;
-                                                                            } ;
-                                                                } ;
+#                                                            bin =
+#                                                                {
+#                                                                    github-token =
+#                                                                        ignore :
+#                                                                            {
+#                                                                                init =
+#                                                                                    { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
+#                                                                                        let
+#                                                                                            application =
+#                                                                                                pkgs.writeShellApplication
+#                                                                                                    {
+#                                                                                                        name = "init" ;
+#                                                                                                        runtimeInputs = [ wrap ] ;
+#                                                                                                        text =
+#                                                                                                            let
+#                                                                                                                github-token =
+#                                                                                                                    pkgs.writeShellApplication
+#                                                                                                                        {
+#                                                                                                                            name = "token" ;
+#                                                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
+#                                                                                                                            text =
+#                                                                                                                                ''
+#                                                                                                                                    GITHUB_TOKEN=${ resources.production.age.plaintext.github.token { failure = 6011 ; } }
+#                                                                                                                                    cat | "$GITHUB_TOKEN/plaintext"
+#                                                                                                                                    SECRETS=${ resources.production.age.ciphertext { failure = 144434 ; } }
+#                                                                                                                                    GIT_SSH_COMMAND_RESOURCE=${ resources.production.bin.ssh { failure = 10240 ; } }
+#                                                                                                                                    export GIT_SSH_COMMAND="$GIT_SSH_COMMAND_RESOURCE/ssh"
+#                                                                                                                                    git -C "$SECRETS" --commit --verbose --allow-empty
+#                                                                                                                                '' ;
+#                                                                                                                        } ;
+#                                                                                                                in
+#                                                                                                                    ''
+#                                                                                                                        wrap ${ github-token } github-token 0500 --literal plain GITHUB_TOKEN --literal plain GIT_SSH_COMMAND_RESOURCE --literal plain GIT_SSH_COMMAND --literal plain SECRETS --uuid 7100
+#                                                                                                                    '' ;
+#                                                                                                    } ;
+#                                                                                            in "${ application }/bin/init" ;
+#                                                                                targets = [ "github-token" ] ;
+#                                                                            } ;
+#                                                                    ssh =
+#                                                                        ignore :
+#                                                                            {
+#                                                                                init =
+#                                                                                    { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
+#                                                                                        let
+#                                                                                            application =
+#                                                                                                pkgs.writeShellApplication
+#                                                                                                    {
+#                                                                                                        name = "init" ;
+#                                                                                                        runtimeInputs = [ wrap ] ;
+#                                                                                                        text =
+#                                                                                                            let
+#                                                                                                                ssh =
+#                                                                                                                    let
+#                                                                                                                        application =
+#                                                                                                                            pkgs.writeShellApplication
+#                                                                                                                                {
+#                                                                                                                                    name = "ssh" ;
+#                                                                                                                                    runtimeInputs = [ pkgs.openssh ] ;
+#                                                                                                                                    text =
+#                                                                                                                                        ''
+#                                                                                                                                            DOT_SSH=${ resources.production.dot-ssh { failure = 6733 ; } }
+#                                                                                                                                            if [[ -t 0 ]]
+#                                                                                                                                            then
+#                                                                                                                                                ssh -F "$DOT_SSH/config" "$@"
+#                                                                                                                                            else
+#                                                                                                                                                ssh -F "$DOT_SSH/config" "$@" <&0
+#                                                                                                                                            fi
+#                                                                                                                                        '' ;
+#                                                                                                                                } ;
+#                                                                                                                        in "${ application }/bin/ssh" ;
+#                                                                                                            in
+#                                                                                                                ''
+#                                                                                                                    wrap ${ ssh } ssh 0500 --literal plain DOT_SSH --literal plain @ --uuid 30907
+#                                                                                                                '' ;
+#                                                                                                    } ;
+#                                                                                            in "${ application }/bin/init" ;
+#                                                                                targets = [ "ssh" ] ;
+#                                                                            } ;
+#                                                                } ;
 #                                                            dot-ssh =
 #                                                                ignore :
 #                                                                    {
