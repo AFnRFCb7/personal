@@ -456,22 +456,22 @@
                                                                                                                                         '' ;
                                                                                                                                 } ;
                                                                                                                             in "${ application }/bin/post-push" ;
-                                                                                                                pre-commit =
-                                                                                                                    let
-                                                                                                                        application =
-                                                                                                                            pkgs.writeShellApplication
-                                                                                                                                {
-                                                                                                                                    name = "pre-commit" ;
-                                                                                                                                    runtimeInputs = [ pkgs.age failure ] ;
-                                                                                                                                    text =
-                                                                                                                                        ''
-                                                                                                                                            BASE_DIR="$( git rev-parse --show-toplevel )" || failure 2717
-                                                                                                                                            RECIPIENT="$( age-keygen -y ${ config.personal.agenix } )" || failure 11617
-                                                                                                                                            GITHUB_TOKEN=${ resources.production.age.plaintext.github.token { failure = 28323 ; } }
-                                                                                                                                            age --encrypt --recipient "$RECIPIENT" --output "$BASE_DIR/github/token" --armor "$GITHUB_TOKEN/plaintext"
-                                                                                                                                        '' ;
-                                                                                                                                } ;
-                                                                                                                            in "${ application }/bin/pre-commit" ;
+#                                                                                                                pre-commit =
+#                                                                                                                    let
+#                                                                                                                        application =
+#                                                                                                                            pkgs.writeShellApplication
+#                                                                                                                                {
+#                                                                                                                                    name = "pre-commit" ;
+#                                                                                                                                    runtimeInputs = [ pkgs.age failure ] ;
+#                                                                                                                                    text =
+#                                                                                                                                        ''
+#                                                                                                                                            BASE_DIR="$( git rev-parse --show-toplevel )" || failure 2717
+#                                                                                                                                            RECIPIENT="$( age-keygen -y ${ config.personal.agenix } )" || failure 11617
+#                                                                                                                                            GITHUB_TOKEN=${ resources.production.age.plaintext.github.token { failure = 28323 ; } }
+#                                                                                                                                            age --encrypt --recipient "$RECIPIENT" --output "$BASE_DIR/github/token" --armor "$GITHUB_TOKEN/plaintext"
+#                                                                                                                                        '' ;
+#                                                                                                                                } ;
+#                                                                                                                            in "${ application }/bin/pre-commit" ;
                                                                                                                 in
                                                                                                                     ''
                                                                                                                         cd /mount
@@ -480,7 +480,7 @@
                                                                                                                         git remote add ssh git@github.com:${ config.personal.secrets.organization }/${ config.personal.secrets.repository }.git
                                                                                                                         wrap ${ post-commit } .git/hooks/post-commit 0500
                                                                                                                         wrap ${ post-push } .git/hooks/post-push 0500
-                                                                                                                        wrap ${ pre-commit } .git/hooks/pre-commit 0500
+                                                                                                                        # wrap ${ pre-commit } .git/hooks/pre-commit 0500
                                                                                                                     '' ;
                                                                                                     } ;
                                                                                             in "${ application }/bin/init" ;
