@@ -413,10 +413,263 @@
                                                         } ;
                                                     production =
                                                         {
+                                                            age =
+                                                                {
+                                                                    ciphertext =
+                                                                        ignore :
+                                                                            {
+                                                                                init =
+                                                                                    { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
+                                                                                        let
+                                                                                            application =
+                                                                                                pkgs.writeShellApplication
+                                                                                                    {
+                                                                                                        name = "init" ;
+                                                                                                        runtimeInputs = [ pkgs.git wrap ] ;
+                                                                                                        text =
+                                                                                                            let
+                                                                                                                post-commit =
+                                                                                                                    let
+                                                                                                                        application =
+                                                                                                                            pkgs.writeShellApplication
+                                                                                                                                {
+                                                                                                                                    name = "post-commit" ;
+                                                                                                                                    runtimeInputs = [ pkgs.coreutils pkgs.giti ] ;
+                                                                                                                                    text =
+                                                                                                                                        ''
+                                                                                                                                            while ! git push ssh HEAD
+                                                                                                                                            do
+                                                                                                                                                sleep 1
+                                                                                                                                            done
+                                                                                                                                        '' ;
+                                                                                                                                } ;
+                                                                                                                            in "${ application }/bin/post-commit" ;
+                                                                                                                post-push =
+                                                                                                                    let
+                                                                                                                        application =
+                                                                                                                            pkgs.writeShellApplication
+                                                                                                                                {
+                                                                                                                                    name = "post-push" ;
+                                                                                                                                    runtimeInputs = [ ] ;
+                                                                                                                                    text =
+                                                                                                                                        ''
+                                                                                                                                            # DOT_SSH=${ resources.production.dot-ssh { failure = 24569 ; } }
+                                                                                                                                            # GITHUB=${ resources.production.age.dot-ssh.github.identity { failure = 20052 ; } }
+                                                                                                                                            # MOBILE=${ resources.production.age.dot-ssh.mobile.identity { failure = 26221 ; } }
+                                                                                                                                            # ssh -F "$DOT_SSH/config" mobile "cat >> ~/
+                                                                                                                                            #
+                                                                                                                                        '' ;
+                                                                                                                                } ;
+                                                                                                                            in "${ application }/bin/post-push" ;
+                                                                                                                pre-commit =
+                                                                                                                    let
+                                                                                                                        application =
+                                                                                                                            pkgs.writeShellApplication
+                                                                                                                                {
+                                                                                                                                    name = "pre-commit" ;
+                                                                                                                                    runtimeInputs = [ pkgs.age failure ] ;
+                                                                                                                                    text =
+                                                                                                                                        ''
+                                                                                                                                            BASE_DIR="$( git rev-parse --show-toplevel )" || failure 2717
+                                                                                                                                            RECIPIENT="$( age-keygen -y ${ config.personal.agenix } )" || failure 11617
+                                                                                                                                            GITHUB_TOKEN=${ resources.production.age.plaintext.github.token { failure = 28323 ; } }
+                                                                                                                                            age --encrypt --recipient "$RECIPIENT" --output "$BASE_DIR/github/token" --armor "$GITHUB_TOKEN/plaintext"
+                                                                                                                                        '' ;
+                                                                                                                                } ;
+                                                                                                                            in "${ application }/bin/pre-commit" ;
+                                                                                                                in
+                                                                                                                    ''
+                                                                                                                        cd /mount
+                                                                                                                        git init >&2
+                                                                                                                        git remote add https https://github.com/${ config.personal.secrets.organization }/${ config.personal.secrets.repository }.git
+                                                                                                                        git remote add ssh git@github.com:${ config.personal.secrets.organization }/${ config.personal.secrets.repository }.git
+                                                                                                                        wrap ${ post-commit } .git/hooks/post-commit 0500
+                                                                                                                        wrap ${ post-push } .git/hooks/post-push 0500
+                                                                                                                        wrap ${ pre-commit } .git/hooks/pre-commit 0500
+                                                                                                                    '' ;
+                                                                                                    } ;
+                                                                                            in "${ application }/bin/init" ;
+                                                                                targets = [ ".git" "dot-gnupg" "dot-ssh" "github" ] ;
+                                                                            } ;
+                                                                    plaintext =
+                                                                        visitor
+                                                                            {
+                                                                                null =
+                                                                                    path : value : ignore :
+                                                                                        {
+                                                                                            init =
+                                                                                                { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
+                                                                                                    let
+                                                                                                        application =
+                                                                                                            pkgs.writeShellApplication
+                                                                                                                {
+                                                                                                                    name = "init" ;
+                                                                                                                    runtimeInputs = [ pkgs.age ] ;
+                                                                                                                    text =
+                                                                                                                        ''
+                                                                                                                            SECRETS=${ resources.production.age.ciphertext { failure = 11236 ; } }
+                                                                                                                            git -C "$SECRETS" fetch https ${ config.personal.secrets.branch } >&2
+                                                                                                                            age --decrypt --identity ${ config.personal.agenix } --output /mount/plaintext "$SECRETS/${ builtins.concatStringsSep "/" path }.asc.age
+                                                                                                                        '' ;
+                                                                                                                } ;
+                                                                                                            in "${ application }/bin/init" ;
+                                                                                            targets = [ "plaintext" ] ;
+                                                                                        } ;
+                                                                            }
+                                                                            {
+                                                                                dot-gnupg =
+                                                                                    {
+                                                                                        ownertrust = null ;
+                                                                                        secret-keys = null ;
+                                                                                    } ;
+                                                                                dot-ssh =
+                                                                                    {
+                                                                                        github =
+                                                                                            {
+                                                                                                identity = null ;
+                                                                                                known-hosts = null ;
+                                                                                            } ;
+                                                                                        mobile =
+                                                                                            {
+                                                                                                identity = null ;
+                                                                                                known-hosts = null ;
+                                                                                            } ;
+                                                                                    } ;
+                                                                                github =
+                                                                                    {
+                                                                                        token = null ;
+                                                                                    } ;
+                                                                            } ;
+                                                                } ;
                                                             bin =
                                                                 {
-
+                                                                    github-token =
+                                                                        ignore
+                                                                            {
+                                                                                init =
+                                                                                    { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
+                                                                                        let
+                                                                                            application =
+                                                                                                pkgs.writeShellApplication
+                                                                                                    {
+                                                                                                        name = "init" ;
+                                                                                                        runtimeInputs = [ wrap ] ;
+                                                                                                        text =
+                                                                                                            let
+                                                                                                                github-token =
+                                                                                                                    pkgs.writeShellApplication
+                                                                                                                        {
+                                                                                                                            name = "token" ;
+                                                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
+                                                                                                                            text =
+                                                                                                                                ''
+                                                                                                                                    GITHUB_TOKEN=${ resources.production.age.plaintext.github.token { failure = 6011 ; } }
+                                                                                                                                    cat | "$GITHUB_TOKEN/plaintext"
+                                                                                                                                    SECRETS=${ resources.production.age.ciphertext { failure = 144434 ; } }
+                                                                                                                                    GIT_SSH_COMMAND_RESOURCE=${ resources.production.bin.ssh { failure = 10240 ; } }
+                                                                                                                                    export GIT_SSH_COMMAND="$GIT_SSH_COMMAND_RESOURCE/ssh"
+                                                                                                                                    git -C "$SECRETS" --commit --verbose --allow-empty
+                                                                                                                                '' ;
+                                                                                                                        } ;
+                                                                                                                in
+                                                                                                                    ''
+                                                                                                                        wrap ${ github-token } github-token 0500 --literal plain GITHUB_TOKEN --literal plain GIT_SSH_COMMAND_RESOURCE --literal plain GIT_SSH_COMMAND --literal plain SECRETS --uuid 7100
+                                                                                                                    '' ;
+                                                                                                    } ;
+                                                                                            in "${ application }/bin/init" ;
+                                                                                targets = [ "github-token" ] ;
+                                                                            } ;
+                                                                    ssh =
+                                                                        ignore :
+                                                                            {
+                                                                                init =
+                                                                                    { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
+                                                                                        let
+                                                                                            application =
+                                                                                                pkgs.writeShellApplication
+                                                                                                    {
+                                                                                                        name = "init" ;
+                                                                                                        runtimeInputs = [ wrap ] ;
+                                                                                                        text =
+                                                                                                            let
+                                                                                                                ssh =
+                                                                                                                    let
+                                                                                                                        application =
+                                                                                                                            pkgs.writeShellApplication
+                                                                                                                                {
+                                                                                                                                    name = "ssh" ;
+                                                                                                                                    runtimeInputs = [ pkgs.openssh ] ;
+                                                                                                                                    text =
+                                                                                                                                        ''
+                                                                                                                                            DOT_SSH=${ resources.production.dot-ssh { failure = 6733 ; } }
+                                                                                                                                            if [[ -t 0 ]]
+                                                                                                                                            then
+                                                                                                                                                ssh -F "$DOT_SSH/config" "$@"
+                                                                                                                                            else
+                                                                                                                                                ssh -F "$DOT_SSH/config" "$@" <&0
+                                                                                                                                            fi
+                                                                                                                                        '' ;
+                                                                                                                                } ;
+                                                                                                                        in "${ application }/bin/ssh" ;
+                                                                                                            in
+                                                                                                                ''
+                                                                                                                    wrap ${ ssh } ssh 0500 --literal plain DOT_SSH --literal plain @ --uuid 30907
+                                                                                                                '' ;
+                                                                                                    } ;
+                                                                                            in "${ application }/bin/init" ;
+                                                                                targets = [ "ssh" ] ;
+                                                                            } ;
                                                                 } ;
+                                                            dot-ssh =
+                                                                ignore :
+                                                                    {
+                                                                        init =
+                                                                            { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
+                                                                                let
+                                                                                    application =
+                                                                                        {
+                                                                                            name = "init" ;
+                                                                                            runtimeInputs = [ wrap ] ;
+                                                                                            text =
+                                                                                                let
+                                                                                                    config =
+                                                                                                        builtins.toFile
+                                                                                                            "config"
+                                                                                                            ''
+                                                                                                                Host github.com
+                                                                                                                    HostName github.com
+                                                                                                                    IdentityFile $GITHUB_IDENTITY_FILE
+                                                                                                                    StrictHostKeyChecking yes
+                                                                                                                    User git
+                                                                                                                    UserKnownHostFile $GITHUB_KNOWN_HOSTS
+                                                                                                                Host mobile
+                                                                                                                    HostName 192.168.1.192
+                                                                                                                    IdentityFile $MOBILE_IDENTITY_FILE
+                                                                                                                    Port 8022
+                                                                                                                    StrictHostKeyChecking yes
+                                                                                                                    User git
+                                                                                                                    UserKnownHostFile $MOBILE_KNOWN_HOSTS
+                                                                                                            '' ;
+                                                                                                    in
+                                                                                                        ''
+                                                                                                            GITHUB_IDENTITY_RESOURCE=${ resources.production.age.plaintext.dot-ssh.github.identity { failure = 21662 ; } }
+                                                                                                            root "$GITHUB_IDENTITY_RESOURCE"
+                                                                                                            export GITHUB_IDENTITY_FILE="$GITHUB_IDENTITIY_RESOURCE/plaintext"
+                                                                                                            GITHUB_KNOWN_RESOURCE=${ resources.production.age.plaintext.dot-ssh.github.known-hosts { failure = 15323 ; } }
+                                                                                                            root "$GITHUB_KNOWN_RESOURCE"
+                                                                                                            export GITHUB_KNOWN_HOSTS="$GITHUB_KNOWN_RESOURCE/plaintext"
+                                                                                                            MOBILE_IDENTITY_RESOURCE=${ resources.production.age.plaintext.dot-ssh.mobile.identity { failure = 28142 ; } }
+                                                                                                            root "$MOBILE_IDENTITY_RESOURCE"
+                                                                                                            export MOBILE_IDENTITY_FILE="$MOBILE_IDENTITIY_RESOURCE/plaintext"
+                                                                                                            MOBILE_KNOWN_RESOURCE=${ resources.production.age.plaintext.dot-ssh.github.identity { failure = 30122 ; } }
+                                                                                                            root "$MOBILE_KNOWN_RESOURCE"
+                                                                                                            export MOBILE_KNOWN_HOSTS="$MOBILE_KNOWN_RESOURCE/plaintext"
+                                                                                                            wrap ${ config } config 0400 --inherit plain GITHUB_IDENTITY_FILE --inherit plain GITHUB_KNOWN_HOSTS --inherit plain MOBILE_IDENTITY_FILE --inherit plain MOBILE_KNOWN_HOSTS --uuid 15122
+                                                                                                        '' ;
+                                                                                        } ;
+                                                                                    in "${ application }/bin/init" ;
+                                                                        targets = [ "config" ] ;
+                                                                    } ;
                                                             pads =
                                                                 {
 
