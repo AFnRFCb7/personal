@@ -487,7 +487,7 @@
                                                                                 targets = [ ".git" "dot-gnupg" "dot-ssh" "github" ] ;
                                                                             } ;
                                                                     plaintext =
-                                                                        visitor
+                                                                        _visitor.implementation
                                                                             {
                                                                                 null =
                                                                                     path : value : ignore :
