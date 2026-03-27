@@ -683,7 +683,7 @@
                                                                                                 pkgs.writeShellApplication
                                                                                                     {
                                                                                                         name = "init" ;
-                                                                                                        runtimeInputs = [ root wrap ] ;
+                                                                                                        runtimeInputs = [ gc-root wrap ] ;
                                                                                                         text =
                                                                                                             let
                                                                                                                 envrc =
@@ -703,8 +703,10 @@
                                                                                                                     ''
                                                                                                                         GITHUB_TOKEN=${ resources.production.bin.github-token { failure = 22181 ; } }
                                                                                                                         export GITHUB_TOKEN
+                                                                                                                        gc-root "$GITHUB_TOKEN"
                                                                                                                         SSH=${ resources.production.bin.ssh { failure = 30475 ; } }
                                                                                                                         export SSH
+                                                                                                                        gc-root "$SSH"
                                                                                                                         wrap ${ envrc } .envrc 0500 --inherit plain GITHUB_TOKEN --inherit-plain SSH --uuid 9717
                                                                                                                     '' ;
                                                                                                     } ;
