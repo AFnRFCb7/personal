@@ -629,7 +629,7 @@
                                                                                     application =
                                                                                         {
                                                                                             name = "init" ;
-                                                                                            runtimeInputs = [ wrap ] ;
+                                                                                            runtimeInputs = [ ] ;
                                                                                             text =
                                                                                                 let
                                                                                                     config =
