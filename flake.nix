@@ -544,7 +544,7 @@
                                                             bin =
                                                                 {
                                                                     github-token =
-                                                                        ignore
+                                                                        ignore :
                                                                             {
                                                                                 init =
                                                                                     { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
