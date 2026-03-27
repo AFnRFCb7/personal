@@ -434,7 +434,7 @@
                                                                                                                             pkgs.writeShellApplication
                                                                                                                                 {
                                                                                                                                     name = "post-commit" ;
-                                                                                                                                    runtimeInputs = [ pkgs.coreutils pkgs.giti ] ;
+                                                                                                                                    runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
                                                                                                                                     text =
                                                                                                                                         ''
                                                                                                                                             while ! git push ssh HEAD
