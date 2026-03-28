@@ -783,7 +783,7 @@
                                                                                                                                         ''
                                                                                                                                             # shellcheck disable=SC2034
                                                                                                                                             PATH=$BIN_PATH
-                                                                                                                                            # shellcheck disable=SC2034
+                                                                                                                                            # shellcheck disable=SC2153
                                                                                                                                             MANPATH=$MAN_PATH
                                                                                                                                         '' ;
                                                                                                                                 } ;
