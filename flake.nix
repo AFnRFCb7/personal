@@ -115,7 +115,7 @@
                                             _visitor.implementation
                                                 {
                                                     lambda =
-                                                        path : value : { derivation ? derivation , setup ? setup : setup } :
+                                                        path : value : { derivation , setup ? setup : setup } :
                                                             let
                                                                 command = ''"${ derivation }/${ builtins.hashString "sha512" ( builtins.toJSON path ) }"'' ;
                                                                 failure =
