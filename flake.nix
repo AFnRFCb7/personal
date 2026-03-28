@@ -69,6 +69,7 @@
                             user =
                                 { config , lib , pkgs , ... } :
                                     let
+                                        # this derivation is a directory of commands
                                         derivation =
                                             pkgs.stdenv.mkDerivation
                                                 {
@@ -88,16 +89,43 @@
                                                                                         {
                                                                                             list = path : list : builtins.concatLists list ;
                                                                                             set = path : set : builtins.concatLists ( builtins.attrValues set ) ;
-                                                                                            string = path : value : [ ''ln --symbolic ${ value } "$out/${ builtins.hashString "sha512" path }'' ] ;
+                                                                                            string = path : value : [ ''ln --symbolic ${ value } "$out/${ builtins.hashString "sha512" ( builtins.toJSON path ) }'' ] ;
                                                                                         }
-                                                                                        resources_ ;
+                                                                                        resources__ ;
                                                                                 in builtins.concatStringsSep "\n" ( builtins.concatLists [ [ ''mkdir --parents "$out"'' ] ( resources ) ] ) ;
                                                                     }
                                                             )
                                                         ] ;
                                                     src = ./. ;
                                                 } ;
+                                        #
                                         resources =
+                                            _visitor.implementation
+                                                {
+                                                    lambda =
+                                                        path : value : { setup ? setup : setup } :
+                                                            let
+                                                                command = "${ derivation }/${ builtins.hashString "sha512" ( builtins.toJSON path ) }" ;
+                                                                failure =
+                                                                    let
+                                                                        application =
+                                                                            pkgs.writeShellApplication
+                                                                                {
+                                                                                    name = "failure" ;
+                                                                                    runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                    text =
+                                                                                        ''
+                                                                                            # shellcheck disable=2140
+                                                                                            echo There was a failure in resource '${ builtins.toJSON path }' >&2
+                                                                                            exit 64
+                                                                                        '' ;
+                                                                                } ;
+                                                                            in "${ application }/bin/failure" ;
+                                                                in ''"$( ${ setup } ${ command } )" || ${ failure }'' ;
+                                                }
+                                                resources___ ;
+                                        # I am using the cyclic script name to form a command.  It still has the cyclic dependency problem.
+                                        resources_ =
                                             _visitor.implementation
                                                 {
                                                     string =
@@ -121,7 +149,8 @@
                                                                     in ''"$( ${ setup value } )" || ${ failure }'' ;
                                                 }
                                                 resources_ ;
-                                        resources_ =
+                                        # I am turning the raw implementation into a setup script path.  It still has the cyclic dependency problem.
+                                        resources__ =
                                             _visitor.implementation
                                                 {
                                                     lambda =
@@ -148,575 +177,578 @@
                                                                             transient = false ;
                                                                         } ;
                                                 }
-                                                {
-                                                    checks =
-                                                        {
-                                                            hook =
-                                                                ignore :
-                                                                    {
-                                                                        init =
-                                                                            { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
-                                                                                let
-                                                                                    application =
-                                                                                        pkgs.writeShellApplication
-                                                                                            {
-                                                                                                name = "init" ;
-                                                                                                runtimeInputs =
-                                                                                                    [
-                                                                                                        pkgs.bash
-                                                                                                        failure
-                                                                                                        trace
-                                                                                                        (
-                                                                                                            pkgs.writeShellApplication
-                                                                                                                {
-                                                                                                                    name = "outer" ;
-                                                                                                                    runtimeInputs =
-                                                                                                                        [
-                                                                                                                            pkgs.bash
-                                                                                                                            failure
-                                                                                                                            (
-                                                                                                                                pkgs.writeShellApplication
-                                                                                                                                    {
-                                                                                                                                        name = "inner" ;
-                                                                                                                                        runtimeInputs = [ failure pkgs.coreutils pkgs.yq-go ] ;
-                                                                                                                                        text =
-                                                                                                                                            ''
-                                                                                                                                                trace INNER "$*"
-                                                                                                                                                while [[ "$#" -gt 0 ]]
-                                                                                                                                                do
-                                                                                                                                                    case "$1" in
-                                                                                                                                                        --init-exit-code)
-                                                                                                                                                            INIT_EXIT_CODE="$2"
-                                                                                                                                                            shift 2
-                                                                                                                                                            ;;
-                                                                                                                                                        --release-exit-code)
-                                                                                                                                                            RELEASE_EXIT_CODE="$2"
-                                                                                                                                                            shift 2
-                                                                                                                                                            ;;
-                                                                                                                                                        *)
-                                                                                                                                                            failure 14578
-                                                                                                                                                    esac
-                                                                                                                                                done
-                                                                                                                                                if RESOURCE=${ resources.checks.resource { setup = setup : ''${ setup } --init-exit-code "$INIT_EXIT_CODE" --release-exit-code "$RELEASE_EXIT_CODE"'' ; } }
-                                                                                                                                                then
-                                                                                                                                                    STATUS="$?"
-                                                                                                                                                else
-                                                                                                                                                    STATUS="$?"
-                                                                                                                                                fi
-                                                                                                                                                # shellcheck disable=SC2016
-                                                                                                                                                yq eval --prettyPrint --arg RESOURCE "$RESOURCE" --arg SETUP_STATUS "$STATUS" '[ { "channel" : .[-1].channel , "init-status" : .[-1].status , "resource" : $RESOURCE , "setup-status" : $SETUP_STATUS } ]' /home/${ config.personal.name }/logs/log.yaml >> /mount/observed.yaml
-                                                                                                                                            '' ;
-                                                                                                                                    }
-                                                                                                                            )
-                                                                                                                        ] ;
-                                                                                                                    text =
-                                                                                                                        ''
-                                                                                                                            trace OUTER "$*"
-                                                                                                                            while [[ "$#" -gt 0 ]]
-                                                                                                                            do
-                                                                                                                                case "$1" in
-                                                                                                                                    --depth)
-                                                                                                                                        DEPTH="$2"
-                                                                                                                                        shift 2
-                                                                                                                                        ;;
-                                                                                                                                    --init-exit-code)
-                                                                                                                                        INIT_EXIT_CODE="$2"
-                                                                                                                                        shift 2
-                                                                                                                                        ;;
-                                                                                                                                    --release-exit-code)
-                                                                                                                                        RELEASE_EXIT_CODE="$2"
-                                                                                                                                        shift 2
-                                                                                                                                        ;;
-                                                                                                                                    *)
-                                                                                                                                        failure 2846
-                                                                                                                                esac
-                                                                                                                            done
-                                                                                                                            NEXT=$(( DEPTH - 1 ))
-                                                                                                                            if [[ "$NEXT" -ge 0 ]]
-                                                                                                                            then
-                                                                                                                                bash -c "$0 --depth $DEPTH --init-exit-code $INIT_EXIT_CODE --release-exit-code $RELEASE_EXIT_CODE"
-                                                                                                                            else
-                                                                                                                                bash -c "inner --init-exit-code $INIT_EXIT_CODE --release-exit-code $RELEASE_EXIT_CODE"
-                                                                                                                            fi
-                                                                                                                            # shellcheck disable=SC2016
-                                                                                                                            yq eval --prettyPrint --arg DEPTH "$DEPTH" '[ { "channel" : .[-1].channel , "depth" : $DEPTH , "init-status" : .[-1].status } ]' /home/${ config.personal.name }/logs/log.yaml >> /mount/observed.yaml
-                                                                                                                        '' ;
-                                                                                                                }
-                                                                                                        )
-                                                                                                    ] ;
-                                                                                                text =
-                                                                                                    ''
-                                                                                                        trace HOOK "$*"
-                                                                                                        trace 10010 "$*"
-                                                                                                        INIT_EXIT_CODE=0
-                                                                                                        trace 8532 "$*"
-                                                                                                        RELEASE_EXIT_CODE=0
-                                                                                                        trace 18566 "$*"
-                                                                                                        while [[ "$#" -gt 0 ]]
-                                                                                                        do
-                                                                                                            trace 30648
-                                                                                                            case "$1" in
-                                                                                                                --depth)
-                                                                                                                    trace 7657
-                                                                                                                    DEPTH="$2"
-                                                                                                                    shift 2
-                                                                                                                    ;;
-                                                                                                                --init-exit-code)
-                                                                                                                    trace 22414
-                                                                                                                    INIT_EXIT_CODE="$2"
-                                                                                                                    shift 2
-                                                                                                                    ;;
-                                                                                                                --release-exit-code)
-                                                                                                                    trace 8458
-                                                                                                                    RELEASE_EXIT_CODE="$2"
-                                                                                                                    shift 2
-                                                                                                                    ;;
-                                                                                                                *)
-                                                                                                                    trace 8730
-                                                                                                                    failure 4168
-                                                                                                            esac
-                                                                                                        done
-                                                                                                        trace 11577 "DEPTH=$DEPTH" "INIT_EXIT_CODE=$INIT_EXIT_CODE" "RELEASE_EXIT_CODE=$RELEASE_EXIT_CODE"
-                                                                                                        NEXT=$(( DEPTH - 1 ))
-                                                                                                        trace 9019
-                                                                                                        bash -c "outer --depth $NEXT --init-exit-code $INIT_EXIT_CODE --release-exit-code $RELEASE_EXIT_CODE"
-                                                                                                        trace 25864
-                                                                                                        mkdir --parents "/mount/observed/$DEPTH"
-                                                                                                        trace 2698
-                                                                                                        # shellcheck disable=SC2016
-                                                                                                        yq eval --prettyPrint --arg DEPTH "$DEPTH" '{ "channel" : .[-2].channel , "depth" : $DEPTH , "init-status" : .[-1].status }' /home/${ config.personal.name }/logs/log.yaml > /scratch/init.yaml
-                                                                                                        trace 1945
-                                                                                                        # shellcheck disable=SC2016
-                                                                                                        yq eval --prettyPrint --arg DEPTH '{ "channel" : .[-1].channel , "depth" : $DEPTH , "release-status" : .[-1].status }' /home/${ config.personal.name }/logs/log.yaml > /scratch/release.yaml
-                                                                                                        # shellcheck disable=SC2016
-                                                                                                        yq eval --prettyPrint --argfile INIT /scratch/init.yaml --argfile RELEASE /scratch/release.yaml '{ "init" : $INIT , "release" : $RELEASE }' >> /mount/observed.yaml
-                                                                                                    '' ;
-                                                                                            } ;
-                                                                                    in ''${ application }/bin/init "$@"'' ;
-                                                                        release =
-                                                                            { failure , pkgs , resources , seed , sequential , trace } :
-                                                                                let
-                                                                                    application =
-                                                                                        pkgs.writeShellApplication
-                                                                                            {
-                                                                                                name = "release" ;
-                                                                                                runtimeInputs = [ pkgs.coreutils ] ;
-                                                                                                text =
-                                                                                                    ''
-                                                                                                        echo 9577
-                                                                                                    '' ;
-                                                                                            } ;
-                                                                                        in "${ application }/bin/release" ;
-                                                                        targets = [ "observed.yaml" ] ;
-                                                                    } ;
-                                                            resource =
-                                                                ignore :
-                                                                    {
-                                                                        init =
-                                                                            { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
-                                                                                let
-                                                                                    application =
-                                                                                        pkgs.writeShellApplication
-                                                                                            {
-                                                                                                name = "init" ;
-                                                                                                runtimeInputs = [ failure pkgs.coreutils ] ;
-                                                                                                text =
-                                                                                                    ''
-                                                                                                        INIT_EXIT_CODE=0
-                                                                                                        RELEASE_EXIT_CODE=0
-                                                                                                        while [[ "$#" -gt 0 ]]
-                                                                                                        do
-                                                                                                            case "$1" in
-                                                                                                                --init-exit-code)
-                                                                                                                    INIT_EXIT_CODE="$2"
-                                                                                                                    shift 2
-                                                                                                                    ;;
-                                                                                                                --release-exit-code)
-                                                                                                                    RELEASE_EXIT_CODE="$2"
-                                                                                                                    shift 2
-                                                                                                                    ;;
-                                                                                                                *)
-                                                                                                                    failure 4168
-                                                                                                            esac
-                                                                                                        done
-                                                                                                        echo "$INIT_EXIT_CODE" > /mount/init-exit-code
-                                                                                                        echo "$RELEASE_EXIT_CODE" > /mount/release-exit-code
-                                                                                                        exit "$INIT_EXIT_CODE"
-                                                                                                    '' ;
-                                                                                            } ;
-                                                                                    in "${ application }/bin/init" ;
-                                                                        release =
-                                                                            { failure , pkgs , resources , seed , sequential , trace } :
-                                                                                let
-                                                                                    application =
-                                                                                        pkgs.writeShellApplication
-                                                                                            {
-                                                                                                name = "release" ;
-                                                                                                runtimeInputs = [ failure pkgs.coreutils ] ;
-                                                                                                text =
-                                                                                                    ''
-                                                                                                        RELEASE_EXIT_CODE="$( cat /mount/release-exit-code )" || failure 19859
-                                                                                                        exit "$RELEASE_EXIT_CODE"
-                                                                                                    '' ;
-                                                                                            } ;
-                                                                                    in "${ application }/bin/release" ;
-                                                                        targets = [ "init-exit-code" "release-exit-code" ] ;
-                                                                    } ;
-                                                        } ;
-                                                    foobar =
-                                                        {
-                                                            pad =
-                                                                ignore :
-                                                                    {
-                                                                        depth = 0 ;
-                                                                        init =
-                                                                            { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
-                                                                                let
-                                                                                    application =
-                                                                                        pkgs.writeShellApplication
-                                                                                            {
-                                                                                                name = "init" ;
-                                                                                                runtimeInputs = [ pkgs.coreutils ] ;
-                                                                                                text =
-                                                                                                    let
-                                                                                                        envrc =
-                                                                                                            ''
-                                                                                                            '' ;
-                                                                                                        in
-                                                                                                            ''
-                                                                                                                touch /mount/.envrc
-                                                                                                                echo 24545
-                                                                                                            '' ;
-                                                                                            } ;
-                                                                                        in "${ application }/bin/init" ;
-                                                                        release =
-                                                                            { failure , pkgs , resources , seed , sequential , trace } :
-                                                                                let
-                                                                                    application =
-                                                                                        pkgs.writeShellApplication
-                                                                                            {
-                                                                                                name = "release" ;
-                                                                                                runtimeInputs = [ pkgs.coreutils ] ;
-                                                                                                text =
-                                                                                                    ''
-                                                                                                        echo 11660
-                                                                                                    '' ;
-                                                                                            } ;
-                                                                                        in "${ application }/bin/release" ;
-                                                                        targets = [ ".envrc" ] ;
-                                                                    } ;
-                                                            temporary =
-                                                                ignore :
-                                                                    {
-                                                                        transient = true ;
-                                                                    } ;
-                                                        } ;
-                                                    production =
-                                                        {
-                                                            age =
+                                                resources___ ;
+                                        # the raw implementation
+                                        resources___ =
+                                            {
+                                                checks =
+                                                    {
+                                                        hook =
+                                                            ignore :
                                                                 {
-                                                                    ciphertext =
-                                                                        ignore :
-                                                                            {
-                                                                                init =
-                                                                                    { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
-                                                                                        let
-                                                                                            application =
-                                                                                                pkgs.writeShellApplication
-                                                                                                    {
-                                                                                                        name = "init" ;
-                                                                                                        runtimeInputs = [ pkgs.git wrap ] ;
-                                                                                                        text =
-                                                                                                            let
-                                                                                                                post-commit =
-                                                                                                                    let
-                                                                                                                        application =
+                                                                    init =
+                                                                        { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
+                                                                            let
+                                                                                application =
+                                                                                    pkgs.writeShellApplication
+                                                                                        {
+                                                                                            name = "init" ;
+                                                                                            runtimeInputs =
+                                                                                                [
+                                                                                                    pkgs.bash
+                                                                                                    failure
+                                                                                                    trace
+                                                                                                    (
+                                                                                                        pkgs.writeShellApplication
+                                                                                                            {
+                                                                                                                name = "outer" ;
+                                                                                                                runtimeInputs =
+                                                                                                                    [
+                                                                                                                        pkgs.bash
+                                                                                                                        failure
+                                                                                                                        (
                                                                                                                             pkgs.writeShellApplication
                                                                                                                                 {
-                                                                                                                                    name = "post-commit" ;
-                                                                                                                                    runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
+                                                                                                                                    name = "inner" ;
+                                                                                                                                    runtimeInputs = [ failure pkgs.coreutils pkgs.yq-go ] ;
                                                                                                                                     text =
                                                                                                                                         ''
-                                                                                                                                            : "${ builtins.concatStringsSep "" [ "$" "{" "GIT_SSH_COMMAND:?must be exported" "}" ] }"
-                                                                                                                                            while ! git push ssh HEAD
+                                                                                                                                            trace INNER "$*"
+                                                                                                                                            while [[ "$#" -gt 0 ]]
                                                                                                                                             do
-                                                                                                                                                sleep 1
+                                                                                                                                                case "$1" in
+                                                                                                                                                    --init-exit-code)
+                                                                                                                                                        INIT_EXIT_CODE="$2"
+                                                                                                                                                        shift 2
+                                                                                                                                                        ;;
+                                                                                                                                                    --release-exit-code)
+                                                                                                                                                        RELEASE_EXIT_CODE="$2"
+                                                                                                                                                        shift 2
+                                                                                                                                                        ;;
+                                                                                                                                                    *)
+                                                                                                                                                        failure 14578
+                                                                                                                                                esac
                                                                                                                                             done
+                                                                                                                                            if RESOURCE=${ resources.checks.resource { setup = setup : ''${ setup } --init-exit-code "$INIT_EXIT_CODE" --release-exit-code "$RELEASE_EXIT_CODE"'' ; } }
+                                                                                                                                            then
+                                                                                                                                                STATUS="$?"
+                                                                                                                                            else
+                                                                                                                                                STATUS="$?"
+                                                                                                                                            fi
+                                                                                                                                            # shellcheck disable=SC2016
+                                                                                                                                            yq eval --prettyPrint --arg RESOURCE "$RESOURCE" --arg SETUP_STATUS "$STATUS" '[ { "channel" : .[-1].channel , "init-status" : .[-1].status , "resource" : $RESOURCE , "setup-status" : $SETUP_STATUS } ]' /home/${ config.personal.name }/logs/log.yaml >> /mount/observed.yaml
                                                                                                                                         '' ;
-                                                                                                                                } ;
-                                                                                                                            in "${ application }/bin/post-commit" ;
-                                                                                                                post-push =
-                                                                                                                    let
-                                                                                                                        application =
-                                                                                                                            pkgs.writeShellApplication
-                                                                                                                                {
-                                                                                                                                    name = "post-push" ;
-                                                                                                                                    runtimeInputs = [ pkgs.openssh ] ;
-                                                                                                                                    text =
-                                                                                                                                        ''
-                                                                                                                                        '' ;
-                                                                                                                                } ;
-                                                                                                                            in "${ application }/bin/post-push" ;
-#                                                                                                                pre-commit =
-#                                                                                                                    let
-#                                                                                                                        application =
-#                                                                                                                            pkgs.writeShellApplication
-#                                                                                                                                {
-#                                                                                                                                    name = "pre-commit" ;
-#                                                                                                                                    runtimeInputs = [ pkgs.age failure ] ;
-#                                                                                                                                    text =
-#                                                                                                                                        ''
-#                                                                                                                                            BASE_DIR="$( git rev-parse --show-toplevel )" || failure 2717
-#                                                                                                                                            RECIPIENT="$( age-keygen -y ${ config.personal.agenix } )" || failure 11617
-#                                                                                                                                            GITHUB_TOKEN=${ resources.production.age.plaintext.github.token { failure = 28323 ; } }
-#                                                                                                                                            age --encrypt --recipient "$RECIPIENT" --output "$BASE_DIR/github/token" --armor "$GITHUB_TOKEN/plaintext"
-#                                                                                                                                        '' ;
-#                                                                                                                                } ;
-#                                                                                                                            in "${ application }/bin/pre-commit" ;
-                                                                                                                in
+                                                                                                                                }
+                                                                                                                        )
+                                                                                                                    ] ;
+                                                                                                                text =
                                                                                                                     ''
-                                                                                                                        cd /mount
-                                                                                                                        git init 2>&1
-                                                                                                                        git config user.email "${ config.personal.secrets.email }"
-                                                                                                                        git config user.name "${ config.personal.secrets.name }"
-                                                                                                                        git remote add https https://github.com/${ config.personal.secrets.organization }/${ config.personal.secrets.repository }.git
-                                                                                                                        git remote add ssh git@github.com:${ config.personal.secrets.organization }/${ config.personal.secrets.repository }.git
-                                                                                                                        wrap ${ post-commit } .git/hooks/post-commit 0500 --literal brace "GIT_SSH_COMMAND:?must be exported" --literal plain PATH --uuid 31150
-                                                                                                                        wrap ${ post-push } .git/hooks/post-push 0500 --literal plain PATH --uuid 28649
+                                                                                                                        trace OUTER "$*"
+                                                                                                                        while [[ "$#" -gt 0 ]]
+                                                                                                                        do
+                                                                                                                            case "$1" in
+                                                                                                                                --depth)
+                                                                                                                                    DEPTH="$2"
+                                                                                                                                    shift 2
+                                                                                                                                    ;;
+                                                                                                                                --init-exit-code)
+                                                                                                                                    INIT_EXIT_CODE="$2"
+                                                                                                                                    shift 2
+                                                                                                                                    ;;
+                                                                                                                                --release-exit-code)
+                                                                                                                                    RELEASE_EXIT_CODE="$2"
+                                                                                                                                    shift 2
+                                                                                                                                    ;;
+                                                                                                                                *)
+                                                                                                                                    failure 2846
+                                                                                                                            esac
+                                                                                                                        done
+                                                                                                                        NEXT=$(( DEPTH - 1 ))
+                                                                                                                        if [[ "$NEXT" -ge 0 ]]
+                                                                                                                        then
+                                                                                                                            bash -c "$0 --depth $DEPTH --init-exit-code $INIT_EXIT_CODE --release-exit-code $RELEASE_EXIT_CODE"
+                                                                                                                        else
+                                                                                                                            bash -c "inner --init-exit-code $INIT_EXIT_CODE --release-exit-code $RELEASE_EXIT_CODE"
+                                                                                                                        fi
+                                                                                                                        # shellcheck disable=SC2016
+                                                                                                                        yq eval --prettyPrint --arg DEPTH "$DEPTH" '[ { "channel" : .[-1].channel , "depth" : $DEPTH , "init-status" : .[-1].status } ]' /home/${ config.personal.name }/logs/log.yaml >> /mount/observed.yaml
                                                                                                                     '' ;
-                                                                                                    } ;
-                                                                                            in "${ application }/bin/init" ;
-                                                                                targets = [ ".git" ] ;
-                                                                            } ;
-#                                                                    plaintext =
-#                                                                        _visitor.implementation
-#                                                                            {
-#                                                                                null =
-#                                                                                    path : value : ignore :
-#                                                                                        {
-#                                                                                            init =
-#                                                                                                { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
-#                                                                                                    let
-#                                                                                                        application =
-#                                                                                                            pkgs.writeShellApplication
-#                                                                                                                {
-#                                                                                                                    name = "init" ;
-#                                                                                                                    runtimeInputs = [ pkgs.age ] ;
-#                                                                                                                    text =
-#                                                                                                                        ''
-#                                                                                                                            SECRETS=${ resources.production.age.ciphertext { failure = 11236 ; } }
-#                                                                                                                            git -C "$SECRETS" fetch https ${ config.personal.secrets.branch } >&2
-#                                                                                                                            age --decrypt --identity ${ config.personal.agenix } --output /mount/plaintext "$SECRETS/${ builtins.concatStringsSep "/" path }.asc.age
-#                                                                                                                        '' ;
-#                                                                                                                } ;
-#                                                                                                            in "${ application }/bin/init" ;
-#                                                                                            targets = [ "plaintext" ] ;
-#                                                                                        } ;
-#                                                                            }
-#                                                                            {
-#                                                                                dot-gnupg =
-#                                                                                    {
-#                                                                                        ownertrust = null ;
-#                                                                                        secret-keys = null ;
-#                                                                                    } ;
-#                                                                                dot-ssh =
-#                                                                                    {
-#                                                                                        github =
-#                                                                                            {
-#                                                                                                identity = null ;
-#                                                                                                known-hosts = null ;
-#                                                                                            } ;
-#                                                                                        mobile =
-#                                                                                            {
-#                                                                                                identity = null ;
-#                                                                                                known-hosts = null ;
-#                                                                                            } ;
-#                                                                                    } ;
-#                                                                                github =
-#                                                                                    {
-#                                                                                        token = null ;
-#                                                                                    } ;
-#                                                                            } ;
+                                                                                                            }
+                                                                                                    )
+                                                                                                ] ;
+                                                                                            text =
+                                                                                                ''
+                                                                                                    trace HOOK "$*"
+                                                                                                    trace 10010 "$*"
+                                                                                                    INIT_EXIT_CODE=0
+                                                                                                    trace 8532 "$*"
+                                                                                                    RELEASE_EXIT_CODE=0
+                                                                                                    trace 18566 "$*"
+                                                                                                    while [[ "$#" -gt 0 ]]
+                                                                                                    do
+                                                                                                        trace 30648
+                                                                                                        case "$1" in
+                                                                                                            --depth)
+                                                                                                                trace 7657
+                                                                                                                DEPTH="$2"
+                                                                                                                shift 2
+                                                                                                                ;;
+                                                                                                            --init-exit-code)
+                                                                                                                trace 22414
+                                                                                                                INIT_EXIT_CODE="$2"
+                                                                                                                shift 2
+                                                                                                                ;;
+                                                                                                            --release-exit-code)
+                                                                                                                trace 8458
+                                                                                                                RELEASE_EXIT_CODE="$2"
+                                                                                                                shift 2
+                                                                                                                ;;
+                                                                                                            *)
+                                                                                                                trace 8730
+                                                                                                                failure 4168
+                                                                                                        esac
+                                                                                                    done
+                                                                                                    trace 11577 "DEPTH=$DEPTH" "INIT_EXIT_CODE=$INIT_EXIT_CODE" "RELEASE_EXIT_CODE=$RELEASE_EXIT_CODE"
+                                                                                                    NEXT=$(( DEPTH - 1 ))
+                                                                                                    trace 9019
+                                                                                                    bash -c "outer --depth $NEXT --init-exit-code $INIT_EXIT_CODE --release-exit-code $RELEASE_EXIT_CODE"
+                                                                                                    trace 25864
+                                                                                                    mkdir --parents "/mount/observed/$DEPTH"
+                                                                                                    trace 2698
+                                                                                                    # shellcheck disable=SC2016
+                                                                                                    yq eval --prettyPrint --arg DEPTH "$DEPTH" '{ "channel" : .[-2].channel , "depth" : $DEPTH , "init-status" : .[-1].status }' /home/${ config.personal.name }/logs/log.yaml > /scratch/init.yaml
+                                                                                                    trace 1945
+                                                                                                    # shellcheck disable=SC2016
+                                                                                                    yq eval --prettyPrint --arg DEPTH '{ "channel" : .[-1].channel , "depth" : $DEPTH , "release-status" : .[-1].status }' /home/${ config.personal.name }/logs/log.yaml > /scratch/release.yaml
+                                                                                                    # shellcheck disable=SC2016
+                                                                                                    yq eval --prettyPrint --argfile INIT /scratch/init.yaml --argfile RELEASE /scratch/release.yaml '{ "init" : $INIT , "release" : $RELEASE }' >> /mount/observed.yaml
+                                                                                                '' ;
+                                                                                        } ;
+                                                                                in ''${ application }/bin/init "$@"'' ;
+                                                                    release =
+                                                                        { failure , pkgs , resources , seed , sequential , trace } :
+                                                                            let
+                                                                                application =
+                                                                                    pkgs.writeShellApplication
+                                                                                        {
+                                                                                            name = "release" ;
+                                                                                            runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                            text =
+                                                                                                ''
+                                                                                                    echo 9577
+                                                                                                '' ;
+                                                                                        } ;
+                                                                                    in "${ application }/bin/release" ;
+                                                                    targets = [ "observed.yaml" ] ;
                                                                 } ;
-#                                                            bin =
-#                                                                {
-#                                                                    github-token =
-#                                                                        ignore :
-#                                                                            {
-#                                                                                init =
-#                                                                                    { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
-#                                                                                        let
-#                                                                                            application =
-#                                                                                                pkgs.writeShellApplication
-#                                                                                                    {
-#                                                                                                        name = "init" ;
-#                                                                                                        runtimeInputs = [ wrap ] ;
-#                                                                                                        text =
-#                                                                                                            let
-#                                                                                                                github-token =
-#                                                                                                                    pkgs.writeShellApplication
-#                                                                                                                        {
-#                                                                                                                            name = "token" ;
-#                                                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
-#                                                                                                                            text =
-#                                                                                                                                ''
-#                                                                                                                                    GITHUB_TOKEN=${ resources.production.age.plaintext.github.token { failure = 6011 ; } }
-#                                                                                                                                    cat | "$GITHUB_TOKEN/plaintext"
-#                                                                                                                                    SECRETS=${ resources.production.age.ciphertext { failure = 144434 ; } }
-#                                                                                                                                    GIT_SSH_COMMAND_RESOURCE=${ resources.production.bin.ssh { failure = 10240 ; } }
-#                                                                                                                                    export GIT_SSH_COMMAND="$GIT_SSH_COMMAND_RESOURCE/ssh"
-#                                                                                                                                    git -C "$SECRETS" --commit --verbose --allow-empty
-#                                                                                                                                '' ;
-#                                                                                                                        } ;
-#                                                                                                                in
-#                                                                                                                    ''
-#                                                                                                                        wrap ${ github-token } github-token 0500 --literal plain GITHUB_TOKEN --literal plain GIT_SSH_COMMAND_RESOURCE --literal plain GIT_SSH_COMMAND --literal plain SECRETS --uuid 7100
-#                                                                                                                    '' ;
-#                                                                                                    } ;
-#                                                                                            in "${ application }/bin/init" ;
-#                                                                                targets = [ "github-token" ] ;
-#                                                                            } ;
-#                                                                    ssh =
-#                                                                        ignore :
-#                                                                            {
-#                                                                                init =
-#                                                                                    { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
-#                                                                                        let
-#                                                                                            application =
-#                                                                                                pkgs.writeShellApplication
-#                                                                                                    {
-#                                                                                                        name = "init" ;
-#                                                                                                        runtimeInputs = [ wrap ] ;
-#                                                                                                        text =
-#                                                                                                            let
-#                                                                                                                ssh =
-#                                                                                                                    let
-#                                                                                                                        application =
-#                                                                                                                            pkgs.writeShellApplication
-#                                                                                                                                {
-#                                                                                                                                    name = "ssh" ;
-#                                                                                                                                    runtimeInputs = [ pkgs.openssh ] ;
-#                                                                                                                                    text =
-#                                                                                                                                        ''
-#                                                                                                                                            DOT_SSH=${ resources.production.dot-ssh { failure = 6733 ; } }
-#                                                                                                                                            if [[ -t 0 ]]
-#                                                                                                                                            then
-#                                                                                                                                                ssh -F "$DOT_SSH/config" "$@"
-#                                                                                                                                            else
-#                                                                                                                                                ssh -F "$DOT_SSH/config" "$@" <&0
-#                                                                                                                                            fi
-#                                                                                                                                        '' ;
-#                                                                                                                                } ;
-#                                                                                                                        in "${ application }/bin/ssh" ;
-#                                                                                                            in
-#                                                                                                                ''
-#                                                                                                                    wrap ${ ssh } ssh 0500 --literal plain DOT_SSH --literal plain @ --uuid 30907
-#                                                                                                                '' ;
-#                                                                                                    } ;
-#                                                                                            in "${ application }/bin/init" ;
-#                                                                                targets = [ "ssh" ] ;
-#                                                                            } ;
-#                                                                } ;
-#                                                            dot-ssh =
-#                                                                ignore :
-#                                                                    {
-#                                                                        init =
-#                                                                            { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
-#                                                                                let
-#                                                                                    application =
-#                                                                                        pkgs.writeShellApplication
-#                                                                                            {
-#                                                                                                name = "init" ;
-#                                                                                                runtimeInputs = [ ] ;
-#                                                                                                text =
-#                                                                                                    let
-#                                                                                                        config =
-#                                                                                                            builtins.toFile
-#                                                                                                                "config"
-#                                                                                                                ''
-#                                                                                                                    Host github.com
-#                                                                                                                        HostName github.com
-#                                                                                                                        IdentityFile $GITHUB_IDENTITY_FILE
-#                                                                                                                        StrictHostKeyChecking yes
-#                                                                                                                        User git
-#                                                                                                                        UserKnownHostFile $GITHUB_KNOWN_HOSTS
-#                                                                                                                    Host mobile
-#                                                                                                                        HostName 192.168.1.192
-#                                                                                                                        IdentityFile $MOBILE_IDENTITY_FILE
-#                                                                                                                        Port 8022
-#                                                                                                                        StrictHostKeyChecking yes
-#                                                                                                                        User git
-#                                                                                                                        UserKnownHostFile $MOBILE_KNOWN_HOSTS
-#                                                                                                                '' ;
-#                                                                                                        in
-#    #                                                                                                        ''
-#    #                                                                                                            GITHUB_IDENTITY_RESOURCE=${ resources.production.age.plaintext.dot-ssh.github.identity { failure = 21662 ; } }
-#    #                                                                                                            root "$GITHUB_IDENTITY_RESOURCE"
-#    #                                                                                                            export GITHUB_IDENTITY_FILE="$GITHUB_IDENTITIY_RESOURCE/plaintext"
-#    #                                                                                                            GITHUB_KNOWN_RESOURCE=${ resources.production.age.plaintext.dot-ssh.github.known-hosts { failure = 15323 ; } }
-#    #                                                                                                            root "$GITHUB_KNOWN_RESOURCE"
-#    #                                                                                                            export GITHUB_KNOWN_HOSTS="$GITHUB_KNOWN_RESOURCE/plaintext"
-#    #                                                                                                            MOBILE_IDENTITY_RESOURCE=${ resources.production.age.plaintext.dot-ssh.mobile.identity { failure = 28142 ; } }
-#    #                                                                                                            root "$MOBILE_IDENTITY_RESOURCE"
-#    #                                                                                                            export MOBILE_IDENTITY_FILE="$MOBILE_IDENTITIY_RESOURCE/plaintext"
-#    #                                                                                                            MOBILE_KNOWN_RESOURCE=${ resources.production.age.plaintext.dot-ssh.github.identity { failure = 30122 ; } }
-#    #                                                                                                            root "$MOBILE_KNOWN_RESOURCE"
-#    #                                                                                                            export MOBILE_KNOWN_HOSTS="$MOBILE_KNOWN_RESOURCE/plaintext"
-#    #                                                                                                            wrap ${ config } config 0400 --inherit plain GITHUB_IDENTITY_FILE --inherit plain GITHUB_KNOWN_HOSTS --inherit plain MOBILE_IDENTITY_FILE --inherit plain MOBILE_KNOWN_HOSTS --uuid 15122
-#    #                                                                                                        '' ;
-#                                                                                                            ''
-#                                                                                                                touch /mount/.envrc
-#                                                                                                            '' ;
-#                                                                                            } ;
-#                                                                                    in "${ application }/bin/init" ;
-#                                                                        targets = [ "config" ] ;
-#                                                                    } ;
-#                                                            pads =
-#                                                                {
-#                                                                    home =
-#                                                                        ignore :
-#                                                                            {
-#                                                                                depth = 2 ;
-#                                                                                init =
-#                                                                                    { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
-#                                                                                        let
-#                                                                                            application =
-#                                                                                                pkgs.writeShellApplication
-#                                                                                                    {
-#                                                                                                        name = "init" ;
-#                                                                                                        runtimeInputs = [ gc-root wrap ] ;
-#                                                                                                        text =
-#                                                                                                            let
-#                                                                                                                envrc =
-#                                                                                                                    let
-#                                                                                                                        application =
-#                                                                                                                           pkgs.writeShellApplication
-#                                                                                                                                {
-#                                                                                                                                    name = "envrc" ;
-#                                                                                                                                    runtimeInputs = [ ] ;
-#                                                                                                                                    text =
-#                                                                                                                                        ''
-#                                                                                                                                            PATH=$GITHUB_TOKEN:$SSH
-#                                                                                                                                        '' ;
-#                                                                                                                                } ;
-#                                                                                                                        in "${ application }/bin/init" ;
-#                                                                                                                in
-#                                                                                                                    ''
-#                                                                                                                        GITHUB_TOKEN=${ resources.production.bin.github-token { failure = 22181 ; } }
-#                                                                                                                        export GITHUB_TOKEN
-#                                                                                                                        gc-root "$GITHUB_TOKEN"
-#                                                                                                                        SSH=${ resources.production.bin.ssh { failure = 30475 ; } }
-#                                                                                                                        export SSH
-#                                                                                                                        gc-root "$SSH"
-#                                                                                                                        wrap ${ envrc } .envrc 0500 --inherit plain GITHUB_TOKEN --inherit-plain SSH --uuid 9717
-#                                                                                                                    '' ;
-#                                                                                                    } ;
-#                                                                                            in "${ application }/bin/init" ;
-#                                                                                targets = [ ".envrc" ] ;
-#                                                                            } ;
-#                                                                } ;
-                                                        } ;
-                                                } ;
+                                                        resource =
+                                                            ignore :
+                                                                {
+                                                                    init =
+                                                                        { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
+                                                                            let
+                                                                                application =
+                                                                                    pkgs.writeShellApplication
+                                                                                        {
+                                                                                            name = "init" ;
+                                                                                            runtimeInputs = [ failure pkgs.coreutils ] ;
+                                                                                            text =
+                                                                                                ''
+                                                                                                    INIT_EXIT_CODE=0
+                                                                                                    RELEASE_EXIT_CODE=0
+                                                                                                    while [[ "$#" -gt 0 ]]
+                                                                                                    do
+                                                                                                        case "$1" in
+                                                                                                            --init-exit-code)
+                                                                                                                INIT_EXIT_CODE="$2"
+                                                                                                                shift 2
+                                                                                                                ;;
+                                                                                                            --release-exit-code)
+                                                                                                                RELEASE_EXIT_CODE="$2"
+                                                                                                                shift 2
+                                                                                                                ;;
+                                                                                                            *)
+                                                                                                                failure 4168
+                                                                                                        esac
+                                                                                                    done
+                                                                                                    echo "$INIT_EXIT_CODE" > /mount/init-exit-code
+                                                                                                    echo "$RELEASE_EXIT_CODE" > /mount/release-exit-code
+                                                                                                    exit "$INIT_EXIT_CODE"
+                                                                                                '' ;
+                                                                                        } ;
+                                                                                in "${ application }/bin/init" ;
+                                                                    release =
+                                                                        { failure , pkgs , resources , seed , sequential , trace } :
+                                                                            let
+                                                                                application =
+                                                                                    pkgs.writeShellApplication
+                                                                                        {
+                                                                                            name = "release" ;
+                                                                                            runtimeInputs = [ failure pkgs.coreutils ] ;
+                                                                                            text =
+                                                                                                ''
+                                                                                                    RELEASE_EXIT_CODE="$( cat /mount/release-exit-code )" || failure 19859
+                                                                                                    exit "$RELEASE_EXIT_CODE"
+                                                                                                '' ;
+                                                                                        } ;
+                                                                                in "${ application }/bin/release" ;
+                                                                    targets = [ "init-exit-code" "release-exit-code" ] ;
+                                                                } ;
+                                                    } ;
+                                                foobar =
+                                                    {
+                                                        pad =
+                                                            ignore :
+                                                                {
+                                                                    depth = 0 ;
+                                                                    init =
+                                                                        { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
+                                                                            let
+                                                                                application =
+                                                                                    pkgs.writeShellApplication
+                                                                                        {
+                                                                                            name = "init" ;
+                                                                                            runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                            text =
+                                                                                                let
+                                                                                                    envrc =
+                                                                                                        ''
+                                                                                                        '' ;
+                                                                                                    in
+                                                                                                        ''
+                                                                                                            touch /mount/.envrc
+                                                                                                            echo 24545
+                                                                                                        '' ;
+                                                                                        } ;
+                                                                                    in "${ application }/bin/init" ;
+                                                                    release =
+                                                                        { failure , pkgs , resources , seed , sequential , trace } :
+                                                                            let
+                                                                                application =
+                                                                                    pkgs.writeShellApplication
+                                                                                        {
+                                                                                            name = "release" ;
+                                                                                            runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                            text =
+                                                                                                ''
+                                                                                                    echo 11660
+                                                                                                '' ;
+                                                                                        } ;
+                                                                                    in "${ application }/bin/release" ;
+                                                                    targets = [ ".envrc" ] ;
+                                                                } ;
+                                                        temporary =
+                                                            ignore :
+                                                                {
+                                                                    transient = true ;
+                                                                } ;
+                                                    } ;
+                                                production =
+                                                    {
+                                                        age =
+                                                            {
+                                                                ciphertext =
+                                                                    ignore :
+                                                                        {
+                                                                            init =
+                                                                                { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
+                                                                                    let
+                                                                                        application =
+                                                                                            pkgs.writeShellApplication
+                                                                                                {
+                                                                                                    name = "init" ;
+                                                                                                    runtimeInputs = [ pkgs.git wrap ] ;
+                                                                                                    text =
+                                                                                                        let
+                                                                                                            post-commit =
+                                                                                                                let
+                                                                                                                    application =
+                                                                                                                        pkgs.writeShellApplication
+                                                                                                                            {
+                                                                                                                                name = "post-commit" ;
+                                                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
+                                                                                                                                text =
+                                                                                                                                    ''
+                                                                                                                                        : "${ builtins.concatStringsSep "" [ "$" "{" "GIT_SSH_COMMAND:?must be exported" "}" ] }"
+                                                                                                                                        while ! git push ssh HEAD
+                                                                                                                                        do
+                                                                                                                                            sleep 1
+                                                                                                                                        done
+                                                                                                                                    '' ;
+                                                                                                                            } ;
+                                                                                                                        in "${ application }/bin/post-commit" ;
+                                                                                                            post-push =
+                                                                                                                let
+                                                                                                                    application =
+                                                                                                                        pkgs.writeShellApplication
+                                                                                                                            {
+                                                                                                                                name = "post-push" ;
+                                                                                                                                runtimeInputs = [ pkgs.openssh ] ;
+                                                                                                                                text =
+                                                                                                                                    ''
+                                                                                                                                    '' ;
+                                                                                                                            } ;
+                                                                                                                        in "${ application }/bin/post-push" ;
+    #                                                                                                                pre-commit =
+    #                                                                                                                    let
+    #                                                                                                                        application =
+    #                                                                                                                            pkgs.writeShellApplication
+    #                                                                                                                                {
+    #                                                                                                                                    name = "pre-commit" ;
+    #                                                                                                                                    runtimeInputs = [ pkgs.age failure ] ;
+    #                                                                                                                                    text =
+    #                                                                                                                                        ''
+    #                                                                                                                                            BASE_DIR="$( git rev-parse --show-toplevel )" || failure 2717
+    #                                                                                                                                            RECIPIENT="$( age-keygen -y ${ config.personal.agenix } )" || failure 11617
+    #                                                                                                                                            GITHUB_TOKEN=${ resources.production.age.plaintext.github.token { failure = 28323 ; } }
+    #                                                                                                                                            age --encrypt --recipient "$RECIPIENT" --output "$BASE_DIR/github/token" --armor "$GITHUB_TOKEN/plaintext"
+    #                                                                                                                                        '' ;
+    #                                                                                                                                } ;
+    #                                                                                                                            in "${ application }/bin/pre-commit" ;
+                                                                                                            in
+                                                                                                                ''
+                                                                                                                    cd /mount
+                                                                                                                    git init 2>&1
+                                                                                                                    git config user.email "${ config.personal.secrets.email }"
+                                                                                                                    git config user.name "${ config.personal.secrets.name }"
+                                                                                                                    git remote add https https://github.com/${ config.personal.secrets.organization }/${ config.personal.secrets.repository }.git
+                                                                                                                    git remote add ssh git@github.com:${ config.personal.secrets.organization }/${ config.personal.secrets.repository }.git
+                                                                                                                    wrap ${ post-commit } .git/hooks/post-commit 0500 --literal brace "GIT_SSH_COMMAND:?must be exported" --literal plain PATH --uuid 31150
+                                                                                                                    wrap ${ post-push } .git/hooks/post-push 0500 --literal plain PATH --uuid 28649
+                                                                                                                '' ;
+                                                                                                } ;
+                                                                                        in "${ application }/bin/init" ;
+                                                                            targets = [ ".git" ] ;
+                                                                        } ;
+    #                                                                    plaintext =
+    #                                                                        _visitor.implementation
+    #                                                                            {
+    #                                                                                null =
+    #                                                                                    path : value : ignore :
+    #                                                                                        {
+    #                                                                                            init =
+    #                                                                                                { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
+    #                                                                                                    let
+    #                                                                                                        application =
+    #                                                                                                            pkgs.writeShellApplication
+    #                                                                                                                {
+    #                                                                                                                    name = "init" ;
+    #                                                                                                                    runtimeInputs = [ pkgs.age ] ;
+    #                                                                                                                    text =
+    #                                                                                                                        ''
+    #                                                                                                                            SECRETS=${ resources.production.age.ciphertext { failure = 11236 ; } }
+    #                                                                                                                            git -C "$SECRETS" fetch https ${ config.personal.secrets.branch } >&2
+    #                                                                                                                            age --decrypt --identity ${ config.personal.agenix } --output /mount/plaintext "$SECRETS/${ builtins.concatStringsSep "/" path }.asc.age
+    #                                                                                                                        '' ;
+    #                                                                                                                } ;
+    #                                                                                                            in "${ application }/bin/init" ;
+    #                                                                                            targets = [ "plaintext" ] ;
+    #                                                                                        } ;
+    #                                                                            }
+    #                                                                            {
+    #                                                                                dot-gnupg =
+    #                                                                                    {
+    #                                                                                        ownertrust = null ;
+    #                                                                                        secret-keys = null ;
+    #                                                                                    } ;
+    #                                                                                dot-ssh =
+    #                                                                                    {
+    #                                                                                        github =
+    #                                                                                            {
+    #                                                                                                identity = null ;
+    #                                                                                                known-hosts = null ;
+    #                                                                                            } ;
+    #                                                                                        mobile =
+    #                                                                                            {
+    #                                                                                                identity = null ;
+    #                                                                                                known-hosts = null ;
+    #                                                                                            } ;
+    #                                                                                    } ;
+    #                                                                                github =
+    #                                                                                    {
+    #                                                                                        token = null ;
+    #                                                                                    } ;
+    #                                                                            } ;
+                                                            } ;
+    #                                                            bin =
+    #                                                                {
+    #                                                                    github-token =
+    #                                                                        ignore :
+    #                                                                            {
+    #                                                                                init =
+    #                                                                                    { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
+    #                                                                                        let
+    #                                                                                            application =
+    #                                                                                                pkgs.writeShellApplication
+    #                                                                                                    {
+    #                                                                                                        name = "init" ;
+    #                                                                                                        runtimeInputs = [ wrap ] ;
+    #                                                                                                        text =
+    #                                                                                                            let
+    #                                                                                                                github-token =
+    #                                                                                                                    pkgs.writeShellApplication
+    #                                                                                                                        {
+    #                                                                                                                            name = "token" ;
+    #                                                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
+    #                                                                                                                            text =
+    #                                                                                                                                ''
+    #                                                                                                                                    GITHUB_TOKEN=${ resources.production.age.plaintext.github.token { failure = 6011 ; } }
+    #                                                                                                                                    cat | "$GITHUB_TOKEN/plaintext"
+    #                                                                                                                                    SECRETS=${ resources.production.age.ciphertext { failure = 144434 ; } }
+    #                                                                                                                                    GIT_SSH_COMMAND_RESOURCE=${ resources.production.bin.ssh { failure = 10240 ; } }
+    #                                                                                                                                    export GIT_SSH_COMMAND="$GIT_SSH_COMMAND_RESOURCE/ssh"
+    #                                                                                                                                    git -C "$SECRETS" --commit --verbose --allow-empty
+    #                                                                                                                                '' ;
+    #                                                                                                                        } ;
+    #                                                                                                                in
+    #                                                                                                                    ''
+    #                                                                                                                        wrap ${ github-token } github-token 0500 --literal plain GITHUB_TOKEN --literal plain GIT_SSH_COMMAND_RESOURCE --literal plain GIT_SSH_COMMAND --literal plain SECRETS --uuid 7100
+    #                                                                                                                    '' ;
+    #                                                                                                    } ;
+    #                                                                                            in "${ application }/bin/init" ;
+    #                                                                                targets = [ "github-token" ] ;
+    #                                                                            } ;
+    #                                                                    ssh =
+    #                                                                        ignore :
+    #                                                                            {
+    #                                                                                init =
+    #                                                                                    { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
+    #                                                                                        let
+    #                                                                                            application =
+    #                                                                                                pkgs.writeShellApplication
+    #                                                                                                    {
+    #                                                                                                        name = "init" ;
+    #                                                                                                        runtimeInputs = [ wrap ] ;
+    #                                                                                                        text =
+    #                                                                                                            let
+    #                                                                                                                ssh =
+    #                                                                                                                    let
+    #                                                                                                                        application =
+    #                                                                                                                            pkgs.writeShellApplication
+    #                                                                                                                                {
+    #                                                                                                                                    name = "ssh" ;
+    #                                                                                                                                    runtimeInputs = [ pkgs.openssh ] ;
+    #                                                                                                                                    text =
+    #                                                                                                                                        ''
+    #                                                                                                                                            DOT_SSH=${ resources.production.dot-ssh { failure = 6733 ; } }
+    #                                                                                                                                            if [[ -t 0 ]]
+    #                                                                                                                                            then
+    #                                                                                                                                                ssh -F "$DOT_SSH/config" "$@"
+    #                                                                                                                                            else
+    #                                                                                                                                                ssh -F "$DOT_SSH/config" "$@" <&0
+    #                                                                                                                                            fi
+    #                                                                                                                                        '' ;
+    #                                                                                                                                } ;
+    #                                                                                                                        in "${ application }/bin/ssh" ;
+    #                                                                                                            in
+    #                                                                                                                ''
+    #                                                                                                                    wrap ${ ssh } ssh 0500 --literal plain DOT_SSH --literal plain @ --uuid 30907
+    #                                                                                                                '' ;
+    #                                                                                                    } ;
+    #                                                                                            in "${ application }/bin/init" ;
+    #                                                                                targets = [ "ssh" ] ;
+    #                                                                            } ;
+    #                                                                } ;
+    #                                                            dot-ssh =
+    #                                                                ignore :
+    #                                                                    {
+    #                                                                        init =
+    #                                                                            { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
+    #                                                                                let
+    #                                                                                    application =
+    #                                                                                        pkgs.writeShellApplication
+    #                                                                                            {
+    #                                                                                                name = "init" ;
+    #                                                                                                runtimeInputs = [ ] ;
+    #                                                                                                text =
+    #                                                                                                    let
+    #                                                                                                        config =
+    #                                                                                                            builtins.toFile
+    #                                                                                                                "config"
+    #                                                                                                                ''
+    #                                                                                                                    Host github.com
+    #                                                                                                                        HostName github.com
+    #                                                                                                                        IdentityFile $GITHUB_IDENTITY_FILE
+    #                                                                                                                        StrictHostKeyChecking yes
+    #                                                                                                                        User git
+    #                                                                                                                        UserKnownHostFile $GITHUB_KNOWN_HOSTS
+    #                                                                                                                    Host mobile
+    #                                                                                                                        HostName 192.168.1.192
+    #                                                                                                                        IdentityFile $MOBILE_IDENTITY_FILE
+    #                                                                                                                        Port 8022
+    #                                                                                                                        StrictHostKeyChecking yes
+    #                                                                                                                        User git
+    #                                                                                                                        UserKnownHostFile $MOBILE_KNOWN_HOSTS
+    #                                                                                                                '' ;
+    #                                                                                                        in
+    #    #                                                                                                        ''
+    #    #                                                                                                            GITHUB_IDENTITY_RESOURCE=${ resources.production.age.plaintext.dot-ssh.github.identity { failure = 21662 ; } }
+    #    #                                                                                                            root "$GITHUB_IDENTITY_RESOURCE"
+    #    #                                                                                                            export GITHUB_IDENTITY_FILE="$GITHUB_IDENTITIY_RESOURCE/plaintext"
+    #    #                                                                                                            GITHUB_KNOWN_RESOURCE=${ resources.production.age.plaintext.dot-ssh.github.known-hosts { failure = 15323 ; } }
+    #    #                                                                                                            root "$GITHUB_KNOWN_RESOURCE"
+    #    #                                                                                                            export GITHUB_KNOWN_HOSTS="$GITHUB_KNOWN_RESOURCE/plaintext"
+    #    #                                                                                                            MOBILE_IDENTITY_RESOURCE=${ resources.production.age.plaintext.dot-ssh.mobile.identity { failure = 28142 ; } }
+    #    #                                                                                                            root "$MOBILE_IDENTITY_RESOURCE"
+    #    #                                                                                                            export MOBILE_IDENTITY_FILE="$MOBILE_IDENTITIY_RESOURCE/plaintext"
+    #    #                                                                                                            MOBILE_KNOWN_RESOURCE=${ resources.production.age.plaintext.dot-ssh.github.identity { failure = 30122 ; } }
+    #    #                                                                                                            root "$MOBILE_KNOWN_RESOURCE"
+    #    #                                                                                                            export MOBILE_KNOWN_HOSTS="$MOBILE_KNOWN_RESOURCE/plaintext"
+    #    #                                                                                                            wrap ${ config } config 0400 --inherit plain GITHUB_IDENTITY_FILE --inherit plain GITHUB_KNOWN_HOSTS --inherit plain MOBILE_IDENTITY_FILE --inherit plain MOBILE_KNOWN_HOSTS --uuid 15122
+    #    #                                                                                                        '' ;
+    #                                                                                                            ''
+    #                                                                                                                touch /mount/.envrc
+    #                                                                                                            '' ;
+    #                                                                                            } ;
+    #                                                                                    in "${ application }/bin/init" ;
+    #                                                                        targets = [ "config" ] ;
+    #                                                                    } ;
+    #                                                            pads =
+    #                                                                {
+    #                                                                    home =
+    #                                                                        ignore :
+    #                                                                            {
+    #                                                                                depth = 2 ;
+    #                                                                                init =
+    #                                                                                    { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
+    #                                                                                        let
+    #                                                                                            application =
+    #                                                                                                pkgs.writeShellApplication
+    #                                                                                                    {
+    #                                                                                                        name = "init" ;
+    #                                                                                                        runtimeInputs = [ gc-root wrap ] ;
+    #                                                                                                        text =
+    #                                                                                                            let
+    #                                                                                                                envrc =
+    #                                                                                                                    let
+    #                                                                                                                        application =
+    #                                                                                                                           pkgs.writeShellApplication
+    #                                                                                                                                {
+    #                                                                                                                                    name = "envrc" ;
+    #                                                                                                                                    runtimeInputs = [ ] ;
+    #                                                                                                                                    text =
+    #                                                                                                                                        ''
+    #                                                                                                                                            PATH=$GITHUB_TOKEN:$SSH
+    #                                                                                                                                        '' ;
+    #                                                                                                                                } ;
+    #                                                                                                                        in "${ application }/bin/init" ;
+    #                                                                                                                in
+    #                                                                                                                    ''
+    #                                                                                                                        GITHUB_TOKEN=${ resources.production.bin.github-token { failure = 22181 ; } }
+    #                                                                                                                        export GITHUB_TOKEN
+    #                                                                                                                        gc-root "$GITHUB_TOKEN"
+    #                                                                                                                        SSH=${ resources.production.bin.ssh { failure = 30475 ; } }
+    #                                                                                                                        export SSH
+    #                                                                                                                        gc-root "$SSH"
+    #                                                                                                                        wrap ${ envrc } .envrc 0500 --inherit plain GITHUB_TOKEN --inherit-plain SSH --uuid 9717
+    #                                                                                                                    '' ;
+    #                                                                                                    } ;
+    #                                                                                            in "${ application }/bin/init" ;
+    #                                                                                targets = [ ".envrc" ] ;
+    #                                                                            } ;
+    #                                                                } ;
+                                                    } ;
+                                            } ;
                                         password-less-core =
                                             derivation : target :
                                                 pkgs.writeShellApplication
