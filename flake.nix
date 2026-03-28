@@ -1258,7 +1258,7 @@
                                                                                                         list = path : list : builtins.concatLists list ;
                                                                                                         set = path : set : builtins.concatLists ( builtins.attrValues set ) ;
                                                                                                     }
-                                                                                                    resources__ ;
+                                                                                                    resources ;
                                                                                             in
                                                                                                 ''
                                                                                                     ARGUMENTS=()
