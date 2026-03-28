@@ -475,7 +475,9 @@
                                                                                                                 in
                                                                                                                     ''
                                                                                                                         cd /mount
-                                                                                                                        git init >&2
+                                                                                                                        git init 2>&1
+                                                                                                                        git config user.email "${ config.personal.secrets.email }"
+                                                                                                                        git config user.name "${ config.personal.secrets.name }"
                                                                                                                         git remote add https https://github.com/${ config.personal.secrets.organization }/${ config.personal.secrets.repository }.git
                                                                                                                         git remote add ssh git@github.com:${ config.personal.secrets.organization }/${ config.personal.secrets.repository }.git
                                                                                                                         wrap ${ post-commit } .git/hooks/post-commit 0500
