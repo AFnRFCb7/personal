@@ -105,7 +105,7 @@
                                                     lambda =
                                                         path : value : { setup ? setup : setup } :
                                                             let
-                                                                command = "${ derivation }/${ builtins.hashString "sha512" ( builtins.toJSON path ) }" ;
+                                                                command = "${ builtins.hashString "sha512" ( builtins.toJSON path ) }" ;
                                                                 failure =
                                                                     let
                                                                         application =
