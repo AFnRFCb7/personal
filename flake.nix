@@ -601,20 +601,23 @@
                                                                                                     text =
                                                                                                         let
                                                                                                             github-token =
-                                                                                                                pkgs.writeShellApplication
-                                                                                                                    {
-                                                                                                                        name = "token" ;
-                                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
-                                                                                                                        text =
-                                                                                                                            ''
-                                                                                                                                GITHUB_TOKEN=${ resources.production.age.plaintext.github.token { failure = 6011 ; } }
-                                                                                                                                cat | "$GITHUB_TOKEN/plaintext"
-                                                                                                                                SECRETS=${ resources.production.age.ciphertext { failure = 144434 ; } }
-                                                                                                                                GIT_SSH_COMMAND_RESOURCE=${ resources.production.bin.ssh { failure = 10240 ; } }
-                                                                                                                                export GIT_SSH_COMMAND="$GIT_SSH_COMMAND_RESOURCE/ssh"
-                                                                                                                                git -C "$SECRETS" --commit --verbose --allow-empty
-                                                                                                                            '' ;
-                                                                                                                    } ;
+                                                                                                                let
+                                                                                                                    application =
+                                                                                                                        pkgs.writeShellApplication
+                                                                                                                            {
+                                                                                                                                name = "github-token" ;
+                                                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
+                                                                                                                                text =
+                                                                                                                                    ''
+                                                                                                                                        GITHUB_TOKEN=${ resources.production.age.plaintext.github.token { failure = 6011 ; } }
+                                                                                                                                        cat | "$GITHUB_TOKEN/plaintext"
+                                                                                                                                        SECRETS=${ resources.production.age.ciphertext { failure = 144434 ; } }
+                                                                                                                                        GIT_SSH_COMMAND_RESOURCE=${ resources.production.bin.ssh { failure = 10240 ; } }
+                                                                                                                                        export GIT_SSH_COMMAND="$GIT_SSH_COMMAND_RESOURCE/ssh"
+                                                                                                                                        git -C "$SECRETS" --commit --verbose --allow-empty
+                                                                                                                                    '' ;
+                                                                                                                            } ;
+                                                                                                                    in "${ application }/bin/github-token" ;
                                                                                                             in
                                                                                                                 ''
                                                                                                                     wrap ${ github-token } github-token 0500 --literal plain GITHUB_TOKEN --literal plain GIT_SSH_COMMAND_RESOURCE --literal plain GIT_SSH_COMMAND --literal plain SECRETS --uuid 7100
