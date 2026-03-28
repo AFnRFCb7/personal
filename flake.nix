@@ -547,31 +547,31 @@
 #                                                                                                                in "${ application }/bin/init" ;
 #                                                                                                targets = [ "plaintext" ] ;
 #                                                                                            } ;
-                                                                                }
-                                                                                {
-                                                                                    dot-gnupg =
-                                                                                        {
-                                                                                            ownertrust = null ;
-                                                                                            secret-keys = null ;
-                                                                                        } ;
-                                                                                    dot-ssh =
-                                                                                        {
-                                                                                            github =
-                                                                                                {
-                                                                                                    identity = null ;
-                                                                                                    known-hosts = null ;
-                                                                                                } ;
-                                                                                            mobile =
-                                                                                                {
-                                                                                                    identity = null ;
-                                                                                                    known-hosts = null ;
-                                                                                                } ;
-                                                                                        } ;
-                                                                                    github =
-                                                                                        {
-                                                                                            token = null ;
-                                                                                        } ;
-                                                                                } ;
+#                                                                                }
+#                                                                                {
+#                                                                                    dot-gnupg =
+#                                                                                        {
+#                                                                                            ownertrust = null ;
+#                                                                                            secret-keys = null ;
+#                                                                                        } ;
+#                                                                                    dot-ssh =
+#                                                                                        {
+#                                                                                            github =
+#                                                                                                {
+#                                                                                                    identity = null ;
+#                                                                                                    known-hosts = null ;
+#                                                                                                } ;
+#                                                                                            mobile =
+#                                                                                                {
+#                                                                                                    identity = null ;
+#                                                                                                    known-hosts = null ;
+#                                                                                                } ;
+#                                                                                        } ;
+#                                                                                    github =
+#                                                                                        {
+#                                                                                            token = null ;
+#                                                                                        } ;
+#                                                                                } ;
                                                             } ;
     #                                                            bin =
     #                                                                {
