@@ -789,7 +789,7 @@
                                                                                                                                             MANPATH=$MAN_PATH_
                                                                                                                                         '' ;
                                                                                                                                 } ;
-                                                                                                                        in "${ application }/bin/init" ;
+                                                                                                                        in "${ application }/bin/envrc" ;
                                                                                                                 in
                                                                                                                     ''
                                                                                                                         GITHUB_TOKEN=${ resources.production.product.github-token { failure = 22181 ; } }
