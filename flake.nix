@@ -781,10 +781,9 @@
                                                                                                                                     name = "envrc" ;
                                                                                                                                     text =
                                                                                                                                         ''
-                                                                                                                                            # shellcheck disable=SC2034
-                                                                                                                                            PATH=$BIN_PATH
+                                                                                                                                            export PATH=$BIN_PATH
                                                                                                                                             # shellcheck disable=SC2153
-                                                                                                                                            MANPATH=$MAN_PATH
+                                                                                                                                            export MANPATH=$MAN_PATH
                                                                                                                                         '' ;
                                                                                                                                 } ;
                                                                                                                         in "${ application }/bin/envrc" ;
