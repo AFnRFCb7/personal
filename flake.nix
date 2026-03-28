@@ -1252,16 +1252,13 @@
                                                                                                                     ''
                                                                                                                         elif [[ "$2" == '${ builtins.toJSON path }' ]]
                                                                                                                         then
-                                                                                                                            cat <<EOF
-                                                                                                                        RESOURCE=${ value { setup = setup : ''${ setup } "${ builtins.concatStringsSep "" [ "$" "{" "ARGUMENTS[@]" "}" ] }"'' ; } }
-                                                                                                                        EOF
                                                                                                                             RESOURCE=${ value { setup = setup : ''${ setup } "${ builtins.concatStringsSep "" [ "$" "{" "ARGUMENTS[@]" "}" ] }"'' ; } }
                                                                                                                     ''
                                                                                                                 ] ;
                                                                                                         list = path : list : builtins.concatLists list ;
                                                                                                         set = path : set : builtins.concatLists ( builtins.attrValues set ) ;
                                                                                                     }
-                                                                                                    resources__ ;
+                                                                                                    resources___ ;
                                                                                             in
                                                                                                 ''
                                                                                                     ARGUMENTS=()
