@@ -486,7 +486,7 @@
                                                                                                                     '' ;
                                                                                                     } ;
                                                                                             in "${ application }/bin/init" ;
-                                                                                targets = [ ".git" "dot-gnupg" "dot-ssh" "github" ] ;
+                                                                                targets = [ ".git" ] ;
                                                                             } ;
 #                                                                    plaintext =
 #                                                                        _visitor.implementation
