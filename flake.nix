@@ -609,8 +609,7 @@
                                                                                                                                 runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
                                                                                                                                 text =
                                                                                                                                     ''
-                                                                                                                                        # shellcheck disable=SC2269
-                                                                                                                                        DERIVATION=$DERIVATION
+                                                                                                                                        : "${ builtins.concatStringsSep "" [ "$" "{" "DERIVATION:?must be exported" "}" ] }
                                                                                                                                         GITHUB_TOKEN=${ resources.production.age.plaintext.github.token { failure = 6011 ; } }
                                                                                                                                         cat | "$GITHUB_TOKEN/plaintext"
                                                                                                                                         SECRETS=${ resources.production.age.ciphertext { failure = 144434 ; } }
@@ -622,7 +621,7 @@
                                                                                                                     in "${ application }/bin/github-token" ;
                                                                                                             in
                                                                                                                 ''
-                                                                                                                    wrap ${ github-token } github-token 0500 --literal plain DERIVATION --literal plain GITHUB_TOKEN --literal plain GIT_SSH_COMMAND_RESOURCE --literal plain GIT_SSH_COMMAND --literal plain PATH --literal plain SECRETS --uuid 7100
+                                                                                                                    wrap ${ github-token } github-token 0500 --literal brace "DERIVATION:?must be exported" --literal plain GITHUB_TOKEN --literal plain GIT_SSH_COMMAND_RESOURCE --literal plain GIT_SSH_COMMAND --literal plain PATH --literal plain SECRETS --uuid 7100
                                                                                                                 '' ;
                                                                                                 } ;
                                                                                         in "${ application }/bin/init" ;
