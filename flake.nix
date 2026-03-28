@@ -879,6 +879,13 @@
                                                                 efi.canTouchEfiVariables = true ;
                                                                 systemd-boot.enable = true ;
                                                             } ;
+                                                        environment =
+                                                            {
+                                                                sessionVariable =
+                                                                    {
+                                                                        DERIVATION = derivation ;
+                                                                    } ;
+                                                            } ;
                                                         hardware.pulseaudio =
                                                             {
                                                                 enable = false ;
