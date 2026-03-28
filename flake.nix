@@ -881,7 +881,7 @@
                                                             } ;
                                                         environment =
                                                             {
-                                                                sessionVariable =
+                                                                sessionVariables =
                                                                     {
                                                                         DERIVATION = derivation ;
                                                                     } ;
