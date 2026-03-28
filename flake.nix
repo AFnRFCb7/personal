@@ -781,10 +781,8 @@
                                                                                                                                     name = "envrc" ;
                                                                                                                                     text =
                                                                                                                                         ''
-                                                                                                                                            : "${ builtins.concatStringsSep "" [ "$" "{" "BIN_PATH_:?must be exported" "}" ] }"
                                                                                                                                             # shellcheck disable=SC2034
                                                                                                                                             PATH=$BIN_PATH_
-                                                                                                                                            : "${ builtins.concatStringsSep "" [ "$" "{" "MAN_PATH_:?must be exported" "}" ] }"
                                                                                                                                             # shellcheck disable=SC2034
                                                                                                                                             MANPATH=$MAN_PATH_
                                                                                                                                         '' ;
