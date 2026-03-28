@@ -1217,71 +1217,71 @@
                                                                     } ;
                                                                 packages =
                                                                     [
-                                                                        (
-                                                                            pkgs.writeShellApplication
-                                                                                {
-                                                                                    name = "resource" ;
-                                                                                    runtimeInputs = [ ] ;
-                                                                                    text =
-                                                                                        let
-                                                                                            conditions =
-                                                                                                builtins.concatLists
-                                                                                                    [
-                                                                                                        [
-                                                                                                            ''
-                                                                                                                if [[ "$#" -ne 2 ]]
-                                                                                                                then
-                                                                                                                    exit 99
-                                                                                                            ''
-                                                                                                        ]
-                                                                                                        resource-conditions
-                                                                                                        [
-                                                                                                            ''
-                                                                                                                else
-                                                                                                                    exit 98
-                                                                                                                fi
-                                                                                                            ''
-                                                                                                        ]
-                                                                                                    ] ;
-                                                                                            resource-conditions =
-                                                                                                _visitor.implementation
-                                                                                                    {
-                                                                                                        lambda =
-                                                                                                            path : value :
-                                                                                                                [
-                                                                                                                    ''
-                                                                                                                        elif [[ "$2" == '${ builtins.toJSON path }' ]]
-                                                                                                                        then
-                                                                                                                            RESOURCE=${ value { setup = setup : ''${ setup } "${ builtins.concatStringsSep "" [ "$" "{" "ARGUMENTS[@]" "}" ] }"'' ; } }
-                                                                                                                    ''
-                                                                                                                ] ;
-                                                                                                        list = path : list : builtins.concatLists list ;
-                                                                                                        set = path : set : builtins.concatLists ( builtins.attrValues set ) ;
-                                                                                                    }
-                                                                                                    resources___ ;
-                                                                                            in
-                                                                                                ''
-                                                                                                    ARGUMENTS=()
-                                                                                                    while [[ "$#" -gt 0 ]]
-                                                                                                    do
-                                                                                                        case "$1" in
-                                                                                                            --argument)
-                                                                                                                ARGUMENTS+=( "$2" )
-                                                                                                                shift 2
-                                                                                                                ;;
-                                                                                                            --resource)
-                                                                                                                # shellcheck disable=SC2140,SC2016
-                                                                                                                ${ builtins.concatStringsSep "\n" conditions }
-                                                                                                                echo "$RESOURCE"
-                                                                                                                shift 2
-                                                                                                                ;;
-                                                                                                            *)
-                                                                                                                exit 64
-                                                                                                        esac
-                                                                                                    done
-                                                                                                '' ;
-                                                                                }
-                                                                        )
+#                                                                        (
+#                                                                            pkgs.writeShellApplication
+#                                                                                {
+#                                                                                    name = "resource" ;
+#                                                                                    runtimeInputs = [ ] ;
+#                                                                                    text =
+#                                                                                        let
+#                                                                                            conditions =
+#                                                                                                builtins.concatLists
+#                                                                                                    [
+#                                                                                                        [
+#                                                                                                            ''
+#                                                                                                                if [[ "$#" -ne 2 ]]
+#                                                                                                                then
+#                                                                                                                    exit 99
+#                                                                                                            ''
+#                                                                                                        ]
+#                                                                                                        resource-conditions
+#                                                                                                        [
+#                                                                                                            ''
+#                                                                                                                else
+#                                                                                                                    exit 98
+#                                                                                                                fi
+#                                                                                                            ''
+#                                                                                                        ]
+#                                                                                                    ] ;
+#                                                                                            resource-conditions =
+#                                                                                                _visitor.implementation
+#                                                                                                    {
+#                                                                                                        lambda =
+#                                                                                                            path : value :
+#                                                                                                                [
+#                                                                                                                    ''
+#                                                                                                                        elif [[ "$2" == '${ builtins.toJSON path }' ]]
+#                                                                                                                        then
+#                                                                                                                            RESOURCE=${ value { setup = setup : ''${ setup } "${ builtins.concatStringsSep "" [ "$" "{" "ARGUMENTS[@]" "}" ] }"'' ; } }
+#                                                                                                                    ''
+#                                                                                                                ] ;
+#                                                                                                        list = path : list : builtins.concatLists list ;
+#                                                                                                        set = path : set : builtins.concatLists ( builtins.attrValues set ) ;
+#                                                                                                    }
+#                                                                                                    resources_ ;
+#                                                                                            in
+#                                                                                                ''
+#                                                                                                    ARGUMENTS=()
+#                                                                                                    while [[ "$#" -gt 0 ]]
+#                                                                                                    do
+#                                                                                                        case "$1" in
+#                                                                                                            --argument)
+#                                                                                                                ARGUMENTS+=( "$2" )
+#                                                                                                                shift 2
+#                                                                                                                ;;
+#                                                                                                            --resource)
+#                                                                                                                # shellcheck disable=SC2140,SC2016
+#                                                                                                                ${ builtins.concatStringsSep "\n" conditions }
+#                                                                                                                echo "$RESOURCE"
+#                                                                                                                shift 2
+#                                                                                                                ;;
+#                                                                                                            *)
+#                                                                                                                exit 64
+#                                                                                                        esac
+#                                                                                                    done
+#                                                                                                '' ;
+#                                                                                }
+#                                                                        )
                                                                         (
                                                                             pkgs.writeShellApplication
                                                                                 {
