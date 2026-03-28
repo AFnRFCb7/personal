@@ -1220,18 +1220,6 @@
                                                                         (
                                                                             pkgs.writeShellApplication
                                                                                 {
-                                                                                    name = "test-resource" ;
-                                                                                    runtimeInputs = [ ] ;
-                                                                                    text =
-                                                                                        ''
-                                                                                            resource --argument --depth --argument 3 --argument --init-exit-code --argument 0 --argument --release-exit-code --argument 0 --resource '["checks","hook"]'
-                                                                                            cat "/home/${ config.personal.name }/resources/log/trace.log"
-                                                                                        '' ;
-                                                                                }
-                                                                        )
-                                                                        (
-                                                                            pkgs.writeShellApplication
-                                                                                {
                                                                                     name = "resource" ;
                                                                                     runtimeInputs = [ ] ;
                                                                                     text =
@@ -1273,7 +1261,7 @@
                                                                                                         list = path : list : builtins.concatLists list ;
                                                                                                         set = path : set : builtins.concatLists ( builtins.attrValues set ) ;
                                                                                                     }
-                                                                                                    resources ;
+                                                                                                    resources__ ;
                                                                                             in
                                                                                                 ''
                                                                                                     ARGUMENTS=()
