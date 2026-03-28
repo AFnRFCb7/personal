@@ -777,11 +777,12 @@
                                                                                                                                     name = "envrc" ;
                                                                                                                                     text =
                                                                                                                                         ''
+                                                                                                                                            : "${ builtins.concatStringsSep "" [ "$" "{" "BIN_PATH_:?must be exported" "}" ] }"
                                                                                                                                             # shellcheck disable=SC2034
                                                                                                                                             PATH=$BIN_PATH_
-                                                                                                                                            : "${ builtins.concatStringsSep "" [ "$" "{" "MANPATH_:?must be exported" "}" ] }"
+                                                                                                                                            : "${ builtins.concatStringsSep "" [ "$" "{" "MAN_PATH_:?must be exported" "}" ] }"
                                                                                                                                             # shellcheck disable=SC2034
-                                                                                                                                            MAN_PATH=$MAN_PATH_
+                                                                                                                                            MANPATH=$MAN_PATH_
                                                                                                                                         '' ;
                                                                                                                                 } ;
                                                                                                                         in "${ application }/bin/init" ;
