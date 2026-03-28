@@ -118,7 +118,7 @@
                                                         path : value : { derivation ? "$DERIVATION" , failure ? 64 , setup ? setup : setup } :
                                                             let
                                                                 command = ''"${ derivation }/${ builtins.hashString "sha512" ( builtins.toJSON path ) }"'' ;
-                                                                failure =
+                                                                failure_ =
                                                                     let
                                                                         application =
                                                                             pkgs.writeShellApplication
@@ -131,7 +131,7 @@
                                                                                             jq \
                                                                                                 --null-input \
                                                                                                 --argjson PATH '${ builtins.toJSON path }' \
-                                                                                                --argjson FAILURE '${ builtins.toJSON false }' \
+                                                                                                --argjson FAILURE '${ builtins.toJSON failure }' \
                                                                                                 '{
                                                                                                     "failure" $FAILURE ,
                                                                                                     "path" : $PATH
@@ -140,7 +140,7 @@
                                                                                         '' ;
                                                                                 } ;
                                                                             in "${ application }/bin/failure" ;
-                                                                in ''"$( ${ setup command } )" || ${ failure }'' ;
+                                                                in ''"$( ${ setup command } )" || ${ failure_ }'' ;
                                                 }
                                                 resources___ ;
                                         # I am using the cyclic script name to form a command.  It still has the cyclic dependency problem.
