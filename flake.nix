@@ -437,7 +437,7 @@
                                                                                                                                     runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
                                                                                                                                     text =
                                                                                                                                         ''
-                                                                                                                                            : "${ builtins.concatStringsSep "" [ "$" "{" "GIT_SSH_COMMAND:?must be exported" "}" ]"
+                                                                                                                                            : "${ builtins.concatStringsSep "" [ "$" "{" "GIT_SSH_COMMAND:?must be exported" "}" ] }"
                                                                                                                                             while ! git push ssh HEAD
                                                                                                                                             do
                                                                                                                                                 sleep 1
