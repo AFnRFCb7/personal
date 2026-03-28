@@ -661,7 +661,7 @@
                                                                                                                     in "${ application }/bin/ssh" ;
                                                                                                         in
                                                                                                             ''
-                                                                                                                wrap ${ ssh } ssh 0500 --literal plain DOT_SSH --literal plain @ --uuid 30907
+                                                                                                                wrap ${ ssh } ssh 0500 --literal plain @ --literal plain DERIVATION --literal plain DOT_SSH --literal plan PATH --uuid 30907
                                                                                                             '' ;
                                                                                                 } ;
                                                                                         in "${ application }/bin/init" ;
