@@ -121,7 +121,7 @@
                                                                                         '' ;
                                                                                 } ;
                                                                             in "${ application }/bin/failure" ;
-                                                                in ''"$( ${ setup } ${ command } )" || ${ failure }'' ;
+                                                                in ''"$( ${ setup command } )" || ${ failure }'' ;
                                                 }
                                                 resources___ ;
                                         # I am using the cyclic script name to form a command.  It still has the cyclic dependency problem.
