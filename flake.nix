@@ -778,8 +778,8 @@
                                                                                                                                     runtimeInputs = [ ] ;
                                                                                                                                     text =
                                                                                                                                         ''
-                                                                                                                                            PATH=$BIN_PATH
-                                                                                                                                            MAN_PATH=$MAN_PATH
+                                                                                                                                            PATH=$BIN_PATH_
+                                                                                                                                            MAN_PATH=$MAN_PATH_
                                                                                                                                         '' ;
                                                                                                                                 } ;
                                                                                                                         in "${ application }/bin/init" ;
@@ -789,11 +789,11 @@
                                                                                                                         gc-root "$GITHUB_TOKEN"
                                                                                                                         SSH=${ resources.production.product.ssh { failure = 11121 ; } }
                                                                                                                         gc-root "$SSH"
-                                                                                                                        BIN_PATH=${ builtins.concatStringsSep ":" ( builtins.map ( x : "${ x }/bin" ) [ "$GITHUB_TOKEN" "$SSH" ] ) }
-                                                                                                                        export BIN_PATH
-                                                                                                                        MAN_PATH=${ builtins.concatStringsSep ":" ( builtins.map ( x : "${ x }/share/man" ) [ "$GITHUB_TOKEN" "$SSH" ] ) }
-                                                                                                                        export MAN_PATH
-                                                                                                                        wrap ${ envrc } .envrc 0400 --inherit plain BIN_PATH --inherit plain MAN_PATH --uuid 30754
+                                                                                                                        BIN_PATH_=${ builtins.concatStringsSep ":" ( builtins.map ( x : "${ x }/bin" ) [ "$GITHUB_TOKEN" "$SSH" ] ) }
+                                                                                                                        export BIN_PATH_
+                                                                                                                        MAN_PATH_=${ builtins.concatStringsSep ":" ( builtins.map ( x : "${ x }/share/man" ) [ "$GITHUB_TOKEN" "$SSH" ] ) }
+                                                                                                                        export MAN_PATH_
+                                                                                                                        wrap ${ envrc } .envrc 0400 --inherit plain BIN_PATH_ --inherit plain MAN_PATH_ --uuid 30754
                                                                                                                     '' ;
                                                                                                     } ;
                                                                                             in "${ application }/bin/init" ;
