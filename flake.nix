@@ -788,7 +788,7 @@
                                                                                                                         gc-root "$GITHUB_TOKEN"
                                                                                                                         SSH=${ resources.production.product.ssh { failure = 11121 ; } }
                                                                                                                         gc-root "$SSH"
-                                                                                                                        BIN_PATH=${ pkgs.mkBinPath [ "$GITHUB_TOKEN" "$SSH" ] }
+                                                                                                                        BIN_PATH=${ builtins.concatStringsSep ":" ( builtins.map ( x : "${ x }/bin" ) [ "$GITHUB_TOKEN" "$SSH" ] ) }
                                                                                                                         export BIN_PATH
                                                                                                                         wrap ${ envrc } .envrc 0400 --inherit plain BIN_PATH --uuid 30754
                                                                                                                     '' ;
