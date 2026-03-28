@@ -124,18 +124,18 @@
                                                                             pkgs.writeShellApplication
                                                                                 {
                                                                                     name = "failure" ;
-                                                                                    runtimeInputs = [ pkgs.jq pkgs.yg-go ] ;
+                                                                                    runtimeInputs = [ pkgs.coreutils pkgs.jq pkgs.yq-go ] ;
                                                                                     text =
                                                                                         ''
                                                                                             # shellcheck disable=2140
                                                                                             jq \
                                                                                                 --null-input \
-                                                                                                --argjson PATH '${ builtins.toJSON path }'
-                                                                                                --argjson FAILURE '${ builtins.toJSON failure }'
+                                                                                                --argjson PATH '${ builtins.toJSON path }'  \
+                                                                                                --argjson FAILURE '${ builtins.toJSON failure }' \
                                                                                                 '{
-                                                                                                    "path" : $PATH ,
-                                                                                                    "FAILURE" $FAILURE
-                                                                                                }' | yq eval --prettyPrint >&2
+                                                                                                    "failure" $FAILURE ,
+                                                                                                    "path" : $PATH
+                                                                                                }' | yq eval --prettyPrint "." >&2
                                                                                             exit 64
                                                                                         '' ;
                                                                                 } ;
