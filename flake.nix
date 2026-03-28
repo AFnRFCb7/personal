@@ -758,7 +758,7 @@
                                                                     home =
                                                                         ignore :
                                                                             {
-                                                                                depth = 2 ;
+                                                                                depth = 1 ;
                                                                                 init =
                                                                                     { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
                                                                                         let
@@ -779,6 +779,7 @@
                                                                                                                                     text =
                                                                                                                                         ''
                                                                                                                                             PATH=$BIN_PATH_
+                                                                                                                                            # shellcheck disable=SC2034
                                                                                                                                             MAN_PATH=$MAN_PATH_
                                                                                                                                         '' ;
                                                                                                                                 } ;
