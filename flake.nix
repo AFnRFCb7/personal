@@ -749,7 +749,7 @@
                                                                                         } ;
                                                                             }
                                                                             {
-                                                                                "github.com" = null ;
+                                                                                github = null ;
                                                                                 mobile = null ;
                                                                             } ;
                                                                 } ;
