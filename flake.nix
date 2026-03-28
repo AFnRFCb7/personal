@@ -710,22 +710,22 @@
                                                                                                             in
                                                                                                                 ''
                                                                                                                     GITHUB_CONTROL_PATH=${ resources.production.dot-ssh.control-path.github { failure = 12555 ; } }
-                                                                                                                    root "$GITHUB_CONTROL_PATH"
+                                                                                                                    gc-root "$GITHUB_CONTROL_PATH"
                                                                                                                     export GITHUB_CONTROL_PATH
                                                                                                                     GITHUB_IDENTITY_RESOURCE=${ resources.production.age.plaintext.dot-ssh.github.identity { failure = 21662 ; } }
-                                                                                                                    root "$GITHUB_IDENTITY_RESOURCE"
+                                                                                                                    gc-root "$GITHUB_IDENTITY_RESOURCE"
                                                                                                                     export GITHUB_IDENTITY_FILE="$GITHUB_IDENTITY_RESOURCE/plaintext"
                                                                                                                     GITHUB_KNOWN_RESOURCE=${ resources.production.age.plaintext.dot-ssh.github.known-hosts { failure = 15323 ; } }
-                                                                                                                    root "$GITHUB_KNOWN_RESOURCE"
+                                                                                                                    gc-root "$GITHUB_KNOWN_RESOURCE"
                                                                                                                     export GITHUB_KNOWN_HOSTS="$GITHUB_KNOWN_RESOURCE/plaintext"
                                                                                                                     MOBILE_CONTROL_PATH=${ resources.production.dot-ssh.control-path.mobile { failure = 27748 ; } }
                                                                                                                     root "$MOBILE_CONTROL_PATH"
                                                                                                                     export MOBILE_CONTROL_PATH
                                                                                                                     MOBILE_IDENTITY_RESOURCE=${ resources.production.age.plaintext.dot-ssh.mobile.identity { failure = 28142 ; } }
-                                                                                                                    root "$MOBILE_IDENTITY_RESOURCE"
+                                                                                                                    gc-root "$MOBILE_IDENTITY_RESOURCE"
                                                                                                                     export MOBILE_IDENTITY_FILE="$MOBILE_IDENTITY_RESOURCE/plaintext"
                                                                                                                     MOBILE_KNOWN_RESOURCE=${ resources.production.age.plaintext.dot-ssh.github.identity { failure = 30122 ; } }
-                                                                                                                    root "$MOBILE_KNOWN_RESOURCE"
+                                                                                                                    gc-root "$MOBILE_KNOWN_RESOURCE"
                                                                                                                     export MOBILE_KNOWN_HOSTS="$MOBILE_KNOWN_RESOURCE/plaintext"
                                                                                                                     wrap \
                                                                                                                         ${ config } \
