@@ -115,7 +115,7 @@
                                             _visitor.implementation
                                                 {
                                                     lambda =
-                                                        path : value : { derivation ? "$DERIVATION" , failure ? code : "exit 64" , setup ? setup : setup } :
+                                                        path : value : { derivation ? "$DERIVATION" , failure ? 64 , setup ? setup : setup } :
                                                             let
                                                                 command = ''"${ derivation }/${ builtins.hashString "sha512" ( builtins.toJSON path ) }"'' ;
                                                                 failure =
@@ -124,11 +124,18 @@
                                                                             pkgs.writeShellApplication
                                                                                 {
                                                                                     name = "failure" ;
-                                                                                    runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                    runtimeInputs = [ pkgs.jq pkgs.yg-go ] ;
                                                                                     text =
                                                                                         ''
                                                                                             # shellcheck disable=2140
-                                                                                            echo There was a failure in resource '${ builtins.toJSON path }' >&2
+                                                                                            jq \
+                                                                                                --null-input \
+                                                                                                --argjson PATH '${ builtins.toJSON path }'
+                                                                                                --argjson FAILURE '${ builtins.toJSON failure }'
+                                                                                                '{
+                                                                                                    "path" : $PATH ,
+                                                                                                    "FAILURE" $FAILURE
+                                                                                                }' | yq eval --prettyPrint >&2
                                                                                             exit 64
                                                                                         '' ;
                                                                                 } ;
