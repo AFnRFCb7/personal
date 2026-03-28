@@ -131,7 +131,7 @@
                                                                                             jq \
                                                                                                 --null-input \
                                                                                                 --argjson PATH '${ builtins.toJSON path }' \
-                                                                                                --argjson FAILURE '${ builtins.toJSON failure }' \
+                                                                                                --argjson FAILURE '${ builtins.toJSON false }' \
                                                                                                 '{
                                                                                                     "failure" $FAILURE ,
                                                                                                     "path" : $PATH
