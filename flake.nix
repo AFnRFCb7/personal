@@ -609,6 +609,7 @@
                                                                                                                                 runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
                                                                                                                                 text =
                                                                                                                                     ''
+                                                                                                                                        # shellcheck disable=SC2269
                                                                                                                                         DERIVATION=$DERIVATION
                                                                                                                                         GITHUB_TOKEN=${ resources.production.age.plaintext.github.token { failure = 6011 ; } }
                                                                                                                                         cat | "$GITHUB_TOKEN/plaintext"
