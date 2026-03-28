@@ -609,7 +609,7 @@
                                                                                                                                 runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
                                                                                                                                 text =
                                                                                                                                     ''
-                                                                                                                                        : "${ builtins.concatStringsSep "" [ "$" "{" "DERIVATION:?must be exported" "}" ] }
+                                                                                                                                        : "${ builtins.concatStringsSep "" [ "$" "{" "DERIVATION:?must be exported" "}" ] }"
                                                                                                                                         GITHUB_TOKEN=${ resources.production.age.plaintext.github.token { failure = 6011 ; } }
                                                                                                                                         cat | "$GITHUB_TOKEN/plaintext"
                                                                                                                                         SECRETS=${ resources.production.age.ciphertext { failure = 144434 ; } }
