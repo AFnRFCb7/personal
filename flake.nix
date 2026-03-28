@@ -73,14 +73,14 @@
                                         derivation =
                                             pkgs.stdenv.mkDerivation
                                                 {
-                                                    installPhase = "install" ;
+                                                    installPhase = "execute-install" ;
                                                     name = "derivation" ;
                                                     nativeBuildInputs =
                                                         [
                                                             (
                                                                 pkgs.writeShellApplication
                                                                     {
-                                                                        name = "install" ;
+                                                                        name = "execute-install" ;
                                                                         runtimeInputs = [ pkgs.coreutils ] ;
                                                                         text =
                                                                             let
@@ -89,7 +89,7 @@
                                                                                         {
                                                                                             list = path : list : builtins.concatLists list ;
                                                                                             set = path : set : builtins.concatLists ( builtins.attrValues set ) ;
-                                                                                            string = path : value : [ ''ln --symbolic ${ value } "$out/${ builtins.hashString "sha512" ( builtins.toJSON path ) }'' ] ;
+                                                                                            string = path : value : [ ''ln --symbolic ${ value } "$out/${ builtins.hashString "sha512" ( builtins.toJSON path ) }"'' ] ;
                                                                                         }
                                                                                         resources__ ;
                                                                                 in builtins.concatStringsSep "\n" ( builtins.concatLists [ [ ''mkdir --parents "$out"'' ] ( resources ) ] ) ;
