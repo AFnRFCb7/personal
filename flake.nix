@@ -92,7 +92,19 @@
                                                                                             string = path : value : [ ''ln --symbolic ${ value } "$out/${ builtins.hashString "sha512" ( builtins.toJSON path ) }"'' ] ;
                                                                                         }
                                                                                         resources__ ;
-                                                                                in builtins.concatStringsSep "\n" ( builtins.concatLists [ [ ''mkdir --parents "$out"'' ] ( resources ) ] ) ;
+                                                                                in
+                                                                                    builtins.concatStringsSep
+                                                                                        "\n"
+                                                                                        (
+                                                                                            builtins.concatLists
+                                                                                                [
+                                                                                                    [
+                                                                                                        '': "${ builtins.concatStringsSep "" [ "$" "{" "out:?must be exported" "}" ] }"''
+                                                                                                        ''mkdir --parents "$out"''
+                                                                                                    ]
+                                                                                                    ( resources )
+                                                                                                ]
+                                                                                        ) ;
                                                                     }
                                                             )
                                                         ] ;
