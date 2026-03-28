@@ -480,7 +480,6 @@
                                                                                                                         git remote add ssh git@github.com:${ config.personal.secrets.organization }/${ config.personal.secrets.repository }.git
                                                                                                                         wrap ${ post-commit } .git/hooks/post-commit 0500
                                                                                                                         wrap ${ post-push } .git/hooks/post-push 0500
-                                                                                                                        # wrap ${ pre-commit } .git/hooks/pre-commit 0500
                                                                                                                     '' ;
                                                                                                     } ;
                                                                                             in "${ application }/bin/init" ;
