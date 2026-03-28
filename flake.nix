@@ -130,7 +130,7 @@
                                                                                             # shellcheck disable=2140
                                                                                             jq \
                                                                                                 --null-input \
-                                                                                                --argjson PATH '${ builtins.toJSON path }'  \
+                                                                                                --argjson PATH '${ builtins.toJSON path }' \
                                                                                                 --argjson FAILURE '${ builtins.toJSON failure }' \
                                                                                                 '{
                                                                                                     "failure" $FAILURE ,
@@ -523,30 +523,30 @@
                                                                                         in "${ application }/bin/init" ;
                                                                             targets = [ ".git" ] ;
                                                                         } ;
-                                                                        plaintext =
-                                                                            _visitor.implementation
-                                                                                {
-                                                                                    null =
-                                                                                        path : value : ignore :
-                                                                                            {
-                                                                                                init =
-                                                                                                    { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
-                                                                                                        let
-                                                                                                            application =
-                                                                                                                pkgs.writeShellApplication
-                                                                                                                    {
-                                                                                                                        name = "init" ;
-                                                                                                                        runtimeInputs = [ pkgs.age ] ;
-                                                                                                                        text =
-                                                                                                                            ''
-                                                                                                                                SECRETS=${ resources.production.age.ciphertext { failure = 11236 ; } }
-                                                                                                                                git -C "$SECRETS" fetch https ${ config.personal.secrets.branch } >&2
-                                                                                                                                age --decrypt --identity ${ config.personal.agenix } --output /mount/plaintext "$SECRETS/${ builtins.concatStringsSep "/" path }.asc.age
-                                                                                                                            '' ;
-                                                                                                                    } ;
-                                                                                                                in "${ application }/bin/init" ;
-                                                                                                targets = [ "plaintext" ] ;
-                                                                                            } ;
+#                                                                        plaintext =
+#                                                                            _visitor.implementation
+#                                                                                {
+#                                                                                    null =
+#                                                                                        path : value : ignore :
+#                                                                                            {
+#                                                                                                init =
+#                                                                                                    { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
+#                                                                                                        let
+#                                                                                                            application =
+#                                                                                                                pkgs.writeShellApplication
+#                                                                                                                    {
+#                                                                                                                        name = "init" ;
+#                                                                                                                        runtimeInputs = [ pkgs.age ] ;
+#                                                                                                                        text =
+#                                                                                                                            ''
+#                                                                                                                                SECRETS=${ resources.production.age.ciphertext { failure = 11236 ; } }
+#                                                                                                                                git -C "$SECRETS" fetch https ${ config.personal.secrets.branch } >&2
+#                                                                                                                                age --decrypt --identity ${ config.personal.agenix } --output /mount/plaintext "$SECRETS/${ builtins.concatStringsSep "/" path }.asc.age
+#                                                                                                                            '' ;
+#                                                                                                                    } ;
+#                                                                                                                in "${ application }/bin/init" ;
+#                                                                                                targets = [ "plaintext" ] ;
+#                                                                                            } ;
                                                                                 }
                                                                                 {
                                                                                     dot-gnupg =
