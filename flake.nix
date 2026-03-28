@@ -779,6 +779,7 @@
                                                                                                                                     text =
                                                                                                                                         ''
                                                                                                                                             PATH=$BIN_PATH
+                                                                                                                                            MAN_PATH=$MAN_PATH
                                                                                                                                         '' ;
                                                                                                                                 } ;
                                                                                                                         in "${ application }/bin/init" ;
@@ -790,7 +791,9 @@
                                                                                                                         gc-root "$SSH"
                                                                                                                         BIN_PATH=${ builtins.concatStringsSep ":" ( builtins.map ( x : "${ x }/bin" ) [ "$GITHUB_TOKEN" "$SSH" ] ) }
                                                                                                                         export BIN_PATH
-                                                                                                                        wrap ${ envrc } .envrc 0400 --inherit plain BIN_PATH --uuid 30754
+                                                                                                                        MAN_PATH=${ builtins.concatStringsSep ":" ( builtins.map ( x : "${ x }/share/man" ) [ "$GITHUB_TOKEN" "$SSH" ] ) }
+                                                                                                                        export MAN_PATH
+                                                                                                                        wrap ${ envrc } .envrc 0400 --inherit plain BIN_PATH --inherit plain MAN_PATH --uuid 30754
                                                                                                                     '' ;
                                                                                                     } ;
                                                                                             in "${ application }/bin/init" ;
