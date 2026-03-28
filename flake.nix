@@ -508,7 +508,18 @@
                                                                                                                                     '' ;
                                                                                                                             } ;
                                                                                                                         in "${ application }/bin/post-push" ;
-
+                                                                                                            pre-commit =
+                                                                                                                let
+                                                                                                                    application =
+                                                                                                                        pkgs.writeShellApplication
+                                                                                                                            {
+                                                                                                                                name = "pre-commit" ;
+                                                                                                                                runtimeInputs = [ ] ;
+                                                                                                                                text =
+                                                                                                                                    ''
+                                                                                                                                    '' ;
+                                                                                                                            } ;
+                                                                                                                    in "${ application }/bin/pre-commit" ;
                                                                                                             in
                                                                                                                 ''
                                                                                                                     cd /mount
@@ -542,7 +553,7 @@
                                                                                                                         ''
                                                                                                                             SECRETS=${ resources.production.age.ciphertext { failure = 11236 ; } }
                                                                                                                             git -C "$SECRETS" fetch https ${ config.personal.secrets.branch } >&2
-                                                                                                                            age --decrypt --identity ${ config.personal.agenix } --output /mount/plaintext "$SECRETS/${ builtins.concatStringsSep "/" path }.asc.age
+                                                                                                                            age --decrypt --identity ${ config.personal.agenix } --output /mount/plaintext "$SECRETS/${ builtins.concatStringsSep "/" path }.asc.age"
                                                                                                                         '' ;
                                                                                                                 } ;
                                                                                                             in "${ application }/bin/init" ;
