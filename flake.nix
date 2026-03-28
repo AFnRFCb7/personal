@@ -481,7 +481,7 @@
                                                                                                                         git config user.name "${ config.personal.secrets.name }"
                                                                                                                         git remote add https https://github.com/${ config.personal.secrets.organization }/${ config.personal.secrets.repository }.git
                                                                                                                         git remote add ssh git@github.com:${ config.personal.secrets.organization }/${ config.personal.secrets.repository }.git
-                                                                                                                        wrap ${ post-commit } .git/hooks/post-commit 0500 --literal braced "GIT_SSH_COMMAND:?must be exported" --literal plain PATH --uuid 31150
+                                                                                                                        wrap ${ post-commit } .git/hooks/post-commit 0500 --literal brace "GIT_SSH_COMMAND:?must be exported" --literal plain PATH --uuid 31150
                                                                                                                         wrap ${ post-push } .git/hooks/post-push 0500 --literal plain PATH --uuid 28649
                                                                                                                     '' ;
                                                                                                     } ;
