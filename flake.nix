@@ -117,7 +117,7 @@
                                                     lambda =
                                                         path : value : { setup ? setup : setup } :
                                                             let
-                                                                command = "${ builtins.hashString "sha512" ( builtins.toJSON path ) }" ;
+                                                                command = "$DERIVATION/${ builtins.hashString "sha512" ( builtins.toJSON path ) }" ;
                                                                 failure =
                                                                     let
                                                                         application =
@@ -1264,7 +1264,8 @@
                                                                                                                     ''
                                                                                                                         elif [[ "$2" == '${ builtins.toJSON path }' ]]
                                                                                                                         then
-                                                                                                                            RESOURCE=${ derivation }/${ value { setup = setup : ''${ setup } "${ builtins.concatStringsSep "" [ "$" "{" "ARGUMENTS[@]" "}" ] }"'' ; } }
+                                                                                                                            DERIVATION=${ derivation }
+                                                                                                                            RESOURCE=${ value { setup = setup : ''${ setup } "${ builtins.concatStringsSep "" [ "$" "{" "ARGUMENTS[@]" "}" ] }"'' ; } }
                                                                                                                     ''
                                                                                                                 ] ;
                                                                                                         list = path : list : builtins.concatLists list ;
