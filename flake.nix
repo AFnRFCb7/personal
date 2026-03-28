@@ -775,10 +775,11 @@
                                                                                                                            pkgs.writeShellApplication
                                                                                                                                 {
                                                                                                                                     name = "envrc" ;
-                                                                                                                                    runtimeInputs = [ ] ;
                                                                                                                                     text =
                                                                                                                                         ''
+                                                                                                                                            # shellcheck disable=SC2034
                                                                                                                                             PATH=$BIN_PATH_
+                                                                                                                                            : "${ builtins.concatStringsSep "" [ "$" "{" "MANPATH_:?must be exported" "}" ] }"
                                                                                                                                             # shellcheck disable=SC2034
                                                                                                                                             MAN_PATH=$MAN_PATH_
                                                                                                                                         '' ;
