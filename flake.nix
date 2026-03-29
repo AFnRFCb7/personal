@@ -680,7 +680,7 @@
                                                                                             pkgs.writeShellApplication
                                                                                                 {
                                                                                                     name = "init" ;
-                                                                                                    runtimeInputs = [ gc-root wrap ] ;
+                                                                                                    runtimeInputs = [ gc-root trace wrap ] ;
                                                                                                     text =
                                                                                                         let
                                                                                                             config =
@@ -709,10 +709,15 @@
                                                                                                                     '' ;
                                                                                                             in
                                                                                                                 ''
+                                                                                                                    trace 22520
                                                                                                                     GITHUB_CONTROL_PATH=${ resources.production.dot-ssh.control-path.github { failure = 12555 ; } }
+                                                                                                                    trace 25834
                                                                                                                     gc-root "$GITHUB_CONTROL_PATH"
+                                                                                                                    trace 27831
                                                                                                                     export GITHUB_CONTROL_PATH
+                                                                                                                    trace 32106
                                                                                                                     GITHUB_IDENTITY_RESOURCE=${ resources.production.age.plaintext.dot-ssh.github.identity { failure = 21662 ; } }
+                                                                                                                    trace 7105
                                                                                                                     gc-root "$GITHUB_IDENTITY_RESOURCE"
                                                                                                                     export GITHUB_IDENTITY_FILE="$GITHUB_IDENTITY_RESOURCE/plaintext"
                                                                                                                     GITHUB_KNOWN_RESOURCE=${ resources.production.age.plaintext.dot-ssh.github.known-hosts { failure = 15323 ; } }
