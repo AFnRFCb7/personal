@@ -719,7 +719,7 @@
                                                                                                                     gc-root "$GITHUB_KNOWN_RESOURCE"
                                                                                                                     export GITHUB_KNOWN_HOSTS="$GITHUB_KNOWN_RESOURCE/plaintext"
                                                                                                                     MOBILE_CONTROL_PATH=${ resources.production.dot-ssh.control-path.mobile { failure = 27748 ; } }
-                                                                                                                    root "$MOBILE_CONTROL_PATH"
+                                                                                                                    gc-root "$MOBILE_CONTROL_PATH"
                                                                                                                     export MOBILE_CONTROL_PATH
                                                                                                                     MOBILE_IDENTITY_RESOURCE=${ resources.production.age.plaintext.dot-ssh.mobile.identity { failure = 28142 ; } }
                                                                                                                     gc-root "$MOBILE_IDENTITY_RESOURCE"
@@ -757,10 +757,10 @@
                                                                                 mobile = null ;
                                                                             } ;
                                                                 } ;
-                                                            pads =
-                                                                {
-                                                                    home =
-                                                                        ignore :
+                                                            pad =
+                                                                let
+                                                                    pad =
+                                                                        products : ignore :
                                                                             {
                                                                                 depth = 1 ;
                                                                                 init =
@@ -773,6 +773,19 @@
                                                                                                         runtimeInputs = [ gc-root wrap ] ;
                                                                                                         text =
                                                                                                             let
+                                                                                                                declarations =
+                                                                                                                    _visitor.implementation
+                                                                                                                        {
+                                                                                                                            list = path : list : builtins.concatLists list ;
+                                                                                                                            set = path : set : builtins.concatLists ( builtins.attrValues set ) ;
+                                                                                                                            string =
+                                                                                                                                path : value :
+                                                                                                                                    [
+                                                                                                                                        ''PRODUCT_${ builtins.hashString "sha512" ( builtins.toJSON path ) }=${ value }''
+                                                                                                                                        ''gc-root "$PRODUCT_${ builtins.hashString "sha512" ( builtins.toJSON path ) }"''
+                                                                                                                                    ] ;
+                                                                                                                        }
+                                                                                                                        products ;
                                                                                                                 envrc =
                                                                                                                     let
                                                                                                                         application =
@@ -787,22 +800,71 @@
                                                                                                                                         '' ;
                                                                                                                                 } ;
                                                                                                                         in "${ application }/bin/envrc" ;
+                                                                                                                variables =
+                                                                                                                    _visitor.implementation
+                                                                                                                        {
+                                                                                                                            list = path : list : builtins.concatLists list ;
+                                                                                                                            set = path : set : builtins.concatLists ( builtins.attrValues set ) ;
+                                                                                                                            string = path : value : ''PRODUCT_${ builtins.hashString "sha512" ( builtins.toJSON path ) }'' ;
+                                                                                                                        }
+                                                                                                                        products ;
                                                                                                                 in
                                                                                                                     ''
-                                                                                                                        GITHUB_TOKEN=${ resources.production.product.github-token { failure = 22181 ; } }
-                                                                                                                        gc-root "$GITHUB_TOKEN"
-                                                                                                                        SSH=${ resources.production.product.ssh { failure = 11121 ; } }
-                                                                                                                        gc-root "$SSH"
-                                                                                                                        BIN_PATH=${ builtins.concatStringsSep ":" ( builtins.map ( x : "${ x }/bin" ) [ "$GITHUB_TOKEN" "$SSH" ] ) }
-                                                                                                                        export BIN_PATH
-                                                                                                                        MAN_PATH=${ builtins.concatStringsSep ":" ( builtins.map ( x : "${ x }/share/man" ) [ "$GITHUB_TOKEN" "$SSH" ] ) }
-                                                                                                                        export MAN_PATH
-                                                                                                                        wrap ${ envrc } .envrc 0400 --inherit plain BIN_PATH --inherit plain MAN_PATH --uuid 30754
+                                                                                                                        ${ builtins.concatStringsSep "\n" declarations }
+                                                                                                                        BIN_PATH="${ builtins.concatStringSep ":" ( builtins.map ( v : "${ builtins.concatStringsSep "" [ "$" v "/bin" ] }" ) variable ) }"
+                                                                                                                        MAN_PATH="${ builtins.concatStringSep ":" ( builtins.map ( v : "${ builtins.concatStringsSep "" [ "$" v "/bin" ] }" ) variable ) }"
+                                                                                                                        wrap ${ envrc } .envrc 0400 --inherit plain BIN_PATH --inherit plain MAN_PATH --uuid 24177
                                                                                                                     '' ;
                                                                                                     } ;
                                                                                             in "${ application }/bin/init" ;
                                                                                 targets = [ ".envrc" ] ;
                                                                             } ;
+                                                                    in
+                                                                        {
+                                                                            home =
+                                                                                ignore :
+                                                                                    {
+                                                                                        depth = 1 ;
+                                                                                        init =
+                                                                                            { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
+                                                                                                let
+                                                                                                    application =
+                                                                                                        pkgs.writeShellApplication
+                                                                                                            {
+                                                                                                                name = "init" ;
+                                                                                                                runtimeInputs = [ gc-root wrap ] ;
+                                                                                                                text =
+                                                                                                                    let
+                                                                                                                        envrc =
+                                                                                                                            let
+                                                                                                                                application =
+                                                                                                                                   pkgs.writeShellApplication
+                                                                                                                                        {
+                                                                                                                                            name = "envrc" ;
+                                                                                                                                            text =
+                                                                                                                                                ''
+                                                                                                                                                    export PATH=$BIN_PATH
+                                                                                                                                                    # shellcheck disable=SC2153
+                                                                                                                                                    export MANPATH=$MAN_PATH
+                                                                                                                                                '' ;
+                                                                                                                                        } ;
+                                                                                                                                in "${ application }/bin/envrc" ;
+                                                                                                                        in
+                                                                                                                            ''
+                                                                                                                                GITHUB_TOKEN=${ resources.production.product.github-token { failure = 22181 ; } }
+                                                                                                                                gc-root "$GITHUB_TOKEN"
+                                                                                                                                SSH=${ resources.production.product.ssh { failure = 11121 ; } }
+                                                                                                                                gc-root "$SSH"
+                                                                                                                                BIN_PATH=${ builtins.concatStringsSep ":" ( builtins.map ( x : "${ x }/bin" ) [ "$GITHUB_TOKEN" "$SSH" ] ) }
+                                                                                                                                export BIN_PATH
+                                                                                                                                MAN_PATH=${ builtins.concatStringsSep ":" ( builtins.map ( x : "${ x }/share/man" ) [ "$GITHUB_TOKEN" "$SSH" ] ) }
+                                                                                                                                export MAN_PATH
+                                                                                                                                wrap ${ envrc } .envrc 0400 --inherit plain BIN_PATH --inherit plain MAN_PATH --uuid 30754
+                                                                                                                            '' ;
+                                                                                                            } ;
+                                                                                                    in "${ application }/bin/init" ;
+                                                                                        targets = [ ".envrc" ] ;
+                                                                                    } ;
                                                                 } ;
                                                         product =
                                                             {
