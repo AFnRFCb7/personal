@@ -713,7 +713,7 @@
                                                                                                                 ''
                                                                                                                     trace 22520
                                                                                                                     GITHUB_CONTROL_PATH=${ resources.production.dot-ssh.control-path.github { failure = 12555 ; } }
-                                                                                                                    trace 25834
+                                                                                                                    trace 25834 "GITHUB_CONTROL_PATH=$GITHUB_CONTROL_PATH"
                                                                                                                     gc-root "$GITHUB_CONTROL_PATH"
                                                                                                                     trace 27831
                                                                                                                     export GITHUB_CONTROL_PATH
