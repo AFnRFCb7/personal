@@ -693,7 +693,7 @@
                                                                                                                     ''
                                                                                                                         Host github.com
                                                                                                                             ControlMaster auto
-                                                                                                                            ControlPath $GITHUB_CONTROL_PATH/%C
+                                                                                                                            ControlPath $GITHUB_CONTROL_PATH%C
                                                                                                                             ControlPersist 5m
                                                                                                                             HostName github.com
                                                                                                                             IdentityFile $GITHUB_IDENTITY_FILE
@@ -707,7 +707,7 @@
                                                                                                                             HostName 192.168.1.192
                                                                                                                             IdentityFile $MOBILE_IDENTITY_FILE
                                                                                                                             Port 8022
-                                                                                                                            StrictHostKeyChecking yes
+                                                                                                                            StrictHostKeyChecking no
                                                                                                                             User git
                                                                                                                             UserKnownHostsFile $MOBILE_KNOWN_HOSTS
                                                                                                                     '' ;
