@@ -756,6 +756,16 @@
                                                                                 null =
                                                                                     path : value : ignore :
                                                                                         {
+                                                                                            init =
+                                                                                                { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
+                                                                                                    let
+                                                                                                        application =
+                                                                                                            pkgs.writeShellApplication
+                                                                                                                {
+                                                                                                                    name = "init" ;
+                                                                                                                    text = "" ;
+                                                                                                                } ;
+                                                                                                        in "${ application }/bin/init" ;
                                                                                             targets = [ ] ;
                                                                                         } ;
                                                                             }
