@@ -548,13 +548,14 @@
                                                                                                             pkgs.writeShellApplication
                                                                                                                 {
                                                                                                                     name = "init" ;
-                                                                                                                    runtimeInputs = [ pkgs.age ] ;
+                                                                                                                    runtimeInputs = [ pkgs.age pkgs.coreutils ] ;
                                                                                                                     text =
                                                                                                                         ''
                                                                                                                             SECRETS=${ resources.production.age.ciphertext { failure = 11236 ; } }
                                                                                                                             git -C "$SECRETS" fetch https ${ config.personal.secrets.branch } 2>&1
                                                                                                                             git -C "$SECRETS" checkout https/${ config.personal.secrets.branch } 2>&1
                                                                                                                             age --decrypt --identity ${ config.personal.agenix } --output /mount/plaintext "$SECRETS/${ builtins.concatStringsSep "/" path }.asc.age"
+                                                                                                                            chmod 0400 /mount/plaintext
                                                                                                                         '' ;
                                                                                                                 } ;
                                                                                                             in "${ application }/bin/init" ;
