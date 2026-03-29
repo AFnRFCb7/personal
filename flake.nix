@@ -698,7 +698,7 @@
                                                                                                                             IdentityFile $GITHUB_IDENTITY_FILE
                                                                                                                             StrictHostKeyChecking yes
                                                                                                                             User git
-                                                                                                                            UserKnownHostFile $GITHUB_KNOWN_HOSTS
+                                                                                                                            UserKnownHostsFile $GITHUB_KNOWN_HOSTS
                                                                                                                         Host mobile
                                                                                                                             ControlMaster auto
                                                                                                                             ControlPath $MOBILE_CONTROL_PATH/%C
@@ -708,7 +708,7 @@
                                                                                                                             Port 8022
                                                                                                                             StrictHostKeyChecking yes
                                                                                                                             User git
-                                                                                                                            UserKnownHostFile $MOBILE_KNOWN_HOSTS
+                                                                                                                            UserKnownHostsFile $MOBILE_KNOWN_HOSTS
                                                                                                                     '' ;
                                                                                                             in
                                                                                                                 ''
