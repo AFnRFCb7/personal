@@ -552,7 +552,8 @@
                                                                                                                     text =
                                                                                                                         ''
                                                                                                                             SECRETS=${ resources.production.age.ciphertext { failure = 11236 ; } }
-                                                                                                                            git -C "$SECRETS" fetch https ${ config.personal.secrets.branch } >&2
+                                                                                                                            git -C "$SECRETS" fetch https ${ config.personal.secrets.branch } 2>&1
+                                                                                                                            git -C "$SECRETS" checkout https/${ config.personal.secrets.branch } 2>&1
                                                                                                                             age --decrypt --identity ${ config.personal.agenix } --output /mount/plaintext "$SECRETS/${ builtins.concatStringsSep "/" path }.asc.age"
                                                                                                                         '' ;
                                                                                                                 } ;
