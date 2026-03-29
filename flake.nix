@@ -680,7 +680,7 @@
                                                                                             pkgs.writeShellApplication
                                                                                                 {
                                                                                                     name = "init" ;
-                                                                                                    runtimeInputs = [ ] ;
+                                                                                                    runtimeInputs = [ gc-root wrap ] ;
                                                                                                     text =
                                                                                                         let
                                                                                                             config =
