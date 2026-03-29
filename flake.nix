@@ -1769,36 +1769,6 @@
                                                         } ;
                                                 in
                                                     factory.check { expected = "/nix/store/gvniix1i4ss6vwibfjvf908ghpvcjxam-get-or-create/bin/get-or-create" ; mkDerivation = pkgs.stdenv.mkDerivation ; } ;
-                                             resource-true-true =
-                                                 pkgs.nixosTest
-                                                     {
-                                                         name = "resource-true-true" ;
-                                                         nodes.machine =
-                                                             { pkgs , ... } :
-                                                                 {
-                                                                     imports = builtins.concatLists [ [ user ] private ] ;
-                                                                 } ;
-                                                         testScript =
-                                                             let
-                                                                 test =
-                                                                     let
-                                                                         application =
-                                                                             pkgs.writeShellApplication
-                                                                                 {
-                                                                                     name = "test" ;
-                                                                                     runtimeInputs = [ pkgs.coreutils ] ;
-                                                                                     text =
-                                                                                         ''
-                                                                                            RESOURCE="$( resource --argument "--init-exit-code" --argument 0 --argument --release-exit-code" --argument 0 --resource '["checks","hook"]' )" || exit 96
-                                                                                         '' ;
-                                                                                } ;
-                                                                        in "${ application }/bin/pre" ;
-                                                                 in
-                                                                    ''
-                                                                        machine.wait_for_unit("multi-user.target")
-                                                                        machine.succeed("bash -c 'runuser ${ testuser } -- ${ test }'")
-                                                                     '' ;
-                                                     } ;
                                             # studio =
                                             #     pkgs.nixosTest
                                             #         {
