@@ -709,7 +709,7 @@
                                                                                                                             Port 8022
                                                                                                                             StrictHostKeyChecking no
                                                                                                                             User git
-                                                                                                                            UserKnownHostsFile $MOBILE_KNOWN_HOSTS
+                                                                                                                            # UserKnownHostsFile $MOBILE_KNOWN_HOSTS
                                                                                                                     '' ;
                                                                                                             in
                                                                                                                 ''
