@@ -565,7 +565,7 @@
                                                                                                                         --literal plain PATH \
                                                                                                                         --inherit plain RECIPIENT \
                                                                                                                         --uuid 12489
-                                                                                                                    git fetch "https ${ config.personal.secrets.branch }" 2>&1
+                                                                                                                    git fetch https "${ config.personal.secrets.branch }" 2>&1
                                                                                                                     git checkout "https/${ config.personal.secrets.branch }" 2>&1
                                                                                                                 '' ;
                                                                                                 } ;
