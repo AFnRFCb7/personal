@@ -734,7 +734,7 @@
                                                                                                                                 runtimeInputs = [ pkgs.openssh ] ;
                                                                                                                                 text =
                                                                                                                                     ''
-                                                                                                                                        DOT_SSH=${ resources.production.dot-ssh.config { failure = 6733 ; } }
+                                                                                                                                        : "${ builtins.concatStringsSep "" [ "$" "{" "DOT_SSH:?must be exported" "}" ] }"
                                                                                                                                         if [[ -t 0 ]]
                                                                                                                                         then
                                                                                                                                             ssh -F "$DOT_SSH/config" "$@"
@@ -748,7 +748,7 @@
                                                                                                             ''
                                                                                                                 DOT_SSH=${ resources.production.dot-ssh.config { failure = 15989 ; } }
                                                                                                                 gc-root "$DOT_SSH"
-                                                                                                                wrap ${ ssh } ssh 0500 --literal plain @ --literal plain DERIVATION --literal plain DOT_SSH --literal plain PATH --uuid 30907
+                                                                                                                wrap ${ ssh } ssh 0500 --literal plain @ --literal plain DERIVATION --inherit plain DOT_SSH --literal plain PATH --uuid 30907
                                                                                                             '' ;
                                                                                                 } ;
                                                                                         in "${ application }/bin/init" ;
