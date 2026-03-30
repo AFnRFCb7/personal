@@ -672,7 +672,7 @@
                                                                                                                                         while [[ "$#" -gt 0 ]]
                                                                                                                                         do
                                                                                                                                             case "$1" in
-                                                                                                                                                ${ builtins.concatStringsSep "/n" cases }
+                                                                                                                                                ${ builtins.concatStringsSep "\n" cases }
                                                                                                                                                 *)
                                                                                                                                                     failure 3842 "$*"
                                                                                                                                                     ;;
@@ -681,7 +681,7 @@
                                                                                                                                         SECRETS=${ resources.production.age.ciphertext { failure = 144434 ; } }
                                                                                                                                         GIT_SSH_COMMAND_RESOURCE=${ resources.production.bin.ssh { failure = 10240 ; } }
                                                                                                                                         export GIT_SSH_COMMAND="$GIT_SSH_COMMAND_RESOURCE/ssh"
-                                                                                                                                        git -C "$SECRETS" --commit --verbose --allow-empty
+                                                                                                                                        git -C "$SECRETS" commit --verbose --allow-empty
                                                                                                                                     '' ;
                                                                                                                             } ;
                                                                                                                     in "${ application }/bin/secrets" ;
@@ -715,7 +715,7 @@
                                                                                             pkgs.writeShellApplication
                                                                                                 {
                                                                                                     name = "init" ;
-                                                                                                    runtimeInputs = [ wrap ] ;
+                                                                                                    runtimeInputs = [ gc-root wrap ] ;
                                                                                                     text =
                                                                                                         let
                                                                                                             ssh =
