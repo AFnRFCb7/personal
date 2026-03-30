@@ -671,7 +671,7 @@
                                                                                                                                         while [[ "$#" -gt 0 ]]
                                                                                                                                         do
                                                                                                                                             case "$1" in
-                                                                                                                                                ${ builtins.concatStringSep "/n" cases }
+                                                                                                                                                ${ builtins.concatStringsSep "/n" cases }
                                                                                                                                                 *)
                                                                                                                                                     failure 3842 "$*"
                                                                                                                                                     ;;
