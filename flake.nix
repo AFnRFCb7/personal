@@ -805,9 +805,9 @@
                                                                                                                             HostName 192.168.1.192
                                                                                                                             IdentityFile $MOBILE_IDENTITY_FILE
                                                                                                                             Port 8022
-                                                                                                                            StrictHostKeyChecking no
+                                                                                                                            StrictHostKeyChecking yes
                                                                                                                             User git
-                                                                                                                            # UserKnownHostsFile $MOBILE_KNOWN_HOSTS
+                                                                                                                            UserKnownHostsFile $MOBILE_KNOWN_HOSTS
                                                                                                                     '' ;
                                                                                                             in
                                                                                                                 ''
