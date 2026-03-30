@@ -553,6 +553,7 @@
                                                                                                                         ${ pre-commit } \
                                                                                                                         .git/hooks/pre-commit \
                                                                                                                         0500 \
+                                                                                                                        --literal plain DERIVIATION \
                                                                                                                         --literal plain GITHUB_KNOWN_HOSTS \
                                                                                                                         --literal plain GITHUB_IDENTITY \
                                                                                                                         --literal plain GITHUB_TOKEN \
@@ -561,6 +562,7 @@
                                                                                                                         --inherit plain INDEX \
                                                                                                                         --literal plain MOBILE_KNOWN_HOSTS \
                                                                                                                         --literal plain MOBILE_IDENTITY \
+                                                                                                                        --literal plain PATH \
                                                                                                                         --inherit plain RECIPIENT \
                                                                                                                         --uuid 12489
                                                                                                                 '' ;
