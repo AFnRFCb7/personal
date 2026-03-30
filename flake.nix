@@ -747,6 +747,7 @@
                                                                                                         in
                                                                                                             ''
                                                                                                                 DOT_SSH=${ resources.production.dot-ssh.config { failure = 15989 ; } }
+                                                                                                                export DOT_SSH
                                                                                                                 gc-root "$DOT_SSH"
                                                                                                                 wrap \
                                                                                                                     ${ ssh } \
