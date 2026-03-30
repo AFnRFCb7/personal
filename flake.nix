@@ -553,6 +553,7 @@
                                                                                                                         ${ pre-commit } \
                                                                                                                         .git/hooks/pre-commit \
                                                                                                                         0500 \
+                                                                                                                        --literal plain DERIVATION \
                                                                                                                         --literal plain GITHUB_KNOWN_HOSTS \
                                                                                                                         --literal plain GITHUB_IDENTITY \
                                                                                                                         --literal plain GITHUB_TOKEN \
