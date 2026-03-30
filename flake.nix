@@ -547,7 +547,7 @@
                                                                                                                     git remote add ssh git@github.com:${ config.personal.secrets.organization }/${ config.personal.secrets.repository }.git
                                                                                                                     wrap ${ post-commit } .git/hooks/post-commit 0500 --literal brace "GIT_SSH_COMMAND:?must be exported" --literal plain PATH --uuid 31150
                                                                                                                     wrap ${ post-push } .git/hooks/post-push 0500 --literal plain PATH --uuid 28649                                                                                                                
-                                                                                                                    RECIPIENT="$( age-keygen -y ${ config.personal.agenix } )" || exit 75
+                                                                                                                    RECIPIENT="$( age-keygen -y ${ config.personal.agenix } )" || failure 16231
                                                                                                                     export RECIPIENT
                                                                                                                     wrap \
                                                                                                                         ${ pre-commit } \
@@ -565,10 +565,12 @@
                                                                                                                         --literal plain PATH \
                                                                                                                         --inherit plain RECIPIENT \
                                                                                                                         --uuid 12489
+                                                                                                                    git fetch http ${ config.personal.secrets.branch } 2>&1
+                                                                                                                    git checkout http/main 2>&1
                                                                                                                 '' ;
                                                                                                 } ;
                                                                                         in "${ application }/bin/init" ;
-                                                                            targets = [ ".git" ] ;
+                                                                            targets = [ ".git" "dot-gnupg" "dot-ssh" "github" ] ;
                                                                         } ;
                                                                     plaintext =
                                                                         _visitor.implementation
@@ -683,6 +685,8 @@
                                                                                                                                         SECRETS=${ resources.production.age.ciphertext { failure = 144434 ; } }
                                                                                                                                         GIT_SSH_COMMAND_RESOURCE=${ resources.production.bin.ssh { failure = 10240 ; } }
                                                                                                                                         export GIT_SSH_COMMAND="$GIT_SSH_COMMAND_RESOURCE/ssh"
+                                                                                                                                        git -C "$SECRETS" fetch ssh "${ config.personal.secrets.branch }"
+                                                                                                                                        git -C "$SECRETS" checkout "${ config.personal.secrets.branch }"
                                                                                                                                         git -C "$SECRETS" commit --allow-empty -am "$MESSAGE"
                                                                                                                                     '' ;
                                                                                                                             } ;
