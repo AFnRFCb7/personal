@@ -734,7 +734,6 @@
                                                                                                                                 runtimeInputs = [ pkgs.openssh ] ;
                                                                                                                                 text =
                                                                                                                                     ''
-                                                                                                                                        : "${ builtins.concatStringsSep "" [ "$" "{" "DOT_SSH:?must be exported" "}" ] }"
                                                                                                                                         if [[ -t 0 ]]
                                                                                                                                         then
                                                                                                                                             ssh -F "$DOT_SSH/config" "$@"
@@ -755,7 +754,6 @@
                                                                                                                     0500 \
                                                                                                                     --literal plain @ \
                                                                                                                     --inherit plain DOT_SSH \
-                                                                                                                    --literal brace "DOT_SSH:?must be exported" \
                                                                                                                     --literal plain PATH \
                                                                                                                     --uuid 30907
                                                                                                             '' ;
