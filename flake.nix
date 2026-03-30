@@ -643,7 +643,7 @@
                                                                                                                         pkgs.writeShellApplication
                                                                                                                             {
                                                                                                                                 name = "secrets" ;
-                                                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
+                                                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.nano ] ;
                                                                                                                                 text =
                                                                                                                                     let
                                                                                                                                         cases =
