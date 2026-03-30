@@ -697,6 +697,7 @@
                                                                                                                         --literal brace "DERIVATION:?must be exported" \
                                                                                                                         --literal plain GIT_SSH_COMMAND_RESOURCE \
                                                                                                                         --literal plain GIT_SSH_COMMAND \
+                                                                                                                        --literal plain MESSAGE \
                                                                                                                         --literal plain PATH \
                                                                                                                         --literal plain RESOURCE \
                                                                                                                         --literal plain SECRETS \
