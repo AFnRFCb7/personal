@@ -702,7 +702,7 @@
                                                                                                                 '' ;
                                                                                                 } ;
                                                                                         in "${ application }/bin/init" ;
-                                                                            targets = [ "github-token" ] ;
+                                                                            targets = [ "secrets" ] ;
                                                                         } ;
                                                                 ssh =
                                                                     ignore :
@@ -945,8 +945,8 @@
                                                                                                                                 in "${ application }/bin/envrc" ;
                                                                                                                         in
                                                                                                                             ''
-                                                                                                                                GITHUB_TOKEN=${ resources.production.product.github-token { failure = 22181 ; } }
-                                                                                                                                gc-root "$GITHUB_TOKEN"
+                                                                                                                                SECRETS=${ resources.production.product.secrets { failure = 22181 ; } }
+                                                                                                                                gc-root "$SECRETS"
                                                                                                                                 SSH=${ resources.production.product.ssh { failure = 11121 ; } }
                                                                                                                                 gc-root "$SSH"
                                                                                                                                 BIN_PATH=${ builtins.concatStringsSep ":" ( builtins.map ( x : "${ x }/bin" ) [ "$GITHUB_TOKEN" "$SSH" ] ) }
@@ -962,7 +962,7 @@
                                                                 } ;
                                                         product =
                                                             {
-                                                                github-token =
+                                                                secrets =
                                                                     ignore :
                                                                         {
                                                                             init =
@@ -975,7 +975,7 @@
                                                                                                     runtimeInputs = [ gc-root pkgs.coreutils ] ;
                                                                                                     text =
                                                                                                         ''
-                                                                                                            BIN=${ resources.production.bin.github-token { failure = 16295 ; } }
+                                                                                                            BIN=${ resources.production.bin.secrets { github-tokenfailure = 16295 ; } }
                                                                                                             gc-root "$BIN"
                                                                                                             ln --symbolic "$BIN" /mount/bin
                                                                                                         '' ;
