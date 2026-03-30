@@ -520,7 +520,7 @@
                                                                                                                                 text =
                                                                                                                                     ''
                                                                                                                                         : "${ builtins.concatStringsSep "" [ "$" "{" "GIT_SSH_COMMAND:?must be exported" "}" ] }"
-                                                                                                                                        GPG_OWNERTRUST=${ resources.production.age.plaintext.dot-gpg.ownertrust { failure = 25440 ; } }
+                                                                                                                                        GPG_OWNERTRUST=${ resources.production.age.plaintext.dot-gnupg.ownertrust { failure = 25440 ; } }
                                                                                                                                         age --encrypt --recipient "$RECIPIENT" --output "$MOUNT/dot-gnupg/ownertrust.asc.age" --armor "$GPG_OWNERTRUST/plaintext"
                                                                                                                                         GPG_SECRET_KEYS=${ resources.production.age.plaintext.dot-gnupg.secret-keys { failure = 31125 ; } }
                                                                                                                                         age --encrypt --recipient "$RECIPIENT" --output "$MOUNT/dot-gnupg/secret-keys.asc.age" --armor "$GPG_SECRET_KEYS/plaintext"
