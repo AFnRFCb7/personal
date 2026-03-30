@@ -669,6 +669,8 @@
                                                                                                                                         in
                                                                                                                                     ''
                                                                                                                                         : "${ builtins.concatStringsSep "" [ "$" "{" "DERIVATION:?must be exported" "}" ] }"
+                                                                                                                                        MESSAGE="$1"
+                                                                                                                                        shift
                                                                                                                                         while [[ "$#" -gt 0 ]]
                                                                                                                                         do
                                                                                                                                             case "$1" in
@@ -681,7 +683,7 @@
                                                                                                                                         SECRETS=${ resources.production.age.ciphertext { failure = 144434 ; } }
                                                                                                                                         GIT_SSH_COMMAND_RESOURCE=${ resources.production.bin.ssh { failure = 10240 ; } }
                                                                                                                                         export GIT_SSH_COMMAND="$GIT_SSH_COMMAND_RESOURCE/ssh"
-                                                                                                                                        git -C "$SECRETS" commit --verbose --allow-empty
+                                                                                                                                        git -C "$SECRETS" commit --allow-empty -am "$MESSAGE"
                                                                                                                                     '' ;
                                                                                                                             } ;
                                                                                                                     in "${ application }/bin/secrets" ;
