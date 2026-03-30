@@ -686,7 +686,7 @@
                                                                                                                                         GIT_SSH_COMMAND_RESOURCE=${ resources.production.bin.ssh { failure = 10240 ; } }
                                                                                                                                         export GIT_SSH_COMMAND="$GIT_SSH_COMMAND_RESOURCE/ssh"
                                                                                                                                         git -C "$SECRETS" fetch ssh "${ config.personal.secrets.branch }"
-                                                                                                                                        git -C "$SECRETS" checkout "${ config.personal.secrets.branch }"
+                                                                                                                                        git -C "$SECRETS" checkout --track ssh/"${ config.personal.secrets.branch }"
                                                                                                                                         git -C "$SECRETS" commit --allow-empty -am "$MESSAGE"
                                                                                                                                     '' ;
                                                                                                                             } ;
