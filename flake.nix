@@ -505,6 +505,8 @@
                                                                                                                                 runtimeInputs = [ pkgs.openssh ] ;
                                                                                                                                 text =
                                                                                                                                     ''
+                                                                                                                                        : "${ builtins.concatStringsSep "" [ "$" "{" "GIT_SSH_COMMAND:?must be exported" "}" ] }"
+                                                                                                                                        echo FIX ME LATER
                                                                                                                                     '' ;
                                                                                                                             } ;
                                                                                                                         in "${ application }/bin/post-push" ;
@@ -514,9 +516,24 @@
                                                                                                                         pkgs.writeShellApplication
                                                                                                                             {
                                                                                                                                 name = "pre-commit" ;
-                                                                                                                                runtimeInputs = [ ] ;
+                                                                                                                                runtimeInputs = [ pkgs.age pkgs.git ] ;
                                                                                                                                 text =
                                                                                                                                     ''
+                                                                                                                                        : "${ builtins.concatStringsSep "" [ "$" "{" "GIT_SSH_COMMAND:?must be exported" "}" ] }"
+                                                                                                                                        GPG_OWNERTRUST=${ resources.production.age.plaintext.dot-gpg.ownertrust { failure = 25440 ; } }
+                                                                                                                                        age --encrypt --recipient "$RECIPIENT" --output "$MOUNT/dot-gpg/ownertrust.asc.age" --armor "$GPG_OWNERTRUST/plaintext"
+                                                                                                                                        GPG_SECRET_KEYS=${ resources.production.age.plaintext.dot-gpg.secret-keys { failure = 31125 ; } }
+                                                                                                                                        age --encrypt --recipient "$RECIPIENT" --output "$MOUNT/dot-gpg/secret-keys.asc.age" --armor "$GPG_SECRET_KEYS/plaintext"
+                                                                                                                                        GITHUB_KNOWN_HOSTS=${ resources.production.age.plaintext.dot-ssh.github.known-hosts { failure = 13704 ; } }
+                                                                                                                                        age --encrypt --recipient "$RECIPIENT" --output "$MOUNT/dot-ssh/github/known-hosts.asc.age" --armor "$GITHUB_IDENTITY/plaintext"
+                                                                                                                                        GITHUB_IDENTITY=${ resources.production.age.plaintext.dot-ssh.github.identity { failure = 15209 ; } }
+                                                                                                                                        age --encrypt --recipient "$RECIPIENT" --output "$MOUNT/dot-ssh/identity/github.asc.age" --armor "$GITHUB_KNOWN_HOSTS/plaintext"
+                                                                                                                                        MOBILE_KNOWN_HOSTS=${ resources.production.age.plaintext.dot-ssh.github.known-hosts { failure = 28909 ; } }
+                                                                                                                                        age --encrypt --recipient "$RECIPIENT" --output "$MOUNT/dot-ssh/github/known-hosts.asc.age" --armor "$MOBILE_KNOWN_HOSTS/plaintext"
+                                                                                                                                        MOBILE_IDENTITY=${ resources.production.age.plaintext.dot-ssh.github.identity { failure = 13514 ; } }
+                                                                                                                                        age --encrypt --recipient "$RECIPIENT" --output "$MOUNT/dot-ssh/identity/github.asc.age" --armor "$MOBILE_IDENTITY/plaintext"
+                                                                                                                                        GITHUB_TOKEN=${ resources.production.age.plaintext.github.token { failure = 31431 ; } }
+                                                                                                                                        age --encrypt --recipient "$RECIPIENT" --output "$MOUNT/github/token.asc.age" --armor "$GITHUB_TOKEN/plaintext"
                                                                                                                                     '' ;
                                                                                                                             } ;
                                                                                                                     in "${ application }/bin/pre-commit" ;
@@ -530,6 +547,23 @@
                                                                                                                     git remote add ssh git@github.com:${ config.personal.secrets.organization }/${ config.personal.secrets.repository }.git
                                                                                                                     wrap ${ post-commit } .git/hooks/post-commit 0500 --literal brace "GIT_SSH_COMMAND:?must be exported" --literal plain PATH --uuid 31150
                                                                                                                     wrap ${ post-push } .git/hooks/post-push 0500 --literal plain PATH --uuid 28649
+                                                                                                                    export MOUNT
+                                                                                                                    RECIPIENT="$( age-keygen -y ${ config.personal.agenix } )" || failure 26577
+                                                                                                                    export RECIPIENT
+                                                                                                                    wrap \
+                                                                                                                        ${ pre-commit } \
+                                                                                                                        .git/hooks/pre-commit \
+                                                                                                                        0500 \
+                                                                                                                        --literal plain GITHUB_KNOWN_HOSTS \
+                                                                                                                        --literal plain GITHUB_SECRET_KEYS \
+                                                                                                                        --literal plain GITHUB_TOKEN \
+                                                                                                                        --literal plain GPG_OWNERTRUST \
+                                                                                                                        --literal plain GPG_SECRET_KEYS \
+                                                                                                                        --literal plain MOBILE_KNOWN_HOSTS \
+                                                                                                                        --literal plain MOBILE_SECRET_KEYS \
+                                                                                                                        --inherit plain MOUNT \
+                                                                                                                        --inherit plain RECIPIENT \
+                                                                                                                        --uuid 12489
                                                                                                                 '' ;
                                                                                                 } ;
                                                                                         in "${ application }/bin/init" ;
@@ -589,7 +623,7 @@
                                                             } ;
                                                         bin =
                                                             {
-                                                                github-token =
+                                                                secrets =
                                                                     ignore :
                                                                         {
                                                                             init =
@@ -602,28 +636,69 @@
                                                                                                     runtimeInputs = [ wrap ] ;
                                                                                                     text =
                                                                                                         let
-                                                                                                            github-token =
+                                                                                                            secrets =
                                                                                                                 let
                                                                                                                     application =
                                                                                                                         pkgs.writeShellApplication
                                                                                                                             {
-                                                                                                                                name = "github-token" ;
+                                                                                                                                name = "secrets" ;
                                                                                                                                 runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
                                                                                                                                 text =
+                                                                                                                                    let
+                                                                                                                                        cases =
+                                                                                                                                            _visitor.implementation
+                                                                                                                                                {
+                                                                                                                                                    lambda =
+                                                                                                                                                        path : value :
+                                                                                                                                                            [
+                                                                                                                                                                ''
+                                                                                                                                                                    '${ builtins.toJSON path }')
+                                                                                                                                                                        VALUE="$2"
+                                                                                                                                                                        RESOURCE=${ value { failure = 19833 ; } }
+                                                                                                                                                                        chmod 0600 "$RESOURCE/plaintext"
+                                                                                                                                                                        echo "$VALUE" > "$RESOURCE/plaintext"
+                                                                                                                                                                        shift 2
+                                                                                                                                                                        ;;
+                                                                                                                                                                ''
+                                                                                                                                                            ] ;
+                                                                                                                                                    list = path : list : builtins.concatLists list ;
+                                                                                                                                                    set = path : set : builtins.concatLists ( builtins.attrValues set ) ;
+                                                                                                                                                }
+                                                                                                                                                resources.production.age.plaintext ;
+                                                                                                                                        in
                                                                                                                                     ''
                                                                                                                                         : "${ builtins.concatStringsSep "" [ "$" "{" "DERIVATION:?must be exported" "}" ] }"
-                                                                                                                                        GITHUB_TOKEN=${ resources.production.age.plaintext.github.token { failure = 6011 ; } }
-                                                                                                                                        cat | "$GITHUB_TOKEN/plaintext"
+                                                                                                                                        while [[ "$#" -gt 0 ]]
+                                                                                                                                        do
+                                                                                                                                            case "$1" in
+                                                                                                                                                ${ builtins.concatStringSep "/n" cases }
+                                                                                                                                                *)
+                                                                                                                                                    failure 3842 "$*"
+                                                                                                                                                    ;;
+                                                                                                                                            esac
+                                                                                                                                        done
                                                                                                                                         SECRETS=${ resources.production.age.ciphertext { failure = 144434 ; } }
                                                                                                                                         GIT_SSH_COMMAND_RESOURCE=${ resources.production.bin.ssh { failure = 10240 ; } }
                                                                                                                                         export GIT_SSH_COMMAND="$GIT_SSH_COMMAND_RESOURCE/ssh"
                                                                                                                                         git -C "$SECRETS" --commit --verbose --allow-empty
                                                                                                                                     '' ;
                                                                                                                             } ;
-                                                                                                                    in "${ application }/bin/github-token" ;
+                                                                                                                    in "${ application }/bin/secrets" ;
                                                                                                             in
                                                                                                                 ''
-                                                                                                                    wrap ${ github-token } github-token 0500 --literal plain DERIVATION --literal brace "DERIVATION:?must be exported" --literal plain GITHUB_TOKEN --literal plain GIT_SSH_COMMAND_RESOURCE --literal plain GIT_SSH_COMMAND --literal plain PATH --literal plain SECRETS --uuid 7100
+                                                                                                                    wrap \
+                                                                                                                        ${ secrets } \
+                                                                                                                        secrets \
+                                                                                                                        0500 \
+                                                                                                                        --literal plain DERIVATION \
+                                                                                                                        --literal brace "DERIVATION:?must be exported" \
+                                                                                                                        --literal plain GIT_SSH_COMMAND_RESOURCE \
+                                                                                                                        --literal plain GIT_SSH_COMMAND \
+                                                                                                                        --literal plain PATH \
+                                                                                                                        --literal plain RESOURCE \
+                                                                                                                        --literal plain SECRETS \
+                                                                                                                        --literal plain VALUE \
+                                                                                                                        --uuid 7100
                                                                                                                 '' ;
                                                                                                 } ;
                                                                                         in "${ application }/bin/init" ;
