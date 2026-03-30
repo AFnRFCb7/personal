@@ -555,12 +555,12 @@
                                                                                                                         .git/hooks/pre-commit \
                                                                                                                         0500 \
                                                                                                                         --literal plain GITHUB_KNOWN_HOSTS \
-                                                                                                                        --literal plain GITHUB_SECRET_KEYS \
+                                                                                                                        --literal plain GITHUB_IDENTITY \
                                                                                                                         --literal plain GITHUB_TOKEN \
                                                                                                                         --literal plain GPG_OWNERTRUST \
                                                                                                                         --literal plain GPG_SECRET_KEYS \
                                                                                                                         --literal plain MOBILE_KNOWN_HOSTS \
-                                                                                                                        --literal plain MOBILE_SECRET_KEYS \
+                                                                                                                        --literal plain MOBILE_IDENTITY \
                                                                                                                         --inherit plain MOUNT \
                                                                                                                         --inherit plain RECIPIENT \
                                                                                                                         --uuid 12489
