@@ -476,7 +476,7 @@
                                                                                             pkgs.writeShellApplication
                                                                                                 {
                                                                                                     name = "init" ;
-                                                                                                    runtimeInputs = [ pkgs.git wrap ] ;
+                                                                                                    runtimeInputs = [ pkgs.age pkgs.git wrap ] ;
                                                                                                     text =
                                                                                                         let
                                                                                                             post-commit =
@@ -547,7 +547,7 @@
                                                                                                                     git remote add ssh git@github.com:${ config.personal.secrets.organization }/${ config.personal.secrets.repository }.git
                                                                                                                     wrap ${ post-commit } .git/hooks/post-commit 0500 --literal brace "GIT_SSH_COMMAND:?must be exported" --literal plain PATH --uuid 31150
                                                                                                                     wrap ${ post-push } .git/hooks/post-push 0500 --literal plain PATH --uuid 28649                                                                                                                
-                                                                                                                    RECIPIENT="$( age-keygen -y ${ config.personal.agenix } )" || failure 26577
+                                                                                                                    RECIPIENT="$( age-keygen -y ${ config.personal.agenix } )" || exit 75
                                                                                                                     export RECIPIENT
                                                                                                                     wrap \
                                                                                                                         ${ pre-commit } \
