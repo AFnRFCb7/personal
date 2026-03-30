@@ -748,7 +748,15 @@
                                                                                                             ''
                                                                                                                 DOT_SSH=${ resources.production.dot-ssh.config { failure = 15989 ; } }
                                                                                                                 gc-root "$DOT_SSH"
-                                                                                                                wrap ${ ssh } ssh 0500 --literal plain @ --literal plain DERIVATION --inherit plain DOT_SSH --literal plain PATH --uuid 30907
+                                                                                                                wrap \
+                                                                                                                    ${ ssh } \
+                                                                                                                    ssh \
+                                                                                                                    0500 \
+                                                                                                                    --literal plain @ \
+                                                                                                                    --inherit plain DOT_SSH \
+                                                                                                                    --literal brace "DOT_SSH:?must be exported" \
+                                                                                                                    --literal plain PATH \
+                                                                                                                    --uuid 30907
                                                                                                             '' ;
                                                                                                 } ;
                                                                                         in "${ application }/bin/init" ;
