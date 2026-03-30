@@ -975,7 +975,7 @@
                                                                                                     runtimeInputs = [ gc-root pkgs.coreutils ] ;
                                                                                                     text =
                                                                                                         ''
-                                                                                                            BIN=${ resources.production.bin.secrets { github-tokenfailure = 16295 ; } }
+                                                                                                            BIN=${ resources.production.bin.secrets { failure = 16295 ; } }
                                                                                                             gc-root "$BIN"
                                                                                                             ln --symbolic "$BIN" /mount/bin
                                                                                                         '' ;
