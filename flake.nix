@@ -840,7 +840,6 @@
                                                                                 in "${ application }/bin/init" ;
                                                                     targets = [ "dot-gnupg" ] ;
                                                                 } ;
-                                                            } ;
                                                         dot-ssh =
                                                             {
                                                                 config =
