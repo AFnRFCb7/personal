@@ -1048,9 +1048,8 @@
                                                                                                                                 gc-root "$SECRETS"
                                                                                                                                 SSH=${ resources.production.product.ssh { failure = 11121 ; } }
                                                                                                                                 gc-root "$SSH"
-                                                                                                                                export BIN_PATH
-                                                                                                                                MAN_PATH=${ builtins.concatStringsSep ":" ( builtins.map ( x : "${ x }/share/man" ) [ "$SECRETS" "$SSH" ] ) }
-                                                                                                                                export MAN_PATH
+                                                                                                                                export BIN_PATH=${ builtins.concatStringsSep ":" ( builtins.map ( x : "${ x }/bin" ) [ "$SECRETS" "$SSH" ] ) }
+                                                                                                                                export MAN_PATH=${ builtins.concatStringsSep ":" ( builtins.map ( x : "${ x }/share/man" ) [ "$SECRETS" "$SSH" ] ) }
                                                                                                                                 wrap ${ envrc } .envrc 0400 --inherit plain BIN_PATH --inherit plain MAN_PATH --uuid 30754
                                                                                                                             '' ;
                                                                                                             } ;
