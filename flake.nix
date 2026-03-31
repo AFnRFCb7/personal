@@ -886,7 +886,7 @@
                                                                                                 '' ;
                                                                                         } ;
                                                                                 in "${ application }/bin/init" ;
-                                                                    targets = [ "private-keys-v1.d" "pubring.kdx" "trustdb.gpg" ] ;
+                                                                    targets = [ "private-keys-v1.d" "pubring.kbx" "trustdb.gpg" ] ;
                                                                 } ;
                                                         dot-ssh =
                                                             {
@@ -1086,14 +1086,16 @@
                                                                                                                                 in "${ application }/bin/envrc" ;
                                                                                                                         in
                                                                                                                             ''
+                                                                                                                                GH=${ resources.production.product.gh { failure = 25686 ; } }
+                                                                                                                                gc-root "$GH"
                                                                                                                                 GPG=${ resources.production.product.gpg { failure = 16451 ; } }
                                                                                                                                 gc-root "$GPG"
                                                                                                                                 SECRETS=${ resources.production.product.secrets { failure = 22181 ; } }
                                                                                                                                 gc-root "$SECRETS"
                                                                                                                                 SSH=${ resources.production.product.ssh { failure = 11121 ; } }
                                                                                                                                 gc-root "$SSH"
-                                                                                                                                export BIN_PATH=${ builtins.concatStringsSep ":" ( builtins.map ( x : "${ x }/bin" ) [ "$SECRETS" "$SSH" ] ) }
-                                                                                                                                export MAN_PATH=${ builtins.concatStringsSep ":" ( builtins.map ( x : "${ x }/share/man" ) [ "$SECRETS" "$SSH" ] ) }
+                                                                                                                                export BIN_PATH=${ builtins.concatStringsSep ":" ( builtins.map ( x : "${ x }/bin" ) [ "$GH" "$GPG" "$SECRETS" "$SSH" ] ) }
+                                                                                                                                export MAN_PATH=${ builtins.concatStringsSep ":" ( builtins.map ( x : "${ x }/share/man" ) [ "$GH" "$GPG" "$SECRETS" "$SSH" ] ) }
                                                                                                                                 wrap ${ envrc } .envrc 0400 --inherit plain BIN_PATH --inherit plain MAN_PATH --uuid 30754
                                                                                                                             '' ;
                                                                                                             } ;
@@ -1103,6 +1105,27 @@
                                                                 } ;
                                                         product =
                                                             {
+                                                                gh =
+                                                                    ignore :
+                                                                        {
+                                                                            init =
+                                                                                { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
+                                                                                    let
+                                                                                        application =
+                                                                                            pkgs.writeShellApplication
+                                                                                                {
+                                                                                                    name = "init" ;
+                                                                                                    runtimeInputs = [ gc-root pkgs.coreutils ] ;
+                                                                                                    text =
+                                                                                                        ''
+                                                                                                            BIN=${ resources.production.bin.gh { failure = 28930 ; } }
+                                                                                                            gc-root "$BIN"
+                                                                                                            ln --symbolic "$BIN" /mount/bin
+                                                                                                        '' ;
+                                                                                                } ;
+                                                                                        in "${ application }/bin/init" ;
+                                                                            targets = [ "bin" ] ;
+                                                                        } ;
                                                                 gpg =
                                                                     ignore :
                                                                         {
