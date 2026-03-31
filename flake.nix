@@ -652,7 +652,7 @@
                                                                                                                         pkgs.writeShellApplication
                                                                                                                             {
                                                                                                                                 name = "gpg" ;
-                                                                                                                                runtimeInputs = [ pkgs.gpg ] ;
+                                                                                                                                runtimeInputs = [ pkgs.gnupg ] ;
                                                                                                                                 text =
                                                                                                                                     ''
                                                                                                                                         export GNUPGHOME="$DOT_GNUPG"
