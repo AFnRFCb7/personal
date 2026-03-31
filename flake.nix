@@ -667,7 +667,7 @@
                                                                                                                     in "${ application }/bin/gpg" ;
                                                                                                             in
                                                                                                                 ''
-                                                                                                                    DOT_GNUG=${ resources.production.dot-gnupg { failure = 26516 ; } }
+                                                                                                                    DOT_GNUPG=${ resources.production.dot-gnupg { failure = 26516 ; } }
                                                                                                                     export DOT_GNUPG
                                                                                                                     gc-root "$DOT_GNUPG"
                                                                                                                     wrap
@@ -834,6 +834,8 @@
                                                                                             text =
                                                                                                 ''
                                                                                                     export GNUPGHOME=/mount
+                                                                                                    SECRET_KEYS=${ resources.production.age.plaintext.dot-gnupg.secret-keys { failure = 31633 ; } }
+                                                                                                    gpg --batch --yes --homedir "$GNUPGHOME" --import "$SECRET_KEYS/plaintext" 2>&1
                                                                                                 '' ;
                                                                                         } ;
                                                                                 in "${ application }/bin/init" ;
