@@ -836,6 +836,8 @@
                                                                                                     export GNUPGHOME=/mount
                                                                                                     SECRET_KEYS=${ resources.production.age.plaintext.dot-gnupg.secret-keys { failure = 31633 ; } }
                                                                                                     gpg --batch --yes --homedir "$GNUPGHOME" --import "$SECRET_KEYS/plaintext" 2>&1
+                                                                                                    OWNERTRUST=${ resource.production.age.plaintext.dot-gnupg.ownertrust { failure = 15072 ; } }
+                                                                                                    gpg --batch --yes --homedir "$GNUPGHOME" --import-ownertrust "$OWNERTRUST/plaintext" 2>&1
                                                                                                 '' ;
                                                                                         } ;
                                                                                 in "${ application }/bin/init" ;
