@@ -833,12 +833,11 @@
                                                                                             runtimeInputs = [ pkgs.gnupg ] ;
                                                                                             text =
                                                                                                 ''
-                                                                                                    export GNUPGHOME=/mount/dot-gnupg
-                                                                                                    mkdir --parents "$GNUPGHOME
+                                                                                                    export GNUPGHOME=/mount
                                                                                                 '' ;
                                                                                         } ;
                                                                                 in "${ application }/bin/init" ;
-                                                                    targets = [ "dot-gnupg" ] ;
+                                                                    targets = [ ] ;
                                                                 } ;
                                                         dot-ssh =
                                                             {
