@@ -820,6 +820,27 @@
                                                                             targets = [ "ssh" ] ;
                                                                         } ;
                                                             } ;
+                                                        dot-gnupg =
+                                                            ignore :
+                                                                {
+                                                                    init =
+                                                                        { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
+                                                                            let
+                                                                                application =
+                                                                                    pkgs.writeShellApplication
+                                                                                        {
+                                                                                            name = "init" ;
+                                                                                            runtimeInputs = [ pkgs.gnupg ] ;
+                                                                                            text =
+                                                                                                ''
+                                                                                                    export GNUPGHOME=/mount/dot-gnupg
+                                                                                                    mkdir --parents "$GNUPGHOME
+                                                                                                '' ;
+                                                                                        } ;
+                                                                                in "${ application }/bin/init" ;
+                                                                    targets = [ "dot-gnupg" ] ;
+                                                                } ;
+                                                            } ;
                                                         dot-ssh =
                                                             {
                                                                 config =
