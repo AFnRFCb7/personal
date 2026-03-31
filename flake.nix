@@ -838,6 +838,7 @@
                                                                                                     gpg --batch --yes --homedir "$GNUPGHOME" --import "$SECRET_KEYS/plaintext" 2>&1
                                                                                                     OWNERTRUST=${ resources.production.age.plaintext.dot-gnupg.ownertrust { failure = 15072 ; } }
                                                                                                     gpg --batch --yes --homedir "$GNUPGHOME" --import-ownertrust "$OWNERTRUST/plaintext" 2>&1
+                                                                                                    gpg --batch --yes --homedir "$GNUPGHOME" --update-trustdb 2>&1
                                                                                                 '' ;
                                                                                         } ;
                                                                                 in "${ application }/bin/init" ;
