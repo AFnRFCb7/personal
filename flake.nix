@@ -633,6 +633,56 @@
                                                             } ;
                                                         bin =
                                                             {
+                                                                gpg =
+                                                                    ignore :
+                                                                        {
+                                                                            init =
+                                                                                { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
+                                                                                    let
+                                                                                        application =
+                                                                                            pkgs.writeShellApplication
+                                                                                                {
+                                                                                                    name = "init" ;
+                                                                                                    runtimeInputs = [ "gc-root" "wrap" ] ;
+                                                                                                    text =
+                                                                                                        let
+                                                                                                            gpg =
+                                                                                                                let
+                                                                                                                    application =
+                                                                                                                        pkgs.writeShellApplication
+                                                                                                                            {
+                                                                                                                                name = "gpg" ;
+                                                                                                                                runtimeInputs = [ pkgs.gpg ] ;
+                                                                                                                                text =
+                                                                                                                                    ''
+                                                                                                                                        export GNUPGHOME="$DOT_GNUPG"
+                                                                                                                                        if [[ -t 0 ]]
+                                                                                                                                        then
+                                                                                                                                            gpg "${ builtins.concatStringsSep "" [ "$" "{" "@" "}" ] }"
+                                                                                                                                        else
+                                                                                                                                            "${ builtins.concatStringsSep "" [ "$" "{" "@" "}" ] }" <&0
+                                                                                                                                        fi
+                                                                                                                                    '' ;
+                                                                                                                            } ;
+                                                                                                                    in "${ application }/bin/gpg" ;
+                                                                                                            in
+                                                                                                                ''
+                                                                                                                    DOT_GNUG=${ resources.production.dot-gnupg { failure = 26516 ; } }
+                                                                                                                    export DOT_GNUPG
+                                                                                                                    gc-root "$DOT_GNUPG"
+                                                                                                                    wrap
+                                                                                                                        ${ gpg } \
+                                                                                                                        bin/gpg \
+                                                                                                                        0500 \
+                                                                                                                        --inherit plain DOT_GNUPG \
+                                                                                                                        --literal  plain GNUPGHOME \
+                                                                                                                        --literal plain PATH \
+                                                                                                                        --uuid 18224
+                                                                                                                '' ;
+                                                                                                } ;
+                                                                                        in  "${ application }/bin/init" ;
+                                                                            targets = [ "bin" ] ;
+                                                                        } ;
                                                                 secrets =
                                                                     ignore :
                                                                         {
@@ -968,6 +1018,7 @@
                                                                                                                                 in "${ application }/bin/envrc" ;
                                                                                                                         in
                                                                                                                             ''
+                                                                                                                                GPG=${ resources.production.product.gpg { failure = 16451 ; } }
                                                                                                                                 SECRETS=${ resources.production.product.secrets { failure = 22181 ; } }
                                                                                                                                 gc-root "$SECRETS"
                                                                                                                                 SSH=${ resources.production.product.ssh { failure = 11121 ; } }
@@ -985,6 +1036,27 @@
                                                                 } ;
                                                         product =
                                                             {
+                                                                gpg =
+                                                                    ignore :
+                                                                        {
+                                                                            init =
+                                                                                { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
+                                                                                    let
+                                                                                        application =
+                                                                                            pkgs.writeShellApplication
+                                                                                                {
+                                                                                                    name = "init" ;
+                                                                                                    runtimeInputs = [ gc-root pkgs.coreutils ] ;
+                                                                                                    text =
+                                                                                                        ''
+                                                                                                            BIN=${ resources.production.bin.gpg { failure = 24435 ; } }
+                                                                                                            gc-root "$BIN"
+                                                                                                            ln --symbolic "$BIN" /mount/bin
+                                                                                                        '' ;
+                                                                                                } ;
+                                                                                        in "${ application }/bin/init" ;
+                                                                            targets = [ "bin" ] ;
+                                                                        } ;
                                                                 secrets =
                                                                     ignore :
                                                                         {
