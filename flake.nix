@@ -670,7 +670,7 @@
                                                                                                                     GITHUB_TOKEN_DIR=${ resources.production.age.plaintext.github.token { failure = 25133 ; } }
                                                                                                                     GITHUB_TOKEN="$( cat "$GITHUB_TOKEN_DIR/plaintext" )" || failure 31678
                                                                                                                     export GITHUB_TOKEN
-                                                                                                                    wrap ${ gh } bin/gh 0500 --inherit plain GITHUB_TOKEN --inherit plain PATH
+                                                                                                                    wrap ${ gh } bin/gh 0500 --inherit plain GITHUB_TOKEN --inherit plain PATH --uuid 32407
                                                                                                                 '' ;
                                                                                                 } ;
                                                                                         in "${ application }/bin/init" ;
@@ -882,7 +882,7 @@
                                                                                                     OWNERTRUST=${ resources.production.age.plaintext.dot-gnupg.ownertrust { failure = 15072 ; } }
                                                                                                     gpg --batch --yes --homedir "$GNUPGHOME" --import-ownertrust "$OWNERTRUST/plaintext" 2>&1
                                                                                                     gpg --batch --yes --homedir "$GNUPGHOME" --update-trustdb 2>&1
-                                                                                                    rm --force "$GNUPGHOME/*~"
+                                                                                                    rm --force "$GNUPGHOME"/*~
                                                                                                 '' ;
                                                                                         } ;
                                                                                 in "${ application }/bin/init" ;
