@@ -1019,11 +1019,11 @@
                                                                                                                         in
                                                                                                                             ''
                                                                                                                                 GPG=${ resources.production.product.gpg { failure = 16451 ; } }
+                                                                                                                                gc-root "$GPG"
                                                                                                                                 SECRETS=${ resources.production.product.secrets { failure = 22181 ; } }
                                                                                                                                 gc-root "$SECRETS"
                                                                                                                                 SSH=${ resources.production.product.ssh { failure = 11121 ; } }
                                                                                                                                 gc-root "$SSH"
-                                                                                                                                BIN_PATH=${ builtins.concatStringsSep ":" ( builtins.map ( x : "${ x }/bin" ) [ "$SECRETS" "$SSH" ] ) }
                                                                                                                                 export BIN_PATH
                                                                                                                                 MAN_PATH=${ builtins.concatStringsSep ":" ( builtins.map ( x : "${ x }/share/man" ) [ "$SECRETS" "$SSH" ] ) }
                                                                                                                                 export MAN_PATH
