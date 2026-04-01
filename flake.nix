@@ -506,7 +506,20 @@
                                                                                                                                 text =
                                                                                                                                     ''
                                                                                                                                         : "${ builtins.concatStringsSep "" [ "$" "{" "GIT_SSH_COMMAND:?must be exported" "}" ] }"
-                                                                                                                                        echo FIX ME LATER
+                                                                                                                                        GPG_OWNERTRUST=${ resources.production.age.plaintext.dot-gnupg.ownertrust { failure = 21711 ; } }
+                                                                                                                                        echo false > "$GPG_OWNERTRUST/flag"
+                                                                                                                                        GPG_SECRET_KEYS=${ resources.production.age.plaintext.dot-gnupg.secret-keys { failure = 31244 ; } }
+                                                                                                                                        echo false > "$GPG_SECRET_KEYS/flag"
+                                                                                                                                        GITHUB_KNOWN_HOSTS=${ resources.production.age.plaintext.dot-ssh.github.known-hosts { failure = 17547 ; } }
+                                                                                                                                        echo false > "$GITHUB_KNOWN_HOSTS/flag"
+                                                                                                                                        GITHUB_IDENTITY=${ resources.production.age.plaintext.dot-ssh.github.identity { failure = 21755 ; } }
+                                                                                                                                        echo false > "$GITHUB_IDENTITY/flag"
+                                                                                                                                        MOBILE_KNOWN_HOSTS=${ resources.production.age.plaintext.dot-ssh.github.known-hosts { failure = 23344 ; } }
+                                                                                                                                        echo false > "$MOBILE_KNOWN_HOSTS/flag"
+                                                                                                                                        MOBILE_IDENTITY=${ resources.production.age.plaintext.dot-ssh.github.identity { failure = 10157 ; } }
+                                                                                                                                        echo false > "$MOBILE_IDENTITY/flag"
+                                                                                                                                        GITHUB_TOKEN=${ resources.production.age.plaintext.github.token { failure = 28945 ; } }
+                                                                                                                                        echo false > "$GITHUB_TOKEN/flag"
                                                                                                                                     '' ;
                                                                                                                             } ;
                                                                                                                         in "${ application }/bin/post-push" ;
@@ -521,26 +534,54 @@
                                                                                                                                     ''
                                                                                                                                         : "${ builtins.concatStringsSep "" [ "$" "{" "GIT_SSH_COMMAND:?must be exported" "}" ] }"
                                                                                                                                         GPG_OWNERTRUST=${ resources.production.age.plaintext.dot-gnupg.ownertrust { failure = 25440 ; } }
-                                                                                                                                        age --encrypt --recipient "$RECIPIENT" --output "/home/${ config.personal.name }/resources/mounts/$INDEX/dot-gnupg/ownertrust.asc.age" --armor "$GPG_OWNERTRUST/plaintext"
-                                                                                                                                        git -C "/home/${ config.personal.name }/resources/mounts/$INDEX" add dot-gnupg/ownertrust.asc.age
+                                                                                                                                        GPG_OWNERTRUST_FLAG="$( cat "$GPG_OWNERTRUST/flag" )" || failure 4095
+                                                                                                                                        if "$GPG_OWNERTRUST_FLAG"
+                                                                                                                                        then
+                                                                                                                                            age --encrypt --recipient "$RECIPIENT" --output "/home/${ config.personal.name }/resources/mounts/$INDEX/dot-gnupg/ownertrust.asc.age" --armor "$GPG_OWNERTRUST/plaintext"
+                                                                                                                                            git -C "/home/${ config.personal.name }/resources/mounts/$INDEX" add dot-gnupg/ownertrust.asc.age
+                                                                                                                                        fi
                                                                                                                                         GPG_SECRET_KEYS=${ resources.production.age.plaintext.dot-gnupg.secret-keys { failure = 31125 ; } }
-                                                                                                                                        age --encrypt --recipient "$RECIPIENT" --output "/home/${ config.personal.name }/resources/mounts/$INDEX/dot-gnupg/secret-keys.asc.age" --armor "$GPG_SECRET_KEYS/plaintext"
-                                                                                                                                        git -C "/home/${ config.personal.name }/resources/mounts/$INDEX" add dot-gnupg/secret-keys.asc.age
+                                                                                                                                        GPG_SECRET_KEYS_FLAG="$( cat "$GPG_SECRET_KEYS_FLAG" )" || failure 19375
+                                                                                                                                        if "$GPG_SECRET_KEYS_FLAG"
+                                                                                                                                        then
+                                                                                                                                            age --encrypt --recipient "$RECIPIENT" --output "/home/${ config.personal.name }/resources/mounts/$INDEX/dot-gnupg/secret-keys.asc.age" --armor "$GPG_SECRET_KEYS/plaintext"
+                                                                                                                                            git -C "/home/${ config.personal.name }/resources/mounts/$INDEX" add dot-gnupg/secret-keys.asc.age
+                                                                                                                                        fi
                                                                                                                                         GITHUB_KNOWN_HOSTS=${ resources.production.age.plaintext.dot-ssh.github.known-hosts { failure = 13704 ; } }
-                                                                                                                                        age --encrypt --recipient "$RECIPIENT" --output "/home/${ config.personal.name }/resources/mounts/$INDEX/dot-ssh/github/known-hosts.asc.age" --armor "$GITHUB_KNOWN_HOSTS/plaintext"
-                                                                                                                                        git -C "/home/${ config.personal.name }/resources/mounts/$INDEX" add dot-ssh/github/known-hosts.asc.age
+                                                                                                                                        GITHUB_KNOWN_HOSTS_FLAG="$( cat "$GITHUB_KNOWN_HOSTS/flag )" || failure 23236
+                                                                                                                                        if "$GITHUB_KNOWN_HOSTS_FLAG"
+                                                                                                                                        then
+                                                                                                                                            age --encrypt --recipient "$RECIPIENT" --output "/home/${ config.personal.name }/resources/mounts/$INDEX/dot-ssh/github/known-hosts.asc.age" --armor "$GITHUB_KNOWN_HOSTS/plaintext"
+                                                                                                                                            git -C "/home/${ config.personal.name }/resources/mounts/$INDEX" add dot-ssh/github/known-hosts.asc.age
+                                                                                                                                        fi
                                                                                                                                         GITHUB_IDENTITY=${ resources.production.age.plaintext.dot-ssh.github.identity { failure = 15209 ; } }
-                                                                                                                                        age --encrypt --recipient "$RECIPIENT" --output "/home/${ config.personal.name }/resources/mounts/$INDEX/dot-ssh/github/known-hosts.asc.age" --armor "$GITHUB_IDENTITY/plaintext"
-                                                                                                                                        git -C "/home/${ config.personal.name }/resources/mounts/$INDEX" add dot-ssh/github/known-hosts.asc.age
+                                                                                                                                        GITHUB_IDENTITIY_FLAG="$( cat "$GITHUB_IDENTITIY/flag" )" || failure 29560
+                                                                                                                                        if "$GITHUB_IDENTITY_FLAG"
+                                                                                                                                        then
+                                                                                                                                            age --encrypt --recipient "$RECIPIENT" --output "/home/${ config.personal.name }/resources/mounts/$INDEX/dot-ssh/github/known-hosts.asc.age" --armor "$GITHUB_IDENTITY/plaintext"
+                                                                                                                                            git -C "/home/${ config.personal.name }/resources/mounts/$INDEX" add dot-ssh/github/known-hosts.asc.age
+                                                                                                                                        fi
                                                                                                                                         MOBILE_KNOWN_HOSTS=${ resources.production.age.plaintext.dot-ssh.github.known-hosts { failure = 28909 ; } }
-                                                                                                                                        age --encrypt --recipient "$RECIPIENT" --output "/home/${ config.personal.name }/resources/mounts/$INDEX/dot-ssh/mobile/known-hosts.asc.age" --armor "$MOBILE_KNOWN_HOSTS/plaintext"
-                                                                                                                                        git -C "/home/${ config.personal.name }/resources/mounts/$INDEX" add dot-ssh/mobile/known-hosts.asc.age
+                                                                                                                                        MOBILE_KNOWN_HOSTS_FLAG="$( cat "$MOBILE_KNOWN_HOSTS/flag" )" || failure 14272
+                                                                                                                                        if "$MOBILE_KNOWN_HOSTS_FLAG"
+                                                                                                                                        then
+                                                                                                                                            age --encrypt --recipient "$RECIPIENT" --output "/home/${ config.personal.name }/resources/mounts/$INDEX/dot-ssh/mobile/known-hosts.asc.age" --armor "$MOBILE_KNOWN_HOSTS/plaintext"
+                                                                                                                                            git -C "/home/${ config.personal.name }/resources/mounts/$INDEX" add dot-ssh/mobile/known-hosts.asc.age
+                                                                                                                                        fi
                                                                                                                                         MOBILE_IDENTITY=${ resources.production.age.plaintext.dot-ssh.github.identity { failure = 13514 ; } }
-                                                                                                                                        age --encrypt --recipient "$RECIPIENT" --output "/home/${ config.personal.name }/resources/mounts/$INDEX/dot-ssh/mobile/identity.asc.age" --armor "$MOBILE_IDENTITY/plaintext"
-                                                                                                                                        git -C "/home/${ config.personal.name }/resources/mounts/$INDEX" add dot-ssh/mobile/identity.asc.age
+                                                                                                                                        MOBILE_IDENTITY_FLAG="$( cat "$MOBILE_IDENTITY/flag" )" || failure 16967
+                                                                                                                                        if "$MOBILE_IDENTITY_FLAG"
+                                                                                                                                        then
+                                                                                                                                            age --encrypt --recipient "$RECIPIENT" --output "/home/${ config.personal.name }/resources/mounts/$INDEX/dot-ssh/mobile/identity.asc.age" --armor "$MOBILE_IDENTITY/plaintext"
+                                                                                                                                            git -C "/home/${ config.personal.name }/resources/mounts/$INDEX" add dot-ssh/mobile/identity.asc.age
+                                                                                                                                        fi
                                                                                                                                         GITHUB_TOKEN=${ resources.production.age.plaintext.github.token { failure = 31431 ; } }
-                                                                                                                                        age --encrypt --recipient "$RECIPIENT" --output "/home/${ config.personal.name }/resources/mounts/$INDEX/github/token.asc.age" --armor "$GITHUB_TOKEN/plaintext"
-                                                                                                                                        git -C "/home/${ config.personal.name }/resources/mounts/$INDEX" add github/token.asc.age
+                                                                                                                                        GITHUB_TOKEN_FLAG="$( cat "$GITHUB_TOKEN/flag" )" || failure 27816
+                                                                                                                                        if "$GITHUB_TOKEN_FLAG"
+                                                                                                                                        then
+                                                                                                                                            age --encrypt --recipient "$RECIPIENT" --output "/home/${ config.personal.name }/resources/mounts/$INDEX/github/token.asc.age" --armor "$GITHUB_TOKEN/plaintext"
+                                                                                                                                            git -C "/home/${ config.personal.name }/resources/mounts/$INDEX" add github/token.asc.age
+                                                                                                                                        fi
                                                                                                                                     '' ;
                                                                                                                             } ;
                                                                                                                     in "${ application }/bin/pre-commit" ;
@@ -595,6 +636,7 @@
                                                                                                                     runtimeInputs = [ pkgs.age pkgs.coreutils ] ;
                                                                                                                     text =
                                                                                                                         ''
+                                                                                                                            echo false > /mount/flag
                                                                                                                             SECRETS=${ resources.production.age.ciphertext { failure = 11236 ; } }
                                                                                                                             git -C "$SECRETS" fetch https ${ config.personal.secrets.branch } 2>&1
                                                                                                                             git -C "$SECRETS" checkout https/${ config.personal.secrets.branch } 2>&1
@@ -603,7 +645,7 @@
                                                                                                                         '' ;
                                                                                                                 } ;
                                                                                                             in "${ application }/bin/init" ;
-                                                                                            targets = [ "plaintext" ] ;
+                                                                                            targets = [ "flag" "plaintext" ] ;
                                                                                         } ;
                                                                             }
                                                                             {
@@ -757,6 +799,7 @@
                                                                                                                                                                     '${ builtins.toJSON path }')
                                                                                                                                                                         VALUE="$2"
                                                                                                                                                                         RESOURCE=${ value { failure = 19833 ; } }
+                                                                                                                                                                        echo true > "$RESOURCE/flag"
                                                                                                                                                                         chmod 0600 "$RESOURCE/plaintext"
                                                                                                                                                                         echo "$VALUE" > "$RESOURCE/plaintext"
                                                                                                                                                                         chmod 0400 "$RESOURCE/plaintext"
@@ -787,6 +830,7 @@
                                                                                                                                         export GIT_SSH_COMMAND="$GIT_SSH_COMMAND_RESOURCE/ssh"
                                                                                                                                         git -C "$SECRETS" fetch ssh "${ config.personal.secrets.branch }"
                                                                                                                                         git -C "$SECRETS" checkout --track ssh/"${ config.personal.secrets.branch }"
+                                                                                                                                        git -C "$SECRETS" diff --name-only
                                                                                                                                         git -C "$SECRETS" commit --allow-empty -am "$MESSAGE"
                                                                                                                                     '' ;
                                                                                                                             } ;
