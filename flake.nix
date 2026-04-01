@@ -529,7 +529,7 @@
                                                                                                                         pkgs.writeShellApplication
                                                                                                                             {
                                                                                                                                 name = "pre-commit" ;
-                                                                                                                                runtimeInputs = [ pkgs.age pkgs.git ] ;
+                                                                                                                                runtimeInputs = [ failure pkgs.age pkgs.git ] ;
                                                                                                                                 text =
                                                                                                                                     ''
                                                                                                                                         : "${ builtins.concatStringsSep "" [ "$" "{" "GIT_SSH_COMMAND:?must be exported" "}" ] }"
@@ -541,7 +541,7 @@
                                                                                                                                             git -C "/home/${ config.personal.name }/resources/mounts/$INDEX" add dot-gnupg/ownertrust.asc.age
                                                                                                                                         fi
                                                                                                                                         GPG_SECRET_KEYS=${ resources.production.age.plaintext.dot-gnupg.secret-keys { failure = 31125 ; } }
-                                                                                                                                        GPG_SECRET_KEYS_FLAG="$( cat "$GPG_SECRET_KEYS_FLAG" )" || failure 19375
+                                                                                                                                        GPG_SECRET_KEYS_FLAG="$( cat "$GPG_SECRET_KEYS/flag" )" || failure 19375
                                                                                                                                         if "$GPG_SECRET_KEYS_FLAG"
                                                                                                                                         then
                                                                                                                                             age --encrypt --recipient "$RECIPIENT" --output "/home/${ config.personal.name }/resources/mounts/$INDEX/dot-gnupg/secret-keys.asc.age" --armor "$GPG_SECRET_KEYS/plaintext"
