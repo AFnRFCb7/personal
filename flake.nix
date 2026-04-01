@@ -882,6 +882,7 @@
                                                                                                     gpg --batch --yes --homedir "$GNUPGHOME" --import-ownertrust "$OWNERTRUST/plaintext" 2>&1
                                                                                                     gpg --batch --yes --homedir "$GNUPGHOME" --update-trustdb 2>&1
                                                                                                     rm --force "$GNUPGHOME"/*~
+                                                                                                    chmod 0700 "$GNUPGHOME"
                                                                                                 '' ;
                                                                                         } ;
                                                                                 in "${ application }/bin/init" ;
@@ -948,7 +949,7 @@
                                                                                                                     MOBILE_IDENTITY_RESOURCE=${ resources.production.age.plaintext.dot-ssh.mobile.identity { failure = 28142 ; } }
                                                                                                                     gc-root "$MOBILE_IDENTITY_RESOURCE"
                                                                                                                     export MOBILE_IDENTITY_FILE="$MOBILE_IDENTITY_RESOURCE/plaintext"
-                                                                                                                    MOBILE_KNOWN_RESOURCE=${ resources.production.age.plaintext.dot-ssh.github.identity { failure = 30122 ; } }
+                                                                                                                    MOBILE_KNOWN_RESOURCE=${ resources.production.age.plaintext.dot-ssh.github.known-hosts { failure = 30122 ; } }
                                                                                                                     gc-root "$MOBILE_KNOWN_RESOURCE"
                                                                                                                     export MOBILE_KNOWN_HOSTS="$MOBILE_KNOWN_RESOURCE/plaintext"
                                                                                                                     wrap \
