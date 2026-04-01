@@ -806,7 +806,7 @@
                                                                                                                         pkgs.writeShellApplication
                                                                                                                             {
                                                                                                                                 name = "secrets" ;
-                                                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.nano ] ;
+                                                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.less pkgs.nano ] ;
                                                                                                                                 text =
                                                                                                                                     let
                                                                                                                                         cases =
