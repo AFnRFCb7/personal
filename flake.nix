@@ -594,7 +594,13 @@
                                                                                                                     git remote add https https://github.com/${ config.personal.secrets.organization }/${ config.personal.secrets.repository }.git
                                                                                                                     git remote add ssh git@github.com:${ config.personal.secrets.organization }/${ config.personal.secrets.repository }.git
                                                                                                                     wrap ${ post-commit } .git/hooks/post-commit 0500 --literal brace "GIT_SSH_COMMAND:?must be exported" --literal plain PATH --uuid 31150
-                                                                                                                    wrap ${ post-push } .git/hooks/post-push 0500 --literal plain PATH --uuid 28649                                                                                                                
+                                                                                                                    wrap \
+                                                                                                                        ${ post-push } \
+                                                                                                                        .git/hooks/post-push \
+                                                                                                                        0500 \
+                                                                                                                        --literal plain PATH \
+
+                                                                                                                        --uuid 28649
                                                                                                                     RECIPIENT="$( age-keygen -y ${ config.personal.agenix } )" || failure 16231
                                                                                                                     export RECIPIENT
                                                                                                                     wrap \
