@@ -555,7 +555,7 @@
                                                                                                                                             git -C "/home/${ config.personal.name }/resources/mounts/$INDEX" add dot-ssh/github/known-hosts.asc.age
                                                                                                                                         fi
                                                                                                                                         GITHUB_IDENTITY=${ resources.production.age.plaintext.dot-ssh.github.identity { failure = 15209 ; } }
-                                                                                                                                        GITHUB_IDENTITIY_FLAG="$( cat "$GITHUB_IDENTITIY/flag" )" || failure 29560
+                                                                                                                                        GITHUB_IDENTITY_FLAG="$( cat "$GITHUB_IDENTITY/flag" )" || failure 29560
                                                                                                                                         if "$GITHUB_IDENTITY_FLAG"
                                                                                                                                         then
                                                                                                                                             age --encrypt --recipient "$RECIPIENT" --output "/home/${ config.personal.name }/resources/mounts/$INDEX/dot-ssh/github/known-hosts.asc.age" --armor "$GITHUB_IDENTITY/plaintext"
