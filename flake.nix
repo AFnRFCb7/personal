@@ -655,7 +655,7 @@
                                                                                                                                 runtimeInputs = [ pkgs.gh ] ;
                                                                                                                                 text =
                                                                                                                                     ''
-                                                                                                                                        export GITHUB_TOKEN
+                                                                                                                                        export GITHUB_TOKEN="$GITHUB_TOKEN"
                                                                                                                                         if [[ -t 0 ]]
                                                                                                                                         then
                                                                                                                                             gh "${ builtins.concatStringsSep "" [ "$" "{" "@" "}" ] }"
