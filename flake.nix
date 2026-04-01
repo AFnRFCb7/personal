@@ -853,7 +853,7 @@
                                                                                                                                         git -C "$SECRETS" fetch ssh "${ config.personal.secrets.branch }"
                                                                                                                                         git -C "$SECRETS" switch -C "${ config.personal.secrets.branch }" ssh/"${ config.personal.secrets.branch }"
                                                                                                                                         git -C "$SECRETS" diff --name-only
-                                                                                                                                        echo -en "" | git -C "$SECRETS" commit --allow-empty -am "$MESSAGE"
+                                                                                                                                        git -C "$SECRETS" commit --allow-empty -am "$MESSAGE"
                                                                                                                                     '' ;
                                                                                                                             } ;
                                                                                                                     in "${ application }/bin/secrets" ;
