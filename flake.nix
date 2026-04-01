@@ -720,9 +720,9 @@
                                                                                                                                         export GITHUB_TOKEN="$GITHUB_TOKEN"
                                                                                                                                         if [[ -t 0 ]]
                                                                                                                                         then
-                                                                                                                                            gh "${ builtins.concatStringsSep "" [ "$" "{" "@" "}" ] }"
+                                                                                                                                            gh "${ builtins.concatStringsSep "" [ "$" "{" "@:-" "}" ] }"
                                                                                                                                         else
-                                                                                                                                            gh "${ builtins.concatStringsSep "" [ "$" "{" "@" "}" ] }" <&0
+                                                                                                                                            gh "${ builtins.concatStringsSep "" [ "$" "{" "@:-" "}" ] }" <&0
                                                                                                                                         fi
                                                                                                                                     '' ;
                                                                                                                             } ;
@@ -763,9 +763,9 @@
                                                                                                                                         export GNUPGHOME="$DOT_GNUPG"
                                                                                                                                         if [[ -t 0 ]]
                                                                                                                                         then
-                                                                                                                                            gpg "${ builtins.concatStringsSep "" [ "$" "{" "@" "}" ] }"
+                                                                                                                                            gpg "${ builtins.concatStringsSep "" [ "$" "{" "@:-" "}" ] }"
                                                                                                                                         else
-                                                                                                                                            "${ builtins.concatStringsSep "" [ "$" "{" "@" "}" ] }" <&0
+                                                                                                                                            "${ builtins.concatStringsSep "" [ "$" "{" "@:-" "}" ] }" <&0
                                                                                                                                         fi
                                                                                                                                     '' ;
                                                                                                                             } ;
@@ -849,7 +849,7 @@
                                                                                                                                         GIT_SSH_COMMAND_RESOURCE=${ resources.production.bin.ssh { failure = 10240 ; } }
                                                                                                                                         export GIT_SSH_COMMAND="$GIT_SSH_COMMAND_RESOURCE/ssh"
                                                                                                                                         git -C "$SECRETS" fetch ssh "${ config.personal.secrets.branch }"
-                                                                                                                                        git -C "$SECRETS" checkout --track ssh/"${ config.personal.secrets.branch }"
+                                                                                                                                        git -C "$SECRETS" checkout --switch -C "${ config.personal.secrets.branch }" ssh/"${ config.personal.secrets.branch }"
                                                                                                                                         git -C "$SECRETS" diff --name-only
                                                                                                                                         git -C "$SECRETS" commit --allow-empty -am "$MESSAGE"
                                                                                                                                     '' ;
@@ -1766,7 +1766,7 @@
                                                                                                                     ''
                                                                                                                         elif [[ "$2" == '${ builtins.toJSON path }' ]]
                                                                                                                         then
-                                                                                                                            RESOURCE=${ value { setup = setup : ''${ setup } "${ builtins.concatStringsSep "" [ "$" "{" "ARGUMENTS[@]" "}" ] }"'' ; } }
+                                                                                                                            RESOURCE=${ value { setup = setup : ''${ setup } "${ builtins.concatStringsSep "" [ "$" "{" "ARGUMENTS[@]:-" "}" ] }"'' ; } }
                                                                                                                     ''
                                                                                                                 ] ;
                                                                                                         list = path : list : builtins.concatLists list ;
