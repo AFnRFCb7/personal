@@ -670,11 +670,11 @@
                                                                                                                     GITHUB_TOKEN_DIR=${ resources.production.age.plaintext.github.token { failure = 25133 ; } }
                                                                                                                     GITHUB_TOKEN="$( cat "$GITHUB_TOKEN_DIR/plaintext" )" || failure 31678
                                                                                                                     export GITHUB_TOKEN
-                                                                                                                    wrap ${ gh } bin/gh 0500 --inherit plain GITHUB_TOKEN --inherit plain PATH --uuid 32407
+                                                                                                                    wrap ${ gh } gh 0500 --inherit plain GITHUB_TOKEN --inherit plain PATH --uuid 32407
                                                                                                                 '' ;
                                                                                                 } ;
                                                                                         in "${ application }/bin/init" ;
-                                                                            targets = [ "bin" ] ;
+                                                                            targets = [ "gh" ] ;
                                                                         } ;
                                                                 gpg =
                                                                     ignore :
@@ -715,7 +715,7 @@
                                                                                                                     gc-root "$DOT_GNUPG"
                                                                                                                     wrap \
                                                                                                                         ${ gpg } \
-                                                                                                                        bin/gpg \
+                                                                                                                        gpg \
                                                                                                                         0500 \
                                                                                                                         --inherit plain DOT_GNUPG \
                                                                                                                         --literal plain PATH \
@@ -723,7 +723,7 @@
                                                                                                                 '' ;
                                                                                                 } ;
                                                                                         in  "${ application }/bin/init" ;
-                                                                            targets = [ "bin" ] ;
+                                                                            targets = [ "gpg" ] ;
                                                                         } ;
                                                                 secrets =
                                                                     ignore :
