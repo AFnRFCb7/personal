@@ -548,6 +548,7 @@
                                                                                                                                             git -C "/home/${ config.personal.name }/resources/mounts/$INDEX" add dot-gnupg/secret-keys.asc.age
                                                                                                                                         fi
                                                                                                                                         GITHUB_KNOWN_HOSTS=${ resources.production.age.plaintext.dot-ssh.github.known-hosts { failure = 13704 ; } }
+                                                                                                                                        echo "GITHUB_KNOWN_HOSTS=$GITHUB_KNOWN_HOSTS"
                                                                                                                                         GITHUB_KNOWN_HOSTS_FLAG="$( cat "$GITHUB_KNOWN_HOSTS/flag" )" || failure 23236
                                                                                                                                         if "$GITHUB_KNOWN_HOSTS_FLAG"
                                                                                                                                         then
@@ -824,6 +825,7 @@
                                                                                                                                                                         echo "$VALUE" > "$RESOURCE/plaintext"
                                                                                                                                                                         chmod 0400 "$RESOURCE/plaintext"
                                                                                                                                                                         shift 2
+                                                                                                                                                                        echo "VALUE=$VALUE" "RESOURCE=$RESOURCE"
                                                                                                                                                                         ;;
                                                                                                                                                                 ''
                                                                                                                                                             ] ;
