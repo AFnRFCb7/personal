@@ -806,7 +806,7 @@
                                                                                                                         pkgs.writeShellApplication
                                                                                                                             {
                                                                                                                                 name = "secrets" ;
-                                                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.git pkgs.less pkgs.nano ] ;
+                                                                                                                                runtimeInputs = [ failure pkgs.coreutils pkgs.git pkgs.less pkgs.nano ] ;
                                                                                                                                 text =
                                                                                                                                     let
                                                                                                                                         cases =
@@ -849,7 +849,7 @@
                                                                                                                                         GIT_SSH_COMMAND_RESOURCE=${ resources.production.bin.ssh { failure = 10240 ; } }
                                                                                                                                         export GIT_SSH_COMMAND="$GIT_SSH_COMMAND_RESOURCE/ssh"
                                                                                                                                         git -C "$SECRETS" fetch ssh "${ config.personal.secrets.branch }"
-                                                                                                                                        git -C "$SECRETS" checkout --switch -C "${ config.personal.secrets.branch }" ssh/"${ config.personal.secrets.branch }"
+                                                                                                                                        git -C "$SECRETS" switch -C "${ config.personal.secrets.branch }" ssh/"${ config.personal.secrets.branch }"
                                                                                                                                         git -C "$SECRETS" diff --name-only
                                                                                                                                         git -C "$SECRETS" commit --allow-empty -am "$MESSAGE"
                                                                                                                                     '' ;
