@@ -603,13 +603,20 @@
                                                                                                                         0500 \
                                                                                                                         --literal plain DERIVATION \
                                                                                                                         --literal plain GITHUB_KNOWN_HOSTS \
+                                                                                                                        --literal plain GITHUB_KNOWN_HOSTS_FLAG \
                                                                                                                         --literal plain GITHUB_IDENTITY \
+                                                                                                                        --literal plain GITHUB_IDENTITY_FLAG \
                                                                                                                         --literal plain GITHUB_TOKEN \
+                                                                                                                        --literal plain GITHUB_TOKEN_FLAG \
                                                                                                                         --literal plain GPG_OWNERTRUST \
+                                                                                                                        --literal plain GPG_OWNERTRUST_FLAG \
                                                                                                                         --literal plain GPG_SECRET_KEYS \
+                                                                                                                        --literal plain GPG_SECRET_KEYS_FLAG \
                                                                                                                         --inherit plain INDEX \
                                                                                                                         --literal plain MOBILE_KNOWN_HOSTS \
+                                                                                                                        --literal plain MOBILE_KNOWN_HOSTS_FLAG \
                                                                                                                         --literal plain MOBILE_IDENTITY \
+                                                                                                                        --literal plain MOBILE_IDENTITY_FLAG \
                                                                                                                         --literal plain PATH \
                                                                                                                         --inherit plain RECIPIENT \
                                                                                                                         --uuid 12094
