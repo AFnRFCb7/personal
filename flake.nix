@@ -1085,7 +1085,7 @@
                                                                                                                                 in "${ application }/bin/envrc" ;
                                                                                                                         in
                                                                                                                             ''
-                                                                                                                                GH=${ resources.production.product.gh { failure = 25686 ; } }
+                                                                                                                                GH=${ resources.production.product.gh { failure = 11371 ; } }
                                                                                                                                 gc-root "$GH"
                                                                                                                                 GPG=${ resources.production.product.gpg { failure = 16451 ; } }
                                                                                                                                 gc-root "$GPG"
