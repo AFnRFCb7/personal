@@ -717,7 +717,7 @@
                                                                                                                         ${ gpg } \
                                                                                                                         bin/gpg \
                                                                                                                         0500 \
-                                                                                                                        --inherit plain DOT_GNUPG
+                                                                                                                        --inherit plain DOT_GNUPG \
                                                                                                                         --literal plain PATH \
                                                                                                                         --uuid 18224
                                                                                                                 '' ;
