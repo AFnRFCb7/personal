@@ -686,7 +686,7 @@
                                                                                             pkgs.writeShellApplication
                                                                                                 {
                                                                                                     name = "init" ;
-                                                                                                    runtimeInputs = [ "gc-root" "wrap" ] ;
+                                                                                                    runtimeInputs = [ gc-root wrap ] ;
                                                                                                     text =
                                                                                                         let
                                                                                                             gpg =
@@ -713,7 +713,7 @@
                                                                                                                     DOT_GNUPG=${ resources.production.dot-gnupg { failure = 26516 ; } }
                                                                                                                     export DOT_GNUPG
                                                                                                                     gc-root "$DOT_GNUPG"
-                                                                                                                    wrap
+                                                                                                                    wrap \
                                                                                                                         ${ gpg } \
                                                                                                                         bin/gpg \
                                                                                                                         0500 \
