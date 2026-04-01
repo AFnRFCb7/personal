@@ -977,9 +977,9 @@
                                                                                                                             # ControlPersist 5m
                                                                                                                             HostName github.com
                                                                                                                             IdentityFile $GITHUB_IDENTITY_FILE
-                                                                                                                            # StrictHostKeyChecking yes
+                                                                                                                            StrictHostKeyChecking yes
                                                                                                                             User git
-                                                                                                                            # UserKnownHostsFile $GITHUB_KNOWN_HOSTS
+                                                                                                                            UserKnownHostsFile $GITHUB_KNOWN_HOSTS
                                                                                                                         Host mobile
                                                                                                                             # ControlMaster auto
                                                                                                                             # ControlPath $MOBILE_CONTROL_PATH/%C
