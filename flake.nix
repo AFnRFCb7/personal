@@ -598,8 +598,14 @@
                                                                                                                         ${ post-push } \
                                                                                                                         .git/hooks/post-push \
                                                                                                                         0500 \
+                                                                                                                        --literal plain GITHUB_KNOWN_HOSTS \
+                                                                                                                        --literal plain GITHUB_IDENTITY \
+                                                                                                                        --literal plain GITHUB_TOKEN \
+                                                                                                                        --literal plain GPG_OWNERTRUST \
+                                                                                                                        --literal plain GPG_SECRET_KEYS \
+                                                                                                                        --literal plain MOBILE_KNOWN_HOSTS \
+                                                                                                                        --literal plain MOBILE_IDENTITY \
                                                                                                                         --literal plain PATH \
-
                                                                                                                         --uuid 28649
                                                                                                                     RECIPIENT="$( age-keygen -y ${ config.personal.agenix } )" || failure 16231
                                                                                                                     export RECIPIENT
