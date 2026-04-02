@@ -2290,6 +2290,7 @@
                                                                                     ''
                                                                                         PAD="$( resource --resource '["production","pad","checks"]' )"
                                                                                         cd "$PAD"
+                                                                                        source .envrc
                                                                                     '' ;
                                                                             } ;
                                                                     in "${ application }/bin/test" ;
