@@ -2289,6 +2289,7 @@
                                                                                 text =
                                                                                     ''
                                                                                         PAD="$( resource --resource '["production","pad","checks"]' )"
+                                                                                        # shellcheck disable=SC1091
                                                                                         cd "$PAD"
                                                                                         source .envrc
                                                                                     '' ;
