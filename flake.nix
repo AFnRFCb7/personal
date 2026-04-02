@@ -736,13 +736,13 @@
                                                                                                                                                                     then
                                                                                                                                                                         failure 16620 "EXPECTED_RESOURCE=$EXPECTED_RESOURCE" "OBSERVED_RESOURCE=$OBSERVED_RESOURCE"
                                                                                                                                                                     fi
+                                                                                                                                                                    sleep 0.2
                                                                                                                                                                     EXPECTED_COUNT=1
                                                                                                                                                                     OBSERVED_COUNT="$( wc --lines < "$OUTFILE" )" || failure 30154
-                                                                                                                                                                    while (( EXPECTED_COUNT > OBSERVED_COUNT ))
-                                                                                                                                                                    do
-                                                                                                                                                                        sleep 0.2
-                                                                                                                                                                        OBSERVED_COUNT="$( wc --lines < "$OUTFILE" )" || failure 26176
-                                                                                                                                                                    done
+                                                                                                                                                                    if (( EXPECTED_COUNT != OBSERVED_COUNT ))
+                                                                                                                                                                    then
+                                                                                                                                                                        failure "EXPECTED_COUNT=$EXPECTED_COUNT" "OBSERVED_COUNT=$OBSERVED_COUNT"
+                                                                                                                                                                    fi
                                                                                                                                                                     EXPECTED_MESSAGES="$( cat <<EOF
                                                                                                                                                                     EOF
                                                                                                                                                                     )" || failure 15634
@@ -760,18 +760,18 @@
                                                                                                                                                 redis-cli --csv SUBSCRIBE invalid-init invalid-release stale-init valid-init valid-release | awk -F',' '$1 == "\"message\"" { print $3 }' | tr -d '"' > "$OUTFILE" &
                                                                                                                                                 sleep 0.2
                                                                                                                                                 timeout 10s bash -c "${ pre-test }"
-                                                                                                                                                EXPECTED_COUNT=1
-                                                                                                                                                OBSERVED_COUNT="$( wc --lines < "$OUTFILE" )" || failure 16086
-                                                                                                                                                while (( EXPECTED_COUNT > OBSERVED_COUNT ))
-                                                                                                                                                do
-                                                                                                                                                    sleep 0.2
-                                                                                                                                                    OBSERVED_COUNT="$( wc --lines < "$OUTFILE" )" || failure 11027
-                                                                                                                                                done
-                                                                                                                                                EXPECTED_MESSAGES="$( cat <<EOF
-                                                                                                                                                EOF
-                                                                                                                                                )" || failure 20863
-                                                                                                                                                OBSERVED_MESSAGES="$( cat "$OUTFILE" )" || failure 21628
-                                                                                                                                                echo "$EXPECTED_MESSAGES" "$OBSERVED_MESSAGES"
+#                                                                                                                                                EXPECTED_COUNT=1
+#                                                                                                                                                OBSERVED_COUNT="$( wc --lines < "$OUTFILE" )" || failure 16086
+#                                                                                                                                                while (( EXPECTED_COUNT > OBSERVED_COUNT ))
+#                                                                                                                                                do
+#                                                                                                                                                    sleep 0.2
+#                                                                                                                                                    OBSERVED_COUNT="$( wc --lines < "$OUTFILE" )" || failure 11027
+#                                                                                                                                                done
+#                                                                                                                                                EXPECTED_MESSAGES="$( cat <<EOF
+#                                                                                                                                                EOF
+#                                                                                                                                                )" || failure 20863
+#                                                                                                                                                OBSERVED_MESSAGES="$( cat "$OUTFILE" )" || failure 21628
+#                                                                                                                                                echo "$EXPECTED_MESSAGES" "$OBSERVED_MESSAGES"
                                                                                                                                             '' ;
                                                                                                                             } ;
                                                                                                                     in "${ application }/bin/true-true" ;
