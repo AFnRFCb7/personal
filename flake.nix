@@ -767,6 +767,10 @@
                                                                                                                                                     sleep 0.2
                                                                                                                                                     OBSERVED_COUNT="$( wc --lines < "$OUTFILE" )" || failure 11027
                                                                                                                                                 done
+                                                                                                                                                EXPECTED_MESSAGES="$( cat <<EOF
+                                                                                                                                                EOF
+                                                                                                                                                )" || failure 20863
+                                                                                                                                                OBSERVED_MESSAGES="$( cat "$OUTFILE" )" || failure 21628
                                                                                                                                             '' ;
                                                                                                                             } ;
                                                                                                                     in "${ application }/bin/true-true" ;
