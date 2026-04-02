@@ -771,6 +771,7 @@
                                                                                                                                                 EOF
                                                                                                                                                 )" || failure 20863
                                                                                                                                                 OBSERVED_MESSAGES="$( cat "$OUTFILE" )" || failure 21628
+                                                                                                                                                echo "$EXPECTED_MESSAGES" "$OBSERVED_MESSAGES"
                                                                                                                                             '' ;
                                                                                                                             } ;
                                                                                                                     in "${ application }/bin/true-true" ;
