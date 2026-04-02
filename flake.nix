@@ -2289,9 +2289,10 @@
                                                                                 text =
                                                                                     ''
                                                                                         PAD="$( resource --resource '["production","pad","checks"]' )"
-                                                                                        # shellcheck disable=SC1091
                                                                                         cd "$PAD"
+                                                                                        # shellcheck disable=SC1091
                                                                                         source .envrc
+                                                                                        true-true
                                                                                     '' ;
                                                                             } ;
                                                                     in "${ application }/bin/test" ;
