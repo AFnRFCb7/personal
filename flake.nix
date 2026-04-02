@@ -777,7 +777,15 @@
                                                                                                                     in "${ application }/bin/true-true" ;
                                                                                                             in
                                                                                                                 ''
-                                                                                                                    wrap ${ true-true } true-true 0500 --inherit plain PATH --uuid 19713
+                                                                                                                    wrap \
+                                                                                                                        ${ true-true } \
+                                                                                                                        true-true \
+                                                                                                                        0500 \
+                                                                                                                        --literal plain EXPECTED_MESSAGES \
+                                                                                                                        --literal plain OBSERVED_MESSAGES \
+                                                                                                                        --literal plain OUT_FILE \
+                                                                                                                        --inherit plain PATH \
+                                                                                                                        --uuid 19713
                                                                                                                 '' ;
                                                                                                 } ;
                                                                                         in "${ application }/bin/init" ;
