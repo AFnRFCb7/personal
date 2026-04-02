@@ -2270,7 +2270,12 @@
                                                     nodes.machine =
                                                         { ... } :
                                                             {
-                                                                imports = builtins.concatLists [ [ user ] private ] ;
+                                                                imports =
+                                                                    builtins.concatLists
+                                                                        [
+                                                                            [ user ]
+                                                                            private
+                                                                        ] ;
                                                             } ;
                                                     testScript =
                                                         let
@@ -2280,9 +2285,10 @@
                                                                         pkgs.writeShellApplication
                                                                             {
                                                                                 name = "test" ;
-                                                                                runtimeInputs = [ ] ;
+                                                                                runtimeInputs = [ pkgs.coreutils ] ;
                                                                                 text =
                                                                                     ''
+                                                                                        true
                                                                                         # PAD="$( resource --resource '["production","pad","checks"]' )"
                                                                                         # cd "$PAD"
                                                                                         # shellcheck disable=SC1091
