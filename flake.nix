@@ -736,7 +736,7 @@
                                                                                                                                                                     then
                                                                                                                                                                         failure 16620 "EXPECTED_RESOURCE=$EXPECTED_RESOURCE" "OBSERVED_RESOURCE=$OBSERVED_RESOURCE"
                                                                                                                                                                     fi
-                                                                                                                                                                    EXPECTED_COUNT=3
+                                                                                                                                                                    EXPECTED_COUNT=1
                                                                                                                                                                     OBSERVED_COUNT="$( wc --lines < "$OUTFILE" )" || failure 30154
                                                                                                                                                                     while (( EXPECTED_COUNT > OBSERVED_COUNT ))
                                                                                                                                                                     do
@@ -756,7 +756,17 @@
                                                                                                                                                 in "${ application }/bin/pre-test" ;
                                                                                                                                         in
                                                                                                                                             ''
-                                                                                                                                                timeout 1m bash -c "${ pre-test }"
+                                                                                                                                                OUTFILE="$( mktemp )" || failure 18422
+                                                                                                                                                redis-cli --csv SUBSCRIBE invalid-init invalid-release stale-init valid-init valid-release | awk -F',' '$1 == "\"message\"" { print $3 }' | tr -d '"' > "$OUTFILE" &
+                                                                                                                                                sleep 0.2
+                                                                                                                                                timeout 10s bash -c "${ pre-test }"
+                                                                                                                                                EXPECTED_COUNT=1
+                                                                                                                                                OBSERVED_COUNT="$( wc --lines < "$OUTFILE" )" || failure 16086
+                                                                                                                                                while (( EXPECTED_COUNT > OBSERVED_COUNT ))
+                                                                                                                                                do
+                                                                                                                                                    sleep 0.2
+                                                                                                                                                    OBSERVED_COUNT="$( wc --lines < "$OUTFILE" )" || failure 11027
+                                                                                                                                                done
                                                                                                                                             '' ;
                                                                                                                             } ;
                                                                                                                     in "${ application }/bin/true-true" ;
