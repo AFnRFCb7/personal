@@ -789,7 +789,7 @@
                                                                                                                 '' ;
                                                                                                 } ;
                                                                                         in "${ application }/bin/init" ;
-                                                                            targets = [ "gh" ] ;
+                                                                            targets = [ "true-true" ] ;
                                                                         } ;
                                                                 gh =
                                                                     ignore :
