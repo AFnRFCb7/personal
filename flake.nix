@@ -983,9 +983,9 @@
                                                                                                                             User git
                                                                                                                             UserKnownHostsFile $GITHUB_KNOWN_HOSTS
                                                                                                                         Host mobile
-                                                                                                                            # ControlMaster auto
-                                                                                                                            # ControlPath $MOBILE_CONTROL_PATH/%C
-                                                                                                                            # ControlPersist 5m
+                                                                                                                            ControlMaster auto
+                                                                                                                            ControlPath $MOBILE_CONTROL_PATH/%C
+                                                                                                                            ControlPersist 5m
                                                                                                                             HostName 192.168.1.192
                                                                                                                             IdentityFile $MOBILE_IDENTITY_FILE
                                                                                                                             Port 8022
