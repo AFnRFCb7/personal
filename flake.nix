@@ -730,18 +730,22 @@
                                                                                                                                                                     OUTFILE="$( mktemp )" || failure 18422
                                                                                                                                                                     redis-cli --csv SUBSCRIBE invalid-init invalid-release stale-init valid-init valid-release | awk -F',' '$1 == "\"message\"" { print $3 }' | tr -d '"' > "$OUTFILE" &
                                                                                                                                                                     sleep 0.2
+                                                                                                                                                                    EXPECTED_RESOURCE=""
                                                                                                                                                                     OBSERVED_RESOURCE=${ resources.production.checks.true-true { failure = 30718 ; } }
                                                                                                                                                                     if [[ "$EXPECTED_RESOURCE" != "$OBSERVED_RESOURCE" ]]
                                                                                                                                                                     then
                                                                                                                                                                         failure 16620 "EXPECTED_RESOURCE=$EXPECTED_RESOURCE" "OBSERVED_RESOURCE=$OBSERVED_RESOURCE"
                                                                                                                                                                     fi
+                                                                                                                                                                    EXPECTED_COUNT=3
                                                                                                                                                                     OBSERVED_COUNT="$( wc --lines < "$OUTFILE" )" || failure 30154
                                                                                                                                                                     while (( EXPECTED_COUNT > OBSERVED_COUNT ))
                                                                                                                                                                     do
                                                                                                                                                                         sleep 0.2
                                                                                                                                                                         OBSERVED_COUNT="$( wc --lines < "$OUTFILE" )" || failure 26176
                                                                                                                                                                     done
-                                                                                                                                                                    EXPECTED_MESSAGES='$EXPECTED_MESSAGES'
+                                                                                                                                                                    EXPECTED_MESSAGES="$( cat <<EOF
+                                                                                                                                                                    EOF
+                                                                                                                                                                    )" || failure 15634
                                                                                                                                                                     OBSERVED_MESSAGES="$( cat "$OUTFILE" )" || failure 31892
                                                                                                                                                                     if [[ "$EXPECTED_MESSAGES" != "$OBSERVED_MESSAGES" ]]
                                                                                                                                                                     then
@@ -758,26 +762,7 @@
                                                                                                                     in "${ application }/bin/true-true" ;
                                                                                                             in
                                                                                                                 ''
-                                                                                                                    export EXPECTED_COUNT=3
-                                                                                                                    EXPECTED_MESSAGES="$( cat <<EOF
-                                                                                                                    EOF
-                                                                                                                    )" || failure 15634
-                                                                                                                    export EXPECTED_RESOURCE=""
-                                                                                                                    wrap \
-                                                                                                                        ${ true-true } \
-                                                                                                                        true-true \
-                                                                                                                        0500 \
-                                                                                                                        --literal plain 1 \
-                                                                                                                        --literal plain 3 \
-                                                                                                                        --inherit plain EXPECTED_COUNT \
-                                                                                                                        --inherit plain EXPECTED_MESSAGES \
-                                                                                                                        --inherit plain EXPECTED_RESOURCE \
-                                                                                                                        --literal plain OBSERVED_COUNT \
-                                                                                                                        --literal plain EXPECTED_MESSAGES \
-                                                                                                                        --literal plain OBSERVED_RESOURCE \
-                                                                                                                        --literal plain OUTFILE \
-                                                                                                                        --inherit plain PATH \
-                                                                                                                        --uuid 19713
+                                                                                                                    wrap ${ true-true } true-true 0500 --inherit plain PATH --uuid 19713
                                                                                                                 '' ;
                                                                                                 } ;
                                                                                         in "${ application }/bin/init" ;
