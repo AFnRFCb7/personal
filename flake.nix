@@ -2201,24 +2201,27 @@
                                                             } ;
                                                     testScript =
                                                         let
-                                                            pre-test =
+                                                            test =
                                                                 let
                                                                     application =
                                                                         pkgs.writeShellApplication
                                                                             {
-                                                                                name = "pre-test" ;
+                                                                                name = "test" ;
                                                                                 runtimeInputs = [ ] ;
                                                                                 text =
                                                                                     ''
-
+                                                                                        PAD="$( resource --resource '["production","pad","checks"]' )"
+                                                                                        cd "$PAD"
+                                                                                        source .envrc
+                                                                                        true-true
                                                                                     '' ;
                                                                             } ;
-                                                                    in "${ application }/bin/pre-test" ;
+                                                                    in "${ application }/bin/test" ;
                                                             in
                                                                 ''
                                                                     machine.wait_for_unit("multi-user.target")
                                                                     machine.wait_for_unit("network-online.target")
-                                                                    machine.succeed("runuser ${ testuser } -- ${ pre-test }")
+                                                                    machine.succeed("runuser ${ testuser } -- ${ test }")
                                                                 '' ;
                                                 } ;
                                             # studio =
