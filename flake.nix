@@ -1185,7 +1185,7 @@
                                                                                                                                 in "${ application }/bin/envrc" ;
                                                                                                                         in
                                                                                                                             ''
-                                                                                                                                CHECKS=${ resources.production.product.check { failure = 23739 ; } }
+                                                                                                                                CHECKS=${ resources.production.product.checks { failure = 23739 ; } }
                                                                                                                                 gc-root "$CHECKS"
                                                                                                                                 export BIN_PATH=${ builtins.concatStringsSep ":" ( builtins.map ( x : "${ x }/bin" ) [ "$CHECKS" ] ) }
                                                                                                                                 export MAN_PATH=${ builtins.concatStringsSep ":" ( builtins.map ( x : "${ x }/share/man" ) [ "$CHECKS" ] ) }
