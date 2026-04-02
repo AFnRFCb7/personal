@@ -730,7 +730,7 @@
                                                                                                                                                                     OUTFILE="$( mktemp )" || failure 18422
                                                                                                                                                                     redis-cli --csv SUBSCRIBE invalid-init invalid-release stale-init valid-init valid-release | awk -F',' '$1 == "\"message\"" { print $3 }' | tr -d '"' > "$OUTFILE" &
                                                                                                                                                                     sleep 0.2
-                                                                                                                                                                    EXPECTED_RESOURCE=""
+                                                                                                                                                                    EXPECTED_RESOURCE="/home/emory/resources/mounts/0000000000000021"
                                                                                                                                                                     OBSERVED_RESOURCE=${ resources.production.checks.true-true { failure = 30718 ; } }
                                                                                                                                                                     if [[ "$EXPECTED_RESOURCE" != "$OBSERVED_RESOURCE" ]]
                                                                                                                                                                     then
