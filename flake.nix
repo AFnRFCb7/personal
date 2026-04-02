@@ -2107,19 +2107,19 @@
                                                             } ;
                                                     testScript =
                                                         let
-                                                            pre-script =
+                                                            pre-test =
                                                                 let
                                                                     application =
                                                                         pkgs.writeShellApplication
                                                                             {
-                                                                                name = "pre-script" ;
+                                                                                name = "pre-test" ;
                                                                                 runtimeInputs = [ ] ;
                                                                                 text =
                                                                                     ''
 
                                                                                     '' ;
                                                                             } ;
-                                                                    in "${ application }/bin/pre-script" ;
+                                                                    in "${ application }/bin/pre-test" ;
                                                             in
                                                                 ''
                                                                     machine.wait_for_unit("multi-user.target")
