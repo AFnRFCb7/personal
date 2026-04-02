@@ -743,14 +743,14 @@
                                                                                                                                                                     then
                                                                                                                                                                         failure "EXPECTED_COUNT=$EXPECTED_COUNT" "OBSERVED_COUNT=$OBSERVED_COUNT"
                                                                                                                                                                     fi
-                                                                                                                                                                    EXPECTED_MESSAGES="$( cat <<EOF
-                                                                                                                                                                    EOF
-                                                                                                                                                                    )" || failure 15634
-                                                                                                                                                                    OBSERVED_MESSAGES="$( cat "$OUTFILE" )" || failure 31892
-#                                                                                                                                                                    if [[ "$EXPECTED_MESSAGES" != "$OBSERVED_MESSAGES" ]]
-#                                                                                                                                                                    then
-#                                                                                                                                                                        failure 13800 "EXPECTED_MESSAGE" "$EXPECTED_MESSAGES" "OBSERVED_MESSAGES" "$OBSERVED_MESSAGES"
-#                                                                                                                                                                    fi
+                                                                                                                                                                    # EXPECTED_MESSAGES="$( cat <<EOF
+                                                                                                                                                                    # EOF
+                                                                                                                                                                    # )" || failure 15634
+                                                                                                                                                                    # OBSERVED_MESSAGES="$( cat "$OUTFILE" )" || failure 31892
+                                                                                                                                                                    # if [[ "$EXPECTED_MESSAGES" != "$OBSERVED_MESSAGES" ]]
+                                                                                                                                                                    # then
+                                                                                                                                                                    #     failure 13800 "EXPECTED_MESSAGE" "$EXPECTED_MESSAGES" "OBSERVED_MESSAGES" "$OBSERVED_MESSAGES"
+                                                                                                                                                                    # fi
                                                                                                                                                                 '' ;
                                                                                                                                                         } ;
                                                                                                                                                 in "${ application }/bin/pre-test" ;
