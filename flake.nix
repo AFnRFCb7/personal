@@ -2096,6 +2096,23 @@
                                                         } ;
                                                 in
                                                     factory.check { expected = "/nix/store/gvniix1i4ss6vwibfjvf908ghpvcjxam-get-or-create/bin/get-or-create" ; mkDerivation = pkgs.stdenv.mkDerivation ; } ;
+                                        resource-true-true =
+                                            pkgs.nixosTest
+                                                {
+                                                    name = "resource-true-true" ;
+                                                    nodes.machine =
+                                                        { ... } :
+                                                            {
+                                                                imports = builtins.concatLists [ [ user ] private ] ;
+                                                            } ;
+                                                    testScript =
+                                                        let
+                                                            in
+                                                                ''
+                                                                    machine.wait_for_unit("multi-user.target")
+                                                                    machine.wait_for_unit("network-online.target")
+                                                                '' ;
+                                                }
                                             # studio =
                                             #     pkgs.nixosTest
                                             #         {
