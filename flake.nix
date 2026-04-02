@@ -569,7 +569,7 @@
                                                                                                                                             age --encrypt --recipient "$RECIPIENT" --output "/home/${ config.personal.name }/resources/mounts/$INDEX/dot-ssh/mobile/known-hosts.asc.age" --armor "$MOBILE_KNOWN_HOSTS/plaintext"
                                                                                                                                             git -C "/home/${ config.personal.name }/resources/mounts/$INDEX" add dot-ssh/mobile/known-hosts.asc.age
                                                                                                                                         fi
-                                                                                                                                        MOBILE_IDENTITY=${ resources.production.age.plaintext.dot-ssh.github.identity { failure = 13514 ; } }
+                                                                                                                                        MOBILE_IDENTITY=${ resources.production.age.plaintext.dot-ssh.mobile.identity { failure = 13514 ; } }
                                                                                                                                         MOBILE_IDENTITY_FLAG="$( cat "$MOBILE_IDENTITY/flag" )" || failure 16967
                                                                                                                                         if "$MOBILE_IDENTITY_FLAG"
                                                                                                                                         then
@@ -974,9 +974,9 @@
                                                                                                                     "config"
                                                                                                                     ''
                                                                                                                         Host github.com
-                                                                                                                            # ControlMaster auto
-                                                                                                                            # ControlPath $GITHUB_CONTROL_PATH%C
-                                                                                                                            # ControlPersist 5m
+                                                                                                                            ControlMaster auto
+                                                                                                                            ControlPath $GITHUB_CONTROL_PATH%C
+                                                                                                                            ControlPersist 5m
                                                                                                                             HostName github.com
                                                                                                                             IdentityFile $GITHUB_IDENTITY_FILE
                                                                                                                             StrictHostKeyChecking yes
@@ -989,9 +989,9 @@
                                                                                                                             HostName 192.168.1.192
                                                                                                                             IdentityFile $MOBILE_IDENTITY_FILE
                                                                                                                             Port 8022
-                                                                                                                            # StrictHostKeyChecking yes
+                                                                                                                            StrictHostKeyChecking yes
                                                                                                                             User git
-                                                                                                                            # UserKnownHostsFile $MOBILE_KNOWN_HOSTS
+                                                                                                                            UserKnownHostsFile $MOBILE_KNOWN_HOSTS
                                                                                                                     '' ;
                                                                                                             in
                                                                                                                 ''
