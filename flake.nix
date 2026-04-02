@@ -715,11 +715,47 @@
                                                                                                                         pkgs.writeShellApplication
                                                                                                                             {
                                                                                                                                 name = "true-true" ;
-                                                                                                                                runtimeInputs = [ pkgs.gh ] ;
+                                                                                                                                runtimeInputs = [ pkgs.bash pkgs.redis ] ;
                                                                                                                                 text =
-                                                                                                                                    ''
-
-                                                                                                                                    '' ;
+                                                                                                                                    let
+                                                                                                                                        pre-test =
+                                                                                                                                            let
+                                                                                                                                                application =
+                                                                                                                                                    pkgs.writeShellApplication
+                                                                                                                                                        {
+                                                                                                                                                            name = "pre-test" ;
+                                                                                                                                                            runtimeInputs = [ failure pkgs.coreutils pkgs.gawk pkgs.redis ] ;
+                                                                                                                                                            text =
+                                                                                                                                                                ''
+                                                                                                                                                                    OUTFILE="$( mktemp )" || failure 18422
+                                                                                                                                                                    redis-cli --csv SUBSCRIBE invalid-init invalid-release stale-init valid-init valid-release | awk -F',' '$1 == "\"message\"" { print $3 }' | tr -d '"' > "$OUTFILE" &
+                                                                                                                                                                    SUB_PID="$!"
+                                                                                                                                                                    sleep 0.2
+                                                                                                                                                                    RESOURCE=${ resources.production.checks.true-true { failure = 30718 ; } }
+                                                                                                                                                                    EXPECTED_COUNT=3
+                                                                                                                                                                    OBSERVED_COUNT="$( wc --lines < "$OUTFILE" )" || failure 30154
+                                                                                                                                                                    while (( EXPECTED_COUNT > OBSERVED_COUNT ))
+                                                                                                                                                                    do
+                                                                                                                                                                        sleep 0.2
+                                                                                                                                                                        OBSERVED_COUNT="$( wc --lines < "$OUTFILE" )" || failure 26176
+                                                                                                                                                                    done
+                                                                                                                                                                    kill "$SUB_PID" 2>/dev/null || true
+                                                                                                                                                                    wait "$SUB_PID" 2>/dev/null || true
+                                                                                                                                                                    EXPECTED_MESSAGES="$( cat <<EOF
+                                                                                                                                                                    EOF
+                                                                                                                                                                    )" || failure 15634
+                                                                                                                                                                    OBSERVED_MESSAGES="$( cat "$OUTFILE" )" || failure 31892
+                                                                                                                                                                    if [[ "$EXPECTED_MESSAGES" != "$OBSERVED_MESSAGES" ]]
+                                                                                                                                                                    then
+                                                                                                                                                                        failure 13800 "EXPECTED_MESSAGE" "$EXPECTED_MESSAGES" "OBSERVED_MESSAGES" "$OBSERVED_MESSAGES"
+                                                                                                                                                                    fi
+                                                                                                                                                                '' ;
+                                                                                                                                                        } ;
+                                                                                                                                                in "${ application }/bin/pre-test" ;
+                                                                                                                                        in
+                                                                                                                                            ''
+                                                                                                                                                timeout 1m bash -c "${ pre-test }"
+                                                                                                                                            '' ;
                                                                                                                             } ;
                                                                                                                     in "${ application }/bin/true-true" ;
                                                                                                             in
