@@ -2107,10 +2107,24 @@
                                                             } ;
                                                     testScript =
                                                         let
+                                                            pre-script =
+                                                                let
+                                                                    application =
+                                                                        pkgs.writeShellApplication
+                                                                            {
+                                                                                name = "pre-script" ;
+                                                                                runtimeInputs = [ ] ;
+                                                                                text =
+                                                                                    ''
+
+                                                                                    '' ;
+                                                                            } ;
+                                                                    in "${ application }/bin/pre-script" ;
                                                             in
                                                                 ''
                                                                     machine.wait_for_unit("multi-user.target")
                                                                     machine.wait_for_unit("network-online.target")
+                                                                    machine.succeed("runuser ${ testuser } -- ${ pre-test }")
                                                                 '' ;
                                                 } ;
                                             # studio =
