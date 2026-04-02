@@ -715,7 +715,7 @@
                                                                                                                         pkgs.writeShellApplication
                                                                                                                             {
                                                                                                                                 name = "true-true" ;
-                                                                                                                                runtimeInputs = [ pkgs.bash pkgs.redis ] ;
+                                                                                                                                runtimeInputs = [ failure pkgs.bash pkgs.coreutils pkgs.redis ] ;
                                                                                                                                 text =
                                                                                                                                     let
                                                                                                                                         pre-test =
