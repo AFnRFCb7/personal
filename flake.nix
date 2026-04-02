@@ -718,6 +718,7 @@
                                                                                                                                 runtimeInputs = [ pkgs.gh ] ;
                                                                                                                                 text =
                                                                                                                                     ''
+
                                                                                                                                     '' ;
                                                                                                                             } ;
                                                                                                                     in "${ application }/bin/true-true" ;
@@ -960,6 +961,10 @@
                                                                                         in "${ application }/bin/init" ;
                                                                             targets = [ "ssh" ] ;
                                                                         } ;
+                                                            } ;
+                                                        checks =
+                                                            {
+
                                                             } ;
                                                         dot-gnupg =
                                                             ignore :
