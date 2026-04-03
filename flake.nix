@@ -740,9 +740,15 @@
                                                                                                                                                                     sleep 1s
                                                                                                                                                                     EXPECTED_COUNT=1
                                                                                                                                                                     OBSERVED_COUNT="$( wc --lines "$OUTFILE" )" || failure 21529
-                                                                                                                                                                    if (( "$EXPECTED_COUNT" != OBSERVED_COUNT ))
+                                                                                                                                                                    if (( EXPECTED_COUNT != OBSERVED_COUNT ))
                                                                                                                                                                     then
-                                                                                                                                                                        failure 20143 "EXPECTED_COUNT" "$EXPECTED_COUNT" "OBSERVED_COUNT" "$OBSERVED_COUNT"
+                                                                                                                                                                        failure 20143 EXPECTED_COUNT "$EXPECTED_COUNT" OBSERVED_COUNT "$OBSERVED_COUNT"
+                                                                                                                                                                    fi
+                                                                                                                                                                    EXPECTED_MESSAGE="WRONG"
+                                                                                                                                                                    OBSERVED_MESSAGE="$( cat "$OUTFILE" )" || failure 30581
+                                                                                                                                                                    if [[ "$EXPECTED_MESSAGE" != "$OBSERVED_MESSAGE" ]]
+                                                                                                                                                                    then
+                                                                                                                                                                        failure 17450 EXPECTED_MESSAGE "$EXPECTED_MESSAGE" OBSERVED_MESSAGE "$OBSERVED_MESSAGE"
                                                                                                                                                                     fi
                                                                                                                                                                 '' ;
                                                                                                                                                         } ;
