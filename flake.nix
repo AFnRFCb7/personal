@@ -738,6 +738,12 @@
                                                                                                                                                                         failure 15789 EXPECTED_RESOURCE "$EXPECTED_RESOURCE" OBSERVED_RESOURCE "$OBSERVED_RESOURCE"
                                                                                                                                                                     fi
                                                                                                                                                                     sleep 1s
+                                                                                                                                                                    EXPECTED_COUNT=1
+                                                                                                                                                                    OBSERVED_COUNT="$( wc --lines "$OUTFILE" )" || failure 21529
+                                                                                                                                                                    if (( "$EXPECTED_COUNT" != OBSERVED_COUNT ))
+                                                                                                                                                                    then
+                                                                                                                                                                        failure 20143 "EXPECTED_COUNT" "$EXPECTED_COUNT" "OBSERVED_COUNT" "$OBSERVED_COUNT"
+                                                                                                                                                                    fi
                                                                                                                                                                 '' ;
                                                                                                                                                         } ;
                                                                                                                                                 in "${ application }/bin/pre-test" ;
