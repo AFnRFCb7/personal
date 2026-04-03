@@ -729,6 +729,7 @@
                                                                                                                                                                 ''
                                                                                                                                                                     # EXPECTED_RESOURCE="WRONG"
                                                                                                                                                                     OUTFILE="$( mktemp )" || failure 18422
+                                                                                                                                                                    sleep 10s
                                                                                                                                                                     redis-cli --csv SUBSCRIBE invalid-init invalid-release stale-init valid-init valid-release | awk -F',' '$1 == "\"message\"" { print $3 }' | tr -d '"' > "$OUTFILE" &
                                                                                                                                                                     sleep 10s
                                                                                                                                                                     # OBSERVED_RESOURCE=${ resources.production.pad.checks { failure = 21760 ; } }
