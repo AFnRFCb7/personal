@@ -771,7 +771,7 @@
                                                                                                                                                     exit 0
                                                                                                                                                 fi
                                                                                                                                                 export OUT_DIRECTORY
-                                                                                                                                                if true
+                                                                                                                                                if false
                                                                                                                                                 then
                                                                                                                                                     exit 0
                                                                                                                                                 fi
