@@ -810,9 +810,7 @@
                                                                                                                         --literal plain '#' \
                                                                                                                         --literal plain 1 \
                                                                                                                         --literal plain 2 \
-                                                                                                                        --literal plain EXPECTED_MESSAGES \
                                                                                                                         --literal plain EXPECTED_RESOURCE \
-                                                                                                                        --literal plain OBSERVED_MESSAGES \
                                                                                                                         --literal plain OUTFILE \
                                                                                                                         --inherit plain PATH \
                                                                                                                         --uuid 19713
