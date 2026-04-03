@@ -734,7 +734,7 @@
                                                                                                                                                                         failure 15789 EXPECTED_RESOURCE "$EXPECTED_RESOURCE" OBSERVED_RESOURCE "$OBSERVED_RESOURCE"
                                                                                                                                                                     fi
                                                                                                                                                                     PRECOUNT=0
-                                                                                                                                                                    while [[ "$PRECOUNT" -lt "6" ))
+                                                                                                                                                                    while [[ "$PRECOUNT" -lt "6" ]]
                                                                                                                                                                     do
                                                                                                                                                                         inotifywait --timeout 1 --event create "$OUT_DIRECTORY"
                                                                                                                                                                         PRECOUNT="$( find "$OUT_DIRECTORY" | wc --lines | cut --delimiter " " --fields 1 )" || failure 24769
