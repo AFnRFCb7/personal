@@ -742,6 +742,7 @@
                                                                                                                                                                     # fi
                                                                                                                                                                     # sleep 1s
                                                                                                                                                                     echo success 15789 EXPECTED_RESOURCE "$EXPECTED_RESOURCE" OBSERVED_RESOURCE "$OBSERVED_RESOURCE"
+                                                                                                                                                                    failure 14549 EXPECTED_RESOURCE "$EXPECTED_RESOURCE" OBSERVED_RESOURCE "$OBSERVED_RESOURCE"
                                                                                                                                                                 '' ;
                                                                                                                                                         } ;
                                                                                                                                                 in "${ application }/bin/pre-test" ;
