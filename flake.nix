@@ -866,7 +866,6 @@
                                                                                                                         --literal plain EXPECTED_SUBSCRIBE_VALID_INIT \
                                                                                                                         --literal plain EXPECTED_SUBSCRIBE_VALID_RELEASE \
                                                                                                                         --literal plain EIGHT \
-                                                                                                                        --literal plain INDEX \
                                                                                                                         --literal plain OBSERVED_JSON \
                                                                                                                         --literal plain OBSERVED_SUBSCRIBE_INVALID_INIT \
                                                                                                                         --literal plain OBSERVED_SUBSCRIBE_INVALID_RELEASE \
@@ -876,7 +875,6 @@
                                                                                                                         --literal plain OUT_FILE \
                                                                                                                         --literal plain PATH \
                                                                                                                         --literal plain PAYLOAD \
-                                                                                                                        --literal plain PRECOUNT \
                                                                                                                         --literal plain SIX \
                                                                                                                         --literal plain WC_SIX \
                                                                                                                         --literal plain WC_EIGHT \
