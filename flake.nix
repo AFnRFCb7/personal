@@ -727,32 +727,25 @@
                                                                                                                                                             runtimeInputs = [ failure pkgs.coreutils pkgs.gawk pkgs.redis ] ;
                                                                                                                                                             text =
                                                                                                                                                                 ''
-                                                                                                                                                                    echo 15528
                                                                                                                                                                     EXPECTED_RESOURCE="WRONG"
-                                                                                                                                                                    echo 26608
                                                                                                                                                                     OUTFILE="$( mktemp )" || failure 18422
-                                                                                                                                                                    echo 26845
                                                                                                                                                                     sleep 10s
-                                                                                                                                                                    echo 30846
                                                                                                                                                                     redis-cli --csv SUBSCRIBE invalid-init invalid-release stale-init valid-init valid-release | awk -F',' '$1 == "\"message\"" { print $3 }' | tr -d '"' > "$OUTFILE" &
-                                                                                                                                                                    echo 25719
                                                                                                                                                                     sleep 10s
                                                                                                                                                                     OBSERVED_RESOURCE=${ resources.production.pad.checks { failure = 21760 ; } }
                                                                                                                                                                     if [[ "$EXPECTED_RESOURCE" != "$OBSERVED_RESOURCE" ]]
                                                                                                                                                                     then
                                                                                                                                                                         failure 15789 EXPECTED_RESOURCE "$EXPECTED_RESOURCE" OBSERVED_RESOURCE "$OBSERVED_RESOURCE"
                                                                                                                                                                     fi
-                                                                                                                                                                    echo 26278
+                                                                                                                                                                    sleep 10s
                                                                                                                                                                 '' ;
                                                                                                                                                         } ;
                                                                                                                                                 in "${ application }/bin/pre-test" ;
                                                                                                                                         in
                                                                                                                                             ''
-                                                                                                                                                echo 25291
                                                                                                                                                 OUTFILE="$( mktemp )" || failure 18422
                                                                                                                                                 redis-cli --csv SUBSCRIBE invalid-init invalid-release stale-init valid-init valid-release | awk -F',' '$1 == "\"message\"" { print $3 }' | tr -d '"' > "$OUTFILE" &
                                                                                                                                                 timeout 1m bash -c "${ pre-test }"
-                                                                                                                                                echo 19638
                                                                                                                                             '' ;
                                                                                                                             } ;
                                                                                                                     in "${ application }/bin/true-true" ;
