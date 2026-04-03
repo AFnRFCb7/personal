@@ -727,24 +727,6 @@
                                                                                                                                                             runtimeInputs = [ failure pkgs.coreutils pkgs.inotify-tools pkgs.redis ] ;
                                                                                                                                                             text =
                                                                                                                                                                 ''
-                                                                                                                                                                    OUT_DIRECTORY="$( mktemp --directory )" || failure 29393
-                                                                                                                                                                    redis-cli --csv SUBSCRIBE invalid-init invalid-release stale-init valid-init valid-release | while read -r PAYLOAD
-                                                                                                                                                                    do
-                                                                                                                                                                        INDEX="$( find "$OUT_DIRECTORY" | wc --lines | cut --delimiter " " --fields 1 )" || failure 17122
-                                                                                                                                                                        echo "$PAYLOAD" > "$OUT_DIRECTORY/$INDEX"
-                                                                                                                                                                    done &
-                                                                                                                                                                    PRECOUNT=0
-                                                                                                                                                                    while (( PRECOUNT < 5 ))
-                                                                                                                                                                    do
-                                                                                                                                                                        inotifywait --event create "$OUT_DIRECTORY"
-                                                                                                                                                                        PRECOUNT="$( find "$OUT_DIRECTORY" | wc --lines | cut --delimiter " " --fields 1 )" || failure 13785
-                                                                                                                                                                    done
-                                                                                                                                                                    EXPECTED_SUBSCRIBE_INVALID_INIT="\"subscribe\",\"invalid-init\",1"
-                                                                                                                                                                    OBSERVED_SUBSCRIBE_INVALID_INIT="$( cat "$OUT_DIRECTORY/1" )" || failure 29807
-                                                                                                                                                                    if [[ "$EXPECTED_SUBSCRIBE_INVALID_INIT" != "" ]]
-                                                                                                                                                                    then
-                                                                                                                                                                        failure 30918 EXPECTED_SUBSCRIBE_INVALID_INIT "$EXPECTED_SUBSCRIBE_INVALID_INIT" OBSERVED_SUBSCRIBE_INVALID_INIT "$OBSERVED_SUBSCRIBE_INVALID_INIT"
-                                                                                                                                                                    fi
                                                                                                                                                                     EXPECTED_RESOURCE="/home/emory/resources/mounts/0000000000000001"
                                                                                                                                                                     OBSERVED_RESOURCE=${ resources.production.pad.checks { failure = 21760 ; } }
                                                                                                                                                                     if [[ "$EXPECTED_RESOURCE" != "$OBSERVED_RESOURCE" ]]
@@ -769,8 +751,49 @@
                                                                                                                                                 in "${ application }/bin/pre-test" ;
                                                                                                                                         in
                                                                                                                                             ''
-                                                                                                                                                OUTFILE="$( mktemp )" || failure 18422
-                                                                                                                                                redis-cli --csv SUBSCRIBE invalid-init invalid-release stale-init valid-init valid-release | awk -F',' '$1 == "\"message\"" { print $3 }' | tr -d '"' > "$OUTFILE" &
+                                                                                                                                                OUT_DIRECTORY="$( mktemp --directory )" || failure 29393
+                                                                                                                                                export OUT_DIRECTORY
+                                                                                                                                                redis-cli --csv SUBSCRIBE invalid-init invalid-release stale-init valid-init valid-release | while read -r PAYLOAD
+                                                                                                                                                do
+                                                                                                                                                    INDEX="$( find "$OUT_DIRECTORY" | wc --lines | cut --delimiter " " --fields 1 )" || failure 17122
+                                                                                                                                                    echo "$PAYLOAD" > "$OUT_DIRECTORY/$INDEX"
+                                                                                                                                                done &
+                                                                                                                                                PRECOUNT=0
+                                                                                                                                                while (( PRECOUNT < 5 ))
+                                                                                                                                                do
+                                                                                                                                                    inotifywait --event create "$OUT_DIRECTORY"
+                                                                                                                                                    PRECOUNT="$( find "$OUT_DIRECTORY" | wc --lines | cut --delimiter " " --fields 1 )" || failure 13785
+                                                                                                                                                done
+                                                                                                                                                EXPECTED_SUBSCRIBE_INVALID_INIT="\"subscribe\",\"invalid-init\",1"
+                                                                                                                                                OBSERVED_SUBSCRIBE_INVALID_INIT="$( cat "$OUT_DIRECTORY/1" )" || failure 29807
+                                                                                                                                                if [[ "$EXPECTED_SUBSCRIBE_INVALID_INIT" != "$OBSERVED_SUBSCRIBE_INVALID_INIT" ]]
+                                                                                                                                                then
+                                                                                                                                                    failure 30918 EXPECTED_SUBSCRIBE_INVALID_INIT "$EXPECTED_SUBSCRIBE_INVALID_INIT" OBSERVED_SUBSCRIBE_INVALID_INIT "$OBSERVED_SUBSCRIBE_INVALID_INIT"
+                                                                                                                                                fi
+                                                                                                                                                EXPECTED_SUBSCRIBE_INVALID_RELEASE="\"subscribe\",\"invalid-release\",1"
+                                                                                                                                                OBSERVED_SUBSCRIBE_INVALID_RELEASE="$( cat "$OUT_DIRECTORY/2" )" || failure 10496
+                                                                                                                                                if [[ "$EXPECTED_SUBSCRIBE_INVALID_RELEASE" != "$OBSERVED_SUBSCRIBE_INVALID_RELEASE" ]]
+                                                                                                                                                then
+                                                                                                                                                    failure 21324 EXPECTED_SUBSCRIBE_INVALID_RELEASE "$EXPECTED_SUBSCRIBE_INVALID_RELEASE" OBSERVED_SUBSCRIBE_INVALID_RELEASE "$OBSERVED_SUBSCRIBE_INVALID_RELEASE"
+                                                                                                                                                fi
+                                                                                                                                                EXPECTED_SUBSCRIBE_STALE_INIT="\"subscribe\",\"stale-init\",1"
+                                                                                                                                                OBSERVED_SUBSCRIBE_STALE_INIT="$( cat "$OUT_DIRECTORY/3" )" || failure 16256
+                                                                                                                                                if [[ "$EXPECTED_SUBSCRIBE_STALE_INIT" != "$OBSERVED_SUBSCRIBE_STALE_INIT" ]]
+                                                                                                                                                then
+                                                                                                                                                    failure 11841 EXPECTED_SUBSCRIBE_STALE_INIT "$EXPECTED_SUBSCRIBE_STALE_INIT" OBSERVED_SUBSCRIBE_STALE_INIT "$OBSERVED_SUBSCRIBE_STALE_INIT"
+                                                                                                                                                fi
+                                                                                                                                                EXPECTED_SUBSCRIBE_VALID_INIT="\"subscribe\",\"valid-init\",1"
+                                                                                                                                                OBSERVED_SUBSCRIBE_VALID_INIT="$( cat "$OUT_DIRECTORY/4" )" || failure 32080
+                                                                                                                                                if [[ "$EXPECTED_SUBSCRIBE_VALID_INIT" != "$OBSERVED_SUBSCRIBE_VALID_INIT" ]]
+                                                                                                                                                then
+                                                                                                                                                    failure 20315 EXPECTED_SUBSCRIBE_VALID_INIT "$EXPECTED_SUBSCRIBE_VALID_INIT" OBSERVED_SUBSCRIBE_VALID_INIT "$OBSERVED_SUBSCRIBE_VALID_INIT"
+                                                                                                                                                fi
+                                                                                                                                                EXPECTED_SUBSCRIBE_VALID_RELEASE="\"subscribe\",\"valid-release\",1"
+                                                                                                                                                OBSERVED_SUBSCRIBE_VALID_RELEASE="$( cat "$OUT_DIRECTORY/1" )" || failure 20683
+                                                                                                                                                if [[ "$EXPECTED_SUBSCRIBE_VALID_RELEASE" != "$OBSERVED_SUBSCRIBE_VALID_RELEASE" ]]
+                                                                                                                                                then
+                                                                                                                                                    failure 28681 EXPECTED_SUBSCRIBE_VALID_RELEASE "$EXPECTED_SUBSCRIBE_VALID_RELEASE" OBSERVED_SUBSCRIBE_VALID_RELEASE "$OBSERVED_SUBSCRIBE_VALID_RELEASE"
+                                                                                                                                                fi
                                                                                                                                                 timeout 1m bash -c "${ pre-test }"
                                                                                                                                             '' ;
                                                                                                                             } ;
@@ -781,7 +804,17 @@
                                                                                                                         ${ true-true } \
                                                                                                                         true-true \
                                                                                                                         0500 \
-                                                                                                                        --literal plain OUTFILE \
+                                                                                                                        --literal plain EXPECTED_SUBSCRIBE_INVALID_INIT \
+                                                                                                                        --literal plain EXPECTED_SUBSCRIBE_INVALID_RELEASE \
+                                                                                                                        --literal plain EXPECTED_SUBSCRIBE_STALE_INIT \
+                                                                                                                        --literal plain EXPECTED_SUBSCRIBE_VALID_INIT \ 
+                                                                                                                        --literal plain EXPECTED_SUBSCRIBE_VALID_RELEASE \
+                                                                                                                        --literal plain OBSERVED_SUBSCRIBE_INVALID_INIT \
+                                                                                                                        --literal plain OBSERVED_SUBSCRIBE_INVALID_RELEASE \
+                                                                                                                        --literal plain OBSERVED_SUBSCRIBE_STALE_INIT \
+                                                                                                                        --literal plain OBSERVED_SUBSCRIBE_VALID_INIT \ 
+                                                                                                                        --literal plain OBSERVED_SUBSCRIBE_VALID_RELEASE \
+                                                                                                                        --literal plain OUT_DIRECTORY \
                                                                                                                         --inherit plain PATH \
                                                                                                                         --uuid 19713
                                                                                                                 '' ;
@@ -2310,13 +2343,11 @@
                                                                                 runtimeInputs = [ pkgs.coreutils ] ;
                                                                                 text =
                                                                                     ''
-                                                                                        echo 14263
                                                                                         PAD="$( resource --resource '["production","pad","checks"]' )"
                                                                                         cd "$PAD"
                                                                                         # shellcheck disable=SC1091
                                                                                         source .envrc
-                                                                                        true-true
-                                                                                        echo 26602
+                                                                                        timeout 2m true-true
                                                                                     '' ;
                                                                             } ;
                                                                     in "${ application }/bin/test" ;
