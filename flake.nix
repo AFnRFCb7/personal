@@ -727,11 +727,26 @@
                                                                                                                                                             runtimeInputs = [ failure pkgs.coreutils pkgs.gawk pkgs.redis ] ;
                                                                                                                                                             text =
                                                                                                                                                                 ''
-                                                                                                                                                                    EXPECTED_RESOURCE="$1"
-                                                                                                                                                                    EXPECTED_MESSAGES="$2"
+                                                                                                                                                                    EXPECTED_PRE_MESSAGES=()
+                                                                                                                                                                    while [[ "$#" -gt 0 ]]
+                                                                                                                                                                    do
+                                                                                                                                                                        case "$1" in
+                                                                                                                                                                            --pre-message)
+                                                                                                                                                                                EXPECTED_PRE_MESSAGES+=( "$2" )
+                                                                                                                                                                                shift 2
+                                                                                                                                                                                ;;
+                                                                                                                                                                            --resource)
+                                                                                                                                                                                EXPECTED_RESOURCE="$2"
+                                                                                                                                                                                shift 2
+                                                                                                                                                                                ;;
+                                                                                                                                                                            *)
+                                                                                                                                                                                failure 5047 "$*"
+                                                                                                                                                                                ;;
+                                                                                                                                                                        esac
+                                                                                                                                                                    done
                                                                                                                                                                     OUTFILE="$( mktemp )" || failure 18422
                                                                                                                                                                     redis-cli --csv SUBSCRIBE invalid-init invalid-release stale-init valid-init valid-release | awk -F',' '$1 == "\"message\"" { print $3 }' | tr -d '"' > "$OUTFILE" &
-                                                                                                                                                                    sleep 10
+                                                                                                                                                                    sleep 10s
                                                                                                                                                                     OBSERVED_RESOURCE=${ resources.production.checks.true-true { failure = 30718 ; } }
                                                                                                                                                                     if [[ "$EXPECTED_RESOURCE" != "$OBSERVED_RESOURCE" ]]
                                                                                                                                                                     then
@@ -758,12 +773,31 @@
                                                                                                                                                 in "${ application }/bin/pre-test" ;
                                                                                                                                         in
                                                                                                                                             ''
-                                                                                                                                                EXPECTED_RESOURCE="$1"
-                                                                                                                                                EXPECTED_MESSAGES="$2"
+                                                                                                                                                EXPECTED_POST_MESSAGES=()
+                                                                                                                                                EXPECTED_PRE_MESSAGES=()
+                                                                                                                                                while [[ "$#" -gt 0 ]]
+                                                                                                                                                do
+                                                                                                                                                    case "$1" in
+                                                                                                                                                        --post-message)
+                                                                                                                                                            EXPECTED_POST_MESSAGES+=( "$2" )
+                                                                                                                                                            shift 2
+                                                                                                                                                            ;;
+                                                                                                                                                        --pre-message)
+                                                                                                                                                            EXPECTED_PRE_MESSAGES+=( "$2" )
+                                                                                                                                                            shift 2
+                                                                                                                                                            ;;
+                                                                                                                                                        --resource)
+                                                                                                                                                            EXPECTED_RESOURCE="$2"
+                                                                                                                                                            shift 2
+                                                                                                                                                            ;;
+                                                                                                                                                        *)
+                                                                                                                                                            failure 23578 "$*"
+                                                                                                                                                            ;;
+                                                                                                                                                    esac
+                                                                                                                                                done
                                                                                                                                                 OUTFILE="$( mktemp )" || failure 18422
                                                                                                                                                 redis-cli --csv SUBSCRIBE invalid-init invalid-release stale-init valid-init valid-release | awk -F',' '$1 == "\"message\"" { print $3 }' | tr -d '"' > "$OUTFILE" &
-                                                                                                                                                sleep 0.2
-                                                                                                                                                timeout 10s bash -c "${ pre-test }" "$EXPECTED_RESOURCE" "$EXPECTED_MESSAGES"
+                                                                                                                                                timeout 10s bash -c "${ pre-test } --expected-resource $EXPECTED_RESOURCE"
                                                                                                                                             '' ;
                                                                                                                             } ;
                                                                                                                     in "${ application }/bin/true-true" ;
@@ -773,6 +807,7 @@
                                                                                                                         ${ true-true } \
                                                                                                                         true-true \
                                                                                                                         0500 \
+                                                                                                                        --literal plain '#' \
                                                                                                                         --literal plain 1 \
                                                                                                                         --literal plain 2 \
                                                                                                                         --literal plain EXPECTED_MESSAGES \
@@ -2310,7 +2345,7 @@
                                                                                         cd "$PAD"
                                                                                         # shellcheck disable=SC1091
                                                                                         source .envrc
-                                                                                        true-true "WRONG"
+                                                                                        true-true --expected-resource "WRONG"
                                                                                     '' ;
                                                                             } ;
                                                                     in "${ application }/bin/test" ;
