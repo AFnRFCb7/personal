@@ -2355,7 +2355,7 @@
                                                                                         cd "$PAD"
                                                                                         # shellcheck disable=SC1091
                                                                                         source .envrc
-                                                                                        timeout 2m true-true
+                                                                                        ${ pkgs.coreutils }/bin/timeout 2m true-true
                                                                                     '' ;
                                                                             } ;
                                                                     in "${ application }/bin/test" ;
