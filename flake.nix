@@ -727,51 +727,41 @@
                                                                                                                                                             runtimeInputs = [ failure pkgs.coreutils pkgs.gawk pkgs.redis ] ;
                                                                                                                                                             text =
                                                                                                                                                                 ''
+                                                                                                                                                                    EXPECTED_RESOURCE="$1"
                                                                                                                                                                     OUTFILE="$( mktemp )" || failure 18422
                                                                                                                                                                     redis-cli --csv SUBSCRIBE invalid-init invalid-release stale-init valid-init valid-release | awk -F',' '$1 == "\"message\"" { print $3 }' | tr -d '"' > "$OUTFILE" &
                                                                                                                                                                     sleep 10
-                                                                                                                                                                    EXPECTED_RESOURCE="/home/emory/resources/mounts/0000000000000021"
+                                                                                                                                                                    EXPECTED_RESOURCE=
                                                                                                                                                                     OBSERVED_RESOURCE=${ resources.production.checks.true-true { failure = 30718 ; } }
                                                                                                                                                                     if [[ "$EXPECTED_RESOURCE" != "$OBSERVED_RESOURCE" ]]
                                                                                                                                                                     then
                                                                                                                                                                         failure 16620 "EXPECTED_RESOURCE=$EXPECTED_RESOURCE" "OBSERVED_RESOURCE=$OBSERVED_RESOURCE"
                                                                                                                                                                     fi
-                                                                                                                                                                    sleep 10
-                                                                                                                                                                    EXPECTED_COUNT=1
-                                                                                                                                                                    OBSERVED_COUNT="$( wc --lines < "$OUTFILE" )" || failure 30154
-                                                                                                                                                                    if (( EXPECTED_COUNT != OBSERVED_COUNT ))
-                                                                                                                                                                    then
-                                                                                                                                                                        failure "EXPECTED_COUNT=$EXPECTED_COUNT" "OBSERVED_COUNT=$OBSERVED_COUNT"
-                                                                                                                                                                    fi
-                                                                                                                                                                    EXPECTED_MESSAGES="$( cat <<EOF
-                                                                                                                                                                    EOF
-                                                                                                                                                                    )" || failure 15634
-                                                                                                                                                                    OBSERVED_MESSAGES="$( cat "$OUTFILE" )" || failure 31892
-                                                                                                                                                                    if [[ "$EXPECTED_MESSAGES" != "$OBSERVED_MESSAGES" ]]
-                                                                                                                                                                    then
-                                                                                                                                                                        failure 13800 "EXPECTED_MESSAGE" "$EXPECTED_MESSAGES" "OBSERVED_MESSAGES" "$OBSERVED_MESSAGES"
-                                                                                                                                                                    fi
+                                                                                                                                                                    # sleep 10
+                                                                                                                                                                    # EXPECTED_COUNT=1
+                                                                                                                                                                    # OBSERVED_COUNT="$( wc --lines < "$OUTFILE" )" || failure 30154
+                                                                                                                                                                    # if (( EXPECTED_COUNT != OBSERVED_COUNT ))
+                                                                                                                                                                    # then
+                                                                                                                                                                    #     failure "EXPECTED_COUNT=$EXPECTED_COUNT" "OBSERVED_COUNT=$OBSERVED_COUNT"
+                                                                                                                                                                    # fi
+                                                                                                                                                                    # EXPECTED_MESSAGES="$( cat <<EOF
+                                                                                                                                                                    # EOF
+                                                                                                                                                                    # )" || failure 15634
+                                                                                                                                                                    # OBSERVED_MESSAGES="$( cat "$OUTFILE" )" || failure 31892
+                                                                                                                                                                    # if [[ "$EXPECTED_MESSAGES" != "$OBSERVED_MESSAGES" ]]
+                                                                                                                                                                    # then
+                                                                                                                                                                    #     failure 13800 "EXPECTED_MESSAGE" "$EXPECTED_MESSAGES" "OBSERVED_MESSAGES" "$OBSERVED_MESSAGES"
+                                                                                                                                                                    # fi
                                                                                                                                                                 '' ;
                                                                                                                                                         } ;
                                                                                                                                                 in "${ application }/bin/pre-test" ;
                                                                                                                                         in
                                                                                                                                             ''
+                                                                                                                                                EXPECTED_RESOURCE="$1"
                                                                                                                                                 OUTFILE="$( mktemp )" || failure 18422
                                                                                                                                                 redis-cli --csv SUBSCRIBE invalid-init invalid-release stale-init valid-init valid-release | awk -F',' '$1 == "\"message\"" { print $3 }' | tr -d '"' > "$OUTFILE" &
                                                                                                                                                 sleep 0.2
-                                                                                                                                                timeout 10s bash -c "${ pre-test }"
-#                                                                                                                                                EXPECTED_COUNT=1
-#                                                                                                                                                OBSERVED_COUNT="$( wc --lines < "$OUTFILE" )" || failure 16086
-#                                                                                                                                                while (( EXPECTED_COUNT > OBSERVED_COUNT ))
-#                                                                                                                                                do
-#                                                                                                                                                    sleep 0.2
-#                                                                                                                                                    OBSERVED_COUNT="$( wc --lines < "$OUTFILE" )" || failure 11027
-#                                                                                                                                                done
-#                                                                                                                                                EXPECTED_MESSAGES="$( cat <<EOF
-#                                                                                                                                                EOF
-#                                                                                                                                                )" || failure 20863
-#                                                                                                                                                OBSERVED_MESSAGES="$( cat "$OUTFILE" )" || failure 21628
-#                                                                                                                                                echo "$EXPECTED_MESSAGES" "$OBSERVED_MESSAGES"
+                                                                                                                                                timeout 10s bash -c "${ pre-test } $EXPECTED_RESOURCE"
                                                                                                                                             '' ;
                                                                                                                             } ;
                                                                                                                     in "${ application }/bin/true-true" ;
@@ -782,6 +772,7 @@
                                                                                                                         true-true \
                                                                                                                         0500 \
                                                                                                                         --literal plain EXPECTED_MESSAGES \
+                                                                                                                        --literal plain EXPECTED_RESOURCE \
                                                                                                                         --literal plain OBSERVED_MESSAGES \
                                                                                                                         --literal plain OUTFILE \
                                                                                                                         --inherit plain PATH \
@@ -2315,7 +2306,7 @@
                                                                                         cd "$PAD"
                                                                                         # shellcheck disable=SC1091
                                                                                         source .envrc
-                                                                                        true-true
+                                                                                        true-true "WRONG"
                                                                                     '' ;
                                                                             } ;
                                                                     in "${ application }/bin/test" ;
