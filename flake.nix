@@ -730,6 +730,12 @@
                                                                                                                                                                     EXPECTED_RESOURCE="WRONG"
                                                                                                                                                                     OUTFILE="$( mktemp )" || failure 18422
                                                                                                                                                                     redis-cli --csv SUBSCRIBE invalid-init invalid-release stale-init valid-init valid-release | awk -F',' '$1 == "\"message\"" { print $3 }' | tr -d '"' > "$OUTFILE" &
+                                                                                                                                                                    sleep 10s
+                                                                                                                                                                    OBSERVED_RESOURCE=${ resources.production.pads.check { failure = 21760 ; } }
+                                                                                                                                                                    if [[ "$EXPECTED_RESOURCE" != "$OBSERVED_RESOURCE" ]]
+                                                                                                                                                                    then
+                                                                                                                                                                        failure 15789 EXPECTED_RESOURCE "$EXPECTED_RESOURCE" OBSERVED_RESOURCE "$OBSERVED_RESOURCE"
+                                                                                                                                                                    fi
                                                                                                                                                                     echo $EXPECTED_RESOURCE
                                                                                                                                                                 '' ;
                                                                                                                                                         } ;
@@ -2289,8 +2295,6 @@
                                                                 ''
                                                                     machine.wait_for_unit("multi-user.target")
                                                                     machine.wait_for_unit("network-online.target")
-                                                                    machine.wait_for_unit("redis.target")
-                                                                    machine.wait_for_unit("resource.target")
                                                                     machine.succeed("runuser --login ${ testuser } -- ${ test }")
                                                                 '' ;
                                                 } ;
