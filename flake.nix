@@ -766,16 +766,36 @@
                                                                                                                                                     exit 0
                                                                                                                                                 fi
                                                                                                                                                 OUT_DIRECTORY="$( mktemp --directory )" || failure 29393
-                                                                                                                                                if true
+                                                                                                                                                if false
                                                                                                                                                 then
                                                                                                                                                     exit 0
                                                                                                                                                 fi
                                                                                                                                                 export OUT_DIRECTORY
+                                                                                                                                                if true
+                                                                                                                                                then
+                                                                                                                                                    exit 0
+                                                                                                                                                fi
                                                                                                                                                 redis-cli --csv SUBSCRIBE invalid-init invalid-release stale-init valid-init valid-release | while read -r PAYLOAD
                                                                                                                                                 do
+                                                                                                                                                    if true
+                                                                                                                                                    then
+                                                                                                                                                        exit 0
+                                                                                                                                                    fi
                                                                                                                                                     INDEX="$( find "$OUT_DIRECTORY" | wc --lines | cut --delimiter " " --fields 1 )" || failure 17122
+                                                                                                                                                    if true
+                                                                                                                                                    then
+                                                                                                                                                        exit 0
+                                                                                                                                                    fi
                                                                                                                                                     echo "$PAYLOAD" > "$OUT_DIRECTORY/$INDEX"
+                                                                                                                                                    if true
+                                                                                                                                                    then
+                                                                                                                                                        exit 0
+                                                                                                                                                    fi
                                                                                                                                                 done &
+                                                                                                                                                if true
+                                                                                                                                                then
+                                                                                                                                                    exit 0
+                                                                                                                                                fi
                                                                                                                                                 PRECOUNT=0
                                                                                                                                                 if true
                                                                                                                                                 then
