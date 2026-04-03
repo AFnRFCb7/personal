@@ -814,13 +814,15 @@
                                                                                                                         --literal plain EXPECTED_SUBSCRIBE_STALE_INIT \
                                                                                                                         --literal plain EXPECTED_SUBSCRIBE_VALID_INIT \
                                                                                                                         --literal plain EXPECTED_SUBSCRIBE_VALID_RELEASE \
+                                                                                                                        --literal plain INDEX \
                                                                                                                         --literal plain OBSERVED_SUBSCRIBE_INVALID_INIT \
                                                                                                                         --literal plain OBSERVED_SUBSCRIBE_INVALID_RELEASE \
                                                                                                                         --literal plain OBSERVED_SUBSCRIBE_STALE_INIT \
                                                                                                                         --literal plain OBSERVED_SUBSCRIBE_VALID_INIT \
                                                                                                                         --literal plain OBSERVED_SUBSCRIBE_VALID_RELEASE \
                                                                                                                         --literal plain OUT_DIRECTORY \
-                                                                                                                        --inherit plain PATH \
+                                                                                                                        --literal plain PATH \
+                                                                                                                        --literal plain PAYLOAD \
                                                                                                                         --literal plain SIX \
                                                                                                                         --uuid 19713
                                                                                                                 '' ;
