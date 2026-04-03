@@ -724,14 +724,14 @@
                                                                                                                                                     pkgs.writeShellApplication
                                                                                                                                                         {
                                                                                                                                                             name = "pre-test" ;
-                                                                                                                                                            runtimeInputs = [ failure pkgs.coreutils pkgs.gawk pkgs.redis ] ;
+                                                                                                                                                            runtimeInputs = [ failure pkgs.coreutils pkgs.redis ] ;
                                                                                                                                                             text =
                                                                                                                                                                 ''
-                                                                                                                                                                    EXPECTED_RESOURCE="/home/emory/resources/mounts/0000000000000001"
                                                                                                                                                                     OUTFILE="$( mktemp )" || failure 18422
                                                                                                                                                                     sleep 1s
-                                                                                                                                                                    redis-cli --csv SUBSCRIBE invalid-init invalid-release stale-init valid-init valid-release | awk -F',' '$1 == "\"message\"" { print $3 }' | tr -d '"' > "$OUTFILE" &
+                                                                                                                                                                    redis-cli --csv SUBSCRIBE invalid-init invalid-release stale-init valid-init valid-release > "$OUTFILE" &
                                                                                                                                                                     sleep 1s
+                                                                                                                                                                    EXPECTED_RESOURCE="/home/emory/resources/mounts/0000000000000001"
                                                                                                                                                                     OBSERVED_RESOURCE=${ resources.production.pad.checks { failure = 21760 ; } }
                                                                                                                                                                     if [[ "$EXPECTED_RESOURCE" != "$OBSERVED_RESOURCE" ]]
                                                                                                                                                                     then
