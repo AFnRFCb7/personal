@@ -728,10 +728,10 @@
                                                                                                                                                             text =
                                                                                                                                                                 ''
                                                                                                                                                                     EXPECTED_RESOURCE="$1"
+                                                                                                                                                                    EXPECTED_MESSAGES="$2"
                                                                                                                                                                     OUTFILE="$( mktemp )" || failure 18422
                                                                                                                                                                     redis-cli --csv SUBSCRIBE invalid-init invalid-release stale-init valid-init valid-release | awk -F',' '$1 == "\"message\"" { print $3 }' | tr -d '"' > "$OUTFILE" &
                                                                                                                                                                     sleep 10
-                                                                                                                                                                    EXPECTED_RESOURCE=
                                                                                                                                                                     OBSERVED_RESOURCE=${ resources.production.checks.true-true { failure = 30718 ; } }
                                                                                                                                                                     if [[ "$EXPECTED_RESOURCE" != "$OBSERVED_RESOURCE" ]]
                                                                                                                                                                     then
@@ -752,16 +752,18 @@
                                                                                                                                                                     # then
                                                                                                                                                                     #     failure 13800 "EXPECTED_MESSAGE" "$EXPECTED_MESSAGES" "OBSERVED_MESSAGES" "$OBSERVED_MESSAGES"
                                                                                                                                                                     # fi
+                                                                                                                                                                    echo "EXPECTED_MESSAGES=$EXPECTED_MESSAGES"
                                                                                                                                                                 '' ;
                                                                                                                                                         } ;
                                                                                                                                                 in "${ application }/bin/pre-test" ;
                                                                                                                                         in
                                                                                                                                             ''
                                                                                                                                                 EXPECTED_RESOURCE="$1"
+                                                                                                                                                EXPECTED_MESSAGES="$2"
                                                                                                                                                 OUTFILE="$( mktemp )" || failure 18422
                                                                                                                                                 redis-cli --csv SUBSCRIBE invalid-init invalid-release stale-init valid-init valid-release | awk -F',' '$1 == "\"message\"" { print $3 }' | tr -d '"' > "$OUTFILE" &
                                                                                                                                                 sleep 0.2
-                                                                                                                                                timeout 10s bash -c "${ pre-test } $EXPECTED_RESOURCE"
+                                                                                                                                                timeout 10s bash -c "${ pre-test }" "$EXPECTED_RESOURCE" "$EXPECTED_MESSAGES"
                                                                                                                                             '' ;
                                                                                                                             } ;
                                                                                                                     in "${ application }/bin/true-true" ;
@@ -771,6 +773,8 @@
                                                                                                                         ${ true-true } \
                                                                                                                         true-true \
                                                                                                                         0500 \
+                                                                                                                        --literal plain 1 \
+                                                                                                                        --literal plain 2 \
                                                                                                                         --literal plain EXPECTED_MESSAGES \
                                                                                                                         --literal plain EXPECTED_RESOURCE \
                                                                                                                         --literal plain OBSERVED_MESSAGES \
