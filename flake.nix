@@ -742,7 +742,7 @@
                                                                                                                                                                     OBSERVED_COUNT="$( wc --lines "$OUTFILE" | cut --delimiter " " --fields 1 )" || failure 21529
                                                                                                                                                                     if [[ "$EXPECTED_COUNT" != "$OBSERVED_COUNT" ]]
                                                                                                                                                                     then
-                                                                                                                                                                        failure 20143 EXPECTED_COUNT "$EXPECTED_COUNT" OBSERVED_COUNT "$OBSERVED_COUNT"
+                                                                                                                                                                        failure 20143 EXPECTED_COUNT "$EXPECTED_COUNT" OBSERVED_COUNT "$OBSERVED_COUNT" OUTFILE "$OUTFILE"
                                                                                                                                                                     fi
                                                                                                                                                                     EXPECTED_MESSAGE="WRONG"
                                                                                                                                                                     OBSERVED_MESSAGE="$( cat "$OUTFILE" )" || failure 30581
