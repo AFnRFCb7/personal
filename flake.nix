@@ -761,8 +761,10 @@
                                                                                                                                                 in "${ application }/bin/pre-test" ;
                                                                                                                                         in
                                                                                                                                             ''
-                                                                                                                                                exit 0
-                                                                                                                                                echo 951
+                                                                                                                                                if true
+                                                                                                                                                then
+                                                                                                                                                    exit 0
+                                                                                                                                                fi
                                                                                                                                                 OUT_DIRECTORY="$( mktemp --directory )" || failure 29393
                                                                                                                                                 export OUT_DIRECTORY
                                                                                                                                                 redis-cli --csv SUBSCRIBE invalid-init invalid-release stale-init valid-init valid-release | while read -r PAYLOAD
