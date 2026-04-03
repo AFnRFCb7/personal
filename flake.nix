@@ -782,7 +782,7 @@
                                                                                                                                                         exit 0
                                                                                                                                                     fi
                                                                                                                                                     INDEX="$( find "$OUT_DIRECTORY" | wc --lines | cut --delimiter " " --fields 1 )" || failure 17122
-                                                                                                                                                    if true
+                                                                                                                                                    if false
                                                                                                                                                     then
                                                                                                                                                         exit 0
                                                                                                                                                     fi
