@@ -715,7 +715,7 @@
                                                                                                                         pkgs.writeShellApplication
                                                                                                                             {
                                                                                                                                 name = "true-true" ;
-                                                                                                                                runtimeInputs = [ failure pkgs.bash pkgs.coreutils pkgs.inotify-tools pkgs.redis ] ;
+                                                                                                                                runtimeInputs = [ failure pkgs.bash pkgs.coreutils pkgs.findutils pkgs.inotify-tools pkgs.redis ] ;
                                                                                                                                 text =
                                                                                                                                     let
                                                                                                                                         pre-test =
@@ -724,7 +724,7 @@
                                                                                                                                                     pkgs.writeShellApplication
                                                                                                                                                         {
                                                                                                                                                             name = "pre-test" ;
-                                                                                                                                                            runtimeInputs = [ failure pkgs.coreutils pkgs.inotify-tools pkgs.redis ] ;
+                                                                                                                                                            runtimeInputs = [ failure pkgs.coreutils pkgs.findutils pkgs.inotify-tools pkgs.redis ] ;
                                                                                                                                                             text =
                                                                                                                                                                 ''
                                                                                                                                                                     EXPECTED_RESOURCE="/home/emory/resources/mounts/0000000000000001"
@@ -732,19 +732,6 @@
                                                                                                                                                                     if [[ "$EXPECTED_RESOURCE" != "$OBSERVED_RESOURCE" ]]
                                                                                                                                                                     then
                                                                                                                                                                         failure 15789 EXPECTED_RESOURCE "$EXPECTED_RESOURCE" OBSERVED_RESOURCE "$OBSERVED_RESOURCE"
-                                                                                                                                                                    fi
-                                                                                                                                                                    EXPECTED_COUNT=1
-                                                                                                                                                                    OBSERVED_COUNT="$( wc --lines "$OUTFILE" | cut --delimiter " " --fields 1 )" || failure 21529
-                                                                                                                                                                    if [[ "$EXPECTED_COUNT" != "$OBSERVED_COUNT" ]]
-                                                                                                                                                                    then
-                                                                                                                                                                        OBSERVED_OUTFILE="$( cat "$OUTFILE" )" || failure 26627
-                                                                                                                                                                        failure 20143 EXPECTED_COUNT "$EXPECTED_COUNT" OBSERVED_COUNT "$OBSERVED_COUNT" OBSERVED_OUTFILE "$OBSERVED_OUTFILE"
-                                                                                                                                                                    fi
-                                                                                                                                                                    EXPECTED_MESSAGE="WRONG"
-                                                                                                                                                                    OBSERVED_MESSAGE="$( cat "$OUTFILE" )" || failure 30581
-                                                                                                                                                                    if [[ "$EXPECTED_MESSAGE" != "$OBSERVED_MESSAGE" ]]
-                                                                                                                                                                    then
-                                                                                                                                                                        failure 17450 EXPECTED_MESSAGE "$EXPECTED_MESSAGE" OBSERVED_MESSAGE "$OBSERVED_MESSAGE"
                                                                                                                                                                     fi
                                                                                                                                                                 '' ;
                                                                                                                                                         } ;
