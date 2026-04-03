@@ -715,7 +715,7 @@
                                                                                                                         pkgs.writeShellApplication
                                                                                                                             {
                                                                                                                                 name = "true-true" ;
-                                                                                                                                runtimeInputs = [ failure pkgs.bash pkgs.coreutils pkgs.redis ] ;
+                                                                                                                                runtimeInputs = [ failure pkgs.bash pkgs.coreutils pkgs.inotify-tools pkgs.redis ] ;
                                                                                                                                 text =
                                                                                                                                     let
                                                                                                                                         pre-test =
@@ -812,7 +812,7 @@
                                                                                                                         --literal plain OBSERVED_SUBSCRIBE_INVALID_INIT \
                                                                                                                         --literal plain OBSERVED_SUBSCRIBE_INVALID_RELEASE \
                                                                                                                         --literal plain OBSERVED_SUBSCRIBE_STALE_INIT \
-                                                                                                                        --literal plain OBSERVED_SUBSCRIBE_VALID_INIT \ 
+                                                                                                                        --literal plain OBSERVED_SUBSCRIBE_VALID_INIT \
                                                                                                                         --literal plain OBSERVED_SUBSCRIBE_VALID_RELEASE \
                                                                                                                         --literal plain OUT_DIRECTORY \
                                                                                                                         --inherit plain PATH \
