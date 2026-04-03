@@ -727,17 +727,20 @@
                                                                                                                                                             runtimeInputs = [ failure pkgs.coreutils pkgs.gawk pkgs.redis ] ;
                                                                                                                                                             text =
                                                                                                                                                                 ''
+                                                                                                                                                                    echo 29720
                                                                                                                                                                     EXPECTED_RESOURCE="WRONG"
                                                                                                                                                                     OUTFILE="$( mktemp )" || failure 18422
-                                                                                                                                                                    sleep 10s
+                                                                                                                                                                    sleep 1s
                                                                                                                                                                     redis-cli --csv SUBSCRIBE invalid-init invalid-release stale-init valid-init valid-release | awk -F',' '$1 == "\"message\"" { print $3 }' | tr -d '"' > "$OUTFILE" &
-                                                                                                                                                                    sleep 10s
+                                                                                                                                                                    sleep 1s
+                                                                                                                                                                    echo 23395
                                                                                                                                                                     OBSERVED_RESOURCE=${ resources.production.pad.checks { failure = 21760 ; } }
+                                                                                                                                                                    echo 20078
                                                                                                                                                                     if [[ "$EXPECTED_RESOURCE" != "$OBSERVED_RESOURCE" ]]
                                                                                                                                                                     then
                                                                                                                                                                         failure 15789 EXPECTED_RESOURCE "$EXPECTED_RESOURCE" OBSERVED_RESOURCE "$OBSERVED_RESOURCE"
                                                                                                                                                                     fi
-                                                                                                                                                                    sleep 10s
+                                                                                                                                                                    sleep 1s
                                                                                                                                                                 '' ;
                                                                                                                                                         } ;
                                                                                                                                                 in "${ application }/bin/pre-test" ;
