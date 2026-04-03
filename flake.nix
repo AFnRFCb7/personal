@@ -745,6 +745,12 @@
                                                                                                                                                                     then
                                                                                                                                                                         failure 14530 EXPECTED_INIT "$EXPECTED_INIT" OBSERVED_INIT "$OBSERVED_INIT"
                                                                                                                                                                     fi
+                                                                                                                                                                    EXPECTED_JSON='${ builtins.toJSON { } }'
+                                                                                                                                                                    OBSERVED_JSON="$( jq --compact-output )" || failure 9412
+                                                                                                                                                                    if [[ "$EXPECTED_JSON" != "$OBSERVED_JSON" ]]
+                                                                                                                                                                    then
+                                                                                                                                                                        failure 16098 EXPECTED_JSON "$EXPECTED_JSON" OBSERVED_JSON "$OBSERVED_JSON"
+                                                                                                                                                                    fi
                                                                                                                                                                     if [[ -e "$OUT_DIRECTORY/7" ]]
                                                                                                                                                                     then
                                                                                                                                                                         SEVEN="$( cat "$OUT_DIRECTORY/7" )" || failure 17032
