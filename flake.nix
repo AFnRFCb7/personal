@@ -1651,6 +1651,7 @@
                                                                         resource =
                                                                             {
                                                                                 after = [ "network.target" "redis.service" ] ;
+                                                                                enable = false ;
                                                                                 requires = [ "redis.service" ] ;
                                                                                 serviceConfig =
                                                                                     let
