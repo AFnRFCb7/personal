@@ -797,7 +797,7 @@
                                                                                                                                                 if [[ -e "$OUT_DIRECTORY/6" ]]
                                                                                                                                                 then
                                                                                                                                                     SIX="$( cat "$OUT_DIRECTORY/6" )" || failure 17032
-                                                                                                                                                    failure 24681
+                                                                                                                                                    failure 24681 SIX "$SIX"
                                                                                                                                                 fi
                                                                                                                                                 timeout 1m bash -c "${ pre-test }"
                                                                                                                                             '' ;
