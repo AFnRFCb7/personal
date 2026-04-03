@@ -766,6 +766,10 @@
                                                                                                                                                     exit 0
                                                                                                                                                 fi
                                                                                                                                                 OUT_DIRECTORY="$( mktemp --directory )" || failure 29393
+                                                                                                                                                if false
+                                                                                                                                                then
+                                                                                                                                                    exit 0
+                                                                                                                                                fi
                                                                                                                                                 export OUT_DIRECTORY
                                                                                                                                                 redis-cli --csv SUBSCRIBE invalid-init invalid-release stale-init valid-init valid-release | while read -r PAYLOAD
                                                                                                                                                 do
