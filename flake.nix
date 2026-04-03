@@ -761,7 +761,7 @@
                                                                                                                                                 in "${ application }/bin/pre-test" ;
                                                                                                                                         in
                                                                                                                                             ''
-                                                                                                                                                if true
+                                                                                                                                                if false
                                                                                                                                                 then
                                                                                                                                                     exit 0
                                                                                                                                                 fi
@@ -773,7 +773,10 @@
                                                                                                                                                     echo "$PAYLOAD" > "$OUT_DIRECTORY/$INDEX"
                                                                                                                                                 done &
                                                                                                                                                 PRECOUNT=0
-                                                                                                                                                echo 4328
+                                                                                                                                                if true
+                                                                                                                                                then
+                                                                                                                                                    exit 0
+                                                                                                                                                fi
                                                                                                                                                 while [[ "$PRECOUNT" -lt "5" ]]
                                                                                                                                                 do
                                                                                                                                                     echo 1438 "PRECOUNT=$PRECOUNT"
