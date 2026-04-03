@@ -753,11 +753,11 @@
                                                                                                                                                                     then
                                                                                                                                                                         failure 15789 EXPECTED_RESOURCE "$EXPECTED_RESOURCE" OBSERVED_RESOURCE "$OBSERVED_RESOURCE"
                                                                                                                                                                     fi
-                                                                                                                                                                    PRECOUNT=0
-                                                                                                                                                                    while [[ "$PRECOUNT" -lt "6" ]]
+                                                                                                                                                                    COUNT_SIX=0
+                                                                                                                                                                    while [[ "$COUNT_SIX" -lt "6" ]]
                                                                                                                                                                     do
                                                                                                                                                                         sleep 1
-                                                                                                                                                                        PRECOUNT="$( wc "$OUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 24769
+                                                                                                                                                                        COUNT_SIX="$( wc "$OUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 24769
                                                                                                                                                                     done
                                                                                                                                                                     EXPECTED_INIT="WRONG"
                                                                                                                                                                     OBSERVED_INIT="$( head --lines 6 "$OUT_FILE" | tail --lines 1 )" || failure 20277
@@ -785,11 +785,11 @@
                                                                                                                                                 OUT_FILE="$( mktemp )" || failure 29393
                                                                                                                                                 export OUT_FILE
                                                                                                                                                 redis-cli --csv SUBSCRIBE invalid-init invalid-release stale-init valid-init valid-release > "$OUT_FILE" &
-                                                                                                                                                PRECOUNT=0
-                                                                                                                                                while [[ "$PRECOUNT" -lt "5" ]]
+                                                                                                                                                COUNT_5=0
+                                                                                                                                                while [[ "$COUNT_5" -lt "5" ]]
                                                                                                                                                 do
                                                                                                                                                     sleep 1
-                                                                                                                                                    PRECOUNT="$( wc "$OUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 13785
+                                                                                                                                                    COUNT_5="$( wc "$OUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 13785
                                                                                                                                                 done
                                                                                                                                                 EXPECTED_SUBSCRIBE_INVALID_INIT="\"subscribe\",\"invalid-init\",1"
                                                                                                                                                 OBSERVED_SUBSCRIBE_INVALID_INIT="$( head --lines 1 "$OUT_FILE" )" || failure 29807
@@ -829,11 +829,11 @@
                                                                                                                                                 fi
                                                                                                                                                 timeout 1m bash -c "${ pre-test }"
                                                                                                                                                 echo 3839
-                                                                                                                                                PRECOUNT=0
-                                                                                                                                                while [[ "$PRECOUNT" -lt "7" ]]
+                                                                                                                                                COUNT_7=0
+                                                                                                                                                while [[ "$COUNT_7" -lt "7" ]]
                                                                                                                                                 do
                                                                                                                                                     sleep 1
-                                                                                                                                                    PRECOUNT="$( wc "$OUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 24082
+                                                                                                                                                    COUNT_7="$( wc "$OUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 24082
                                                                                                                                                 done
                                                                                                                                                 EXPECTED_JSON='${ builtins.toJSON { } }'
                                                                                                                                                 OBSERVED_JSON="$( jq --compact-output )" || failure 29872
@@ -857,6 +857,8 @@
                                                                                                                         ${ true-true } \
                                                                                                                         true-true \
                                                                                                                         0500 \
+                                                                                                                        --literal plain COUNT_5 \
+                                                                                                                        --literal plain COUNT_7 \
                                                                                                                         --literal plain EXPECTED_JSON \
                                                                                                                         --literal plain EXPECTED_SUBSCRIBE_INVALID_INIT \
                                                                                                                         --literal plain EXPECTED_SUBSCRIBE_INVALID_RELEASE \
