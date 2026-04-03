@@ -744,7 +744,7 @@
                                                                                                                                                     pkgs.writeShellApplication
                                                                                                                                                         {
                                                                                                                                                             name = "pre-test" ;
-                                                                                                                                                            runtimeInputs = [ failure pkgs.coreutils pkgs.findutils pkgs.inotify-tools pkgs.redis ] ;
+                                                                                                                                                            runtimeInputs = [ failure pkgs.coreutils pkgs.findutils pkgs.jq pkgs.inotify-tools pkgs.redis ] ;
                                                                                                                                                             text =
                                                                                                                                                                 ''
                                                                                                                                                                     EXPECTED_RESOURCE="/home/emory/resources/mounts/0000000000000001"
@@ -759,14 +759,14 @@
                                                                                                                                                                         sleep 1
                                                                                                                                                                         COUNT_SIX="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 24769
                                                                                                                                                                     done
-                                                                                                                                                                    EXPECTED_INIT="WRONG"
+                                                                                                                                                                    EXPECTED_INIT="\"message\",\"stale-init\",\"/home/emory/resources/logs/0000000000000021\""
                                                                                                                                                                     OBSERVED_INIT="$( head --lines 6 "$OUTPUT_FILE" | tail --lines 1 )" || failure 20277
                                                                                                                                                                     if [[ "$EXPECTED_INIT" != "$OBSERVED_INIT" ]]
                                                                                                                                                                     then
                                                                                                                                                                         failure 14530 EXPECTED_INIT "$EXPECTED_INIT" OBSERVED_INIT "$OBSERVED_INIT"
                                                                                                                                                                     fi
                                                                                                                                                                     EXPECTED_INIT_JSON='${ builtins.toJSON { } }'
-                                                                                                                                                                    OBSERVED_INIT_JSON="$( jq --compact-output )" || failure 9412
+                                                                                                                                                                    OBSERVED_INIT_JSON="$( jq --compact-output /home/emory/resources/logs/0000000000000021 )" || failure 9412
                                                                                                                                                                     if [[ "$EXPECTED_INIT_JSON" != "$OBSERVED_INIT_JSON" ]]
                                                                                                                                                                     then
                                                                                                                                                                         failure 16098 EXPECTED_INIT_JSON "$EXPECTED_INIT_JSON" OBSERVED_INIT_JSON "$OBSERVED_INIT_JSON"
