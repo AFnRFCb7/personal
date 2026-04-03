@@ -2310,6 +2310,7 @@
                                                                 ''
                                                                     machine.wait_for_unit("multi-user.target")
                                                                     machine.wait_for_unit("network-online.target")
+                                                                    machine.wait_for_unit("redis.target")
                                                                     machine.succeed("runuser --login ${ testuser } -- ${ test }")
                                                                 '' ;
                                                 } ;
