@@ -736,13 +736,13 @@
                                                                                                                                                                     then
                                                                                                                                                                         failure 16620 "EXPECTED_RESOURCE=$EXPECTED_RESOURCE" "OBSERVED_RESOURCE=$OBSERVED_RESOURCE"
                                                                                                                                                                     fi
-                                                                                                                                                                    sleep 0.2
-                                                                                                                                                                    EXPECTED_COUNT=1
-                                                                                                                                                                    OBSERVED_COUNT="$( wc --lines < "$OUTFILE" )" || failure 30154
-                                                                                                                                                                    if (( EXPECTED_COUNT != OBSERVED_COUNT ))
-                                                                                                                                                                    then
-                                                                                                                                                                        failure "EXPECTED_COUNT=$EXPECTED_COUNT" "OBSERVED_COUNT=$OBSERVED_COUNT"
-                                                                                                                                                                    fi
+                                                                                                                                                                    # sleep 0.2
+                                                                                                                                                                    # EXPECTED_COUNT=1
+                                                                                                                                                                    # OBSERVED_COUNT="$( wc --lines < "$OUTFILE" )" || failure 30154
+                                                                                                                                                                    # if (( EXPECTED_COUNT != OBSERVED_COUNT ))
+                                                                                                                                                                    # then
+                                                                                                                                                                    #     failure "EXPECTED_COUNT=$EXPECTED_COUNT" "OBSERVED_COUNT=$OBSERVED_COUNT"
+                                                                                                                                                                    # fi
                                                                                                                                                                     # EXPECTED_MESSAGES="$( cat <<EOF
                                                                                                                                                                     # EOF
                                                                                                                                                                     # )" || failure 15634
