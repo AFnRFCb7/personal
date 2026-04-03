@@ -874,7 +874,6 @@
                                                                                                                         --literal plain OBSERVED_SUBSCRIBE_VALID_RELEASE \
                                                                                                                         --literal plain OUT_FILE \
                                                                                                                         --literal plain PATH \
-                                                                                                                        --literal plain PAYLOAD \
                                                                                                                         --literal plain SIX \
                                                                                                                         --literal plain WC_SIX \
                                                                                                                         --literal plain WC_EIGHT \
