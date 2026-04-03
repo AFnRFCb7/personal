@@ -757,7 +757,7 @@
                                                                                                                                                                     while [[ "$PRECOUNT" -lt "6" ]]
                                                                                                                                                                     do
                                                                                                                                                                         sleep 1
-                                                                                                                                                                        PRECOUNT="$( cat "$OUT_FILE" | wc --lines | cut --delimiter " " --fields 1 )" || failure 24769
+                                                                                                                                                                        PRECOUNT="$( wc "$OUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 24769
                                                                                                                                                                     done
                                                                                                                                                                     EXPECTED_INIT="WRONG"
                                                                                                                                                                     OBSERVED_INIT="$( head --lines 6 "$OUT_FILE" | tail --lines 1 )" || failure 20277
@@ -789,7 +789,7 @@
                                                                                                                                                 while [[ "$PRECOUNT" -lt "5" ]]
                                                                                                                                                 do
                                                                                                                                                     sleep 1
-                                                                                                                                                    PRECOUNT="$( cat "$OUT_FILE" | wc --lines | cut --delimiter " " --fields 1 )" || failure 13785
+                                                                                                                                                    PRECOUNT="$( wc "$OUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 13785
                                                                                                                                                 done
                                                                                                                                                 EXPECTED_SUBSCRIBE_INVALID_INIT="\"subscribe\",\"invalid-init\",1"
                                                                                                                                                 OBSERVED_SUBSCRIBE_INVALID_INIT="$( head --lines 1 "$OUT_FILE" )" || failure 29807
@@ -833,7 +833,7 @@
                                                                                                                                                 while [[ "$PRECOUNT" -lt "7" ]]
                                                                                                                                                 do
                                                                                                                                                     sleep 1
-                                                                                                                                                    PRECOUNT="$( cat "$OUT_FILE" | wc --lines | cut --delimiter " " --fields 1 )" || failure 24082
+                                                                                                                                                    PRECOUNT="$( wc "$OUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 24082
                                                                                                                                                 done
                                                                                                                                                 EXPECTED_JSON='${ builtins.toJSON { } }'
                                                                                                                                                 OBSERVED_JSON="$( jq --compact-output )" || failure 29872
