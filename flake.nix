@@ -872,7 +872,7 @@
                                                                                                                         --literal plain OBSERVED_SUBSCRIBE_STALE_INIT \
                                                                                                                         --literal plain OBSERVED_SUBSCRIBE_VALID_INIT \
                                                                                                                         --literal plain OBSERVED_SUBSCRIBE_VALID_RELEASE \
-                                                                                                                        --literal plain OUT_FILE \
+                                                                                                                        --literal plain OUTPUT_FILE \
                                                                                                                         --literal plain PATH \
                                                                                                                         --literal plain SIX \
                                                                                                                         --literal plain WC_SIX \
