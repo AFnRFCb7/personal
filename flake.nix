@@ -739,7 +739,7 @@
                                                                                                                                                                     fi
                                                                                                                                                                     sleep 1s
                                                                                                                                                                     EXPECTED_COUNT=1
-                                                                                                                                                                    OBSERVED_COUNT="$( wc --lines "$OUTFILE" )" || failure 21529
+                                                                                                                                                                    OBSERVED_COUNT="$( wc --lines "$OUTFILE" | cut --delimiter " " --fields 1 )" || failure 21529
                                                                                                                                                                     if [[ "$EXPECTED_COUNT" != "$OBSERVED_COUNT" ]]
                                                                                                                                                                     then
                                                                                                                                                                         failure 20143 EXPECTED_COUNT "$EXPECTED_COUNT" OBSERVED_COUNT "$OBSERVED_COUNT"
