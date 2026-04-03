@@ -756,11 +756,11 @@
                                                                                                                                                                     PRECOUNT=0
                                                                                                                                                                     while [[ "$PRECOUNT" -lt "6" ]]
                                                                                                                                                                     do
-                                                                                                                                                                        inotifywait --timeout 1 --event create "$OUT_DIRECTORY"
-                                                                                                                                                                        PRECOUNT="$( find "$OUT_DIRECTORY" | wc --lines | cut --delimiter " " --fields 1 )" || failure 24769
+                                                                                                                                                                        sleep 1
+                                                                                                                                                                        PRECOUNT="$( cat "$OUT_FILE" | wc --lines | cut --delimiter " " --fields 1 )" || failure 24769
                                                                                                                                                                     done
                                                                                                                                                                     EXPECTED_INIT="WRONG"
-                                                                                                                                                                    OBSERVED_INIT="$( cat "$OUT_DIRECTORY/6" )" || failure 20277
+                                                                                                                                                                    OBSERVED_INIT="$( head --lines 6 "$OUT_FILE" | tail --lines 1 )" || failure 20277
                                                                                                                                                                     if [[ "$EXPECTED_INIT" != "$OBSERVED_INIT" ]]
                                                                                                                                                                     then
                                                                                                                                                                         failure 14530 EXPECTED_INIT "$EXPECTED_INIT" OBSERVED_INIT "$OBSERVED_INIT"
@@ -771,9 +771,10 @@
                                                                                                                                                                     then
                                                                                                                                                                         failure 16098 EXPECTED_JSON "$EXPECTED_JSON" OBSERVED_JSON "$OBSERVED_JSON"
                                                                                                                                                                     fi
-                                                                                                                                                                    if [[ -e "$OUT_DIRECTORY/7" ]]
+                                                                                                                                                                    WC_SEVEN="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 21345
+                                                                                                                                                                    if [[ "$WC_SEVEN" != 6 ]]
                                                                                                                                                                     then
-                                                                                                                                                                        SEVEN="$( cat "$OUT_DIRECTORY/7" )" || failure 17032
+                                                                                                                                                                        SEVEN="$( head --lines 7 "$OUT_FILE" | tail --lines 1 )" || failure 17032
                                                                                                                                                                         failure 20505 SEVEN "$SEVEN"
                                                                                                                                                                     fi
                                                                                                                                                                 '' ;
@@ -781,63 +782,58 @@
                                                                                                                                                 in "${ application }/bin/pre-test" ;
                                                                                                                                         in
                                                                                                                                             ''
-                                                                                                                                                OUT_DIRECTORY="$( mktemp --directory )" || failure 29393
-                                                                                                                                                export OUT_DIRECTORY
-                                                                                                                                                redis-cli --csv SUBSCRIBE invalid-init invalid-release stale-init valid-init valid-release -exec subscribe \; &
-                                                                                                                                                if true
-                                                                                                                                                then
-                                                                                                                                                    exit 0
-                                                                                                                                                fi
+                                                                                                                                                OUT_FILE="$( mktemp )" || failure 29393
+                                                                                                                                                export OUT_FILE
+                                                                                                                                                redis-cli --csv SUBSCRIBE invalid-init invalid-release stale-init valid-init valid-release > "$OUT_FILE" &
                                                                                                                                                 PRECOUNT=0
                                                                                                                                                 while [[ "$PRECOUNT" -lt "5" ]]
                                                                                                                                                 do
-                                                                                                                                                    echo 1438 "PRECOUNT=$PRECOUNT"
-                                                                                                                                                    inotifywait --timeout 1 --event create "$OUT_DIRECTORY"
-                                                                                                                                                    PRECOUNT="$( find "$OUT_DIRECTORY" | wc --lines | cut --delimiter " " --fields 1 )" || failure 13785
+                                                                                                                                                    sleep 1
+                                                                                                                                                    PRECOUNT="$( cat "$OUT_FILE" | wc --lines | cut --delimiter " " --fields 1 )" || failure 13785
                                                                                                                                                 done
                                                                                                                                                 EXPECTED_SUBSCRIBE_INVALID_INIT="\"subscribe\",\"invalid-init\",1"
-                                                                                                                                                OBSERVED_SUBSCRIBE_INVALID_INIT="$( cat "$OUT_DIRECTORY/1" )" || failure 29807
+                                                                                                                                                OBSERVED_SUBSCRIBE_INVALID_INIT="$( head --lines 1 "$OUT_FILE" )" || failure 29807
                                                                                                                                                 if [[ "$EXPECTED_SUBSCRIBE_INVALID_INIT" != "$OBSERVED_SUBSCRIBE_INVALID_INIT" ]]
                                                                                                                                                 then
                                                                                                                                                     failure 30918 EXPECTED_SUBSCRIBE_INVALID_INIT "$EXPECTED_SUBSCRIBE_INVALID_INIT" OBSERVED_SUBSCRIBE_INVALID_INIT "$OBSERVED_SUBSCRIBE_INVALID_INIT"
                                                                                                                                                 fi
                                                                                                                                                 EXPECTED_SUBSCRIBE_INVALID_RELEASE="\"subscribe\",\"invalid-release\",1"
-                                                                                                                                                OBSERVED_SUBSCRIBE_INVALID_RELEASE="$( cat "$OUT_DIRECTORY/2" )" || failure 10496
+                                                                                                                                                OBSERVED_SUBSCRIBE_INVALID_RELEASE="$( head --lines 2 "$OUT_FILE" | tail --lines 1 )" || failure 10496
                                                                                                                                                 if [[ "$EXPECTED_SUBSCRIBE_INVALID_RELEASE" != "$OBSERVED_SUBSCRIBE_INVALID_RELEASE" ]]
                                                                                                                                                 then
                                                                                                                                                     failure 21324 EXPECTED_SUBSCRIBE_INVALID_RELEASE "$EXPECTED_SUBSCRIBE_INVALID_RELEASE" OBSERVED_SUBSCRIBE_INVALID_RELEASE "$OBSERVED_SUBSCRIBE_INVALID_RELEASE"
                                                                                                                                                 fi
                                                                                                                                                 EXPECTED_SUBSCRIBE_STALE_INIT="\"subscribe\",\"stale-init\",1"
-                                                                                                                                                OBSERVED_SUBSCRIBE_STALE_INIT="$( cat "$OUT_DIRECTORY/3" )" || failure 16256
+                                                                                                                                                OBSERVED_SUBSCRIBE_STALE_INIT="$( head --lines 3 "$OUT_FILE" | tail --lines 1 )" || failure 16256
                                                                                                                                                 if [[ "$EXPECTED_SUBSCRIBE_STALE_INIT" != "$OBSERVED_SUBSCRIBE_STALE_INIT" ]]
                                                                                                                                                 then
                                                                                                                                                     failure 11841 EXPECTED_SUBSCRIBE_STALE_INIT "$EXPECTED_SUBSCRIBE_STALE_INIT" OBSERVED_SUBSCRIBE_STALE_INIT "$OBSERVED_SUBSCRIBE_STALE_INIT"
                                                                                                                                                 fi
                                                                                                                                                 EXPECTED_SUBSCRIBE_VALID_INIT="\"subscribe\",\"valid-init\",1"
-                                                                                                                                                OBSERVED_SUBSCRIBE_VALID_INIT="$( cat "$OUT_DIRECTORY/4" )" || failure 32080
+                                                                                                                                                OBSERVED_SUBSCRIBE_VALID_INIT="$( head --lines 4 "$OUT_FILE" | tail --lines 1 )" || failure 32080
                                                                                                                                                 if [[ "$EXPECTED_SUBSCRIBE_VALID_INIT" != "$OBSERVED_SUBSCRIBE_VALID_INIT" ]]
                                                                                                                                                 then
                                                                                                                                                     failure 20315 EXPECTED_SUBSCRIBE_VALID_INIT "$EXPECTED_SUBSCRIBE_VALID_INIT" OBSERVED_SUBSCRIBE_VALID_INIT "$OBSERVED_SUBSCRIBE_VALID_INIT"
                                                                                                                                                 fi
                                                                                                                                                 EXPECTED_SUBSCRIBE_VALID_RELEASE="\"subscribe\",\"valid-release\",1"
-                                                                                                                                                OBSERVED_SUBSCRIBE_VALID_RELEASE="$( cat "$OUT_DIRECTORY/5" )" || failure 20683
+                                                                                                                                                OBSERVED_SUBSCRIBE_VALID_RELEASE="$( head --lines 5 "$OUT_FILE" | tail --lines 1 )" || failure 20683
                                                                                                                                                 if [[ "$EXPECTED_SUBSCRIBE_VALID_RELEASE" != "$OBSERVED_SUBSCRIBE_VALID_RELEASE" ]]
                                                                                                                                                 then
                                                                                                                                                     failure 28681 EXPECTED_SUBSCRIBE_VALID_RELEASE "$EXPECTED_SUBSCRIBE_VALID_RELEASE" OBSERVED_SUBSCRIBE_VALID_RELEASE "$OBSERVED_SUBSCRIBE_VALID_RELEASE"
                                                                                                                                                 fi
-                                                                                                                                                if [[ -e "$OUT_DIRECTORY/6" ]]
+                                                                                                                                                WC_SIX="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 17924
+                                                                                                                                                if [[ "$WC_SIX" != "5" ]]
                                                                                                                                                 then
-                                                                                                                                                    SIX="$( cat "$OUT_DIRECTORY/6" )" || failure 17032
+                                                                                                                                                    SIX="$( head --lines 6 "$OUT_FILE" | tail --lines 1 )" || failure 17032
                                                                                                                                                     failure 24681 SIX "$SIX"
                                                                                                                                                 fi
-                                                                                                                                                echo 4693
                                                                                                                                                 timeout 1m bash -c "${ pre-test }"
                                                                                                                                                 echo 3839
                                                                                                                                                 PRECOUNT=0
                                                                                                                                                 while [[ "$PRECOUNT" -lt "7" ]]
                                                                                                                                                 do
-                                                                                                                                                    inotifywait --timeout 1 --event create "$OUT_DIRECTORY"
-                                                                                                                                                    PRECOUNT="$( find "$OUT_DIRECTORY" | wc --lines | cut --delimiter " " --fields 1 )" || failure 24082
+                                                                                                                                                    sleep 1
+                                                                                                                                                    PRECOUNT="$( cat "$OUT_FILE" | wc --lines | cut --delimiter " " --fields 1 )" || failure 24082
                                                                                                                                                 done
                                                                                                                                                 EXPECTED_JSON='${ builtins.toJSON { } }'
                                                                                                                                                 OBSERVED_JSON="$( jq --compact-output )" || failure 29872
@@ -845,9 +841,10 @@
                                                                                                                                                 then
                                                                                                                                                     failure 24215 EXPECTED_JSON "$EXPECTED_JSON" OBSERVED_JSON "$OBSERVED_JSON"
                                                                                                                                                 fi
-                                                                                                                                                if [[ -e "$OUT_DIRECTORY/8" ]]
+                                                                                                                                                WC_EIGHT="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 17418
+                                                                                                                                                if [[ "$WC_EIGHT" != 7 ]]
                                                                                                                                                 then
-                                                                                                                                                    EIGHT="$( cat "$OUT_DIRECTORY/8" )" || failure 14060
+                                                                                                                                                    EIGHT="$( head --lines 8 "$OUT_FILE" | tail --lines 1 )" || failure 14060
                                                                                                                                                     failure 12459 EIGHT "$EIGHT"
                                                                                                                                                 fi
                                                                                                                                                 echo 5140
@@ -874,11 +871,13 @@
                                                                                                                         --literal plain OBSERVED_SUBSCRIBE_STALE_INIT \
                                                                                                                         --literal plain OBSERVED_SUBSCRIBE_VALID_INIT \
                                                                                                                         --literal plain OBSERVED_SUBSCRIBE_VALID_RELEASE \
-                                                                                                                        --literal plain OUT_DIRECTORY \
+                                                                                                                        --literal plain OUT_FILE \
                                                                                                                         --literal plain PATH \
                                                                                                                         --literal plain PAYLOAD \
                                                                                                                         --literal plain PRECOUNT \
                                                                                                                         --literal plain SIX \
+                                                                                                                        --literal plain WC_SIX \
+                                                                                                                        --literal plain WC_EIGHT \
                                                                                                                         --uuid 19713
                                                                                                                 '' ;
                                                                                                 } ;
