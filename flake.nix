@@ -797,7 +797,7 @@
                                                                                                                                                 then
                                                                                                                                                     failure 30918 EXPECTED_SUBSCRIBE_INVALID_INIT "$EXPECTED_SUBSCRIBE_INVALID_INIT" OBSERVED_SUBSCRIBE_INVALID_INIT "$OBSERVED_SUBSCRIBE_INVALID_INIT"
                                                                                                                                                 fi
-                                                                                                                                                EXPECTED_SUBSCRIBE_INVALID_RELEASE="\"subscribe\",\"invalid-release\",2"
+                                                                                                                                                EXPECTED_SUBSCRIBE_INVALID_RELEASE="\"subscribe\",\"invalid-release\",20"
                                                                                                                                                 OBSERVED_SUBSCRIBE_INVALID_RELEASE="$( head --lines 2 "$OUTPUT_FILE" | tail --lines 1 )" || failure 10496
                                                                                                                                                 if [[ "$EXPECTED_SUBSCRIBE_INVALID_RELEASE" != "$OBSERVED_SUBSCRIBE_INVALID_RELEASE" ]]
                                                                                                                                                 then
