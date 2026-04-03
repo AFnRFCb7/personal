@@ -751,7 +751,7 @@
                                                                                                                                                                     # then
                                                                                                                                                                     #     failure 13800 "EXPECTED_MESSAGE" "$EXPECTED_MESSAGES" "OBSERVED_MESSAGES" "$OBSERVED_MESSAGES"
                                                                                                                                                                     # fi
-                                                                                                                                                                    echo "EXPECTED_MESSAGES=$EXPECTED_MESSAGES"
+                                                                                                                                                                    echo $RESOURCE"
                                                                                                                                                                 '' ;
                                                                                                                                                         } ;
                                                                                                                                                 in "${ application }/bin/pre-test" ;
@@ -2311,6 +2311,7 @@
                                                                     machine.wait_for_unit("multi-user.target")
                                                                     machine.wait_for_unit("network-online.target")
                                                                     machine.wait_for_unit("redis.target")
+                                                                    machine.wait_for_unit("resource.target")
                                                                     machine.succeed("runuser --login ${ testuser } -- ${ test }")
                                                                 '' ;
                                                 } ;
