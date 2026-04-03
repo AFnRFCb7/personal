@@ -797,7 +797,7 @@
                                                                                                                                                 done
                                                                                                                                                 OUTFILE="$( mktemp )" || failure 18422
                                                                                                                                                 redis-cli --csv SUBSCRIBE invalid-init invalid-release stale-init valid-init valid-release | awk -F',' '$1 == "\"message\"" { print $3 }' | tr -d '"' > "$OUTFILE" &
-                                                                                                                                                timeout 10s bash -c "${ pre-test } --expected-resource $EXPECTED_RESOURCE"
+                                                                                                                                                timeout 10s bash -c "${ pre-test } \"--expected-resource\" \"$EXPECTED_RESOURCE\""
                                                                                                                                             '' ;
                                                                                                                             } ;
                                                                                                                     in "${ application }/bin/true-true" ;
