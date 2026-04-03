@@ -766,7 +766,7 @@
                                                                                                                                                     exit 0
                                                                                                                                                 fi
                                                                                                                                                 OUT_DIRECTORY="$( mktemp --directory )" || failure 29393
-                                                                                                                                                if false
+                                                                                                                                                if true
                                                                                                                                                 then
                                                                                                                                                     exit 0
                                                                                                                                                 fi
