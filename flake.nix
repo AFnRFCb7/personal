@@ -727,23 +727,7 @@
                                                                                                                                                             runtimeInputs = [ failure pkgs.coreutils pkgs.gawk pkgs.redis ] ;
                                                                                                                                                             text =
                                                                                                                                                                 ''
-                                                                                                                                                                    EXPECTED_PRE_MESSAGES=()
-                                                                                                                                                                    while [[ "$#" -gt 0 ]]
-                                                                                                                                                                    do
-                                                                                                                                                                        case "$1" in
-                                                                                                                                                                            --pre-message)
-                                                                                                                                                                                EXPECTED_PRE_MESSAGES+=( "$2" )
-                                                                                                                                                                                shift 2
-                                                                                                                                                                                ;;
-                                                                                                                                                                            --resource)
-                                                                                                                                                                                EXPECTED_RESOURCE="$2"
-                                                                                                                                                                                shift 2
-                                                                                                                                                                                ;;
-                                                                                                                                                                            *)
-                                                                                                                                                                                failure 5047 "$*"
-                                                                                                                                                                                ;;
-                                                                                                                                                                        esac
-                                                                                                                                                                    done
+                                                                                                                                                                    EXPECTED_RESOURCE="WRONG"
                                                                                                                                                                     OUTFILE="$( mktemp )" || failure 18422
                                                                                                                                                                     redis-cli --csv SUBSCRIBE invalid-init invalid-release stale-init valid-init valid-release | awk -F',' '$1 == "\"message\"" { print $3 }' | tr -d '"' > "$OUTFILE" &
                                                                                                                                                                     sleep 10s
@@ -773,31 +757,10 @@
                                                                                                                                                 in "${ application }/bin/pre-test" ;
                                                                                                                                         in
                                                                                                                                             ''
-                                                                                                                                                EXPECTED_POST_MESSAGES=()
-                                                                                                                                                EXPECTED_PRE_MESSAGES=()
-                                                                                                                                                while [[ "$#" -gt 0 ]]
-                                                                                                                                                do
-                                                                                                                                                    case "$1" in
-                                                                                                                                                        --post-message)
-                                                                                                                                                            EXPECTED_POST_MESSAGES+=( "$2" )
-                                                                                                                                                            shift 2
-                                                                                                                                                            ;;
-                                                                                                                                                        --pre-message)
-                                                                                                                                                            EXPECTED_PRE_MESSAGES+=( "$2" )
-                                                                                                                                                            shift 2
-                                                                                                                                                            ;;
-                                                                                                                                                        --resource)
-                                                                                                                                                            EXPECTED_RESOURCE="$2"
-                                                                                                                                                            shift 2
-                                                                                                                                                            ;;
-                                                                                                                                                        *)
-                                                                                                                                                            failure 23578 "$*"
-                                                                                                                                                            ;;
-                                                                                                                                                    esac
-                                                                                                                                                done
                                                                                                                                                 OUTFILE="$( mktemp )" || failure 18422
                                                                                                                                                 redis-cli --csv SUBSCRIBE invalid-init invalid-release stale-init valid-init valid-release | awk -F',' '$1 == "\"message\"" { print $3 }' | tr -d '"' > "$OUTFILE" &
-                                                                                                                                                timeout 10s bash -c "${ pre-test } \"--expected-resource\" \"$EXPECTED_RESOURCE\""
+                                                                                                                                                timeout 10s bash -c "${ pre-test }"
+                                                                                                                                                echo "$OUTFILE"
                                                                                                                                             '' ;
                                                                                                                             } ;
                                                                                                                     in "${ application }/bin/true-true" ;
@@ -807,10 +770,6 @@
                                                                                                                         ${ true-true } \
                                                                                                                         true-true \
                                                                                                                         0500 \
-                                                                                                                        --literal plain '#' \
-                                                                                                                        --literal plain 1 \
-                                                                                                                        --literal plain 2 \
-                                                                                                                        --literal plain EXPECTED_RESOURCE \
                                                                                                                         --literal plain OUTFILE \
                                                                                                                         --inherit plain PATH \
                                                                                                                         --uuid 19713
@@ -2343,7 +2302,7 @@
                                                                                         cd "$PAD"
                                                                                         # shellcheck disable=SC1091
                                                                                         source .envrc
-                                                                                        true-true --expected-resource "WRONG"
+                                                                                        true-true
                                                                                     '' ;
                                                                             } ;
                                                                     in "${ application }/bin/test" ;
