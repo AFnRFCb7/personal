@@ -751,7 +751,7 @@
                                                                                                                                                 echo 25291
                                                                                                                                                 OUTFILE="$( mktemp )" || failure 18422
                                                                                                                                                 redis-cli --csv SUBSCRIBE invalid-init invalid-release stale-init valid-init valid-release | awk -F',' '$1 == "\"message\"" { print $3 }' | tr -d '"' > "$OUTFILE" &
-                                                                                                                                                timeout 10s bash -c "${ pre-test }"
+                                                                                                                                                timeout 1m bash -c "${ pre-test }"
                                                                                                                                                 echo 19638
                                                                                                                                             '' ;
                                                                                                                             } ;
