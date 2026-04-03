@@ -765,11 +765,11 @@
                                                                                                                                                                     then
                                                                                                                                                                         failure 14530 EXPECTED_INIT "$EXPECTED_INIT" OBSERVED_INIT "$OBSERVED_INIT"
                                                                                                                                                                     fi
-                                                                                                                                                                    EXPECTED_JSON='${ builtins.toJSON { } }'
-                                                                                                                                                                    OBSERVED_JSON="$( jq --compact-output )" || failure 9412
-                                                                                                                                                                    if [[ "$EXPECTED_JSON" != "$OBSERVED_JSON" ]]
+                                                                                                                                                                    EXPECTED_INIT_JSON='${ builtins.toJSON { } }'
+                                                                                                                                                                    OBSERVED_INIT_JSON="$( jq --compact-output )" || failure 9412
+                                                                                                                                                                    if [[ "$EXPECTED_INIT_JSON" != "$OBSERVED_INIT_JSON" ]]
                                                                                                                                                                     then
-                                                                                                                                                                        failure 16098 EXPECTED_JSON "$EXPECTED_JSON" OBSERVED_JSON "$OBSERVED_JSON"
+                                                                                                                                                                        failure 16098 EXPECTED_INIT_JSON "$EXPECTED_INIT_JSON" OBSERVED_INIT_JSON "$OBSERVED_INIT_JSON"
                                                                                                                                                                     fi
                                                                                                                                                                     WC_SEVEN="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 21345
                                                                                                                                                                     if [[ "$WC_SEVEN" != 6 ]]
