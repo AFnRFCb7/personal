@@ -727,6 +727,7 @@
                                                                                                                                                             runtimeInputs = [ failure pkgs.coreutils pkgs.gawk pkgs.redis ] ;
                                                                                                                                                             text =
                                                                                                                                                                 ''
+                                                                                                                                                                    echo 15528
                                                                                                                                                                     # EXPECTED_RESOURCE="WRONG"
                                                                                                                                                                     OUTFILE="$( mktemp )" || failure 18422
                                                                                                                                                                     sleep 10s
@@ -737,15 +738,17 @@
                                                                                                                                                                     # then
                                                                                                                                                                     #     failure 15789 EXPECTED_RESOURCE "$EXPECTED_RESOURCE" OBSERVED_RESOURCE "$OBSERVED_RESOURCE"
                                                                                                                                                                     # fi
+                                                                                                                                                                    echo 26278
                                                                                                                                                                 '' ;
                                                                                                                                                         } ;
                                                                                                                                                 in "${ application }/bin/pre-test" ;
                                                                                                                                         in
                                                                                                                                             ''
+                                                                                                                                                echo 25291
                                                                                                                                                 OUTFILE="$( mktemp )" || failure 18422
                                                                                                                                                 redis-cli --csv SUBSCRIBE invalid-init invalid-release stale-init valid-init valid-release | awk -F',' '$1 == "\"message\"" { print $3 }' | tr -d '"' > "$OUTFILE" &
                                                                                                                                                 timeout 10s bash -c "${ pre-test }"
-                                                                                                                                                echo "$OUTFILE"
+                                                                                                                                                echo 19638
                                                                                                                                             '' ;
                                                                                                                             } ;
                                                                                                                     in "${ application }/bin/true-true" ;
@@ -2283,11 +2286,13 @@
                                                                                 runtimeInputs = [ pkgs.coreutils ] ;
                                                                                 text =
                                                                                     ''
+                                                                                        echo 14263
                                                                                         PAD="$( resource --resource '["production","pad","checks"]' )"
                                                                                         cd "$PAD"
                                                                                         # shellcheck disable=SC1091
                                                                                         source .envrc
                                                                                         true-true
+                                                                                        echo 26602
                                                                                     '' ;
                                                                             } ;
                                                                     in "${ application }/bin/test" ;
