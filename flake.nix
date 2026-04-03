@@ -734,12 +734,12 @@
                                                                                                                                                                         failure 15789 EXPECTED_RESOURCE "$EXPECTED_RESOURCE" OBSERVED_RESOURCE "$OBSERVED_RESOURCE"
                                                                                                                                                                     fi
                                                                                                                                                                     PRECOUNT=0
-                                                                                                                                                                    while (( PRECOUNT < 6 ))
+                                                                                                                                                                    while [[ "$PRECOUNT" -lt "6" ))
                                                                                                                                                                     do
                                                                                                                                                                         inotifywait --timeout 1 --event create "$OUT_DIRECTORY"
                                                                                                                                                                         PRECOUNT="$( find "$OUT_DIRECTORY" | wc --lines | cut --delimiter " " --fields 1 )" || failure 24769
                                                                                                                                                                     done
-                                                                                                                                                                    EXPECTED_INIT="\"subscribe\",\"invalid-init\",1"
+                                                                                                                                                                    EXPECTED_INIT="WRONG"
                                                                                                                                                                     OBSERVED_INIT="$( cat "$OUT_DIRECTORY/6" )" || failure 20277
                                                                                                                                                                     if [[ "$EXPECTED_INIT" != "$OBSERVED_INIT" ]]
                                                                                                                                                                     then
@@ -755,6 +755,7 @@
                                                                                                                                                 in "${ application }/bin/pre-test" ;
                                                                                                                                         in
                                                                                                                                             ''
+                                                                                                                                                echo 951
                                                                                                                                                 OUT_DIRECTORY="$( mktemp --directory )" || failure 29393
                                                                                                                                                 export OUT_DIRECTORY
                                                                                                                                                 redis-cli --csv SUBSCRIBE invalid-init invalid-release stale-init valid-init valid-release | while read -r PAYLOAD
@@ -763,8 +764,10 @@
                                                                                                                                                     echo "$PAYLOAD" > "$OUT_DIRECTORY/$INDEX"
                                                                                                                                                 done &
                                                                                                                                                 PRECOUNT=0
-                                                                                                                                                while (( PRECOUNT < 5 ))
+                                                                                                                                                echo 4328
+                                                                                                                                                while [[ "$PRECOUNT" -lt "5" ]]
                                                                                                                                                 do
+                                                                                                                                                    echo 1438 "PRECOUNT=$PRECOUNT"
                                                                                                                                                     inotifywait --timeout 1 --event create "$OUT_DIRECTORY"
                                                                                                                                                     PRECOUNT="$( find "$OUT_DIRECTORY" | wc --lines | cut --delimiter " " --fields 1 )" || failure 13785
                                                                                                                                                 done
@@ -803,9 +806,11 @@
                                                                                                                                                     SIX="$( cat "$OUT_DIRECTORY/6" )" || failure 17032
                                                                                                                                                     failure 24681 SIX "$SIX"
                                                                                                                                                 fi
+                                                                                                                                                echo 4693
                                                                                                                                                 timeout 1m bash -c "${ pre-test }"
+                                                                                                                                                echo 3839
                                                                                                                                                 PRECOUNT=0
-                                                                                                                                                while (( PRECOUNT < 7 ))
+                                                                                                                                                while [[ "$PRECOUNT" -lt "7" ]]
                                                                                                                                                 do
                                                                                                                                                     inotifywait --timeout 1 --event create "$OUT_DIRECTORY"
                                                                                                                                                     PRECOUNT="$( find "$OUT_DIRECTORY" | wc --lines | cut --delimiter " " --fields 1 )" || failure 24082
@@ -815,6 +820,7 @@
                                                                                                                                                     EIGHT="$( cat "$OUT_DIRECTORY/8" )" || failure 14060
                                                                                                                                                     failure 12459 EIGHT "$EIGHT"
                                                                                                                                                 fi
+                                                                                                                                                echo 5140
                                                                                                                                             '' ;
                                                                                                                             } ;
                                                                                                                     in "${ application }/bin/true-true" ;
@@ -839,6 +845,7 @@
                                                                                                                         --literal plain OUT_DIRECTORY \
                                                                                                                         --literal plain PATH \
                                                                                                                         --literal plain PAYLOAD \
+                                                                                                                        --literal plain PRECOUNT \
                                                                                                                         --literal plain SIX \
                                                                                                                         --uuid 19713
                                                                                                                 '' ;
