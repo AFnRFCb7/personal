@@ -789,13 +789,14 @@
                                                                                                                                                     failure 20315 EXPECTED_SUBSCRIBE_VALID_INIT "$EXPECTED_SUBSCRIBE_VALID_INIT" OBSERVED_SUBSCRIBE_VALID_INIT "$OBSERVED_SUBSCRIBE_VALID_INIT"
                                                                                                                                                 fi
                                                                                                                                                 EXPECTED_SUBSCRIBE_VALID_RELEASE="\"subscribe\",\"valid-release\",1"
-                                                                                                                                                OBSERVED_SUBSCRIBE_VALID_RELEASE="$( cat "$OUT_DIRECTORY/1" )" || failure 20683
+                                                                                                                                                OBSERVED_SUBSCRIBE_VALID_RELEASE="$( cat "$OUT_DIRECTORY/5" )" || failure 20683
                                                                                                                                                 if [[ "$EXPECTED_SUBSCRIBE_VALID_RELEASE" != "$OBSERVED_SUBSCRIBE_VALID_RELEASE" ]]
                                                                                                                                                 then
                                                                                                                                                     failure 28681 EXPECTED_SUBSCRIBE_VALID_RELEASE "$EXPECTED_SUBSCRIBE_VALID_RELEASE" OBSERVED_SUBSCRIBE_VALID_RELEASE "$OBSERVED_SUBSCRIBE_VALID_RELEASE"
                                                                                                                                                 fi
                                                                                                                                                 if [[ -e "$OUT_DIRECTORY/6" ]]
                                                                                                                                                 then
+                                                                                                                                                    SIX="$( cat "$OUT_DIRECTORY/6" )" || failure 17032
                                                                                                                                                     failure 24681
                                                                                                                                                 fi
                                                                                                                                                 timeout 1m bash -c "${ pre-test }"
@@ -820,6 +821,7 @@
                                                                                                                         --literal plain OBSERVED_SUBSCRIBE_VALID_RELEASE \
                                                                                                                         --literal plain OUT_DIRECTORY \
                                                                                                                         --inherit plain PATH \
+                                                                                                                        --literal plain SIX \
                                                                                                                         --uuid 19713
                                                                                                                 '' ;
                                                                                                 } ;
