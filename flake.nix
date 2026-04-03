@@ -761,6 +761,7 @@
                                                                                                                                                 in "${ application }/bin/pre-test" ;
                                                                                                                                         in
                                                                                                                                             ''
+                                                                                                                                                exit 0
                                                                                                                                                 echo 951
                                                                                                                                                 OUT_DIRECTORY="$( mktemp --directory )" || failure 29393
                                                                                                                                                 export OUT_DIRECTORY
@@ -821,6 +822,12 @@
                                                                                                                                                     inotifywait --timeout 1 --event create "$OUT_DIRECTORY"
                                                                                                                                                     PRECOUNT="$( find "$OUT_DIRECTORY" | wc --lines | cut --delimiter " " --fields 1 )" || failure 24082
                                                                                                                                                 done
+                                                                                                                                                EXPECTED_JSON='${ builtins.toJSON { } }'
+                                                                                                                                                OBSERVED_JSON="$( jq --compact-output )" || failure 29872
+                                                                                                                                                if [[ "$EXPECTED_JSON" != "$OBSERVED_JSON" ]]
+                                                                                                                                                then
+                                                                                                                                                    failure 24215 EXPECTED_JSON "$EXPECTED_JSON" OBSERVED_JSON "$OBSERVED_JSON"
+                                                                                                                                                fi
                                                                                                                                                 if [[ -e "$OUT_DIRECTORY/8" ]]
                                                                                                                                                 then
                                                                                                                                                     EIGHT="$( cat "$OUT_DIRECTORY/8" )" || failure 14060
@@ -836,6 +843,7 @@
                                                                                                                         ${ true-true } \
                                                                                                                         true-true \
                                                                                                                         0500 \
+                                                                                                                        --literal plain EXPECTED_JSON \
                                                                                                                         --literal plain EXPECTED_SUBSCRIBE_INVALID_INIT \
                                                                                                                         --literal plain EXPECTED_SUBSCRIBE_INVALID_RELEASE \
                                                                                                                         --literal plain EXPECTED_SUBSCRIBE_STALE_INIT \
@@ -843,6 +851,7 @@
                                                                                                                         --literal plain EXPECTED_SUBSCRIBE_VALID_RELEASE \
                                                                                                                         --literal plain EIGHT \
                                                                                                                         --literal plain INDEX \
+                                                                                                                        --literal plain OBSERVED_JSON \
                                                                                                                         --literal plain OBSERVED_SUBSCRIBE_INVALID_INIT \
                                                                                                                         --literal plain OBSERVED_SUBSCRIBE_INVALID_RELEASE \
                                                                                                                         --literal plain OBSERVED_SUBSCRIBE_STALE_INIT \
