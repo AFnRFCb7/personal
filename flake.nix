@@ -715,7 +715,27 @@
                                                                                                                         pkgs.writeShellApplication
                                                                                                                             {
                                                                                                                                 name = "true-true" ;
-                                                                                                                                runtimeInputs = [ failure pkgs.bash pkgs.coreutils pkgs.findutils pkgs.inotify-tools pkgs.redis ] ;
+                                                                                                                                runtimeInputs =
+                                                                                                                                    [
+                                                                                                                                        failure
+                                                                                                                                        pkgs.bash
+                                                                                                                                        pkgs.coreutils
+                                                                                                                                        pkgs.findutils
+                                                                                                                                        pkgs.inotify-tools
+                                                                                                                                        pkgs.redis
+                                                                                                                                        (
+                                                                                                                                            pkgs.writeShellApplication
+                                                                                                                                                {
+                                                                                                                                                    name = "subscribe" ;
+                                                                                                                                                    runtimeInputs = [ failure pkgs.coreutils pkgs.findutils ] ;
+                                                                                                                                                    text =
+                                                                                                                                                        ''
+                                                                                                                                                            INDEX="$( find "$OUT_DIRECTORY" | wc --lines | cut --delimiter " " --fields 1 )" || failure 17122
+                                                                                                                                                            echo "$PAYLOAD" > "$OUT_DIRECTORY/$INDEX"
+                                                                                                                                                        '' ;
+                                                                                                                                                }
+                                                                                                                                        )
+                                                                                                                                    ] ;
                                                                                                                                 text =
                                                                                                                                     let
                                                                                                                                         pre-test =
@@ -763,15 +783,7 @@
                                                                                                                                             ''
                                                                                                                                                 OUT_DIRECTORY="$( mktemp --directory )" || failure 29393
                                                                                                                                                 export OUT_DIRECTORY
-                                                                                                                                                redis-cli --csv SUBSCRIBE invalid-init invalid-release stale-init valid-init valid-release | while read -r PAYLOAD
-                                                                                                                                                do
-                                                                                                                                                    INDEX="$( find "$OUT_DIRECTORY" | wc --lines | cut --delimiter " " --fields 1 )" || failure 17122
-                                                                                                                                                    echo "$PAYLOAD" > "$OUT_DIRECTORY/$INDEX"
-                                                                                                                                                    if false
-                                                                                                                                                    then
-                                                                                                                                                        exit 0
-                                                                                                                                                    fi
-                                                                                                                                                done &
+                                                                                                                                                redis-cli --csv SUBSCRIBE invalid-init invalid-release stale-init valid-init valid-release -exec subscribe \; &
                                                                                                                                                 if true
                                                                                                                                                 then
                                                                                                                                                     exit 0
