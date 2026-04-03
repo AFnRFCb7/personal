@@ -733,11 +733,12 @@
                                                                                                                                                                         INDEX="$( find "$OUT_DIRECTORY" | wc --lines | cut --delimiter " " --fields 1 )" || failure 17122
                                                                                                                                                                         echo "$PAYLOAD" > "$OUT_DIRECTORY/$INDEX"
                                                                                                                                                                     done &
-                                                                                                                                                                    inotifywait --event create "$OUT_DIRECTORY"
-                                                                                                                                                                    inotifywait --event create "$OUT_DIRECTORY"
-                                                                                                                                                                    inotifywait --event create "$OUT_DIRECTORY"
-                                                                                                                                                                    inotifywait --event create "$OUT_DIRECTORY"
-                                                                                                                                                                    inotifywait --event create "$OUT_DIRECTORY"
+                                                                                                                                                                    PRECOUNT=0
+                                                                                                                                                                    while (( PRECOUNT < 5 ))
+                                                                                                                                                                    do
+                                                                                                                                                                        inotifywait --event create "$OUT_DIRECTORY"
+                                                                                                                                                                        PRECOUNT="$( find "$OUT_DIRECTORY" | wc --lines | cut --delimiter " " --fields 1 )" || failure 13785
+                                                                                                                                                                    done
                                                                                                                                                                     EXPECTED_SUBSCRIBE_INVALID_INIT="\"subscribe\",\"invalid-init\",1"
                                                                                                                                                                     OBSERVED_SUBSCRIBE_INVALID_INIT="$( cat "$OUT_DIRECTORY/1" )" || failure 29807
                                                                                                                                                                     if [[ "$EXPECTED_SUBSCRIBE_INVALID_INIT" != "" ]]
