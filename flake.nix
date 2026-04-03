@@ -733,6 +733,23 @@
                                                                                                                                                                     then
                                                                                                                                                                         failure 15789 EXPECTED_RESOURCE "$EXPECTED_RESOURCE" OBSERVED_RESOURCE "$OBSERVED_RESOURCE"
                                                                                                                                                                     fi
+                                                                                                                                                                    PRECOUNT=0
+                                                                                                                                                                    while (( PRECOUNT < 6 ))
+                                                                                                                                                                    do
+                                                                                                                                                                        inotifywait --timeout 1 --event create "$OUT_DIRECTORY"
+                                                                                                                                                                        PRECOUNT="$( find "$OUT_DIRECTORY" | wc --lines | cut --delimiter " " --fields 1 )" || failure 24769
+                                                                                                                                                                    done
+                                                                                                                                                                    EXPECTED_INIT="\"subscribe\",\"invalid-init\",1"
+                                                                                                                                                                    OBSERVED_INIT="$( cat "$OUT_DIRECTORY/6" )" || failure 20277
+                                                                                                                                                                    if [[ "$EXPECTED_INIT" != "$OBSERVED_INIT" ]]
+                                                                                                                                                                    then
+                                                                                                                                                                        failure 14530 EXPECTED_INIT "$EXPECTED_INIT" OBSERVED_INIT "$OBSERVED_INIT"
+                                                                                                                                                                    fi
+                                                                                                                                                                    if [[ -e "$OUT_DIRECTORY/7" ]]
+                                                                                                                                                                    then
+                                                                                                                                                                        SEVEN="$( cat "$OUT_DIRECTORY/7" )" || failure 17032
+                                                                                                                                                                        failure 20505 SEVEN "$SEVEN"
+                                                                                                                                                                    fi
                                                                                                                                                                 '' ;
                                                                                                                                                         } ;
                                                                                                                                                 in "${ application }/bin/pre-test" ;
@@ -748,7 +765,7 @@
                                                                                                                                                 PRECOUNT=0
                                                                                                                                                 while (( PRECOUNT < 5 ))
                                                                                                                                                 do
-                                                                                                                                                    inotifywait --event create "$OUT_DIRECTORY"
+                                                                                                                                                    inotifywait --timeout 1 --event create "$OUT_DIRECTORY"
                                                                                                                                                     PRECOUNT="$( find "$OUT_DIRECTORY" | wc --lines | cut --delimiter " " --fields 1 )" || failure 13785
                                                                                                                                                 done
                                                                                                                                                 EXPECTED_SUBSCRIBE_INVALID_INIT="\"subscribe\",\"invalid-init\",1"
@@ -787,6 +804,17 @@
                                                                                                                                                     failure 24681 SIX "$SIX"
                                                                                                                                                 fi
                                                                                                                                                 timeout 1m bash -c "${ pre-test }"
+                                                                                                                                                PRECOUNT=0
+                                                                                                                                                while (( PRECOUNT < 7 ))
+                                                                                                                                                do
+                                                                                                                                                    inotifywait --timeout 1 --event create "$OUT_DIRECTORY"
+                                                                                                                                                    PRECOUNT="$( find "$OUT_DIRECTORY" | wc --lines | cut --delimiter " " --fields 1 )" || failure 24082
+                                                                                                                                                done
+                                                                                                                                                if [[ -e "$OUT_DIRECTORY/8" ]]
+                                                                                                                                                then
+                                                                                                                                                    EIGHT="$( cat "$OUT_DIRECTORY/8" )" || failure 14060
+                                                                                                                                                    failure 12459 EIGHT "$EIGHT"
+                                                                                                                                                fi
                                                                                                                                             '' ;
                                                                                                                             } ;
                                                                                                                     in "${ application }/bin/true-true" ;
@@ -801,6 +829,7 @@
                                                                                                                         --literal plain EXPECTED_SUBSCRIBE_STALE_INIT \
                                                                                                                         --literal plain EXPECTED_SUBSCRIBE_VALID_INIT \
                                                                                                                         --literal plain EXPECTED_SUBSCRIBE_VALID_RELEASE \
+                                                                                                                        --literal plain EIGHT \
                                                                                                                         --literal plain INDEX \
                                                                                                                         --literal plain OBSERVED_SUBSCRIBE_INVALID_INIT \
                                                                                                                         --literal plain OBSERVED_SUBSCRIBE_INVALID_RELEASE \
@@ -1715,7 +1744,7 @@
                                                                                                                 do
                                                                                                                     nohup "$FILE" &
                                                                                                                 done
-                                                                                                                find /home/${ config.personal.name }/resources/release -mindepth 1 -type f -exec inotifywait --event delete-self {} \;
+                                                                                                                find /home/${ config.personal.name }/resources/release -mindepth 1 -type f -exec inotifywait --timeout 1 --event delete-self {} \;
                                                                                                             fi
                                                                                                             mkdir --parents /home/${config.personal.name}/resources/canonical /home/${config.personal.name}/resources/quarantine.init /home/${config.personal.name}/resources/quarantine.release
                                                                                                             mapfile -t PROBLEMS < <( find /home/${config.personal.name}/resources/canonical /home/${config.personal.name}/resources/quarantine.init /home/${config.personal.name}/resources/quarantine.release -mindepth 1 -type f | sort )
