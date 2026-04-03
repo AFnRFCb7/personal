@@ -729,9 +729,13 @@
                                                                                                                                                                 ''
                                                                                                                                                                     echo 15528
                                                                                                                                                                     # EXPECTED_RESOURCE="WRONG"
+                                                                                                                                                                    echo 26608
                                                                                                                                                                     OUTFILE="$( mktemp )" || failure 18422
+                                                                                                                                                                    echo 26845
                                                                                                                                                                     sleep 10s
+                                                                                                                                                                    echo 30846
                                                                                                                                                                     redis-cli --csv SUBSCRIBE invalid-init invalid-release stale-init valid-init valid-release | awk -F',' '$1 == "\"message\"" { print $3 }' | tr -d '"' > "$OUTFILE" &
+                                                                                                                                                                    echo 25719
                                                                                                                                                                     sleep 10s
                                                                                                                                                                     # OBSERVED_RESOURCE=${ resources.production.pad.checks { failure = 21760 ; } }
                                                                                                                                                                     # if [[ "$EXPECTED_RESOURCE" != "$OBSERVED_RESOURCE" ]]
