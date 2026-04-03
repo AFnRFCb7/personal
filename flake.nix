@@ -777,7 +777,7 @@
                                                                                                                                                 fi
                                                                                                                                                 redis-cli --csv SUBSCRIBE invalid-init invalid-release stale-init valid-init valid-release | while read -r PAYLOAD
                                                                                                                                                 do
-                                                                                                                                                    if true
+                                                                                                                                                    if false
                                                                                                                                                     then
                                                                                                                                                         exit 0
                                                                                                                                                     fi
