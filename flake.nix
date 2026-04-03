@@ -787,7 +787,7 @@
                                                                                                                                                         exit 0
                                                                                                                                                     fi
                                                                                                                                                     echo "$PAYLOAD" > "$OUT_DIRECTORY/$INDEX"
-                                                                                                                                                    if true
+                                                                                                                                                    if false
                                                                                                                                                     then
                                                                                                                                                         exit 0
                                                                                                                                                     fi
