@@ -794,6 +794,10 @@
                                                                                                                                                 then
                                                                                                                                                     failure 28681 EXPECTED_SUBSCRIBE_VALID_RELEASE "$EXPECTED_SUBSCRIBE_VALID_RELEASE" OBSERVED_SUBSCRIBE_VALID_RELEASE "$OBSERVED_SUBSCRIBE_VALID_RELEASE"
                                                                                                                                                 fi
+                                                                                                                                                if [[ -e "$OUT_DIRECTORY/6" ]]
+                                                                                                                                                then
+                                                                                                                                                    failure 24681
+                                                                                                                                                fi
                                                                                                                                                 timeout 1m bash -c "${ pre-test }"
                                                                                                                                             '' ;
                                                                                                                             } ;
@@ -807,7 +811,7 @@
                                                                                                                         --literal plain EXPECTED_SUBSCRIBE_INVALID_INIT \
                                                                                                                         --literal plain EXPECTED_SUBSCRIBE_INVALID_RELEASE \
                                                                                                                         --literal plain EXPECTED_SUBSCRIBE_STALE_INIT \
-                                                                                                                        --literal plain EXPECTED_SUBSCRIBE_VALID_INIT \ 
+                                                                                                                        --literal plain EXPECTED_SUBSCRIBE_VALID_INIT \
                                                                                                                         --literal plain EXPECTED_SUBSCRIBE_VALID_RELEASE \
                                                                                                                         --literal plain OBSERVED_SUBSCRIBE_INVALID_INIT \
                                                                                                                         --literal plain OBSERVED_SUBSCRIBE_INVALID_RELEASE \
