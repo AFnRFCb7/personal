@@ -728,7 +728,7 @@
                                                                                                                                                             text =
                                                                                                                                                                 ''
                                                                                                                                                                     echo 29720
-                                                                                                                                                                    EXPECTED_RESOURCE="WRONG"
+                                                                                                                                                                    EXPECTED_RESOURCE="/home/emory/resources/mounts/0000000000000001"
                                                                                                                                                                     OUTFILE="$( mktemp )" || failure 18422
                                                                                                                                                                     sleep 1s
                                                                                                                                                                     redis-cli --csv SUBSCRIBE invalid-init invalid-release stale-init valid-init valid-release | awk -F',' '$1 == "\"message\"" { print $3 }' | tr -d '"' > "$OUTFILE" &
