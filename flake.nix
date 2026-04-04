@@ -749,7 +749,6 @@
                                                                                                                                                                             expected = [ ] ;
                                                                                                                                                                             observed = [ ] ;
                                                                                                                                                                         } ;
-                                                                                                                                                                    transient = "-1" ;
                                                                                                                                                                 } ;
                                                                                                                                                             release = "WRONG" ;
                                                                                                                                                             release-file = "/home/emory/resources/release/0000000000000021" ;
@@ -903,13 +902,13 @@
                                                                                                                                                     failure 27913
                                                                                                                                                 fi
 
-
                                                                                                                                                 WC_EIGHT="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 17418
                                                                                                                                                 if [[ "$WC_EIGHT" != 7 ]]
                                                                                                                                                 then
                                                                                                                                                     EIGHT="$( head --lines 8 "$OUTPUT_FILE" | tail --lines 1 )" || failure 14060
                                                                                                                                                     failure 12459 EIGHT "$EIGHT"
                                                                                                                                                 fi
+
                                                                                                                                             '' ;
                                                                                                                             } ;
                                                                                                                     in "${ application }/bin/true-true" ;
