@@ -800,7 +800,6 @@
                                                                                                                                                                         failure 16098 EXPECTED_INIT_JSON "$EXPECTED_INIT_JSON" OBSERVED_INIT_JSON "$OBSERVED_INIT_JSON" VERBOSE_INIT_JSON "$VERBOSE_INIT_JSON"
                                                                                                                                                                     fi
                                                                                                                                                                     # shellcheck disable=SC2016
-                                                                                                                                                                    echo '${ release }' > "$EXPECTED_RELEASE_FILE"
                                                                                                                                                                     EXPECTED_RELEASE='${ release }'
                                                                                                                                                                     OBSERVED_RELEASE="$( cat ${ release-file } )" || failure 19359
                                                                                                                                                                     if [[ "$EXPECTED_RELEASE" != "$OBSERVED_RELEASE" ]]
