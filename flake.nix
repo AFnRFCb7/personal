@@ -742,8 +742,12 @@
                                                                                                                                                                     targets = [ ".envrc" ] ;
                                                                                                                                                                     transient = "-1" ;
                                                                                                                                                                 } ;
+                                                                                                                                                            standard-error = "" ;
+                                                                                                                                                            standard-error-file = "" ;
                                                                                                                                                             standard-input = "" ;
                                                                                                                                                             standard-input-file = "/home/emory/resources/logs/0000000000000020" ;
+                                                                                                                                                            standard-output = "" ;
+                                                                                                                                                            standard-output-file = "" ;
                                                                                                                                                             in
                                                                                                                                                                 ''
                                                                                                                                                                     EXPECTED_RESOURCE="/home/emory/resources/mounts/0000000000000021"
@@ -768,7 +772,7 @@
                                                                                                                                                                     OBSERVED_INIT_JSON="$( jq --compact-output "." /home/emory/resources/logs/0000000000000025 )" || failure 9412
                                                                                                                                                                     if [[ "$EXPECTED_INIT_JSON" != "$OBSERVED_INIT_JSON" ]]
                                                                                                                                                                     then
-                                                                                                                                                                        VERBOSE_INIT_JSON="$( jq "." "$OBSERVED_INIT_JSON" )" || failure 23617
+                                                                                                                                                                        VERBOSE_INIT_JSON="$( jq "." /home/emory/resources/logs/0000000000000025 )" || failure 23617
                                                                                                                                                                         failure 16098 EXPECTED_INIT_JSON "$EXPECTED_INIT_JSON" OBSERVED_INIT_JSON "$OBSERVED_INIT_JSON" VERBOSE_INIT_JSON "$VERBOSE_INIT_JSON"
                                                                                                                                                                     fi
                                                                                                                                                                     WC_SEVEN="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 21345
@@ -776,6 +780,12 @@
                                                                                                                                                                     then
                                                                                                                                                                         SEVEN="$( head --lines 7 "$OUTPUT_FILE" | tail --lines 1 )" || failure 17032
                                                                                                                                                                         failure 20505 SEVEN "$SEVEN"
+                                                                                                                                                                    fi
+                                                                                                                                                                    EXPECTED_STANDARD_ERROR='${ standard-error }'
+                                                                                                                                                                    OBSERVED_STANDARD_ERROR="$( cat ${ standard-error-file } )" || failure 31412
+                                                                                                                                                                    if [[ "$EXPECTED_STANDARD_ERROR" != "$OBSERVED_STANDARD_ERROR" ]]
+                                                                                                                                                                    then
+                                                                                                                                                                        failure 30053 EXPECTED_STANDARD_ERROR "$EXPECTED_STANDARD_ERROR" OBSERVED_STANDARD_ERROR "$OBSERVED_STANDARD_ERROR"
                                                                                                                                                                     fi
                                                                                                                                                                     EXPECTED_STANDARD_INPUT='${ standard-input }'
                                                                                                                                                                     OBSERVED_STANDARD_INPUT="$( cat ${ standard-input-file } )" || failure 23070
