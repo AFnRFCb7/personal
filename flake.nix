@@ -807,6 +807,7 @@
                                                                                                                                                                         SEVEN="$( head --lines 7 "$OUTPUT_FILE" | tail --lines 1 )" || failure 17032
                                                                                                                                                                         failure 20505 SEVEN "$SEVEN"
                                                                                                                                                                     fi
+                                                                                                                                                                    # shellcheck disable=SC2016
                                                                                                                                                                     EXPECTED_RELEASE='${ release }'
                                                                                                                                                                     OBSERVED_RELEASE="$( cat ${ release-file } )" || failure 19359
                                                                                                                                                                     if [[ "$EXPECTED_RELEASE" != "$OBSERVED_RELEASE" ]]
