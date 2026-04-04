@@ -929,7 +929,6 @@
                                                                                                                                                 COUNT_7=0
                                                                                                                                                 while [[ "$COUNT_7" -lt "7" ]]
                                                                                                                                                 do
-                                                                                                                                                    echo 25854
                                                                                                                                                     sleep 1
                                                                                                                                                     COUNT_7="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 24082
                                                                                                                                                 done
