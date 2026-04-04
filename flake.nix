@@ -830,6 +830,10 @@
                                                                                                                                     ] ;
                                                                                                                                 text =
                                                                                                                                     let
+                                                                                                                                        release =
+                                                                                                                                            {
+
+                                                                                                                                            } ;
                                                                                                                                         in
                                                                                                                                             ''
                                                                                                                                                 OUTPUT_FILE="$( mktemp )" || failure 29393
@@ -917,8 +921,7 @@
                                                                                                                         --literal plain EXPECTED_SUBSCRIBE_STALE_INIT \
                                                                                                                         --literal plain EXPECTED_SUBSCRIBE_VALID_INIT \
                                                                                                                         --literal plain EXPECTED_SUBSCRIBE_VALID_RELEASE \
-                                                                                                                        --literal plain EIGHT \
-                                                                                                                        --literal plain OBSERVED_JSON \
+                                                                                                                        --literal plain EIGHT \-
                                                                                                                         --literal plain OBSERVED_RELEASE \
                                                                                                                         --literal plain OBSERVED_SUBSCRIBE_INVALID_INIT \
                                                                                                                         --literal plain OBSERVED_SUBSCRIBE_INVALID_RELEASE \
