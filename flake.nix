@@ -759,9 +759,6 @@
 
                                                                                                                                                                     export PATH="/nix/store/xy9sa2741cinqmfpmqhdrk38gcv1waxb-trace/bin:/nix/store/xj5znbv8827p7lp2lv1ikz09wblh52mq-destroy/bin:$PATH"
 
-                                                                                                                                                                    export PATH="/nix/store/xy9sa2741cinqmfpmqhdrk38gcv1waxb-trace/bin:/nix/store/xj5znbv8827p7lp2lv1ikz09wblh52mq-destroy/bin:$PATH"
-
-
                                                                                                                                                                     mkdir --parents "/home/emory/.gc-root/0000000000000021"
                                                                                                                                                                     export HASH=2437475884155327532bf64974842426fba94cc1f5db86078db4b6e529ff9863997fb22a3bd26b9baf3d0431eaa9be65fc4307448ac2184c051449ce206651bc
                                                                                                                                                                     export INDEX=0000000000000021
