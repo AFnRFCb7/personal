@@ -751,9 +751,9 @@
                                                                                                                                                                         } ;
                                                                                                                                                                     transient = "-1" ;
                                                                                                                                                                 } ;
-                                                                                                                                                            release = "" ;
+                                                                                                                                                            release = "WRONG" ;
                                                                                                                                                             release-file = "/home/emory/resources/release/0000000000000021" ;
-                                                                                                                                                            script = "" ;
+                                                                                                                                                            script = "WRONG" ;
                                                                                                                                                             script-file = "/home/emory/resources/logs/0000000000000022" ;
                                                                                                                                                             standard-error = "" ;
                                                                                                                                                             standard-error-file = "/home/emory/resources/logs/0000000000000023" ;
