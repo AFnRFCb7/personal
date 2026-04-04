@@ -747,7 +747,7 @@
                                                                                                                                                             in
                                                                                                                                                                 ''
                                                                                                                                                                     EXPECTED_RESOURCE="/home/emory/resources/mounts/0000000000000001"
-                                                                                                                                                                    OBSERVED_RESOURCE=${ resources.production.pad.checks { failure = 21760 ; } }
+                                                                                                                                                                    OBSERVED_RESOURCE=${ resources.production.checks.true-true { failure = 21760 ; } }
                                                                                                                                                                     if [[ "$EXPECTED_RESOURCE" != "$OBSERVED_RESOURCE" ]]
                                                                                                                                                                     then
                                                                                                                                                                         failure 15789 EXPECTED_RESOURCE "$EXPECTED_RESOURCE" OBSERVED_RESOURCE "$OBSERVED_RESOURCE"
