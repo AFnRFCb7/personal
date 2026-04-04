@@ -750,7 +750,21 @@
                                                                                                                                                                             observed = [ ] ;
                                                                                                                                                                         } ;
                                                                                                                                                                 } ;
-                                                                                                                                                            release = "WRONG" ;
+                                                                                                                                                            release =
+                                                                                                                                                                ''
+                                                                                                                                                                    #!/nix/store/mjhcjikhxps97mq5z54j4gjjfzgmsir5-bash-5.2p37/bin/bash
+                                                                                                                                                                    set -o errexit
+                                                                                                                                                                    set -o nounset
+                                                                                                                                                                    set -o pipefail
+
+                                                                                                                                                                    export PATH=\"/nix/store/xy9sa2741cinqmfpmqhdrk38gcv1waxb-trace/bin:/nix/store/xj5znbv8827p7lp2lv1ikz09wblh52mq-destroy/bin:$PATH\"
+
+
+                                                                                                                                                                    mkdir --parents \"/home/emory/.gc-root/0000000000000021\"
+                                                                                                                                                                    export HASH=2437475884155327532bf64974842426fba94cc1f5db86078db4b6e529ff9863997fb22a3bd26b9baf3d0431eaa9be65fc4307448ac2184c051449ce206651bc
+                                                                                                                                                                    export INDEX=0000000000000021
+                                                                                                                                                                    destroy
+                                                                                                                                                                '' ;
                                                                                                                                                             release-file = "/home/emory/resources/release/0000000000000021" ;
                                                                                                                                                             script = "WRONG" ;
                                                                                                                                                             script-file = "/home/emory/resources/logs/0000000000000022" ;
@@ -895,10 +909,11 @@
                                                                                                                                                 then
                                                                                                                                                     failure 12883 EXPECTED_RELEASE "$EXPECTED_RELEASE" OBSERVED_RELEASE "OBSERVED_RELEASE"
                                                                                                                                                 fi
-                                                                                                                                                EXPECTED_RELEASE='${ builtins.toJSON release }'
-                                                                                                                                                OBSERVED_RELEASE="$( cat )" || failure 20816
-                                                                                                                                                if [[ "$EXPECTED_RELEASE" != "OBSERVED_RELEASE" ]]
+                                                                                                                                                EXPECTED_RELEASE_JSON='${ builtins.toJSON release }'
+                                                                                                                                                OBSERVED_RELEASE_JSON="$( cat )" || failure 20816
+                                                                                                                                                if [[ "$EXPECTED_RELEASE_JSON" != "$OBSERVED_RELEASE_JSON" ]]
                                                                                                                                                 then
+                                                                                                                                                    VERBOSE_RELEASE_JSON="$OBSERVED_RELEASE_JSON"
                                                                                                                                                     failure 27913
                                                                                                                                                 fi
 
@@ -921,6 +936,7 @@
                                                                                                                         --literal plain COUNT_5 \
                                                                                                                         --literal plain COUNT_7 \
                                                                                                                         --literal plain EXPECTED_RELEASE \
+                                                                                                                        --literal plain EXPECTED_RELEASE_JSON \
                                                                                                                         --literal plain EXPECTED_SUBSCRIBE_INVALID_INIT \
                                                                                                                         --literal plain EXPECTED_SUBSCRIBE_INVALID_RELEASE \
                                                                                                                         --literal plain EXPECTED_SUBSCRIBE_STALE_INIT \
@@ -928,6 +944,7 @@
                                                                                                                         --literal plain EXPECTED_SUBSCRIBE_VALID_RELEASE \
                                                                                                                         --literal plain EIGHT \
                                                                                                                         --literal plain OBSERVED_RELEASE \
+                                                                                                                        --literal plain OBSERVED_RELEASE_JSON \
                                                                                                                         --literal plain OBSERVED_SUBSCRIBE_INVALID_INIT \
                                                                                                                         --literal plain OBSERVED_SUBSCRIBE_INVALID_RELEASE \
                                                                                                                         --literal plain OBSERVED_SUBSCRIBE_STALE_INIT \
@@ -936,6 +953,7 @@
                                                                                                                         --literal plain OUTPUT_FILE \
                                                                                                                         --literal plain PATH \
                                                                                                                         --literal plain SIX \
+                                                                                                                        --literal plain VERBOSE_RELEASE_JSON \
                                                                                                                         --literal plain WC_SIX \
                                                                                                                         --literal plain WC_EIGHT \
                                                                                                                         --uuid 19713
