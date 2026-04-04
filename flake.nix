@@ -1962,12 +1962,19 @@
                                                                                                                         echo "TYPE=$TYPE" "CHANNEL=$CHANNEL" "PAYLOAD=$PAYLOAD"
                                                                                                                         if [[ "$TYPE" == "message" ]]
                                                                                                                         then
+                                                                                                                            echo 6992
                                                                                                                             SCRIPT_FILE="$( jq --raw-output '."script-file" // empty' "$PAYLOAD" )" || failure 14571
+                                                                                                                            echo 9635
                                                                                                                             STAMP="$( date +%s )" || failure 7521
+                                                                                                                            echo 9821
                                                                                                                             STANDARD_ERROR_FILE="$( jq --raw-output '."standard-error-file" // empty' "$PAYLOAD" )" || failure 18867
+                                                                                                                            echo 20847
                                                                                                                             STANDARD_INPUT_FILE="$( jq --raw-output '."standard-input-file" // empty' "$PAYLOAD" )" || failure 7805
+                                                                                                                            echo 2577
                                                                                                                             STANDARD_OUTPUT_FILE="$( jq --raw-output '."standard-output-file" // empty' "$PAYLOAD" )" || failure 31273
+                                                                                                                            echo 10912
                                                                                                                             mkdir --parents "/home/${ config.personal.name }/resources/logs"
+                                                                                                                            echo 20164
                                                                                                                             jq \
                                                                                                                                 --arg CHANNEL "$CHANNEL" \
                                                                                                                                 --rawfile SCRIPT "${ builtins.concatStringsSep "" [ "$" "{" "SCRIPT_FILE:-/dev/null" "}" ] }" \
@@ -1989,6 +1996,7 @@
                                                                                                                                 (if has("standard-output-file") then del(."standard-output-file") | .["standard-output"] = $STANDARD_OUTPUT else . end)
                                                                                                                                 ' "$PAYLOAD" \
                                                                                                                                 | yq eval --prettyPrint '[.]' >> "/home/${ config.personal.name }/resources/logs/log.yaml" || failure 31275
+                                                                                                                            echo 25017
                                                                                                                         fi
                                                                                                                     done
                                                                                                                 '' ;
