@@ -742,7 +742,8 @@
                                                                                                                                                                     seed = [ "production" "checks" "true-true" ] ;
                                                                                                                                                                     standard-error-file = standard-error-file ;
                                                                                                                                                                     standard-input-file = standard-input-file ;
-                                                                                                                                                                    standard-output-file = standard-output-file
+                                                                                                                                                                    standard-output-file = standard-output-file ;
+                                                                                                                                                                    status = "0" ;
                                                                                                                                                                     targets =
                                                                                                                                                                         {
                                                                                                                                                                             expected = [ ] ;
