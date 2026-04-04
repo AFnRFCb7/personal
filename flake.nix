@@ -759,9 +759,7 @@
                                                                                                                                                                             targets = [ ".envrc" ] ;
                                                                                                                                                                             transient = "-1" ;
                                                                                                                                                                         } ;
-                                                                                                                                                                    standard-input =
-                                                                                                                                                                        ''
-                                                                                                                                                                        '' ;
+                                                                                                                                                                    standard-input = "" ;
                                                                                                                                                                     standard-input-file = "/home/emory/resources/logs/0000000000000020" ;
                                                                                                                                                                     in
                                                                                                                                                                         ''
