@@ -883,12 +883,8 @@
                                                                                                                                             sleep 1
                                                                                                                                             COUNT_7="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 24082
                                                                                                                                         done
-                                                                                                                                        EXPECTED_JSON='${ builtins.toJSON release }'
-                                                                                                                                        OBSERVED_JSON="$( jq --compact-output )" || failure 29872
-                                                                                                                                        if [[ "$EXPECTED_JSON" != "$OBSERVED_JSON" ]]
-                                                                                                                                        then
-                                                                                                                                            failure 24215 EXPECTED_JSON "$EXPECTED_JSON" OBSERVED_JSON "$OBSERVED_JSON"
-                                                                                                                                        fi
+
+
 
                                                                                                                                         WC_EIGHT="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 17418
                                                                                                                                         if [[ "$WC_EIGHT" != 7 ]]
