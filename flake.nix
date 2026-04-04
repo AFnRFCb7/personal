@@ -915,7 +915,7 @@
                                                                                                                                                 if [[ "$EXPECTED_RELEASE_JSON" != "$OBSERVED_RELEASE_JSON" ]]
                                                                                                                                                 then
                                                                                                                                                     VERBOSE_RELEASE_JSON="$OBSERVED_RELEASE_JSON"
-                                                                                                                                                    failure 27913
+                                                                                                                                                    failure 27913 EXPECTED_RELEASE_JSON "$EXPECTED_RELEASE_JSON" OBSERVED_RELEASE_JSON "OBSERVED_RELEASE_JSON" VERBOSE_RELEASE_JSON "$VERBOSE_RELEASE_JSON"
                                                                                                                                                 fi
 
                                                                                                                                                 WC_EIGHT="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 17418
