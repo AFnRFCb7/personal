@@ -793,7 +793,7 @@
                                                                                                                                                                                 SEVEN="$( head --lines 7 "$OUTPUT_FILE" | tail --lines 1 )" || failure 17032
                                                                                                                                                                                 failure 20505 SEVEN "$SEVEN"
                                                                                                                                                                             fi
-                                                                                                                                                                            EXPECTED_STANDARD_INPUT=''${ standard-input }''
+                                                                                                                                                                            EXPECTED_STANDARD_INPUT='${ standard-input }'
                                                                                                                                                                             OBSERVED_STANDARD_INPUT="$( cat ${ standard-input-file } )" || failure 23070
                                                                                                                                                                             if [[ "$EXPECTED_STANDARD_INPUT" != "$OBSERVED_STANDARD_INPUT" ]]
                                                                                                                                                                             then
