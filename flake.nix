@@ -727,7 +727,7 @@
                                                                                                                                             pkgs.writeShellApplication
                                                                                                                                                 {
                                                                                                                                                     name = "pre-test" ;
-                                                                                                                                                    runtimeInputs = [ failure pkgs.coreutils pkgs.findutils pkgs.jq pkgs.inotify-tools pkgs.redis ] ;
+                                                                                                                                                    runtimeInputs = [ failure pkgs.coreutils pkgs.diffutils pkgs.findutils pkgs.jq pkgs.inotify-tools pkgs.redis ] ;
                                                                                                                                                     text =
                                                                                                                                                         let
                                                                                                                                                             init =
