@@ -757,10 +757,10 @@
                                                                                                                                                                     set -o nounset
                                                                                                                                                                     set -o pipefail
 
-                                                                                                                                                                    export PATH=\"/nix/store/xy9sa2741cinqmfpmqhdrk38gcv1waxb-trace/bin:/nix/store/xj5znbv8827p7lp2lv1ikz09wblh52mq-destroy/bin:$PATH\"
+                                                                                                                                                                    export PATH="/nix/store/xy9sa2741cinqmfpmqhdrk38gcv1waxb-trace/bin:/nix/store/xj5znbv8827p7lp2lv1ikz09wblh52mq-destroy/bin:$PATH"
 
 
-                                                                                                                                                                    mkdir --parents \"/home/emory/.gc-root/0000000000000021\"
+                                                                                                                                                                    mkdir --parents "/home/emory/.gc-root/0000000000000021"
                                                                                                                                                                     export HASH=2437475884155327532bf64974842426fba94cc1f5db86078db4b6e529ff9863997fb22a3bd26b9baf3d0431eaa9be65fc4307448ac2184c051449ce206651bc
                                                                                                                                                                     export INDEX=0000000000000021
                                                                                                                                                                     destroy
@@ -801,12 +801,6 @@
                                                                                                                                                                         VERBOSE_INIT_JSON="$( jq "." /home/emory/resources/logs/0000000000000025 )" || failure 23617
                                                                                                                                                                         failure 16098 EXPECTED_INIT_JSON "$EXPECTED_INIT_JSON" OBSERVED_INIT_JSON "$OBSERVED_INIT_JSON" VERBOSE_INIT_JSON "$VERBOSE_INIT_JSON"
                                                                                                                                                                     fi
-                                                                                                                                                                    WC_SEVEN="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 21345
-                                                                                                                                                                    if [[ "$WC_SEVEN" != 6 ]]
-                                                                                                                                                                    then
-                                                                                                                                                                        SEVEN="$( head --lines 7 "$OUTPUT_FILE" | tail --lines 1 )" || failure 17032
-                                                                                                                                                                        failure 20505 SEVEN "$SEVEN"
-                                                                                                                                                                    fi
                                                                                                                                                                     # shellcheck disable=SC2016
                                                                                                                                                                     EXPECTED_RELEASE='${ release }'
                                                                                                                                                                     OBSERVED_RELEASE="$( cat ${ release-file } )" || failure 19359
@@ -837,7 +831,22 @@
                                                                                                                                                                     if [[ "$EXPECTED_STANDARD_OUTPUT" != "$OBSERVED_STANDARD_OUTPUT" ]]
                                                                                                                                                                     then
                                                                                                                                                                         failure 24902 EXPECTED_STANDARD_OUTPUT "$EXPECTED_STANDARD_OUTPUT" OBSERVED_STANDARD_OUTPUT "$OBSERVED_STANDARD_OUTPUT"
-                                                                                                                                                                    fi                                                                                                                                                                    
+                                                                                                                                                                    fi
+                                                                                                                                                                    WC_SEVEN="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 21345
+                                                                                                                                                                    if [[ "$WC_SEVEN" != 6 ]]
+                                                                                                                                                                    then
+                                                                                                                                                                        SEVEN="$( head --lines 7 "$OUTPUT_FILE" | tail --lines 1 )" || failure 17032
+                                                                                                                                                                        failure 20505 SEVEN "$SEVEN"
+                                                                                                                                                                    fi
+                                                                                                                                                                    INDEX="$( basename "$EXPECTED_RESOURCE" )" || failure 22580
+                                                                                                                                                                    if [[ -e "$HOME/resources/invalid-init/$INDEX" ]]
+                                                                                                                                                                    then
+                                                                                                                                                                        failure 23500
+                                                                                                                                                                    fi
+                                                                                                                                                                    if [[ -e "$HOME/resources/invalid-release/$INDEX" ]]
+                                                                                                                                                                    then
+                                                                                                                                                                        failure 13101
+                                                                                                                                                                    fi
                                                                                                                                                                 '' ;
                                                                                                                                                 }
                                                                                                                                         )
