@@ -793,6 +793,12 @@
                                                                                                                                                                     then
                                                                                                                                                                         failure 13551 EXPECTED_STANDARD_INPUT "$EXPECTED_STANDARD_INPUT" OBSERVED_STANDARD_INPUT "$OBSERVED_STANDARD_INPUT"
                                                                                                                                                                     fi
+                                                                                                                                                                    EXPECTED_STANDARD_OUTPUT='${ standard-output }'
+                                                                                                                                                                    OBSERVED_STANDARD_OUTPUT="$( cat ${ standard-output-file } )" || failure 18330
+                                                                                                                                                                    if [[ "$EXPECTED_STANDARD_OUTPUT" != "$OBSERVED_STANDARD_OUTPUT" ]]
+                                                                                                                                                                    then
+                                                                                                                                                                        failure 24902 EXPECTED_STANDARD_OUTPUT "$EXPECTED_STANDARD_OUTPUT" OBSERVED_STANDARD_OUTPUT "$OBSERVED_STANDARD_OUTPUT"
+                                                                                                                                                                    fi                                                                                                                                                                    
                                                                                                                                                                 '' ;
                                                                                                                                                 }
                                                                                                                                         )
