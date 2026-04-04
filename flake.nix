@@ -764,7 +764,14 @@
                                                                                                                                                                     export INDEX=0000000000000021
                                                                                                                                                                     destroy'' ;
                                                                                                                                                             release-file = "/home/emory/resources/release/0000000000000021" ;
-                                                                                                                                                            script = "WRONG" ;
+                                                                                                                                                            script =
+                                                                                                                                                                ''
+                                                                                                                                                                    #!/nix/store/mjhcjikhxps97mq5z54j4gjjfzgmsir5-bash-5.2p37/bin/bash
+                                                                                                                                                                    set -o errexit
+                                                                                                                                                                    set -o nounset
+                                                                                                                                                                    set -o pipefail
+
+                                                                                                                                                                    /nix/store/cvh32ah932d7s6hvg5mc0nlxsj4i815h-init/bin/init''  ;
                                                                                                                                                             script-file = "/home/emory/resources/logs/0000000000000022" ;
                                                                                                                                                             standard-error = "" ;
                                                                                                                                                             standard-error-file = "/home/emory/resources/logs/0000000000000023" ;
