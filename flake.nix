@@ -896,6 +896,12 @@
                                                                                                                                                 then
                                                                                                                                                     failure 12883 EXPECTED_RELEASE "$EXPECTED_RELEASE" OBSERVED_RELEASE "OBSERVED_RELEASE"
                                                                                                                                                 fi
+                                                                                                                                                EXPECTED_RELEASE='${ builtins.toJSON release }'
+                                                                                                                                                OBSERVED_RELEASE="$( cat )" || failure 20816
+                                                                                                                                                if [[ "$EXPECTED_RELEASE" != "OBSERVED_RELEASE" ]]
+                                                                                                                                                then
+                                                                                                                                                    failure 27913
+                                                                                                                                                fi
 
 
                                                                                                                                                 WC_EIGHT="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 17418
@@ -921,7 +927,7 @@
                                                                                                                         --literal plain EXPECTED_SUBSCRIBE_STALE_INIT \
                                                                                                                         --literal plain EXPECTED_SUBSCRIBE_VALID_INIT \
                                                                                                                         --literal plain EXPECTED_SUBSCRIBE_VALID_RELEASE \
-                                                                                                                        --literal plain EIGHT \-
+                                                                                                                        --literal plain EIGHT \
                                                                                                                         --literal plain OBSERVED_RELEASE \
                                                                                                                         --literal plain OBSERVED_SUBSCRIBE_INVALID_INIT \
                                                                                                                         --literal plain OBSERVED_SUBSCRIBE_INVALID_RELEASE \
