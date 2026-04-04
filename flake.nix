@@ -2043,8 +2043,8 @@
                                                                                                                                         if [[ "$TYPE" == "message" ]]
                                                                                                                                         then
                                                                                                                                             jq --raw-output "." "$PAYLOAD"
-                                                                                                                                            RELEASE="$( jq --raw-output '."release" // empty' "$PAYLOAD" )" || failure 24568
-                                                                                                                                            "$RELEASE"
+                                                                                                                                            RELEASE_FILE="$( jq --raw-output '."release-file" // empty' "$PAYLOAD" )" || failure 24568
+                                                                                                                                            nohup "$RELEASE_FILE" &
                                                                                                                                         else
                                                                                                                                             echo "TYPE=$TYPE" "CHANNEL=$CHANNEL" "PAYLOAD=$PAYLOAD"
                                                                                                                                         fi
