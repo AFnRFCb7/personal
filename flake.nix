@@ -829,70 +829,78 @@
                                                                                                                                         )
                                                                                                                                     ] ;
                                                                                                                                 text =
-                                                                                                                                    ''
-                                                                                                                                        OUTPUT_FILE="$( mktemp )" || failure 29393
-                                                                                                                                        export OUTPUT_FILE
-                                                                                                                                        redis-cli --csv SUBSCRIBE invalid-init invalid-release stale-init valid-init valid-release > "$OUTPUT_FILE" &
-                                                                                                                                        COUNT_5=0
-                                                                                                                                        while [[ "$COUNT_5" -lt "5" ]]
-                                                                                                                                        do
-                                                                                                                                            sleep 1
-                                                                                                                                            COUNT_5="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 13785
-                                                                                                                                        done
-                                                                                                                                        EXPECTED_SUBSCRIBE_INVALID_INIT="\"subscribe\",\"invalid-init\",1"
-                                                                                                                                        OBSERVED_SUBSCRIBE_INVALID_INIT="$( head --lines 1 "$OUTPUT_FILE" )" || failure 29807
-                                                                                                                                        if [[ "$EXPECTED_SUBSCRIBE_INVALID_INIT" != "$OBSERVED_SUBSCRIBE_INVALID_INIT" ]]
-                                                                                                                                        then
-                                                                                                                                            failure 30918 EXPECTED_SUBSCRIBE_INVALID_INIT "$EXPECTED_SUBSCRIBE_INVALID_INIT" OBSERVED_SUBSCRIBE_INVALID_INIT "$OBSERVED_SUBSCRIBE_INVALID_INIT"
-                                                                                                                                        fi
-                                                                                                                                        EXPECTED_SUBSCRIBE_INVALID_RELEASE="\"subscribe\",\"invalid-release\",2"
-                                                                                                                                        OBSERVED_SUBSCRIBE_INVALID_RELEASE="$( head --lines 2 "$OUTPUT_FILE" | tail --lines 1 )" || failure 10496
-                                                                                                                                        if [[ "$EXPECTED_SUBSCRIBE_INVALID_RELEASE" != "$OBSERVED_SUBSCRIBE_INVALID_RELEASE" ]]
-                                                                                                                                        then
-                                                                                                                                            failure 21324 EXPECTED_SUBSCRIBE_INVALID_RELEASE "$EXPECTED_SUBSCRIBE_INVALID_RELEASE" OBSERVED_SUBSCRIBE_INVALID_RELEASE "$OBSERVED_SUBSCRIBE_INVALID_RELEASE"
-                                                                                                                                        fi
-                                                                                                                                        EXPECTED_SUBSCRIBE_STALE_INIT="\"subscribe\",\"stale-init\",3"
-                                                                                                                                        OBSERVED_SUBSCRIBE_STALE_INIT="$( head --lines 3 "$OUTPUT_FILE" | tail --lines 1 )" || failure 16256
-                                                                                                                                        if [[ "$EXPECTED_SUBSCRIBE_STALE_INIT" != "$OBSERVED_SUBSCRIBE_STALE_INIT" ]]
-                                                                                                                                        then
-                                                                                                                                            failure 11841 EXPECTED_SUBSCRIBE_STALE_INIT "$EXPECTED_SUBSCRIBE_STALE_INIT" OBSERVED_SUBSCRIBE_STALE_INIT "$OBSERVED_SUBSCRIBE_STALE_INIT"
-                                                                                                                                        fi
-                                                                                                                                        EXPECTED_SUBSCRIBE_VALID_INIT="\"subscribe\",\"valid-init\",4"
-                                                                                                                                        OBSERVED_SUBSCRIBE_VALID_INIT="$( head --lines 4 "$OUTPUT_FILE" | tail --lines 1 )" || failure 32080
-                                                                                                                                        if [[ "$EXPECTED_SUBSCRIBE_VALID_INIT" != "$OBSERVED_SUBSCRIBE_VALID_INIT" ]]
-                                                                                                                                        then
-                                                                                                                                            failure 20315 EXPECTED_SUBSCRIBE_VALID_INIT "$EXPECTED_SUBSCRIBE_VALID_INIT" OBSERVED_SUBSCRIBE_VALID_INIT "$OBSERVED_SUBSCRIBE_VALID_INIT"
-                                                                                                                                        fi
-                                                                                                                                        EXPECTED_SUBSCRIBE_VALID_RELEASE="\"subscribe\",\"valid-release\",5"
-                                                                                                                                        OBSERVED_SUBSCRIBE_VALID_RELEASE="$( head --lines 5 "$OUTPUT_FILE" | tail --lines 1 )" || failure 20683
-                                                                                                                                        if [[ "$EXPECTED_SUBSCRIBE_VALID_RELEASE" != "$OBSERVED_SUBSCRIBE_VALID_RELEASE" ]]
-                                                                                                                                        then
-                                                                                                                                            failure 28681 EXPECTED_SUBSCRIBE_VALID_RELEASE "$EXPECTED_SUBSCRIBE_VALID_RELEASE" OBSERVED_SUBSCRIBE_VALID_RELEASE "$OBSERVED_SUBSCRIBE_VALID_RELEASE"
-                                                                                                                                        fi
-                                                                                                                                        WC_SIX="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 17924
-                                                                                                                                        if [[ "$WC_SIX" != "5" ]]
-                                                                                                                                        then
-                                                                                                                                            SIX="$( head --lines 6 "$OUTPUT_FILE" | tail --lines 1 )" || failure 17032
-                                                                                                                                            failure 24681 SIX "$SIX"
-                                                                                                                                        fi
-                                                                                                                                        timeout 1m bash -c pre-test
-                                                                                                                                        COUNT_7=0
-                                                                                                                                        while [[ "$COUNT_7" -lt "7" ]]
-                                                                                                                                        do
-                                                                                                                                            echo 25854
-                                                                                                                                            sleep 1
-                                                                                                                                            COUNT_7="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 24082
-                                                                                                                                        done
+                                                                                                                                    let
+                                                                                                                                        in
+                                                                                                                                            ''
+                                                                                                                                                OUTPUT_FILE="$( mktemp )" || failure 29393
+                                                                                                                                                export OUTPUT_FILE
+                                                                                                                                                redis-cli --csv SUBSCRIBE invalid-init invalid-release stale-init valid-init valid-release > "$OUTPUT_FILE" &
+                                                                                                                                                COUNT_5=0
+                                                                                                                                                while [[ "$COUNT_5" -lt "5" ]]
+                                                                                                                                                do
+                                                                                                                                                    sleep 1
+                                                                                                                                                    COUNT_5="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 13785
+                                                                                                                                                done
+                                                                                                                                                EXPECTED_SUBSCRIBE_INVALID_INIT="\"subscribe\",\"invalid-init\",1"
+                                                                                                                                                OBSERVED_SUBSCRIBE_INVALID_INIT="$( head --lines 1 "$OUTPUT_FILE" )" || failure 29807
+                                                                                                                                                if [[ "$EXPECTED_SUBSCRIBE_INVALID_INIT" != "$OBSERVED_SUBSCRIBE_INVALID_INIT" ]]
+                                                                                                                                                then
+                                                                                                                                                    failure 30918 EXPECTED_SUBSCRIBE_INVALID_INIT "$EXPECTED_SUBSCRIBE_INVALID_INIT" OBSERVED_SUBSCRIBE_INVALID_INIT "$OBSERVED_SUBSCRIBE_INVALID_INIT"
+                                                                                                                                                fi
+                                                                                                                                                EXPECTED_SUBSCRIBE_INVALID_RELEASE="\"subscribe\",\"invalid-release\",2"
+                                                                                                                                                OBSERVED_SUBSCRIBE_INVALID_RELEASE="$( head --lines 2 "$OUTPUT_FILE" | tail --lines 1 )" || failure 10496
+                                                                                                                                                if [[ "$EXPECTED_SUBSCRIBE_INVALID_RELEASE" != "$OBSERVED_SUBSCRIBE_INVALID_RELEASE" ]]
+                                                                                                                                                then
+                                                                                                                                                    failure 21324 EXPECTED_SUBSCRIBE_INVALID_RELEASE "$EXPECTED_SUBSCRIBE_INVALID_RELEASE" OBSERVED_SUBSCRIBE_INVALID_RELEASE "$OBSERVED_SUBSCRIBE_INVALID_RELEASE"
+                                                                                                                                                fi
+                                                                                                                                                EXPECTED_SUBSCRIBE_STALE_INIT="\"subscribe\",\"stale-init\",3"
+                                                                                                                                                OBSERVED_SUBSCRIBE_STALE_INIT="$( head --lines 3 "$OUTPUT_FILE" | tail --lines 1 )" || failure 16256
+                                                                                                                                                if [[ "$EXPECTED_SUBSCRIBE_STALE_INIT" != "$OBSERVED_SUBSCRIBE_STALE_INIT" ]]
+                                                                                                                                                then
+                                                                                                                                                    failure 11841 EXPECTED_SUBSCRIBE_STALE_INIT "$EXPECTED_SUBSCRIBE_STALE_INIT" OBSERVED_SUBSCRIBE_STALE_INIT "$OBSERVED_SUBSCRIBE_STALE_INIT"
+                                                                                                                                                fi
+                                                                                                                                                EXPECTED_SUBSCRIBE_VALID_INIT="\"subscribe\",\"valid-init\",4"
+                                                                                                                                                OBSERVED_SUBSCRIBE_VALID_INIT="$( head --lines 4 "$OUTPUT_FILE" | tail --lines 1 )" || failure 32080
+                                                                                                                                                if [[ "$EXPECTED_SUBSCRIBE_VALID_INIT" != "$OBSERVED_SUBSCRIBE_VALID_INIT" ]]
+                                                                                                                                                then
+                                                                                                                                                    failure 20315 EXPECTED_SUBSCRIBE_VALID_INIT "$EXPECTED_SUBSCRIBE_VALID_INIT" OBSERVED_SUBSCRIBE_VALID_INIT "$OBSERVED_SUBSCRIBE_VALID_INIT"
+                                                                                                                                                fi
+                                                                                                                                                EXPECTED_SUBSCRIBE_VALID_RELEASE="\"subscribe\",\"valid-release\",5"
+                                                                                                                                                OBSERVED_SUBSCRIBE_VALID_RELEASE="$( head --lines 5 "$OUTPUT_FILE" | tail --lines 1 )" || failure 20683
+                                                                                                                                                if [[ "$EXPECTED_SUBSCRIBE_VALID_RELEASE" != "$OBSERVED_SUBSCRIBE_VALID_RELEASE" ]]
+                                                                                                                                                then
+                                                                                                                                                    failure 28681 EXPECTED_SUBSCRIBE_VALID_RELEASE "$EXPECTED_SUBSCRIBE_VALID_RELEASE" OBSERVED_SUBSCRIBE_VALID_RELEASE "$OBSERVED_SUBSCRIBE_VALID_RELEASE"
+                                                                                                                                                fi
+                                                                                                                                                WC_SIX="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 17924
+                                                                                                                                                if [[ "$WC_SIX" != "5" ]]
+                                                                                                                                                then
+                                                                                                                                                    SIX="$( head --lines 6 "$OUTPUT_FILE" | tail --lines 1 )" || failure 17032
+                                                                                                                                                    failure 24681 SIX "$SIX"
+                                                                                                                                                fi
+                                                                                                                                                timeout 1m bash -c pre-test
+                                                                                                                                                COUNT_7=0
+                                                                                                                                                while [[ "$COUNT_7" -lt "7" ]]
+                                                                                                                                                do
+                                                                                                                                                    echo 25854
+                                                                                                                                                    sleep 1
+                                                                                                                                                    COUNT_7="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 24082
+                                                                                                                                                done
+
+                                                                                                                                                EXPECTED_RELEASE="WRONG"
+                                                                                                                                                OBSERVED_RELEASE="$( head --lines 7 "$OUTPUT_FILE" | tail --lines 1 )" || failure 14819
+                                                                                                                                                if [[ "$EXPECTED_RELEASE" != "$OBSERVED_RELEASE" ]]
+                                                                                                                                                then
+                                                                                                                                                    failure 12883 EXPECTED_RELEASE "$EXPECTED_RELEASE" OBSERVED_RELEASE "OBSERVED_RELEASE"
+                                                                                                                                                fi
 
 
-
-                                                                                                                                        WC_EIGHT="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 17418
-                                                                                                                                        if [[ "$WC_EIGHT" != 7 ]]
-                                                                                                                                        then
-                                                                                                                                            EIGHT="$( head --lines 8 "$OUTPUT_FILE" | tail --lines 1 )" || failure 14060
-                                                                                                                                            failure 12459 EIGHT "$EIGHT"
-                                                                                                                                        fi
-                                                                                                                                    '' ;
+                                                                                                                                                WC_EIGHT="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 17418
+                                                                                                                                                if [[ "$WC_EIGHT" != 7 ]]
+                                                                                                                                                then
+                                                                                                                                                    EIGHT="$( head --lines 8 "$OUTPUT_FILE" | tail --lines 1 )" || failure 14060
+                                                                                                                                                    failure 12459 EIGHT "$EIGHT"
+                                                                                                                                                fi
+                                                                                                                                            '' ;
                                                                                                                             } ;
                                                                                                                     in "${ application }/bin/true-true" ;
                                                                                                             in
@@ -904,6 +912,7 @@
                                                                                                                         --literal plain COUNT_5 \
                                                                                                                         --literal plain COUNT_7 \
                                                                                                                         --literal plain EXPECTED_JSON \
+                                                                                                                        --literal plain EXPECTED_RELEASE \
                                                                                                                         --literal plain EXPECTED_SUBSCRIBE_INVALID_INIT \
                                                                                                                         --literal plain EXPECTED_SUBSCRIBE_INVALID_RELEASE \
                                                                                                                         --literal plain EXPECTED_SUBSCRIBE_STALE_INIT \
@@ -911,6 +920,7 @@
                                                                                                                         --literal plain EXPECTED_SUBSCRIBE_VALID_RELEASE \
                                                                                                                         --literal plain EIGHT \
                                                                                                                         --literal plain OBSERVED_JSON \
+                                                                                                                        --literal plain OBSERVED_RELEASE \
                                                                                                                         --literal plain OBSERVED_SUBSCRIBE_INVALID_INIT \
                                                                                                                         --literal plain OBSERVED_SUBSCRIBE_INVALID_RELEASE \
                                                                                                                         --literal plain OBSERVED_SUBSCRIBE_STALE_INIT \
