@@ -911,7 +911,6 @@
                                                                                                                         0500 \
                                                                                                                         --literal plain COUNT_5 \
                                                                                                                         --literal plain COUNT_7 \
-                                                                                                                        --literal plain EXPECTED_JSON \
                                                                                                                         --literal plain EXPECTED_RELEASE \
                                                                                                                         --literal plain EXPECTED_SUBSCRIBE_INVALID_INIT \
                                                                                                                         --literal plain EXPECTED_SUBSCRIBE_INVALID_RELEASE \
