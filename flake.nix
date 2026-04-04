@@ -746,7 +746,7 @@
                                                                                                                                                             standard-input-file = "/home/emory/resources/logs/0000000000000020" ;
                                                                                                                                                             in
                                                                                                                                                                 ''
-                                                                                                                                                                    EXPECTED_RESOURCE="/home/emory/resources/mounts/0000000000000001"
+                                                                                                                                                                    EXPECTED_RESOURCE="/home/emory/resources/mounts/0000000000000021"
                                                                                                                                                                     OBSERVED_RESOURCE=${ resources.production.checks.true-true { failure = 21760 ; } }
                                                                                                                                                                     if [[ "$EXPECTED_RESOURCE" != "$OBSERVED_RESOURCE" ]]
                                                                                                                                                                     then
