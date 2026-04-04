@@ -726,151 +726,135 @@
                                                                                                                                         (
                                                                                                                                             pkgs.writeShellApplication
                                                                                                                                                 {
-                                                                                                                                                    name = "subscribe" ;
-                                                                                                                                                    runtimeInputs = [ failure pkgs.coreutils pkgs.findutils ] ;
+                                                                                                                                                    name = "pre-test" ;
+                                                                                                                                                    runtimeInputs = [ failure pkgs.coreutils pkgs.findutils pkgs.jq pkgs.inotify-tools pkgs.redis ] ;
                                                                                                                                                     text =
-                                                                                                                                                        ''
-                                                                                                                                                            INDEX="$( find "$OUT_DIRECTORY" | wc --lines | cut --delimiter " " --fields 1 )" || failure 17122
-                                                                                                                                                            echo "$PAYLOAD" > "$OUT_DIRECTORY/$INDEX"
-                                                                                                                                                        '' ;
+                                                                                                                                                        let
+                                                                                                                                                            init =
+                                                                                                                                                                {
+                                                                                                                                                                    arguments = [ "" ] ;
+                                                                                                                                                                    has-standard-input = "false" ;
+                                                                                                                                                                    hash = "e733448676165d51456a7e88fb4550d33e11d78946e3c0140690bfcc6809a5610552de7c90c22ea2bf3ec9667b1746085f159b11246443b68ea4cc407e88fb4550d33e11d78946e3c0140690bfcc6809a5610552de7c90c22ea2bf3ec9667b1746085f159b11246443b68ea4cc403fbba55e" ;
+                                                                                                                                                                    index = "0000000000000001" ;
+                                                                                                                                                                    scripts-hash = "60a453861750c0e2d6e7ade96b7ddfb591e1994dd353c6d9a58b9ad2074d2c5a54fa5fc21a469400e0adf8c48fe0a365f75d1dfa7c2d2434f7991625ccb43105" ;
+                                                                                                                                                                    seed = [ "production" "pad" "checks" ] ;
+                                                                                                                                                                    standard-input-file = standard-input-file ;
+                                                                                                                                                                    targets = [ ".envrc" ] ;
+                                                                                                                                                                    transient = "-1" ;
+                                                                                                                                                                } ;
+                                                                                                                                                            standard-input = "" ;
+                                                                                                                                                            standard-input-file = "/home/emory/resources/logs/0000000000000020" ;
+                                                                                                                                                            in
+                                                                                                                                                                ''
+                                                                                                                                                                    EXPECTED_RESOURCE="/home/emory/resources/mounts/0000000000000001"
+                                                                                                                                                                    OBSERVED_RESOURCE=${ resources.production.pad.checks { failure = 21760 ; } }
+                                                                                                                                                                    if [[ "$EXPECTED_RESOURCE" != "$OBSERVED_RESOURCE" ]]
+                                                                                                                                                                    then
+                                                                                                                                                                        failure 15789 EXPECTED_RESOURCE "$EXPECTED_RESOURCE" OBSERVED_RESOURCE "$OBSERVED_RESOURCE"
+                                                                                                                                                                    fi
+                                                                                                                                                                    COUNT_SIX=0
+                                                                                                                                                                    while [[ "$COUNT_SIX" -lt "6" ]]
+                                                                                                                                                                    do
+                                                                                                                                                                        sleep 1
+                                                                                                                                                                        COUNT_SIX="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 24769
+                                                                                                                                                                    done
+                                                                                                                                                                    EXPECTED_INIT="\"message\",\"stale-init\",\"/home/emory/resources/logs/0000000000000021\""
+                                                                                                                                                                    OBSERVED_INIT="$( head --lines 6 "$OUTPUT_FILE" | tail --lines 1 )" || failure 20277
+                                                                                                                                                                    if [[ "$EXPECTED_INIT" != "$OBSERVED_INIT" ]]
+                                                                                                                                                                    then
+                                                                                                                                                                        failure 14530 EXPECTED_INIT "$EXPECTED_INIT" OBSERVED_INIT "$OBSERVED_INIT"
+                                                                                                                                                                    fi
+                                                                                                                                                                    EXPECTED_INIT_JSON='${ builtins.toJSON init }'
+                                                                                                                                                                    OBSERVED_INIT_JSON="$( jq --compact-output "." /home/emory/resources/logs/0000000000000021 )" || failure 9412
+                                                                                                                                                                    if [[ "$EXPECTED_INIT_JSON" != "$OBSERVED_INIT_JSON" ]]
+                                                                                                                                                                    then
+                                                                                                                                                                        failure 16098 EXPECTED_INIT_JSON "$EXPECTED_INIT_JSON" OBSERVED_INIT_JSON "$OBSERVED_INIT_JSON"
+                                                                                                                                                                    fi
+                                                                                                                                                                    WC_SEVEN="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 21345
+                                                                                                                                                                    if [[ "$WC_SEVEN" != 6 ]]
+                                                                                                                                                                    then
+                                                                                                                                                                        SEVEN="$( head --lines 7 "$OUTPUT_FILE" | tail --lines 1 )" || failure 17032
+                                                                                                                                                                        failure 20505 SEVEN "$SEVEN"
+                                                                                                                                                                    fi
+                                                                                                                                                                    EXPECTED_STANDARD_INPUT='${ standard-input }'
+                                                                                                                                                                    OBSERVED_STANDARD_INPUT="$( cat ${ standard-input-file } )" || failure 23070
+                                                                                                                                                                    if [[ "$EXPECTED_STANDARD_INPUT" != "$OBSERVED_STANDARD_INPUT" ]]
+                                                                                                                                                                    then
+                                                                                                                                                                        failure 13551 EXPECTED_STANDARD_INPUT "$EXPECTED_STANDARD_INPUT" OBSERVED_STANDARD_INPUT "$OBSERVED_STANDARD_INPUT"
+                                                                                                                                                                    fi
+                                                                                                                                                                '' ;
                                                                                                                                                 }
                                                                                                                                         )
                                                                                                                                     ] ;
                                                                                                                                 text =
-                                                                                                                                    let
-                                                                                                                                        pre-test =
-                                                                                                                                            let
-                                                                                                                                                application =
-                                                                                                                                                    pkgs.writeShellApplication
-                                                                                                                                                        {
-                                                                                                                                                            name = "pre-test" ;
-                                                                                                                                                            runtimeInputs = [ failure pkgs.coreutils pkgs.findutils pkgs.jq pkgs.inotify-tools pkgs.redis ] ;
-                                                                                                                                                            text =
-                                                                                                                                                                let
-                                                                                                                                                                    init =
-                                                                                                                                                                        {
-                                                                                                                                                                            arguments = [ "" ] ;
-                                                                                                                                                                            has-standard-input = false ;
-                                                                                                                                                                            hash = "e733448676165d51456a7e88fb4550d33e11d78946e3c0140690bfcc6809a5610552de7c90c22ea2bf3ec9667b1746085f159b11246443b68ea4cc407e88fb4550d33e11d78946e3c0140690bfcc6809a5610552de7c90c22ea2bf3ec9667b1746085f159b11246443b68ea4cc403fbba55e" ;
-                                                                                                                                                                            index = "0000000000000001" ;
-                                                                                                                                                                            scripts-hash = "60a453861750c0e2d6e7ade96b7ddfb591e1994dd353c6d9a58b9ad2074d2c5a54fa5fc21a469400e0adf8c48fe0a365f75d1dfa7c2d2434f7991625ccb43105" ;
-                                                                                                                                                                            seed = [ "production" "pad" "checks" ] ;
-                                                                                                                                                                            standard-input-file = standard-input-file ;
-                                                                                                                                                                            targets = [ ".envrc" ] ;
-                                                                                                                                                                            transient = "-1" ;
-                                                                                                                                                                        } ;
-                                                                                                                                                                    standard-input = "" ;
-                                                                                                                                                                    standard-input-file = "/home/emory/resources/logs/0000000000000020" ;
-                                                                                                                                                                    in
-                                                                                                                                                                        ''
-                                                                                                                                                                            EXPECTED_RESOURCE="/home/emory/resources/mounts/0000000000000001"
-                                                                                                                                                                            OBSERVED_RESOURCE=${ resources.production.pad.checks { failure = 21760 ; } }
-                                                                                                                                                                            if [[ "$EXPECTED_RESOURCE" != "$OBSERVED_RESOURCE" ]]
-                                                                                                                                                                            then
-                                                                                                                                                                                failure 15789 EXPECTED_RESOURCE "$EXPECTED_RESOURCE" OBSERVED_RESOURCE "$OBSERVED_RESOURCE"
-                                                                                                                                                                            fi
-                                                                                                                                                                            COUNT_SIX=0
-                                                                                                                                                                            while [[ "$COUNT_SIX" -lt "6" ]]
-                                                                                                                                                                            do
-                                                                                                                                                                                sleep 1
-                                                                                                                                                                                COUNT_SIX="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 24769
-                                                                                                                                                                            done
-                                                                                                                                                                            EXPECTED_INIT="\"message\",\"stale-init\",\"/home/emory/resources/logs/0000000000000021\""
-                                                                                                                                                                            OBSERVED_INIT="$( head --lines 6 "$OUTPUT_FILE" | tail --lines 1 )" || failure 20277
-                                                                                                                                                                            if [[ "$EXPECTED_INIT" != "$OBSERVED_INIT" ]]
-                                                                                                                                                                            then
-                                                                                                                                                                                failure 14530 EXPECTED_INIT "$EXPECTED_INIT" OBSERVED_INIT "$OBSERVED_INIT"
-                                                                                                                                                                            fi
-                                                                                                                                                                            EXPECTED_INIT_JSON='${ builtins.toJSON init }'
-                                                                                                                                                                            OBSERVED_INIT_JSON="$( jq --compact-output "." /home/emory/resources/logs/0000000000000021 )" || failure 9412
-                                                                                                                                                                            if [[ "$EXPECTED_INIT_JSON" != "$OBSERVED_INIT_JSON" ]]
-                                                                                                                                                                            then
-                                                                                                                                                                                failure 16098 EXPECTED_INIT_JSON "$EXPECTED_INIT_JSON" OBSERVED_INIT_JSON "$OBSERVED_INIT_JSON"
-                                                                                                                                                                            fi
-                                                                                                                                                                            WC_SEVEN="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 21345
-                                                                                                                                                                            if [[ "$WC_SEVEN" != 6 ]]
-                                                                                                                                                                            then
-                                                                                                                                                                                SEVEN="$( head --lines 7 "$OUTPUT_FILE" | tail --lines 1 )" || failure 17032
-                                                                                                                                                                                failure 20505 SEVEN "$SEVEN"
-                                                                                                                                                                            fi
-                                                                                                                                                                            EXPECTED_STANDARD_INPUT='${ standard-input }'
-                                                                                                                                                                            OBSERVED_STANDARD_INPUT="$( cat ${ standard-input-file } )" || failure 23070
-                                                                                                                                                                            if [[ "$EXPECTED_STANDARD_INPUT" != "$OBSERVED_STANDARD_INPUT" ]]
-                                                                                                                                                                            then
-                                                                                                                                                                                failure 13551 EXPECTED_STANDARD_INPUT "$EXPECTED_STANDARD_INPUT" OBSERVED_STANDARD_INPUT "$OBSERVED_STANDARD_INPUT"
-                                                                                                                                                                            fi
-                                                                                                                                                                        '' ;
-                                                                                                                                                        } ;
-                                                                                                                                                in "${ application }/bin/pre-test" ;
-                                                                                                                                        in
-                                                                                                                                            ''
-                                                                                                                                                OUTPUT_FILE="$( mktemp )" || failure 29393
-                                                                                                                                                export OUTPUT_FILE
-                                                                                                                                                redis-cli --csv SUBSCRIBE invalid-init invalid-release stale-init valid-init valid-release > "$OUTPUT_FILE" &
-                                                                                                                                                COUNT_5=0
-                                                                                                                                                while [[ "$COUNT_5" -lt "5" ]]
-                                                                                                                                                do
-                                                                                                                                                    sleep 1
-                                                                                                                                                    COUNT_5="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 13785
-                                                                                                                                                done
-                                                                                                                                                EXPECTED_SUBSCRIBE_INVALID_INIT="\"subscribe\",\"invalid-init\",1"
-                                                                                                                                                OBSERVED_SUBSCRIBE_INVALID_INIT="$( head --lines 1 "$OUTPUT_FILE" )" || failure 29807
-                                                                                                                                                if [[ "$EXPECTED_SUBSCRIBE_INVALID_INIT" != "$OBSERVED_SUBSCRIBE_INVALID_INIT" ]]
-                                                                                                                                                then
-                                                                                                                                                    failure 30918 EXPECTED_SUBSCRIBE_INVALID_INIT "$EXPECTED_SUBSCRIBE_INVALID_INIT" OBSERVED_SUBSCRIBE_INVALID_INIT "$OBSERVED_SUBSCRIBE_INVALID_INIT"
-                                                                                                                                                fi
-                                                                                                                                                EXPECTED_SUBSCRIBE_INVALID_RELEASE="\"subscribe\",\"invalid-release\",2"
-                                                                                                                                                OBSERVED_SUBSCRIBE_INVALID_RELEASE="$( head --lines 2 "$OUTPUT_FILE" | tail --lines 1 )" || failure 10496
-                                                                                                                                                if [[ "$EXPECTED_SUBSCRIBE_INVALID_RELEASE" != "$OBSERVED_SUBSCRIBE_INVALID_RELEASE" ]]
-                                                                                                                                                then
-                                                                                                                                                    failure 21324 EXPECTED_SUBSCRIBE_INVALID_RELEASE "$EXPECTED_SUBSCRIBE_INVALID_RELEASE" OBSERVED_SUBSCRIBE_INVALID_RELEASE "$OBSERVED_SUBSCRIBE_INVALID_RELEASE"
-                                                                                                                                                fi
-                                                                                                                                                EXPECTED_SUBSCRIBE_STALE_INIT="\"subscribe\",\"stale-init\",3"
-                                                                                                                                                OBSERVED_SUBSCRIBE_STALE_INIT="$( head --lines 3 "$OUTPUT_FILE" | tail --lines 1 )" || failure 16256
-                                                                                                                                                if [[ "$EXPECTED_SUBSCRIBE_STALE_INIT" != "$OBSERVED_SUBSCRIBE_STALE_INIT" ]]
-                                                                                                                                                then
-                                                                                                                                                    failure 11841 EXPECTED_SUBSCRIBE_STALE_INIT "$EXPECTED_SUBSCRIBE_STALE_INIT" OBSERVED_SUBSCRIBE_STALE_INIT "$OBSERVED_SUBSCRIBE_STALE_INIT"
-                                                                                                                                                fi
-                                                                                                                                                EXPECTED_SUBSCRIBE_VALID_INIT="\"subscribe\",\"valid-init\",4"
-                                                                                                                                                OBSERVED_SUBSCRIBE_VALID_INIT="$( head --lines 4 "$OUTPUT_FILE" | tail --lines 1 )" || failure 32080
-                                                                                                                                                if [[ "$EXPECTED_SUBSCRIBE_VALID_INIT" != "$OBSERVED_SUBSCRIBE_VALID_INIT" ]]
-                                                                                                                                                then
-                                                                                                                                                    failure 20315 EXPECTED_SUBSCRIBE_VALID_INIT "$EXPECTED_SUBSCRIBE_VALID_INIT" OBSERVED_SUBSCRIBE_VALID_INIT "$OBSERVED_SUBSCRIBE_VALID_INIT"
-                                                                                                                                                fi
-                                                                                                                                                EXPECTED_SUBSCRIBE_VALID_RELEASE="\"subscribe\",\"valid-release\",5"
-                                                                                                                                                OBSERVED_SUBSCRIBE_VALID_RELEASE="$( head --lines 5 "$OUTPUT_FILE" | tail --lines 1 )" || failure 20683
-                                                                                                                                                if [[ "$EXPECTED_SUBSCRIBE_VALID_RELEASE" != "$OBSERVED_SUBSCRIBE_VALID_RELEASE" ]]
-                                                                                                                                                then
-                                                                                                                                                    failure 28681 EXPECTED_SUBSCRIBE_VALID_RELEASE "$EXPECTED_SUBSCRIBE_VALID_RELEASE" OBSERVED_SUBSCRIBE_VALID_RELEASE "$OBSERVED_SUBSCRIBE_VALID_RELEASE"
-                                                                                                                                                fi
-                                                                                                                                                WC_SIX="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 17924
-                                                                                                                                                if [[ "$WC_SIX" != "5" ]]
-                                                                                                                                                then
-                                                                                                                                                    SIX="$( head --lines 6 "$OUTPUT_FILE" | tail --lines 1 )" || failure 17032
-                                                                                                                                                    failure 24681 SIX "$SIX"
-                                                                                                                                                fi
-                                                                                                                                                timeout 1m bash -c "${ pre-test }"
-                                                                                                                                                echo 3839
-                                                                                                                                                COUNT_7=0
-                                                                                                                                                while [[ "$COUNT_7" -lt "7" ]]
-                                                                                                                                                do
-                                                                                                                                                    sleep 1
-                                                                                                                                                    COUNT_7="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 24082
-                                                                                                                                                done
-                                                                                                                                                EXPECTED_JSON='${ builtins.toJSON { } }'
-                                                                                                                                                OBSERVED_JSON="$( jq --compact-output )" || failure 29872
-                                                                                                                                                if [[ "$EXPECTED_JSON" != "$OBSERVED_JSON" ]]
-                                                                                                                                                then
-                                                                                                                                                    failure 24215 EXPECTED_JSON "$EXPECTED_JSON" OBSERVED_JSON "$OBSERVED_JSON"
-                                                                                                                                                fi
-                                                                                                                                                WC_EIGHT="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 17418
-                                                                                                                                                if [[ "$WC_EIGHT" != 7 ]]
-                                                                                                                                                then
-                                                                                                                                                    EIGHT="$( head --lines 8 "$OUTPUT_FILE" | tail --lines 1 )" || failure 14060
-                                                                                                                                                    failure 12459 EIGHT "$EIGHT"
-                                                                                                                                                fi
-                                                                                                                                                echo 5140
-                                                                                                                                            '' ;
+                                                                                                                                    ''
+                                                                                                                                        OUTPUT_FILE="$( mktemp )" || failure 29393
+                                                                                                                                        export OUTPUT_FILE
+                                                                                                                                        redis-cli --csv SUBSCRIBE invalid-init invalid-release stale-init valid-init valid-release > "$OUTPUT_FILE" &
+                                                                                                                                        COUNT_5=0
+                                                                                                                                        while [[ "$COUNT_5" -lt "5" ]]
+                                                                                                                                        do
+                                                                                                                                            sleep 1
+                                                                                                                                            COUNT_5="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 13785
+                                                                                                                                        done
+                                                                                                                                        EXPECTED_SUBSCRIBE_INVALID_INIT="\"subscribe\",\"invalid-init\",1"
+                                                                                                                                        OBSERVED_SUBSCRIBE_INVALID_INIT="$( head --lines 1 "$OUTPUT_FILE" )" || failure 29807
+                                                                                                                                        if [[ "$EXPECTED_SUBSCRIBE_INVALID_INIT" != "$OBSERVED_SUBSCRIBE_INVALID_INIT" ]]
+                                                                                                                                        then
+                                                                                                                                            failure 30918 EXPECTED_SUBSCRIBE_INVALID_INIT "$EXPECTED_SUBSCRIBE_INVALID_INIT" OBSERVED_SUBSCRIBE_INVALID_INIT "$OBSERVED_SUBSCRIBE_INVALID_INIT"
+                                                                                                                                        fi
+                                                                                                                                        EXPECTED_SUBSCRIBE_INVALID_RELEASE="\"subscribe\",\"invalid-release\",2"
+                                                                                                                                        OBSERVED_SUBSCRIBE_INVALID_RELEASE="$( head --lines 2 "$OUTPUT_FILE" | tail --lines 1 )" || failure 10496
+                                                                                                                                        if [[ "$EXPECTED_SUBSCRIBE_INVALID_RELEASE" != "$OBSERVED_SUBSCRIBE_INVALID_RELEASE" ]]
+                                                                                                                                        then
+                                                                                                                                            failure 21324 EXPECTED_SUBSCRIBE_INVALID_RELEASE "$EXPECTED_SUBSCRIBE_INVALID_RELEASE" OBSERVED_SUBSCRIBE_INVALID_RELEASE "$OBSERVED_SUBSCRIBE_INVALID_RELEASE"
+                                                                                                                                        fi
+                                                                                                                                        EXPECTED_SUBSCRIBE_STALE_INIT="\"subscribe\",\"stale-init\",3"
+                                                                                                                                        OBSERVED_SUBSCRIBE_STALE_INIT="$( head --lines 3 "$OUTPUT_FILE" | tail --lines 1 )" || failure 16256
+                                                                                                                                        if [[ "$EXPECTED_SUBSCRIBE_STALE_INIT" != "$OBSERVED_SUBSCRIBE_STALE_INIT" ]]
+                                                                                                                                        then
+                                                                                                                                            failure 11841 EXPECTED_SUBSCRIBE_STALE_INIT "$EXPECTED_SUBSCRIBE_STALE_INIT" OBSERVED_SUBSCRIBE_STALE_INIT "$OBSERVED_SUBSCRIBE_STALE_INIT"
+                                                                                                                                        fi
+                                                                                                                                        EXPECTED_SUBSCRIBE_VALID_INIT="\"subscribe\",\"valid-init\",4"
+                                                                                                                                        OBSERVED_SUBSCRIBE_VALID_INIT="$( head --lines 4 "$OUTPUT_FILE" | tail --lines 1 )" || failure 32080
+                                                                                                                                        if [[ "$EXPECTED_SUBSCRIBE_VALID_INIT" != "$OBSERVED_SUBSCRIBE_VALID_INIT" ]]
+                                                                                                                                        then
+                                                                                                                                            failure 20315 EXPECTED_SUBSCRIBE_VALID_INIT "$EXPECTED_SUBSCRIBE_VALID_INIT" OBSERVED_SUBSCRIBE_VALID_INIT "$OBSERVED_SUBSCRIBE_VALID_INIT"
+                                                                                                                                        fi
+                                                                                                                                        EXPECTED_SUBSCRIBE_VALID_RELEASE="\"subscribe\",\"valid-release\",5"
+                                                                                                                                        OBSERVED_SUBSCRIBE_VALID_RELEASE="$( head --lines 5 "$OUTPUT_FILE" | tail --lines 1 )" || failure 20683
+                                                                                                                                        if [[ "$EXPECTED_SUBSCRIBE_VALID_RELEASE" != "$OBSERVED_SUBSCRIBE_VALID_RELEASE" ]]
+                                                                                                                                        then
+                                                                                                                                            failure 28681 EXPECTED_SUBSCRIBE_VALID_RELEASE "$EXPECTED_SUBSCRIBE_VALID_RELEASE" OBSERVED_SUBSCRIBE_VALID_RELEASE "$OBSERVED_SUBSCRIBE_VALID_RELEASE"
+                                                                                                                                        fi
+                                                                                                                                        WC_SIX="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 17924
+                                                                                                                                        if [[ "$WC_SIX" != "5" ]]
+                                                                                                                                        then
+                                                                                                                                            SIX="$( head --lines 6 "$OUTPUT_FILE" | tail --lines 1 )" || failure 17032
+                                                                                                                                            failure 24681 SIX "$SIX"
+                                                                                                                                        fi
+                                                                                                                                        timeout 1m bash -c pre-test
+                                                                                                                                        echo 3839
+                                                                                                                                        COUNT_7=0
+                                                                                                                                        while [[ "$COUNT_7" -lt "7" ]]
+                                                                                                                                        do
+                                                                                                                                            sleep 1
+                                                                                                                                            COUNT_7="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 24082
+                                                                                                                                        done
+                                                                                                                                        EXPECTED_JSON='${ builtins.toJSON { } }'
+                                                                                                                                        OBSERVED_JSON="$( jq --compact-output )" || failure 29872
+                                                                                                                                        if [[ "$EXPECTED_JSON" != "$OBSERVED_JSON" ]]
+                                                                                                                                        then
+                                                                                                                                            failure 24215 EXPECTED_JSON "$EXPECTED_JSON" OBSERVED_JSON "$OBSERVED_JSON"
+                                                                                                                                        fi
+                                                                                                                                        WC_EIGHT="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 17418
+                                                                                                                                        if [[ "$WC_EIGHT" != 7 ]]
+                                                                                                                                        then
+                                                                                                                                            EIGHT="$( head --lines 8 "$OUTPUT_FILE" | tail --lines 1 )" || failure 14060
+                                                                                                                                            failure 12459 EIGHT "$EIGHT"
+                                                                                                                                        fi
+                                                                                                                                        echo 5140
+                                                                                                                                    '' ;
                                                                                                                             } ;
                                                                                                                     in "${ application }/bin/true-true" ;
                                                                                                             in
