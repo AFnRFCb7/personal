@@ -972,6 +972,13 @@
                                                                                                                                                     failure 27913 EXPECTED_RELEASE_JSON "$EXPECTED_RELEASE_JSON" OBSERVED_RELEASE_JSON "$OBSERVED_RELEASE_JSON" VERBOSE_RELEASE_JSON "$VERBOSE_RELEASE_JSON"
                                                                                                                                                 fi
                                                                                                                                                 EXPECTED_SCRIPT='${ script }'
+                                                                                                                                                echo cat ${ script-file }
+                                                                                                                                                if [[ -e ${ script-file } ]]
+                                                                                                                                                then
+                                                                                                                                                    failure 30297
+                                                                                                                                                else
+                                                                                                                                                    failure 30902
+                                                                                                                                                fi
                                                                                                                                                 OBSERVED_SCRIPT="$( cat ${ script-file } )" || failure 19776
                                                                                                                                                 if [[ "$EXPECTED_SCRIPT" != "$OBSERVED_SCRIPT" ]]
                                                                                                                                                 then
