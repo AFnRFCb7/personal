@@ -1246,9 +1246,10 @@
                                                                                             pkgs.writeShellApplication
                                                                                                 {
                                                                                                     name = "init" ;
-                                                                                                    runtimeInputs = [ pkgs.gnupg ] ;
+                                                                                                    runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                     text =
                                                                                                         ''
+                                                                                                            echo 14060
                                                                                                         '' ;
                                                                                                 } ;
                                                                                         in "${ application }/bin/init" ;
@@ -1262,6 +1263,7 @@
                                                                                                     runtimeInputs = [ pkgs.gnupg ] ;
                                                                                                     text =
                                                                                                         ''
+                                                                                                            echo 18719
                                                                                                         '' ;
                                                                                                 } ;
                                                                                         in "${ application }/bin/release" ;
