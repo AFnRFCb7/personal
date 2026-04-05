@@ -883,7 +883,7 @@
                                                                                                                                                 hash = "04694a0c7b85003740af1525a7fdab5352e488c7fa585da3857d515095f5e43e0a0f6a20afb5dc8db72fd991e020fe1e82779fbbd90f2d558477990bd9a691c0" ;
                                                                                                                                                 index = "0000000000000021" ;
                                                                                                                                                 script-file = script-file ;
-                                                                                                                                                seed = [ "production" "checks" "true=true" ] ;
+                                                                                                                                                seed = [ "production" "checks" "true-true" ] ;
                                                                                                                                                 standard-error-file = standard-error-file ;
                                                                                                                                                 standard-output-file = standard-output-file ;
                                                                                                                                                 status = "0" ;
