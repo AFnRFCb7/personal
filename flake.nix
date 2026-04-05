@@ -972,18 +972,11 @@
                                                                                                                                                     failure 27913 EXPECTED_RELEASE_JSON "$EXPECTED_RELEASE_JSON" OBSERVED_RELEASE_JSON "$OBSERVED_RELEASE_JSON" VERBOSE_RELEASE_JSON "$VERBOSE_RELEASE_JSON"
                                                                                                                                                 fi
                                                                                                                                                 EXPECTED_SCRIPT='${ script }'
-                                                                                                                                                echo cat ${ script-file }
-                                                                                                                                                if [[ -e ${ script-file } ]]
-                                                                                                                                                then
-                                                                                                                                                    failure 30297
-                                                                                                                                                else
-                                                                                                                                                    failure 30902
-                                                                                                                                                fi
                                                                                                                                                 OBSERVED_SCRIPT="$( cat ${ script-file } )" || failure 19776
                                                                                                                                                 if [[ "$EXPECTED_SCRIPT" != "$OBSERVED_SCRIPT" ]]
                                                                                                                                                 then
                                                                                                                                                     SCRIPT_FILE="$( mktemp )" || failure 9186
-                                                                                                                                                    cat "$EXPECTED_SCRIPT" > "$SCRIPT_FILE"
+                                                                                                                                                    echo "$EXPECTED_SCRIPT" > "$SCRIPT_FILE"
                                                                                                                                                     DIFF_SCRIPT="$( diff --unified "$SCRIPT_FILE" ${ script-file } )" || failure 7114
                                                                                                                                                     failure 5478 EXPECTED_SCRIPT "$EXPECTED_SCRIPT" OBSERVED_SCRIPT "$OBSERVED_SCRIPT" DIFF_SCRIPT "$DIFF_SCRIPT"
                                                                                                                                                 fi
