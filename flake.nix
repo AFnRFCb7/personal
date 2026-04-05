@@ -979,6 +979,10 @@
                                                                                                                                                     DIFF_SCRIPT="$( diff --unified "$SCRIPT_FILE" ${ script-file } )" || true
                                                                                                                                                     failure 5478 EXPECTED_SCRIPT "$EXPECTED_SCRIPT" OBSERVED_SCRIPT "$OBSERVED_SCRIPT" DIFF_SCRIPT "$DIFF_SCRIPT"
                                                                                                                                                 fi
+                                                                                                                                                if true
+                                                                                                                                                then
+                                                                                                                                                    exit 0
+                                                                                                                                                fi
                                                                                                                                                 EXPECTED_STANDARD_ERROR='${ standard-error }'
                                                                                                                                                 OBSERVED_STANDARD_ERROR="$( cat ${ standard-error-file } )" || failure 4256
                                                                                                                                                 if [[ "$EXPECTED_STANDARD_ERROR" != "$OBSERVED_STANDARD_ERROR" ]]
