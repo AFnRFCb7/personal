@@ -888,9 +888,7 @@
                                                                                                                                                 status = "0" ;
                                                                                                                                             } ;
                                                                                                                                         release-message-file = "/home/emory/resources/logs/0000000000000029" ;
-                                                                                                                                        script =
-                                                                                                                                            ''
-                                                                                                                                            '' ;
+                                                                                                                                        script = "" ;
                                                                                                                                         script-file = "/home/emory/resources/logs/0000000000000026" ;
                                                                                                                                         standard-error = "" ;
                                                                                                                                         standard-error-file = "/home/emory/resources/logs/0000000000000027" ;
@@ -970,18 +968,20 @@
                                                                                                                                                     VERBOSE_RELEASE_JSON="$( jq "." ${ release-message-file } )" || failure 18266
                                                                                                                                                     failure 27913 EXPECTED_RELEASE_JSON "$EXPECTED_RELEASE_JSON" OBSERVED_RELEASE_JSON "$OBSERVED_RELEASE_JSON" VERBOSE_RELEASE_JSON "$VERBOSE_RELEASE_JSON"
                                                                                                                                                 fi
+                                                                                                                                                # failure 23377
                                                                                                                                                 EXPECTED_SCRIPT='${ script }'
                                                                                                                                                 OBSERVED_SCRIPT="$( cat ${ script-file } )" || failure 19776
-                                                                                                                                                failure 19487
+                                                                                                                                                # failure 19487
                                                                                                                                                 if [[ "$EXPECTED_SCRIPT" != "$OBSERVED_SCRIPT" ]]
                                                                                                                                                 then
+                                                                                                                                                    failure 26303
                                                                                                                                                     SCRIPT_FILE="$( mktemp )" || failure 9186
-                                                                                                                                                    failure 11
+                                                                                                                                                    failure 28839
                                                                                                                                                     echo "$EXPECTED_SCRIPT" > "$SCRIPT_FILE"
                                                                                                                                                     DIFF_SCRIPT="$( diff --unified "$SCRIPT_FILE" ${ script-file } )" || true
                                                                                                                                                     failure 5478 EXPECTED_SCRIPT "$EXPECTED_SCRIPT" OBSERVED_SCRIPT "$OBSERVED_SCRIPT" DIFF_SCRIPT "$DIFF_SCRIPT"
                                                                                                                                                 fi
-                                                                                                                                                failure 12
+                                                                                                                                                failure 16171
                                                                                                                                                 EXPECTED_STANDARD_ERROR='${ standard-error }'
                                                                                                                                                 OBSERVED_STANDARD_ERROR="$( cat ${ standard-error-file } )" || failure 4256
                                                                                                                                                 if [[ "$EXPECTED_STANDARD_ERROR" != "$OBSERVED_STANDARD_ERROR" ]]
