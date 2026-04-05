@@ -871,7 +871,6 @@
                                                                                                                                                                     then
                                                                                                                                                                         failure 13101
                                                                                                                                                                     fi
-                                                                                                                                                                    echo 25798
                                                                                                                                                                 '' ;
                                                                                                                                                 }
                                                                                                                                         )
@@ -977,7 +976,7 @@
                                                                                                                                                 then
                                                                                                                                                     SCRIPT_FILE="$( mktemp )" || failure 9186
                                                                                                                                                     echo "$EXPECTED_SCRIPT" > "$SCRIPT_FILE"
-                                                                                                                                                    DIFF_SCRIPT="$( diff --unified "$SCRIPT_FILE" ${ script-file } )" || failure 7114
+                                                                                                                                                    DIFF_SCRIPT="$( diff --unified "$SCRIPT_FILE" ${ script-file } )" || true
                                                                                                                                                     failure 5478 EXPECTED_SCRIPT "$EXPECTED_SCRIPT" OBSERVED_SCRIPT "$OBSERVED_SCRIPT" DIFF_SCRIPT "$DIFF_SCRIPT"
                                                                                                                                                 fi
                                                                                                                                                 EXPECTED_STANDARD_ERROR='${ standard-error }'
@@ -986,9 +985,20 @@
                                                                                                                                                 then
                                                                                                                                                     STANDARD_ERROR_FILE="$( mktemp )" || failure 13779
                                                                                                                                                     echo "$EXPECTED_STANDARD_ERROR" > "$STANDARD_ERROR_FILE"
-                                                                                                                                                    DIFF_STANDARD_ERROR="$( diff --unified "$STANDARD_ERROR_FILE" ${ standard-error-file } )" || failure 26077
+                                                                                                                                                    DIFF_STANDARD_ERROR="$( diff --unified "$STANDARD_ERROR_FILE" ${ standard-error-file } )" || true
                                                                                                                                                     failure 20376 EXPECTED_STANDARD_ERROR "$EXPECTED_STANDARD_ERROR" OBSERVED_STANDARD_ERROR "$OBSERVED_STANDARD_ERROR" DIFF_STANDARD_ERROR "$DIFF_STANDARD_ERROR"
                                                                                                                                                 fi
+
+                                                                                                                                                INDEX="$( jq --raw-output ".index" ${ release-message-file } )" || failure 27849
+                                                                                                                                                if [[ -e "$HOME/resources/invalid-init/$INDEX" ]]
+                                                                                                                                                then
+                                                                                                                                                    failure 31812
+                                                                                                                                                fi
+                                                                                                                                                if [[ -e "$HOME/resources/invalid-release/$INDEX" ]]
+                                                                                                                                                then
+                                                                                                                                                    failure 20789
+                                                                                                                                                fi
+
                                                                                                                                                 WC_EIGHT="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 17418
                                                                                                                                                 if [[ "$WC_EIGHT" != 7 ]]
                                                                                                                                                 then
@@ -1019,6 +1029,7 @@
                                                                                                                         --literal plain EXPECTED_SUBSCRIBE_VALID_INIT \
                                                                                                                         --literal plain EXPECTED_SUBSCRIBE_VALID_RELEASE \
                                                                                                                         --literal plain EIGHT \
+                                                                                                                        --literal plain INDEX \
                                                                                                                         --literal plain OBSERVED_RELEASE \
                                                                                                                         --literal plain OBSERVED_RELEASE_JSON \
                                                                                                                         --literal plain OBSERVED_SCRIPT \
