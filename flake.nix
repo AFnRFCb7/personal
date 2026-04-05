@@ -884,10 +884,13 @@
                                                                                                                                                 echo 26347
                                                                                                                                                 OUTPUT_FILE="$( mktemp )" || failure 29393
                                                                                                                                                 export OUTPUT_FILE
+                                                                                                                                                echo 29534
                                                                                                                                                 redis-cli --csv SUBSCRIBE invalid-init invalid-release stale-init valid-init valid-release > "$OUTPUT_FILE" &
+                                                                                                                                                echo 6527
                                                                                                                                                 COUNT_5=0
                                                                                                                                                 while [[ "$COUNT_5" -lt "5" ]]
                                                                                                                                                 do
+                                                                                                                                                    echo "$COUNT_5=$COUNT_5"
                                                                                                                                                     sleep 1
                                                                                                                                                     COUNT_5="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 13785
                                                                                                                                                 done
@@ -2049,6 +2052,7 @@
                                                                                                                                         }
                                                                                                                                         if [[ "$TYPE" == "message" ]]
                                                                                                                                         then
+                                                                                                                                            echo 4642
                                                                                                                                             jq --raw-output "." "$PAYLOAD"
                                                                                                                                             RELEASE_FILE="$( jq --raw-output '."release-file" // empty' "$PAYLOAD" )" || failure 24568
                                                                                                                                             nohup "$RELEASE_FILE" &
