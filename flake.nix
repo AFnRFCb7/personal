@@ -952,7 +952,7 @@
                                                                                                                                                     failure 12883 EXPECTED_RELEASE "$EXPECTED_RELEASE" OBSERVED_RELEASE "$OBSERVED_RELEASE"
                                                                                                                                                 fi
                                                                                                                                                 EXPECTED_RELEASE_JSON='${ builtins.toJSON release }'
-                                                                                                                                                OBSERVED_RELEASE_JSON="$( cat ${ release-message-file }" || failure 1446
+                                                                                                                                                OBSERVED_RELEASE_JSON="$( cat "${ release-message-file }" )" || failure 1446
                                                                                                                                                 # OBSERVED_RELEASE_JSON="$( jq --compact-output "." ${ release-message-file } )" || failure 20816 ${ release-message-file }
                                                                                                                                                 if [[ "$EXPECTED_RELEASE_JSON" != "$OBSERVED_RELEASE_JSON" ]]
                                                                                                                                                 then
