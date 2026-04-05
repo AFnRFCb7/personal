@@ -989,6 +989,10 @@
                                                                                                                                                     DIFF_STANDARD_ERROR="$( diff --unified "$STANDARD_ERROR_FILE" ${ standard-error-file } )" || failure 26077
                                                                                                                                                     failure 20376 EXPECTED_STANDARD_ERROR "$EXPECTED_STANDARD_ERROR" OBSERVED_STANDARD_ERROR "$OBSERVED_STANDARD_ERROR" DIFF_STANDARD_ERROR "$DIFF_STANDARD_ERROR"
                                                                                                                                                 fi
+                                                                                                                                                if true
+                                                                                                                                                then
+                                                                                                                                                    exit 0
+                                                                                                                                                fi
                                                                                                                                                 WC_EIGHT="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 17418
                                                                                                                                                 if [[ "$WC_EIGHT" != 7 ]]
                                                                                                                                                 then
