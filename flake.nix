@@ -868,6 +868,7 @@
                                                                                                                                                                     then
                                                                                                                                                                         failure 13101
                                                                                                                                                                     fi
+                                                                                                                                                                    echo 25798
                                                                                                                                                                 '' ;
                                                                                                                                                 }
                                                                                                                                         )
@@ -925,7 +926,9 @@
                                                                                                                                                     SIX="$( head --lines 6 "$OUTPUT_FILE" | tail --lines 1 )" || failure 17032
                                                                                                                                                     failure 24681 SIX "$SIX"
                                                                                                                                                 fi
+                                                                                                                                                echo 28522
                                                                                                                                                 timeout 1m bash -c pre-test
+                                                                                                                                                echo 30683
                                                                                                                                                 COUNT_7=0
                                                                                                                                                 while [[ "$COUNT_7" -lt "7" ]]
                                                                                                                                                 do
