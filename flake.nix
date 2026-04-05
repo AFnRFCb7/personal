@@ -881,6 +881,7 @@
                                                                                                                                             } ;
                                                                                                                                         in
                                                                                                                                             ''
+                                                                                                                                                echo 26347
                                                                                                                                                 OUTPUT_FILE="$( mktemp )" || failure 29393
                                                                                                                                                 export OUTPUT_FILE
                                                                                                                                                 redis-cli --csv SUBSCRIBE invalid-init invalid-release stale-init valid-init valid-release > "$OUTPUT_FILE" &
@@ -932,6 +933,7 @@
                                                                                                                                                 COUNT_7=0
                                                                                                                                                 while [[ "$COUNT_7" -lt "7" ]]
                                                                                                                                                 do
+                                                                                                                                                    echo "COUNT_7=$COUNT_7"
                                                                                                                                                     sleep 1
                                                                                                                                                     COUNT_7="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 24082
                                                                                                                                                 done
