@@ -943,14 +943,14 @@
 
                                                                                                                                                 echo 12316
 
-                                                                                                                                                EXPECTED_RELEASE="WRONG"
+                                                                                                                                                EXPECTED_RELEASE="\"message\",\"valid-release\",\"/home/emory/resources/logs/0000000000000029\""
                                                                                                                                                 OBSERVED_RELEASE="$( head --lines 7 "$OUTPUT_FILE" | tail --lines 1 )" || failure 14819
                                                                                                                                                 if [[ "$EXPECTED_RELEASE" != "$OBSERVED_RELEASE" ]]
                                                                                                                                                 then
                                                                                                                                                     failure 12883 EXPECTED_RELEASE "$EXPECTED_RELEASE" OBSERVED_RELEASE "$OBSERVED_RELEASE"
                                                                                                                                                 fi
                                                                                                                                                 EXPECTED_RELEASE_JSON='${ builtins.toJSON release }'
-                                                                                                                                                OBSERVED_RELEASE_JSON="$( cat )" || failure 20816
+                                                                                                                                                OBSERVED_RELEASE_JSON="$( cat /home/emory/resources/logs/0000000000000029 )" || failure 20816
                                                                                                                                                 if [[ "$EXPECTED_RELEASE_JSON" != "$OBSERVED_RELEASE_JSON" ]]
                                                                                                                                                 then
                                                                                                                                                     VERBOSE_RELEASE_JSON="$OBSERVED_RELEASE_JSON"
