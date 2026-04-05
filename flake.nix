@@ -980,6 +980,15 @@
                                                                                                                                                     DIFF_SCRIPT="$( diff --unified "$SCRIPT_FILE" ${ script-file } )" || failure 7114
                                                                                                                                                     failure 5478 EXPECTED_SCRIPT "$EXPECTED_SCRIPT" OBSERVED_SCRIPT "$OBSERVED_SCRIPT" DIFF_SCRIPT "$DIFF_SCRIPT"
                                                                                                                                                 fi
+                                                                                                                                                EXPECTED_STANDARD_ERROR='${ standard-error }'
+                                                                                                                                                OBSERVED_STANDARD_ERROR="$( cat ${ script-file } )" || failure 4256
+                                                                                                                                                if [[ "$EXPECTED_STANDARD_EROR" != "$OBSERVED_STANDARD_ERROR" ]]
+                                                                                                                                                then
+                                                                                                                                                    STANDARD_ERROR_FILE="$( mktemp )" || failure 13779
+                                                                                                                                                    cat "$EXPECTED_STANDARD_ERROR" > "$STANDARD_ERROR_FILE
+                                                                                                                                                    DIFF_STANDARD_ERROR="$( diff --unified "$STANDARD_ERROR_FILE" ${ standard-error-file } )" || failure 26077
+                                                                                                                                                    failure 20376 EXPECTED_STANDARD_ERROR "$EXPECTED_STANDARD_ERROR" OBSERVED_STANDARD_ERROR "$OBSERVED_STANDARD_ERROR" DIFF_STANDARD_ERROR "$DIFF_STANDARD_ERROR"
+                                                                                                                                                fi
                                                                                                                                                 WC_EIGHT="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 17418
                                                                                                                                                 if [[ "$WC_EIGHT" != 7 ]]
                                                                                                                                                 then
@@ -999,9 +1008,11 @@
                                                                                                                         --literal plain COUNT_5 \
                                                                                                                         --literal plain COUNT_7 \
                                                                                                                         --literal plain DIFF_SCRIPT \
+                                                                                                                        --literal plain DIFF_STANDARD_ERROR \
                                                                                                                         --literal plain EXPECTED_RELEASE \
                                                                                                                         --literal plain EXPECTED_RELEASE_JSON \
                                                                                                                         --literal plain EXPECTED_SCRIPT \
+                                                                                                                        --literal plain EXPECTED_STANDARD_ERROR \
                                                                                                                         --literal plain EXPECTED_SUBSCRIBE_INVALID_INIT \
                                                                                                                         --literal plain EXPECTED_SUBSCRIBE_INVALID_RELEASE \
                                                                                                                         --literal plain EXPECTED_SUBSCRIBE_STALE_INIT \
@@ -1011,6 +1022,7 @@
                                                                                                                         --literal plain OBSERVED_RELEASE \
                                                                                                                         --literal plain OBSERVED_RELEASE_JSON \
                                                                                                                         --literal plain OBSERVED_SCRIPT \
+                                                                                                                        --literal plain OBSERVED_STANDARD_ERROR \
                                                                                                                         --literal plain OBSERVED_SUBSCRIBE_INVALID_INIT \
                                                                                                                         --literal plain OBSERVED_SUBSCRIBE_INVALID_RELEASE \
                                                                                                                         --literal plain OBSERVED_SUBSCRIBE_STALE_INIT \
@@ -1019,6 +1031,8 @@
                                                                                                                         --literal plain OUTPUT_FILE \
                                                                                                                         --literal plain PATH \
                                                                                                                         --literal plain SIX \
+                                                                                                                        --literal plain SCRIPT_FILE \
+                                                                                                                        --literal plain STANDARD_ERROR_FILE \
                                                                                                                         --literal plain VERBOSE_RELEASE_JSON \
                                                                                                                         --literal plain WC_SIX \
                                                                                                                         --literal plain WC_EIGHT \
