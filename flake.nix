@@ -947,7 +947,7 @@
                                                                                                                                                 OBSERVED_RELEASE="$( head --lines 7 "$OUTPUT_FILE" | tail --lines 1 )" || failure 14819
                                                                                                                                                 if [[ "$EXPECTED_RELEASE" != "$OBSERVED_RELEASE" ]]
                                                                                                                                                 then
-                                                                                                                                                    failure 12883 EXPECTED_RELEASE "$EXPECTED_RELEASE" OBSERVED_RELEASE "OBSERVED_RELEASE"
+                                                                                                                                                    failure 12883 EXPECTED_RELEASE "$EXPECTED_RELEASE" OBSERVED_RELEASE "$OBSERVED_RELEASE"
                                                                                                                                                 fi
                                                                                                                                                 EXPECTED_RELEASE_JSON='${ builtins.toJSON release }'
                                                                                                                                                 OBSERVED_RELEASE_JSON="$( cat )" || failure 20816
