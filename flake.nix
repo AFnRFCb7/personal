@@ -721,6 +721,7 @@
                                                                                                                                         pkgs.bash
                                                                                                                                         pkgs.coreutils
                                                                                                                                         pkgs.findutils
+                                                                                                                                        pkgs.jq
                                                                                                                                         pkgs.inotify-tools
                                                                                                                                         pkgs.redis
                                                                                                                                         (
@@ -942,9 +943,6 @@
                                                                                                                                                     sleep 1
                                                                                                                                                     COUNT_7="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 24082
                                                                                                                                                 done
-
-                                                                                                                                                echo 12316
-
                                                                                                                                                 EXPECTED_RELEASE="\"message\",\"valid-release\",\"${ release-message-file }\""
                                                                                                                                                 OBSERVED_RELEASE="$( head --lines 7 "$OUTPUT_FILE" | tail --lines 1 )" || failure 14819
                                                                                                                                                 if [[ "$EXPECTED_RELEASE" != "$OBSERVED_RELEASE" ]]
@@ -952,8 +950,7 @@
                                                                                                                                                     failure 12883 EXPECTED_RELEASE "$EXPECTED_RELEASE" OBSERVED_RELEASE "$OBSERVED_RELEASE"
                                                                                                                                                 fi
                                                                                                                                                 EXPECTED_RELEASE_JSON='${ builtins.toJSON release }'
-                                                                                                                                                OBSERVED_RELEASE_JSON="$( cat "${ release-message-file }" )" || failure 1446
-                                                                                                                                                # OBSERVED_RELEASE_JSON="$( jq --compact-output "." ${ release-message-file } )" || failure 20816 ${ release-message-file }
+                                                                                                                                                OBSERVED_RELEASE_JSON="$( jq --compact-output "." ${ release-message-file } )" || failure 20816 ${ release-message-file }
                                                                                                                                                 if [[ "$EXPECTED_RELEASE_JSON" != "$OBSERVED_RELEASE_JSON" ]]
                                                                                                                                                     VERBOSE_RELEASE_JSON="$( jq "." ${ release-message-file } )" || failure 18266
                                                                                                                                                     failure 27913 EXPECTED_RELEASE_JSON "$EXPECTED_RELEASE_JSON" OBSERVED_RELEASE_JSON "$OBSERVED_RELEASE_JSON" VERBOSE_RELEASE_JSON "$VERBOSE_RELEASE_JSON"
