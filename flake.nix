@@ -955,9 +955,7 @@
                                                                                                                                                 OBSERVED_RELEASE_JSON="$( cat "${ release-message-file }" )" || failure 1446
                                                                                                                                                 # OBSERVED_RELEASE_JSON="$( jq --compact-output "." ${ release-message-file } )" || failure 20816 ${ release-message-file }
                                                                                                                                                 if [[ "$EXPECTED_RELEASE_JSON" != "$OBSERVED_RELEASE_JSON" ]]
-                                                                                                                                                then
-                                                                                                                                                    VERBOSE_RELEASE_JSON="WRONG"
-                                                                                                                                                    # VERBOSE_RELEASE_JSON="$( jq "." ${ release-message-file } )" || failure 18266
+                                                                                                                                                    VERBOSE_RELEASE_JSON="$( jq "." ${ release-message-file } )" || failure 18266
                                                                                                                                                     failure 27913 EXPECTED_RELEASE_JSON "$EXPECTED_RELEASE_JSON" OBSERVED_RELEASE_JSON "$OBSERVED_RELEASE_JSON" VERBOSE_RELEASE_JSON "$VERBOSE_RELEASE_JSON"
                                                                                                                                                 fi
 
