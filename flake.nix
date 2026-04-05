@@ -738,7 +738,7 @@
                                                                                                                                                                     index = "0000000000000021" ;
                                                                                                                                                                     release-file = release-file ;
                                                                                                                                                                     script-file = script-file ;
-                                                                                                                                                                    scripts-hash = "3f04a2ea60178bb3619ec95c8e41820eb061cab22a9ecd3effaa73042349c3e6c153bc9537d892dc8c3527b781d3e30a7c15d6b36b123dc11ca63e0b9c29e1b5q" ;
+                                                                                                                                                                    scripts-hash = "3f04a2ea60178bb3619ec95c8e41820eb061cab22a9ecd3effaa73042349c3e6c153bc9537d892dc8c3527b781d3e30a7c15d6b36b123dc11ca63e0b9c29e1b5" ;
                                                                                                                                                                     seed = [ "production" "checks" "true-true" ] ;
                                                                                                                                                                     standard-error-file = standard-error-file ;
                                                                                                                                                                     standard-input-file = standard-input-file ;
@@ -777,7 +777,9 @@
                                                                                                                                                             standard-error-file = "/home/emory/resources/logs/0000000000000023" ;
                                                                                                                                                             standard-input = "" ;
                                                                                                                                                             standard-input-file = "/home/emory/resources/logs/0000000000000020" ;
-                                                                                                                                                            standard-output = "" ;
+                                                                                                                                                            standard-output =
+                                                                                                                                                                ''
+                                                                                                                                                                '' ;
                                                                                                                                                             standard-output-file = "/home/emory/resources/logs/0000000000000024" ;
                                                                                                                                                             in
                                                                                                                                                                 ''
