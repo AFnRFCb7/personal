@@ -750,7 +750,7 @@
                                                                                                                                                                             observed = [ ] ;
                                                                                                                                                                         } ;
                                                                                                                                                                 } ;
-                                                                                                                                                            init-messag-file = "/home/emory/resources/logs/0000000000000025" ;
+                                                                                                                                                            init-message-file = "/home/emory/resources/logs/0000000000000025" ;
                                                                                                                                                             release =
                                                                                                                                                                 ''
                                                                                                                                                                     #!/nix/store/mjhcjikhxps97mq5z54j4gjjfzgmsir5-bash-5.2p37/bin/bash
