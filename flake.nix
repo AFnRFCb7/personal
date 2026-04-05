@@ -970,12 +970,12 @@
                                                                                                                                                     VERBOSE_RELEASE_JSON="$( jq "." ${ release-message-file } )" || failure 18266
                                                                                                                                                     failure 27913 EXPECTED_RELEASE_JSON "$EXPECTED_RELEASE_JSON" OBSERVED_RELEASE_JSON "$OBSERVED_RELEASE_JSON" VERBOSE_RELEASE_JSON "$VERBOSE_RELEASE_JSON"
                                                                                                                                                 fi
+                                                                                                                                                EXPECTED_SCRIPT='${ script }'
+                                                                                                                                                OBSERVED_SCRIPT="$( cat ${ script-file } )" || failure 19776
                                                                                                                                                 if true
                                                                                                                                                 then
                                                                                                                                                     exit 0
                                                                                                                                                 fi
-                                                                                                                                                EXPECTED_SCRIPT='${ script }'
-                                                                                                                                                OBSERVED_SCRIPT="$( cat ${ script-file } )" || failure 19776
                                                                                                                                                 if [[ "$EXPECTED_SCRIPT" != "$OBSERVED_SCRIPT" ]]
                                                                                                                                                 then
                                                                                                                                                     SCRIPT_FILE="$( mktemp )" || failure 9186
