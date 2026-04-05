@@ -972,6 +972,7 @@
                                                                                                                                                 fi
                                                                                                                                                 EXPECTED_SCRIPT='${ script }'
                                                                                                                                                 OBSERVED_SCRIPT="$( cat ${ script-file } )" || failure 19776
+                                                                                                                                                failure 19487
                                                                                                                                                 if [[ "$EXPECTED_SCRIPT" != "$OBSERVED_SCRIPT" ]]
                                                                                                                                                 then
                                                                                                                                                     SCRIPT_FILE="$( mktemp )" || failure 9186
