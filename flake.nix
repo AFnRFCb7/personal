@@ -980,16 +980,12 @@
                                                                                                                                                     DIFF_SCRIPT="$( diff --unified "$SCRIPT_FILE" ${ script-file } )" || failure 7114
                                                                                                                                                     failure 5478 EXPECTED_SCRIPT "$EXPECTED_SCRIPT" OBSERVED_SCRIPT "$OBSERVED_SCRIPT" DIFF_SCRIPT "$DIFF_SCRIPT"
                                                                                                                                                 fi
-                                                                                                                                                if true
-                                                                                                                                                then
-                                                                                                                                                    exit 0
-                                                                                                                                                fi
                                                                                                                                                 EXPECTED_STANDARD_ERROR='${ standard-error }'
-                                                                                                                                                OBSERVED_STANDARD_ERROR="$( cat ${ script-file } )" || failure 4256
+                                                                                                                                                OBSERVED_STANDARD_ERROR="$( cat ${ standard-error-file } )" || failure 4256
                                                                                                                                                 if [[ "$EXPECTED_STANDARD_ERROR" != "$OBSERVED_STANDARD_ERROR" ]]
                                                                                                                                                 then
                                                                                                                                                     STANDARD_ERROR_FILE="$( mktemp )" || failure 13779
-                                                                                                                                                    cat "$EXPECTED_STANDARD_ERROR" > "$STANDARD_ERROR_FILE"
+                                                                                                                                                    echo "$EXPECTED_STANDARD_ERROR" > "$STANDARD_ERROR_FILE"
                                                                                                                                                     DIFF_STANDARD_ERROR="$( diff --unified "$STANDARD_ERROR_FILE" ${ standard-error-file } )" || failure 26077
                                                                                                                                                     failure 20376 EXPECTED_STANDARD_ERROR "$EXPECTED_STANDARD_ERROR" OBSERVED_STANDARD_ERROR "$OBSERVED_STANDARD_ERROR" DIFF_STANDARD_ERROR "$DIFF_STANDARD_ERROR"
                                                                                                                                                 fi
