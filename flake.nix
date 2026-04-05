@@ -720,6 +720,7 @@
                                                                                                                                         failure
                                                                                                                                         pkgs.bash
                                                                                                                                         pkgs.coreutils
+                                                                                                                                        pkgs.diffutils
                                                                                                                                         pkgs.findutils
                                                                                                                                         pkgs.jq
                                                                                                                                         pkgs.inotify-tools
@@ -885,6 +886,7 @@
                                                                                                                                                 seed = [ "production" "checks" "true=true" ] ;
                                                                                                                                                 standard-error-file = standard-error-file ;
                                                                                                                                                 standard-output-file = standard-output-file ;
+                                                                                                                                                status = "0" ;
                                                                                                                                             } ;
                                                                                                                                         release-message-file = "/home/emory/resources/logs/0000000000000029" ;
                                                                                                                                         script =
@@ -969,7 +971,15 @@
                                                                                                                                                     VERBOSE_RELEASE_JSON="$( jq "." ${ release-message-file } )" || failure 18266
                                                                                                                                                     failure 27913 EXPECTED_RELEASE_JSON "$EXPECTED_RELEASE_JSON" OBSERVED_RELEASE_JSON "$OBSERVED_RELEASE_JSON" VERBOSE_RELEASE_JSON "$VERBOSE_RELEASE_JSON"
                                                                                                                                                 fi
-
+                                                                                                                                                EXPECTED_SCRIPT='${ script }'
+                                                                                                                                                OBSERVED_SCRIPT="$( cat ${ script-file } )" || failure 19776
+                                                                                                                                                if [[ "$EXPECTED_SCRIPT" != "$OBSERVED_SCRIPT" ]]
+                                                                                                                                                then
+                                                                                                                                                    SCRIPT_FILE="$( mktemp )" || failure 9186
+                                                                                                                                                    cat "$EXPECTED_SCRIPT" > "$SCRIPT_FILE
+                                                                                                                                                    DIFF_SCRIPT="$( diff --unified "$SCRIPT_FILE" ${ script-file } )" || failure 7114
+                                                                                                                                                    failure 5478 EXPECTED_SCRIPT "$EXPECTED_SCRIPT" OBSERVED_SCRIPT "$OBSERVED_SCRIPT" DIFF_SCRIPT "$DIFF_SCRIPT"
+                                                                                                                                                fi
                                                                                                                                                 WC_EIGHT="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 17418
                                                                                                                                                 if [[ "$WC_EIGHT" != 7 ]]
                                                                                                                                                 then
@@ -988,8 +998,10 @@
                                                                                                                         0500 \
                                                                                                                         --literal plain COUNT_5 \
                                                                                                                         --literal plain COUNT_7 \
+                                                                                                                        --literal plain DIFF_SCRIPT \
                                                                                                                         --literal plain EXPECTED_RELEASE \
                                                                                                                         --literal plain EXPECTED_RELEASE_JSON \
+                                                                                                                        --literal plain EXPECTED_SCRIPT \
                                                                                                                         --literal plain EXPECTED_SUBSCRIBE_INVALID_INIT \
                                                                                                                         --literal plain EXPECTED_SUBSCRIBE_INVALID_RELEASE \
                                                                                                                         --literal plain EXPECTED_SUBSCRIBE_STALE_INIT \
@@ -998,6 +1010,7 @@
                                                                                                                         --literal plain EIGHT \
                                                                                                                         --literal plain OBSERVED_RELEASE \
                                                                                                                         --literal plain OBSERVED_RELEASE_JSON \
+                                                                                                                        --literal plain OBSERVED_SCRIPT \
                                                                                                                         --literal plain OBSERVED_SUBSCRIBE_INVALID_INIT \
                                                                                                                         --literal plain OBSERVED_SUBSCRIBE_INVALID_RELEASE \
                                                                                                                         --literal plain OBSERVED_SUBSCRIBE_STALE_INIT \
