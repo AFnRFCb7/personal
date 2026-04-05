@@ -750,6 +750,7 @@
                                                                                                                                                                             observed = [ ] ;
                                                                                                                                                                         } ;
                                                                                                                                                                 } ;
+                                                                                                                                                            init-messag-file = "/home/emory/resources/logs/0000000000000025" ;
                                                                                                                                                             release =
                                                                                                                                                                 ''
                                                                                                                                                                     #!/nix/store/mjhcjikhxps97mq5z54j4gjjfzgmsir5-bash-5.2p37/bin/bash
@@ -793,17 +794,17 @@
                                                                                                                                                                         sleep 1
                                                                                                                                                                         COUNT_SIX="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 24769
                                                                                                                                                                     done
-                                                                                                                                                                    EXPECTED_INIT="\"message\",\"valid-init\",\"/home/emory/resources/logs/0000000000000025\""
+                                                                                                                                                                    EXPECTED_INIT="\"message\",\"valid-init\",\"${ init-message-file }\""
                                                                                                                                                                     OBSERVED_INIT="$( head --lines 6 "$OUTPUT_FILE" | tail --lines 1 )" || failure 20277
                                                                                                                                                                     if [[ "$EXPECTED_INIT" != "$OBSERVED_INIT" ]]
                                                                                                                                                                     then
                                                                                                                                                                         failure 14530 EXPECTED_INIT "$EXPECTED_INIT" OBSERVED_INIT "$OBSERVED_INIT"
                                                                                                                                                                     fi
                                                                                                                                                                     EXPECTED_INIT_JSON='${ builtins.toJSON init }'
-                                                                                                                                                                    OBSERVED_INIT_JSON="$( jq --compact-output "." /home/emory/resources/logs/0000000000000025 )" || failure 9412
+                                                                                                                                                                    OBSERVED_INIT_JSON="$( jq --compact-output "." ${ init-message-file } )" || failure 9412
                                                                                                                                                                     if [[ "$EXPECTED_INIT_JSON" != "$OBSERVED_INIT_JSON" ]]
                                                                                                                                                                     then
-                                                                                                                                                                        VERBOSE_INIT_JSON="$( jq "." /home/emory/resources/logs/0000000000000025 )" || failure 23617
+                                                                                                                                                                        VERBOSE_INIT_JSON="$( jq "." ${ init-message-file } )" || failure 23617
                                                                                                                                                                         failure 16098 EXPECTED_INIT_JSON "$EXPECTED_INIT_JSON" OBSERVED_INIT_JSON "$OBSERVED_INIT_JSON" VERBOSE_INIT_JSON "$VERBOSE_INIT_JSON"
                                                                                                                                                                     fi
                                                                                                                                                                     # shellcheck disable=SC2016
@@ -879,6 +880,7 @@
                                                                                                                                             {
 
                                                                                                                                             } ;
+                                                                                                                                        release-message-file = "/home/emory/resources/logs/0000000000000029" ;
                                                                                                                                         in
                                                                                                                                             ''
                                                                                                                                                 echo 26347
@@ -943,18 +945,18 @@
 
                                                                                                                                                 echo 12316
 
-                                                                                                                                                EXPECTED_RELEASE="\"message\",\"valid-release\",\"/home/emory/resources/logs/0000000000000029\""
+                                                                                                                                                EXPECTED_RELEASE="\"message\",\"valid-release\",\"${ release-message-file }\""
                                                                                                                                                 OBSERVED_RELEASE="$( head --lines 7 "$OUTPUT_FILE" | tail --lines 1 )" || failure 14819
                                                                                                                                                 if [[ "$EXPECTED_RELEASE" != "$OBSERVED_RELEASE" ]]
                                                                                                                                                 then
                                                                                                                                                     failure 12883 EXPECTED_RELEASE "$EXPECTED_RELEASE" OBSERVED_RELEASE "$OBSERVED_RELEASE"
                                                                                                                                                 fi
                                                                                                                                                 EXPECTED_RELEASE_JSON='${ builtins.toJSON release }'
-                                                                                                                                                OBSERVED_RELEASE_JSON="$( cat /home/emory/resources/logs/0000000000000029 )" || failure 20816
+                                                                                                                                                OBSERVED_RELEASE_JSON="$( jq --compact-output "." ${ release-message-file } )" || failure 20816
                                                                                                                                                 if [[ "$EXPECTED_RELEASE_JSON" != "$OBSERVED_RELEASE_JSON" ]]
                                                                                                                                                 then
-                                                                                                                                                    VERBOSE_RELEASE_JSON="$OBSERVED_RELEASE_JSON"
-                                                                                                                                                    failure 27913 EXPECTED_RELEASE_JSON "$EXPECTED_RELEASE_JSON" OBSERVED_RELEASE_JSON "OBSERVED_RELEASE_JSON" VERBOSE_RELEASE_JSON "$VERBOSE_RELEASE_JSON"
+                                                                                                                                                    VERBOSE_RELEASE_JSON="$( jq "." ${ release-message-file } )" || failure 18266
+                                                                                                                                                    failure 27913 EXPECTED_RELEASE_JSON "$EXPECTED_RELEASE_JSON" OBSERVED_RELEASE_JSON "$OBSERVED_RELEASE_JSON" VERBOSE_RELEASE_JSON "$VERBOSE_RELEASE_JSON"
                                                                                                                                                 fi
 
                                                                                                                                                 WC_EIGHT="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 17418
