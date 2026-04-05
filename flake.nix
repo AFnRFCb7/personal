@@ -777,9 +777,7 @@
                                                                                                                                                             standard-error-file = "/home/emory/resources/logs/0000000000000023" ;
                                                                                                                                                             standard-input = "" ;
                                                                                                                                                             standard-input-file = "/home/emory/resources/logs/0000000000000020" ;
-                                                                                                                                                            standard-output =
-                                                                                                                                                                ''
-                                                                                                                                                                '' ;
+                                                                                                                                                            standard-output = "14060" ;
                                                                                                                                                             standard-output-file = "/home/emory/resources/logs/0000000000000024" ;
                                                                                                                                                             in
                                                                                                                                                                 ''
