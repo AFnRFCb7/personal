@@ -757,10 +757,10 @@
                                                                                                                                                                     set -o nounset
                                                                                                                                                                     set -o pipefail
 
-                                                                                                                                                                    export PATH="/nix/store/xy9sa2741cinqmfpmqhdrk38gcv1waxb-trace/bin:/nix/store/xj5znbv8827p7lp2lv1ikz09wblh52mq-destroy/bin:$PATH"
+                                                                                                                                                                    export PATH="/nix/store/xy9sa2741cinqmfpmqhdrk38gcv1waxb-trace/bin:/nix/store/gx5sjm084p653q6f83if7rvi97nhm0d6-destroy/bin:$PATH"
 
                                                                                                                                                                     mkdir --parents "/home/emory/.gc-root/0000000000000021"
-                                                                                                                                                                    export HASH=2437475884155327532bf64974842426fba94cc1f5db86078db4b6e529ff9863997fb22a3bd26b9baf3d0431eaa9be65fc4307448ac2184c051449ce206651bc
+                                                                                                                                                                    export HASH=04694a0c7b85003740af1525a7fdab5352e488c7fa585da3857d515095f5e43e0a0f6a20afb5dc8db72fd991e020fe1e82779fbbd90f2d558477990bd9a691c0
                                                                                                                                                                     export INDEX=0000000000000021
                                                                                                                                                                     destroy'' ;
                                                                                                                                                             release-file = "/home/emory/resources/release/0000000000000021" ;
