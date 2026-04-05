@@ -976,16 +976,16 @@
                                                                                                                                                 if [[ "$EXPECTED_SCRIPT" != "$OBSERVED_SCRIPT" ]]
                                                                                                                                                 then
                                                                                                                                                     SCRIPT_FILE="$( mktemp )" || failure 9186
-                                                                                                                                                    cat "$EXPECTED_SCRIPT" > "$SCRIPT_FILE
+                                                                                                                                                    cat "$EXPECTED_SCRIPT" > "$SCRIPT_FILE"
                                                                                                                                                     DIFF_SCRIPT="$( diff --unified "$SCRIPT_FILE" ${ script-file } )" || failure 7114
                                                                                                                                                     failure 5478 EXPECTED_SCRIPT "$EXPECTED_SCRIPT" OBSERVED_SCRIPT "$OBSERVED_SCRIPT" DIFF_SCRIPT "$DIFF_SCRIPT"
                                                                                                                                                 fi
                                                                                                                                                 EXPECTED_STANDARD_ERROR='${ standard-error }'
                                                                                                                                                 OBSERVED_STANDARD_ERROR="$( cat ${ script-file } )" || failure 4256
-                                                                                                                                                if [[ "$EXPECTED_STANDARD_EROR" != "$OBSERVED_STANDARD_ERROR" ]]
+                                                                                                                                                if [[ "$EXPECTED_STANDARD_ERROR" != "$OBSERVED_STANDARD_ERROR" ]]
                                                                                                                                                 then
                                                                                                                                                     STANDARD_ERROR_FILE="$( mktemp )" || failure 13779
-                                                                                                                                                    cat "$EXPECTED_STANDARD_ERROR" > "$STANDARD_ERROR_FILE
+                                                                                                                                                    cat "$EXPECTED_STANDARD_ERROR" > "$STANDARD_ERROR_FILE"
                                                                                                                                                     DIFF_STANDARD_ERROR="$( diff --unified "$STANDARD_ERROR_FILE" ${ standard-error-file } )" || failure 26077
                                                                                                                                                     failure 20376 EXPECTED_STANDARD_ERROR "$EXPECTED_STANDARD_ERROR" OBSERVED_STANDARD_ERROR "$OBSERVED_STANDARD_ERROR" DIFF_STANDARD_ERROR "$DIFF_STANDARD_ERROR"
                                                                                                                                                 fi
