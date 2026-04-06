@@ -754,7 +754,7 @@
                                                                                                                                                                     arguments = [ "" ] ;
                                                                                                                                                                     has-standard-input = "false" ;
                                                                                                                                                                     hash = "04694a0c7b85003740af1525a7fdab5352e488c7fa585da3857d515095f5e43e0a0f6a20afb5dc8db72fd991e020fe1e82779fbbd90f2d558477990bd9a691c0" ;
-                                                                                                                                                                    index = pad-16 alpha 17293 ;
+                                                                                                                                                                    index = pad-16 alpha 3 ;
                                                                                                                                                                     release-file = release-file ;
                                                                                                                                                                     script-file = script-file ;
                                                                                                                                                                     scripts-hash = "3f04a2ea60178bb3619ec95c8e41820eb061cab22a9ecd3effaa73042349c3e6c153bc9537d892dc8c3527b781d3e30a7c15d6b36b123dc11ca63e0b9c29e1b5" ;
@@ -783,7 +783,7 @@
                                                                                                                                                                     export HASH=04694a0c7b85003740af1525a7fdab5352e488c7fa585da3857d515095f5e43e0a0f6a20afb5dc8db72fd991e020fe1e82779fbbd90f2d558477990bd9a691c0
                                                                                                                                                                     export INDEX=${ pad-16 alpha 17293 }
                                                                                                                                                                     destroy'' ;
-                                                                                                                                                            release-file = release-16 alpha 17293 ;
+                                                                                                                                                            release-file = release-16 alpha 6 ;
                                                                                                                                                             script =
                                                                                                                                                                 ''
                                                                                                                                                                     #!/nix/store/mjhcjikhxps97mq5z54j4gjjfzgmsir5-bash-5.2p37/bin/bash
@@ -792,13 +792,13 @@
                                                                                                                                                                     set -o pipefail
 
                                                                                                                                                                     /nix/store/qy4wc2sgkskjywq1sk7qfljsaqydar6d-init/bin/init''  ;
-                                                                                                                                                            script-file = log-16 alpha 17293 ;
+                                                                                                                                                            script-file = log-16 alpha 7 ;
                                                                                                                                                             standard-error = "" ;
-                                                                                                                                                            standard-error-file = log-16 alpha 17293 ;
+                                                                                                                                                            standard-error-file = log-16 alpha 8 ;
                                                                                                                                                             standard-input = "" ;
-                                                                                                                                                            standard-input-file = log-16 alpha 17293 ;
+                                                                                                                                                            standard-input-file = log-16 alpha 5 ;
                                                                                                                                                             standard-output = "14060" ;
-                                                                                                                                                            standard-output-file = log-16 alpha 17293 ;
+                                                                                                                                                            standard-output-file = log-16 alpha 9 ;
                                                                                                                                                             stale =
                                                                                                                                                                 {
 
