@@ -1081,7 +1081,6 @@
                                                                                                                         --literal plain EXPECTED_SUBSCRIBE_VALID_INIT \
                                                                                                                         --literal plain EXPECTED_SUBSCRIBE_VALID_RELEASE \
                                                                                                                         --literal plain EIGHT \
-                                                                                                                        --literal plain HOME \
                                                                                                                         --literal plain OBSERVED_RELEASE \
                                                                                                                         --literal plain OBSERVED_RELEASE_JSON \
                                                                                                                         --literal plain OBSERVED_SCRIPT \
