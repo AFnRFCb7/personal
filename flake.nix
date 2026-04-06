@@ -710,8 +710,8 @@
                                                                                                     text =
                                                                                                         let
                                                                                                             file-16 = prefix : a : b : "/home/emory/resources/logs/${ pad-16 a b }" ;
-                                                                                                            log-16 = file-16 : a : b : file-16 "/home/emory/resources/logs/" ;
-                                                                                                            mount-16 = file-16 : a : b : file-16 "/home/emory/resources/mounts/" ;
+                                                                                                            log-16 = file-16 "/home/emory/resources/logs/" ;
+                                                                                                            mount-16 = file-16 "/home/emory/resources/mounts/" ;
                                                                                                             pad-16 =
                                                                                                                 a : b :
                                                                                                                     let
@@ -722,6 +722,7 @@
                                                                                                                         in
                                                                                                                             if length < 16 then builtins.throw "number ${ builtins.toString number } is negative"
                                                                                                                             else builtins.substring 1 16 sum ;
+                                                                                                            release-16 = file-16 "/home/emory/resources/release/" ;
                                                                                                             true-true =
                                                                                                                 let
                                                                                                                     alpha = 21 ;
@@ -766,7 +767,7 @@
                                                                                                                                                                             observed = [ ] ;
                                                                                                                                                                         } ;
                                                                                                                                                                 } ;
-                                                                                                                                                            init-message-file = "/home/emory/resources/logs/0000000000000025" ;
+                                                                                                                                                            init-message-file = log-16 alpha -10 ;
                                                                                                                                                             release =
                                                                                                                                                                 ''
                                                                                                                                                                     #!/nix/store/mjhcjikhxps97mq5z54j4gjjfzgmsir5-bash-5.2p37/bin/bash
@@ -780,7 +781,7 @@
                                                                                                                                                                     export HASH=04694a0c7b85003740af1525a7fdab5352e488c7fa585da3857d515095f5e43e0a0f6a20afb5dc8db72fd991e020fe1e82779fbbd90f2d558477990bd9a691c0
                                                                                                                                                                     export INDEX=${ pad-16 alpha -10 }
                                                                                                                                                                     destroy'' ;
-                                                                                                                                                            release-file = file-16 alpha -10 ;
+                                                                                                                                                            release-file = release-16 alpha -10 ;
                                                                                                                                                             script =
                                                                                                                                                                 ''
                                                                                                                                                                     #!/nix/store/mjhcjikhxps97mq5z54j4gjjfzgmsir5-bash-5.2p37/bin/bash
@@ -789,7 +790,7 @@
                                                                                                                                                                     set -o pipefail
 
                                                                                                                                                                     /nix/store/qy4wc2sgkskjywq1sk7qfljsaqydar6d-init/bin/init''  ;
-                                                                                                                                                            script-file = file-16 alpha -10 ;
+                                                                                                                                                            script-file = log-16 alpha -10 ;
                                                                                                                                                             standard-error = "" ;
                                                                                                                                                             standard-error-file = log-16 alpha -10 ;
                                                                                                                                                             standard-input = "" ;
@@ -800,10 +801,10 @@
                                                                                                                                                                 {
 
                                                                                                                                                                 } ;
-                                                                                                                                                            stale-message-file = "" ;
+                                                                                                                                                            stale-message-file = log-16 alpha -10 ;
                                                                                                                                                             in
                                                                                                                                                                 ''
-                                                                                                                                                                    EXPECTED_RESOURCE=${ file-16 alpha -10 }
+                                                                                                                                                                    EXPECTED_RESOURCE=${ log-16 alpha -10 }
                                                                                                                                                                     OBSERVED_RESOURCE=${ resources.production.checks.true-true { failure = 21760 ; } }
                                                                                                                                                                     if [[ "$EXPECTED_RESOURCE" != "$OBSERVED_RESOURCE" ]]
                                                                                                                                                                     then
@@ -924,7 +925,7 @@
                                                                                                                                                 standard-output-file = standard-output-file ;
                                                                                                                                                 status = "0" ;
                                                                                                                                             } ;
-                                                                                                                                        release-message-file = file-16 alpha -10 ;
+                                                                                                                                        release-message-file = release-16 alpha -10 ;
                                                                                                                                         script =
                                                                                                                                             ''
                                                                                                                                                 #!/nix/store/mjhcjikhxps97mq5z54j4gjjfzgmsir5-bash-5.2p37/bin/bash
