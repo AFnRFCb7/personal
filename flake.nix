@@ -732,11 +732,11 @@
                                                                                                                                                 pad16 =
                                                                                                                                                     number :
                                                                                                                                                         let
-                                                                                                                                                            constant = 50000000000000000 ;
+                                                                                                                                                            constant = 10000000000000000 ;
                                                                                                                                                             length = builtins.stringLength sum ;
                                                                                                                                                             sum = builtins.toString ( constant + number ) ;
                                                                                                                                                             in
-                                                                                                                                                                if length < 16 then builtins.throw "number ${ builtins.toString number } is too small"
+                                                                                                                                                                if length < 16 then builtins.throw "number ${ builtins.toString number } is negative"
                                                                                                                                                                 else builtins.substring 1 16 sum ;
                                                                                                                                                 in
                                                                                                                                                     pkgs.writeShellApplication
@@ -790,11 +790,11 @@
                                                                                                                                                                             /nix/store/qy4wc2sgkskjywq1sk7qfljsaqydar6d-init/bin/init''  ;
                                                                                                                                                                     script-file = file-16 1 ;
                                                                                                                                                                     standard-error = "" ;
-                                                                                                                                                                    standard-error-file = file-16 2 ;
+                                                                                                                                                                    standard-error-file = file-16 ( alpha + 2 ) ;
                                                                                                                                                                     standard-input = "" ;
-                                                                                                                                                                    standard-input-file = file-16 -1 ;
+                                                                                                                                                                    standard-input-file = file-16 ( alpha -1 ) ;
                                                                                                                                                                     standard-output = "14060" ;
-                                                                                                                                                                    standard-output-file = file-16 3 ;
+                                                                                                                                                                    standard-output-file = file-16 ( alpha + 3 ) ;
                                                                                                                                                                     in
                                                                                                                                                                         ''
                                                                                                                                                                             EXPECTED_RESOURCE="/home/emory/resources/mounts/0000000000000021"
@@ -893,7 +893,7 @@
                                                                                                                                         release =
                                                                                                                                             {
                                                                                                                                                 hash = "04694a0c7b85003740af1525a7fdab5352e488c7fa585da3857d515095f5e43e0a0f6a20afb5dc8db72fd991e020fe1e82779fbbd90f2d558477990bd9a691c0" ;
-                                                                                                                                                index = "0000000000000021" ;
+                                                                                                                                                index = pad16 alpha ;
                                                                                                                                                 script-file = script-file ;
                                                                                                                                                 seed = [ "production" "checks" "true-true" ] ;
                                                                                                                                                 standard-error-file = standard-error-file ;
