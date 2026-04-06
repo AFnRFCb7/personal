@@ -993,7 +993,15 @@
                                                                                                                                                     DIFF_STANDARD_ERROR="$( diff --unified "$STANDARD_ERROR_FILE" ${ standard-error-file } )" || true
                                                                                                                                                     failure 20376 EXPECTED_STANDARD_ERROR "$EXPECTED_STANDARD_ERROR" OBSERVED_STANDARD_ERROR "$OBSERVED_STANDARD_ERROR" DIFF_STANDARD_ERROR "$DIFF_STANDARD_ERROR"
                                                                                                                                                 fi
-
+                                                                                                                                                EXPECTED_STANDARD_OUTPUT='${ standard-output }'
+                                                                                                                                                OBSERVED_STANDARD_OUTPUT="$( cat ${ standard-output-file } )" || failure 11369
+                                                                                                                                                if [[ "$EXPECTED_STANDARD_OUTPUT" != "$OBSERVED_STANDARD_OUTPUT" ]]
+                                                                                                                                                then
+                                                                                                                                                    STANDARD_OUTPUT_FILE="$( mktemp )" || failure 24497
+                                                                                                                                                    echo "$EXPECTED_STANDARD_OUTPUT" > "$STANDARD_OUTPUT_FILE"
+                                                                                                                                                    DIFF_STANDARD_OUTPUT="$( diff --unified "$STANDARD_OUTPUT_FILE" ${ standard-output-file } )" || true
+                                                                                                                                                    failure 22430 EXPECTED_STANDARD_OUTPUT "$EXPECTED_STANDARD_OUTPUT" OBSERVED_STANDARD_OUTPUT "$OBSERVED_STANDARD_OUTPUT" DIFF_STANDARD_OUTPUT "$DIFF_STANDARD_OUTPUT"
+                                                                                                                                                fi
                                                                                                                                                 INDEX="$( jq --raw-output ".index" ${ release-message-file } )" || failure 27849
                                                                                                                                                 if [[ -e "$HOME/resources/invalid-init/$INDEX" ]]
                                                                                                                                                 then
@@ -1003,14 +1011,12 @@
                                                                                                                                                 then
                                                                                                                                                     failure 20789
                                                                                                                                                 fi
-
                                                                                                                                                 WC_EIGHT="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 17418
                                                                                                                                                 if [[ "$WC_EIGHT" != 7 ]]
                                                                                                                                                 then
                                                                                                                                                     EIGHT="$( head --lines 8 "$OUTPUT_FILE" | tail --lines 1 )" || failure 14060
                                                                                                                                                     failure 12459 EIGHT "$EIGHT"
                                                                                                                                                 fi
-
                                                                                                                                             '' ;
                                                                                                                             } ;
                                                                                                                     in "${ application }/bin/true-true" ;
@@ -1024,10 +1030,12 @@
                                                                                                                         --literal plain COUNT_7 \
                                                                                                                         --literal plain DIFF_SCRIPT \
                                                                                                                         --literal plain DIFF_STANDARD_ERROR \
+                                                                                                                        --literal plain DIFF_STANDARD_OUTPUT \
                                                                                                                         --literal plain EXPECTED_RELEASE \
                                                                                                                         --literal plain EXPECTED_RELEASE_JSON \
                                                                                                                         --literal plain EXPECTED_SCRIPT \
                                                                                                                         --literal plain EXPECTED_STANDARD_ERROR \
+                                                                                                                        --literal plain EXPECTED_STANDARD_OUTPUT \
                                                                                                                         --literal plain EXPECTED_SUBSCRIBE_INVALID_INIT \
                                                                                                                         --literal plain EXPECTED_SUBSCRIBE_INVALID_RELEASE \
                                                                                                                         --literal plain EXPECTED_SUBSCRIBE_STALE_INIT \
@@ -1040,6 +1048,7 @@
                                                                                                                         --literal plain OBSERVED_RELEASE_JSON \
                                                                                                                         --literal plain OBSERVED_SCRIPT \
                                                                                                                         --literal plain OBSERVED_STANDARD_ERROR \
+                                                                                                                        --literal plain OBSERVED_STANDARD_OUTPUT \
                                                                                                                         --literal plain OBSERVED_SUBSCRIBE_INVALID_INIT \
                                                                                                                         --literal plain OBSERVED_SUBSCRIBE_INVALID_RELEASE \
                                                                                                                         --literal plain OBSERVED_SUBSCRIBE_STALE_INIT \
@@ -1050,6 +1059,7 @@
                                                                                                                         --literal plain SIX \
                                                                                                                         --literal plain SCRIPT_FILE \
                                                                                                                         --literal plain STANDARD_ERROR_FILE \
+                                                                                                                        --literal plain STANDARD_OUTPUT_FILE \
                                                                                                                         --literal plain VERBOSE_RELEASE_JSON \
                                                                                                                         --literal plain WC_SIX \
                                                                                                                         --literal plain WC_EIGHT \
@@ -1748,11 +1758,11 @@
                                                                                             pkgs.writeShellApplication
                                                                                                 {
                                                                                                     name = "init" ;
-                                                                                                    runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                    runtimeInputs = [ pkgs.coreutils pkgs.redis ] ;
                                                                                                     text =
                                                                                                         ''
-                                                                                                            echo "$1" > /mount/holder
-                                                                                                            chmod 0400 /mount/holder
+                                                                                                            touch /mount/holder
+                                                                                                            redis-cli --csv SUBSCRIBE invalid-init invalid-release stale-init valid-init valid-release > /mount/holder &
                                                                                                         '' ;
                                                                                                 } ;
                                                                                     in "${ application }/bin/init" ;
