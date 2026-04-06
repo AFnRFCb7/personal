@@ -888,7 +888,14 @@
                                                                                                                                                 status = "0" ;
                                                                                                                                             } ;
                                                                                                                                         release-message-file = "/home/emory/resources/logs/0000000000000029" ;
-                                                                                                                                        script = "" ;
+                                                                                                                                        script =
+                                                                                                                                            ''
+                                                                                                                                                #!/nix/store/mjhcjikhxps97mq5z54j4gjjfzgmsir5-bash-5.2p37/bin/bash
+                                                                                                                                                set -o errexit
+                                                                                                                                                set -o nounset
+                                                                                                                                                set -o pipefail
+
+                                                                                                                                                /nix/store/ivcji4xkipn8zfiqj50yfgrq8g9cfxn1-release/bin/release'' ;
                                                                                                                                         script-file = "/home/emory/resources/logs/0000000000000026" ;
                                                                                                                                         standard-error = "" ;
                                                                                                                                         standard-error-file = "/home/emory/resources/logs/0000000000000027" ;
