@@ -1343,6 +1343,40 @@
                                                             {
                                                                 true =
                                                                     {
+                                                                        false =
+                                                                            ignore :
+                                                                                {
+                                                                                    init =
+                                                                                        { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
+                                                                                            let
+                                                                                                application =
+                                                                                                    pkgs.writeShellApplication
+                                                                                                        {
+                                                                                                            name = "init" ;
+                                                                                                            runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                            text =
+                                                                                                                ''
+                                                                                                                    echo 19414
+                                                                                                                '' ;
+                                                                                                        } ;
+                                                                                                in "${ application }/bin/init" ;
+                                                                                    release =
+                                                                                        { failure , pkgs , resources , seed , sequential , trace } :
+                                                                                            let
+                                                                                                application =
+                                                                                                    pkgs.writeShellApplication
+                                                                                                        {
+                                                                                                            name = "release" ;
+                                                                                                            runtimeInputs = [ pkgs.gnupg ] ;
+                                                                                                            text =
+                                                                                                                ''
+                                                                                                                    echo 29410
+                                                                                                                    exit 54
+                                                                                                                '' ;
+                                                                                                        } ;
+                                                                                                in "${ application }/bin/release" ;
+                                                                                    targets = [ ] ;
+                                                                                } ;
                                                                         true =
                                                                             ignore :
                                                                                 {
