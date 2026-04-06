@@ -800,6 +800,7 @@
                                                                                                                                                                 {
 
                                                                                                                                                                 } ;
+                                                                                                                                                            stale-message-file = "" ;
                                                                                                                                                             in
                                                                                                                                                                 ''
                                                                                                                                                                     EXPECTED_RESOURCE=${ file-16 alpha -10 }
@@ -879,7 +880,7 @@
                                                                                                                                                                         SEVEN="$( head --lines 7 "$OUTPUT_FILE" | tail --lines 1 )" || failure 17032
                                                                                                                                                                         failure 20505 SEVEN "$SEVEN"
                                                                                                                                                                     fi
-                                                                                                                                                                    EXPECTED_STALE="\"message\",\"stale-init\",\"${ init-message-file }\""
+                                                                                                                                                                    EXPECTED_STALE="\"message\",\"stale-init\",\"${ stale-message-file }\""
                                                                                                                                                                     OBSERVED_STALE=${ resources.production.checks.true-true { failure = 22380 ; } }
                                                                                                                                                                     if [[ "$EXPECTED_STALE" != "$OBSERVED_STALE" ]]
                                                                                                                                                                     then
