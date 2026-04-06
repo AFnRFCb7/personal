@@ -728,8 +728,8 @@
                                                                                                                                         (
                                                                                                                                             let
                                                                                                                                                 alpha = 21 ;
-                                                                                                                                                file16 = number : "/home/emory/resources/logs/${ pad16 number }" ;
-                                                                                                                                                pad16 =
+                                                                                                                                                file-16 = number : "/home/emory/resources/logs/${ pad16 number }" ;
+                                                                                                                                                pad-16 =
                                                                                                                                                     number :
                                                                                                                                                         let
                                                                                                                                                             constant = 10000000000000000 ;
@@ -750,7 +750,7 @@
                                                                                                                                                                             arguments = [ "" ] ;
                                                                                                                                                                             has-standard-input = "false" ;
                                                                                                                                                                             hash = "04694a0c7b85003740af1525a7fdab5352e488c7fa585da3857d515095f5e43e0a0f6a20afb5dc8db72fd991e020fe1e82779fbbd90f2d558477990bd9a691c0" ;
-                                                                                                                                                                            index = pad16 alpha ;
+                                                                                                                                                                            index = pad-16 alpha ;
                                                                                                                                                                             release-file = release-file ;
                                                                                                                                                                             script-file = script-file ;
                                                                                                                                                                             scripts-hash = "3f04a2ea60178bb3619ec95c8e41820eb061cab22a9ecd3effaa73042349c3e6c153bc9537d892dc8c3527b781d3e30a7c15d6b36b123dc11ca63e0b9c29e1b5" ;
@@ -893,7 +893,7 @@
                                                                                                                                         release =
                                                                                                                                             {
                                                                                                                                                 hash = "04694a0c7b85003740af1525a7fdab5352e488c7fa585da3857d515095f5e43e0a0f6a20afb5dc8db72fd991e020fe1e82779fbbd90f2d558477990bd9a691c0" ;
-                                                                                                                                                index = pad16 alpha ;
+                                                                                                                                                index = pad-16 alpha ;
                                                                                                                                                 script-file = script-file ;
                                                                                                                                                 seed = [ "production" "checks" "true-true" ] ;
                                                                                                                                                 standard-error-file = standard-error-file ;
