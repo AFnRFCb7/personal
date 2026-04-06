@@ -961,17 +961,17 @@
                                                                                                                                                 then
                                                                                                                                                     failure 12883 EXPECTED_RELEASE "$EXPECTED_RELEASE" OBSERVED_RELEASE "$OBSERVED_RELEASE"
                                                                                                                                                 fi
-                                                                                                                                                failure 21696
+                                                                                                                                                # failure 21696
                                                                                                                                                 EXPECTED_RELEASE_JSON='${ builtins.toJSON release }'
-                                                                                                                                                failure 32586
+                                                                                                                                                # failure 32586
                                                                                                                                                 OBSERVED_RELEASE_JSON="$( jq --compact-output "." ${ release-message-file } )" || failure 20816 ${ release-message-file }
-                                                                                                                                                failure 24000
+                                                                                                                                                # failure 24000
                                                                                                                                                 if [[ "$EXPECTED_RELEASE_JSON" != "$OBSERVED_RELEASE_JSON" ]]
                                                                                                                                                 then
                                                                                                                                                     VERBOSE_RELEASE_JSON="$( jq "." ${ release-message-file } )" || failure 18266
                                                                                                                                                     failure 27913 EXPECTED_RELEASE_JSON "$EXPECTED_RELEASE_JSON" OBSERVED_RELEASE_JSON "$OBSERVED_RELEASE_JSON" VERBOSE_RELEASE_JSON "$VERBOSE_RELEASE_JSON"
                                                                                                                                                 fi
-                                                                                                                                                failure 23377
+                                                                                                                                                # failure 23377
                                                                                                                                                 EXPECTED_SCRIPT='${ script }'
                                                                                                                                                 failure 18767
                                                                                                                                                 OBSERVED_SCRIPT="$( cat ${ script-file } )" || failure 19776
