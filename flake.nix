@@ -980,7 +980,7 @@
                                                                                                                                                 then
                                                                                                                                                     # failure 26303
                                                                                                                                                     SCRIPT_FILE="$( mktemp )" || failure 9186
-                                                                                                                                                    failure 28839
+                                                                                                                                                    # failure 28839
                                                                                                                                                     echo "$EXPECTED_SCRIPT" > "$SCRIPT_FILE"
                                                                                                                                                     DIFF_SCRIPT="$( diff --unified "$SCRIPT_FILE" ${ script-file } )" || true
                                                                                                                                                     failure 5478 EXPECTED_SCRIPT "$EXPECTED_SCRIPT" OBSERVED_SCRIPT "$OBSERVED_SCRIPT" DIFF_SCRIPT "$DIFF_SCRIPT"
