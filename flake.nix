@@ -845,8 +845,7 @@
                                                                                                                                                                     OBSERVED_SCRIPT="$( cat ${ script-file } )" || failure 11196
                                                                                                                                                                     if [[ "$EXPECTED_SCRIPT" != "$OBSERVED_SCRIPT" ]]
                                                                                                                                                                     then
-                                                                                                                                                                        SCRIPT_FILE="$( mktemp )" || failure 20736
-                                                                                                                                                                        echo "$EXPECTED_SCRIPT" > "$SCRIPT_FILE"
+                                                                                                                                                                        SCRIPT_FILE=${ resources.production.temporary.argument { failure = 25623 ; setup = setup : ''${ setup } "$EXPECTED_SCRIPT"'' ; } }
                                                                                                                                                                         DIFF_SCRIPT="$( diff --unified "$SCRIPT_FILE" ${ script-file } )" || true
                                                                                                                                                                         failure 18539 EXPECTED_SCRIPT "$EXPECTED_SCRIPT" OBSERVED_SCRIPT "$OBSERVED_SCRIPT" DIFF_SCRIPT "$DIFF_SCRIPT"
                                                                                                                                                                     fi
@@ -854,7 +853,7 @@
                                                                                                                                                                     OBSERVED_STANDARD_ERROR="$( cat ${ standard-error-file } )" || failure 31412
                                                                                                                                                                     if [[ "$EXPECTED_STANDARD_ERROR" != "$OBSERVED_STANDARD_ERROR" ]]
                                                                                                                                                                     then
-                                                                                                                                                                        STANDARD_ERROR_FILE="$( mktemp )" || failure 26037
+                                                                                                                                                                        STANDARD_ERROR_FILE=${ resources.production.temporary.argument { failure = 19268 ; setup = setup : ''${ setup } "$EXPECTED_STANDARD_ERROR"'' ; } }
                                                                                                                                                                         echo "$EXPECTED_STANDARD_ERROR" > "$STANDARD_ERROR_FILE"
                                                                                                                                                                         DIFF_STANDARD_ERROR="$( diff --unified "$STANDARD_ERROR_FILE" ${ standard-error-file } )" || true
                                                                                                                                                                         failure 30053 EXPECTED_STANDARD_ERROR "$EXPECTED_STANDARD_ERROR" OBSERVED_STANDARD_ERROR "$OBSERVED_STANDARD_ERROR" DIFF_STANDARD_ERROR "$DIFF_STANDARD_ERROR"
@@ -1868,7 +1867,7 @@
                                                                                                     runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                     text =
                                                                                                         ''
-                                                                                                            echo "$1" > /mount/holder
+                                                                                                            echo -en "$1" > /mount/holder
                                                                                                             chmod 0400 /mount/holder
                                                                                                         '' ;
                                                                                                 } ;
