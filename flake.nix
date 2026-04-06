@@ -825,7 +825,7 @@
                                                                                                                                                                     OBSERVED_RELEASE="$( cat ${ release-file } )" || failure 19359
                                                                                                                                                                     if [[ "$EXPECTED_RELEASE" != "$OBSERVED_RELEASE" ]]
                                                                                                                                                                     then
-                                                                                                                                                                        RELEASE_FILE="$( mktemp )" || failure 30981
+                                                                                                                                                                        RELEASE_FILE=${ resources.production.temporary.argument { failure = 24871 ; setup = setup : ''${ setup } "$RELEASE_FILE"'' ; } }
                                                                                                                                                                         echo "$EXPECTED_RELEASE" > "$RELEASE_FILE"
                                                                                                                                                                         DIFF_RELEASE="$( diff --unified "$RELEASE_FILE" ${ release-file } )" || true
                                                                                                                                                                         failure 12409 EXPECTED_RELEASE "$EXPECTED_RELEASE" OBSERVED_RELEASE "$OBSERVED_RELEASE" DIFF_RELEASE "$DIFF_RELEASE"
@@ -1064,7 +1064,6 @@
                                                                                                                         --literal plain OBSERVED_SUBSCRIBE_INVALID_RELEASE \
                                                                                                                         --literal plain OBSERVED_SUBSCRIBE_STALE_INIT \
                                                                                                                         --literal plain OBSERVED_SUBSCRIBE_VALID_INIT \
-                                                                                                                        --literal plain OBSERVED_SUBSCRIBE_VALID_RELEASE \
                                                                                                                         --literal plain OUTPUT_DIRECTORY \
                                                                                                                         --literal plain OUTPUT_FILE \
                                                                                                                         --literal plain PATH \
