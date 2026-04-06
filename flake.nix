@@ -872,12 +872,11 @@
                                                                                                                                                                         SEVEN="$( head --lines 7 "$OUTPUT_FILE" | tail --lines 1 )" || failure 17032
                                                                                                                                                                         failure 20505 SEVEN "$SEVEN"
                                                                                                                                                                     fi
-                                                                                                                                                                    INDEX="$( basename "$EXPECTED_RESOURCE" )" || failure 22580
-                                                                                                                                                                    if [[ -e "$HOME/resources/invalid-init/$INDEX" ]]
+                                                                                                                                                                    if [[ -e "$HOME/resources/invalid-init/${ pad-16 alpha }" ]]
                                                                                                                                                                     then
                                                                                                                                                                         failure 23500
                                                                                                                                                                     fi
-                                                                                                                                                                    if [[ -e "$HOME/resources/invalid-release/$INDEX" ]]
+                                                                                                                                                                    if [[ -e "$HOME/resources/invalid-release/${ pad-16 alpha }" ]]
                                                                                                                                                                     then
                                                                                                                                                                         failure 13101
                                                                                                                                                                     fi
@@ -964,7 +963,6 @@
                                                                                                                                                 fi
                                                                                                                                                 echo 28522
                                                                                                                                                 timeout 1m bash -c pre-test
-                                                                                                                                                echo 30683
                                                                                                                                                 COUNT_7=0
                                                                                                                                                 while [[ "$COUNT_7" -lt "7" ]]
                                                                                                                                                 do
@@ -1012,12 +1010,11 @@
                                                                                                                                                     DIFF_STANDARD_OUTPUT="$( diff --unified "$STANDARD_OUTPUT_FILE" ${ standard-output-file } )" || true
                                                                                                                                                     failure 22430 EXPECTED_STANDARD_OUTPUT "$EXPECTED_STANDARD_OUTPUT" OBSERVED_STANDARD_OUTPUT "$OBSERVED_STANDARD_OUTPUT" DIFF_STANDARD_OUTPUT "$DIFF_STANDARD_OUTPUT"
                                                                                                                                                 fi
-                                                                                                                                                INDEX="$( jq --raw-output ".index" ${ release-message-file } )" || failure 27849
-                                                                                                                                                if [[ -e "$HOME/resources/invalid-init/$INDEX" ]]
+                                                                                                                                                if [[ -e "$HOME/resources/invalid-init/${ pad-16 alpha }" ]]
                                                                                                                                                 then
                                                                                                                                                     failure 31812
                                                                                                                                                 fi
-                                                                                                                                                if [[ -e "$HOME/resources/invalid-release/$INDEX" ]]
+                                                                                                                                                if [[ -e "$HOME/resources/invalid-release/${ pad-16 alpha }" ]]
                                                                                                                                                 then
                                                                                                                                                     failure 20789
                                                                                                                                                 fi
@@ -1054,7 +1051,6 @@
                                                                                                                         --literal plain EXPECTED_SUBSCRIBE_VALID_RELEASE \
                                                                                                                         --literal plain EIGHT \
                                                                                                                         --literal plain HOME \
-                                                                                                                        --literal plain INDEX \
                                                                                                                         --literal plain OBSERVED_RELEASE \
                                                                                                                         --literal plain OBSERVED_RELEASE_JSON \
                                                                                                                         --literal plain OBSERVED_SCRIPT \
