@@ -806,8 +806,8 @@
                                                                                                                                                             stale-message-file = log-16 alpha 17293 ;
                                                                                                                                                             in
                                                                                                                                                                 ''
-                                                                                                                                                                    EXPECTED_RESOURCE=${ log-16 alpha 6 }
-                                                                                                                                                                    OBSERVED_RESOURCE=${ resources.production.checks.true-true { failure = 21760 ; } }
+                                                                                                                                                                    EXPECTED_RESOURCE=${ mount-16 alpha 6 }
+                                                                                                                                                                    OBSERVED_RESOURCE=${ resources.production.checks.true.true { failure = 21760 ; } }
                                                                                                                                                                     if [[ "$EXPECTED_RESOURCE" != "$OBSERVED_RESOURCE" ]]
                                                                                                                                                                     then
                                                                                                                                                                         failure 15789 EXPECTED_RESOURCE "$EXPECTED_RESOURCE" OBSERVED_RESOURCE "$OBSERVED_RESOURCE"
@@ -884,7 +884,7 @@
                                                                                                                                                                         failure 20505 SEVEN "$SEVEN"
                                                                                                                                                                     fi
                                                                                                                                                                     EXPECTED_STALE_RESOURCE="$EXPECTED_RESOURCE"
-                                                                                                                                                                    OBSERVED_STALE_RESOURCE=${ resources.production.checks.true-true { failure = 22380 ; } }
+                                                                                                                                                                    OBSERVED_STALE_RESOURCE=${ resources.production.checks.true.true { failure = 22380 ; } }
                                                                                                                                                                     if [[ "$EXPECTED_STALE_RESOURCE" != "$OBSERVED_STALE_RESOURCE" ]]
                                                                                                                                                                     then
                                                                                                                                                                         failure 32085 EXPECTED_STALE_RESOURCE "$EXPECTED_STALE_RESOURCE" OBSERVED_STALE_RESOURCE "$OBSERVED_STALE_RESOURCE"
@@ -1341,39 +1341,42 @@
                                                             } ;
                                                         checks =
                                                             {
-                                                                true-true =
-                                                                    ignore :
-                                                                        {
-                                                                            init =
-                                                                                { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
-                                                                                    let
-                                                                                        application =
-                                                                                            pkgs.writeShellApplication
-                                                                                                {
-                                                                                                    name = "init" ;
-                                                                                                    runtimeInputs = [ pkgs.coreutils ] ;
-                                                                                                    text =
-                                                                                                        ''
-                                                                                                            echo 14060
-                                                                                                        '' ;
-                                                                                                } ;
-                                                                                        in "${ application }/bin/init" ;
-                                                                            release =
-                                                                                { failure , pkgs , resources , seed , sequential , trace } :
-                                                                                    let
-                                                                                        application =
-                                                                                            pkgs.writeShellApplication
-                                                                                                {
-                                                                                                    name = "release" ;
-                                                                                                    runtimeInputs = [ pkgs.gnupg ] ;
-                                                                                                    text =
-                                                                                                        ''
-                                                                                                            echo 18719
-                                                                                                        '' ;
-                                                                                                } ;
-                                                                                        in "${ application }/bin/release" ;
-                                                                            targets = [ ] ;
-                                                                        } ;
+                                                                true =
+                                                                    {
+                                                                        true =
+                                                                            ignore :
+                                                                                {
+                                                                                    init =
+                                                                                        { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
+                                                                                            let
+                                                                                                application =
+                                                                                                    pkgs.writeShellApplication
+                                                                                                        {
+                                                                                                            name = "init" ;
+                                                                                                            runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                            text =
+                                                                                                                ''
+                                                                                                                    echo 14060
+                                                                                                                '' ;
+                                                                                                        } ;
+                                                                                                in "${ application }/bin/init" ;
+                                                                                    release =
+                                                                                        { failure , pkgs , resources , seed , sequential , trace } :
+                                                                                            let
+                                                                                                application =
+                                                                                                    pkgs.writeShellApplication
+                                                                                                        {
+                                                                                                            name = "release" ;
+                                                                                                            runtimeInputs = [ pkgs.gnupg ] ;
+                                                                                                            text =
+                                                                                                                ''
+                                                                                                                    echo 18719
+                                                                                                                '' ;
+                                                                                                        } ;
+                                                                                                in "${ application }/bin/release" ;
+                                                                                    targets = [ ] ;
+                                                                                } ;
+                                                                    } ;
                                                             } ;
                                                         dot-gnupg =
                                                             ignore :
