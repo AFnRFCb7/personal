@@ -709,6 +709,17 @@
                                                                                                     runtimeInputs = [ failure gc-root pkgs.coreutils wrap ] ;
                                                                                                     text =
                                                                                                         let
+                                                                                                            alpha = 21 ;
+                                                                                                            file-16 = number : "/home/emory/resources/logs/${ pad-16 number }" ;
+                                                                                                            pad-16 =
+                                                                                                                number :
+                                                                                                                    let
+                                                                                                                        constant = 10000000000000000 ;
+                                                                                                                        length = builtins.stringLength sum ;
+                                                                                                                        sum = builtins.toString ( constant + number ) ;
+                                                                                                                        in
+                                                                                                                            if length < 16 then builtins.throw "number ${ builtins.toString number } is negative"
+                                                                                                                            else builtins.substring 1 16 sum ;
                                                                                                             true-true =
                                                                                                                 let
                                                                                                                     application =
@@ -727,17 +738,6 @@
                                                                                                                                         pkgs.redis
                                                                                                                                         (
                                                                                                                                             let
-                                                                                                                                                alpha = 21 ;
-                                                                                                                                                file-16 = number : "/home/emory/resources/logs/${ pad-16 number }" ;
-                                                                                                                                                pad-16 =
-                                                                                                                                                    number :
-                                                                                                                                                        let
-                                                                                                                                                            constant = 10000000000000000 ;
-                                                                                                                                                            length = builtins.stringLength sum ;
-                                                                                                                                                            sum = builtins.toString ( constant + number ) ;
-                                                                                                                                                            in
-                                                                                                                                                                if length < 16 then builtins.throw "number ${ builtins.toString number } is negative"
-                                                                                                                                                                else builtins.substring 1 16 sum ;
                                                                                                                                                 in
                                                                                                                                                     pkgs.writeShellApplication
                                                                                                                                                         {
