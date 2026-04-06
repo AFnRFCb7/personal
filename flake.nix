@@ -914,8 +914,8 @@
                                                                                                                                         standard-output-file = file-16 ( alpha + 7 ) ;
                                                                                                                                         in
                                                                                                                                             ''
-                                                                                                                                                echo 26347
-                                                                                                                                                OUTPUT_FILE="$( mktemp )" || failure 29393
+                                                                                                                                                OUTPUT_DIRECTORY=${ resources.production.temporary.redis { failure = 16152 ; } }
+                                                                                                                                                OUTPUT_FILE="$OUTPUT_DIRECTORY/holder"
                                                                                                                                                 export OUTPUT_FILE
                                                                                                                                                 echo 29534
                                                                                                                                                 redis-cli --csv SUBSCRIBE invalid-init invalid-release stale-init valid-init valid-release > "$OUTPUT_FILE" &
@@ -1065,6 +1065,7 @@
                                                                                                                         --literal plain OBSERVED_SUBSCRIBE_STALE_INIT \
                                                                                                                         --literal plain OBSERVED_SUBSCRIBE_VALID_INIT \
                                                                                                                         --literal plain OBSERVED_SUBSCRIBE_VALID_RELEASE \
+                                                                                                                        --literal plain OUTPUT_DIRECTORY \
                                                                                                                         --literal plain OUTPUT_FILE \
                                                                                                                         --literal plain PATH \
                                                                                                                         --literal plain SIX \
