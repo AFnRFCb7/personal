@@ -847,7 +847,7 @@
                                                                                                                                                                     then
                                                                                                                                                                         SCRIPT_FILE=${ resources.production.temporary.argument { failure = 25623 ; setup = setup : ''${ setup } "$EXPECTED_SCRIPT"'' ; } }
                                                                                                                                                                         echo
-                                                                                                                                                                        ${ pkgs.findutils }/bin/find "$SCRIPT_FILE"
+                                                                                                                                                                        echo "$SCRIPT_FILE"
                                                                                                                                                                         echo
                                                                                                                                                                         DIFF_SCRIPT="$( diff --unified "$SCRIPT_FILE/holder" ${ script-file } )" || true
                                                                                                                                                                         failure 18539 EXPECTED_SCRIPT "$EXPECTED_SCRIPT" OBSERVED_SCRIPT "$OBSERVED_SCRIPT" DIFF_SCRIPT "$DIFF_SCRIPT"
