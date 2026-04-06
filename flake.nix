@@ -795,7 +795,7 @@
                                                                                                                                                             standard-output-file = file-16 ( alpha + 3 ) ;
                                                                                                                                                             in
                                                                                                                                                                 ''
-                                                                                                                                                                    EXPECTED_RESOURCE="/home/emory/resources/mounts/0000000000000021"
+                                                                                                                                                                    EXPECTED_RESOURCE=${ file-16 ( alpha + 6 ) }
                                                                                                                                                                     OBSERVED_RESOURCE=${ resources.production.checks.true-true { failure = 21760 ; } }
                                                                                                                                                                     if [[ "$EXPECTED_RESOURCE" != "$OBSERVED_RESOURCE" ]]
                                                                                                                                                                     then
