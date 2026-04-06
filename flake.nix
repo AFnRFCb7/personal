@@ -824,8 +824,8 @@
                                                                                                                                                                     if [[ "$WC_WTF" -gt 6 ]]
                                                                                                                                                                     then
                                                                                                                                                                         SEVEN="$( head --lines 7 "$OUTPUT_FILE" | tail --lines 1 )" || failure 17032
-                                                                                                                                                                        cat /home/emory/resources/logs/0000000000000031 >&2
-                                                                                                                                                                        failure 10236 WC_WTF "$WC_WTF" SEVEN "$SEVEN"
+                                                                                                                                                                        SEVEN_I=$( cat /home/emory/resources/logs/0000000000000031 )
+                                                                                                                                                                        failure 10236 WC_WTF "$WC_WTF" SEVEN "$SEVEN" SEVEN_I "$SEVEN_I" OBSERVED_INIT "$OBSERVED_INIT"
                                                                                                                                                                     fi
                                                                                                                                                                     EXPECTED_INIT_JSON='${ builtins.toJSON init }'
                                                                                                                                                                     OBSERVED_INIT_JSON="$( jq --compact-output "." ${ init-message-file } )" || failure 9412
