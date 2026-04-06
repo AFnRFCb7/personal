@@ -710,6 +710,7 @@
                                                                                                     text =
                                                                                                         let
                                                                                                             file-16 = prefix : a : b : "${ prefix }/${ pad-16 a b }" ;
+                                                                                                            gc-root = file-16 "$HOME/.gc-root" ;
                                                                                                             invalid-init = file-16 "$HOME/resources/invalid-init" ;
                                                                                                             invalid-release = file-16 "$HOME/resources/invalid-release" ;
                                                                                                             log-16 = file-16 "/home/emory/resources/logs" ;
@@ -777,11 +778,11 @@
                                                                                                                                                                     set -o nounset
                                                                                                                                                                     set -o pipefail
 
-                                                                                                                                                                    export PATH="/nix/store/xy9sa2741cinqmfpmqhdrk38gcv1waxb-trace/bin:/nix/store/gx5sjm084p653q6f83if7rvi97nhm0d6-destroy/bin:$PATH"
+                                                                                                                                                                    export PATH="/nix/store/xy9sa2741cinqmfpmqhdrk38gcv1waxb-trace/bin:/nix/store/54f702arxcxl6xv5dn8x9gy16yqxfddw-destroy/bin:$PATH"
 
-                                                                                                                                                                    mkdir --parents "/home/emory/.gc-root/0000000000000021"
-                                                                                                                                                                    export HASH=04694a0c7b85003740af1525a7fdab5352e488c7fa585da3857d515095f5e43e0a0f6a20afb5dc8db72fd991e020fe1e82779fbbd90f2d558477990bd9a691c0
-                                                                                                                                                                    export INDEX=${ pad-16 alpha 17293 }
+                                                                                                                                                                    mkdir --parents "${ gc-root alpha 0 }"
+                                                                                                                                                                    export HASH=edfecc45b51dde9d2a0dabab9f3aa00d09d71bc89189d9ad2bf9c162580a4a0c978ec61357acf317e56cd70236208c79cc73d6438692da34d90680a8c0a51a73
+                                                                                                                                                                    export INDEX=${ pad-16 alpha 0 }
                                                                                                                                                                     destroy'' ;
                                                                                                                                                             release-file = release-16 alpha 6 ;
                                                                                                                                                             script =
@@ -836,12 +837,6 @@
                                                                                                                                                                     OBSERVED_RELEASE="$( cat ${ release-file } )" || failure 19359
                                                                                                                                                                     if [[ "$EXPECTED_RELEASE" != "$OBSERVED_RELEASE" ]]
                                                                                                                                                                     then
-                                                                                                                                                                        echo
-                                                                                                                                                                        RELEASE_FILE=${ resources.production.temporary.argument { failure = 24871 ; setup = setup : ''${ setup } "$EXPECTED_RELEASE"'' ; } }
-                                                                                                                                                                        echo
-                                                                                                                                                                        echo "RELEASE_FILE=$RELEASE_FILE"
-                                                                                                                                                                        ${ pkgs.findutils }/bin/find "$RELEASE_FILE"
-                                                                                                                                                                        echo
                                                                                                                                                                         DIFF_RELEASE="$( diff --unified "$RELEASE_FILE/holder" ${ release-file } )" || true
                                                                                                                                                                         failure 12409 EXPECTED_RELEASE "$EXPECTED_RELEASE" OBSERVED_RELEASE "$OBSERVED_RELEASE" DIFF_RELEASE "$DIFF_RELEASE"
                                                                                                                                                                     fi
