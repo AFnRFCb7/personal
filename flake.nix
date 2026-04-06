@@ -1341,6 +1341,77 @@
                                                             } ;
                                                         checks =
                                                             {
+                                                                false =
+                                                                    {
+                                                                        false =
+                                                                            ignore :
+                                                                                {
+                                                                                    init =
+                                                                                        { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
+                                                                                            let
+                                                                                                application =
+                                                                                                    pkgs.writeShellApplication
+                                                                                                        {
+                                                                                                            name = "init" ;
+                                                                                                            runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                            text =
+                                                                                                                ''
+                                                                                                                    echo 30796
+                                                                                                                    exit 52
+                                                                                                                '' ;
+                                                                                                        } ;
+                                                                                                in "${ application }/bin/init" ;
+                                                                                    release =
+                                                                                        { failure , pkgs , resources , seed , sequential , trace } :
+                                                                                            let
+                                                                                                application =
+                                                                                                    pkgs.writeShellApplication
+                                                                                                        {
+                                                                                                            name = "release" ;
+                                                                                                            runtimeInputs = [ pkgs.gnupg ] ;
+                                                                                                            text =
+                                                                                                                ''
+                                                                                                                    echo 29589
+                                                                                                                    exit 45
+                                                                                                                '' ;
+                                                                                                        } ;
+                                                                                                in "${ application }/bin/release" ;
+                                                                                    targets = [ ] ;
+                                                                                } ;
+                                                                        true =
+                                                                            ignore :
+                                                                                {
+                                                                                    init =
+                                                                                        { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
+                                                                                            let
+                                                                                                application =
+                                                                                                    pkgs.writeShellApplication
+                                                                                                        {
+                                                                                                            name = "init" ;
+                                                                                                            runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                            text =
+                                                                                                                ''
+                                                                                                                    echo 14060
+                                                                                                                '' ;
+                                                                                                        } ;
+                                                                                                in "${ application }/bin/init" ;
+                                                                                    release =
+                                                                                        { failure , pkgs , resources , seed , sequential , trace } :
+                                                                                            let
+                                                                                                application =
+                                                                                                    pkgs.writeShellApplication
+                                                                                                        {
+                                                                                                            name = "release" ;
+                                                                                                            runtimeInputs = [ pkgs.gnupg ] ;
+                                                                                                            text =
+                                                                                                                ''
+                                                                                                                    echo 18719
+                                                                                                                '' ;
+                                                                                                        } ;
+                                                                                                in "${ application }/bin/release" ;
+                                                                                    targets = [ ] ;
+                                                                                } ;
+                                                                    } ;
                                                                 true =
                                                                     {
                                                                         false =
