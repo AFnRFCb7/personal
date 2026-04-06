@@ -724,7 +724,7 @@
                                                                                                                         in
                                                                                                                             if length < 16 then builtins.throw "number ${ builtins.toString number } is negative"
                                                                                                                             else builtins.substring 1 16 sum ;
-                                                                                                            release-16 = file-16 "/home/emory/resources/release/" ;
+                                                                                                            release-16 = file-16 "/home/emory/resources/release" ;
                                                                                                             true-true =
                                                                                                                 let
                                                                                                                     alpha = 21 ;
@@ -754,7 +754,7 @@
                                                                                                                                                                     arguments = [ "" ] ;
                                                                                                                                                                     has-standard-input = "false" ;
                                                                                                                                                                     hash = "edfecc45b51dde9d2a0dabab9f3aa00d09d71bc89189d9ad2bf9c162580a4a0c978ec61357acf317e56cd70236208c79cc73d6438692da34d90680a8c0a51a73" ;
-                                                                                                                                                                    index = pad-16 alpha 3 ;
+                                                                                                                                                                    index = pad-16 alpha 6 ;
                                                                                                                                                                     release-file = release-file ;
                                                                                                                                                                     script-file = script-file ;
                                                                                                                                                                     scripts-hash = "3f04a2ea60178bb3619ec95c8e41820eb061cab22a9ecd3effaa73042349c3e6c153bc9537d892dc8c3527b781d3e30a7c15d6b36b123dc11ca63e0b9c29e1b5" ;
