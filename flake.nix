@@ -917,14 +917,14 @@
                                                                                                                                         release =
                                                                                                                                             {
                                                                                                                                                 hash = "04694a0c7b85003740af1525a7fdab5352e488c7fa585da3857d515095f5e43e0a0f6a20afb5dc8db72fd991e020fe1e82779fbbd90f2d558477990bd9a691c0" ;
-                                                                                                                                                index = pad-16 alpha ;
+                                                                                                                                                index = pad-16 alpha -10 ;
                                                                                                                                                 script-file = script-file ;
                                                                                                                                                 seed = [ "production" "checks" "true-true" ] ;
                                                                                                                                                 standard-error-file = standard-error-file ;
                                                                                                                                                 standard-output-file = standard-output-file ;
                                                                                                                                                 status = "0" ;
                                                                                                                                             } ;
-                                                                                                                                        release-message-file = "/home/emory/resources/logs/0000000000000029" ;
+                                                                                                                                        release-message-file = file-16 alpha -10 ;
                                                                                                                                         script =
                                                                                                                                             ''
                                                                                                                                                 #!/nix/store/mjhcjikhxps97mq5z54j4gjjfzgmsir5-bash-5.2p37/bin/bash
@@ -933,11 +933,11 @@
                                                                                                                                                 set -o pipefail
 
                                                                                                                                                 /nix/store/ivcji4xkipn8zfiqj50yfgrq8g9cfxn1-release/bin/release'' ;
-                                                                                                                                        script-file = file-16 ( alpha + 5 ) ;
+                                                                                                                                        script-file = log-16 alpha -10 ;
                                                                                                                                         standard-error = "" ;
-                                                                                                                                        standard-error-file = file-16 ( alpha + 6 ) ;
+                                                                                                                                        standard-error-file = log-16 alpha -10 ;
                                                                                                                                         standard-output = "18719" ;
-                                                                                                                                        standard-output-file = file-16 ( alpha + 7 ) ;
+                                                                                                                                        standard-output-file = log-16 alpha -10 ;
                                                                                                                                         in
                                                                                                                                             ''
                                                                                                                                                 OUTPUT_DIRECTORY=${ resources.production.temporary.redis { failure = 16152 ; } }
