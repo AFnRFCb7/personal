@@ -873,6 +873,7 @@
                                                                                                                                                                     if [[ "$WC_SEVEN" != 6 ]]
                                                                                                                                                                     then
                                                                                                                                                                         SEVEN="$( head --lines 7 "$OUTPUT_FILE" | tail --lines 1 )" || failure 17032
+                                                                                                                                                                        cat /home/emory/resources/logs/0000000000000031 >&2
                                                                                                                                                                         failure 20505 SEVEN "$SEVEN"
                                                                                                                                                                     fi
                                                                                                                                                                     if [[ -e "${ invalid-init alpha 17293 }" ]]
@@ -883,7 +884,7 @@
                                                                                                                                                                     then
                                                                                                                                                                         failure 13101
                                                                                                                                                                     fi
-                                                                                                                                                                '' ;
+                                                                                                                                                                '' ;q
                                                                                                                                                 }
                                                                                                                                         )
                                                                                                                                     ] ;
