@@ -820,6 +820,13 @@
                                                                                                                                                                     then
                                                                                                                                                                         failure 14530 EXPECTED_INIT "$EXPECTED_INIT" OBSERVED_INIT "$OBSERVED_INIT"
                                                                                                                                                                     fi
+                                                                                                                                                                    WC_WTF="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 30515
+                                                                                                                                                                    if [[ "$WC_WTF" > 6 ]]
+                                                                                                                                                                    then
+                                                                                                                                                                        SEVEN="$( head --lines 7 "$OUTPUT_FILE" | tail --lines 1 )" || failure 17032
+                                                                                                                                                                        cat /home/emory/resources/logs/0000000000000031 >&2
+                                                                                                                                                                        failure 20505 SEVEN "$SEVEN"
+                                                                                                                                                                    fi
                                                                                                                                                                     EXPECTED_INIT_JSON='${ builtins.toJSON init }'
                                                                                                                                                                     OBSERVED_INIT_JSON="$( jq --compact-output "." ${ init-message-file } )" || failure 9412
                                                                                                                                                                     if [[ "$EXPECTED_INIT_JSON" != "$OBSERVED_INIT_JSON" ]]
