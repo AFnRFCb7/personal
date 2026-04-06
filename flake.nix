@@ -806,7 +806,7 @@
                                                                                                                                                             stale-message-file = log-16 alpha 17293 ;
                                                                                                                                                             in
                                                                                                                                                                 ''
-                                                                                                                                                                    EXPECTED_RESOURCE=${ log-16 alpha 17293 }
+                                                                                                                                                                    EXPECTED_RESOURCE=${ log-16 alpha 6 }
                                                                                                                                                                     OBSERVED_RESOURCE=${ resources.production.checks.true-true { failure = 21760 ; } }
                                                                                                                                                                     if [[ "$EXPECTED_RESOURCE" != "$OBSERVED_RESOURCE" ]]
                                                                                                                                                                     then
