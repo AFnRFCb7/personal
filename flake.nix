@@ -710,8 +710,8 @@
                                                                                                     text =
                                                                                                         let
                                                                                                             file-16 = prefix : a : b : "/home/emory/resources/logs/${ pad-16 a b }" ;
-                                                                                                            log-16 = file-16 : a : b : pad-16 "/home/emory/resources/logs/" ;
-                                                                                                            mount-16 = file-16 : a : b : pad-16 "/home/emory/resources/mounts/" ;
+                                                                                                            log-16 = file-16 : a : b : file-16 "/home/emory/resources/logs/" ;
+                                                                                                            mount-16 = file-16 : a : b : file-16 "/home/emory/resources/mounts/" ;
                                                                                                             pad-16 =
                                                                                                                 a : b :
                                                                                                                     let
