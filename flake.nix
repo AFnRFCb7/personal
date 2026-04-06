@@ -836,7 +836,11 @@
                                                                                                                                                                     OBSERVED_RELEASE="$( cat ${ release-file } )" || failure 19359
                                                                                                                                                                     if [[ "$EXPECTED_RELEASE" != "$OBSERVED_RELEASE" ]]
                                                                                                                                                                     then
+                                                                                                                                                                        echo
                                                                                                                                                                         RELEASE_FILE=${ resources.production.temporary.argument { failure = 24871 ; setup = setup : ''${ setup } "$EXPECTED_RELEASE"'' ; } }
+                                                                                                                                                                        echo
+                                                                                                                                                                        echo "RELEASE_FILE=$RELEASE_FILE"
+                                                                                                                                                                        echo
                                                                                                                                                                         DIFF_RELEASE="$( diff --unified "$RELEASE_FILE/holder" ${ release-file } )" || true
                                                                                                                                                                         failure 12409 EXPECTED_RELEASE "$EXPECTED_RELEASE" OBSERVED_RELEASE "$OBSERVED_RELEASE" DIFF_RELEASE "$DIFF_RELEASE"
                                                                                                                                                                     fi
@@ -846,9 +850,6 @@
                                                                                                                                                                     if [[ "$EXPECTED_SCRIPT" != "$OBSERVED_SCRIPT" ]]
                                                                                                                                                                     then
                                                                                                                                                                         SCRIPT_FILE=${ resources.production.temporary.argument { failure = 25623 ; setup = setup : ''${ setup } "$EXPECTED_SCRIPT"'' ; } }
-                                                                                                                                                                        echo
-                                                                                                                                                                        echo "$SCRIPT_FILE"
-                                                                                                                                                                        echo
                                                                                                                                                                         DIFF_SCRIPT="$( diff --unified "$SCRIPT_FILE/holder" ${ script-file } )" || true
                                                                                                                                                                         failure 18539 EXPECTED_SCRIPT "$EXPECTED_SCRIPT" OBSERVED_SCRIPT "$OBSERVED_SCRIPT" DIFF_SCRIPT "$DIFF_SCRIPT"
                                                                                                                                                                     fi
