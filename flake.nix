@@ -721,7 +721,7 @@
                                                                                                                             else builtins.substring 1 16 sum ;
                                                                                                             true-true =
                                                                                                                 let
-                                                                                                                    alpha = 27 ;
+                                                                                                                    alpha = 21 ;
                                                                                                                     application =
                                                                                                                         pkgs.writeShellApplication
                                                                                                                             {
@@ -748,7 +748,7 @@
                                                                                                                                                                     arguments = [ "" ] ;
                                                                                                                                                                     has-standard-input = "false" ;
                                                                                                                                                                     hash = "04694a0c7b85003740af1525a7fdab5352e488c7fa585da3857d515095f5e43e0a0f6a20afb5dc8db72fd991e020fe1e82779fbbd90f2d558477990bd9a691c0" ;
-                                                                                                                                                                    index = pad-16 alpha ;
+                                                                                                                                                                    index = pad-16 ( alpha + 12 ) ;
                                                                                                                                                                     release-file = release-file ;
                                                                                                                                                                     script-file = script-file ;
                                                                                                                                                                     scripts-hash = "3f04a2ea60178bb3619ec95c8e41820eb061cab22a9ecd3effaa73042349c3e6c153bc9537d892dc8c3527b781d3e30a7c15d6b36b123dc11ca63e0b9c29e1b5" ;
@@ -793,6 +793,11 @@
                                                                                                                                                             standard-input-file = file-16 ( alpha -1 ) ;
                                                                                                                                                             standard-output = "14060" ;
                                                                                                                                                             standard-output-file = file-16 ( alpha + 3 ) ;
+                                                                                                                                                            stale =
+                                                                                                                                                                {
+
+                                                                                                                                                                } ;
+                                                                                                                                                            stale-message-file = file-16 ( alpha + 100 ) ;
                                                                                                                                                             in
                                                                                                                                                                 ''
                                                                                                                                                                     EXPECTED_RESOURCE=${ file-16 ( alpha + 6 ) }
@@ -877,6 +882,13 @@
                                                                                                                                                                     if [[ "$EXPECTED_STALE" != "$OBSERVED_STALE" ]]
                                                                                                                                                                     then
                                                                                                                                                                         failure 20392 EXPECTED_STALE "$EXPECTED_STALE" OBSERVED_STALE "$OBSERVED_STALE"
+                                                                                                                                                                    fi
+                                                                                                                                                                    EXPECTED_INIT_JSON='${ builtins.toJSON stale }'
+                                                                                                                                                                    OBSERVED_STALE_JSON="$( jq --compact-output "." ${ stale-message-file } )" || failure 9412
+                                                                                                                                                                    if [[ "$EXPECTED_STALE_JSON" != "$OBSERVED_STALE_JSON" ]]
+                                                                                                                                                                    then
+                                                                                                                                                                        VERBOSE_STALE_JSON="$( jq "." ${ stale-message-file } )" || failure 28749
+                                                                                                                                                                        failure 23762 EXPECTED_STALE_JSON "$EXPECTED_STALE_JSON" OBSERVED_STALE_JSON "$OBSERVED_STALE_JSON" VERBOSE_STALE_JSON "$VERBOSE_STALE_JSON"
                                                                                                                                                                     fi
 
                                                                                                                                                                     WC_NINE="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 24218
