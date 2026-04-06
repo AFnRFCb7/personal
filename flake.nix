@@ -968,8 +968,9 @@
                                                                                                                                                     VERBOSE_RELEASE_JSON="$( jq "." ${ release-message-file } )" || failure 18266
                                                                                                                                                     failure 27913 EXPECTED_RELEASE_JSON "$EXPECTED_RELEASE_JSON" OBSERVED_RELEASE_JSON "$OBSERVED_RELEASE_JSON" VERBOSE_RELEASE_JSON "$VERBOSE_RELEASE_JSON"
                                                                                                                                                 fi
-                                                                                                                                                # failure 23377
+                                                                                                                                                failure 23377
                                                                                                                                                 EXPECTED_SCRIPT='${ script }'
+                                                                                                                                                failure 18767
                                                                                                                                                 OBSERVED_SCRIPT="$( cat ${ script-file } )" || failure 19776
                                                                                                                                                 failure 19487
                                                                                                                                                 if [[ "$EXPECTED_SCRIPT" != "$OBSERVED_SCRIPT" ]]
