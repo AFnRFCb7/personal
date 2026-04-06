@@ -721,7 +721,7 @@
                                                                                                                             else builtins.substring 1 16 sum ;
                                                                                                             true-true =
                                                                                                                 let
-                                                                                                                    alpha = 21 ;
+                                                                                                                    alpha = 27 ;
                                                                                                                     application =
                                                                                                                         pkgs.writeShellApplication
                                                                                                                             {
