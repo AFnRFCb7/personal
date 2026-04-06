@@ -728,14 +728,15 @@
                                                                                                                                         (
                                                                                                                                             let
                                                                                                                                                 alpha = 21 ;
+                                                                                                                                                file16 = number : "/home/emory/resources/logs/${ pad16 number }" ;
                                                                                                                                                 pad16 =
                                                                                                                                                     number :
                                                                                                                                                         let
-                                                                                                                                                            constant = 10000000000000000 ;
+                                                                                                                                                            constant = 50000000000000000 ;
                                                                                                                                                             length = builtins.stringLength sum ;
                                                                                                                                                             sum = builtins.toString ( constant + number ) ;
                                                                                                                                                             in
-                                                                                                                                                                if length < 16 then builtins.throw "number ${ builtins.toString number } is negative"
+                                                                                                                                                                if length < 16 then builtins.throw "number ${ builtins.toString number } is too small"
                                                                                                                                                                 else builtins.substring 1 16 sum ;
                                                                                                                                                 in
                                                                                                                                                     pkgs.writeShellApplication
@@ -749,7 +750,7 @@
                                                                                                                                                                             arguments = [ "" ] ;
                                                                                                                                                                             has-standard-input = "false" ;
                                                                                                                                                                             hash = "04694a0c7b85003740af1525a7fdab5352e488c7fa585da3857d515095f5e43e0a0f6a20afb5dc8db72fd991e020fe1e82779fbbd90f2d558477990bd9a691c0" ;
-                                                                                                                                                                            index = "0000000000000021" ;
+                                                                                                                                                                            index = pad16 alpha ;
                                                                                                                                                                             release-file = release-file ;
                                                                                                                                                                             script-file = script-file ;
                                                                                                                                                                             scripts-hash = "3f04a2ea60178bb3619ec95c8e41820eb061cab22a9ecd3effaa73042349c3e6c153bc9537d892dc8c3527b781d3e30a7c15d6b36b123dc11ca63e0b9c29e1b5" ;
@@ -787,13 +788,13 @@
                                                                                                                                                                             set -o pipefail
 
                                                                                                                                                                             /nix/store/qy4wc2sgkskjywq1sk7qfljsaqydar6d-init/bin/init''  ;
-                                                                                                                                                                    script-file = "/home/emory/resources/logs/0000000000000022" ;
+                                                                                                                                                                    script-file = file-16 1 ;
                                                                                                                                                                     standard-error = "" ;
-                                                                                                                                                                    standard-error-file = "/home/emory/resources/logs/0000000000000023" ;
+                                                                                                                                                                    standard-error-file = file-16 2 ;
                                                                                                                                                                     standard-input = "" ;
-                                                                                                                                                                    standard-input-file = "/home/emory/resources/logs/0000000000000020" ;
+                                                                                                                                                                    standard-input-file = file-16 -1 ;
                                                                                                                                                                     standard-output = "14060" ;
-                                                                                                                                                                    standard-output-file = "/home/emory/resources/logs/0000000000000024" ;
+                                                                                                                                                                    standard-output-file = file-16 3 ;
                                                                                                                                                                     in
                                                                                                                                                                         ''
                                                                                                                                                                             EXPECTED_RESOURCE="/home/emory/resources/mounts/0000000000000021"
