@@ -732,6 +732,7 @@
                                                                                                                                                     runtimeInputs = [ failure pkgs.coreutils pkgs.diffutils pkgs.findutils pkgs.jq pkgs.inotify-tools pkgs.redis ] ;
                                                                                                                                                     text =
                                                                                                                                                         let
+                                                                                                                                                            alpha = 21 ;
                                                                                                                                                             init =
                                                                                                                                                                 {
                                                                                                                                                                     arguments = [ "" ] ;
@@ -899,7 +900,7 @@
                                                                                                                                         script-file = "/home/emory/resources/logs/0000000000000026" ;
                                                                                                                                         standard-error = "" ;
                                                                                                                                         standard-error-file = "/home/emory/resources/logs/0000000000000027" ;
-                                                                                                                                        standard-output = "" ;
+                                                                                                                                        standard-output = "18719" ;
                                                                                                                                         standard-output-file = "/home/emory/resources/logs/0000000000000028" ;
                                                                                                                                         in
                                                                                                                                             ''
