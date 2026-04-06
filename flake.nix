@@ -710,6 +710,8 @@
                                                                                                     text =
                                                                                                         let
                                                                                                             file-16 = prefix : a : b : "/home/emory/resources/logs/${ pad-16 a b }" ;
+                                                                                                            invalid-init = file-16 "$HOME/resources/invalid-init/${ pad-16 a b a}" ;
+                                                                                                            invalid-release = file-16 "$HOME/resources/invalid-release/${ pad-16 alpha }" ;
                                                                                                             log-16 = file-16 "/home/emory/resources/logs/" ;
                                                                                                             mount-16 = file-16 "/home/emory/resources/mounts/" ;
                                                                                                             pad-16 =
@@ -901,11 +903,11 @@
                                                                                                                                                                         NINE="$( head --lines 9 "$OUTPUT_FILE" | tail --lines 1 )" || failure 13955
                                                                                                                                                                         failure 15414 NINE "$NINE"
                                                                                                                                                                     fi
-                                                                                                                                                                    if [[ -e "$HOME/resources/invalid-init/${ pad-16 alpha }" ]]
+                                                                                                                                                                    if [[ -e "${ invalid-init alpha 17293 }" ]]
                                                                                                                                                                     then
                                                                                                                                                                         failure 23500
                                                                                                                                                                     fi
-                                                                                                                                                                    if [[ -e "$HOME/resources/invalid-release/${ pad-16 alpha }" ]]
+                                                                                                                                                                    if [[ -e "${ invalid-release alpha 17293 }" ]]
                                                                                                                                                                     then
                                                                                                                                                                         failure 13101
                                                                                                                                                                     fi
@@ -1039,11 +1041,11 @@
                                                                                                                                                     DIFF_STANDARD_OUTPUT="$( diff --unified "$STANDARD_OUTPUT_FILE" ${ standard-output-file } )" || true
                                                                                                                                                     failure 22430 EXPECTED_STANDARD_OUTPUT "$EXPECTED_STANDARD_OUTPUT" OBSERVED_STANDARD_OUTPUT "$OBSERVED_STANDARD_OUTPUT" DIFF_STANDARD_OUTPUT "$DIFF_STANDARD_OUTPUT"
                                                                                                                                                 fi
-                                                                                                                                                if [[ -e "$HOME/resources/invalid-init/${ pad-16 alpha }" ]]
+                                                                                                                                                if [[ -e "${ invalid-init alpha 17293 }" ]]
                                                                                                                                                 then
                                                                                                                                                     failure 31812
                                                                                                                                                 fi
-                                                                                                                                                if [[ -e "$HOME/resources/invalid-release/${ pad-16 alpha }" ]]
+                                                                                                                                                if [[ -e "${ invalid-release alpha 17293 }" ]]
                                                                                                                                                 then
                                                                                                                                                     failure 20789
                                                                                                                                                 fi
