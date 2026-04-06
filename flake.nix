@@ -968,31 +968,22 @@
                                                                                                                                                 then
                                                                                                                                                     failure 12883 EXPECTED_RELEASE "$EXPECTED_RELEASE" OBSERVED_RELEASE "$OBSERVED_RELEASE"
                                                                                                                                                 fi
-                                                                                                                                                # failure 21696
                                                                                                                                                 EXPECTED_RELEASE_JSON='${ builtins.toJSON release }'
-                                                                                                                                                # failure 32586
                                                                                                                                                 OBSERVED_RELEASE_JSON="$( jq --compact-output "." ${ release-message-file } )" || failure 20816 ${ release-message-file }
-                                                                                                                                                # failure 24000
                                                                                                                                                 if [[ "$EXPECTED_RELEASE_JSON" != "$OBSERVED_RELEASE_JSON" ]]
                                                                                                                                                 then
                                                                                                                                                     VERBOSE_RELEASE_JSON="$( jq "." ${ release-message-file } )" || failure 18266
                                                                                                                                                     failure 27913 EXPECTED_RELEASE_JSON "$EXPECTED_RELEASE_JSON" OBSERVED_RELEASE_JSON "$OBSERVED_RELEASE_JSON" VERBOSE_RELEASE_JSON "$VERBOSE_RELEASE_JSON"
                                                                                                                                                 fi
-                                                                                                                                                # failure 23377
                                                                                                                                                 EXPECTED_SCRIPT='${ script }'
-                                                                                                                                                # failure 18767 cat ${ script-file }
                                                                                                                                                 OBSERVED_SCRIPT="$( cat ${ script-file } )" || failure 19776
-                                                                                                                                                # failure 19487 EXPECTED_SCRIPT "$EXPECTED_SCRIPT" OBSERVED_SCRIPT "$OBSERVED_SCRIPT"
                                                                                                                                                 if [[ "$EXPECTED_SCRIPT" != "$OBSERVED_SCRIPT" ]]
                                                                                                                                                 then
-                                                                                                                                                    # failure 26303
                                                                                                                                                     SCRIPT_FILE="$( mktemp )" || failure 9186
-                                                                                                                                                    # failure 28839
                                                                                                                                                     echo "$EXPECTED_SCRIPT" > "$SCRIPT_FILE"
                                                                                                                                                     DIFF_SCRIPT="$( diff --unified "$SCRIPT_FILE" ${ script-file } )" || true
                                                                                                                                                     failure 5478 EXPECTED_SCRIPT "$EXPECTED_SCRIPT" OBSERVED_SCRIPT "$OBSERVED_SCRIPT" DIFF_SCRIPT "$DIFF_SCRIPT"
                                                                                                                                                 fi
-                                                                                                                                                failure 16171
                                                                                                                                                 EXPECTED_STANDARD_ERROR='${ standard-error }'
                                                                                                                                                 OBSERVED_STANDARD_ERROR="$( cat ${ standard-error-file } )" || failure 4256
                                                                                                                                                 if [[ "$EXPECTED_STANDARD_ERROR" != "$OBSERVED_STANDARD_ERROR" ]]
@@ -1724,6 +1715,28 @@
                                                                                         in "${ application }/bin/init" ;
                                                                             targets = [ "bin" ] ;
                                                                         } ;
+                                                            } ;
+                                                        temporary =
+                                                            {
+                                                                argument =
+                                                                    ignore :
+                                                                        {
+                                                                            init =
+                                                                                { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
+                                                                                    let
+                                                                                        application =
+                                                                                            pkgs.writeShellApplication
+                                                                                                {
+                                                                                                    name = "init" ;
+                                                                                                    runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                    text =
+                                                                                                        ''
+                                                                                                            echo "$1" > /mount/holder
+                                                                                                            chmod 0400 /mount/holder
+                                                                                                        '' ;
+                                                                                                } ;
+                                                                            targets = [ "holder" ] ;
+                                                                        }
                                                             } ;
                                                     } ;
                                             } ;
