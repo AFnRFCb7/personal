@@ -709,13 +709,15 @@
                                                                                                     runtimeInputs = [ failure gc-root pkgs.coreutils wrap ] ;
                                                                                                     text =
                                                                                                         let
-                                                                                                            file-16 = number : "/home/emory/resources/logs/${ pad-16 number }" ;
+                                                                                                            file-16 = prefix : a : b : "/home/emory/resources/logs/${ pad-16 a b }" ;
+                                                                                                            logs-16 = file-16 : a : b : pad-16 "/home/emory/resources/logs/" ;
+                                                                                                            mounts-16 = file-16 : a : b : pad-16 "/home/emory/resources/mounts/" ;
                                                                                                             pad-16 =
-                                                                                                                number :
+                                                                                                                a : b :
                                                                                                                     let
                                                                                                                         constant = 10000000000000000 ;
                                                                                                                         length = builtins.stringLength sum ;
-                                                                                                                        sum = builtins.toString ( constant + number ) ;
+                                                                                                                        sum = builtins.toString ( constant + a + b ) ;
                                                                                                                         in
                                                                                                                             if length < 16 then builtins.throw "number ${ builtins.toString number } is negative"
                                                                                                                             else builtins.substring 1 16 sum ;
@@ -748,7 +750,7 @@
                                                                                                                                                                     arguments = [ "" ] ;
                                                                                                                                                                     has-standard-input = "false" ;
                                                                                                                                                                     hash = "04694a0c7b85003740af1525a7fdab5352e488c7fa585da3857d515095f5e43e0a0f6a20afb5dc8db72fd991e020fe1e82779fbbd90f2d558477990bd9a691c0" ;
-                                                                                                                                                                    index = pad-16 ( alpha + 12 ) ;
+                                                                                                                                                                    index = pad-16 alpha -10 ;
                                                                                                                                                                     release-file = release-file ;
                                                                                                                                                                     script-file = script-file ;
                                                                                                                                                                     scripts-hash = "3f04a2ea60178bb3619ec95c8e41820eb061cab22a9ecd3effaa73042349c3e6c153bc9537d892dc8c3527b781d3e30a7c15d6b36b123dc11ca63e0b9c29e1b5" ;
@@ -775,9 +777,9 @@
 
                                                                                                                                                                     mkdir --parents "/home/emory/.gc-root/0000000000000021"
                                                                                                                                                                     export HASH=04694a0c7b85003740af1525a7fdab5352e488c7fa585da3857d515095f5e43e0a0f6a20afb5dc8db72fd991e020fe1e82779fbbd90f2d558477990bd9a691c0
-                                                                                                                                                                    export INDEX=0000000000000021
+                                                                                                                                                                    export INDEX=${ pad-16 alpha -10 }
                                                                                                                                                                     destroy'' ;
-                                                                                                                                                            release-file = "/home/emory/resources/release/0000000000000021" ;
+                                                                                                                                                            release-file = file-16 alpha -10 ;
                                                                                                                                                             script =
                                                                                                                                                                 ''
                                                                                                                                                                     #!/nix/store/mjhcjikhxps97mq5z54j4gjjfzgmsir5-bash-5.2p37/bin/bash
@@ -786,21 +788,20 @@
                                                                                                                                                                     set -o pipefail
 
                                                                                                                                                                     /nix/store/qy4wc2sgkskjywq1sk7qfljsaqydar6d-init/bin/init''  ;
-                                                                                                                                                            script-file = file-16 ( alpha + 1 ) ;
+                                                                                                                                                            script-file = file-16 alpha -10 ;
                                                                                                                                                             standard-error = "" ;
-                                                                                                                                                            standard-error-file = file-16 ( alpha + 2 ) ;
+                                                                                                                                                            standard-error-file = log-16 alpha -10 ;
                                                                                                                                                             standard-input = "" ;
-                                                                                                                                                            standard-input-file = file-16 ( alpha -1 ) ;
+                                                                                                                                                            standard-input-file = log-16 alpha -10 ;
                                                                                                                                                             standard-output = "14060" ;
-                                                                                                                                                            standard-output-file = file-16 ( alpha + 3 ) ;
+                                                                                                                                                            standard-output-file = log-16 alpha -10 ;
                                                                                                                                                             stale =
                                                                                                                                                                 {
 
                                                                                                                                                                 } ;
-                                                                                                                                                            stale-message-file = file-16 ( alpha + 100 ) ;
                                                                                                                                                             in
                                                                                                                                                                 ''
-                                                                                                                                                                    EXPECTED_RESOURCE=${ file-16 ( alpha + 6 ) }
+                                                                                                                                                                    EXPECTED_RESOURCE=${ file-16 alpha -10 }
                                                                                                                                                                     OBSERVED_RESOURCE=${ resources.production.checks.true-true { failure = 21760 ; } }
                                                                                                                                                                     if [[ "$EXPECTED_RESOURCE" != "$OBSERVED_RESOURCE" ]]
                                                                                                                                                                     then
@@ -877,13 +878,13 @@
                                                                                                                                                                         SEVEN="$( head --lines 7 "$OUTPUT_FILE" | tail --lines 1 )" || failure 17032
                                                                                                                                                                         failure 20505 SEVEN "$SEVEN"
                                                                                                                                                                     fi
-                                                                                                                                                                    EXPECTED_STALE=${ file-16 ( alpha + 6 ) }
-                                                                                                                                                                    OBSERVED_RESOURCE=${ resources.production.checks.true-true { failure = 23677 ; } }
+                                                                                                                                                                    EXPECTED_STALE="\"message\",\"stale-init\",\"${ init-message-file }\""
+                                                                                                                                                                    OBSERVED_STALE=${ resources.production.checks.true-true { failure = 22380 ; } }
                                                                                                                                                                     if [[ "$EXPECTED_STALE" != "$OBSERVED_STALE" ]]
                                                                                                                                                                     then
-                                                                                                                                                                        failure 20392 EXPECTED_STALE "$EXPECTED_STALE" OBSERVED_STALE "$OBSERVED_STALE"
+                                                                                                                                                                        failure 32085 EXPECTED_STALE "$EXPECTED_STALE" OBSERVED_STALE "$OBSERVED_STALE"
                                                                                                                                                                     fi
-                                                                                                                                                                    EXPECTED_INIT_JSON='${ builtins.toJSON stale }'
+                                                                                                                                                                    EXPECTED_STALE_JSON='${ builtins.toJSON stale }'
                                                                                                                                                                     OBSERVED_STALE_JSON="$( jq --compact-output "." ${ stale-message-file } )" || failure 9412
                                                                                                                                                                     if [[ "$EXPECTED_STALE_JSON" != "$OBSERVED_STALE_JSON" ]]
                                                                                                                                                                     then
