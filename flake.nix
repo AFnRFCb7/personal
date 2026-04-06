@@ -973,9 +973,9 @@
                                                                                                                                                 fi
                                                                                                                                                 # failure 23377
                                                                                                                                                 EXPECTED_SCRIPT='${ script }'
-                                                                                                                                                failure 18767
+                                                                                                                                                # failure 18767 cat ${ script-file }
                                                                                                                                                 OBSERVED_SCRIPT="$( cat ${ script-file } )" || failure 19776
-                                                                                                                                                failure 19487
+                                                                                                                                                failure 19487 "$EXPECTED_SCRIPT" "$OBSERVED_SCRIPT"
                                                                                                                                                 if [[ "$EXPECTED_SCRIPT" != "$OBSERVED_SCRIPT" ]]
                                                                                                                                                 then
                                                                                                                                                     failure 26303
