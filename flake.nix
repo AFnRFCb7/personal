@@ -728,7 +728,7 @@
                                                                                                                                         (
                                                                                                                                             let
                                                                                                                                                 alpha = 21 ;
-                                                                                                                                                file-16 = number : "/home/emory/resources/logs/${ pad16 number }" ;
+                                                                                                                                                file-16 = number : "/home/emory/resources/logs/${ pad-16 number }" ;
                                                                                                                                                 pad-16 =
                                                                                                                                                     number :
                                                                                                                                                         let
@@ -909,11 +909,11 @@
                                                                                                                                                 set -o pipefail
 
                                                                                                                                                 /nix/store/ivcji4xkipn8zfiqj50yfgrq8g9cfxn1-release/bin/release'' ;
-                                                                                                                                        script-file = "/home/emory/resources/logs/0000000000000026" ;
+                                                                                                                                        script-file = file-16 ( alpha + 5 ) ;
                                                                                                                                         standard-error = "" ;
-                                                                                                                                        standard-error-file = "/home/emory/resources/logs/0000000000000027" ;
+                                                                                                                                        standard-error-file = file-16 ( alpha + 6 ) ;
                                                                                                                                         standard-output = "18719" ;
-                                                                                                                                        standard-output-file = "/home/emory/resources/logs/0000000000000028" ;
+                                                                                                                                        standard-output-file = file-16 ( alpha + 7 ) ;
                                                                                                                                         in
                                                                                                                                             ''
                                                                                                                                                 echo 26347
