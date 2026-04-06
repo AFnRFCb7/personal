@@ -1038,6 +1038,7 @@
                                                                                                                         0500 \
                                                                                                                         --literal plain COUNT_5 \
                                                                                                                         --literal plain COUNT_7 \
+                                                                                                                        --literal plain DERIVATION \
                                                                                                                         --literal plain DIFF_SCRIPT \
                                                                                                                         --literal plain DIFF_STANDARD_ERROR \
                                                                                                                         --literal plain DIFF_STANDARD_OUTPUT \
@@ -1063,6 +1064,7 @@
                                                                                                                         --literal plain OBSERVED_SUBSCRIBE_INVALID_RELEASE \
                                                                                                                         --literal plain OBSERVED_SUBSCRIBE_STALE_INIT \
                                                                                                                         --literal plain OBSERVED_SUBSCRIBE_VALID_INIT \
+                                                                                                                        --literal plain OBSERVED_SUBSCRIBE_VALID_RELEASE \
                                                                                                                         --literal plain OUTPUT_DIRECTORY \
                                                                                                                         --literal plain OUTPUT_FILE \
                                                                                                                         --literal plain PATH \
