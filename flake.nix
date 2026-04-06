@@ -978,7 +978,7 @@
                                                                                                                                                 # failure 19487 EXPECTED_SCRIPT "$EXPECTED_SCRIPT" OBSERVED_SCRIPT "$OBSERVED_SCRIPT"
                                                                                                                                                 if [[ "$EXPECTED_SCRIPT" != "$OBSERVED_SCRIPT" ]]
                                                                                                                                                 then
-                                                                                                                                                    failure 26303
+                                                                                                                                                    # failure 26303
                                                                                                                                                     SCRIPT_FILE="$( mktemp )" || failure 9186
                                                                                                                                                     failure 28839
                                                                                                                                                     echo "$EXPECTED_SCRIPT" > "$SCRIPT_FILE"
