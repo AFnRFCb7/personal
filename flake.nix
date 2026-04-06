@@ -717,7 +717,8 @@
                                                                                                                     let
                                                                                                                         constant = 10000000000000000 ;
                                                                                                                         length = builtins.stringLength sum ;
-                                                                                                                        sum = builtins.toString ( constant + a + b ) ;
+                                                                                                                        number = a + b ;
+                                                                                                                        sum = builtins.toString ( constant + number ) ;
                                                                                                                         in
                                                                                                                             if length < 16 then builtins.throw "number ${ builtins.toString number } is negative"
                                                                                                                             else builtins.substring 1 16 sum ;
