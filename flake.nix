@@ -783,8 +783,7 @@
                                                                                                                                                                     mkdir --parents "${ gc-root alpha 6 }"
                                                                                                                                                                     export HASH=edfecc45b51dde9d2a0dabab9f3aa00d09d71bc89189d9ad2bf9c162580a4a0c978ec61357acf317e56cd70236208c79cc73d6438692da34d90680a8c0a51a73
                                                                                                                                                                     export INDEX=${ pad-16 alpha 6 }
-                                                                                                                                                                    destroy
-                                                                                                                                                                '' ;
+                                                                                                                                                                    destroy'' ;
                                                                                                                                                             release-file = release-16 alpha 6 ;
                                                                                                                                                             script =
                                                                                                                                                                 ''
