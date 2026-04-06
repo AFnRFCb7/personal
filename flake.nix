@@ -752,7 +752,7 @@
                                                                                                                                                                     arguments = [ "" ] ;
                                                                                                                                                                     has-standard-input = "false" ;
                                                                                                                                                                     hash = "04694a0c7b85003740af1525a7fdab5352e488c7fa585da3857d515095f5e43e0a0f6a20afb5dc8db72fd991e020fe1e82779fbbd90f2d558477990bd9a691c0" ;
-                                                                                                                                                                    index = pad-16 alpha -10 ;
+                                                                                                                                                                    index = pad-16 alpha 17293 ;
                                                                                                                                                                     release-file = release-file ;
                                                                                                                                                                     script-file = script-file ;
                                                                                                                                                                     scripts-hash = "3f04a2ea60178bb3619ec95c8e41820eb061cab22a9ecd3effaa73042349c3e6c153bc9537d892dc8c3527b781d3e30a7c15d6b36b123dc11ca63e0b9c29e1b5" ;
@@ -767,7 +767,7 @@
                                                                                                                                                                             observed = [ ] ;
                                                                                                                                                                         } ;
                                                                                                                                                                 } ;
-                                                                                                                                                            init-message-file = log-16 alpha -10 ;
+                                                                                                                                                            init-message-file = log-16 alpha 17293 ;
                                                                                                                                                             release =
                                                                                                                                                                 ''
                                                                                                                                                                     #!/nix/store/mjhcjikhxps97mq5z54j4gjjfzgmsir5-bash-5.2p37/bin/bash
@@ -779,9 +779,9 @@
 
                                                                                                                                                                     mkdir --parents "/home/emory/.gc-root/0000000000000021"
                                                                                                                                                                     export HASH=04694a0c7b85003740af1525a7fdab5352e488c7fa585da3857d515095f5e43e0a0f6a20afb5dc8db72fd991e020fe1e82779fbbd90f2d558477990bd9a691c0
-                                                                                                                                                                    export INDEX=${ pad-16 alpha -10 }
+                                                                                                                                                                    export INDEX=${ pad-16 alpha 17293 }
                                                                                                                                                                     destroy'' ;
-                                                                                                                                                            release-file = release-16 alpha -10 ;
+                                                                                                                                                            release-file = release-16 alpha 17293 ;
                                                                                                                                                             script =
                                                                                                                                                                 ''
                                                                                                                                                                     #!/nix/store/mjhcjikhxps97mq5z54j4gjjfzgmsir5-bash-5.2p37/bin/bash
@@ -790,21 +790,21 @@
                                                                                                                                                                     set -o pipefail
 
                                                                                                                                                                     /nix/store/qy4wc2sgkskjywq1sk7qfljsaqydar6d-init/bin/init''  ;
-                                                                                                                                                            script-file = log-16 alpha -10 ;
+                                                                                                                                                            script-file = log-16 alpha 17293 ;
                                                                                                                                                             standard-error = "" ;
-                                                                                                                                                            standard-error-file = log-16 alpha -10 ;
+                                                                                                                                                            standard-error-file = log-16 alpha 17293 ;
                                                                                                                                                             standard-input = "" ;
-                                                                                                                                                            standard-input-file = log-16 alpha -10 ;
+                                                                                                                                                            standard-input-file = log-16 alpha 17293 ;
                                                                                                                                                             standard-output = "14060" ;
-                                                                                                                                                            standard-output-file = log-16 alpha -10 ;
+                                                                                                                                                            standard-output-file = log-16 alpha 17293 ;
                                                                                                                                                             stale =
                                                                                                                                                                 {
 
                                                                                                                                                                 } ;
-                                                                                                                                                            stale-message-file = log-16 alpha -10 ;
+                                                                                                                                                            stale-message-file = log-16 alpha 17293 ;
                                                                                                                                                             in
                                                                                                                                                                 ''
-                                                                                                                                                                    EXPECTED_RESOURCE=${ log-16 alpha -10 }
+                                                                                                                                                                    EXPECTED_RESOURCE=${ log-16 alpha 17293 }
                                                                                                                                                                     OBSERVED_RESOURCE=${ resources.production.checks.true-true { failure = 21760 ; } }
                                                                                                                                                                     if [[ "$EXPECTED_RESOURCE" != "$OBSERVED_RESOURCE" ]]
                                                                                                                                                                     then
@@ -881,11 +881,11 @@
                                                                                                                                                                         SEVEN="$( head --lines 7 "$OUTPUT_FILE" | tail --lines 1 )" || failure 17032
                                                                                                                                                                         failure 20505 SEVEN "$SEVEN"
                                                                                                                                                                     fi
-                                                                                                                                                                    EXPECTED_STALE="\"message\",\"stale-init\",\"${ stale-message-file }\""
-                                                                                                                                                                    OBSERVED_STALE=${ resources.production.checks.true-true { failure = 22380 ; } }
-                                                                                                                                                                    if [[ "$EXPECTED_STALE" != "$OBSERVED_STALE" ]]
+                                                                                                                                                                    EXPECTED_STALE_RESOURCE="$EXPECTED_RESOURCE"
+                                                                                                                                                                    OBSERVED_STALE_RESOURCE=${ resources.production.checks.true-true { failure = 22380 ; } }
+                                                                                                                                                                    if [[ "$EXPECTED_STALE_RESOURCE" != "$OBSERVED_STALE_RESOURCE" ]]
                                                                                                                                                                     then
-                                                                                                                                                                        failure 32085 EXPECTED_STALE "$EXPECTED_STALE" OBSERVED_STALE "$OBSERVED_STALE"
+                                                                                                                                                                        failure 32085 EXPECTED_STALE_RESOURCE "$EXPECTED_STALE_RESOURCE" OBSERVED_STALE_RESOURCE "$OBSERVED_STALE_RESOURCE"
                                                                                                                                                                     fi
                                                                                                                                                                     EXPECTED_STALE_JSON='${ builtins.toJSON stale }'
                                                                                                                                                                     OBSERVED_STALE_JSON="$( jq --compact-output "." ${ stale-message-file } )" || failure 9412
@@ -918,14 +918,14 @@
                                                                                                                                         release =
                                                                                                                                             {
                                                                                                                                                 hash = "04694a0c7b85003740af1525a7fdab5352e488c7fa585da3857d515095f5e43e0a0f6a20afb5dc8db72fd991e020fe1e82779fbbd90f2d558477990bd9a691c0" ;
-                                                                                                                                                index = pad-16 alpha -10 ;
+                                                                                                                                                index = pad-16 alpha 17293 ;
                                                                                                                                                 script-file = script-file ;
                                                                                                                                                 seed = [ "production" "checks" "true-true" ] ;
                                                                                                                                                 standard-error-file = standard-error-file ;
                                                                                                                                                 standard-output-file = standard-output-file ;
                                                                                                                                                 status = "0" ;
                                                                                                                                             } ;
-                                                                                                                                        release-message-file = release-16 alpha -10 ;
+                                                                                                                                        release-message-file = release-16 alpha 17293 ;
                                                                                                                                         script =
                                                                                                                                             ''
                                                                                                                                                 #!/nix/store/mjhcjikhxps97mq5z54j4gjjfzgmsir5-bash-5.2p37/bin/bash
@@ -934,11 +934,11 @@
                                                                                                                                                 set -o pipefail
 
                                                                                                                                                 /nix/store/ivcji4xkipn8zfiqj50yfgrq8g9cfxn1-release/bin/release'' ;
-                                                                                                                                        script-file = log-16 alpha -10 ;
+                                                                                                                                        script-file = log-16 alpha 17293 ;
                                                                                                                                         standard-error = "" ;
-                                                                                                                                        standard-error-file = log-16 alpha -10 ;
+                                                                                                                                        standard-error-file = log-16 alpha 17293 ;
                                                                                                                                         standard-output = "18719" ;
-                                                                                                                                        standard-output-file = log-16 alpha -10 ;
+                                                                                                                                        standard-output-file = log-16 alpha 17293 ;
                                                                                                                                         in
                                                                                                                                             ''
                                                                                                                                                 OUTPUT_DIRECTORY=${ resources.production.temporary.redis { failure = 16152 ; } }
