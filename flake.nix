@@ -872,6 +872,19 @@
                                                                                                                                                                         SEVEN="$( head --lines 7 "$OUTPUT_FILE" | tail --lines 1 )" || failure 17032
                                                                                                                                                                         failure 20505 SEVEN "$SEVEN"
                                                                                                                                                                     fi
+                                                                                                                                                                    EXPECTED_STALE=${ file-16 ( alpha + 6 ) }
+                                                                                                                                                                    OBSERVED_RESOURCE=${ resources.production.checks.true-true { failure = 23677 ; } }
+                                                                                                                                                                    if [[ "$EXPECTED_STALE" != "$OBSERVED_STALE" ]]
+                                                                                                                                                                    then
+                                                                                                                                                                        failure 20392 EXPECTED_STALE "$EXPECTED_STALE" OBSERVED_STALE "$OBSERVED_STALE"
+                                                                                                                                                                    fi
+
+                                                                                                                                                                    WC_NINE="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 24218
+                                                                                                                                                                    if [[ "$WC_NINE" != 8 ]]
+                                                                                                                                                                    then
+                                                                                                                                                                        NINE="$( head --lines 9 "$OUTPUT_FILE" | tail --lines 1 )" || failure 13955
+                                                                                                                                                                        failure 15414 NINE "$NINE"
+                                                                                                                                                                    fi
                                                                                                                                                                     if [[ -e "$HOME/resources/invalid-init/${ pad-16 alpha }" ]]
                                                                                                                                                                     then
                                                                                                                                                                         failure 23500
