@@ -709,11 +709,11 @@
                                                                                                     runtimeInputs = [ failure gc-root pkgs.coreutils wrap ] ;
                                                                                                     text =
                                                                                                         let
-                                                                                                            file-16 = prefix : a : b : "/home/emory/resources/logs/${ pad-16 a b }" ;
-                                                                                                            invalid-init = file-16 "$HOME/resources/invalid-init/" ;
-                                                                                                            invalid-release = file-16 "$HOME/resources/invalid-release/" ;
-                                                                                                            log-16 = file-16 "/home/emory/resources/logs/" ;
-                                                                                                            mount-16 = file-16 "/home/emory/resources/mounts/" ;
+                                                                                                            file-16 = prefix : a : b : "${ prefix }/${ pad-16 a b }" ;
+                                                                                                            invalid-init = file-16 "$HOME/resources/invalid-init" ;
+                                                                                                            invalid-release = file-16 "$HOME/resources/invalid-release" ;
+                                                                                                            log-16 = file-16 "/home/emory/resources/logs" ;
+                                                                                                            mount-16 = file-16 "/home/emory/resources/mounts" ;
                                                                                                             pad-16 =
                                                                                                                 a : b :
                                                                                                                     let
