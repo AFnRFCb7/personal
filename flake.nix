@@ -722,7 +722,7 @@
                                                                                                                         in
                                                                                                                             if length < 16 then builtins.throw "number ${ builtins.toString number } is negative"
                                                                                                                             else builtins.substring 1 16 sum ;
-                                                                                                            release-16 = file-16 "/home/emory/resources/release/" ;
+                                                                                                            release-16 = release-16 "/home/emory/resources/release/" ;
                                                                                                             true-true =
                                                                                                                 let
                                                                                                                     alpha = 21 ;
