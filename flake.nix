@@ -710,11 +710,11 @@
                                                                                                     text =
                                                                                                         let
                                                                                                             file-16 = prefix : a : b : "${ prefix }/${ pad-16 a b }" ;
-                                                                                                            gc-root = file-16 "$HOME/.gc-root" ;
-                                                                                                            invalid-init = file-16 "$HOME/resources/invalid-init" ;
-                                                                                                            invalid-release = file-16 "$HOME/resources/invalid-release" ;
-                                                                                                            log-16 = file-16 "/home/emory/resources/logs" ;
-                                                                                                            mount-16 = file-16 "/home/emory/resources/mounts" ;
+                                                                                                            gc-root = file-16 "/home/${ config.personal.name }/.gc-root" ;
+                                                                                                            invalid-init = file-16 "/home/${ config.personal.name }/resources/invalid-init" ;
+                                                                                                            invalid-release = file-16 "/home/${ config.personal.name }/resources/invalid-release" ;
+                                                                                                            log-16 = file-16 "/home/${ config.personal.name }/resources/logs" ;
+                                                                                                            mount-16 = file-16 "/home/${ config.personal.name }/resources/mounts" ;
                                                                                                             pad-16 =
                                                                                                                 a : b :
                                                                                                                     let
@@ -782,7 +782,7 @@
 
                                                                                                                                                                     mkdir --parents "${ gc-root alpha 0 }"
                                                                                                                                                                     export HASH=edfecc45b51dde9d2a0dabab9f3aa00d09d71bc89189d9ad2bf9c162580a4a0c978ec61357acf317e56cd70236208c79cc73d6438692da34d90680a8c0a51a73
-                                                                                                                                                                    export INDEX=${ pad-16 alpha 0 }
+                                                                                                                                                                    export INDEX=${ pad-16 alpha 6 }
                                                                                                                                                                     destroy'' ;
                                                                                                                                                             release-file = release-16 alpha 6 ;
                                                                                                                                                             script =
@@ -1003,18 +1003,16 @@
                                                                                                                                                 OBSERVED_STANDARD_ERROR="$( cat ${ standard-error-file } )" || failure 4256
                                                                                                                                                 if [[ "$EXPECTED_STANDARD_ERROR" != "$OBSERVED_STANDARD_ERROR" ]]
                                                                                                                                                 then
-                                                                                                                                                    STANDARD_ERROR_FILE="$( mktemp )" || failure 13779
-                                                                                                                                                    echo "$EXPECTED_STANDARD_ERROR" > "$STANDARD_ERROR_FILE"
-                                                                                                                                                    DIFF_STANDARD_ERROR="$( diff --unified "$STANDARD_ERROR_FILE" ${ standard-error-file } )" || true
+                                                                                                                                                    STANDARD_ERROR_FILE=${ resources.production.temporary.argument { failure = 13779 ; setup = setup : ''${ setup } "$EXPECTED_STANDARD_ERROR"'' ; } }
+                                                                                                                                                    DIFF_STANDARD_ERROR="$( diff --unified "$STANDARD_ERROR_FILE/holder" ${ standard-error-file } )" || true
                                                                                                                                                     failure 20376 EXPECTED_STANDARD_ERROR "$EXPECTED_STANDARD_ERROR" OBSERVED_STANDARD_ERROR "$OBSERVED_STANDARD_ERROR" DIFF_STANDARD_ERROR "$DIFF_STANDARD_ERROR"
                                                                                                                                                 fi
                                                                                                                                                 EXPECTED_STANDARD_OUTPUT='${ standard-output }'
                                                                                                                                                 OBSERVED_STANDARD_OUTPUT="$( cat ${ standard-output-file } )" || failure 11369
                                                                                                                                                 if [[ "$EXPECTED_STANDARD_OUTPUT" != "$OBSERVED_STANDARD_OUTPUT" ]]
                                                                                                                                                 then
-                                                                                                                                                    STANDARD_OUTPUT_FILE="$( mktemp )" || failure 24497
-                                                                                                                                                    echo "$EXPECTED_STANDARD_OUTPUT" > "$STANDARD_OUTPUT_FILE"
-                                                                                                                                                    DIFF_STANDARD_OUTPUT="$( diff --unified "$STANDARD_OUTPUT_FILE" ${ standard-output-file } )" || true
+                                                                                                                                                    STANDARD_OUTPUT_FILE=${ resources.production.temporary.argument { failure = 24497 ; setup = setup : ''${ setup } "$EXPECTED_STANDARD_OUTPUT"'' ; } }
+                                                                                                                                                    DIFF_STANDARD_OUTPUT="$( diff --unified "$STANDARD_OUTPUT_FILE/holder" ${ standard-output-file } )" || true
                                                                                                                                                     failure 22430 EXPECTED_STANDARD_OUTPUT "$EXPECTED_STANDARD_OUTPUT" OBSERVED_STANDARD_OUTPUT "$OBSERVED_STANDARD_OUTPUT" DIFF_STANDARD_OUTPUT "$DIFF_STANDARD_OUTPUT"
                                                                                                                                                 fi
                                                                                                                                                 if [[ -e "${ invalid-init alpha 17293 }" ]]
