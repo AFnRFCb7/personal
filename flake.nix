@@ -1873,7 +1873,7 @@
                                                                                                             chmod 0400 /mount/holder
                                                                                                         '' ;
                                                                                                 } ;
-                                                                                    in "${ application }/bin/init" ;
+                                                                                    in ''${ application }/bin/init "${ builtins.concatStringsSep "" [ "$" "{" "@:-" "}" ] }'' ;
                                                                             targets = [ "holder" ] ;
                                                                         } ;
                                                                 redis =
