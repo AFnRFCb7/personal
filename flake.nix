@@ -970,7 +970,7 @@
                                                                                                                                                 # we will not test the temporary resource
                                                                                                                                                 # (because that would open an infinite loop)
                                                                                                                                                 COUNT_8=0
-                                                                                                                                                while [[ "$COUNT_8" -lt "8" ]]
+                                                                                                                                                while [[ "$COUNT_8" -lt "7" ]]
                                                                                                                                                 do
                                                                                                                                                     sleep 1
                                                                                                                                                     COUNT_8="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 24082
