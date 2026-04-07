@@ -901,7 +901,8 @@
                                                                                                                                                 standard-output-file = standard-output-file ;
                                                                                                                                                 status = "0" ;
                                                                                                                                             } ;
-                                                                                                                                        release-message-file = release-16 alpha 17293 ;
+                                                                                                                                        release-message-file = release-16 alpha 17293
+                                                                                                                                         ;
                                                                                                                                         script =
                                                                                                                                             ''
                                                                                                                                                 #!/nix/store/mjhcjikhxps97mq5z54j4gjjfzgmsir5-bash-5.2p37/bin/bash
@@ -965,12 +966,14 @@
                                                                                                                                                     failure 24681 SIX "$SIX"
                                                                                                                                                 fi
                                                                                                                                                 timeout 1m bash -c pre-test
-                                                                                                                                                COUNT_7=0
-                                                                                                                                                while [[ "$COUNT_7" -lt "7" ]]
+                                                                                                                                                # the pre-test creates 2 resources which should be released in a specific order
+                                                                                                                                                # we will not test the temporary resource
+                                                                                                                                                # (because that would open an infinite loop)
+                                                                                                                                                COUNT_8=0
+                                                                                                                                                while [[ "$COUNT_8" -lt "8" ]]
                                                                                                                                                 do
-                                                                                                                                                    echo "COUNT_7=$COUNT_7"
                                                                                                                                                     sleep 1
-                                                                                                                                                    COUNT_7="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 24082
+                                                                                                                                                    COUNT_8="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 24082
                                                                                                                                                 done
                                                                                                                                                 EXPECTED_RELEASE="\"message\",\"valid-release\",\"${ release-message-file }\""
                                                                                                                                                 OBSERVED_RELEASE="$( head --lines 8 "$OUTPUT_FILE" | tail --lines 1 )" || failure 14819
@@ -1033,7 +1036,7 @@
                                                                                                                         true-true \
                                                                                                                         0500 \
                                                                                                                         --literal plain COUNT_5 \
-                                                                                                                        --literal plain COUNT_7 \
+                                                                                                                        --literal plain COUNT_8 \
                                                                                                                         --literal plain DERIVATION \
                                                                                                                         --literal plain DIFF_SCRIPT \
                                                                                                                         --literal plain DIFF_STANDARD_ERROR \
