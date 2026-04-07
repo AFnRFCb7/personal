@@ -966,6 +966,7 @@
                                                                                                                                                     failure 24681 SIX "$SIX"
                                                                                                                                                 fi
                                                                                                                                                 timeout 1m bash -c pre-test
+                                                                                                                                                # WTF
                                                                                                                                                 # the pre-test creates 2 resources which should be released in a specific order
                                                                                                                                                 # we will not test the temporary resource
                                                                                                                                                 # (because that would open an infinite loop)
@@ -975,11 +976,12 @@
                                                                                                                                                     sleep 1
                                                                                                                                                     COUNT_7="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 24082
                                                                                                                                                 done
+                                                                                                                                                # WTF
                                                                                                                                                 EXPECTED_RELEASE="\"message\",\"valid-release\",\"${ release-message-file }\""
                                                                                                                                                 OBSERVED_RELEASE="$( head --lines 12 "$OUTPUT_FILE" | tail --lines 1 )" || failure 14819
                                                                                                                                                 if [[ "$EXPECTED_RELEASE" != "$OBSERVED_RELEASE" ]]
                                                                                                                                                 then
-                                                                                                                                                    failure 12883 EXPECTED_RELEASE "$EXPECTED_RELEASE" OBSERVED_RELEASE "$OBSERVED_RELEASE"
+                                                                                                                                                    failure 12883 EXPECTED_RELEASE "$EXPECTED_RELEASE" OBSERVED_RELEASE "$OBSERVED_RELEASE" "$( cat /home/emory/resources/logs/0000000000000031 )"
                                                                                                                                                 fi
                                                                                                                                                 EXPECTED_RELEASE_JSON='${ builtins.toJSON release }'
                                                                                                                                                 OBSERVED_RELEASE_JSON="$( jq --compact-output "." ${ release-message-file } )" || failure 20816 ${ release-message-file }
