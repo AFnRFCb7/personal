@@ -971,13 +971,13 @@
                                                                                                                                                 # we will not test the temporary resource
                                                                                                                                                 # (because that would open an infinite loop)
                                                                                                                                                 COUNT_7=0
-                                                                                                                                                while [[ "$COUNT_7" -lt "7" ]]
+                                                                                                                                                while [[ "$COUNT_7" -ne "8" ]]
                                                                                                                                                 do
                                                                                                                                                     sleep 1
                                                                                                                                                     COUNT_7="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 24082
                                                                                                                                                 done
 
-                                                                                                                                                sleep 10s
+                                                                                                                                                sleep 1m
                                                                                                                                                 failure 12080 "$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )"
                                                                                                                                                 # WTF
                                                                                                                                                 EXPECTED_RELEASE="\"message\",\"valid-release\",\"${ release-message-file }\""
