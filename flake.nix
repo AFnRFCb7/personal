@@ -982,6 +982,7 @@
                                                                                                                                                 then
                                                                                                                                                     failure 12883 EXPECTED_RELEASE "$EXPECTED_RELEASE" OBSERVED_RELEASE "$OBSERVED_RELEASE" "$( cat /home/emory/resources/logs/0000000000000031 )"
                                                                                                                                                 fi
+                                                                                                                                                failure 7188
                                                                                                                                                 EXPECTED_RELEASE_JSON='${ builtins.toJSON release }'
                                                                                                                                                 OBSERVED_RELEASE_JSON="$( jq --compact-output "." ${ release-message-file } )" || failure 20816 ${ release-message-file }
                                                                                                                                                 if [[ "$EXPECTED_RELEASE_JSON" != "$OBSERVED_RELEASE_JSON" ]]
