@@ -920,9 +920,7 @@
                                                                                                                                                 OUTPUT_DIRECTORY=${ resources.production.temporary.redis { failure = 16152 ; } }
                                                                                                                                                 OUTPUT_FILE="$OUTPUT_DIRECTORY/holder"
                                                                                                                                                 export OUTPUT_FILE
-                                                                                                                                                echo 29534
                                                                                                                                                 redis-cli --csv SUBSCRIBE invalid-init invalid-release stale-init valid-init valid-release > "$OUTPUT_FILE" &
-                                                                                                                                                echo 6527
                                                                                                                                                 COUNT_5=0
                                                                                                                                                 while [[ "$COUNT_5" -lt "5" ]]
                                                                                                                                                 do
@@ -966,7 +964,6 @@
                                                                                                                                                     SIX="$( head --lines 6 "$OUTPUT_FILE" | tail --lines 1 )" || failure 17032
                                                                                                                                                     failure 24681 SIX "$SIX"
                                                                                                                                                 fi
-                                                                                                                                                echo 28522
                                                                                                                                                 timeout 1m bash -c pre-test
                                                                                                                                                 COUNT_7=0
                                                                                                                                                 while [[ "$COUNT_7" -lt "7" ]]
@@ -976,7 +973,7 @@
                                                                                                                                                     COUNT_7="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 24082
                                                                                                                                                 done
                                                                                                                                                 EXPECTED_RELEASE="\"message\",\"valid-release\",\"${ release-message-file }\""
-                                                                                                                                                OBSERVED_RELEASE="$( head --lines 7 "$OUTPUT_FILE" | tail --lines 1 )" || failure 14819
+                                                                                                                                                OBSERVED_RELEASE="$( head --lines 8 "$OUTPUT_FILE" | tail --lines 1 )" || failure 14819
                                                                                                                                                 if [[ "$EXPECTED_RELEASE" != "$OBSERVED_RELEASE" ]]
                                                                                                                                                 then
                                                                                                                                                     failure 12883 EXPECTED_RELEASE "$EXPECTED_RELEASE" OBSERVED_RELEASE "$OBSERVED_RELEASE"
