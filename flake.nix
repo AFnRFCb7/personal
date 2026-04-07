@@ -969,14 +969,14 @@
                                                                                                                                                 # the pre-test creates 2 resources which should be released in a specific order
                                                                                                                                                 # we will not test the temporary resource
                                                                                                                                                 # (because that would open an infinite loop)
-                                                                                                                                                COUNT_8=0
-                                                                                                                                                while [[ "$COUNT_8" -lt "7" ]]
+                                                                                                                                                COUNT_7=0
+                                                                                                                                                while [[ "$COUNT_7" -lt "7" ]]
                                                                                                                                                 do
                                                                                                                                                     sleep 1
-                                                                                                                                                    COUNT_8="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 24082
+                                                                                                                                                    COUNT_7="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 24082
                                                                                                                                                 done
                                                                                                                                                 EXPECTED_RELEASE="\"message\",\"valid-release\",\"${ release-message-file }\""
-                                                                                                                                                OBSERVED_RELEASE="$( head --lines 8 "$OUTPUT_FILE" | tail --lines 1 )" || failure 14819
+                                                                                                                                                OBSERVED_RELEASE="$( head --lines 9 "$OUTPUT_FILE" | tail --lines 1 )" || failure 14819
                                                                                                                                                 if [[ "$EXPECTED_RELEASE" != "$OBSERVED_RELEASE" ]]
                                                                                                                                                 then
                                                                                                                                                     failure 12883 EXPECTED_RELEASE "$EXPECTED_RELEASE" OBSERVED_RELEASE "$OBSERVED_RELEASE"
@@ -1036,7 +1036,7 @@
                                                                                                                         true-true \
                                                                                                                         0500 \
                                                                                                                         --literal plain COUNT_5 \
-                                                                                                                        --literal plain COUNT_8 \
+                                                                                                                        --literal plain COUNT_7 \
                                                                                                                         --literal plain DERIVATION \
                                                                                                                         --literal plain DIFF_SCRIPT \
                                                                                                                         --literal plain DIFF_STANDARD_ERROR \
