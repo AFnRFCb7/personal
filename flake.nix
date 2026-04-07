@@ -976,7 +976,7 @@
                                                                                                                                                     COUNT_7="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 24082
                                                                                                                                                 done
                                                                                                                                                 EXPECTED_RELEASE="\"message\",\"valid-release\",\"${ release-message-file }\""
-                                                                                                                                                OBSERVED_RELEASE="$( head --lines 9 "$OUTPUT_FILE" | tail --lines 1 )" || failure 14819
+                                                                                                                                                OBSERVED_RELEASE="$( head --lines 10 "$OUTPUT_FILE" | tail --lines 1 )" || failure 14819
                                                                                                                                                 if [[ "$EXPECTED_RELEASE" != "$OBSERVED_RELEASE" ]]
                                                                                                                                                 then
                                                                                                                                                     failure 12883 EXPECTED_RELEASE "$EXPECTED_RELEASE" OBSERVED_RELEASE "$OBSERVED_RELEASE"
