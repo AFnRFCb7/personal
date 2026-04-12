@@ -972,7 +972,7 @@
                                                                                                                                                 # (because that would open an infinite loop)
                                                                                                                                                 COUNT_7=0
                                                                                                                                                 # failure 24948
-                                                                                                                                                while [[ "$COUNT_7" -ne "8" ]]
+                                                                                                                                                while [[ "$COUNT_7" -lt "8" ]]
                                                                                                                                                 do
                                                                                                                                                     sleep 1
                                                                                                                                                     echo "COUNT_7=$COUNT_7"
@@ -980,7 +980,7 @@
                                                                                                                                                 done
                                                                                                                                                 # failure 10910 THIS WORKS
                                                                                                                                                 EXPECTED_RELEASE="\"message\",\"valid-release\",\"${ release-message-file }\""
-                                                                                                                                                failure 19796
+                                                                                                                                                # failure 19796 THIS WORKS
                                                                                                                                                 OBSERVED_RELEASE="$( head --lines 8 "$OUTPUT_FILE" | tail --lines 1 )" || failure 14819
                                                                                                                                                 failure 30219
                                                                                                                                                 if [[ "$EXPECTED_RELEASE" != "$OBSERVED_RELEASE" ]]
