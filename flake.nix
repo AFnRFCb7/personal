@@ -978,7 +978,7 @@
                                                                                                                                                     echo "COUNT_7=$COUNT_7"
                                                                                                                                                     COUNT_7="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 24082
                                                                                                                                                 done
-                                                                                                                                                failure 10910
+                                                                                                                                                # failure 10910 THIS WORKS
                                                                                                                                                 EXPECTED_RELEASE="\"message\",\"valid-release\",\"${ release-message-file }\""
                                                                                                                                                 failure 19796
                                                                                                                                                 OBSERVED_RELEASE="$( head --lines 8 "$OUTPUT_FILE" | tail --lines 1 )" || failure 14819
