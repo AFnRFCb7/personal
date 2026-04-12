@@ -971,12 +971,14 @@
                                                                                                                                                 # we will not test the temporary resource
                                                                                                                                                 # (because that would open an infinite loop)
                                                                                                                                                 COUNT_7=0
-                                                                                                                                                failure 24948
+                                                                                                                                                # failure 24948
                                                                                                                                                 while [[ "$COUNT_7" -ne "8" ]]
                                                                                                                                                 do
                                                                                                                                                     sleep 1
+                                                                                                                                                    echo "COUNT_7=$COUNT_7"
                                                                                                                                                     COUNT_7="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 24082
-                                                                                                                                                done
+                                                                                                                                                done 10910
+                                                                                                                                                failure
                                                                                                                                                 EXPECTED_RELEASE="\"message\",\"valid-release\",\"${ release-message-file }\""
                                                                                                                                                 OBSERVED_RELEASE="$( head --lines 8 "$OUTPUT_FILE" | tail --lines 1 )" || failure 14819
                                                                                                                                                 if [[ "$EXPECTED_RELEASE" != "$OBSERVED_RELEASE" ]]
