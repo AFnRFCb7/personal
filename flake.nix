@@ -971,6 +971,7 @@
                                                                                                                                                 # we will not test the temporary resource
                                                                                                                                                 # (because that would open an infinite loop)
                                                                                                                                                 COUNT_7=0
+                                                                                                                                                failure 24948
                                                                                                                                                 while [[ "$COUNT_7" -ne "8" ]]
                                                                                                                                                 do
                                                                                                                                                     sleep 1
