@@ -973,7 +973,8 @@
                                                                                                                                                 # it is going to test one of them
                                                                                                                                                 # and leave the other untested because the other is a temporary and we want to avoid infinite loops
                                                                                                                                                 timeout 1m bash -c pre-test
-                                                                                                                                                # after the pre-test thread is over it should release the two previously inited thingis
+                                                                                                                                                # during the pre-test two things should be init'ed
+                                                                                                                                                # and after two things should be released
                                                                                                                                                 COUNT_7=0
                                                                                                                                                 while [[ "$COUNT_7" != "7" ]]
                                                                                                                                                 do
@@ -1873,6 +1874,7 @@
                                                                                                         ''
                                                                                                             echo -en "$1" > /mount/holder
                                                                                                             chmod 0400 /mount/holder
+                                                                                                            trace 23398 "INDEX=$INDEX"
                                                                                                         '' ;
                                                                                                 } ;
                                                                                     in ''${ application }/bin/init "${ builtins.concatStringsSep "" [ "$" "{" "@:-" "}" ] }"'' ;
