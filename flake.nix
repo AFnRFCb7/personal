@@ -966,10 +966,6 @@
                                                                                                                                                     failure 24681 SIX "$SIX"
                                                                                                                                                 fi
                                                                                                                                                 timeout 1m bash -c pre-test
-                                                                                                                                                # WTF
-                                                                                                                                                # the pre-test creates 2 resources which should be released in a specific order
-                                                                                                                                                # we will not test the temporary resource
-                                                                                                                                                # (because that would open an infinite loop)
                                                                                                                                                 COUNT_7=0
                                                                                                                                                 # failure 24948
                                                                                                                                                 while [[ "$COUNT_7" -lt "7" ]]
