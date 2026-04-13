@@ -872,6 +872,9 @@
                                                                                                                                                                     WC_EIGHT="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 21345
                                                                                                                                                                     # We are skipping 6 because that is
                                                                                                                                                                     # RELEASE_FILE=${ resources.production.temporary.argument { failure = 14425 ; setup = setup : ''${ setup } "$EXPECTED_RELEASE"'' ; } }
+                                                                                                                                                                    # a temporary file and we are assuming it is right
+                                                                                                                                                                    # because otherwise checking it would create its own temporary file and we would need to check it
+                                                                                                                                                                    # and on and on and we would be creating an infinite loop
                                                                                                                                                                     if [[ "$WC_EIGHT" != 7 ]]
                                                                                                                                                                     then
                                                                                                                                                                         EIGHT="$( head --lines 8 "$OUTPUT_FILE" | tail --lines 1 )" || failure 17032
@@ -965,13 +968,16 @@
                                                                                                                                                     SIX="$( head --lines 6 "$OUTPUT_FILE" | tail --lines 1 )" || failure 17032
                                                                                                                                                     failure 24681 SIX "$SIX"
                                                                                                                                                 fi
+                                                                                                                                                # the following pre-test should in its own process thread
+                                                                                                                                                # init 2 things
+                                                                                                                                                # it is going to test one of them
+                                                                                                                                                # and leave the other untested because the other is a temporary and we want to avoid infinite loops
                                                                                                                                                 timeout 1m bash -c pre-test
+                                                                                                                                                # after the pre-test thread is over it should release the two previously inited thingis
                                                                                                                                                 COUNT_7=0
-                                                                                                                                                # failure 24948
-                                                                                                                                                while [[ "$COUNT_7" -lt "7" ]]
+                                                                                                                                                while [[ "$COUNT_7" != "7" ]]
                                                                                                                                                 do
                                                                                                                                                     sleep 1
-                                                                                                                                                    echo "COUNT_7=$COUNT_7"
                                                                                                                                                     COUNT_7="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 24082
                                                                                                                                                 done
                                                                                                                                                 # failure 10910 THIS WORKS
