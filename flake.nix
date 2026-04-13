@@ -987,7 +987,7 @@
                                                                                                                                                 # failure 30219 THIS WORKS
                                                                                                                                                 if [[ "$EXPECTED_RELEASE" != "$OBSERVED_RELEASE" ]]
                                                                                                                                                 then
-                                                                                                                                                    failure 12883 28596 EXPECTED_RELEASE "$EXPECTED_RELEASE" OBSERVED_RELEASE "$OBSERVED_RELEASE" "$( cat /home/emory/resources/logs/0000000000000031 )"
+                                                                                                                                                    failure 12883 28596 18268 EXPECTED_RELEASE "$EXPECTED_RELEASE" OBSERVED_RELEASE "$OBSERVED_RELEASE" "$( cat /home/emory/resources/logs/0000000000000031 )"
                                                                                                                                                 fi
                                                                                                                                                 failure 7188
                                                                                                                                                 EXPECTED_RELEASE_JSON='${ builtins.toJSON release }'
