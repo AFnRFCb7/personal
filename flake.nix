@@ -972,7 +972,7 @@
                                                                                                                                                 # (because that would open an infinite loop)
                                                                                                                                                 COUNT_7=0
                                                                                                                                                 # failure 24948
-                                                                                                                                                while [[ "$COUNT_7" -lt "8" ]]
+                                                                                                                                                while [[ "$COUNT_7" -lt "7" ]]
                                                                                                                                                 do
                                                                                                                                                     sleep 1
                                                                                                                                                     echo "COUNT_7=$COUNT_7"
