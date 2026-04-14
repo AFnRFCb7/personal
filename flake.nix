@@ -904,6 +904,7 @@
                                                                                                                                                 standard-output-file = standard-output-file ;
                                                                                                                                                 status = "0" ;
                                                                                                                                             } ;
+                                                                                                                                        # TODO
                                                                                                                                         # this is wrong but wtf
                                                                                                                                         # release-message-file = release-16 alpha 5 ;
                                                                                                                                         release-message-file = log-16 alpha 5 ;
@@ -977,7 +978,7 @@
                                                                                                                                                     sleep 1
                                                                                                                                                     COUNT_6="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 24082
                                                                                                                                                 done
-                                                                                                                                                # WRONG BUT OK FOR NOW
+                                                                                                                                                # TODO WRONG BUT OK FOR NOW
                                                                                                                                                 EXPECTED_RELEASE="\"message\",\"valid-init\",\"${ release-message-file }\""
                                                                                                                                                 OBSERVED_RELEASE="$( head --lines 8 "$OUTPUT_FILE" | tail --lines 1 )" || failure 14819
                                                                                                                                                 if [[ "$EXPECTED_RELEASE" != "$OBSERVED_RELEASE" ]]
