@@ -779,9 +779,9 @@
 
                                                                                                                                                                     export PATH="/nix/store/xy9sa2741cinqmfpmqhdrk38gcv1waxb-trace/bin:/nix/store/54f702arxcxl6xv5dn8x9gy16yqxfddw-destroy/bin:$PATH"
 
-                                                                                                                                                                    mkdir --parents "${ gc-root alpha 6 }"
-                                                                                                                                                                    export HASH=edfecc45b51dde9d2a0dabab9f3aa00d09d71bc89189d9ad2bf9c162580a4a0c978ec61357acf317e56cd70236208c79cc73d6438692da34d90680a8c0a51a73
-                                                                                                                                                                    export INDEX=${ pad-16 alpha 6 }
+                                                                                                                                                                    mkdir --parents "${ gc-root alpha 1 }"
+                                                                                                                                                                    export HASH=e0a0a4e4ae26d30986f07d58634add724195ef807bc6697193f9a89fe62e012113db34929a6409d830991489bf49e1cc16eba4bd2c21032220c95941c1a8b764
+                                                                                                                                                                    export INDEX=${ pad-16 alpha 1 }
                                                                                                                                                                     destroy'' ;
                                                                                                                                                             release-file = release-16 alpha 1 ;
                                                                                                                                                             script =
