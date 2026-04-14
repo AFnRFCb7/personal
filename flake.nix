@@ -725,6 +725,927 @@
                                                                                                                             if length < 16 then builtins.throw "number ${ builtins.toString number } is negative"
                                                                                                                             else builtins.substring 1 16 sum ;
                                                                                                             release-16 = file-16 "/home/emory/resources/release" ;
+                                                                                                            false-false =
+                                                                                                                let
+                                                                                                                    alpha = 21 ;
+                                                                                                                    application =
+                                                                                                                        pkgs.writeShellApplication
+                                                                                                                            {
+                                                                                                                                name = "true-true" ;
+                                                                                                                                runtimeInputs =
+                                                                                                                                    [
+                                                                                                                                        failure
+                                                                                                                                        pkgs.bash
+                                                                                                                                        pkgs.coreutils
+                                                                                                                                        pkgs.diffutils
+                                                                                                                                        pkgs.findutils
+                                                                                                                                        pkgs.jq
+                                                                                                                                        pkgs.inotify-tools
+                                                                                                                                        pkgs.redis
+                                                                                                                                        (
+                                                                                                                                            pkgs.writeShellApplication
+                                                                                                                                                {
+                                                                                                                                                    name = "pre-test" ;
+                                                                                                                                                    runtimeInputs = [ failure pkgs.coreutils pkgs.diffutils pkgs.findutils pkgs.jq pkgs.inotify-tools pkgs.redis sequential ] ;
+                                                                                                                                                    text =
+                                                                                                                                                        let
+                                                                                                                                                            init =
+                                                                                                                                                                {
+                                                                                                                                                                    arguments = [ "" ] ;
+                                                                                                                                                                    has-standard-input = "false" ;
+                                                                                                                                                                    hash = "e0a0a4e4ae26d30986f07d58634add724195ef807bc6697193f9a89fe62e012113db34929a6409d830991489bf49e1cc16eba4bd2c21032220c95941c1a8b764" ;
+                                                                                                                                                                    index = pad-16 alpha 1 ;
+                                                                                                                                                                    release-file = release-file ;
+                                                                                                                                                                    script-file = script-file ;
+                                                                                                                                                                    scripts-hash = "d167f7da399e6b01b83f44c3ecb00eb43f5b666e767882bd27e1758abd7c7cc87797e80307d86f0b3cf8a2946115f6cba1b7e99622f17cd83c1631cf92a5c464" ;
+                                                                                                                                                                    seed = [ "production" "checks" "true" "true" ] ;
+                                                                                                                                                                    standard-error-file = standard-error-file ;
+                                                                                                                                                                    standard-input-file = standard-input-file ;
+                                                                                                                                                                    standard-output-file = standard-output-file ;
+                                                                                                                                                                    status = "0" ;
+                                                                                                                                                                    targets =
+                                                                                                                                                                        {
+                                                                                                                                                                            expected = [ "31321" ] ;
+                                                                                                                                                                            observed = [ "31321" ] ;
+                                                                                                                                                                        } ;
+                                                                                                                                                                } ;
+                                                                                                                                                            init-message-file = log-16 alpha 5 ;
+                                                                                                                                                            release =
+                                                                                                                                                                ''
+                                                                                                                                                                    #!/nix/store/mjhcjikhxps97mq5z54j4gjjfzgmsir5-bash-5.2p37/bin/bash
+                                                                                                                                                                    set -o errexit
+                                                                                                                                                                    set -o nounset
+                                                                                                                                                                    set -o pipefail
+
+                                                                                                                                                                    export PATH="/nix/store/xy9sa2741cinqmfpmqhdrk38gcv1waxb-trace/bin:/nix/store/54f702arxcxl6xv5dn8x9gy16yqxfddw-destroy/bin:$PATH"
+
+                                                                                                                                                                    mkdir --parents "${ gc-root alpha 1 }"
+                                                                                                                                                                    export HASH=e0a0a4e4ae26d30986f07d58634add724195ef807bc6697193f9a89fe62e012113db34929a6409d830991489bf49e1cc16eba4bd2c21032220c95941c1a8b764
+                                                                                                                                                                    export INDEX=${ pad-16 alpha 1 }
+                                                                                                                                                                    destroy'' ;
+                                                                                                                                                            release-file = release-16 alpha 1 ;
+                                                                                                                                                            script =
+                                                                                                                                                                ''
+                                                                                                                                                                    #!/nix/store/mjhcjikhxps97mq5z54j4gjjfzgmsir5-bash-5.2p37/bin/bash
+                                                                                                                                                                    set -o errexit
+                                                                                                                                                                    set -o nounset
+                                                                                                                                                                    set -o pipefail
+
+                                                                                                                                                                    /nix/store/6avrj20bbivwnl6y8fsmhalzwiqd11n8-init/bin/init''  ;
+                                                                                                                                                            script-file = log-16 alpha 2 ;
+                                                                                                                                                            standard-error = "" ;
+                                                                                                                                                            standard-error-file = log-16 alpha 3 ;
+                                                                                                                                                            standard-input = "" ;
+                                                                                                                                                            standard-input-file = log-16 alpha 0 ;
+                                                                                                                                                            standard-output = "14060" ;
+                                                                                                                                                            standard-output-file = log-16 alpha 4 ;
+                                                                                                                                                            in
+                                                                                                                                                                ''
+                                                                                                                                                                    EXPECTED_RESOURCE=${ mount-16 alpha 1 }
+                                                                                                                                                                    OBSERVED_RESOURCE=${ resources.production.checks.true.true { failure = 21760 ; } }
+                                                                                                                                                                    if [[ "$EXPECTED_RESOURCE" != "$OBSERVED_RESOURCE" ]]
+                                                                                                                                                                    then
+                                                                                                                                                                        failure 15789 EXPECTED_RESOURCE "$EXPECTED_RESOURCE" OBSERVED_RESOURCE "$OBSERVED_RESOURCE"
+                                                                                                                                                                    fi
+                                                                                                                                                                    COUNT_SIX=0
+                                                                                                                                                                    while [[ "$COUNT_SIX" -lt "6" ]]
+                                                                                                                                                                    do
+                                                                                                                                                                        sleep 1
+                                                                                                                                                                        COUNT_SIX="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 24769
+                                                                                                                                                                    done
+                                                                                                                                                                    EXPECTED_INIT="\"message\",\"valid-init\",\"${ init-message-file }\""
+                                                                                                                                                                    OBSERVED_INIT="$( head --lines 6 "$OUTPUT_FILE" | tail --lines 1 )" || failure 20277
+                                                                                                                                                                    if [[ "$EXPECTED_INIT" != "$OBSERVED_INIT" ]]
+                                                                                                                                                                    then
+                                                                                                                                                                        failure 14530 EXPECTED_INIT "$EXPECTED_INIT" OBSERVED_INIT "$OBSERVED_INIT"
+                                                                                                                                                                    fi
+                                                                                                                                                                    EXPECTED_INIT_JSON='${ builtins.toJSON init }'
+                                                                                                                                                                    OBSERVED_INIT_JSON="$( jq --compact-output "." ${ init-message-file } )" || failure 9412
+                                                                                                                                                                    if [[ "$EXPECTED_INIT_JSON" != "$OBSERVED_INIT_JSON" ]]
+                                                                                                                                                                    then
+                                                                                                                                                                        VERBOSE_INIT_JSON="$( jq "." ${ init-message-file } )" || failure 23617
+                                                                                                                                                                        failure 16098 EXPECTED_INIT_JSON "$EXPECTED_INIT_JSON" OBSERVED_INIT_JSON "$OBSERVED_INIT_JSON" VERBOSE_INIT_JSON "$VERBOSE_INIT_JSON"
+                                                                                                                                                                    fi
+                                                                                                                                                                    # shellcheck disable=SC2016
+                                                                                                                                                                    EXPECTED_RELEASE='${ release }'
+                                                                                                                                                                    OBSERVED_RELEASE="$( cat ${ release-file } )" || failure 19359
+                                                                                                                                                                    if [[ "$EXPECTED_RELEASE" != "$OBSERVED_RELEASE" ]]
+                                                                                                                                                                    then
+                                                                                                                                                                        RELEASE_SEQUENCE="$( sequential )" || failure 20665
+                                                                                                                                                                        echo "$EXPECTED_RELEASE" > "$TEMPORARY/$RELEASE_SEQUENCE"
+                                                                                                                                                                        DIFF_RELEASE="$( diff --unified "$TEMPORARY/$RELEASE_SEQUENCE" ${ release-file } )" || true
+                                                                                                                                                                        failure 12409 EXPECTED_RELEASE "$EXPECTED_RELEASE" OBSERVED_RELEASE "$OBSERVED_RELEASE" DIFF_RELEASE "$DIFF_RELEASE"
+                                                                                                                                                                    fi
+                                                                                                                                                                    # shellcheck disable=SC2016
+                                                                                                                                                                    EXPECTED_SCRIPT='${ script }'
+                                                                                                                                                                    OBSERVED_SCRIPT="$( cat ${ script-file } )" || failure 11196
+                                                                                                                                                                    if [[ "$EXPECTED_SCRIPT" != "$OBSERVED_SCRIPT" ]]
+                                                                                                                                                                    then
+                                                                                                                                                                        RELEASE_SEQUENCE="$( sequential )" || failure 16175
+                                                                                                                                                                        echo "$EXPECTED_SCRIPT" > "$TEMPORARY/$RELEASE_SEQUENCE"
+                                                                                                                                                                        DIFF_SCRIPT="$( diff --unified "/home/${ config.personal.name }/resources/mounts/$INDEX/true-true/pre-test/SCRIPT" ${ script-file } )" || true
+                                                                                                                                                                        failure 18539 EXPECTED_SCRIPT "$EXPECTED_SCRIPT" OBSERVED_SCRIPT "$OBSERVED_SCRIPT" DIFF_SCRIPT "$DIFF_SCRIPT"
+                                                                                                                                                                    fi
+                                                                                                                                                                    EXPECTED_STANDARD_ERROR='${ standard-error }'
+                                                                                                                                                                    OBSERVED_STANDARD_ERROR="$( cat ${ standard-error-file } )" || failure 31412
+                                                                                                                                                                    if [[ "$EXPECTED_STANDARD_ERROR" != "$OBSERVED_STANDARD_ERROR" ]]
+                                                                                                                                                                    then
+                                                                                                                                                                        STANDARD_ERROR_SEQUENCE="$( sequential )" || failure 21857
+                                                                                                                                                                        echo "$EXPECTED_STANDARD_ERROR" > "$TEMPORARY/$STANDARD_ERROR_SEQUENCE"
+                                                                                                                                                                        DIFF_STANDARD_ERROR="$( diff --unified "/home/${ config.personal.name }/resources/mounts/$INDEX/true-true/pre-test/STANDARD_ERROR" ${ standard-error-file } )" || true
+                                                                                                                                                                        failure 30053 EXPECTED_STANDARD_ERROR "$EXPECTED_STANDARD_ERROR" OBSERVED_STANDARD_ERROR "$OBSERVED_STANDARD_ERROR" DIFF_STANDARD_ERROR "$DIFF_STANDARD_ERROR"
+                                                                                                                                                                    fi
+                                                                                                                                                                    EXPECTED_STANDARD_INPUT='${ standard-input }'
+                                                                                                                                                                    OBSERVED_STANDARD_INPUT="$( cat ${ standard-input-file } )" || failure 23070
+                                                                                                                                                                    if [[ "$EXPECTED_STANDARD_INPUT" != "$OBSERVED_STANDARD_INPUT" ]]
+                                                                                                                                                                    then
+                                                                                                                                                                        STANDARD_INPUT_SEQUENCE="$( sequential )" || failure 30671
+                                                                                                                                                                        echo "$EXPECTED_STANDARD_INPUT" > "$TEMPORARY/$STANDARD_INPUT_SEQUENCE"
+                                                                                                                                                                        DIFF_STANDARD_INPUT="$( diff --unified "/home/${ config.personal.name }/resources/mounts/$INDEX/true-true/pre-test/STANDARD_INPUT" ${ standard-output-file } )" || true
+                                                                                                                                                                        failure 13551 EXPECTED_STANDARD_INPUT "$EXPECTED_STANDARD_INPUT" OBSERVED_STANDARD_INPUT "$OBSERVED_STANDARD_INPUT" DIFF_STANDARD_INPUT "$DIFF_STANDARD_INPUT"
+                                                                                                                                                                    fi
+                                                                                                                                                                    EXPECTED_STANDARD_OUTPUT='${ standard-output }'
+                                                                                                                                                                    OBSERVED_STANDARD_OUTPUT="$( cat ${ standard-output-file } )" || failure 18330
+                                                                                                                                                                    if [[ "$EXPECTED_STANDARD_OUTPUT" != "$OBSERVED_STANDARD_OUTPUT" ]]
+                                                                                                                                                                    then
+                                                                                                                                                                        STANDARD_OUTPUT_SEQUENCE="$( sequential )" || failure 22790
+                                                                                                                                                                        echo "$EXPECTED_STANDARD_OUTPUT" > "$TEMPORARY/$STANDARD_OUTPUT_SEQUENCE"
+                                                                                                                                                                        DIFF_STANDARD_OUTPUT="$( diff --unified "/home/${ config.personal.name }/resources/mounts/$INDEX/true-true/pre-test/STANDARD_INPUT" ${ standard-output-file } )" || true
+                                                                                                                                                                        failure 16668 EXPECTED_STANDARD_OUTPUT "$EXPECTED_STANDARD_OUTPUT" OBSERVED_STANDARD_OUTPUT "$OBSERVED_STANDARD_OUTPUT" DIFF_STANDARD_OUTPUT "$DIFF_STANDARD_OUTPUT"
+                                                                                                                                                                    fi
+                                                                                                                                                                    WC_SEVEN="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 21345
+                                                                                                                                                                    if [[ "$WC_SEVEN" != 6 ]]
+                                                                                                                                                                    then
+                                                                                                                                                                        SEVEN="$( head --lines 7 "$OUTPUT_FILE" | tail --lines 1 )" || failure 17032
+                                                                                                                                                                        failure 20505 SEVEN "$SEVEN"
+                                                                                                                                                                    fi
+                                                                                                                                                                    if [[ -e "${ invalid-init alpha 17293 }" ]]
+                                                                                                                                                                    then
+                                                                                                                                                                        failure 23500
+                                                                                                                                                                    fi
+                                                                                                                                                                    if [[ -e "${ invalid-release alpha 17293 }" ]]
+                                                                                                                                                                    then
+                                                                                                                                                                        failure 13101
+                                                                                                                                                                    fi
+                                                                                                                                                                '' ;
+                                                                                                                                                }
+                                                                                                                                        )
+                                                                                                                                        sequential
+                                                                                                                                    ] ;
+                                                                                                                                text =
+                                                                                                                                    let
+                                                                                                                                        release =
+                                                                                                                                            {
+                                                                                                                                                hash = "e0a0a4e4ae26d30986f07d58634add724195ef807bc6697193f9a89fe62e012113db34929a6409d830991489bf49e1cc16eba4bd2c21032220c95941c1a8b764" ;
+                                                                                                                                                index = pad-16 alpha 1 ;
+                                                                                                                                                script-file = script-file ;
+                                                                                                                                                seed = [ "production" "checks" "true" "true" ] ;
+                                                                                                                                                standard-error-file = standard-error-file ;
+                                                                                                                                                standard-output-file = standard-output-file ;
+                                                                                                                                                status = "0" ;
+                                                                                                                                            } ;
+                                                                                                                                        release-message-file = log-16 alpha 9 ;
+                                                                                                                                        script =
+                                                                                                                                            ''
+                                                                                                                                                #!/nix/store/mjhcjikhxps97mq5z54j4gjjfzgmsir5-bash-5.2p37/bin/bash
+                                                                                                                                                set -o errexit
+                                                                                                                                                set -o nounset
+                                                                                                                                                set -o pipefail
+
+                                                                                                                                                /nix/store/ivcji4xkipn8zfiqj50yfgrq8g9cfxn1-release/bin/release'' ;
+                                                                                                                                        script-file = log-16 alpha 6;
+                                                                                                                                        standard-error = "" ;
+                                                                                                                                        standard-error-file = log-16 alpha 7 ;
+                                                                                                                                        standard-output = "18719" ;
+                                                                                                                                        standard-output-file = log-16 alpha 8 ;
+                                                                                                                                        in
+                                                                                                                                            ''
+                                                                                                                                                OUTPUT_SEQUENCE="$( sequential )" || failure 27462
+                                                                                                                                                OUTPUT_FILE="$TEMPORARY/$OUTPUT_SEQUENCE"
+                                                                                                                                                export OUTPUT_FILE
+                                                                                                                                                touch "$OUTPUT_FILE"
+                                                                                                                                                redis-cli --csv SUBSCRIBE invalid-init invalid-release stale-init valid-init valid-release > "$OUTPUT_FILE" &
+                                                                                                                                                COUNT_5=0
+                                                                                                                                                while [[ "$COUNT_5" -lt "5" ]]
+                                                                                                                                                do
+                                                                                                                                                    echo "$COUNT_5=$COUNT_5"
+                                                                                                                                                    sleep 1
+                                                                                                                                                    COUNT_5="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 13785
+                                                                                                                                                done
+                                                                                                                                                EXPECTED_SUBSCRIBE_INVALID_INIT="\"subscribe\",\"invalid-init\",1"
+                                                                                                                                                OBSERVED_SUBSCRIBE_INVALID_INIT="$( head --lines 1 "$OUTPUT_FILE" )" || failure 29807
+                                                                                                                                                if [[ "$EXPECTED_SUBSCRIBE_INVALID_INIT" != "$OBSERVED_SUBSCRIBE_INVALID_INIT" ]]
+                                                                                                                                                then
+                                                                                                                                                    failure 30918 EXPECTED_SUBSCRIBE_INVALID_INIT "$EXPECTED_SUBSCRIBE_INVALID_INIT" OBSERVED_SUBSCRIBE_INVALID_INIT "$OBSERVED_SUBSCRIBE_INVALID_INIT"
+                                                                                                                                                fi
+                                                                                                                                                EXPECTED_SUBSCRIBE_INVALID_RELEASE="\"subscribe\",\"invalid-release\",2"
+                                                                                                                                                OBSERVED_SUBSCRIBE_INVALID_RELEASE="$( head --lines 2 "$OUTPUT_FILE" | tail --lines 1 )" || failure 10496
+                                                                                                                                                if [[ "$EXPECTED_SUBSCRIBE_INVALID_RELEASE" != "$OBSERVED_SUBSCRIBE_INVALID_RELEASE" ]]
+                                                                                                                                                then
+                                                                                                                                                    failure 21324 EXPECTED_SUBSCRIBE_INVALID_RELEASE "$EXPECTED_SUBSCRIBE_INVALID_RELEASE" OBSERVED_SUBSCRIBE_INVALID_RELEASE "$OBSERVED_SUBSCRIBE_INVALID_RELEASE"
+                                                                                                                                                fi
+                                                                                                                                                EXPECTED_SUBSCRIBE_STALE_INIT="\"subscribe\",\"stale-init\",3"
+                                                                                                                                                OBSERVED_SUBSCRIBE_STALE_INIT="$( head --lines 3 "$OUTPUT_FILE" | tail --lines 1 )" || failure 16256
+                                                                                                                                                if [[ "$EXPECTED_SUBSCRIBE_STALE_INIT" != "$OBSERVED_SUBSCRIBE_STALE_INIT" ]]
+                                                                                                                                                then
+                                                                                                                                                    failure 11841 EXPECTED_SUBSCRIBE_STALE_INIT "$EXPECTED_SUBSCRIBE_STALE_INIT" OBSERVED_SUBSCRIBE_STALE_INIT "$OBSERVED_SUBSCRIBE_STALE_INIT"
+                                                                                                                                                fi
+                                                                                                                                                EXPECTED_SUBSCRIBE_VALID_INIT="\"subscribe\",\"valid-init\",4"
+                                                                                                                                                OBSERVED_SUBSCRIBE_VALID_INIT="$( head --lines 4 "$OUTPUT_FILE" | tail --lines 1 )" || failure 32080
+                                                                                                                                                if [[ "$EXPECTED_SUBSCRIBE_VALID_INIT" != "$OBSERVED_SUBSCRIBE_VALID_INIT" ]]
+                                                                                                                                                then
+                                                                                                                                                    failure 20315 EXPECTED_SUBSCRIBE_VALID_INIT "$EXPECTED_SUBSCRIBE_VALID_INIT" OBSERVED_SUBSCRIBE_VALID_INIT "$OBSERVED_SUBSCRIBE_VALID_INIT"
+                                                                                                                                                fi
+                                                                                                                                                EXPECTED_SUBSCRIBE_VALID_RELEASE="\"subscribe\",\"valid-release\",5"
+                                                                                                                                                OBSERVED_SUBSCRIBE_VALID_RELEASE="$( head --lines 5 "$OUTPUT_FILE" | tail --lines 1 )" || failure 20683
+                                                                                                                                                if [[ "$EXPECTED_SUBSCRIBE_VALID_RELEASE" != "$OBSERVED_SUBSCRIBE_VALID_RELEASE" ]]
+                                                                                                                                                then
+                                                                                                                                                    failure 28681 EXPECTED_SUBSCRIBE_VALID_RELEASE "$EXPECTED_SUBSCRIBE_VALID_RELEASE" OBSERVED_SUBSCRIBE_VALID_RELEASE "$OBSERVED_SUBSCRIBE_VALID_RELEASE"
+                                                                                                                                                fi
+                                                                                                                                                WC_SIX="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 17924
+                                                                                                                                                if [[ "$WC_SIX" != "5" ]]
+                                                                                                                                                then
+                                                                                                                                                    SIX="$( head --lines 6 "$OUTPUT_FILE" | tail --lines 1 )" || failure 17032
+                                                                                                                                                    failure 24681 SIX "$SIX"
+                                                                                                                                                fi
+                                                                                                                                                timeout 1m bash -c pre-test
+                                                                                                                                                COUNT_7=0
+                                                                                                                                                while [[ "$COUNT_7" != "7" ]]
+                                                                                                                                                do
+                                                                                                                                                    sleep 1
+                                                                                                                                                    COUNT_7="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 24082
+                                                                                                                                                done
+                                                                                                                                                EXPECTED_RELEASE="\"message\",\"valid-release\",\"${ release-message-file }\""
+                                                                                                                                                OBSERVED_RELEASE="$( head --lines 8 "$OUTPUT_FILE" | tail --lines 1 )" || failure 14819
+                                                                                                                                                if [[ "$EXPECTED_RELEASE" != "$OBSERVED_RELEASE" ]]
+                                                                                                                                                then
+                                                                                                                                                    failure 13751 EXPECTED_RELEASE "$EXPECTED_RELEASE" OBSERVED_RELEASE "$OBSERVED_RELEASE" "$( cat /home/emory/resources/logs/0000000000000031 )"
+                                                                                                                                                fi
+                                                                                                                                                EXPECTED_RELEASE_JSON='${ builtins.toJSON release }'
+                                                                                                                                                OBSERVED_RELEASE_JSON="$( jq --compact-output "." ${ release-message-file } )" || failure 20816 ${ release-message-file }
+                                                                                                                                                if [[ "$EXPECTED_RELEASE_JSON" != "$OBSERVED_RELEASE_JSON" ]]
+                                                                                                                                                then
+                                                                                                                                                    VERBOSE_RELEASE_JSON="$( jq "." ${ release-message-file } )" || failure 18266
+                                                                                                                                                    failure 25932 EXPECTED_RELEASE_JSON "$EXPECTED_RELEASE_JSON" OBSERVED_RELEASE_JSON "$OBSERVED_RELEASE_JSON" VERBOSE_RELEASE_JSON "$VERBOSE_RELEASE_JSON"
+                                                                                                                                                fi
+                                                                                                                                                EXPECTED_SCRIPT='${ script }'
+                                                                                                                                                OBSERVED_SCRIPT="$( cat ${ script-file } )" || failure 19776
+                                                                                                                                                if [[ "$EXPECTED_SCRIPT" != "$OBSERVED_SCRIPT" ]]
+                                                                                                                                                then
+                                                                                                                                                    SCRIPT_SEQUENCE="$( sequential )" || failure 29176
+                                                                                                                                                    echo "$EXPECTED_SCRIPT" > "$TEMPORARY/$SCRIPT_SEQUENCE"
+                                                                                                                                                    DIFF_SCRIPT="$( diff --unified "$TEMPORARY/$SCRIPT_SEQUENCE" ${ script-file } )" || true
+                                                                                                                                                    failure 5478 EXPECTED_SCRIPT "$EXPECTED_SCRIPT" OBSERVED_SCRIPT "$OBSERVED_SCRIPT" DIFF_SCRIPT "$DIFF_SCRIPT"
+                                                                                                                                                fi
+                                                                                                                                                EXPECTED_STANDARD_ERROR='${ standard-error }'
+                                                                                                                                                OBSERVED_STANDARD_ERROR="$( cat ${ standard-error-file } )" || failure 4256
+                                                                                                                                                if [[ "$EXPECTED_STANDARD_ERROR" != "$OBSERVED_STANDARD_ERROR" ]]
+                                                                                                                                                then
+                                                                                                                                                    STANDARD_ERROR_SEQUENCE="$( sequential )" || failure 27101
+                                                                                                                                                    echo "$EXPECTED_STANDARD_ERROR" > "$TEMPORARY/$STANDARD_ERROR_SEQUENCE"
+                                                                                                                                                    DIFF_STANDARD_ERROR="$( diff --unified "$TEMPORARY/$STANDARD_ERROR_SEQUENCE" ${ standard-error-file } )" || true
+                                                                                                                                                    failure 20376 EXPECTED_STANDARD_ERROR "$EXPECTED_STANDARD_ERROR" OBSERVED_STANDARD_ERROR "$OBSERVED_STANDARD_ERROR" DIFF_STANDARD_ERROR "$DIFF_STANDARD_ERROR"
+                                                                                                                                                fi
+                                                                                                                                                EXPECTED_STANDARD_OUTPUT='${ standard-output }'
+                                                                                                                                                OBSERVED_STANDARD_OUTPUT="$( cat ${ standard-output-file } )" || failure 11369
+                                                                                                                                                if [[ "$EXPECTED_STANDARD_OUTPUT" != "$OBSERVED_STANDARD_OUTPUT" ]]
+                                                                                                                                                then
+                                                                                                                                                    STANDARD_OUTPUT_SEQUENCE="$( sequential )" || failure 29999
+                                                                                                                                                    echo "$EXPECTED_STANDARD_OUTPUT" > "$TEMPORARY/$STANDARD_OUTPUT_SEQUENCE"
+                                                                                                                                                    DIFF_STANDARD_OUTPUT="$( diff --unified "$TEMPORARY/$STANDARD_OUTPUT_SEQUENCE" ${ standard-output-file } )" || true
+                                                                                                                                                    failure 22430 EXPECTED_STANDARD_OUTPUT "$EXPECTED_STANDARD_OUTPUT" OBSERVED_STANDARD_OUTPUT "$OBSERVED_STANDARD_OUTPUT" DIFF_STANDARD_OUTPUT "$DIFF_STANDARD_OUTPUT"
+                                                                                                                                                fi
+                                                                                                                                                if [[ -e "${ invalid-init alpha 17293 }" ]]
+                                                                                                                                                then
+                                                                                                                                                    failure 31812
+                                                                                                                                                fi
+                                                                                                                                                if [[ -e "${ invalid-release alpha 17293 }" ]]
+                                                                                                                                                then
+                                                                                                                                                    failure 20789
+                                                                                                                                                fi
+                                                                                                                                                WC_EIGHT="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 17418
+                                                                                                                                                if [[ "$WC_EIGHT" != 7 ]]
+                                                                                                                                                then
+                                                                                                                                                    EIGHT="$( head --lines 8 "$OUTPUT_FILE" | tail --lines 1 )" || failure 14060
+                                                                                                                                                    failure 12459 EIGHT "$EIGHT"
+                                                                                                                                                fi
+                                                                                                                                            '' ;
+                                                                                                                            } ;
+                                                                                                                    in "${ application }/bin/false-false" ;
+                                                                                                            false-true =
+                                                                                                                let
+                                                                                                                    alpha = 21 ;
+                                                                                                                    application =
+                                                                                                                        pkgs.writeShellApplication
+                                                                                                                            {
+                                                                                                                                name = "true-true" ;
+                                                                                                                                runtimeInputs =
+                                                                                                                                    [
+                                                                                                                                        failure
+                                                                                                                                        pkgs.bash
+                                                                                                                                        pkgs.coreutils
+                                                                                                                                        pkgs.diffutils
+                                                                                                                                        pkgs.findutils
+                                                                                                                                        pkgs.jq
+                                                                                                                                        pkgs.inotify-tools
+                                                                                                                                        pkgs.redis
+                                                                                                                                        (
+                                                                                                                                            pkgs.writeShellApplication
+                                                                                                                                                {
+                                                                                                                                                    name = "pre-test" ;
+                                                                                                                                                    runtimeInputs = [ failure pkgs.coreutils pkgs.diffutils pkgs.findutils pkgs.jq pkgs.inotify-tools pkgs.redis sequential ] ;
+                                                                                                                                                    text =
+                                                                                                                                                        let
+                                                                                                                                                            init =
+                                                                                                                                                                {
+                                                                                                                                                                    arguments = [ "" ] ;
+                                                                                                                                                                    has-standard-input = "false" ;
+                                                                                                                                                                    hash = "e0a0a4e4ae26d30986f07d58634add724195ef807bc6697193f9a89fe62e012113db34929a6409d830991489bf49e1cc16eba4bd2c21032220c95941c1a8b764" ;
+                                                                                                                                                                    index = pad-16 alpha 1 ;
+                                                                                                                                                                    release-file = release-file ;
+                                                                                                                                                                    script-file = script-file ;
+                                                                                                                                                                    scripts-hash = "d167f7da399e6b01b83f44c3ecb00eb43f5b666e767882bd27e1758abd7c7cc87797e80307d86f0b3cf8a2946115f6cba1b7e99622f17cd83c1631cf92a5c464" ;
+                                                                                                                                                                    seed = [ "production" "checks" "true" "true" ] ;
+                                                                                                                                                                    standard-error-file = standard-error-file ;
+                                                                                                                                                                    standard-input-file = standard-input-file ;
+                                                                                                                                                                    standard-output-file = standard-output-file ;
+                                                                                                                                                                    status = "0" ;
+                                                                                                                                                                    targets =
+                                                                                                                                                                        {
+                                                                                                                                                                            expected = [ "31321" ] ;
+                                                                                                                                                                            observed = [ "31321" ] ;
+                                                                                                                                                                        } ;
+                                                                                                                                                                } ;
+                                                                                                                                                            init-message-file = log-16 alpha 5 ;
+                                                                                                                                                            release =
+                                                                                                                                                                ''
+                                                                                                                                                                    #!/nix/store/mjhcjikhxps97mq5z54j4gjjfzgmsir5-bash-5.2p37/bin/bash
+                                                                                                                                                                    set -o errexit
+                                                                                                                                                                    set -o nounset
+                                                                                                                                                                    set -o pipefail
+
+                                                                                                                                                                    export PATH="/nix/store/xy9sa2741cinqmfpmqhdrk38gcv1waxb-trace/bin:/nix/store/54f702arxcxl6xv5dn8x9gy16yqxfddw-destroy/bin:$PATH"
+
+                                                                                                                                                                    mkdir --parents "${ gc-root alpha 1 }"
+                                                                                                                                                                    export HASH=e0a0a4e4ae26d30986f07d58634add724195ef807bc6697193f9a89fe62e012113db34929a6409d830991489bf49e1cc16eba4bd2c21032220c95941c1a8b764
+                                                                                                                                                                    export INDEX=${ pad-16 alpha 1 }
+                                                                                                                                                                    destroy'' ;
+                                                                                                                                                            release-file = release-16 alpha 1 ;
+                                                                                                                                                            script =
+                                                                                                                                                                ''
+                                                                                                                                                                    #!/nix/store/mjhcjikhxps97mq5z54j4gjjfzgmsir5-bash-5.2p37/bin/bash
+                                                                                                                                                                    set -o errexit
+                                                                                                                                                                    set -o nounset
+                                                                                                                                                                    set -o pipefail
+
+                                                                                                                                                                    /nix/store/6avrj20bbivwnl6y8fsmhalzwiqd11n8-init/bin/init''  ;
+                                                                                                                                                            script-file = log-16 alpha 2 ;
+                                                                                                                                                            standard-error = "" ;
+                                                                                                                                                            standard-error-file = log-16 alpha 3 ;
+                                                                                                                                                            standard-input = "" ;
+                                                                                                                                                            standard-input-file = log-16 alpha 0 ;
+                                                                                                                                                            standard-output = "14060" ;
+                                                                                                                                                            standard-output-file = log-16 alpha 4 ;
+                                                                                                                                                            in
+                                                                                                                                                                ''
+                                                                                                                                                                    EXPECTED_RESOURCE=${ mount-16 alpha 1 }
+                                                                                                                                                                    OBSERVED_RESOURCE=${ resources.production.checks.true.true { failure = 21760 ; } }
+                                                                                                                                                                    if [[ "$EXPECTED_RESOURCE" != "$OBSERVED_RESOURCE" ]]
+                                                                                                                                                                    then
+                                                                                                                                                                        failure 15789 EXPECTED_RESOURCE "$EXPECTED_RESOURCE" OBSERVED_RESOURCE "$OBSERVED_RESOURCE"
+                                                                                                                                                                    fi
+                                                                                                                                                                    COUNT_SIX=0
+                                                                                                                                                                    while [[ "$COUNT_SIX" -lt "6" ]]
+                                                                                                                                                                    do
+                                                                                                                                                                        sleep 1
+                                                                                                                                                                        COUNT_SIX="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 24769
+                                                                                                                                                                    done
+                                                                                                                                                                    EXPECTED_INIT="\"message\",\"valid-init\",\"${ init-message-file }\""
+                                                                                                                                                                    OBSERVED_INIT="$( head --lines 6 "$OUTPUT_FILE" | tail --lines 1 )" || failure 20277
+                                                                                                                                                                    if [[ "$EXPECTED_INIT" != "$OBSERVED_INIT" ]]
+                                                                                                                                                                    then
+                                                                                                                                                                        failure 14530 EXPECTED_INIT "$EXPECTED_INIT" OBSERVED_INIT "$OBSERVED_INIT"
+                                                                                                                                                                    fi
+                                                                                                                                                                    EXPECTED_INIT_JSON='${ builtins.toJSON init }'
+                                                                                                                                                                    OBSERVED_INIT_JSON="$( jq --compact-output "." ${ init-message-file } )" || failure 9412
+                                                                                                                                                                    if [[ "$EXPECTED_INIT_JSON" != "$OBSERVED_INIT_JSON" ]]
+                                                                                                                                                                    then
+                                                                                                                                                                        VERBOSE_INIT_JSON="$( jq "." ${ init-message-file } )" || failure 23617
+                                                                                                                                                                        failure 16098 EXPECTED_INIT_JSON "$EXPECTED_INIT_JSON" OBSERVED_INIT_JSON "$OBSERVED_INIT_JSON" VERBOSE_INIT_JSON "$VERBOSE_INIT_JSON"
+                                                                                                                                                                    fi
+                                                                                                                                                                    # shellcheck disable=SC2016
+                                                                                                                                                                    EXPECTED_RELEASE='${ release }'
+                                                                                                                                                                    OBSERVED_RELEASE="$( cat ${ release-file } )" || failure 19359
+                                                                                                                                                                    if [[ "$EXPECTED_RELEASE" != "$OBSERVED_RELEASE" ]]
+                                                                                                                                                                    then
+                                                                                                                                                                        RELEASE_SEQUENCE="$( sequential )" || failure 20665
+                                                                                                                                                                        echo "$EXPECTED_RELEASE" > "$TEMPORARY/$RELEASE_SEQUENCE"
+                                                                                                                                                                        DIFF_RELEASE="$( diff --unified "$TEMPORARY/$RELEASE_SEQUENCE" ${ release-file } )" || true
+                                                                                                                                                                        failure 12409 EXPECTED_RELEASE "$EXPECTED_RELEASE" OBSERVED_RELEASE "$OBSERVED_RELEASE" DIFF_RELEASE "$DIFF_RELEASE"
+                                                                                                                                                                    fi
+                                                                                                                                                                    # shellcheck disable=SC2016
+                                                                                                                                                                    EXPECTED_SCRIPT='${ script }'
+                                                                                                                                                                    OBSERVED_SCRIPT="$( cat ${ script-file } )" || failure 11196
+                                                                                                                                                                    if [[ "$EXPECTED_SCRIPT" != "$OBSERVED_SCRIPT" ]]
+                                                                                                                                                                    then
+                                                                                                                                                                        RELEASE_SEQUENCE="$( sequential )" || failure 16175
+                                                                                                                                                                        echo "$EXPECTED_SCRIPT" > "$TEMPORARY/$RELEASE_SEQUENCE"
+                                                                                                                                                                        DIFF_SCRIPT="$( diff --unified "/home/${ config.personal.name }/resources/mounts/$INDEX/true-true/pre-test/SCRIPT" ${ script-file } )" || true
+                                                                                                                                                                        failure 18539 EXPECTED_SCRIPT "$EXPECTED_SCRIPT" OBSERVED_SCRIPT "$OBSERVED_SCRIPT" DIFF_SCRIPT "$DIFF_SCRIPT"
+                                                                                                                                                                    fi
+                                                                                                                                                                    EXPECTED_STANDARD_ERROR='${ standard-error }'
+                                                                                                                                                                    OBSERVED_STANDARD_ERROR="$( cat ${ standard-error-file } )" || failure 31412
+                                                                                                                                                                    if [[ "$EXPECTED_STANDARD_ERROR" != "$OBSERVED_STANDARD_ERROR" ]]
+                                                                                                                                                                    then
+                                                                                                                                                                        STANDARD_ERROR_SEQUENCE="$( sequential )" || failure 21857
+                                                                                                                                                                        echo "$EXPECTED_STANDARD_ERROR" > "$TEMPORARY/$STANDARD_ERROR_SEQUENCE"
+                                                                                                                                                                        DIFF_STANDARD_ERROR="$( diff --unified "/home/${ config.personal.name }/resources/mounts/$INDEX/true-true/pre-test/STANDARD_ERROR" ${ standard-error-file } )" || true
+                                                                                                                                                                        failure 30053 EXPECTED_STANDARD_ERROR "$EXPECTED_STANDARD_ERROR" OBSERVED_STANDARD_ERROR "$OBSERVED_STANDARD_ERROR" DIFF_STANDARD_ERROR "$DIFF_STANDARD_ERROR"
+                                                                                                                                                                    fi
+                                                                                                                                                                    EXPECTED_STANDARD_INPUT='${ standard-input }'
+                                                                                                                                                                    OBSERVED_STANDARD_INPUT="$( cat ${ standard-input-file } )" || failure 23070
+                                                                                                                                                                    if [[ "$EXPECTED_STANDARD_INPUT" != "$OBSERVED_STANDARD_INPUT" ]]
+                                                                                                                                                                    then
+                                                                                                                                                                        STANDARD_INPUT_SEQUENCE="$( sequential )" || failure 30671
+                                                                                                                                                                        echo "$EXPECTED_STANDARD_INPUT" > "$TEMPORARY/$STANDARD_INPUT_SEQUENCE"
+                                                                                                                                                                        DIFF_STANDARD_INPUT="$( diff --unified "/home/${ config.personal.name }/resources/mounts/$INDEX/true-true/pre-test/STANDARD_INPUT" ${ standard-output-file } )" || true
+                                                                                                                                                                        failure 13551 EXPECTED_STANDARD_INPUT "$EXPECTED_STANDARD_INPUT" OBSERVED_STANDARD_INPUT "$OBSERVED_STANDARD_INPUT" DIFF_STANDARD_INPUT "$DIFF_STANDARD_INPUT"
+                                                                                                                                                                    fi
+                                                                                                                                                                    EXPECTED_STANDARD_OUTPUT='${ standard-output }'
+                                                                                                                                                                    OBSERVED_STANDARD_OUTPUT="$( cat ${ standard-output-file } )" || failure 18330
+                                                                                                                                                                    if [[ "$EXPECTED_STANDARD_OUTPUT" != "$OBSERVED_STANDARD_OUTPUT" ]]
+                                                                                                                                                                    then
+                                                                                                                                                                        STANDARD_OUTPUT_SEQUENCE="$( sequential )" || failure 22790
+                                                                                                                                                                        echo "$EXPECTED_STANDARD_OUTPUT" > "$TEMPORARY/$STANDARD_OUTPUT_SEQUENCE"
+                                                                                                                                                                        DIFF_STANDARD_OUTPUT="$( diff --unified "/home/${ config.personal.name }/resources/mounts/$INDEX/true-true/pre-test/STANDARD_INPUT" ${ standard-output-file } )" || true
+                                                                                                                                                                        failure 16668 EXPECTED_STANDARD_OUTPUT "$EXPECTED_STANDARD_OUTPUT" OBSERVED_STANDARD_OUTPUT "$OBSERVED_STANDARD_OUTPUT" DIFF_STANDARD_OUTPUT "$DIFF_STANDARD_OUTPUT"
+                                                                                                                                                                    fi
+                                                                                                                                                                    WC_SEVEN="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 21345
+                                                                                                                                                                    if [[ "$WC_SEVEN" != 6 ]]
+                                                                                                                                                                    then
+                                                                                                                                                                        SEVEN="$( head --lines 7 "$OUTPUT_FILE" | tail --lines 1 )" || failure 17032
+                                                                                                                                                                        failure 20505 SEVEN "$SEVEN"
+                                                                                                                                                                    fi
+                                                                                                                                                                    if [[ -e "${ invalid-init alpha 17293 }" ]]
+                                                                                                                                                                    then
+                                                                                                                                                                        failure 23500
+                                                                                                                                                                    fi
+                                                                                                                                                                    if [[ -e "${ invalid-release alpha 17293 }" ]]
+                                                                                                                                                                    then
+                                                                                                                                                                        failure 13101
+                                                                                                                                                                    fi
+                                                                                                                                                                '' ;
+                                                                                                                                                }
+                                                                                                                                        )
+                                                                                                                                        sequential
+                                                                                                                                    ] ;
+                                                                                                                                text =
+                                                                                                                                    let
+                                                                                                                                        release =
+                                                                                                                                            {
+                                                                                                                                                hash = "e0a0a4e4ae26d30986f07d58634add724195ef807bc6697193f9a89fe62e012113db34929a6409d830991489bf49e1cc16eba4bd2c21032220c95941c1a8b764" ;
+                                                                                                                                                index = pad-16 alpha 1 ;
+                                                                                                                                                script-file = script-file ;
+                                                                                                                                                seed = [ "production" "checks" "true" "true" ] ;
+                                                                                                                                                standard-error-file = standard-error-file ;
+                                                                                                                                                standard-output-file = standard-output-file ;
+                                                                                                                                                status = "0" ;
+                                                                                                                                            } ;
+                                                                                                                                        release-message-file = log-16 alpha 9 ;
+                                                                                                                                        script =
+                                                                                                                                            ''
+                                                                                                                                                #!/nix/store/mjhcjikhxps97mq5z54j4gjjfzgmsir5-bash-5.2p37/bin/bash
+                                                                                                                                                set -o errexit
+                                                                                                                                                set -o nounset
+                                                                                                                                                set -o pipefail
+
+                                                                                                                                                /nix/store/ivcji4xkipn8zfiqj50yfgrq8g9cfxn1-release/bin/release'' ;
+                                                                                                                                        script-file = log-16 alpha 6;
+                                                                                                                                        standard-error = "" ;
+                                                                                                                                        standard-error-file = log-16 alpha 7 ;
+                                                                                                                                        standard-output = "18719" ;
+                                                                                                                                        standard-output-file = log-16 alpha 8 ;
+                                                                                                                                        in
+                                                                                                                                            ''
+                                                                                                                                                OUTPUT_SEQUENCE="$( sequential )" || failure 27462
+                                                                                                                                                OUTPUT_FILE="$TEMPORARY/$OUTPUT_SEQUENCE"
+                                                                                                                                                export OUTPUT_FILE
+                                                                                                                                                touch "$OUTPUT_FILE"
+                                                                                                                                                redis-cli --csv SUBSCRIBE invalid-init invalid-release stale-init valid-init valid-release > "$OUTPUT_FILE" &
+                                                                                                                                                COUNT_5=0
+                                                                                                                                                while [[ "$COUNT_5" -lt "5" ]]
+                                                                                                                                                do
+                                                                                                                                                    echo "$COUNT_5=$COUNT_5"
+                                                                                                                                                    sleep 1
+                                                                                                                                                    COUNT_5="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 13785
+                                                                                                                                                done
+                                                                                                                                                EXPECTED_SUBSCRIBE_INVALID_INIT="\"subscribe\",\"invalid-init\",1"
+                                                                                                                                                OBSERVED_SUBSCRIBE_INVALID_INIT="$( head --lines 1 "$OUTPUT_FILE" )" || failure 29807
+                                                                                                                                                if [[ "$EXPECTED_SUBSCRIBE_INVALID_INIT" != "$OBSERVED_SUBSCRIBE_INVALID_INIT" ]]
+                                                                                                                                                then
+                                                                                                                                                    failure 30918 EXPECTED_SUBSCRIBE_INVALID_INIT "$EXPECTED_SUBSCRIBE_INVALID_INIT" OBSERVED_SUBSCRIBE_INVALID_INIT "$OBSERVED_SUBSCRIBE_INVALID_INIT"
+                                                                                                                                                fi
+                                                                                                                                                EXPECTED_SUBSCRIBE_INVALID_RELEASE="\"subscribe\",\"invalid-release\",2"
+                                                                                                                                                OBSERVED_SUBSCRIBE_INVALID_RELEASE="$( head --lines 2 "$OUTPUT_FILE" | tail --lines 1 )" || failure 10496
+                                                                                                                                                if [[ "$EXPECTED_SUBSCRIBE_INVALID_RELEASE" != "$OBSERVED_SUBSCRIBE_INVALID_RELEASE" ]]
+                                                                                                                                                then
+                                                                                                                                                    failure 21324 EXPECTED_SUBSCRIBE_INVALID_RELEASE "$EXPECTED_SUBSCRIBE_INVALID_RELEASE" OBSERVED_SUBSCRIBE_INVALID_RELEASE "$OBSERVED_SUBSCRIBE_INVALID_RELEASE"
+                                                                                                                                                fi
+                                                                                                                                                EXPECTED_SUBSCRIBE_STALE_INIT="\"subscribe\",\"stale-init\",3"
+                                                                                                                                                OBSERVED_SUBSCRIBE_STALE_INIT="$( head --lines 3 "$OUTPUT_FILE" | tail --lines 1 )" || failure 16256
+                                                                                                                                                if [[ "$EXPECTED_SUBSCRIBE_STALE_INIT" != "$OBSERVED_SUBSCRIBE_STALE_INIT" ]]
+                                                                                                                                                then
+                                                                                                                                                    failure 11841 EXPECTED_SUBSCRIBE_STALE_INIT "$EXPECTED_SUBSCRIBE_STALE_INIT" OBSERVED_SUBSCRIBE_STALE_INIT "$OBSERVED_SUBSCRIBE_STALE_INIT"
+                                                                                                                                                fi
+                                                                                                                                                EXPECTED_SUBSCRIBE_VALID_INIT="\"subscribe\",\"valid-init\",4"
+                                                                                                                                                OBSERVED_SUBSCRIBE_VALID_INIT="$( head --lines 4 "$OUTPUT_FILE" | tail --lines 1 )" || failure 32080
+                                                                                                                                                if [[ "$EXPECTED_SUBSCRIBE_VALID_INIT" != "$OBSERVED_SUBSCRIBE_VALID_INIT" ]]
+                                                                                                                                                then
+                                                                                                                                                    failure 20315 EXPECTED_SUBSCRIBE_VALID_INIT "$EXPECTED_SUBSCRIBE_VALID_INIT" OBSERVED_SUBSCRIBE_VALID_INIT "$OBSERVED_SUBSCRIBE_VALID_INIT"
+                                                                                                                                                fi
+                                                                                                                                                EXPECTED_SUBSCRIBE_VALID_RELEASE="\"subscribe\",\"valid-release\",5"
+                                                                                                                                                OBSERVED_SUBSCRIBE_VALID_RELEASE="$( head --lines 5 "$OUTPUT_FILE" | tail --lines 1 )" || failure 20683
+                                                                                                                                                if [[ "$EXPECTED_SUBSCRIBE_VALID_RELEASE" != "$OBSERVED_SUBSCRIBE_VALID_RELEASE" ]]
+                                                                                                                                                then
+                                                                                                                                                    failure 28681 EXPECTED_SUBSCRIBE_VALID_RELEASE "$EXPECTED_SUBSCRIBE_VALID_RELEASE" OBSERVED_SUBSCRIBE_VALID_RELEASE "$OBSERVED_SUBSCRIBE_VALID_RELEASE"
+                                                                                                                                                fi
+                                                                                                                                                WC_SIX="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 17924
+                                                                                                                                                if [[ "$WC_SIX" != "5" ]]
+                                                                                                                                                then
+                                                                                                                                                    SIX="$( head --lines 6 "$OUTPUT_FILE" | tail --lines 1 )" || failure 17032
+                                                                                                                                                    failure 24681 SIX "$SIX"
+                                                                                                                                                fi
+                                                                                                                                                timeout 1m bash -c pre-test
+                                                                                                                                                COUNT_7=0
+                                                                                                                                                while [[ "$COUNT_7" != "7" ]]
+                                                                                                                                                do
+                                                                                                                                                    sleep 1
+                                                                                                                                                    COUNT_7="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 24082
+                                                                                                                                                done
+                                                                                                                                                EXPECTED_RELEASE="\"message\",\"valid-release\",\"${ release-message-file }\""
+                                                                                                                                                OBSERVED_RELEASE="$( head --lines 8 "$OUTPUT_FILE" | tail --lines 1 )" || failure 14819
+                                                                                                                                                if [[ "$EXPECTED_RELEASE" != "$OBSERVED_RELEASE" ]]
+                                                                                                                                                then
+                                                                                                                                                    failure 13751 EXPECTED_RELEASE "$EXPECTED_RELEASE" OBSERVED_RELEASE "$OBSERVED_RELEASE" "$( cat /home/emory/resources/logs/0000000000000031 )"
+                                                                                                                                                fi
+                                                                                                                                                EXPECTED_RELEASE_JSON='${ builtins.toJSON release }'
+                                                                                                                                                OBSERVED_RELEASE_JSON="$( jq --compact-output "." ${ release-message-file } )" || failure 20816 ${ release-message-file }
+                                                                                                                                                if [[ "$EXPECTED_RELEASE_JSON" != "$OBSERVED_RELEASE_JSON" ]]
+                                                                                                                                                then
+                                                                                                                                                    VERBOSE_RELEASE_JSON="$( jq "." ${ release-message-file } )" || failure 18266
+                                                                                                                                                    failure 25932 EXPECTED_RELEASE_JSON "$EXPECTED_RELEASE_JSON" OBSERVED_RELEASE_JSON "$OBSERVED_RELEASE_JSON" VERBOSE_RELEASE_JSON "$VERBOSE_RELEASE_JSON"
+                                                                                                                                                fi
+                                                                                                                                                EXPECTED_SCRIPT='${ script }'
+                                                                                                                                                OBSERVED_SCRIPT="$( cat ${ script-file } )" || failure 19776
+                                                                                                                                                if [[ "$EXPECTED_SCRIPT" != "$OBSERVED_SCRIPT" ]]
+                                                                                                                                                then
+                                                                                                                                                    SCRIPT_SEQUENCE="$( sequential )" || failure 29176
+                                                                                                                                                    echo "$EXPECTED_SCRIPT" > "$TEMPORARY/$SCRIPT_SEQUENCE"
+                                                                                                                                                    DIFF_SCRIPT="$( diff --unified "$TEMPORARY/$SCRIPT_SEQUENCE" ${ script-file } )" || true
+                                                                                                                                                    failure 5478 EXPECTED_SCRIPT "$EXPECTED_SCRIPT" OBSERVED_SCRIPT "$OBSERVED_SCRIPT" DIFF_SCRIPT "$DIFF_SCRIPT"
+                                                                                                                                                fi
+                                                                                                                                                EXPECTED_STANDARD_ERROR='${ standard-error }'
+                                                                                                                                                OBSERVED_STANDARD_ERROR="$( cat ${ standard-error-file } )" || failure 4256
+                                                                                                                                                if [[ "$EXPECTED_STANDARD_ERROR" != "$OBSERVED_STANDARD_ERROR" ]]
+                                                                                                                                                then
+                                                                                                                                                    STANDARD_ERROR_SEQUENCE="$( sequential )" || failure 27101
+                                                                                                                                                    echo "$EXPECTED_STANDARD_ERROR" > "$TEMPORARY/$STANDARD_ERROR_SEQUENCE"
+                                                                                                                                                    DIFF_STANDARD_ERROR="$( diff --unified "$TEMPORARY/$STANDARD_ERROR_SEQUENCE" ${ standard-error-file } )" || true
+                                                                                                                                                    failure 20376 EXPECTED_STANDARD_ERROR "$EXPECTED_STANDARD_ERROR" OBSERVED_STANDARD_ERROR "$OBSERVED_STANDARD_ERROR" DIFF_STANDARD_ERROR "$DIFF_STANDARD_ERROR"
+                                                                                                                                                fi
+                                                                                                                                                EXPECTED_STANDARD_OUTPUT='${ standard-output }'
+                                                                                                                                                OBSERVED_STANDARD_OUTPUT="$( cat ${ standard-output-file } )" || failure 11369
+                                                                                                                                                if [[ "$EXPECTED_STANDARD_OUTPUT" != "$OBSERVED_STANDARD_OUTPUT" ]]
+                                                                                                                                                then
+                                                                                                                                                    STANDARD_OUTPUT_SEQUENCE="$( sequential )" || failure 29999
+                                                                                                                                                    echo "$EXPECTED_STANDARD_OUTPUT" > "$TEMPORARY/$STANDARD_OUTPUT_SEQUENCE"
+                                                                                                                                                    DIFF_STANDARD_OUTPUT="$( diff --unified "$TEMPORARY/$STANDARD_OUTPUT_SEQUENCE" ${ standard-output-file } )" || true
+                                                                                                                                                    failure 22430 EXPECTED_STANDARD_OUTPUT "$EXPECTED_STANDARD_OUTPUT" OBSERVED_STANDARD_OUTPUT "$OBSERVED_STANDARD_OUTPUT" DIFF_STANDARD_OUTPUT "$DIFF_STANDARD_OUTPUT"
+                                                                                                                                                fi
+                                                                                                                                                if [[ -e "${ invalid-init alpha 17293 }" ]]
+                                                                                                                                                then
+                                                                                                                                                    failure 31812
+                                                                                                                                                fi
+                                                                                                                                                if [[ -e "${ invalid-release alpha 17293 }" ]]
+                                                                                                                                                then
+                                                                                                                                                    failure 20789
+                                                                                                                                                fi
+                                                                                                                                                WC_EIGHT="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 17418
+                                                                                                                                                if [[ "$WC_EIGHT" != 7 ]]
+                                                                                                                                                then
+                                                                                                                                                    EIGHT="$( head --lines 8 "$OUTPUT_FILE" | tail --lines 1 )" || failure 14060
+                                                                                                                                                    failure 12459 EIGHT "$EIGHT"
+                                                                                                                                                fi
+                                                                                                                                            '' ;
+                                                                                                                            } ;
+                                                                                                                    in "${ application }/bin/false-true" ;
+                                                                                                            true-false =
+                                                                                                                let
+                                                                                                                    alpha = 21 ;
+                                                                                                                    application =
+                                                                                                                        pkgs.writeShellApplication
+                                                                                                                            {
+                                                                                                                                name = "true-true" ;
+                                                                                                                                runtimeInputs =
+                                                                                                                                    [
+                                                                                                                                        failure
+                                                                                                                                        pkgs.bash
+                                                                                                                                        pkgs.coreutils
+                                                                                                                                        pkgs.diffutils
+                                                                                                                                        pkgs.findutils
+                                                                                                                                        pkgs.jq
+                                                                                                                                        pkgs.inotify-tools
+                                                                                                                                        pkgs.redis
+                                                                                                                                        (
+                                                                                                                                            pkgs.writeShellApplication
+                                                                                                                                                {
+                                                                                                                                                    name = "pre-test" ;
+                                                                                                                                                    runtimeInputs = [ failure pkgs.coreutils pkgs.diffutils pkgs.findutils pkgs.jq pkgs.inotify-tools pkgs.redis sequential ] ;
+                                                                                                                                                    text =
+                                                                                                                                                        let
+                                                                                                                                                            init =
+                                                                                                                                                                {
+                                                                                                                                                                    arguments = [ "" ] ;
+                                                                                                                                                                    has-standard-input = "false" ;
+                                                                                                                                                                    hash = "e0a0a4e4ae26d30986f07d58634add724195ef807bc6697193f9a89fe62e012113db34929a6409d830991489bf49e1cc16eba4bd2c21032220c95941c1a8b764" ;
+                                                                                                                                                                    index = pad-16 alpha 1 ;
+                                                                                                                                                                    release-file = release-file ;
+                                                                                                                                                                    script-file = script-file ;
+                                                                                                                                                                    scripts-hash = "d167f7da399e6b01b83f44c3ecb00eb43f5b666e767882bd27e1758abd7c7cc87797e80307d86f0b3cf8a2946115f6cba1b7e99622f17cd83c1631cf92a5c464" ;
+                                                                                                                                                                    seed = [ "production" "checks" "true" "true" ] ;
+                                                                                                                                                                    standard-error-file = standard-error-file ;
+                                                                                                                                                                    standard-input-file = standard-input-file ;
+                                                                                                                                                                    standard-output-file = standard-output-file ;
+                                                                                                                                                                    status = "0" ;
+                                                                                                                                                                    targets =
+                                                                                                                                                                        {
+                                                                                                                                                                            expected = [ "31321" ] ;
+                                                                                                                                                                            observed = [ "31321" ] ;
+                                                                                                                                                                        } ;
+                                                                                                                                                                } ;
+                                                                                                                                                            init-message-file = log-16 alpha 5 ;
+                                                                                                                                                            release =
+                                                                                                                                                                ''
+                                                                                                                                                                    #!/nix/store/mjhcjikhxps97mq5z54j4gjjfzgmsir5-bash-5.2p37/bin/bash
+                                                                                                                                                                    set -o errexit
+                                                                                                                                                                    set -o nounset
+                                                                                                                                                                    set -o pipefail
+
+                                                                                                                                                                    export PATH="/nix/store/xy9sa2741cinqmfpmqhdrk38gcv1waxb-trace/bin:/nix/store/54f702arxcxl6xv5dn8x9gy16yqxfddw-destroy/bin:$PATH"
+
+                                                                                                                                                                    mkdir --parents "${ gc-root alpha 1 }"
+                                                                                                                                                                    export HASH=e0a0a4e4ae26d30986f07d58634add724195ef807bc6697193f9a89fe62e012113db34929a6409d830991489bf49e1cc16eba4bd2c21032220c95941c1a8b764
+                                                                                                                                                                    export INDEX=${ pad-16 alpha 1 }
+                                                                                                                                                                    destroy'' ;
+                                                                                                                                                            release-file = release-16 alpha 1 ;
+                                                                                                                                                            script =
+                                                                                                                                                                ''
+                                                                                                                                                                    #!/nix/store/mjhcjikhxps97mq5z54j4gjjfzgmsir5-bash-5.2p37/bin/bash
+                                                                                                                                                                    set -o errexit
+                                                                                                                                                                    set -o nounset
+                                                                                                                                                                    set -o pipefail
+
+                                                                                                                                                                    /nix/store/6avrj20bbivwnl6y8fsmhalzwiqd11n8-init/bin/init''  ;
+                                                                                                                                                            script-file = log-16 alpha 2 ;
+                                                                                                                                                            standard-error = "" ;
+                                                                                                                                                            standard-error-file = log-16 alpha 3 ;
+                                                                                                                                                            standard-input = "" ;
+                                                                                                                                                            standard-input-file = log-16 alpha 0 ;
+                                                                                                                                                            standard-output = "14060" ;
+                                                                                                                                                            standard-output-file = log-16 alpha 4 ;
+                                                                                                                                                            in
+                                                                                                                                                                ''
+                                                                                                                                                                    EXPECTED_RESOURCE=${ mount-16 alpha 1 }
+                                                                                                                                                                    OBSERVED_RESOURCE=${ resources.production.checks.true.true { failure = 21760 ; } }
+                                                                                                                                                                    if [[ "$EXPECTED_RESOURCE" != "$OBSERVED_RESOURCE" ]]
+                                                                                                                                                                    then
+                                                                                                                                                                        failure 15789 EXPECTED_RESOURCE "$EXPECTED_RESOURCE" OBSERVED_RESOURCE "$OBSERVED_RESOURCE"
+                                                                                                                                                                    fi
+                                                                                                                                                                    COUNT_SIX=0
+                                                                                                                                                                    while [[ "$COUNT_SIX" -lt "6" ]]
+                                                                                                                                                                    do
+                                                                                                                                                                        sleep 1
+                                                                                                                                                                        COUNT_SIX="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 24769
+                                                                                                                                                                    done
+                                                                                                                                                                    EXPECTED_INIT="\"message\",\"valid-init\",\"${ init-message-file }\""
+                                                                                                                                                                    OBSERVED_INIT="$( head --lines 6 "$OUTPUT_FILE" | tail --lines 1 )" || failure 20277
+                                                                                                                                                                    if [[ "$EXPECTED_INIT" != "$OBSERVED_INIT" ]]
+                                                                                                                                                                    then
+                                                                                                                                                                        failure 14530 EXPECTED_INIT "$EXPECTED_INIT" OBSERVED_INIT "$OBSERVED_INIT"
+                                                                                                                                                                    fi
+                                                                                                                                                                    EXPECTED_INIT_JSON='${ builtins.toJSON init }'
+                                                                                                                                                                    OBSERVED_INIT_JSON="$( jq --compact-output "." ${ init-message-file } )" || failure 9412
+                                                                                                                                                                    if [[ "$EXPECTED_INIT_JSON" != "$OBSERVED_INIT_JSON" ]]
+                                                                                                                                                                    then
+                                                                                                                                                                        VERBOSE_INIT_JSON="$( jq "." ${ init-message-file } )" || failure 23617
+                                                                                                                                                                        failure 16098 EXPECTED_INIT_JSON "$EXPECTED_INIT_JSON" OBSERVED_INIT_JSON "$OBSERVED_INIT_JSON" VERBOSE_INIT_JSON "$VERBOSE_INIT_JSON"
+                                                                                                                                                                    fi
+                                                                                                                                                                    # shellcheck disable=SC2016
+                                                                                                                                                                    EXPECTED_RELEASE='${ release }'
+                                                                                                                                                                    OBSERVED_RELEASE="$( cat ${ release-file } )" || failure 19359
+                                                                                                                                                                    if [[ "$EXPECTED_RELEASE" != "$OBSERVED_RELEASE" ]]
+                                                                                                                                                                    then
+                                                                                                                                                                        RELEASE_SEQUENCE="$( sequential )" || failure 20665
+                                                                                                                                                                        echo "$EXPECTED_RELEASE" > "$TEMPORARY/$RELEASE_SEQUENCE"
+                                                                                                                                                                        DIFF_RELEASE="$( diff --unified "$TEMPORARY/$RELEASE_SEQUENCE" ${ release-file } )" || true
+                                                                                                                                                                        failure 12409 EXPECTED_RELEASE "$EXPECTED_RELEASE" OBSERVED_RELEASE "$OBSERVED_RELEASE" DIFF_RELEASE "$DIFF_RELEASE"
+                                                                                                                                                                    fi
+                                                                                                                                                                    # shellcheck disable=SC2016
+                                                                                                                                                                    EXPECTED_SCRIPT='${ script }'
+                                                                                                                                                                    OBSERVED_SCRIPT="$( cat ${ script-file } )" || failure 11196
+                                                                                                                                                                    if [[ "$EXPECTED_SCRIPT" != "$OBSERVED_SCRIPT" ]]
+                                                                                                                                                                    then
+                                                                                                                                                                        RELEASE_SEQUENCE="$( sequential )" || failure 16175
+                                                                                                                                                                        echo "$EXPECTED_SCRIPT" > "$TEMPORARY/$RELEASE_SEQUENCE"
+                                                                                                                                                                        DIFF_SCRIPT="$( diff --unified "/home/${ config.personal.name }/resources/mounts/$INDEX/true-true/pre-test/SCRIPT" ${ script-file } )" || true
+                                                                                                                                                                        failure 18539 EXPECTED_SCRIPT "$EXPECTED_SCRIPT" OBSERVED_SCRIPT "$OBSERVED_SCRIPT" DIFF_SCRIPT "$DIFF_SCRIPT"
+                                                                                                                                                                    fi
+                                                                                                                                                                    EXPECTED_STANDARD_ERROR='${ standard-error }'
+                                                                                                                                                                    OBSERVED_STANDARD_ERROR="$( cat ${ standard-error-file } )" || failure 31412
+                                                                                                                                                                    if [[ "$EXPECTED_STANDARD_ERROR" != "$OBSERVED_STANDARD_ERROR" ]]
+                                                                                                                                                                    then
+                                                                                                                                                                        STANDARD_ERROR_SEQUENCE="$( sequential )" || failure 21857
+                                                                                                                                                                        echo "$EXPECTED_STANDARD_ERROR" > "$TEMPORARY/$STANDARD_ERROR_SEQUENCE"
+                                                                                                                                                                        DIFF_STANDARD_ERROR="$( diff --unified "/home/${ config.personal.name }/resources/mounts/$INDEX/true-true/pre-test/STANDARD_ERROR" ${ standard-error-file } )" || true
+                                                                                                                                                                        failure 30053 EXPECTED_STANDARD_ERROR "$EXPECTED_STANDARD_ERROR" OBSERVED_STANDARD_ERROR "$OBSERVED_STANDARD_ERROR" DIFF_STANDARD_ERROR "$DIFF_STANDARD_ERROR"
+                                                                                                                                                                    fi
+                                                                                                                                                                    EXPECTED_STANDARD_INPUT='${ standard-input }'
+                                                                                                                                                                    OBSERVED_STANDARD_INPUT="$( cat ${ standard-input-file } )" || failure 23070
+                                                                                                                                                                    if [[ "$EXPECTED_STANDARD_INPUT" != "$OBSERVED_STANDARD_INPUT" ]]
+                                                                                                                                                                    then
+                                                                                                                                                                        STANDARD_INPUT_SEQUENCE="$( sequential )" || failure 30671
+                                                                                                                                                                        echo "$EXPECTED_STANDARD_INPUT" > "$TEMPORARY/$STANDARD_INPUT_SEQUENCE"
+                                                                                                                                                                        DIFF_STANDARD_INPUT="$( diff --unified "/home/${ config.personal.name }/resources/mounts/$INDEX/true-true/pre-test/STANDARD_INPUT" ${ standard-output-file } )" || true
+                                                                                                                                                                        failure 13551 EXPECTED_STANDARD_INPUT "$EXPECTED_STANDARD_INPUT" OBSERVED_STANDARD_INPUT "$OBSERVED_STANDARD_INPUT" DIFF_STANDARD_INPUT "$DIFF_STANDARD_INPUT"
+                                                                                                                                                                    fi
+                                                                                                                                                                    EXPECTED_STANDARD_OUTPUT='${ standard-output }'
+                                                                                                                                                                    OBSERVED_STANDARD_OUTPUT="$( cat ${ standard-output-file } )" || failure 18330
+                                                                                                                                                                    if [[ "$EXPECTED_STANDARD_OUTPUT" != "$OBSERVED_STANDARD_OUTPUT" ]]
+                                                                                                                                                                    then
+                                                                                                                                                                        STANDARD_OUTPUT_SEQUENCE="$( sequential )" || failure 22790
+                                                                                                                                                                        echo "$EXPECTED_STANDARD_OUTPUT" > "$TEMPORARY/$STANDARD_OUTPUT_SEQUENCE"
+                                                                                                                                                                        DIFF_STANDARD_OUTPUT="$( diff --unified "/home/${ config.personal.name }/resources/mounts/$INDEX/true-true/pre-test/STANDARD_INPUT" ${ standard-output-file } )" || true
+                                                                                                                                                                        failure 16668 EXPECTED_STANDARD_OUTPUT "$EXPECTED_STANDARD_OUTPUT" OBSERVED_STANDARD_OUTPUT "$OBSERVED_STANDARD_OUTPUT" DIFF_STANDARD_OUTPUT "$DIFF_STANDARD_OUTPUT"
+                                                                                                                                                                    fi
+                                                                                                                                                                    WC_SEVEN="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 21345
+                                                                                                                                                                    if [[ "$WC_SEVEN" != 6 ]]
+                                                                                                                                                                    then
+                                                                                                                                                                        SEVEN="$( head --lines 7 "$OUTPUT_FILE" | tail --lines 1 )" || failure 17032
+                                                                                                                                                                        failure 20505 SEVEN "$SEVEN"
+                                                                                                                                                                    fi
+                                                                                                                                                                    if [[ -e "${ invalid-init alpha 17293 }" ]]
+                                                                                                                                                                    then
+                                                                                                                                                                        failure 23500
+                                                                                                                                                                    fi
+                                                                                                                                                                    if [[ -e "${ invalid-release alpha 17293 }" ]]
+                                                                                                                                                                    then
+                                                                                                                                                                        failure 13101
+                                                                                                                                                                    fi
+                                                                                                                                                                '' ;
+                                                                                                                                                }
+                                                                                                                                        )
+                                                                                                                                        sequential
+                                                                                                                                    ] ;
+                                                                                                                                text =
+                                                                                                                                    let
+                                                                                                                                        release =
+                                                                                                                                            {
+                                                                                                                                                hash = "e0a0a4e4ae26d30986f07d58634add724195ef807bc6697193f9a89fe62e012113db34929a6409d830991489bf49e1cc16eba4bd2c21032220c95941c1a8b764" ;
+                                                                                                                                                index = pad-16 alpha 1 ;
+                                                                                                                                                script-file = script-file ;
+                                                                                                                                                seed = [ "production" "checks" "true" "true" ] ;
+                                                                                                                                                standard-error-file = standard-error-file ;
+                                                                                                                                                standard-output-file = standard-output-file ;
+                                                                                                                                                status = "0" ;
+                                                                                                                                            } ;
+                                                                                                                                        release-message-file = log-16 alpha 9 ;
+                                                                                                                                        script =
+                                                                                                                                            ''
+                                                                                                                                                #!/nix/store/mjhcjikhxps97mq5z54j4gjjfzgmsir5-bash-5.2p37/bin/bash
+                                                                                                                                                set -o errexit
+                                                                                                                                                set -o nounset
+                                                                                                                                                set -o pipefail
+
+                                                                                                                                                /nix/store/ivcji4xkipn8zfiqj50yfgrq8g9cfxn1-release/bin/release'' ;
+                                                                                                                                        script-file = log-16 alpha 6;
+                                                                                                                                        standard-error = "" ;
+                                                                                                                                        standard-error-file = log-16 alpha 7 ;
+                                                                                                                                        standard-output = "18719" ;
+                                                                                                                                        standard-output-file = log-16 alpha 8 ;
+                                                                                                                                        in
+                                                                                                                                            ''
+                                                                                                                                                OUTPUT_SEQUENCE="$( sequential )" || failure 27462
+                                                                                                                                                OUTPUT_FILE="$TEMPORARY/$OUTPUT_SEQUENCE"
+                                                                                                                                                export OUTPUT_FILE
+                                                                                                                                                touch "$OUTPUT_FILE"
+                                                                                                                                                redis-cli --csv SUBSCRIBE invalid-init invalid-release stale-init valid-init valid-release > "$OUTPUT_FILE" &
+                                                                                                                                                COUNT_5=0
+                                                                                                                                                while [[ "$COUNT_5" -lt "5" ]]
+                                                                                                                                                do
+                                                                                                                                                    echo "$COUNT_5=$COUNT_5"
+                                                                                                                                                    sleep 1
+                                                                                                                                                    COUNT_5="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 13785
+                                                                                                                                                done
+                                                                                                                                                EXPECTED_SUBSCRIBE_INVALID_INIT="\"subscribe\",\"invalid-init\",1"
+                                                                                                                                                OBSERVED_SUBSCRIBE_INVALID_INIT="$( head --lines 1 "$OUTPUT_FILE" )" || failure 29807
+                                                                                                                                                if [[ "$EXPECTED_SUBSCRIBE_INVALID_INIT" != "$OBSERVED_SUBSCRIBE_INVALID_INIT" ]]
+                                                                                                                                                then
+                                                                                                                                                    failure 30918 EXPECTED_SUBSCRIBE_INVALID_INIT "$EXPECTED_SUBSCRIBE_INVALID_INIT" OBSERVED_SUBSCRIBE_INVALID_INIT "$OBSERVED_SUBSCRIBE_INVALID_INIT"
+                                                                                                                                                fi
+                                                                                                                                                EXPECTED_SUBSCRIBE_INVALID_RELEASE="\"subscribe\",\"invalid-release\",2"
+                                                                                                                                                OBSERVED_SUBSCRIBE_INVALID_RELEASE="$( head --lines 2 "$OUTPUT_FILE" | tail --lines 1 )" || failure 10496
+                                                                                                                                                if [[ "$EXPECTED_SUBSCRIBE_INVALID_RELEASE" != "$OBSERVED_SUBSCRIBE_INVALID_RELEASE" ]]
+                                                                                                                                                then
+                                                                                                                                                    failure 21324 EXPECTED_SUBSCRIBE_INVALID_RELEASE "$EXPECTED_SUBSCRIBE_INVALID_RELEASE" OBSERVED_SUBSCRIBE_INVALID_RELEASE "$OBSERVED_SUBSCRIBE_INVALID_RELEASE"
+                                                                                                                                                fi
+                                                                                                                                                EXPECTED_SUBSCRIBE_STALE_INIT="\"subscribe\",\"stale-init\",3"
+                                                                                                                                                OBSERVED_SUBSCRIBE_STALE_INIT="$( head --lines 3 "$OUTPUT_FILE" | tail --lines 1 )" || failure 16256
+                                                                                                                                                if [[ "$EXPECTED_SUBSCRIBE_STALE_INIT" != "$OBSERVED_SUBSCRIBE_STALE_INIT" ]]
+                                                                                                                                                then
+                                                                                                                                                    failure 11841 EXPECTED_SUBSCRIBE_STALE_INIT "$EXPECTED_SUBSCRIBE_STALE_INIT" OBSERVED_SUBSCRIBE_STALE_INIT "$OBSERVED_SUBSCRIBE_STALE_INIT"
+                                                                                                                                                fi
+                                                                                                                                                EXPECTED_SUBSCRIBE_VALID_INIT="\"subscribe\",\"valid-init\",4"
+                                                                                                                                                OBSERVED_SUBSCRIBE_VALID_INIT="$( head --lines 4 "$OUTPUT_FILE" | tail --lines 1 )" || failure 32080
+                                                                                                                                                if [[ "$EXPECTED_SUBSCRIBE_VALID_INIT" != "$OBSERVED_SUBSCRIBE_VALID_INIT" ]]
+                                                                                                                                                then
+                                                                                                                                                    failure 20315 EXPECTED_SUBSCRIBE_VALID_INIT "$EXPECTED_SUBSCRIBE_VALID_INIT" OBSERVED_SUBSCRIBE_VALID_INIT "$OBSERVED_SUBSCRIBE_VALID_INIT"
+                                                                                                                                                fi
+                                                                                                                                                EXPECTED_SUBSCRIBE_VALID_RELEASE="\"subscribe\",\"valid-release\",5"
+                                                                                                                                                OBSERVED_SUBSCRIBE_VALID_RELEASE="$( head --lines 5 "$OUTPUT_FILE" | tail --lines 1 )" || failure 20683
+                                                                                                                                                if [[ "$EXPECTED_SUBSCRIBE_VALID_RELEASE" != "$OBSERVED_SUBSCRIBE_VALID_RELEASE" ]]
+                                                                                                                                                then
+                                                                                                                                                    failure 28681 EXPECTED_SUBSCRIBE_VALID_RELEASE "$EXPECTED_SUBSCRIBE_VALID_RELEASE" OBSERVED_SUBSCRIBE_VALID_RELEASE "$OBSERVED_SUBSCRIBE_VALID_RELEASE"
+                                                                                                                                                fi
+                                                                                                                                                WC_SIX="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 17924
+                                                                                                                                                if [[ "$WC_SIX" != "5" ]]
+                                                                                                                                                then
+                                                                                                                                                    SIX="$( head --lines 6 "$OUTPUT_FILE" | tail --lines 1 )" || failure 17032
+                                                                                                                                                    failure 24681 SIX "$SIX"
+                                                                                                                                                fi
+                                                                                                                                                timeout 1m bash -c pre-test
+                                                                                                                                                COUNT_7=0
+                                                                                                                                                while [[ "$COUNT_7" != "7" ]]
+                                                                                                                                                do
+                                                                                                                                                    sleep 1
+                                                                                                                                                    COUNT_7="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 24082
+                                                                                                                                                done
+                                                                                                                                                EXPECTED_RELEASE="\"message\",\"valid-release\",\"${ release-message-file }\""
+                                                                                                                                                OBSERVED_RELEASE="$( head --lines 8 "$OUTPUT_FILE" | tail --lines 1 )" || failure 14819
+                                                                                                                                                if [[ "$EXPECTED_RELEASE" != "$OBSERVED_RELEASE" ]]
+                                                                                                                                                then
+                                                                                                                                                    failure 13751 EXPECTED_RELEASE "$EXPECTED_RELEASE" OBSERVED_RELEASE "$OBSERVED_RELEASE" "$( cat /home/emory/resources/logs/0000000000000031 )"
+                                                                                                                                                fi
+                                                                                                                                                EXPECTED_RELEASE_JSON='${ builtins.toJSON release }'
+                                                                                                                                                OBSERVED_RELEASE_JSON="$( jq --compact-output "." ${ release-message-file } )" || failure 20816 ${ release-message-file }
+                                                                                                                                                if [[ "$EXPECTED_RELEASE_JSON" != "$OBSERVED_RELEASE_JSON" ]]
+                                                                                                                                                then
+                                                                                                                                                    VERBOSE_RELEASE_JSON="$( jq "." ${ release-message-file } )" || failure 18266
+                                                                                                                                                    failure 25932 EXPECTED_RELEASE_JSON "$EXPECTED_RELEASE_JSON" OBSERVED_RELEASE_JSON "$OBSERVED_RELEASE_JSON" VERBOSE_RELEASE_JSON "$VERBOSE_RELEASE_JSON"
+                                                                                                                                                fi
+                                                                                                                                                EXPECTED_SCRIPT='${ script }'
+                                                                                                                                                OBSERVED_SCRIPT="$( cat ${ script-file } )" || failure 19776
+                                                                                                                                                if [[ "$EXPECTED_SCRIPT" != "$OBSERVED_SCRIPT" ]]
+                                                                                                                                                then
+                                                                                                                                                    SCRIPT_SEQUENCE="$( sequential )" || failure 29176
+                                                                                                                                                    echo "$EXPECTED_SCRIPT" > "$TEMPORARY/$SCRIPT_SEQUENCE"
+                                                                                                                                                    DIFF_SCRIPT="$( diff --unified "$TEMPORARY/$SCRIPT_SEQUENCE" ${ script-file } )" || true
+                                                                                                                                                    failure 5478 EXPECTED_SCRIPT "$EXPECTED_SCRIPT" OBSERVED_SCRIPT "$OBSERVED_SCRIPT" DIFF_SCRIPT "$DIFF_SCRIPT"
+                                                                                                                                                fi
+                                                                                                                                                EXPECTED_STANDARD_ERROR='${ standard-error }'
+                                                                                                                                                OBSERVED_STANDARD_ERROR="$( cat ${ standard-error-file } )" || failure 4256
+                                                                                                                                                if [[ "$EXPECTED_STANDARD_ERROR" != "$OBSERVED_STANDARD_ERROR" ]]
+                                                                                                                                                then
+                                                                                                                                                    STANDARD_ERROR_SEQUENCE="$( sequential )" || failure 27101
+                                                                                                                                                    echo "$EXPECTED_STANDARD_ERROR" > "$TEMPORARY/$STANDARD_ERROR_SEQUENCE"
+                                                                                                                                                    DIFF_STANDARD_ERROR="$( diff --unified "$TEMPORARY/$STANDARD_ERROR_SEQUENCE" ${ standard-error-file } )" || true
+                                                                                                                                                    failure 20376 EXPECTED_STANDARD_ERROR "$EXPECTED_STANDARD_ERROR" OBSERVED_STANDARD_ERROR "$OBSERVED_STANDARD_ERROR" DIFF_STANDARD_ERROR "$DIFF_STANDARD_ERROR"
+                                                                                                                                                fi
+                                                                                                                                                EXPECTED_STANDARD_OUTPUT='${ standard-output }'
+                                                                                                                                                OBSERVED_STANDARD_OUTPUT="$( cat ${ standard-output-file } )" || failure 11369
+                                                                                                                                                if [[ "$EXPECTED_STANDARD_OUTPUT" != "$OBSERVED_STANDARD_OUTPUT" ]]
+                                                                                                                                                then
+                                                                                                                                                    STANDARD_OUTPUT_SEQUENCE="$( sequential )" || failure 29999
+                                                                                                                                                    echo "$EXPECTED_STANDARD_OUTPUT" > "$TEMPORARY/$STANDARD_OUTPUT_SEQUENCE"
+                                                                                                                                                    DIFF_STANDARD_OUTPUT="$( diff --unified "$TEMPORARY/$STANDARD_OUTPUT_SEQUENCE" ${ standard-output-file } )" || true
+                                                                                                                                                    failure 22430 EXPECTED_STANDARD_OUTPUT "$EXPECTED_STANDARD_OUTPUT" OBSERVED_STANDARD_OUTPUT "$OBSERVED_STANDARD_OUTPUT" DIFF_STANDARD_OUTPUT "$DIFF_STANDARD_OUTPUT"
+                                                                                                                                                fi
+                                                                                                                                                if [[ -e "${ invalid-init alpha 17293 }" ]]
+                                                                                                                                                then
+                                                                                                                                                    failure 31812
+                                                                                                                                                fi
+                                                                                                                                                if [[ -e "${ invalid-release alpha 17293 }" ]]
+                                                                                                                                                then
+                                                                                                                                                    failure 20789
+                                                                                                                                                fi
+                                                                                                                                                WC_EIGHT="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 17418
+                                                                                                                                                if [[ "$WC_EIGHT" != 7 ]]
+                                                                                                                                                then
+                                                                                                                                                    EIGHT="$( head --lines 8 "$OUTPUT_FILE" | tail --lines 1 )" || failure 14060
+                                                                                                                                                    failure 12459 EIGHT "$EIGHT"
+                                                                                                                                                fi
+                                                                                                                                            '' ;
+                                                                                                                            } ;
+                                                                                                                    in "${ application }/bin/true-false" ;
                                                                                                             true-true =
                                                                                                                 let
                                                                                                                     alpha = 21 ;
@@ -1034,6 +1955,132 @@
                                                                                                                     in "${ application }/bin/true-true" ;
                                                                                                             in
                                                                                                                 ''
+                                                                                                                    wrap \
+                                                                                                                        ${ false-false } \
+                                                                                                                        false-false \
+                                                                                                                        0500 \
+                                                                                                                        --literal plain COUNT_5 \
+                                                                                                                        --literal plain COUNT_7 \
+                                                                                                                        --literal plain DIFF_SCRIPT \
+                                                                                                                        --literal plain DIFF_STANDARD_ERROR \
+                                                                                                                        --literal plain DIFF_STANDARD_OUTPUT \
+                                                                                                                        --literal plain EXPECTED_RELEASE \
+                                                                                                                        --literal plain EXPECTED_RELEASE_JSON \
+                                                                                                                        --literal plain EXPECTED_SCRIPT \
+                                                                                                                        --literal plain EXPECTED_STANDARD_ERROR \
+                                                                                                                        --literal plain EXPECTED_STANDARD_OUTPUT \
+                                                                                                                        --literal plain EXPECTED_SUBSCRIBE_INVALID_INIT \
+                                                                                                                        --literal plain EXPECTED_SUBSCRIBE_INVALID_RELEASE \
+                                                                                                                        --literal plain EXPECTED_SUBSCRIBE_STALE_INIT \
+                                                                                                                        --literal plain EXPECTED_SUBSCRIBE_VALID_INIT \
+                                                                                                                        --literal plain EXPECTED_SUBSCRIBE_VALID_RELEASE \
+                                                                                                                        --literal plain EIGHT \
+                                                                                                                        --literal plain OBSERVED_RELEASE \
+                                                                                                                        --literal plain OBSERVED_RELEASE_JSON \
+                                                                                                                        --literal plain OBSERVED_SCRIPT \
+                                                                                                                        --literal plain OBSERVED_STANDARD_ERROR \
+                                                                                                                        --literal plain OBSERVED_STANDARD_OUTPUT \
+                                                                                                                        --literal plain OBSERVED_SUBSCRIBE_INVALID_INIT \
+                                                                                                                        --literal plain OBSERVED_SUBSCRIBE_INVALID_RELEASE \
+                                                                                                                        --literal plain OBSERVED_SUBSCRIBE_STALE_INIT \
+                                                                                                                        --literal plain OBSERVED_SUBSCRIBE_VALID_INIT \
+                                                                                                                        --literal plain OBSERVED_SUBSCRIBE_VALID_RELEASE \
+                                                                                                                        --literal plain OUTPUT_FILE \
+                                                                                                                        --literal plain OUTPUT_SEQUENCE \
+                                                                                                                        --literal plain PATH \
+                                                                                                                        --literal plain SIX \
+                                                                                                                        --literal plain SCRIPT_SEQUENCE \
+                                                                                                                        --literal plain STANDARD_ERROR_SEQUENCE \
+                                                                                                                        --literal plain STANDARD_OUTPUT_SEQUENCE \
+                                                                                                                        --literal plain TEMPORARY \
+                                                                                                                        --literal plain VERBOSE_RELEASE_JSON \
+                                                                                                                        --literal plain WC_SIX \
+                                                                                                                        --literal plain WC_EIGHT \
+                                                                                                                        --uuid 20437
+                                                                                                                    wrap \
+                                                                                                                        ${ false-true } \
+                                                                                                                        false-true \
+                                                                                                                        0500 \
+                                                                                                                        --literal plain COUNT_5 \
+                                                                                                                        --literal plain COUNT_7 \
+                                                                                                                        --literal plain DIFF_SCRIPT \
+                                                                                                                        --literal plain DIFF_STANDARD_ERROR \
+                                                                                                                        --literal plain DIFF_STANDARD_OUTPUT \
+                                                                                                                        --literal plain EXPECTED_RELEASE \
+                                                                                                                        --literal plain EXPECTED_RELEASE_JSON \
+                                                                                                                        --literal plain EXPECTED_SCRIPT \
+                                                                                                                        --literal plain EXPECTED_STANDARD_ERROR \
+                                                                                                                        --literal plain EXPECTED_STANDARD_OUTPUT \
+                                                                                                                        --literal plain EXPECTED_SUBSCRIBE_INVALID_INIT \
+                                                                                                                        --literal plain EXPECTED_SUBSCRIBE_INVALID_RELEASE \
+                                                                                                                        --literal plain EXPECTED_SUBSCRIBE_STALE_INIT \
+                                                                                                                        --literal plain EXPECTED_SUBSCRIBE_VALID_INIT \
+                                                                                                                        --literal plain EXPECTED_SUBSCRIBE_VALID_RELEASE \
+                                                                                                                        --literal plain EIGHT \
+                                                                                                                        --literal plain OBSERVED_RELEASE \
+                                                                                                                        --literal plain OBSERVED_RELEASE_JSON \
+                                                                                                                        --literal plain OBSERVED_SCRIPT \
+                                                                                                                        --literal plain OBSERVED_STANDARD_ERROR \
+                                                                                                                        --literal plain OBSERVED_STANDARD_OUTPUT \
+                                                                                                                        --literal plain OBSERVED_SUBSCRIBE_INVALID_INIT \
+                                                                                                                        --literal plain OBSERVED_SUBSCRIBE_INVALID_RELEASE \
+                                                                                                                        --literal plain OBSERVED_SUBSCRIBE_STALE_INIT \
+                                                                                                                        --literal plain OBSERVED_SUBSCRIBE_VALID_INIT \
+                                                                                                                        --literal plain OBSERVED_SUBSCRIBE_VALID_RELEASE \
+                                                                                                                        --literal plain OUTPUT_FILE \
+                                                                                                                        --literal plain OUTPUT_SEQUENCE \
+                                                                                                                        --literal plain PATH \
+                                                                                                                        --literal plain SIX \
+                                                                                                                        --literal plain SCRIPT_SEQUENCE \
+                                                                                                                        --literal plain STANDARD_ERROR_SEQUENCE \
+                                                                                                                        --literal plain STANDARD_OUTPUT_SEQUENCE \
+                                                                                                                        --literal plain TEMPORARY \
+                                                                                                                        --literal plain VERBOSE_RELEASE_JSON \
+                                                                                                                        --literal plain WC_SIX \
+                                                                                                                        --literal plain WC_EIGHT \
+                                                                                                                        --uuid 21038
+                                                                                                                    wrap \
+                                                                                                                        ${ true-false } \
+                                                                                                                        true-false \
+                                                                                                                        0500 \
+                                                                                                                        --literal plain COUNT_5 \
+                                                                                                                        --literal plain COUNT_7 \
+                                                                                                                        --literal plain DIFF_SCRIPT \
+                                                                                                                        --literal plain DIFF_STANDARD_ERROR \
+                                                                                                                        --literal plain DIFF_STANDARD_OUTPUT \
+                                                                                                                        --literal plain EXPECTED_RELEASE \
+                                                                                                                        --literal plain EXPECTED_RELEASE_JSON \
+                                                                                                                        --literal plain EXPECTED_SCRIPT \
+                                                                                                                        --literal plain EXPECTED_STANDARD_ERROR \
+                                                                                                                        --literal plain EXPECTED_STANDARD_OUTPUT \
+                                                                                                                        --literal plain EXPECTED_SUBSCRIBE_INVALID_INIT \
+                                                                                                                        --literal plain EXPECTED_SUBSCRIBE_INVALID_RELEASE \
+                                                                                                                        --literal plain EXPECTED_SUBSCRIBE_STALE_INIT \
+                                                                                                                        --literal plain EXPECTED_SUBSCRIBE_VALID_INIT \
+                                                                                                                        --literal plain EXPECTED_SUBSCRIBE_VALID_RELEASE \
+                                                                                                                        --literal plain EIGHT \
+                                                                                                                        --literal plain OBSERVED_RELEASE \
+                                                                                                                        --literal plain OBSERVED_RELEASE_JSON \
+                                                                                                                        --literal plain OBSERVED_SCRIPT \
+                                                                                                                        --literal plain OBSERVED_STANDARD_ERROR \
+                                                                                                                        --literal plain OBSERVED_STANDARD_OUTPUT \
+                                                                                                                        --literal plain OBSERVED_SUBSCRIBE_INVALID_INIT \
+                                                                                                                        --literal plain OBSERVED_SUBSCRIBE_INVALID_RELEASE \
+                                                                                                                        --literal plain OBSERVED_SUBSCRIBE_STALE_INIT \
+                                                                                                                        --literal plain OBSERVED_SUBSCRIBE_VALID_INIT \
+                                                                                                                        --literal plain OBSERVED_SUBSCRIBE_VALID_RELEASE \
+                                                                                                                        --literal plain OUTPUT_FILE \
+                                                                                                                        --literal plain OUTPUT_SEQUENCE \
+                                                                                                                        --literal plain PATH \
+                                                                                                                        --literal plain SIX \
+                                                                                                                        --literal plain SCRIPT_SEQUENCE \
+                                                                                                                        --literal plain STANDARD_ERROR_SEQUENCE \
+                                                                                                                        --literal plain STANDARD_OUTPUT_SEQUENCE \
+                                                                                                                        --literal plain TEMPORARY \
+                                                                                                                        --literal plain VERBOSE_RELEASE_JSON \
+                                                                                                                        --literal plain WC_SIX \
+                                                                                                                        --literal plain WC_EIGHT \
+                                                                                                                        --uuid 11009
                                                                                                                     wrap \
                                                                                                                         ${ true-true } \
                                                                                                                         true-true \
