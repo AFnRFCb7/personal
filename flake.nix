@@ -841,7 +841,7 @@
                                                                                                                                                                     OBSERVED_SCRIPT="$( cat ${ script-file } )" || failure 11196
                                                                                                                                                                     if [[ "$EXPECTED_SCRIPT" != "$OBSERVED_SCRIPT" ]]
                                                                                                                                                                     then
-                                                                                                                                                                        RELEASE_SEQUENCE="$( sequential )" || failure 26024
+                                                                                                                                                                        RELEASE_SEQUENCE="$( sequential )" || failure 16175
                                                                                                                                                                         echo "$EXPECTED_SCRIPT" > "$TEMPORARY/$RELEASE_SEQUENCE"
                                                                                                                                                                         DIFF_SCRIPT="$( diff --unified "/home/${ config.personal.name }/resources/mounts/$INDEX/true-true/pre-test/SCRIPT" ${ script-file } )" || true
                                                                                                                                                                         failure 18539 EXPECTED_SCRIPT "$EXPECTED_SCRIPT" OBSERVED_SCRIPT "$OBSERVED_SCRIPT" DIFF_SCRIPT "$DIFF_SCRIPT"
@@ -896,10 +896,10 @@
                                                                                                                                     let
                                                                                                                                         release =
                                                                                                                                             {
-                                                                                                                                                hash = "04694a0c7b85003740af1525a7fdab5352e488c7fa585da3857d515095f5e43e0a0f6a20afb5dc8db72fd991e020fe1e82779fbbd90f2d558477990bd9a691c0" ;
-                                                                                                                                                index = pad-16 alpha 17293 ;
+                                                                                                                                                hash = "e0a0a4e4ae26d30986f07d58634add724195ef807bc6697193f9a89fe62e012113db34929a6409d830991489bf49e1cc16eba4bd2c21032220c95941c1a8b764" ;
+                                                                                                                                                index = pad-16 alpha 1 ;
                                                                                                                                                 script-file = script-file ;
-                                                                                                                                                seed = [ "production" "checks" "true-true" ] ;
+                                                                                                                                                seed = [ "production" "checks" "true" "true" ] ;
                                                                                                                                                 standard-error-file = standard-error-file ;
                                                                                                                                                 standard-output-file = standard-output-file ;
                                                                                                                                                 status = "0" ;
@@ -913,7 +913,7 @@
                                                                                                                                                 set -o pipefail
 
                                                                                                                                                 /nix/store/ivcji4xkipn8zfiqj50yfgrq8g9cfxn1-release/bin/release'' ;
-                                                                                                                                        script-file = log-16 alpha 17293 ;
+                                                                                                                                        script-file = log-16 alpha 6;
                                                                                                                                         standard-error = "" ;
                                                                                                                                         standard-error-file = log-16 alpha 17293 ;
                                                                                                                                         standard-output = "18719" ;
@@ -986,7 +986,7 @@
                                                                                                                                                 if [[ "$EXPECTED_RELEASE_JSON" != "$OBSERVED_RELEASE_JSON" ]]
                                                                                                                                                 then
                                                                                                                                                     VERBOSE_RELEASE_JSON="$( jq "." ${ release-message-file } )" || failure 18266
-                                                                                                                                                    failure 26024 EXPECTED_RELEASE_JSON "$EXPECTED_RELEASE_JSON" OBSERVED_RELEASE_JSON "$OBSERVED_RELEASE_JSON" VERBOSE_RELEASE_JSON "$VERBOSE_RELEASE_JSON"
+                                                                                                                                                    failure 25932 EXPECTED_RELEASE_JSON "$EXPECTED_RELEASE_JSON" OBSERVED_RELEASE_JSON "$OBSERVED_RELEASE_JSON" VERBOSE_RELEASE_JSON "$VERBOSE_RELEASE_JSON"
                                                                                                                                                 fi
                                                                                                                                                 EXPECTED_SCRIPT='${ script }'
                                                                                                                                                 OBSERVED_SCRIPT="$( cat ${ script-file } )" || failure 19776
