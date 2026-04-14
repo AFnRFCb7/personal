@@ -28,7 +28,7 @@
                                             flock = pkgs.flock ;
                                             gc-root-directory = gc-root-directory ;
                                             invalid-init-channel = "invalid-init" ;
-                                            invalid-release-channel = "invalid-release" ;
+                                            invalid-release-channel = "invalid-release" ;valid-release-channel
                                             jq = pkgs.jq ;
                                             procps = pkgs.procps ;
                                             redis = pkgs.redis ;
