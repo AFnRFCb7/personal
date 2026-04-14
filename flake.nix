@@ -1037,8 +1037,6 @@
                                                                                                                     in "${ application }/bin/true-true" ;
                                                                                                             in
                                                                                                                 ''
-                                                                                                                    mkdir --parents /mount/temporary
-                                                                                                                    export TEMPORARY=/home/${ config.personal.name }/mounts/$INDEX/temporary
                                                                                                                     wrap \
                                                                                                                         ${ true-true } \
                                                                                                                         true-true \
@@ -1076,7 +1074,7 @@
                                                                                                                         --literal plain SCRIPT_SEQUENCE \
                                                                                                                         --literal plain STANDARD_ERROR_SEQUENCE \
                                                                                                                         --literal plain STANDARD_OUTPUT_SEQUENCE \
-                                                                                                                        --inherit plain TEMPORARY \
+                                                                                                                        --literal plain TEMPORARY \
                                                                                                                         --literal plain VERBOSE_RELEASE_JSON \
                                                                                                                         --literal plain WC_SIX \
                                                                                                                         --literal plain WC_EIGHT \
@@ -1084,7 +1082,7 @@
                                                                                                                 '' ;
                                                                                                 } ;
                                                                                         in "${ application }/bin/init" ;
-                                                                            targets = [ "temporary" "true-true" ] ;
+                                                                            targets = [ "true-true" ] ;
                                                                         } ;
                                                                 gh =
                                                                     ignore :
@@ -1685,6 +1683,7 @@
                                                                                                                                                     export PATH=$BIN_PATH
                                                                                                                                                     # shellcheck disable=SC2153
                                                                                                                                                     export MANPATH=$MAN_PATH
+                                                                                                                                                    export TEMPORARY=/home/${ config.personal.name }/resources/$INDEX/temporary"
                                                                                                                                                 '' ;
                                                                                                                                         } ;
                                                                                                                                 in "${ application }/bin/envrc" ;
@@ -1694,11 +1693,12 @@
                                                                                                                                 gc-root "$CHECKS"
                                                                                                                                 export BIN_PATH=${ builtins.concatStringsSep ":" ( builtins.map ( x : "${ x }/bin" ) [ "$CHECKS" ] ) }
                                                                                                                                 export MAN_PATH=${ builtins.concatStringsSep ":" ( builtins.map ( x : "${ x }/share/man" ) [ "$CHECKS" ] ) }
+                                                                                                                                mkdir --parents /mount/temporary
                                                                                                                                 wrap ${ envrc } .envrc 0400 --inherit plain BIN_PATH --inherit plain MAN_PATH --uuid 24290
                                                                                                                             '' ;
                                                                                                             } ;
                                                                                                     in "${ application }/bin/init" ;
-                                                                                        targets = [ ".envrc" ] ;
+                                                                                        targets = [ ".envrc" "temporary" ] ;
                                                                                     } ;
                                                                             home =
                                                                                 ignore :
