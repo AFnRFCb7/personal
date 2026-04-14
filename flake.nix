@@ -1415,11 +1415,9 @@
                                                                                                                                                             standard-output-file = log-16 alpha 4 ;
                                                                                                                                                             in
                                                                                                                                                                 ''
-                                                                                                                                                                    EXPECTED_RESOURCE=${ mount-16 alpha 1 }
-                                                                                                                                                                    OBSERVED_RESOURCE=${ resources.production.checks.true.false { failure = 28374 ; } }
-                                                                                                                                                                    if [[ "$EXPECTED_RESOURCE" != "$OBSERVED_RESOURCE" ]]
+                                                                                                                                                                    if OBSERVED_RESOURCE=${ resources.production.checks.true.false { failure = 16630 ; } }
                                                                                                                                                                     then
-                                                                                                                                                                        failure 28991 EXPECTED_RESOURCE "$EXPECTED_RESOURCE" OBSERVED_RESOURCE "$OBSERVED_RESOURCE"
+                                                                                                                                                                        failure 28991 OBSERVED_RESOURCE "$OBSERVED_RESOURCE"
                                                                                                                                                                     fi
                                                                                                                                                                     COUNT_SIX=0
                                                                                                                                                                     while [[ "$COUNT_SIX" -lt "6" ]]
