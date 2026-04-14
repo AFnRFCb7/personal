@@ -1683,7 +1683,7 @@
                                                                                                                                                     export PATH=$BIN_PATH
                                                                                                                                                     # shellcheck disable=SC2153
                                                                                                                                                     export MANPATH=$MAN_PATH
-                                                                                                                                                    export TEMPORARY="/home/${ config.personal.name }/resources/$INDEX/temporary"
+                                                                                                                                                    export TEMPORARY="/home/${ config.personal.name }/resources/mounts/$INDEX/temporary"
                                                                                                                                                 '' ;
                                                                                                                                         } ;
                                                                                                                                 in "${ application }/bin/envrc" ;
