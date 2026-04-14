@@ -794,11 +794,11 @@
                                                                                                                                                                     /nix/store/qy4wc2sgkskjywq1sk7qfljsaqydar6d-init/bin/init''  ;
                                                                                                                                                             script-file = log-16 alpha 2 ;
                                                                                                                                                             standard-error = "" ;
-                                                                                                                                                            standard-error-file = log-16 alpha 2 ;
+                                                                                                                                                            standard-error-file = log-16 alpha 3 ;
                                                                                                                                                             standard-input = "" ;
-                                                                                                                                                            standard-input-file = log-16 alpha 3 ;
+                                                                                                                                                            standard-input-file = log-16 alpha 0 ;
                                                                                                                                                             standard-output = "14060" ;
-                                                                                                                                                            standard-output-file = log-16 alpha 9 ;
+                                                                                                                                                            standard-output-file = log-16 alpha 4 ;
                                                                                                                                                             in
                                                                                                                                                                 ''
                                                                                                                                                                     EXPECTED_RESOURCE=${ mount-16 alpha 1 }
