@@ -769,7 +769,7 @@
                                                                                                                                                                             observed = [ ] ;
                                                                                                                                                                         } ;
                                                                                                                                                                 } ;
-                                                                                                                                                            init-message-file = log-16 alpha 10 ;
+                                                                                                                                                            init-message-file = log-16 alpha 5 ;
                                                                                                                                                             release =
                                                                                                                                                                 ''
                                                                                                                                                                     #!/nix/store/mjhcjikhxps97mq5z54j4gjjfzgmsir5-bash-5.2p37/bin/bash
