@@ -915,9 +915,9 @@
                                                                                                                                                 /nix/store/ivcji4xkipn8zfiqj50yfgrq8g9cfxn1-release/bin/release'' ;
                                                                                                                                         script-file = log-16 alpha 6;
                                                                                                                                         standard-error = "" ;
-                                                                                                                                        standard-error-file = log-16 alpha 17293 ;
+                                                                                                                                        standard-error-file = log-16 alpha 7 ;
                                                                                                                                         standard-output = "18719" ;
-                                                                                                                                        standard-output-file = log-16 alpha 17293 ;
+                                                                                                                                        standard-output-file = log-16 alpha 8 ;
                                                                                                                                         in
                                                                                                                                             ''
                                                                                                                                                 OUTPUT_SEQUENCE="$( sequential )" || failure 27462
