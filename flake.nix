@@ -997,13 +997,14 @@
                                                                                                                                                 then
                                                                                                                                                     SCRIPT_SEQUENCE="$( sequential )" || failure 29176
                                                                                                                                                     echo "$EXPECTED_SCRIPT" > "$TEMPORARY/$SCRIPT_SEQUENCE"
-                                                                                                                                                    DIFF_SCRIPT="$( diff --unified "/home/${ config.personal.name }/resources/mounts/$INDEX/true-true/post-test/SCRIPT" ${ script-file } )" || true
+                                                                                                                                                    DIFF_SCRIPT="$( diff --unified "$TEMPORARY/$SCRIPT_SEQUENCE" ${ script-file } )" || true
                                                                                                                                                     failure 5478 EXPECTED_SCRIPT "$EXPECTED_SCRIPT" OBSERVED_SCRIPT "$OBSERVED_SCRIPT" DIFF_SCRIPT "$DIFF_SCRIPT"
                                                                                                                                                 fi
                                                                                                                                                 EXPECTED_STANDARD_ERROR='${ standard-error }'
                                                                                                                                                 OBSERVED_STANDARD_ERROR="$( cat ${ standard-error-file } )" || failure 4256
                                                                                                                                                 if [[ "$EXPECTED_STANDARD_ERROR" != "$OBSERVED_STANDARD_ERROR" ]]
                                                                                                                                                 then
+                                                                                                                                                    STANDARD_ERROR_SEQUENCE="$( sequential )" || failure
                                                                                                                                                     echo "$EXPECTED_STANDARD_ERROR" > "/home/${ config.personal.name }/resources/mounts/$INDEX/true-true/post-test/STANDARD_ERROR"
                                                                                                                                                     DIFF_STANDARD_ERROR="$( diff --unified "/home/${ config.personal.name }/resources/mounts/$INDEX/true-true/post-test/STANDARD_ERROR" ${ standard-error-file } )" || true
                                                                                                                                                     failure 20376 EXPECTED_STANDARD_ERROR "$EXPECTED_STANDARD_ERROR" OBSERVED_STANDARD_ERROR "$OBSERVED_STANDARD_ERROR" DIFF_STANDARD_ERROR "$DIFF_STANDARD_ERROR"
@@ -1072,8 +1073,6 @@
                                                                                                                         --literal plain PATH \
                                                                                                                         --literal plain SIX \
                                                                                                                         --literal plain SCRIPT_SEQUENCE \
-                                                                                                                        --literal plain STANDARD_ERROR_FILE \
-                                                                                                                        --literal plain STANDARD_OUTPUT_FILE \
                                                                                                                         --inherit plain TEMPORARY \
                                                                                                                         --literal plain VERBOSE_RELEASE_JSON \
                                                                                                                         --literal plain WC_SIX \
