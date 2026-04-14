@@ -924,6 +924,7 @@
                                                                                                                                                 OUTPUT_SEQUENCE="$( sequential )" || failure 27462
                                                                                                                                                 OUTPUT_FILE="$TEMPORARY/$OUTPUT_SEQUENCE"
                                                                                                                                                 export OUTPUT_FILE
+                                                                                                                                                touch "$OUTPUT_FILE"
                                                                                                                                                 redis-cli --csv SUBSCRIBE invalid-init invalid-release stale-init valid-init valid-release > "$OUTPUT_FILE" &
                                                                                                                                                 COUNT_5=0
                                                                                                                                                 while [[ "$COUNT_5" -lt "5" ]]
