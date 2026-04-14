@@ -1071,7 +1071,6 @@
                                                                                                                         --literal plain OUTPUT_SEQUENCE \
                                                                                                                         --literal plain PATH \
                                                                                                                         --literal plain SIX \
-                                                                                                                        --literal plain SCRIPT_FILE \
                                                                                                                         --literal plain SCRIPT_SEQUENCE \
                                                                                                                         --literal plain STANDARD_ERROR_FILE \
                                                                                                                         --literal plain STANDARD_OUTPUT_FILE \
