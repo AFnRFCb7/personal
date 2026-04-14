@@ -1014,7 +1014,7 @@
                                                                                                                                                 if [[ "$EXPECTED_STANDARD_OUTPUT" != "$OBSERVED_STANDARD_OUTPUT" ]]
                                                                                                                                                 then
                                                                                                                                                     STANDARD_OUTPUT_SEQUENCE="$( sequential )" || failure 29999
-                                                                                                                                                    echo "$STANDARD_OUTPUT_FILE" > "$TEMPORARY/$STANDARD_OUTPUT_SEQUENCE"
+                                                                                                                                                    echo "$EXPECTED_STANDARD_OUTPUT" > "$TEMPORARY/$STANDARD_OUTPUT_SEQUENCE"
                                                                                                                                                     DIFF_STANDARD_OUTPUT="$( diff --unified "$TEMPORARY/$STANDARD_OUTPUT_SEQUENCE" ${ standard-output-file } )" || true
                                                                                                                                                     failure 22430 EXPECTED_STANDARD_OUTPUT "$EXPECTED_STANDARD_OUTPUT" OBSERVED_STANDARD_OUTPUT "$OBSERVED_STANDARD_OUTPUT" DIFF_STANDARD_OUTPUT "$DIFF_STANDARD_OUTPUT"
                                                                                                                                                 fi
