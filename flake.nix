@@ -972,14 +972,14 @@
                                                                                                                                                     failure 24681 SIX "$SIX"
                                                                                                                                                 fi
                                                                                                                                                 timeout 1m bash -c pre-test
-                                                                                                                                                COUNT_6=0
-                                                                                                                                                while [[ "$COUNT_6" != "6" ]]
+                                                                                                                                                COUNT_7=0
+                                                                                                                                                while [[ "$COUNT_7" != "7" ]]
                                                                                                                                                 do
                                                                                                                                                     sleep 1
-                                                                                                                                                    COUNT_6="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 24082
+                                                                                                                                                    COUNT_7="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 24082
                                                                                                                                                 done
                                                                                                                                                 # TODO WRONG BUT OK FOR NOW
-                                                                                                                                                EXPECTED_RELEASE="\"message\",\"valid-init\",\"${ release-message-file }\""
+                                                                                                                                                EXPECTED_RELEASE="\"message\",\"valid-release\",\"${ release-message-file }\""
                                                                                                                                                 OBSERVED_RELEASE="$( head --lines 8 "$OUTPUT_FILE" | tail --lines 1 )" || failure 14819
                                                                                                                                                 if [[ "$EXPECTED_RELEASE" != "$OBSERVED_RELEASE" ]]
                                                                                                                                                 then
@@ -1043,7 +1043,7 @@
                                                                                                                         true-true \
                                                                                                                         0500 \
                                                                                                                         --literal plain COUNT_5 \
-                                                                                                                        --literal plain COUNT_6 \
+                                                                                                                        --literal plain COUNT_7 \
                                                                                                                         --literal plain DIFF_SCRIPT \
                                                                                                                         --literal plain DIFF_STANDARD_ERROR \
                                                                                                                         --literal plain DIFF_STANDARD_OUTPUT \
