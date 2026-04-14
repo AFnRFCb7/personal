@@ -19,7 +19,6 @@
                         visitor
                     } @primary :
                         let
-                            _failure = failure.lib { coreutils = pkgs.coreutils ; jq = pkgs.jq ; mkDerivation = pkgs.stdenv.mkDerivation ; visitor = visitor ; writeShellApplication = pkgs.writeShellApplication ; yq-go = pkgs.yq-go ; } ;
                             _resource =
                                 { gc-root-directory , resources , resources-directory } :
                                     resource.lib
@@ -1683,7 +1682,7 @@
                                                                                                                                                     export PATH=$BIN_PATH
                                                                                                                                                     # shellcheck disable=SC2153
                                                                                                                                                     export MANPATH=$MAN_PATH
-                                                                                                                                                    export TEMPORARY=/home/${ config.personal.name }/resources/$INDEX/temporary"
+                                                                                                                                                    export TEMPORARY="/home/${ config.personal.name }/resources/$INDEX/temporary"
                                                                                                                                                 '' ;
                                                                                                                                         } ;
                                                                                                                                 in "${ application }/bin/envrc" ;
@@ -2767,51 +2766,6 @@
                                                                     machine.succeed("runuser --login ${ testuser } -- ${ test }")
                                                                 '' ;
                                                 } ;
-                                            # studio =
-                                            #     pkgs.nixosTest
-                                            #         {
-                                            #             name = "studio" ;
-                                            #             nodes.machine =
-                                            #                 { pkgs , ... } :
-                                            #                     {
-                                            #                         imports = builtins.concatLists [ [ user ] private ] ;
-                                            #                     } ;
-                                            #             testScript =
-                                            #                 let
-                                            #                     test-script =
-                                            #                         let
-                                            #                             application =
-                                            #                                 pkgs.writeShellApplication
-                                            #                                     {
-                                            #                                         name = "test-script" ;
-                                            #                                         runtimeInputs = [ pkgs.coreutils pkgs.direnv ( _failure.implementation "59d475a8" ) ] ;
-                                            #                                         text =
-                                            #                                             ''
-                                            #                                                 while [[ ! -f "config.personal.name/pads/checks/.envrc" ]]
-                                            #                                                 do
-                                            #                                                    echo f5e2d051 WAIT for .envrc >&2
-                                            #                                                    sleep 1
-                                            #                                                 done
-                                            #                                                 cd "config.personal.name/pads/checks"
-                                            #                                                 # shellcheck disable=SC1091
-                                            #                                                 source "config.personal.name/pads/checks/.envrc"
-                                            #                                                 if ! studio
-                                            #                                                 then
-                                            #                                                     cat "config.personal.name/resources/log/trace.log" >&2
-                                            #                                                     exit 99
-                                            #                                                 fi
-                                            #                                             '' ;
-                                            #                                     } ;
-                                            #                             in "${ application }/bin/test-script" ;
-                                            #                     in
-                                            #                         ''
-                                            #                             machine.wait_for_unit("multi-user.target")
-                                            #                             machine.wait_for_unit("network-online.target")
-                                            #                             machine.wait_until_succeeds("ping -c1 -w5 8.8.8.8")
-                                            #                             machine.wait_until_succeeds("timeout 30s getent hosts github.com")
-                                            #                             machine.succeed("runuser ${ testuser } -- ${ test-script }")
-                                            #                         '' ;
-                                            #         } ;
                                             visitor-happy =
                                                 _visitor.check
                                                     {
