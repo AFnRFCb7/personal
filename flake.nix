@@ -801,7 +801,7 @@
                                                                                                                                                             standard-output-file = log-16 alpha 9 ;
                                                                                                                                                             in
                                                                                                                                                                 ''
-                                                                                                                                                                    EXPECTED_RESOURCE=${ mount-16 alpha 6 }
+                                                                                                                                                                    EXPECTED_RESOURCE=${ mount-16 alpha 1 }
                                                                                                                                                                     OBSERVED_RESOURCE=${ resources.production.checks.true.true { failure = 21760 ; } }
                                                                                                                                                                     if [[ "$EXPECTED_RESOURCE" != "$OBSERVED_RESOURCE" ]]
                                                                                                                                                                     then
