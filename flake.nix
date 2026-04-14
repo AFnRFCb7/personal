@@ -1075,7 +1075,7 @@
                                                                                                                         --literal plain SIX \
                                                                                                                         --literal plain SCRIPT_SEQUENCE \
                                                                                                                         --literal plain STANDARD_ERROR_SEQUENCE \
-                                                                                                                        --literal plain STANRDARD_OUTPUT_SEQUENCE \
+                                                                                                                        --literal plain STANDARD_OUTPUT_SEQUENCE \
                                                                                                                         --inherit plain TEMPORARY \
                                                                                                                         --literal plain VERBOSE_RELEASE_JSON \
                                                                                                                         --literal plain WC_SIX \
