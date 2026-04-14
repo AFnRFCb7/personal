@@ -731,7 +731,7 @@
                                                                                                                     application =
                                                                                                                         pkgs.writeShellApplication
                                                                                                                             {
-                                                                                                                                name = "true-true" ;
+                                                                                                                                name = "false-false" ;
                                                                                                                                 runtimeInputs =
                                                                                                                                     [
                                                                                                                                         failure
@@ -1038,7 +1038,7 @@
                                                                                                                     application =
                                                                                                                         pkgs.writeShellApplication
                                                                                                                             {
-                                                                                                                                name = "true-true" ;
+                                                                                                                                name = "false-true" ;
                                                                                                                                 runtimeInputs =
                                                                                                                                     [
                                                                                                                                         failure
@@ -1345,7 +1345,7 @@
                                                                                                                     application =
                                                                                                                         pkgs.writeShellApplication
                                                                                                                             {
-                                                                                                                                name = "true-true" ;
+                                                                                                                                name = "true-false" ;
                                                                                                                                 runtimeInputs =
                                                                                                                                     [
                                                                                                                                         failure
