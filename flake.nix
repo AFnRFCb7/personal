@@ -2126,7 +2126,7 @@
                                                                                                                 '' ;
                                                                                                 } ;
                                                                                         in "${ application }/bin/init" ;
-                                                                            targets = [ "true-true" ] ;
+                                                                            targets = [ "false-false" "false-true" "true-false" "true-true" ] ;
                                                                         } ;
                                                                 gh =
                                                                     ignore :
