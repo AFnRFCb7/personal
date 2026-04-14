@@ -904,8 +904,7 @@
                                                                                                                                                 standard-output-file = standard-output-file ;
                                                                                                                                                 status = "0" ;
                                                                                                                                             } ;
-                                                                                                                                        release-message-file = release-16 alpha 5
-                                                                                                                                         ;
+                                                                                                                                        release-message-file = release-16 alpha 5 ;
                                                                                                                                         script =
                                                                                                                                             ''
                                                                                                                                                 #!/nix/store/mjhcjikhxps97mq5z54j4gjjfzgmsir5-bash-5.2p37/bin/bash
@@ -969,9 +968,7 @@
                                                                                                                                                     SIX="$( head --lines 6 "$OUTPUT_FILE" | tail --lines 1 )" || failure 17032
                                                                                                                                                     failure 24681 SIX "$SIX"
                                                                                                                                                 fi
-                                                                                                                                                # the following pre-test should in its own process thread init 1 thiing
                                                                                                                                                 timeout 1m bash -c pre-test
-                                                                                                                                                # during the pre-test 1 things should be init'ed and after 1 thing should be released
                                                                                                                                                 COUNT_6=0
                                                                                                                                                 while [[ "$COUNT_6" != "6" ]]
                                                                                                                                                 do
