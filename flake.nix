@@ -1427,7 +1427,7 @@
                                                                                                                                                                         sleep 1
                                                                                                                                                                         COUNT_SIX="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 20751
                                                                                                                                                                     done
-                                                                                                                                                                    EXPECTED_INIT="\"message\",\"valid-init\",\"${ init-message-file }\""
+                                                                                                                                                                    EXPECTED_INIT="\"message\",\"invalid-init\",\"${ init-message-file }\""
                                                                                                                                                                     OBSERVED_INIT="$( head --lines 6 "$OUTPUT_FILE" | tail --lines 1 )" || failure 19870
                                                                                                                                                                     if [[ "$EXPECTED_INIT" != "$OBSERVED_INIT" ]]
                                                                                                                                                                     then
