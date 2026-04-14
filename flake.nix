@@ -904,7 +904,7 @@
                                                                                                                                                 standard-output-file = standard-output-file ;
                                                                                                                                                 status = "0" ;
                                                                                                                                             } ;
-                                                                                                                                        release-message-file = release-16 alpha 17293
+                                                                                                                                        release-message-file = release-16 alpha 5
                                                                                                                                          ;
                                                                                                                                         script =
                                                                                                                                             ''
