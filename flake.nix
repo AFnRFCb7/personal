@@ -747,7 +747,7 @@
                                                                                                                                             pkgs.writeShellApplication
                                                                                                                                                 {
                                                                                                                                                     name = "pre-test" ;
-                                                                                                                                                    runtimeInputs = [ failure pkgs.coreutils pkgs.diffutils pkgs.findutils pkgs.jq pkgs.inotify-tools pkgs.redis ] ;
+                                                                                                                                                    runtimeInputs = [ failure pkgs.coreutils pkgs.diffutils pkgs.findutils pkgs.jq pkgs.inotify-tools pkgs.redis sequential ] ;
                                                                                                                                                     text =
                                                                                                                                                         let
                                                                                                                                                             init =
@@ -832,7 +832,8 @@
                                                                                                                                                                     OBSERVED_RELEASE="$( cat ${ release-file } )" || failure 19359
                                                                                                                                                                     if [[ "$EXPECTED_RELEASE" != "$OBSERVED_RELEASE" ]]
                                                                                                                                                                     then
-                                                                                                                                                                        echo "$EXPECTED_RELEASE" > "/home/${ config.personal.name }/resources/mounts/$INDEX/true-true/pre-test/RELEASE"
+                                                                                                                                                                        RELEASE_SEQUENCE="$( sequential )" || failure 20665
+                                                                                                                                                                        echo "$EXPECTED_RELEASE" > "$TEMPORARY/$RELEASE_SEQUENCE"
                                                                                                                                                                         DIFF_RELEASE="$( diff --unified "/home/${ config.personal.name }/resources/mounts/$INDEX/true-true/pre-test/RELEASE" ${ release-file } )" || true
                                                                                                                                                                         failure 12409 EXPECTED_RELEASE "$EXPECTED_RELEASE" OBSERVED_RELEASE "$OBSERVED_RELEASE" DIFF_RELEASE "$DIFF_RELEASE"
                                                                                                                                                                     fi
@@ -841,7 +842,8 @@
                                                                                                                                                                     OBSERVED_SCRIPT="$( cat ${ script-file } )" || failure 11196
                                                                                                                                                                     if [[ "$EXPECTED_SCRIPT" != "$OBSERVED_SCRIPT" ]]
                                                                                                                                                                     then
-                                                                                                                                                                        echo "$EXPECTED_SCRIPT" > "/home/${ config.personal.name }/resources/mounts/$INDEX/true-true/pre-test/SCRIPT"
+                                                                                                                                                                        RELEASE_SCRIPT="$( sequential )" || failure 26024
+                                                                                                                                                                        echo "$EXPECTED_SCRIPT" > "$TEMPORARY/$EXPECTED_SEQUENCE"
                                                                                                                                                                         DIFF_SCRIPT="$( diff --unified "/home/${ config.personal.name }/resources/mounts/$INDEX/true-true/pre-test/SCRIPT" ${ script-file } )" || true
                                                                                                                                                                         failure 18539 EXPECTED_SCRIPT "$EXPECTED_SCRIPT" OBSERVED_SCRIPT "$OBSERVED_SCRIPT" DIFF_SCRIPT "$DIFF_SCRIPT"
                                                                                                                                                                     fi
@@ -849,7 +851,8 @@
                                                                                                                                                                     OBSERVED_STANDARD_ERROR="$( cat ${ standard-error-file } )" || failure 31412
                                                                                                                                                                     if [[ "$EXPECTED_STANDARD_ERROR" != "$OBSERVED_STANDARD_ERROR" ]]
                                                                                                                                                                     then
-                                                                                                                                                                        echo "$EXPECTED_STANDARD_ERROR" > "/home/${ config.personal.name }/resources/mounts/$INDEX/true-true/pre-test/STANDARD_ERROR"
+                                                                                                                                                                        STANDARD_ERROR_SEQUENCE="$( sequential )" || failure 21857
+                                                                                                                                                                        echo "$EXPECTED_STANDARD_ERROR" > "$TEMPORARY/$STANDARD_ERROR_SEQUENCE"
                                                                                                                                                                         DIFF_STANDARD_ERROR="$( diff --unified "/home/${ config.personal.name }/resources/mounts/$INDEX/true-true/pre-test/STANDARD_ERROR" ${ standard-error-file } )" || true
                                                                                                                                                                         failure 30053 EXPECTED_STANDARD_ERROR "$EXPECTED_STANDARD_ERROR" OBSERVED_STANDARD_ERROR "$OBSERVED_STANDARD_ERROR" DIFF_STANDARD_ERROR "$DIFF_STANDARD_ERROR"
                                                                                                                                                                     fi
@@ -857,7 +860,8 @@
                                                                                                                                                                     OBSERVED_STANDARD_INPUT="$( cat ${ standard-input-file } )" || failure 23070
                                                                                                                                                                     if [[ "$EXPECTED_STANDARD_INPUT" != "$OBSERVED_STANDARD_INPUT" ]]
                                                                                                                                                                     then
-                                                                                                                                                                        echo "$EXPECTED_STANDARD_INPUT" > "/home/${ config.personal.name }/resources/mounts/$INDEX/true-true/pre-test/STANDARD_INPUT"
+                                                                                                                                                                        STANDARD_INPUT_SEQUENCE="$( sequential )" || failure 30671
+                                                                                                                                                                        echo "$EXPECTED_STANDARD_INPUT" > "$TEMPORARY/$STANDARD_INPUT_SEQUENCE"
                                                                                                                                                                         DIFF_STANDARD_INPUT="$( diff --unified "/home/${ config.personal.name }/resources/mounts/$INDEX/true-true/pre-test/STANDARD_INPUT" ${ standard-output-file } )" || true
                                                                                                                                                                         failure 13551 EXPECTED_STANDARD_INPUT "$EXPECTED_STANDARD_INPUT" OBSERVED_STANDARD_INPUT "$OBSERVED_STANDARD_INPUT" DIFF_STANDARD_INPUT "$DIFF_STANDARD_INPUT"
                                                                                                                                                                     fi
@@ -865,7 +869,8 @@
                                                                                                                                                                     OBSERVED_STANDARD_OUTPUT="$( cat ${ standard-output-file } )" || failure 18330
                                                                                                                                                                     if [[ "$EXPECTED_STANDARD_OUTPUT" != "$OBSERVED_STANDARD_OUTPUT" ]]
                                                                                                                                                                     then
-                                                                                                                                                                        echo "$EXPECTED_STANDARD_OUTPUT" > "/home/${ config.personal.name }/resources/mounts/$INDEX/true-true/pre-test/STANDARD_INPUT"
+                                                                                                                                                                        STANDARD_OUTPUT_SEQUENCE="$( sequential )" || failure 22790
+                                                                                                                                                                        echo "$EXPECTED_STANDARD_OUTPUT" > "$TEMPORARY/$STANDARD_OUTPUT_SEQUENCE"
                                                                                                                                                                         DIFF_STANDARD_OUTPUT="$( diff --unified "/home/${ config.personal.name }/resources/mounts/$INDEX/true-true/pre-test/STANDARD_INPUT" ${ standard-output-file } )" || true
                                                                                                                                                                         failure 16668 EXPECTED_STANDARD_OUTPUT "$EXPECTED_STANDARD_OUTPUT" OBSERVED_STANDARD_OUTPUT "$OBSERVED_STANDARD_OUTPUT" DIFF_STANDARD_OUTPUT "$DIFF_STANDARD_OUTPUT"
                                                                                                                                                                     fi
@@ -886,6 +891,7 @@
                                                                                                                                                                 '' ;
                                                                                                                                                 }
                                                                                                                                         )
+                                                                                                                                        sequential
                                                                                                                                     ] ;
                                                                                                                                 text =
                                                                                                                                     let
@@ -916,9 +922,8 @@
                                                                                                                                         standard-output-file = log-16 alpha 17293 ;
                                                                                                                                         in
                                                                                                                                             ''
-                                                                                                                                                export INDEX="$INDEX"
-                                                                                                                                                OUTPUT_DIRECTORY=${ resources.production.temporary.redis { failure = 16152 ; } }
-                                                                                                                                                OUTPUT_FILE="$OUTPUT_DIRECTORY/holder"
+                                                                                                                                                OUTPUT_SEQUENCE="$( sequential )" || failure 27462
+                                                                                                                                                OUTPUT_FILE="$TEMPORARY/$OUTPUT_SEQUENCE"
                                                                                                                                                 export OUTPUT_FILE
                                                                                                                                                 redis-cli --csv SUBSCRIBE invalid-init invalid-release stale-init valid-init valid-release > "$OUTPUT_FILE" &
                                                                                                                                                 COUNT_5=0
@@ -990,7 +995,8 @@
                                                                                                                                                 OBSERVED_SCRIPT="$( cat ${ script-file } )" || failure 19776
                                                                                                                                                 if [[ "$EXPECTED_SCRIPT" != "$OBSERVED_SCRIPT" ]]
                                                                                                                                                 then
-                                                                                                                                                    echo "$EXPECTED_SCRIPT" > "/home/${ config.personal.name }/resources/mounts/$INDEX/true-true/post-test/SCRIPT"
+                                                                                                                                                    SCRIPT_SEQUENCE="$( sequential )" || failure 29176
+                                                                                                                                                    echo "$EXPECTED_SCRIPT" > "$TEMPORARY/$SCRIPT_SEQUENCE"
                                                                                                                                                     DIFF_SCRIPT="$( diff --unified "/home/${ config.personal.name }/resources/mounts/$INDEX/true-true/post-test/SCRIPT" ${ script-file } )" || true
                                                                                                                                                     failure 5478 EXPECTED_SCRIPT "$EXPECTED_SCRIPT" OBSERVED_SCRIPT "$OBSERVED_SCRIPT" DIFF_SCRIPT "$DIFF_SCRIPT"
                                                                                                                                                 fi
@@ -1029,8 +1035,8 @@
                                                                                                                     in "${ application }/bin/true-true" ;
                                                                                                             in
                                                                                                                 ''
-                                                                                                                    mkdir --parents /mount/temporary/true-true/pre-test
-                                                                                                                    mkdir --parents /mount/temporary/true-true/post-test
+                                                                                                                    mkdir --parents /mount/temporary
+                                                                                                                    export TEMPORARY=/home/${ config.personal.name }/mounts/$INDEX
                                                                                                                     wrap \
                                                                                                                         ${ true-true } \
                                                                                                                         true-true \
@@ -1062,13 +1068,15 @@
                                                                                                                         --literal plain OBSERVED_SUBSCRIBE_STALE_INIT \
                                                                                                                         --literal plain OBSERVED_SUBSCRIBE_VALID_INIT \
                                                                                                                         --literal plain OBSERVED_SUBSCRIBE_VALID_RELEASE \
-                                                                                                                        --literal plain OUTPUT_DIRECTORY \
                                                                                                                         --literal plain OUTPUT_FILE \
+                                                                                                                        --literal plain OUTPUT_SEQUENCE \
                                                                                                                         --literal plain PATH \
                                                                                                                         --literal plain SIX \
                                                                                                                         --literal plain SCRIPT_FILE \
+                                                                                                                        --literal plain SCRIPT_SEQUENCE \
                                                                                                                         --literal plain STANDARD_ERROR_FILE \
                                                                                                                         --literal plain STANDARD_OUTPUT_FILE \
+                                                                                                                        --export plain TEMPORARY \
                                                                                                                         --literal plain VERBOSE_RELEASE_JSON \
                                                                                                                         --literal plain WC_SIX \
                                                                                                                         --literal plain WC_EIGHT \
