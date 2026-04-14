@@ -1693,7 +1693,7 @@
                                                                                                                                 export BIN_PATH=${ builtins.concatStringsSep ":" ( builtins.map ( x : "${ x }/bin" ) [ "$CHECKS" ] ) }
                                                                                                                                 export MAN_PATH=${ builtins.concatStringsSep ":" ( builtins.map ( x : "${ x }/share/man" ) [ "$CHECKS" ] ) }
                                                                                                                                 mkdir --parents /mount/temporary
-                                                                                                                                wrap ${ envrc } .envrc 0400 --inherit plain BIN_PATH --inherit-plain INDEX --inherit plain MAN_PATH --uuid 24290
+                                                                                                                                wrap ${ envrc } .envrc 0400 --inherit plain BIN_PATH --inherit plain INDEX --inherit plain MAN_PATH --uuid 24290
                                                                                                                             '' ;
                                                                                                             } ;
                                                                                                     in "${ application }/bin/init" ;
