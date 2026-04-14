@@ -904,7 +904,9 @@
                                                                                                                                                 standard-output-file = standard-output-file ;
                                                                                                                                                 status = "0" ;
                                                                                                                                             } ;
-                                                                                                                                        release-message-file = release-16 alpha 5 ;
+                                                                                                                                        # this is wrong but wtf
+                                                                                                                                        # release-message-file = release-16 alpha 5 ;
+                                                                                                                                        release-message-file = log-16 alpha 5 ;
                                                                                                                                         script =
                                                                                                                                             ''
                                                                                                                                                 #!/nix/store/mjhcjikhxps97mq5z54j4gjjfzgmsir5-bash-5.2p37/bin/bash
