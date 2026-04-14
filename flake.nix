@@ -1043,7 +1043,6 @@
                                                                                                                         0500 \
                                                                                                                         --literal plain COUNT_5 \
                                                                                                                         --literal plain COUNT_6 \
-                                                                                                                        --literal plain DERIVATION \
                                                                                                                         --literal plain DIFF_SCRIPT \
                                                                                                                         --literal plain DIFF_STANDARD_ERROR \
                                                                                                                         --literal plain DIFF_STANDARD_OUTPUT \
@@ -1076,7 +1075,7 @@
                                                                                                                         --literal plain SCRIPT_SEQUENCE \
                                                                                                                         --literal plain STANDARD_ERROR_FILE \
                                                                                                                         --literal plain STANDARD_OUTPUT_FILE \
-                                                                                                                        --export plain TEMPORARY \
+                                                                                                                        --inherit plain TEMPORARY \
                                                                                                                         --literal plain VERBOSE_RELEASE_JSON \
                                                                                                                         --literal plain WC_SIX \
                                                                                                                         --literal plain WC_EIGHT \
