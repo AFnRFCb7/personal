@@ -754,10 +754,10 @@
                                                                                                                                                                     arguments = [ "" ] ;
                                                                                                                                                                     has-standard-input = "false" ;
                                                                                                                                                                     hash = "edfecc45b51dde9d2a0dabab9f3aa00d09d71bc89189d9ad2bf9c162580a4a0c978ec61357acf317e56cd70236208c79cc73d6438692da34d90680a8c0a51a73" ;
-                                                                                                                                                                    index = pad-16 alpha 6 ;
+                                                                                                                                                                    index = pad-16 alpha 1 ;
                                                                                                                                                                     release-file = release-file ;
                                                                                                                                                                     script-file = script-file ;
-                                                                                                                                                                    scripts-hash = "3f04a2ea60178bb3619ec95c8e41820eb061cab22a9ecd3effaa73042349c3e6c153bc9537d892dc8c3527b781d3e30a7c15d6b36b123dc11ca63e0b9c29e1b5" ;
+                                                                                                                                                                    scripts-hash = "d167f7da399e6b01b83f44c3ecb00eb43f5b666e767882bd27e1758abd7c7cc87797e80307d86f0b3cf8a2946115f6cba1b7e99622f17cd83c1631cf92a5c464" ;
                                                                                                                                                                     seed = [ "production" "checks" "true" "true" ] ;
                                                                                                                                                                     standard-error-file = standard-error-file ;
                                                                                                                                                                     standard-input-file = standard-input-file ;
@@ -765,8 +765,8 @@
                                                                                                                                                                     status = "0" ;
                                                                                                                                                                     targets =
                                                                                                                                                                         {
-                                                                                                                                                                            expected = [ ] ;
-                                                                                                                                                                            observed = [ ] ;
+                                                                                                                                                                            expected = [ "31321" ] ;
+                                                                                                                                                                            observed = [ "31321" ] ;
                                                                                                                                                                         } ;
                                                                                                                                                                 } ;
                                                                                                                                                             init-message-file = log-16 alpha 5 ;
@@ -783,7 +783,7 @@
                                                                                                                                                                     export HASH=edfecc45b51dde9d2a0dabab9f3aa00d09d71bc89189d9ad2bf9c162580a4a0c978ec61357acf317e56cd70236208c79cc73d6438692da34d90680a8c0a51a73
                                                                                                                                                                     export INDEX=${ pad-16 alpha 6 }
                                                                                                                                                                     destroy'' ;
-                                                                                                                                                            release-file = release-16 alpha 6 ;
+                                                                                                                                                            release-file = release-16 alpha 1 ;
                                                                                                                                                             script =
                                                                                                                                                                 ''
                                                                                                                                                                     #!/nix/store/mjhcjikhxps97mq5z54j4gjjfzgmsir5-bash-5.2p37/bin/bash
@@ -792,11 +792,11 @@
                                                                                                                                                                     set -o pipefail
 
                                                                                                                                                                     /nix/store/qy4wc2sgkskjywq1sk7qfljsaqydar6d-init/bin/init''  ;
-                                                                                                                                                            script-file = log-16 alpha 7 ;
+                                                                                                                                                            script-file = log-16 alpha 2 ;
                                                                                                                                                             standard-error = "" ;
-                                                                                                                                                            standard-error-file = log-16 alpha 8 ;
+                                                                                                                                                            standard-error-file = log-16 alpha 2 ;
                                                                                                                                                             standard-input = "" ;
-                                                                                                                                                            standard-input-file = log-16 alpha 5 ;
+                                                                                                                                                            standard-input-file = log-16 alpha 3 ;
                                                                                                                                                             standard-output = "14060" ;
                                                                                                                                                             standard-output-file = log-16 alpha 9 ;
                                                                                                                                                             in
