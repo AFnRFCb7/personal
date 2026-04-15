@@ -1393,9 +1393,9 @@
 
                                                                                                                                                                     export PATH="/nix/store/xy9sa2741cinqmfpmqhdrk38gcv1waxb-trace/bin:/nix/store/54f702arxcxl6xv5dn8x9gy16yqxfddw-destroy/bin:$PATH"
 
-                                                                                                                                                                    mkdir --parents "${ gc-root alpha 1 }"
+                                                                                                                                                                    mkdir --parents "${ gc-root alpha 5 }"
                                                                                                                                                                     export HASH=e0a0a4e4ae26d30986f07d58634add724195ef807bc6697193f9a89fe62e012113db34929a6409d830991489bf49e1cc16eba4bd2c21032220c95941c1a8b764
-                                                                                                                                                                    export INDEX=${ pad-16 alpha 1 }
+                                                                                                                                                                    export INDEX=${ pad-16 alpha 5 }
                                                                                                                                                                     destroy'' ;
                                                                                                                                                             release-file = release-16 alpha 1 ;
                                                                                                                                                             script =
@@ -1798,11 +1798,11 @@
                                                                                                                                                                         SEVEN="$( head --lines 7 "$OUTPUT_FILE" | tail --lines 1 )" || failure 17032
                                                                                                                                                                         failure 20505 SEVEN "$SEVEN"
                                                                                                                                                                     fi
-                                                                                                                                                                    if [[ -e "${ invalid-init alpha 17293 }" ]]
+                                                                                                                                                                    if [[ -e "/home/${ config.personal.name }/resources/invalid-init" ]]
                                                                                                                                                                     then
                                                                                                                                                                         failure 23500
                                                                                                                                                                     fi
-                                                                                                                                                                    if [[ -e "${ invalid-release alpha 17293 }" ]]
+                                                                                                                                                                    if [[ -e "/home/${ config.personal.name }/resources/invalid-release" ]]
                                                                                                                                                                     then
                                                                                                                                                                         failure 13101
                                                                                                                                                                     fi
