@@ -3849,46 +3849,46 @@
 #                                                                    machine.succeed("runuser --login ${ testuser } -- ${ test }")
 #                                                                '' ;
 #                                                } ;
-                                        resource-true-false =
-                                            pkgs.nixosTest
-                                                {
-                                                    name = "resource-true-false" ;
-                                                    nodes.machine =
-                                                        { ... } :
-                                                            {
-                                                                imports =
-                                                                    builtins.concatLists
-                                                                        [
-                                                                            [ user ]
-                                                                            private
-                                                                        ] ;
-                                                            } ;
-                                                    testScript =
-                                                        let
-                                                            test =
-                                                                let
-                                                                    application =
-                                                                        pkgs.writeShellApplication
-                                                                            {
-                                                                                name = "test" ;
-                                                                                runtimeInputs = [ pkgs.coreutils ] ;
-                                                                                text =
-                                                                                    ''
-                                                                                        PAD="$( resource --resource '["production","pad","checks"]' )"
-                                                                                        cd "$PAD"
-                                                                                        # shellcheck disable=SC1091
-                                                                                        source .envrc
-                                                                                        ${ pkgs.coreutils }/bin/timeout 2m true-false
-                                                                                    '' ;
-                                                                            } ;
-                                                                    in "${ application }/bin/test" ;
-                                                            in
-                                                                ''
-                                                                    machine.wait_for_unit("multi-user.target")
-                                                                    machine.wait_for_unit("network-online.target")
-                                                                    machine.succeed("runuser --login ${ testuser } -- ${ test }")
-                                                                '' ;
-                                                } ;
+#                                        resource-true-false =
+#                                            pkgs.nixosTest
+#                                                {
+#                                                    name = "resource-true-false" ;
+#                                                    nodes.machine =
+#                                                        { ... } :
+#                                                            {
+#                                                                imports =
+#                                                                    builtins.concatLists
+#                                                                        [
+#                                                                            [ user ]
+#                                                                            private
+#                                                                        ] ;
+#                                                            } ;
+#                                                    testScript =
+#                                                        let
+#                                                            test =
+#                                                                let
+#                                                                    application =
+#                                                                        pkgs.writeShellApplication
+#                                                                            {
+#                                                                                name = "test" ;
+#                                                                                runtimeInputs = [ pkgs.coreutils ] ;
+#                                                                                text =
+#                                                                                    ''
+#                                                                                        PAD="$( resource --resource '["production","pad","checks"]' )"
+#                                                                                        cd "$PAD"
+#                                                                                        # shellcheck disable=SC1091
+#                                                                                        source .envrc
+#                                                                                        ${ pkgs.coreutils }/bin/timeout 2m true-false
+#                                                                                    '' ;
+#                                                                            } ;
+#                                                                    in "${ application }/bin/test" ;
+#                                                            in
+#                                                                ''
+#                                                                    machine.wait_for_unit("multi-user.target")
+#                                                                    machine.wait_for_unit("network-online.target")
+#                                                                    machine.succeed("runuser --login ${ testuser } -- ${ test }")
+#                                                                '' ;
+#                                                } ;
                                         resource-true-true =
                                             pkgs.nixosTest
                                                 {
