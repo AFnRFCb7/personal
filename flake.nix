@@ -132,7 +132,7 @@
                                                                                                 --argjson PATH '${ builtins.toJSON path }' \
                                                                                                 --argjson FAILURE '${ builtins.toJSON failure }' \
                                                                                                 '{
-                                                                                                    "failure" $FAILURE ,
+                                                                                                    "failure" : $FAILURE ,
                                                                                                     "path" : $PATH
                                                                                                 }' | yq eval --prettyPrint "." >&2
                                                                                             exit 64
