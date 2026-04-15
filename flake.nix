@@ -1211,7 +1211,7 @@
                                                                                                                                                 standard-output-file = standard-output-file ;
                                                                                                                                                 status = "0" ;
                                                                                                                                             } ;
-                                                                                                                                        release-message-file = log-16 alpha 9 ;
+                                                                                                                                        release-message-file = log-16 alpha 13 ;
                                                                                                                                         script =
                                                                                                                                             ''
                                                                                                                                                 #!/nix/store/mjhcjikhxps97mq5z54j4gjjfzgmsir5-bash-5.2p37/bin/bash
@@ -1286,7 +1286,7 @@
                                                                                                                                                 OBSERVED_RELEASE="$( head --lines 8 "$OUTPUT_FILE" | tail --lines 1 )" || failure 14819
                                                                                                                                                 if [[ "$EXPECTED_RELEASE" != "$OBSERVED_RELEASE" ]]
                                                                                                                                                 then
-                                                                                                                                                    failure 13751 EXPECTED_RELEASE "$EXPECTED_RELEASE" OBSERVED_RELEASE "$OBSERVED_RELEASE" "$( cat /home/emory/resources/logs/0000000000000031 )"
+                                                                                                                                                    failure 13751 EXPECTED_RELEASE "$EXPECTED_RELEASE" OBSERVED_RELEASE "$OBSERVED_RELEASE"
                                                                                                                                                 fi
                                                                                                                                                 EXPECTED_RELEASE_JSON='${ builtins.toJSON release }'
                                                                                                                                                 OBSERVED_RELEASE_JSON="$( jq --compact-output "." ${ release-message-file } )" || failure 20816 ${ release-message-file }
@@ -1767,7 +1767,6 @@
                                                                                                                                                                     fi
                                                                                                                                                                     EXPECTED_STANDARD_ERROR='${ standard-error }'
                                                                                                                                                                     OBSERVED_STANDARD_ERROR="$( cat ${ standard-error-file } )" || failure 31412
-                                                                                                                                                                    if [[ "$EXPECTED_STANDARD_ERROR" != "$OBSERVED_STANDARD_ERROR" ]]
                                                                                                                                                                     then
                                                                                                                                                                         STANDARD_ERROR_SEQUENCE="$( sequential )" || failure 21857
                                                                                                                                                                         echo "$EXPECTED_STANDARD_ERROR" > "$TEMPORARY/$STANDARD_ERROR_SEQUENCE"
