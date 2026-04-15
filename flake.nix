@@ -1580,6 +1580,7 @@
                                                                                                                                                     SIX="$( head --lines 6 "$OUTPUT_FILE" | tail --lines 1 )" || failure 17032
                                                                                                                                                     failure 12828 SIX "$SIX"
                                                                                                                                                 fi
+                                                                                                                                                failure 24924
                                                                                                                                                 timeout 1m bash -c pre-test
                                                                                                                                                 COUNT_7=0
                                                                                                                                                 while [[ "$COUNT_7" != "7" ]]
