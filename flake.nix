@@ -1816,7 +1816,7 @@
                                                                                                                                         release =
                                                                                                                                             {
                                                                                                                                                 hash = "e0a0a4e4ae26d30986f07d58634add724195ef807bc6697193f9a89fe62e012113db34929a6409d830991489bf49e1cc16eba4bd2c21032220c95941c1a8b764" ;
-                                                                                                                                                index = pad-16 alpha 1 ;
+                                                                                                                                                index = pad-16 alpha 5 ;
                                                                                                                                                 script-file = script-file ;
                                                                                                                                                 seed = [ "production" "checks" "true" "true" ] ;
                                                                                                                                                 standard-error-file = standard-error-file ;
@@ -1832,11 +1832,11 @@
                                                                                                                                                 set -o pipefail
 
                                                                                                                                                 /nix/store/ivcji4xkipn8zfiqj50yfgrq8g9cfxn1-release/bin/release'' ;
-                                                                                                                                        script-file = log-16 alpha 6;
+                                                                                                                                        script-file = log-16 alpha 10 ;
                                                                                                                                         standard-error = "" ;
-                                                                                                                                        standard-error-file = log-16 alpha 7 ;
+                                                                                                                                        standard-error-file = log-16 alpha 11 ;
                                                                                                                                         standard-output = "18719" ;
-                                                                                                                                        standard-output-file = log-16 alpha 8 ;
+                                                                                                                                        standard-output-file = log-16 alpha 12 ;
                                                                                                                                         in
                                                                                                                                             ''
                                                                                                                                                 OUTPUT_SEQUENCE="$( sequential )" || failure 27462
@@ -1934,11 +1934,11 @@
                                                                                                                                                     DIFF_STANDARD_OUTPUT="$( diff --unified "$TEMPORARY/$STANDARD_OUTPUT_SEQUENCE" ${ standard-output-file } )" || true
                                                                                                                                                     failure 22430 EXPECTED_STANDARD_OUTPUT "$EXPECTED_STANDARD_OUTPUT" OBSERVED_STANDARD_OUTPUT "$OBSERVED_STANDARD_OUTPUT" DIFF_STANDARD_OUTPUT "$DIFF_STANDARD_OUTPUT"
                                                                                                                                                 fi
-                                                                                                                                                if [[ -e "${ invalid-init alpha 17293 }" ]]
+                                                                                                                                                if [[ -e "/home/${ config.personal.name }/resources/invalid-init" ]]
                                                                                                                                                 then
                                                                                                                                                     failure 31812
                                                                                                                                                 fi
-                                                                                                                                                if [[ -e "${ invalid-release alpha 17293 }" ]]
+                                                                                                                                                if [[ -e "/home/${ config.personal.name }/resources/invalid-release" ]]
                                                                                                                                                 then
                                                                                                                                                     failure 20789
                                                                                                                                                 fi
