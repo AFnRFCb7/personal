@@ -801,7 +801,6 @@
                                                                                                                                                             standard-output-file = log-16 alpha 4 ;
                                                                                                                                                             in
                                                                                                                                                                 ''
-
                                                                                                                                                                     EXPECTED_RESOURCE=${ mount-16 alpha 4 }
                                                                                                                                                                     OBSERVED_RESOURCE=${ resources.production.checks.true.true { failure = 21760 ; } }
                                                                                                                                                                     if [[ "$EXPECTED_RESOURCE" != "$OBSERVED_RESOURCE" ]]
@@ -1721,7 +1720,7 @@
                                                                                                                                                             standard-output-file = log-16 alpha 4 ;
                                                                                                                                                             in
                                                                                                                                                                 ''
-                                                                                                                                                                    EXPECTED_RESOURCE=${ mount-16 alpha 1 }
+                                                                                                                                                                    EXPECTED_RESOURCE=${ mount-16 alpha 4 }
                                                                                                                                                                     OBSERVED_RESOURCE=${ resources.production.checks.true.true { failure = 21760 ; } }
                                                                                                                                                                     if [[ "$EXPECTED_RESOURCE" != "$OBSERVED_RESOURCE" ]]
                                                                                                                                                                     then
