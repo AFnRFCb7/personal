@@ -1673,7 +1673,7 @@
                                                                                                                                                                     arguments = [ "" ] ;
                                                                                                                                                                     has-standard-input = "false" ;
                                                                                                                                                                     hash = "e0a0a4e4ae26d30986f07d58634add724195ef807bc6697193f9a89fe62e012113db34929a6409d830991489bf49e1cc16eba4bd2c21032220c95941c1a8b764" ;
-                                                                                                                                                                    index = pad-16 alpha 1 ;
+                                                                                                                                                                    index = pad-16 alpha 5 ;
                                                                                                                                                                     release-file = release-file ;
                                                                                                                                                                     script-file = script-file ;
                                                                                                                                                                     scripts-hash = "d167f7da399e6b01b83f44c3ecb00eb43f5b666e767882bd27e1758abd7c7cc87797e80307d86f0b3cf8a2946115f6cba1b7e99622f17cd83c1631cf92a5c464" ;
@@ -1711,13 +1711,13 @@
                                                                                                                                                                     set -o pipefail
 
                                                                                                                                                                     /nix/store/6avrj20bbivwnl6y8fsmhalzwiqd11n8-init/bin/init''  ;
-                                                                                                                                                            script-file = log-16 alpha 2 ;
+                                                                                                                                                            script-file = log-16 alpha 5 ;
                                                                                                                                                             standard-error = "" ;
-                                                                                                                                                            standard-error-file = log-16 alpha 3 ;
+                                                                                                                                                            standard-error-file = log-16 alpha 7 ;
                                                                                                                                                             standard-input = "" ;
                                                                                                                                                             standard-input-file = log-16 alpha 0 ;
                                                                                                                                                             standard-output = "14060" ;
-                                                                                                                                                            standard-output-file = log-16 alpha 4 ;
+                                                                                                                                                            standard-output-file = log-16 alpha 8 ;
                                                                                                                                                             in
                                                                                                                                                                 ''
                                                                                                                                                                     EXPECTED_RESOURCE=${ mount-16 alpha 5 }
