@@ -1715,8 +1715,7 @@
                                                                                                                                                             standard-error = "" ;
                                                                                                                                                             standard-error-file = log-16 alpha 7 ;
                                                                                                                                                             standard-input = "" ;
-                                                                                                                                                            standard-input-file = log-16 alpha
-                                                                                                                                                             ;
+                                                                                                                                                            standard-input-file = log-16 alpha 3 ;
                                                                                                                                                             standard-output = "14060" ;
                                                                                                                                                             standard-output-file = log-16 alpha 8 ;
                                                                                                                                                             in
