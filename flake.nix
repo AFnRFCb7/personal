@@ -1767,6 +1767,7 @@
                                                                                                                                                                     fi
                                                                                                                                                                     EXPECTED_STANDARD_ERROR='${ standard-error }'
                                                                                                                                                                     OBSERVED_STANDARD_ERROR="$( cat ${ standard-error-file } )" || failure 31412
+                                                                                                                                                                    if [[ "$EXPECTED_STANDARD_ERROR" != "$OBSERVED_STANDARD_ERROR" ]]
                                                                                                                                                                     then
                                                                                                                                                                         STANDARD_ERROR_SEQUENCE="$( sequential )" || failure 21857
                                                                                                                                                                         echo "$EXPECTED_STANDARD_ERROR" > "$TEMPORARY/$STANDARD_ERROR_SEQUENCE"
