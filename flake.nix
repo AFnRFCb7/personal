@@ -1108,11 +1108,9 @@
                                                                                                                                                             standard-output-file = log-16 alpha 4 ;
                                                                                                                                                             in
                                                                                                                                                                 ''
-                                                                                                                                                                    EXPECTED_RESOURCE=${ mount-16 alpha 1 }
-                                                                                                                                                                    OBSERVED_RESOURCE=${ resources.production.checks.true.true { failure = 21760 ; } }
-                                                                                                                                                                    if [[ "$EXPECTED_RESOURCE" != "$OBSERVED_RESOURCE" ]]
+                                                                                                                                                                    if OBSERVED_RESOURCE=${ resources.production.checks.false.true { failure = 10966 ; } }
                                                                                                                                                                     then
-                                                                                                                                                                        failure 15789 EXPECTED_RESOURCE "$EXPECTED_RESOURCE" OBSERVED_RESOURCE "$OBSERVED_RESOURCE"
+                                                                                                                                                                        failure 20136 OBSERVED_RESOURCE "$OBSERVED_RESOURCE"
                                                                                                                                                                     fi
                                                                                                                                                                     COUNT_SIX=0
                                                                                                                                                                     while [[ "$COUNT_SIX" -lt "6" ]]
@@ -3810,46 +3808,46 @@
 #                                                                    machine.succeed("runuser --login ${ testuser } -- ${ test }")
 #                                                                '' ;
 #                                                } ;
-#                                        resource-false-true =
-#                                            pkgs.nixosTest
-#                                                {
-#                                                    name = "resource-false-true" ;
-#                                                    nodes.machine =
-#                                                        { ... } :
-#                                                            {
-#                                                                imports =
-#                                                                    builtins.concatLists
-#                                                                        [
-#                                                                            [ user ]
-#                                                                            private
-#                                                                        ] ;
-#                                                            } ;
-#                                                    testScript =
-#                                                        let
-#                                                            test =
-#                                                                let
-#                                                                    application =
-#                                                                        pkgs.writeShellApplication
-#                                                                            {
-#                                                                                name = "test" ;
-#                                                                                runtimeInputs = [ pkgs.coreutils ] ;
-#                                                                                text =
-#                                                                                    ''
-#                                                                                        PAD="$( resource --resource '["production","pad","checks"]' )"
-#                                                                                        cd "$PAD"
-#                                                                                        # shellcheck disable=SC1091
-#                                                                                        source .envrc
-#                                                                                        ${ pkgs.coreutils }/bin/timeout 2m false-true
-#                                                                                    '' ;
-#                                                                            } ;
-#                                                                    in "${ application }/bin/test" ;
-#                                                            in
-#                                                                ''
-#                                                                    machine.wait_for_unit("multi-user.target")
-#                                                                    machine.wait_for_unit("network-online.target")
-#                                                                    machine.succeed("runuser --login ${ testuser } -- ${ test }")
-#                                                                '' ;
-#                                                } ;
+                                        resource-false-true =
+                                            pkgs.nixosTest
+                                                {
+                                                    name = "resource-false-true" ;
+                                                    nodes.machine =
+                                                        { ... } :
+                                                            {
+                                                                imports =
+                                                                    builtins.concatLists
+                                                                        [
+                                                                            [ user ]
+                                                                            private
+                                                                        ] ;
+                                                            } ;
+                                                    testScript =
+                                                        let
+                                                            test =
+                                                                let
+                                                                    application =
+                                                                        pkgs.writeShellApplication
+                                                                            {
+                                                                                name = "test" ;
+                                                                                runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                text =
+                                                                                    ''
+                                                                                        PAD="$( resource --resource '["production","pad","checks"]' )"
+                                                                                        cd "$PAD"
+                                                                                        # shellcheck disable=SC1091
+                                                                                        source .envrc
+                                                                                        ${ pkgs.coreutils }/bin/timeout 2m false-true
+                                                                                    '' ;
+                                                                            } ;
+                                                                    in "${ application }/bin/test" ;
+                                                            in
+                                                                ''
+                                                                    machine.wait_for_unit("multi-user.target")
+                                                                    machine.wait_for_unit("network-online.target")
+                                                                    machine.succeed("runuser --login ${ testuser } -- ${ test }")
+                                                                '' ;
+                                                } ;
 #                                        resource-true-false =
 #                                            pkgs.nixosTest
 #                                                {
