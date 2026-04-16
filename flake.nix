@@ -1076,7 +1076,7 @@
                                                                                                                                                                             observed = [ "31321" ] ;
                                                                                                                                                                         } ;
                                                                                                                                                                 } ;
-                                                                                                                                                            init-message-file = log-16 alpha 5 ;
+                                                                                                                                                            init-message-file = log-16 alpha 9 ;
                                                                                                                                                             release =
                                                                                                                                                                 ''
                                                                                                                                                                     #!/nix/store/mjhcjikhxps97mq5z54j4gjjfzgmsir5-bash-5.2p37/bin/bash
@@ -1120,7 +1120,7 @@
                                                                                                                                                                         sleep 1
                                                                                                                                                                         COUNT_SIX="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 24769
                                                                                                                                                                     done
-                                                                                                                                                                    EXPECTED_INIT="\"message\",\"valid-init\",\"${ init-message-file }\""
+                                                                                                                                                                    EXPECTED_INIT="\"message\",\"invalid-init\",\"${ init-message-file }\""
                                                                                                                                                                     OBSERVED_INIT="$( head --lines 6 "$OUTPUT_FILE" | tail --lines 1 )" || failure 20277
                                                                                                                                                                     if [[ "$EXPECTED_INIT" != "$OBSERVED_INIT" ]]
                                                                                                                                                                     then
