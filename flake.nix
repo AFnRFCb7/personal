@@ -1072,8 +1072,8 @@
                                                                                                                                                                     status = "123" ;
                                                                                                                                                                     targets =
                                                                                                                                                                         {
-                                                                                                                                                                            expected = [ "31321" ] ;
-                                                                                                                                                                            observed = [ "31321" ] ;
+                                                                                                                                                                            expected = [ "32051" ] ;
+                                                                                                                                                                            observed = [ "32051" ] ;
                                                                                                                                                                         } ;
                                                                                                                                                                 } ;
                                                                                                                                                             init-message-file = log-16 alpha 9 ;
@@ -1117,10 +1117,10 @@
                                                                                                                                                                         VERBOSE_INIT_JSON="$( jq "." ${ init-message-file } )" || failure 23617
                                                                                                                                                                         echo -en "3678398669363458\n"
                                                                                                                                                                         echo -en "EXPECTED_INIT_JSON\n$EXPECTED_INIT_JSON\n"
-                                                                                                                                                                        EXPECTED=$(mktemp)
+                                                                                                                                                                        EXPECTED=$( mktemp )
                                                                                                                                                                         echo "$EXPECTED_INIT_JSON" | od -c > "$EXPECTED"
                                                                                                                                                                         echo -en "OBSERVED_INIT_JSON\n$OBSERVED_INIT_JSON\n"
-                                                                                                                                                                        OBSERVED=$(mktemp)
+                                                                                                                                                                        OBSERVED=$( mktemp )
                                                                                                                                                                         echo "$OBSERVED_INIT_JSON" | od -c > "$OBSERVED" || true
                                                                                                                                                                         echo DIFF
                                                                                                                                                                         diff --unified "$EXPECTED" "$OBSERVED"
