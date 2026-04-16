@@ -1065,7 +1065,7 @@
                                                                                                                                                                     release-file = release-file ;
                                                                                                                                                                     script-file = script-file ;
                                                                                                                                                                     scripts-hash = "630f132a9adb8536bc022119b7ed2d58f22ee7d0a953350b2332f1343e026b6b0d606c6659933323c766a960846a551c4df440673b148af0f3b0b4bc28c1a962" ;
-                                                                                                                                                                    seed = [ "production" "checks" "true" "true" ] ;
+                                                                                                                                                                    seed = [ "production" "checks" "false" "true" ] ;
                                                                                                                                                                     standard-error-file = standard-error-file ;
                                                                                                                                                                     standard-input-file = standard-input-file ;
                                                                                                                                                                     standard-output-file = standard-output-file ;
