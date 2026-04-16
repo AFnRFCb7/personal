@@ -1062,7 +1062,6 @@
                                                                                                                                                                     has-standard-input = "false" ;
                                                                                                                                                                     hash = "14f4505668d6271697d662a87f05e1781d55142660e774ea28b23c6c50a0f6e358f2fab35632c90fe52814df15417092192249f1a9182d47a9cbd4d8dc0b578b" ;
                                                                                                                                                                     index = pad-16 alpha 5 ;
-                                                                                                                                                                    release-file = release-file ;
                                                                                                                                                                     script-file = script-file ;
                                                                                                                                                                     scripts-hash = "630f132a9adb8536bc022119b7ed2d58f22ee7d0a953350b2332f1343e026b6b0d606c6659933323c766a960846a551c4df440673b148af0f3b0b4bc28c1a962" ;
                                                                                                                                                                     seed = [ "production" "checks" "false" "true" ] ;
@@ -1077,20 +1076,6 @@
                                                                                                                                                                         } ;
                                                                                                                                                                 } ;
                                                                                                                                                             init-message-file = log-16 alpha 9 ;
-                                                                                                                                                            release =
-                                                                                                                                                                ''
-                                                                                                                                                                    #!/nix/store/mjhcjikhxps97mq5z54j4gjjfzgmsir5-bash-5.2p37/bin/bash
-                                                                                                                                                                    set -o errexit
-                                                                                                                                                                    set -o nounset
-                                                                                                                                                                    set -o pipefail
-
-                                                                                                                                                                    export PATH="/nix/store/xy9sa2741cinqmfpmqhdrk38gcv1waxb-trace/bin:/nix/store/54f702arxcxl6xv5dn8x9gy16yqxfddw-destroy/bin:$PATH"
-
-                                                                                                                                                                    mkdir --parents "${ gc-root alpha 1 }"
-                                                                                                                                                                    export HASH=e0a0a4e4ae26d30986f07d58634add724195ef807bc6697193f9a89fe62e012113db34929a6409d830991489bf49e1cc16eba4bd2c21032220c95941c1a8b764
-                                                                                                                                                                    export INDEX=${ pad-16 alpha 1 }
-                                                                                                                                                                    destroy'' ;
-                                                                                                                                                            release-file = release-16 alpha 1 ;
                                                                                                                                                             script =
                                                                                                                                                                 ''
                                                                                                                                                                     #!/nix/store/mjhcjikhxps97mq5z54j4gjjfzgmsir5-bash-5.2p37/bin/bash
