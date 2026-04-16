@@ -2376,7 +2376,7 @@
                                                                                                                 ''
                                                                                                                     touch /mount/11273
                                                                                                                     echo 30796
-                                                                                                                    exit 52
+                                                                                                                    exit 191
                                                                                                                 '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/init" ;
@@ -2391,7 +2391,7 @@
                                                                                                             text =
                                                                                                                 ''
                                                                                                                     echo 29589
-                                                                                                                    exit 45
+                                                                                                                    exit 131
                                                                                                                 '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/release" ;
@@ -2412,6 +2412,7 @@
                                                                                                                 ''
                                                                                                                     touch /mount/32051
                                                                                                                     echo 14060
+                                                                                                                    exit 123
                                                                                                                 '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/init" ;
@@ -2463,7 +2464,7 @@
                                                                                                             text =
                                                                                                                 ''
                                                                                                                     echo 29410
-                                                                                                                    exit 54
+                                                                                                                    exit 177
                                                                                                                 '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/release" ;
