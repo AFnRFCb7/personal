@@ -1212,6 +1212,7 @@
                                                                                                                                         standard-output-file = log-16 alpha 8 ;
                                                                                                                                         in
                                                                                                                                             ''
+                                                                                                                                                export INDEX="$INDEX"
                                                                                                                                                 OUTPUT_SEQUENCE="$( sequential )" || failure 27462
                                                                                                                                                 OUTPUT_FILE="$TEMPORARY/$OUTPUT_SEQUENCE"
                                                                                                                                                 export OUTPUT_FILE
