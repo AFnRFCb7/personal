@@ -1069,7 +1069,7 @@
                                                                                                                                                                     standard-error-file = standard-error-file ;
                                                                                                                                                                     standard-input-file = standard-input-file ;
                                                                                                                                                                     standard-output-file = standard-output-file ;
-                                                                                                                                                                    status = "0" ;
+                                                                                                                                                                    status = "123" ;
                                                                                                                                                                     targets =
                                                                                                                                                                         {
                                                                                                                                                                             expected = [ "31321" ] ;
