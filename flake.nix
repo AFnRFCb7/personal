@@ -2239,7 +2239,7 @@
                                                                                                 } ;
                                                                                         in "${ application }/bin/init" ;
                                                                             targets = [ "nonce" ] ;
-                                                                        }
+                                                                        } ;
                                                                 secrets =
                                                                     ignore :
                                                                         {
