@@ -1681,7 +1681,7 @@
                                                                                                                                                                     set -o nounset
                                                                                                                                                                     set -o pipefail
 
-                                                                                                                                                                    export PATH="/nix/store/xy9sa2741cinqmfpmqhdrk38gcv1waxb-trace/bin:/nix/store/f36dwk36j5pmkkdhzbnkds0aqvrrl2q3-destroyy/bin:$PATH"
+                                                                                                                                                                    export PATH="/nix/store/xy9sa2741cinqmfpmqhdrk38gcv1waxb-trace/bin:/nix/store/f36dwk36j5pmkkdhzbnkds0aqvrrl2q3-destroy/bin:$PATH"
 
                                                                                                                                                                     mkdir --parents "${ gc-root alpha 5 }"
                                                                                                                                                                     export HASH=e0a0a4e4ae26d30986f07d58634add724195ef807bc6697193f9a89fe62e012113db34929a6409d830991489bf49e1cc16eba4bd2c21032220c95941c1a8b764
@@ -1739,7 +1739,7 @@
                                                                                                                                                                         RELEASE_SEQUENCE="$( sequential )" || failure 20665
                                                                                                                                                                         echo "$EXPECTED_RELEASE" > "$TEMPORARY/$RELEASE_SEQUENCE"
                                                                                                                                                                         DIFF_RELEASE="$( diff --unified "$TEMPORARY/$RELEASE_SEQUENCE" ${ release-file } )" || true
-                                                                                                                                                                        failure 8075034797443896 EXPECTED_RELEASE "$EXPECTED_RELEASE" OBSERVED_RELEASE "$OBSERVED_RELEASE" DIFF_RELEASE "$DIFF_RELEASE"
+                                                                                                                                                                        failure 5122556563275570 EXPECTED_RELEASE "$EXPECTED_RELEASE" OBSERVED_RELEASE "$OBSERVED_RELEASE" DIFF_RELEASE "$DIFF_RELEASE"
                                                                                                                                                                     fi
                                                                                                                                                                     # shellcheck disable=SC2016
                                                                                                                                                                     EXPECTED_SCRIPT='${ script }'
