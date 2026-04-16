@@ -1032,6 +1032,7 @@
                                                                                                                                             '' ;
                                                                                                                             } ;
                                                                                                                     in "${ application }/bin/false-false" ;
+                                                                                                            ### FIND ME
                                                                                                             false-true =
                                                                                                                 let
                                                                                                                     alpha = 21 ;
@@ -2382,6 +2383,7 @@
                                                                                                 in "${ application }/bin/release" ;
                                                                                     targets = [ "11273" ] ;
                                                                                 } ;
+                                                                        # FIND ME
                                                                         true =
                                                                             ignore :
                                                                                 {
@@ -2401,6 +2403,27 @@
                                                                                                                 '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/init" ;
+                                                                                    init-resolutions =
+                                                                                        {
+                                                                                            b4a45784de5a710c =
+                                                                                                {
+                                                                                                    c5db23113303796b =
+                                                                                                        { failure , pkgs , resources , seed , sequential , trace } :
+                                                                                                            let
+                                                                                                                application =
+                                                                                                                    pkgs.writeShellApplication
+                                                                                                                        {
+                                                                                                                            name = "resolve" ;
+                                                                                                                            runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                                            text =
+                                                                                                                                ''
+                                                                                                                                    echo "$STANDARD_OUTPUT"
+                                                                                                                                    exit "$STATUS"
+                                                                                                                                '' ;
+                                                                                                                        } ;
+                                                                                                                in "${ application }/bin/resolve" ;
+                                                                                                } ;
+                                                                                        } ;
                                                                                     release =
                                                                                         { failure , pkgs , resources , seed , sequential , trace } :
                                                                                             let
