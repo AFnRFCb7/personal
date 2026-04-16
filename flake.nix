@@ -1120,6 +1120,7 @@
                                                                                                                                                                         EXPECTED=$(mktemp)
                                                                                                                                                                         echo "$EXPECTED_INIT_JSON" | od -c > $EXPECTED
                                                                                                                                                                         echo -en "OBSERVED_INIT_JSON\n$OBSERVED_INIT_JSON\n"
+                                                                                                                                                                        OBSERVED=$(mktemp)
                                                                                                                                                                         echo "$OBSERVED_INIT_JSON" | od -c > $OBSERVED
                                                                                                                                                                         diff --unified "$EXPECTED" "$OBSERVED"
                                                                                                                                                                         echo -en "3393445283548754\n"
