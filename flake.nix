@@ -2220,15 +2220,16 @@
                                                                                                             nonce =
                                                                                                                 let
                                                                                                                     application =
-                                                                                                                        {
-                                                                                                                            name = "nonce" ;
-                                                                                                                            runtimeInputs = [ failure pkgs.coreutils ] ;
-                                                                                                                            text =
-                                                                                                                                ''
-                                                                                                                                    SUFFIX="$( tr -dc '0-9' </dev/urandom | head -c 8 )" || failure 4741951775161798
-                                                                                                                                    echo "$PREFIX$SUFFIX"
-                                                                                                                                '' ;
-                                                                                                                        } ;
+                                                                                                                        pkgs.writeShellApplication
+                                                                                                                            {
+                                                                                                                                name = "nonce" ;
+                                                                                                                                runtimeInputs = [ failure pkgs.coreutils ] ;
+                                                                                                                                text =
+                                                                                                                                    ''
+                                                                                                                                        SUFFIX="$( tr -dc '0-9' </dev/urandom | head -c 8 )" || failure 4741951775161798
+                                                                                                                                        echo "$PREFIX$SUFFIX"
+                                                                                                                                    '' ;
+                                                                                                                            } ;
                                                                                                                     in "${ application }/bin/nonce" ;
                                                                                                             in
                                                                                                                 ''
@@ -2899,6 +2900,27 @@
                                                                                         in "${ application }/bin/init" ;
                                                                             targets = [ "bin" ] ;
                                                                         } ;
+                                                                nonce =
+                                                                    ignore :
+                                                                        {
+                                                                            init =
+                                                                                { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
+                                                                                    let
+                                                                                        application =
+                                                                                            pkgs.writeShellApplication
+                                                                                                {
+                                                                                                    name = "init" ;
+                                                                                                    runtimeInputs = [ gc-root pkgs.coreutils ] ;
+                                                                                                    text =
+                                                                                                        ''
+                                                                                                            BIN=${ resources.production.bin.nonce { failure = 4741951720755287 ; } }
+                                                                                                            gc-root "$BIN"
+                                                                                                            ln --symbolic "$BIN" /mount/bin
+                                                                                                        '' ;
+                                                                                                } ;
+                                                                                        in "${ application }/bin/init" ;
+                                                                            targets = [ "bin" ] ;
+                                                                        }
                                                                 secrets =
                                                                     ignore :
                                                                         {
