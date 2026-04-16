@@ -1108,10 +1108,12 @@
                                                                                                                                                             standard-output-file = log-16 alpha 4 ;
                                                                                                                                                             in
                                                                                                                                                                 ''
+                                                                                                                                                                    echo 26294
                                                                                                                                                                     if OBSERVED_RESOURCE=${ resources.production.checks.false.true { failure = 10966 ; } }
                                                                                                                                                                     then
                                                                                                                                                                         failure 20136 OBSERVED_RESOURCE "$OBSERVED_RESOURCE"
                                                                                                                                                                     fi
+                                                                                                                                                                    echo 17478
                                                                                                                                                                     COUNT_SIX=0
                                                                                                                                                                     while [[ "$COUNT_SIX" -lt "6" ]]
                                                                                                                                                                     do
