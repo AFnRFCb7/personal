@@ -1117,9 +1117,10 @@
                                                                                                                                                                         VERBOSE_INIT_JSON="$( jq "." ${ init-message-file } )" || failure 23617
                                                                                                                                                                         echo -en "3678398669363458\n"
                                                                                                                                                                         echo -en "EXPECTED_INIT_JSON\n$EXPECTED_INIT_JSON\n"
-                                                                                                                                                                        echo "$EXPECTED_INIT" | sha512sum
+                                                                                                                                                                        echo "$EXPECTED_INIT" | od -c
                                                                                                                                                                         echo -en "OBSERVED_INIT_JSON\n$OBSERVED_INIT_JSON\n"
-                                                                                                                                                                        echo "$OBSERVED_INIT" | sha512sum
+                                                                                                                                                                        echo "$OBSERVED_INIT" | od -c
+
                                                                                                                                                                         echo -en "3393445283548754\n"
                                                                                                                                                                         failure 8195484594960100 EXPECTED_INIT_JSON "$EXPECTED_INIT_JSON" OBSERVED_INIT_JSON "$OBSERVED_INIT_JSON" VERBOSE_INIT_JSON "$VERBOSE_INIT_JSON"
                                                                                                                                                                     fi
