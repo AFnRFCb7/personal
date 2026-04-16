@@ -2002,6 +2002,7 @@
                                                                                                                         --literal plain EXPECTED_SUBSCRIBE_VALID_INIT \
                                                                                                                         --literal plain EXPECTED_SUBSCRIBE_VALID_RELEASE \
                                                                                                                         --literal plain EIGHT \
+                                                                                                                        --inherit plain INDEX \
                                                                                                                         --literal plain OBSERVED_RELEASE \
                                                                                                                         --literal plain OBSERVED_RELEASE_JSON \
                                                                                                                         --literal plain OBSERVED_SCRIPT \
