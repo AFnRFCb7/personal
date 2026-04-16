@@ -2920,7 +2920,7 @@
                                                                                                 } ;
                                                                                         in "${ application }/bin/init" ;
                                                                             targets = [ "bin" ] ;
-                                                                        }
+                                                                        } ;
                                                                 secrets =
                                                                     ignore :
                                                                         {
