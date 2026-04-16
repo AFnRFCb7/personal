@@ -1739,7 +1739,7 @@
                                                                                                                                                                         RELEASE_SEQUENCE="$( sequential )" || failure 20665
                                                                                                                                                                         echo "$EXPECTED_RELEASE" > "$TEMPORARY/$RELEASE_SEQUENCE"
                                                                                                                                                                         DIFF_RELEASE="$( diff --unified "$TEMPORARY/$RELEASE_SEQUENCE" ${ release-file } )" || true
-                                                                                                                                                                        failure 5122556563275570 EXPECTED_RELEASE "$EXPECTED_RELEASE" OBSERVED_RELEASE "$OBSERVED_RELEASE" DIFF_RELEASE "$DIFF_RELEASE"
+                                                                                                                                                                        failure 4741951735942239 EXPECTED_RELEASE "$EXPECTED_RELEASE" OBSERVED_RELEASE "$OBSERVED_RELEASE" DIFF_RELEASE "$DIFF_RELEASE"
                                                                                                                                                                     fi
                                                                                                                                                                     # shellcheck disable=SC2016
                                                                                                                                                                     EXPECTED_SCRIPT='${ script }'
@@ -2204,6 +2204,42 @@
                                                                                         in  "${ application }/bin/init" ;
                                                                             targets = [ "gpg" ] ;
                                                                         } ;
+                                                                nonce =
+                                                                    ignore :
+                                                                        {
+                                                                            init =
+                                                                                { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
+                                                                                    let
+                                                                                        application =
+                                                                                            pkgs.writeShellApplication
+                                                                                                {
+                                                                                                    name = "init" ;
+                                                                                                    runtimeInputs = [ wrap ] ;
+                                                                                                    text =
+                                                                                                        let
+                                                                                                            nonce =
+                                                                                                                let
+                                                                                                                    application =
+                                                                                                                        {
+                                                                                                                            name = "nonce" ;
+                                                                                                                            runtimeInputs = [ failure pkgs.coreutils ] ;
+                                                                                                                            text =
+                                                                                                                                ''
+                                                                                                                                    SUFFIX="$( tr -dc '0-9' </dev/urandom | head -c 8 )" || failure 4741951775161798
+                                                                                                                                    echo "$PREFIX$SUFFIX"
+                                                                                                                                '' ;
+                                                                                                                        } ;
+                                                                                                                    in "${ application }/bin/nonce" ;
+                                                                                                            in
+                                                                                                                ''
+                                                                                                                    export PREFIX=47419517
+                                                                                                                    wrap ${ nonce } nonce 0500 --inherit plain PREFIX --literal plain PATH --literal plain suffix --uuid 4741951780798554
+                                                                                                                '' ;
+
+                                                                                                } ;
+                                                                                        in "${ application }/bin/init" ;
+                                                                            targets = [ "nonce" ] ;
+                                                                        }
                                                                 secrets =
                                                                     ignore :
                                                                         {
