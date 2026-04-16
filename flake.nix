@@ -1084,7 +1084,8 @@
                                                                                                                                                                     set -o nounset
                                                                                                                                                                     set -o pipefail
 
-                                                                                                                                                                    /nix/store/6avrj20bbivwnl6y8fsmhalzwiqd11n8-init/bin/init''  ;
+                                                                                                                                                                    /nix/store/6avrj20bbivwnl6y8fsmhalzwiqd11n8-init/bin/init
+                                                                                                                                                                ''  ;
                                                                                                                                                             script-file = log-16 alpha 6 ;
                                                                                                                                                             standard-error = "" ;
                                                                                                                                                             standard-error-file = log-16 alpha 7 ;
