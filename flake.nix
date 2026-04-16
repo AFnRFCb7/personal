@@ -1060,11 +1060,11 @@
                                                                                                                                                                 {
                                                                                                                                                                     arguments = [ "" ] ;
                                                                                                                                                                     has-standard-input = "false" ;
-                                                                                                                                                                    hash = "e0a0a4e4ae26d30986f07d58634add724195ef807bc6697193f9a89fe62e012113db34929a6409d830991489bf49e1cc16eba4bd2c21032220c95941c1a8b764" ;
-                                                                                                                                                                    index = pad-16 alpha 1 ;
+                                                                                                                                                                    hash = "14f4505668d6271697d662a87f05e1781d55142660e774ea28b23c6c50a0f6e358f2fab35632c90fe52814df15417092192249f1a9182d47a9cbd4d8dc0b578b" ;
+                                                                                                                                                                    index = pad-16 alpha 5 ;
                                                                                                                                                                     release-file = release-file ;
                                                                                                                                                                     script-file = script-file ;
-                                                                                                                                                                    scripts-hash = "d167f7da399e6b01b83f44c3ecb00eb43f5b666e767882bd27e1758abd7c7cc87797e80307d86f0b3cf8a2946115f6cba1b7e99622f17cd83c1631cf92a5c464" ;
+                                                                                                                                                                    scripts-hash = "630f132a9adb8536bc022119b7ed2d58f22ee7d0a953350b2332f1343e026b6b0d606c6659933323c766a960846a551c4df440673b148af0f3b0b4bc28c1a962" ;
                                                                                                                                                                     seed = [ "production" "checks" "true" "true" ] ;
                                                                                                                                                                     standard-error-file = standard-error-file ;
                                                                                                                                                                     standard-input-file = standard-input-file ;
@@ -1099,21 +1099,19 @@
                                                                                                                                                                     set -o pipefail
 
                                                                                                                                                                     /nix/store/6avrj20bbivwnl6y8fsmhalzwiqd11n8-init/bin/init''  ;
-                                                                                                                                                            script-file = log-16 alpha 2 ;
+                                                                                                                                                            script-file = log-16 alpha 6 ;
                                                                                                                                                             standard-error = "" ;
-                                                                                                                                                            standard-error-file = log-16 alpha 3 ;
+                                                                                                                                                            standard-error-file = log-16 alpha 7 ;
                                                                                                                                                             standard-input = "" ;
-                                                                                                                                                            standard-input-file = log-16 alpha 0 ;
+                                                                                                                                                            standard-input-file = log-16 alpha 3 ;
                                                                                                                                                             standard-output = "14060" ;
-                                                                                                                                                            standard-output-file = log-16 alpha 4 ;
+                                                                                                                                                            standard-output-file = log-16 alpha 8 ;
                                                                                                                                                             in
                                                                                                                                                                 ''
-                                                                                                                                                                    echo 26294
                                                                                                                                                                     if OBSERVED_RESOURCE=${ resources.production.checks.false.true { failure = 10966 ; } }
                                                                                                                                                                     then
                                                                                                                                                                         failure 20136 OBSERVED_RESOURCE "$OBSERVED_RESOURCE"
                                                                                                                                                                     fi
-                                                                                                                                                                    echo 17478
                                                                                                                                                                     COUNT_SIX=0
                                                                                                                                                                     while [[ "$COUNT_SIX" -lt "6" ]]
                                                                                                                                                                     do
