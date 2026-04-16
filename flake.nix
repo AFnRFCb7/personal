@@ -1084,8 +1084,7 @@
                                                                                                                                                                     set -o nounset
                                                                                                                                                                     set -o pipefail
 
-                                                                                                                                                                    /nix/store/06sz5z4zpzrn8jr2g3zdd97qmgpwkd34-init/bin/init
-                                                                                                                                                                ''  ;
+                                                                                                                                                                    /nix/store/06sz5z4zpzrn8jr2g3zdd97qmgpwkd34-init/bin/init''  ;
                                                                                                                                                             script-file = log-16 alpha 6 ;
                                                                                                                                                             standard-error = "" ;
                                                                                                                                                             standard-error-file = log-16 alpha 7 ;
@@ -1212,7 +1211,6 @@
                                                                                                                                         standard-output-file = log-16 alpha 8 ;
                                                                                                                                         in
                                                                                                                                             ''
-                                                                                                                                                export INDEX="$INDEX"
                                                                                                                                                 OUTPUT_SEQUENCE="$( sequential )" || failure 27462
                                                                                                                                                 OUTPUT_FILE="$TEMPORARY/$OUTPUT_SEQUENCE"
                                                                                                                                                 export OUTPUT_FILE
@@ -2002,7 +2000,6 @@
                                                                                                                         --literal plain EXPECTED_SUBSCRIBE_VALID_INIT \
                                                                                                                         --literal plain EXPECTED_SUBSCRIBE_VALID_RELEASE \
                                                                                                                         --literal plain EIGHT \
-                                                                                                                        --inherit plain INDEX \
                                                                                                                         --literal plain OBSERVED_RELEASE \
                                                                                                                         --literal plain OBSERVED_RELEASE_JSON \
                                                                                                                         --literal plain OBSERVED_SCRIPT \
