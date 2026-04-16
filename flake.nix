@@ -1115,6 +1115,9 @@
                                                                                                                                                                     if [[ "$EXPECTED_INIT_JSON" != "$OBSERVED_INIT_JSON" ]]
                                                                                                                                                                     then
                                                                                                                                                                         VERBOSE_INIT_JSON="$( jq "." ${ init-message-file } )" || failure 23617
+                                                                                                                                                                        echo -en "3678398669363458\n"
+                                                                                                                                                                        echo -en "EXPECTED_INIT_JSON\n$EXPECTED_INIT_JSON\n"
+                                                                                                                                                                        echo -en "OBSERVED_INIT_JSON\n$OBSERVED_INIT_JSON\n"
                                                                                                                                                                         failure 28489 EXPECTED_INIT_JSON "$EXPECTED_INIT_JSON" OBSERVED_INIT_JSON "$OBSERVED_INIT_JSON" VERBOSE_INIT_JSON "$VERBOSE_INIT_JSON"
                                                                                                                                                                     fi
                                                                                                                                                                     # shellcheck disable=SC2016
