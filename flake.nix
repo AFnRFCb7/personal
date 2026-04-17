@@ -1259,7 +1259,7 @@
                                                                                                                                                     SIX="$( head --lines 6 "$OUTPUT_FILE" | tail --lines 1 )" || failure 17032
                                                                                                                                                     failure 24681 SIX "$SIX"
                                                                                                                                                 fi
-                                                                                                                                                failure 0308692145985463
+                                                                                                                                                # failure 0308692145985463
                                                                                                                                                 timeout 1m bash -c pre-test
                                                                                                                                                 COUNT_7=0
                                                                                                                                                 while [[ "$COUNT_7" != "7" ]]
@@ -1267,6 +1267,7 @@
                                                                                                                                                     sleep 1
                                                                                                                                                     COUNT_7="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 24082
                                                                                                                                                 done
+                                                                                                                                                failure 0308692145985463
                                                                                                                                                 EXPECTED_RELEASE="\"message\",\"valid-release\",\"${ release-message-file }\""
                                                                                                                                                 OBSERVED_RELEASE="$( head --lines 8 "$OUTPUT_FILE" | tail --lines 1 )" || failure 14819
                                                                                                                                                 if [[ "$EXPECTED_RELEASE" != "$OBSERVED_RELEASE" ]]
