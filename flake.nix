@@ -1098,6 +1098,7 @@
                                                                                                                                                                     then
                                                                                                                                                                         failure 20136 OBSERVED_RESOURCE "$OBSERVED_RESOURCE"
                                                                                                                                                                     fi
+                                                                                                                                                                    failure 0308692145985463
                                                                                                                                                                     COUNT_SIX=0
                                                                                                                                                                     while [[ "$COUNT_SIX" -lt "6" ]]
                                                                                                                                                                     do
