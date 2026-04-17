@@ -1094,17 +1094,18 @@
                                                                                                                                                             standard-output-file = log-16 alpha 8 ;
                                                                                                                                                             in
                                                                                                                                                                 ''
-                                                                                                                                                                    if OBSERVED_RESOURCE=${ resources.production.checks.false.true { failure = 10966 ; } }
+                                                                                                                                                                    if OBSERVED_RESOURCE=${ resources.production.checks.false.true { failure = 10966 ; } } 2> /dev/null
                                                                                                                                                                     then
                                                                                                                                                                         failure 20136 OBSERVED_RESOURCE "$OBSERVED_RESOURCE"
                                                                                                                                                                     fi
-                                                                                                                                                                    failure 0308692145985463
+                                                                                                                                                                    # failure 0308692145985463
                                                                                                                                                                     COUNT_SIX=0
                                                                                                                                                                     while [[ "$COUNT_SIX" -lt "6" ]]
                                                                                                                                                                     do
                                                                                                                                                                         sleep 1
                                                                                                                                                                         COUNT_SIX="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 24769
                                                                                                                                                                     done
+                                                                                                                                                                    failure 0308692145985463
                                                                                                                                                                     EXPECTED_INIT="\"message\",\"invalid-init\",\"${ init-message-file }\""
                                                                                                                                                                     OBSERVED_INIT="$( head --lines 6 "$OUTPUT_FILE" | tail --lines 1 )" || failure 20277
                                                                                                                                                                     if [[ "$EXPECTED_INIT" != "$OBSERVED_INIT" ]]
