@@ -1171,7 +1171,7 @@
                                                                                                                                                                         SEVEN="$( head --lines 7 "$OUTPUT_FILE" | tail --lines 1 )" || failure 17032
                                                                                                                                                                         failure 20505 SEVEN "$SEVEN"
                                                                                                                                                                     fi
-                                                                                                                                                                    if [[ -e "/home/${ config.personal.name }/resources/release" ]]
+                                                                                                                                                                    if [[ -e "/home/${ config.personal.name }/resources/release/${ index }" ]]
                                                                                                                                                                     then
                                                                                                                                                                         failure 3874459131291981
                                                                                                                                                                     fi
