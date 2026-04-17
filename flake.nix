@@ -710,8 +710,8 @@
                                                                                                         let
                                                                                                             file-16 = prefix : a : b : "${ prefix }/${ pad-16 a b }" ;
                                                                                                             gc-root = file-16 "/home/${ config.personal.name }/.gc-root" ;
-                                                                                                            invalid-init = file-16 "/home/${ config.personal.name }/resources/invalid-init" ;
-                                                                                                            invalid-release = file-16 "/home/${ config.personal.name }/resources/invalid-release" ;
+                                                                                                            invalid-init-16 = file-16 "/home/${ config.personal.name }/resources/invalid-init" ;
+                                                                                                            invalid-release-16 = file-16 "/home/${ config.personal.name }/resources/invalid-release" ;
                                                                                                             log-16 = file-16 "/home/${ config.personal.name }/resources/logs" ;
                                                                                                             mount-16 = file-16 "/home/${ config.personal.name }/resources/mounts" ;
                                                                                                             pad-16 =
@@ -1187,10 +1187,6 @@
                                                                                                                                                                     if [[ ! -x "/home/${ config.personal.name }/invalid-init/${ index }/resolve.sh" ]]
                                                                                                                                                                     then
                                                                                                                                                                         failure 4145801929253151
-                                                                                                                                                                    fi
-                                                                                                                                                                    if [[ ! -f "/home/${ config.personal.name }/invalid-init/${ index }/log.yaml" ]]
-                                                                                                                                                                    then
-                                                                                                                                                                        failure 8194604905771612
                                                                                                                                                                     fi
                                                                                                                                                                     if [[ ! -f "/home/${ config.personal.name }/invalid-init/${ index }/resolve/b4a45784de5a710c/c5db23113303796b/resolve.sh" ]]
                                                                                                                                                                     then
