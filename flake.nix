@@ -1261,6 +1261,7 @@
                                                                                                                                                 fi
                                                                                                                                                 # failure 0308692145985463
                                                                                                                                                 timeout 1m bash -c pre-test
+                                                                                                                                                failure 0308692145985463
                                                                                                                                                 COUNT_7=0
                                                                                                                                                 while [[ "$COUNT_7" != "7" ]]
                                                                                                                                                 do
@@ -1281,6 +1282,7 @@
                                                                                                                                                     VERBOSE_RELEASE_JSON="$( jq "." ${ release-message-file } )" || failure 18266
                                                                                                                                                     failure 25932 EXPECTED_RELEASE_JSON "$EXPECTED_RELEASE_JSON" OBSERVED_RELEASE_JSON "$OBSERVED_RELEASE_JSON" VERBOSE_RELEASE_JSON "$VERBOSE_RELEASE_JSON"
                                                                                                                                                 fi
+                                                                                                                                                failure 0308692145985463
                                                                                                                                                 EXPECTED_SCRIPT='${ script }'
                                                                                                                                                 OBSERVED_SCRIPT="$( cat ${ script-file } )" || failure 19776
                                                                                                                                                 if [[ "$EXPECTED_SCRIPT" != "$OBSERVED_SCRIPT" ]]
