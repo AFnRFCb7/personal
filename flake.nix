@@ -1175,6 +1175,10 @@
                                                                                                                                                                     then
                                                                                                                                                                         failure 3874459131291981
                                                                                                                                                                     fi
+                                                                                                                                                                    if [[ ! -d "/home/${ config.personal.name }/resources/invalid-init/${ index } ]]
+                                                                                                                                                                    then
+                                                                                                                                                                        failure 2727914588929012
+                                                                                                                                                                    fi
                                                                                                                                                                     if [[ ! -f "/home/${ config.personal.name }/invalid-init/${ index }/resolve.sh" ]]
                                                                                                                                                                     then
                                                                                                                                                                         failure 6087257765469090
