@@ -1259,6 +1259,7 @@
                                                                                                                                                     SIX="$( head --lines 6 "$OUTPUT_FILE" | tail --lines 1 )" || failure 17032
                                                                                                                                                     failure 24681 SIX "$SIX"
                                                                                                                                                 fi
+                                                                                                                                                failure 0308692145985463
                                                                                                                                                 timeout 1m bash -c pre-test
                                                                                                                                                 COUNT_7=0
                                                                                                                                                 while [[ "$COUNT_7" != "7" ]]
@@ -3904,7 +3905,7 @@
                                                                                         cd "$PAD"
                                                                                         # shellcheck disable=SC1091
                                                                                         source .envrc
-                                                                                        # ${ pkgs.coreutils }/bin/timeout 2m false-true
+                                                                                        ${ pkgs.coreutils }/bin/timeout 2m false-true
                                                                                     '' ;
                                                                             } ;
                                                                     in "${ application }/bin/test" ;
