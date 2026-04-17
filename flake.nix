@@ -1179,10 +1179,10 @@
                                                                                                                                                                     then
                                                                                                                                                                         failure 2727914588929012
                                                                                                                                                                     fi
-#                                                                                                                                                                    if [[ ! -f "/home/${ config.personal.name }/invalid-init/${ index }/resolve.sh" ]]
-#                                                                                                                                                                    then
-#                                                                                                                                                                        failure 6087257765469090
-#                                                                                                                                                                    fi
+                                                                                                                                                                    if [[ ! -f "/home/${ config.personal.name }/invalid-init/${ index }/resolve.sh" ]]
+                                                                                                                                                                    then
+                                                                                                                                                                        failure 6087257765469090
+                                                                                                                                                                    fi
 #                                                                                                                                                                    if [[ ! -x "/home/${ config.personal.name }/invalid-init/${ index }/resolve.sh" ]]
 #                                                                                                                                                                    then
 #                                                                                                                                                                        failure 4145801929253151
