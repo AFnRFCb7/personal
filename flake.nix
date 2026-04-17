@@ -1638,11 +1638,11 @@
                                                                                                                                                     DIFF_STANDARD_OUTPUT="$( diff --unified "$TEMPORARY/$STANDARD_OUTPUT_SEQUENCE" ${ standard-output-file } )" || true
                                                                                                                                                     failure 29333 EXPECTED_STANDARD_OUTPUT "$EXPECTED_STANDARD_OUTPUT" OBSERVED_STANDARD_OUTPUT "$OBSERVED_STANDARD_OUTPUT" DIFF_STANDARD_OUTPUT "$DIFF_STANDARD_OUTPUT"
                                                                                                                                                 fi
-                                                                                                                                                if [[ -e "${ invalid-init alpha 17293 }" ]]
+                                                                                                                                                if [[ -e "${ invalid-init-16 alpha 17293 }" ]]
                                                                                                                                                 then
                                                                                                                                                     failure 29251
                                                                                                                                                 fi
-                                                                                                                                                if [[ -e "${ invalid-release alpha 17293 }" ]]
+                                                                                                                                                if [[ -e "${ invalid-release-16 alpha 17293 }" ]]
                                                                                                                                                 then
                                                                                                                                                     failure 29221
                                                                                                                                                 fi
