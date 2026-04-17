@@ -1170,13 +1170,17 @@
                                                                                                                                                                         SEVEN="$( head --lines 7 "$OUTPUT_FILE" | tail --lines 1 )" || failure 17032
                                                                                                                                                                         failure 20505 SEVEN "$SEVEN"
                                                                                                                                                                     fi
+                                                                                                                                                                    if [[ -e "/home/${ config.personal.name }/resources/release" ]]
+                                                                                                                                                                    then
+                                                                                                                                                                        failure 3874459131291981
+                                                                                                                                                                    fi
                                                                                                                                                                     if [[ -e "${ invalid-init alpha 17293 }" ]]
                                                                                                                                                                     then
-                                                                                                                                                                        failure 23500
+                                                                                                                                                                        failure 6087257765469090
                                                                                                                                                                     fi
-                                                                                                                                                                    if [[ -e "${ invalid-release alpha 17293 }" ]]
+                                                                                                                                                                    if [[ -e "/home/${ config.personal.name }/resources/invalid-release" ]]
                                                                                                                                                                     then
-                                                                                                                                                                        failure 13101
+                                                                                                                                                                        failure 4857756770187742
                                                                                                                                                                     fi
                                                                                                                                                                 '' ;
                                                                                                                                                 }
