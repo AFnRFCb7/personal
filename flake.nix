@@ -1113,7 +1113,7 @@
                                                                                                                                                                     then
                                                                                                                                                                         failure 14530 EXPECTED_INIT "$EXPECTED_INIT" OBSERVED_INIT "$OBSERVED_INIT"
                                                                                                                                                                     fi
-                                                                                                                                                                    failure 0308692145985463
+                                                                                                                                                                    # failure 0308692145985463
                                                                                                                                                                     EXPECTED_INIT_JSON='${ builtins.toJSON init }'
                                                                                                                                                                     OBSERVED_INIT_JSON="$( jq --compact-output "." ${ init-message-file } )" || failure 9412
                                                                                                                                                                     if [[ "$EXPECTED_INIT_JSON" != "$OBSERVED_INIT_JSON" ]]
@@ -1131,6 +1131,7 @@
                                                                                                                                                                         echo -en "3393445283548754\n"
                                                                                                                                                                         failure 8195484594960100 EXPECTED_INIT_JSON "$EXPECTED_INIT_JSON" OBSERVED_INIT_JSON "$OBSERVED_INIT_JSON" VERBOSE_INIT_JSON "$VERBOSE_INIT_JSON"
                                                                                                                                                                     fi
+                                                                                                                                                                    # failure 0308692145985463
                                                                                                                                                                     # shellcheck disable=SC2016
                                                                                                                                                                     EXPECTED_SCRIPT='${ script }'
                                                                                                                                                                     OBSERVED_SCRIPT="$( cat ${ script-file } )" || failure 11196
@@ -1141,6 +1142,7 @@
                                                                                                                                                                         DIFF_SCRIPT="$( diff --unified "$TEMPORARY/$SCRIPT_SEQUENCE" ${ script-file } )" || true
                                                                                                                                                                         failure 1275594965878699 EXPECTED_SCRIPT "$EXPECTED_SCRIPT" OBSERVED_SCRIPT "$OBSERVED_SCRIPT" DIFF_SCRIPT "$DIFF_SCRIPT"
                                                                                                                                                                     fi
+                                                                                                                                                                    failure 0308692145985463
                                                                                                                                                                     EXPECTED_STANDARD_ERROR='${ standard-error }'
                                                                                                                                                                     OBSERVED_STANDARD_ERROR="$( cat ${ standard-error-file } )" || failure 31412
                                                                                                                                                                     if [[ "$EXPECTED_STANDARD_ERROR" != "$OBSERVED_STANDARD_ERROR" ]]
