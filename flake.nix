@@ -1108,7 +1108,7 @@
                                                                                                                                                                     # failure 0308692145985463
                                                                                                                                                                     EXPECTED_INIT="\"message\",\"invalid-init\",\"${ init-message-file }\""
                                                                                                                                                                     OBSERVED_INIT="$( head --lines 6 "$OUTPUT_FILE" | tail --lines 1 )" || failure 20277
-                                                                                                                                                                    failure 0308692145985463
+                                                                                                                                                                    # failure 0308692145985463
                                                                                                                                                                     if [[ "$EXPECTED_INIT" != "$OBSERVED_INIT" ]]
                                                                                                                                                                     then
                                                                                                                                                                         failure 14530 EXPECTED_INIT "$EXPECTED_INIT" OBSERVED_INIT "$OBSERVED_INIT"
@@ -1170,7 +1170,7 @@
                                                                                                                                                                         DIFF_STANDARD_OUTPUT="$( diff --unified "/home/${ config.personal.name }/resources/mounts/$INDEX/true-true/pre-test/STANDARD_INPUT" ${ standard-output-file } )" || true
                                                                                                                                                                         failure 16668 EXPECTED_STANDARD_OUTPUT "$EXPECTED_STANDARD_OUTPUT" OBSERVED_STANDARD_OUTPUT "$OBSERVED_STANDARD_OUTPUT" DIFF_STANDARD_OUTPUT "$DIFF_STANDARD_OUTPUT"
                                                                                                                                                                     fi
-                                                                                                                                                                    failure 0308692145985463 "$0"
+                                                                                                                                                                    # failure 0308692145985463 "$0"
                                                                                                                                                                     WC_SEVEN="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 21345
                                                                                                                                                                     if [[ "$WC_SEVEN" != 6 ]]
                                                                                                                                                                     then
@@ -1185,6 +1185,7 @@
                                                                                                                                                                     then
                                                                                                                                                                         failure 13101
                                                                                                                                                                     fi
+                                                                                                                                                                    failure 3516582420196795 "$0"
                                                                                                                                                                 '' ;
                                                                                                                                                 }
                                                                                                                                         )
