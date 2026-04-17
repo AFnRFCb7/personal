@@ -1098,22 +1098,18 @@
                                                                                                                                                                     then
                                                                                                                                                                         failure 20136 OBSERVED_RESOURCE "$OBSERVED_RESOURCE"
                                                                                                                                                                     fi
-                                                                                                                                                                    # failure 0308692145985463
                                                                                                                                                                     COUNT_SIX=0
                                                                                                                                                                     while [[ "$COUNT_SIX" -lt "6" ]]
                                                                                                                                                                     do
                                                                                                                                                                         sleep 1
                                                                                                                                                                         COUNT_SIX="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 24769
                                                                                                                                                                     done
-                                                                                                                                                                    # failure 0308692145985463
                                                                                                                                                                     EXPECTED_INIT="\"message\",\"invalid-init\",\"${ init-message-file }\""
                                                                                                                                                                     OBSERVED_INIT="$( head --lines 6 "$OUTPUT_FILE" | tail --lines 1 )" || failure 20277
-                                                                                                                                                                    # failure 0308692145985463
                                                                                                                                                                     if [[ "$EXPECTED_INIT" != "$OBSERVED_INIT" ]]
                                                                                                                                                                     then
                                                                                                                                                                         failure 14530 EXPECTED_INIT "$EXPECTED_INIT" OBSERVED_INIT "$OBSERVED_INIT"
                                                                                                                                                                     fi
-                                                                                                                                                                    # failure 0308692145985463
                                                                                                                                                                     EXPECTED_INIT_JSON='${ builtins.toJSON init }'
                                                                                                                                                                     OBSERVED_INIT_JSON="$( jq --compact-output "." ${ init-message-file } )" || failure 9412
                                                                                                                                                                     if [[ "$EXPECTED_INIT_JSON" != "$OBSERVED_INIT_JSON" ]]
@@ -1131,7 +1127,6 @@
                                                                                                                                                                         echo -en "3393445283548754\n"
                                                                                                                                                                         failure 8195484594960100 EXPECTED_INIT_JSON "$EXPECTED_INIT_JSON" OBSERVED_INIT_JSON "$OBSERVED_INIT_JSON" VERBOSE_INIT_JSON "$VERBOSE_INIT_JSON"
                                                                                                                                                                     fi
-                                                                                                                                                                    # failure 0308692145985463
                                                                                                                                                                     # shellcheck disable=SC2016
                                                                                                                                                                     EXPECTED_SCRIPT='${ script }'
                                                                                                                                                                     OBSERVED_SCRIPT="$( cat ${ script-file } )" || failure 11196
@@ -1142,7 +1137,6 @@
                                                                                                                                                                         DIFF_SCRIPT="$( diff --unified "$TEMPORARY/$SCRIPT_SEQUENCE" ${ script-file } )" || true
                                                                                                                                                                         failure 1275594965878699 EXPECTED_SCRIPT "$EXPECTED_SCRIPT" OBSERVED_SCRIPT "$OBSERVED_SCRIPT" DIFF_SCRIPT "$DIFF_SCRIPT"
                                                                                                                                                                     fi
-                                                                                                                                                                    # failure 0308692145985463
                                                                                                                                                                     EXPECTED_STANDARD_ERROR='${ standard-error }'
                                                                                                                                                                     OBSERVED_STANDARD_ERROR="$( cat ${ standard-error-file } )" || failure 31412
                                                                                                                                                                     if [[ "$EXPECTED_STANDARD_ERROR" != "$OBSERVED_STANDARD_ERROR" ]]
@@ -1170,7 +1164,6 @@
                                                                                                                                                                         DIFF_STANDARD_OUTPUT="$( diff --unified "/home/${ config.personal.name }/resources/mounts/$INDEX/true-true/pre-test/STANDARD_INPUT" ${ standard-output-file } )" || true
                                                                                                                                                                         failure 16668 EXPECTED_STANDARD_OUTPUT "$EXPECTED_STANDARD_OUTPUT" OBSERVED_STANDARD_OUTPUT "$OBSERVED_STANDARD_OUTPUT" DIFF_STANDARD_OUTPUT "$DIFF_STANDARD_OUTPUT"
                                                                                                                                                                     fi
-                                                                                                                                                                    # failure 0308692145985463 "$0"
                                                                                                                                                                     WC_SEVEN="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 21345
                                                                                                                                                                     if [[ "$WC_SEVEN" != 6 ]]
                                                                                                                                                                     then
@@ -1266,16 +1259,13 @@
                                                                                                                                                     SIX="$( head --lines 6 "$OUTPUT_FILE" | tail --lines 1 )" || failure 17032
                                                                                                                                                     failure 24681 SIX "$SIX"
                                                                                                                                                 fi
-                                                                                                                                                # failure 0308692145985463
                                                                                                                                                 timeout 1m bash -c pre-test
-                                                                                                                                                failure 0308692145985463
                                                                                                                                                 COUNT_7=0
                                                                                                                                                 while [[ "$COUNT_7" != "7" ]]
                                                                                                                                                 do
                                                                                                                                                     sleep 1
                                                                                                                                                     COUNT_7="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 24082
                                                                                                                                                 done
-                                                                                                                                                failure 0308692145985463
                                                                                                                                                 EXPECTED_RELEASE="\"message\",\"valid-release\",\"${ release-message-file }\""
                                                                                                                                                 OBSERVED_RELEASE="$( head --lines 8 "$OUTPUT_FILE" | tail --lines 1 )" || failure 14819
                                                                                                                                                 if [[ "$EXPECTED_RELEASE" != "$OBSERVED_RELEASE" ]]
@@ -1289,7 +1279,6 @@
                                                                                                                                                     VERBOSE_RELEASE_JSON="$( jq "." ${ release-message-file } )" || failure 18266
                                                                                                                                                     failure 25932 EXPECTED_RELEASE_JSON "$EXPECTED_RELEASE_JSON" OBSERVED_RELEASE_JSON "$OBSERVED_RELEASE_JSON" VERBOSE_RELEASE_JSON "$VERBOSE_RELEASE_JSON"
                                                                                                                                                 fi
-                                                                                                                                                failure 0308692145985463
                                                                                                                                                 EXPECTED_SCRIPT='${ script }'
                                                                                                                                                 OBSERVED_SCRIPT="$( cat ${ script-file } )" || failure 19776
                                                                                                                                                 if [[ "$EXPECTED_SCRIPT" != "$OBSERVED_SCRIPT" ]]
