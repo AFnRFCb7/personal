@@ -1094,7 +1094,7 @@
                                                                                                                                                             standard-output-file = log-16 alpha 8 ;
                                                                                                                                                             in
                                                                                                                                                                 ''
-                                                                                                                                                                    if OBSERVED_RESOURCE=${ resources.production.checks.false.true { failure = 10966 ; } } > /dev/null 2>&1
+                                                                                                                                                                    if OBSERVED_RESOURCE=${ resources.production.checks.false.true { failure = 10966 ; } }
                                                                                                                                                                     then
                                                                                                                                                                         failure 20136 OBSERVED_RESOURCE "$OBSERVED_RESOURCE"
                                                                                                                                                                     fi
@@ -1185,7 +1185,6 @@
                                                                                                                                                                     then
                                                                                                                                                                         failure 13101
                                                                                                                                                                     fi
-                                                                                                                                                                    failure 3516582420196795 "$0"
                                                                                                                                                                 '' ;
                                                                                                                                                 }
                                                                                                                                         )
