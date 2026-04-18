@@ -1198,11 +1198,12 @@
                                                                                                                                                                     then
                                                                                                                                                                         failure 4857756770187742
                                                                                                                                                                     fi
-                                                                                                                                                                    failure 6414245179582165
+                                                                                                                                                                    # failure 6414245179582165
                                                                                                                                                                     if /home/${ config.personal.name }/resources/invalid-init/${ index }/resolve/d6f7e33e04336ec1/f76cca72fe96d8d9/resolve.sh 9929554118572229
                                                                                                                                                                     then
                                                                                                                                                                         failure 8131657869889475
                                                                                                                                                                     fi
+                                                                                                                                                                    failure 6414245179582165
                                                                                                                                                                     if [[ ! -d "/home/${ config.personal.name }/resources/invalid-init/${ index }" ]]
                                                                                                                                                                     then
                                                                                                                                                                         failure 3283946614596257
