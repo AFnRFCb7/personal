@@ -1161,7 +1161,7 @@
                                                                                                                                                                         SEVEN="$( head --lines 7 "$OUTPUT_FILE" | tail --lines 1 )" || failure 17032
                                                                                                                                                                         failure 20505 SEVEN "$SEVEN"
                                                                                                                                                                     fi
-                                                                                                                                                                    failure 6414245179582165
+                                                                                                                                                                    # failure 6414245179582165
                                                                                                                                                                     if [[ -e "/home/${ config.personal.name }/resources/release/${ index }" ]]
                                                                                                                                                                     then
                                                                                                                                                                         failure 3874459131291981
@@ -1198,6 +1198,7 @@
                                                                                                                                                                     then
                                                                                                                                                                         failure 4857756770187742
                                                                                                                                                                     fi
+                                                                                                                                                                    failure 6414245179582165
                                                                                                                                                                     if /home/${ config.personal.name }/resources/invalid-init/${ index }/resolve/d6f7e33e04336ec1/f76cca72fe96d8d9/resolve.sh 9929554118572229
                                                                                                                                                                     then
                                                                                                                                                                         failure 8131657869889475
