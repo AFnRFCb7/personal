@@ -1200,11 +1200,11 @@
                                                                                                                                                                     then
                                                                                                                                                                         failure 4857756770187742
                                                                                                                                                                     fi
-                                                                                                                                                                    cat /home/emory/resources/mounts/0516337443213259/repository/personal/flake.nix >&2
+                                                                                                                                                                    cat /home/${ config.personal.name }/resources/invalid-init/${ index }/resolve/d6f7e33e04336ec1/f76cca72fe96d8d9/resolve.sh >&2
                                                                                                                                                                     failure 6414245179582165
-                                                                                                                                                                    if /home/${ config.personal.name }/resources/invalid-init/${ index }/resolve/d6f7e33e04336ec1/f76cca72fe96d8d9/resolve.sh 9929554118572229
+                                                                                                                                                                    if /home/${ config.personal.name }/resources/invalid-init/${ index }/resolve/d6f7e33e04336ec1/f76cca72fe96d8d9/resolve.sh 9929554118572229 > /dev/null 2>&1
                                                                                                                                                                     then
-                                                                                                                                                                        failure 8131657869889475
+                                                                                                                                                                        failure 8131657869889475 STATUS "$?"
                                                                                                                                                                     fi
                                                                                                                                                                     failure 6414245179582165
                                                                                                                                                                     if [[ ! -d "/home/${ config.personal.name }/resources/invalid-init/${ index }" ]]
@@ -1238,20 +1238,6 @@
                                                                                                                                                                     if [[ -e "/home/${ config.personal.name }/resources/invalid-release" ]]
                                                                                                                                                                     then
                                                                                                                                                                         failure 6677838274987955
-                                                                                                                                                                    fi
-#                                                                                                                                                                    COUNT_SEVEN=0
-#                                                                                                                                                                    while [[ "$COUNT_SEVEN" -lt "7" ]]
-#                                                                                                                                                                    do
-#                                                                                                                                                                        sleep 1
-#                                                                                                                                                                        COUNT_SEVEN="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 8887449361737335
-#                                                                                                                                                                    done
-#                                                                                                                                                                    EXPECTED_FAILED_INIT_RESOLVE=
-#                                                                                                                                                                    OBSERVED_FAILED_INIT_RESOLVE="$( head --lines 7 "$OUTPUT_FILE" | tail --lines 1 )" || failure 9549121773214915
-
-                                                                                                                                                                    if ! /home/${ config.personal.name }/resources/invalid-init/${ index }/resolve/b4a45784de5a710c/c5db23113303796b/resolve.sh 3488994186444672
-                                                                                                                                                                    then
-                                                                                                                                                                        cat /home/emory/resources/mounts/0516337443213259/repository/personal/flake.nix >&2
-                                                                                                                                                                        failure 2778713686522567
                                                                                                                                                                     fi
                                                                                                                                                                 '' ;
                                                                                                                                                 }
