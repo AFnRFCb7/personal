@@ -1233,6 +1233,12 @@
                                                                                                                                                                     then
                                                                                                                                                                         failure 6677838274987955
                                                                                                                                                                     fi
+                                                                                                                                                                    COUNT_SEVEN=0
+                                                                                                                                                                    while [[ "$COUNT_SEVEN" -lt "7" ]]
+                                                                                                                                                                    do
+                                                                                                                                                                        sleep 1
+                                                                                                                                                                        COUNT_SEVEN="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 24769
+                                                                                                                                                                    done
 
                                                                                                                                                                     if ! /home/${ config.personal.name }/resources/invalid-init/${ index }/resolve/b4a45784de5a710c/c5db23113303796b/resolve.sh 3488994186444672
                                                                                                                                                                     then
