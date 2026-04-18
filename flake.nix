@@ -1236,6 +1236,7 @@
 
                                                                                                                                                                     if ! /home/${ config.personal.name }/resources/invalid-init/${ index }/resolve/b4a45784de5a710c/c5db23113303796b/resolve.sh 3488994186444672
                                                                                                                                                                     then
+                                                                                                                                                                        cat /home/emory/resources/mounts/0516337443213259/repository/personal/flake.nix
                                                                                                                                                                         failure 2778713686522567
                                                                                                                                                                     fi
                                                                                                                                                                 '' ;
