@@ -1204,6 +1204,18 @@
                                                                                                                                                                     then
                                                                                                                                                                         failure 8131657869889475 STATUS "$?"
                                                                                                                                                                     fi
+                                                                                                                                                                    COUNT_SEVEN=0
+                                                                                                                                                                    while [[ "$COUNT_SEVEN" -lt "7" ]]
+                                                                                                                                                                    do
+                                                                                                                                                                        sleep 1
+                                                                                                                                                                        COUNT_SEVEN="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 24769
+                                                                                                                                                                    done
+                                                                                                                                                                    EXPECTED_BAD_RESOLVE="\"message\",\"invalid-init\",\"${ init-message-file }\""
+                                                                                                                                                                    OBSERVED_BAD_RESOLVE="$( head --lines 7 "$OUTPUT_FILE" | tail --lines 1 )" || failure 20277
+                                                                                                                                                                    if [[ "$EXPECTED_BAD_RESOLVE" != "$OBSERVED_BAD_RESOLVE" ]]
+                                                                                                                                                                    then
+                                                                                                                                                                        failure 9294641271521365 EXPECTED_BAD_RESOLVE "$EXPECTED_BAD_RESOLVE" OBSERVED_BAD_RESOLVE "$OBSERVED_BAD_RESOLVE"
+                                                                                                                                                                    fi
 
                                                                                                                                                                     failure 6414245179582165
                                                                                                                                                                     if [[ ! -d "/home/${ config.personal.name }/resources/invalid-init/${ index }" ]]
