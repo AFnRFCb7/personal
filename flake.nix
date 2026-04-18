@@ -1057,6 +1057,18 @@
                                                                                                                                                     runtimeInputs = [ failure pkgs.coreutils pkgs.diffutils pkgs.findutils pkgs.jq pkgs.inotify-tools pkgs.redis sequential ] ;
                                                                                                                                                     text =
                                                                                                                                                         let
+                                                                                                                                                            good-init =
+                                                                                                                                                                {
+                                                                                                                                                                    standard-error =
+                                                                                                                                                                        ''
+                                                                                                                                                                        '' ;
+                                                                                                                                                                    standard-input =
+                                                                                                                                                                        ''
+                                                                                                                                                                        '' ;
+                                                                                                                                                                    standard-output =
+                                                                                                                                                                        ''
+                                                                                                                                                                        '' ;
+                                                                                                                                                                } ;
                                                                                                                                                             good-init-resolve =
                                                                                                                                                                 {
                                                                                                                                                                     arguments = [ "9929554118572229" ] ;
@@ -1213,7 +1225,7 @@
                                                                                                                                                                     cat /home/${ config.personal.name }/resources/invalid-init/${ index }/resolve/b4a45784de5a710c/c5db23113303796b/resolve.sh >&2
                                                                                                                                                                     if ! /home/${ config.personal.name }/resources/invalid-init/${ index }/resolve/b4a45784de5a710c/c5db23113303796b/resolve.sh 9929554118572229 > /dev/null 2>&1
                                                                                                                                                                     then
-                                                                                                                                                                        failure 8131657869889475
+                                                                                                                                                                        failure 8131657869889475 "$?"
                                                                                                                                                                     fi
                                                                                                                                                                     COUNT_SEVEN=0
                                                                                                                                                                     while [[ "$COUNT_SEVEN" -lt "7" ]]
@@ -1234,6 +1246,14 @@
                                                                                                                                                                         VERBOSE_GOOD_INIT_RESOLVE_JSON="$( jq "." ${ good-init-resolve-file } )" || failure 8997333792138166
                                                                                                                                                                         failure 5972293388135472 EXPECTED_GOOD_INIT_RESOLVE_JSON "$EXPECTED_GOOD_INIT_RESOLVE_JSON" OBSERVED_GOOD_INIT_RESOLVE_JSON "$OBSERVED_GOOD_INIT_RESOLVE_JSON" VERBOSE_GOOD_INIT_RESOLVE_JSON "$VERBOSE_GOOD_INIT_RESOLVE_JSON"
                                                                                                                                                                     fi
+                                                                                                                                                                    EXPECTED_GOOD_INIT_STANDARD_ERROR='${ good-init.standard-error }'
+                                                                                                                                                                    OBSERVED_GOOD_INIT_STANDARD_ERROR="$( cat ${ good-init.json.standard-error-file } )" || failure 3367377293755565
+                                                                                                                                                                    if [[ "$EXPECTED_GOOD_INIT_STANDARD_ERROR" != "$OBSERVED_GOOD_INIT_STANDARD_ERROR" ]]
+                                                                                                                                                                    then
+                                                                                                                                                                        GOOD_INIT_STANDARD_ERROR_SEQUENCE="$( sequential )" || failure 9219241536577672
+                                                                                                                                                                        echo "$EXPECTED_GOOD_INIT_STANDARD_ERROR" > "$TEMPORARY/$GOOD_INIT_STANDARD_ERROR_SEQUENCE"
+                                                                                                                                                                        DIFF_GOOD_INIT_STANDARD_ERROR="$( diff --unified "$EXPECTED_GOOD_INIT_STANDARD_ERROR" "$OBSERVED_GOOD_INIT_STANDARD_ERROR" )" || true
+                                                                                                                                                                        failure 4366475228683281 EXPECTED_GOOD_INIT_STANDARD_ERROR "$EXPECTED_GOOD_INIT_STANDARD_ERROR" OBSERVED_GOOD_INIT_STANDARD_ERROR "$OBSERVED_GOOD_INIT_STANDARD_ERROR" DIFF_GOOD_INIT_STANDARD_ERROR "$DIFF_GOOD_INIT_STANDARD_ERROR"
                                                                                                                                                                 '' ;
                                                                                                                                                 }
                                                                                                                                         )
