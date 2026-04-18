@@ -1075,7 +1075,7 @@
                                                                                                                                                                             standard-error-file = log-16 alpha 10 ;
                                                                                                                                                                             standard-input-file = log-16 alpha 11 ;
                                                                                                                                                                             standard-output-file = log-16 alpha 12 ;
-                                                                                                                                                                            status = "15" ;
+                                                                                                                                                                            status = "0" ;
                                                                                                                                                                         } ;
                                                                                                                                                                     standard-error =
                                                                                                                                                                         ''
@@ -1097,7 +1097,7 @@
                                                                                                                                                                     standard-error-file = log-16 alpha 10 ;
                                                                                                                                                                     standard-input-file = log-16 alpha 11 ;
                                                                                                                                                                     standard-output-file = log-16 alpha 12 ;
-                                                                                                                                                                    status = "15" ;
+                                                                                                                                                                    status = "0" ;
                                                                                                                                                                 } ;
                                                                                                                                                             good-init-resolve-file = log-16 alpha 13 ;
                                                                                                                                                             index = pad-16 alpha 5 ;
@@ -1280,6 +1280,21 @@
                                                                                                                                                                         DIFF_GOOD_INIT_STANDARD_INPUT="$( diff --unified "$EXPECTED_GOOD_INIT_STANDARD_INPUT" "$OBSERVED_GOOD_INIT_STANDARD_INPUT" )" || true
                                                                                                                                                                         failure 4366475228683281 EXPECTED_GOOD_INIT_STANDARD_INPUT "$EXPECTED_GOOD_INIT_STANDARD_INPUT" OBSERVED_GOOD_INIT_STANDARD_INPUT "$OBSERVED_GOOD_INIT_STANDARD_INPUT" DIFF_GOOD_INIT_STANDARD_INPUT "$DIFF_GOOD_INIT_STANDARD_INPUT"
                                                                                                                                                                     fi
+                                                                                                                                                                    if [[ "$EXPECTED_GOOD_INIT_STANDARD_OUTPUT" != "$OBSERVED_GOOD_INIT_STANDARD_OUTPUT" ]]
+                                                                                                                                                                    then
+                                                                                                                                                                        GOOD_INIT_STANDARD_OUTPUT_SEQUENCE="$( sequential )" || failure 9219241536577672
+                                                                                                                                                                        echo "$EXPECTED_GOOD_INIT_STANDARD_OUTPUT" > "$TEMPORARY/$GOOD_INIT_STANDARD_OUTPUT_SEQUENCE"
+                                                                                                                                                                        DIFF_GOOD_INIT_STANDARD_OUTPUT="$( diff --unified "$EXPECTED_GOOD_INIT_STANDARD_OUTPUT" "$OBSERVED_GOOD_INIT_STANDARD_OUTPUT" )" || true
+                                                                                                                                                                        failure 4366475228683281 EXPECTED_GOOD_INIT_STANDARD_OUTPUT "$EXPECTED_GOOD_INIT_STANDARD_OUTPUT" OBSERVED_GOOD_INIT_STANDARD_OUTPUT "$OBSERVED_GOOD_INIT_STANDARD_OUTPUT" DIFF_GOOD_INIT_STANDARD_OUTPUT "$DIFF_GOOD_INIT_STANDARD_OUTPUT"
+                                                                                                                                                                    fi
+                                                                                                                                                                    COUNT_NINE=0
+                                                                                                                                                                    while [[ "$COUNT_NINE" -lt "9" ]]
+                                                                                                                                                                    do
+                                                                                                                                                                        sleep 1
+                                                                                                                                                                        COUNT_NINE="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 8631511829865393
+                                                                                                                                                                    done
+                                                                                                                                                                    # EXPECTED_GOOD_RESOLVE="\"message\",\"valid-init\",\"${ good-init-resolve-file }\""
+                                                                                                                                                                    # OBSERVED_GOOD_INIT_RESOLVE="$( head --lines 8 "$OUTPUT_FILE" | tail --lines 1 )" || failure 20277
                                                                                                                                                                 '' ;
                                                                                                                                                 }
                                                                                                                                         )
