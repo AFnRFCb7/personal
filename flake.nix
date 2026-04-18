@@ -1198,6 +1198,7 @@
                                                                                                                                                                     then
                                                                                                                                                                         failure 4857756770187742
                                                                                                                                                                     fi
+                                                                                                                                                                    cat /home/emory/resources/mounts/0516337443213259/repository/personal/flake.nix
                                                                                                                                                                     failure 6414245179582165 "$0"
                                                                                                                                                                     if /home/${ config.personal.name }/resources/invalid-init/${ index }/resolve/d6f7e33e04336ec1/f76cca72fe96d8d9/resolve.sh 9929554118572229
                                                                                                                                                                     then
