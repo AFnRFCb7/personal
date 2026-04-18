@@ -1065,7 +1065,7 @@
                                                                                                                                                                     resolution-path = [ "d6f7e33e04336ec1" "f76cca72fe96d8d9" ] ;
                                                                                                                                                                     script-file = "/nix/store/g1zd9vhwa3y2pghscl70s4a4s3vmicvh-resolve/bin/resolve" ;
                                                                                                                                                                     standard-error-file = log-16 alpha 10 ;
-                                                                                                                                                                    standard-input-file = log-16  alpha 11 ;
+                                                                                                                                                                    standard-input-file = log-16 alpha 11 ;
                                                                                                                                                                     standard-output-file = log-16 alpha 12 ;
                                                                                                                                                                     status = "15" ;
                                                                                                                                                                 } ;
@@ -1210,12 +1210,9 @@
                                                                                                                                                                     then
                                                                                                                                                                         failure 4857756770187742
                                                                                                                                                                     fi
-                                                                                                                                                                    # cat /home/${ config.personal.name }/resources/invalid-init/${ index }/resolve/d6f7e33e04336ec1/f76cca72fe96d8d9/resolve.sh >&2
-                                                                                                                                                                    # failure 6414245179582165
-                                                                                                                                                                    echo we are going to call the bad resolver and fail
-                                                                                                                                                                    if /home/${ config.personal.name }/resources/invalid-init/${ index }/resolve/d6f7e33e04336ec1/f76cca72fe96d8d9/resolve.sh 9929554118572229 > /dev/null 2>&1
+                                                                                                                                                                    if ! /home/${ config.personal.name }/resources/invalid-init/${ index }/resolve/b4a45784de5a710c/c5db23113303796b/resolve.sh 9929554118572229 > /dev/null 2>&1
                                                                                                                                                                     then
-                                                                                                                                                                        failure 8131657869889475 STATUS "$?"
+                                                                                                                                                                        failure 8131657869889475
                                                                                                                                                                     fi
                                                                                                                                                                     COUNT_SEVEN=0
                                                                                                                                                                     while [[ "$COUNT_SEVEN" -lt "7" ]]
@@ -1223,7 +1220,7 @@
                                                                                                                                                                         sleep 1
                                                                                                                                                                         COUNT_SEVEN="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 24769
                                                                                                                                                                     done
-                                                                                                                                                                    EXPECTED_BAD_INIT_RESOLVE="\"message\",\"invalid-init\",\"${ bad-init-resolve-file }\""
+                                                                                                                                                                    EXPECTED_BAD_INIT_RESOLVE="\"message\",\"valid-init\",\"${ bad-init-resolve-file }\""
                                                                                                                                                                     OBSERVED_BAD_INIT_RESOLVE="$( head --lines 7 "$OUTPUT_FILE" | tail --lines 1 )" || failure 20277
                                                                                                                                                                     if [[ "$EXPECTED_BAD_INIT_RESOLVE" != "$OBSERVED_BAD_INIT_RESOLVE" ]]
                                                                                                                                                                     then
@@ -1235,40 +1232,6 @@
                                                                                                                                                                     then
                                                                                                                                                                         VERBOSE_BAD_INIT_RESOLVE_JSON="$( jq "." ${ bad-init-resolve-file } )" || failure 8997333792138166
                                                                                                                                                                         failure 5972293388135472 EXPECTED_BAD_INIT_RESOLVE_JSON "$EXPECTED_BAD_INIT_RESOLVE_JSON" OBSERVED_BAD_INIT_RESOLVE_JSON "$OBSERVED_BAD_INIT_RESOLVE_JSON" VERBOSE_BAD_INIT_RESOLVE_JSON "$VERBOSE_BAD_INIT_RESOLVE_JSON"
-                                                                                                                                                                    fi
-
-                                                                                                                                                                    failure 6414245179582165
-                                                                                                                                                                    if [[ ! -d "/home/${ config.personal.name }/resources/invalid-init/${ index }" ]]
-                                                                                                                                                                    then
-                                                                                                                                                                        failure 3283946614596257
-                                                                                                                                                                    fi
-                                                                                                                                                                    if [[ ! -f "/home/${ config.personal.name }/resources/invalid-init/${ index }/resolve.sh" ]]
-                                                                                                                                                                    then
-                                                                                                                                                                        failure 8527543585774983
-                                                                                                                                                                    fi
-                                                                                                                                                                    if [[ ! -x "/home/${ config.personal.name }/resources/invalid-init/${ index }/resolve.sh" ]]
-                                                                                                                                                                    then
-                                                                                                                                                                        failure 2794482975915555
-                                                                                                                                                                    fi
-                                                                                                                                                                    if [[ ! -f "/home/${ config.personal.name }/resources/invalid-init/${ index }/resolve/b4a45784de5a710c/c5db23113303796b/resolve.sh" ]]
-                                                                                                                                                                    then
-                                                                                                                                                                        failure 9824561959682677
-                                                                                                                                                                    fi
-                                                                                                                                                                    if [[ ! -x "/home/${ config.personal.name }/resources/invalid-init/${ index }/resolve/b4a45784de5a710c/c5db23113303796b/resolve.sh" ]]
-                                                                                                                                                                    then
-                                                                                                                                                                        failure 8888577144358769
-                                                                                                                                                                    fi
-                                                                                                                                                                    if [[ ! -f "/home/${ config.personal.name }/resources/invalid-init/${ index }/resolve/d6f7e33e04336ec1/f76cca72fe96d8d9/resolve.sh" ]]
-                                                                                                                                                                    then
-                                                                                                                                                                        failure 3951875867571434
-                                                                                                                                                                    fi
-                                                                                                                                                                    if [[ ! -x "/home/${ config.personal.name }/resources/invalid-init/${ index }/resolve/d6f7e33e04336ec1/f76cca72fe96d8d9/resolve.sh" ]]
-                                                                                                                                                                    then
-                                                                                                                                                                        failure 7974463788392239
-                                                                                                                                                                    fi
-                                                                                                                                                                    if [[ -e "/home/${ config.personal.name }/resources/invalid-release" ]]
-                                                                                                                                                                    then
-                                                                                                                                                                        failure 6677838274987955
                                                                                                                                                                     fi
                                                                                                                                                                 '' ;
                                                                                                                                                 }
