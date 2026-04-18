@@ -1201,7 +1201,6 @@
                                                                                                                                                                     then
                                                                                                                                                                         failure 8131657869889475
                                                                                                                                                                     fi
-
                                                                                                                                                                     if [[ ! -d "/home/${ config.personal.name }/resources/invalid-init/${ index }" ]]
                                                                                                                                                                     then
                                                                                                                                                                         failure 3283946614596257
@@ -1234,6 +1233,8 @@
                                                                                                                                                                     then
                                                                                                                                                                         failure 6677838274987955
                                                                                                                                                                     fi
+
+                                                                                                                                                                    /home/${ config.personal.name }/resources/invalid-init/${ index }/resolve/b4a45784de5a710c/c5db23113303796b/resolve.sh 3488994186444672
                                                                                                                                                                 '' ;
                                                                                                                                                 }
                                                                                                                                         )
