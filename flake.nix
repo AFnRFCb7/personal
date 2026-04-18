@@ -1059,6 +1059,12 @@
                                                                                                                                                         let
                                                                                                                                                             good-init =
                                                                                                                                                                 {
+                                                                                                                                                                    files =
+                                                                                                                                                                        {
+                                                                                                                                                                            standard-error-file = log-16 alpha 10 ;
+                                                                                                                                                                            standard-input-file = log-16 alpha 11 ;
+                                                                                                                                                                            standard-output-file = log-16 alpha 12 ;
+                                                                                                                                                                        } ;
                                                                                                                                                                     json =
                                                                                                                                                                         {
                                                                                                                                                                             arguments = [ "9929554118572229" ] ;
@@ -1266,6 +1272,7 @@
                                                                                                                                                                         echo "$EXPECTED_GOOD_INIT_STANDARD_ERROR" > "$TEMPORARY/$GOOD_INIT_STANDARD_ERROR_SEQUENCE"
                                                                                                                                                                         DIFF_GOOD_INIT_STANDARD_ERROR="$( diff --unified "$EXPECTED_GOOD_INIT_STANDARD_ERROR" "$OBSERVED_GOOD_INIT_STANDARD_ERROR" )" || true
                                                                                                                                                                         failure 4366475228683281 EXPECTED_GOOD_INIT_STANDARD_ERROR "$EXPECTED_GOOD_INIT_STANDARD_ERROR" OBSERVED_GOOD_INIT_STANDARD_ERROR "$OBSERVED_GOOD_INIT_STANDARD_ERROR" DIFF_GOOD_INIT_STANDARD_ERROR "$DIFF_GOOD_INIT_STANDARD_ERROR"
+                                                                                                                                                                    fi
                                                                                                                                                                 '' ;
                                                                                                                                                 }
                                                                                                                                         )
