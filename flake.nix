@@ -1234,7 +1234,10 @@
                                                                                                                                                                         failure 6677838274987955
                                                                                                                                                                     fi
 
-                                                                                                                                                                    /home/${ config.personal.name }/resources/invalid-init/${ index }/resolve/b4a45784de5a710c/c5db23113303796b/resolve.sh 3488994186444672
+                                                                                                                                                                    if ! /home/${ config.personal.name }/resources/invalid-init/${ index }/resolve/b4a45784de5a710c/c5db23113303796b/resolve.sh 3488994186444672
+                                                                                                                                                                    then
+                                                                                                                                                                        failure 2778713686522567
+                                                                                                                                                                    fi
                                                                                                                                                                 '' ;
                                                                                                                                                 }
                                                                                                                                         )
