@@ -1069,7 +1069,7 @@
                                                                                                                                                                     standard-output-file = log-16 alpha 12 ;
                                                                                                                                                                     status = "15" ;
                                                                                                                                                                 } ;
-                                                                                                                                                            bad-init-resolve-file = log-16 alpha 13 ;
+                                                                                                                                                            good-init-resolve-file = log-16 alpha 13 ;
                                                                                                                                                             index = pad-16 alpha 5 ;
                                                                                                                                                             init =
                                                                                                                                                                 {
