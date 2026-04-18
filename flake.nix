@@ -1057,8 +1057,8 @@
                                                                                                                                                     runtimeInputs = [ failure pkgs.coreutils pkgs.diffutils pkgs.findutils pkgs.jq pkgs.inotify-tools pkgs.redis sequential ] ;
                                                                                                                                                     text =
                                                                                                                                                         let
+                                                                                                                                                            bad-resolve = { } ;
                                                                                                                                                             bad-resolve-file = log-16 alpha 13 ;
-
                                                                                                                                                             index = pad-16 alpha 5 ;
                                                                                                                                                             init =
                                                                                                                                                                 {
@@ -1217,6 +1217,13 @@
                                                                                                                                                                     if [[ "$EXPECTED_BAD_RESOLVE" != "$OBSERVED_BAD_RESOLVE" ]]
                                                                                                                                                                     then
                                                                                                                                                                         failure 9294641271521365 EXPECTED_BAD_RESOLVE "$EXPECTED_BAD_RESOLVE" OBSERVED_BAD_RESOLVE "$OBSERVED_BAD_RESOLVE"
+                                                                                                                                                                    fi
+                                                                                                                                                                    EXPECTED_BAD_RESOLVE_JSON='${ builtins.toJSON bad-resolve }'
+                                                                                                                                                                    OBSERVED_BAD_RESOLVE_JSON="$( jq --compact-output "." ${ bad-resolve-file } )" || failure 9412
+                                                                                                                                                                    if [[ "$EXPECTED_BAD_RESOLVE_JSON" != "$OBSERVED_BAD_RESOLVE_JSON" ]]
+                                                                                                                                                                    then
+                                                                                                                                                                        VERBOSE_BAD_RESOLVE_JSON="$( jq "." ${ bad-resolve-file } )" || failure 6225415174182279
+                                                                                                                                                                        failure 9143235846719862 EXPECTED_BAD_RESOLVE_JSON "$EXPECTED_BAD_RESOLVE_JSON" OBSERVED_BAD_RESOLVE_JSON "$OBSERVED_BAD_RESOLVE_JSON" VERBOSE_BAD_RESOLVE_JSON "$VERBOSE_BAD_RESOLVE_JSON"
                                                                                                                                                                     fi
 
                                                                                                                                                                     failure 6414245179582165
