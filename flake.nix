@@ -1191,7 +1191,7 @@
                                                                                                                                                                     then
                                                                                                                                                                         failure 5344476823433508
                                                                                                                                                                     fi
-                                                                                                                                                                    if [[ ! -x "/home/${ config.personal.name }/resources/invalid-init/${ index }/b4a45784de5a710c/c5db23113303796b/resolve/resolve.sh" ]]
+                                                                                                                                                                    if [[ ! -x "/home/${ config.personal.name }/resources/invalid-init/${ index }/b4a45784de5a710c/c5db23113303796b/resolve.sh" ]]
                                                                                                                                                                     then
                                                                                                                                                                         failure 7155352788913521
                                                                                                                                                                     fi
@@ -2479,12 +2479,28 @@
                                                                                                                             runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                                             text =
                                                                                                                                 ''
-                                                                                                                                    echo "$STANDARD_OUTPUT"
-                                                                                                                                    exit "$STATUS"
+                                                                                                                                    echo 3292477133481244
                                                                                                                                 '' ;
                                                                                                                         } ;
                                                                                                                 in "${ application }/bin/resolve" ;
                                                                                                 } ;
+                                                                                            d6f7e33e04336ec1 =
+                                                                                                {
+                                                                                                    f76cca72fe96d8d9 =
+                                                                                                        { failure , pkgs , resources , seed , sequential , trace } :
+                                                                                                            let
+                                                                                                                application =
+                                                                                                                    pkgs.writeShellApplication
+                                                                                                                        {
+                                                                                                                            name = "resolve" ;
+                                                                                                                            runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                                            text =
+                                                                                                                                ''
+                                                                                                                                    echo 8473391382136319
+                                                                                                                                    exit 15
+                                                                                                                                '' ;
+                                                                                                                        }
+                                                                                                }
                                                                                         } ;
                                                                                     release =
                                                                                         { failure , pkgs , resources , seed , sequential , trace } :
