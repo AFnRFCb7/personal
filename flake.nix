@@ -1233,12 +1233,14 @@
                                                                                                                                                                     then
                                                                                                                                                                         failure 6677838274987955
                                                                                                                                                                     fi
-                                                                                                                                                                    COUNT_SEVEN=0
-                                                                                                                                                                    while [[ "$COUNT_SEVEN" -lt "7" ]]
-                                                                                                                                                                    do
-                                                                                                                                                                        sleep 1
-                                                                                                                                                                        COUNT_SEVEN="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 24769
-                                                                                                                                                                    done
+#                                                                                                                                                                    COUNT_SEVEN=0
+#                                                                                                                                                                    while [[ "$COUNT_SEVEN" -lt "7" ]]
+#                                                                                                                                                                    do
+#                                                                                                                                                                        sleep 1
+#                                                                                                                                                                        COUNT_SEVEN="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 8887449361737335
+#                                                                                                                                                                    done
+#                                                                                                                                                                    EXPECTED_FAILED_INIT_RESOLVE=
+#                                                                                                                                                                    OBSERVED_FAILED_INIT_RESOLVE="$( head --lines 7 "$OUTPUT_FILE" | tail --lines 1 )" || failure 9549121773214915
 
                                                                                                                                                                     if ! /home/${ config.personal.name }/resources/invalid-init/${ index }/resolve/b4a45784de5a710c/c5db23113303796b/resolve.sh 3488994186444672
                                                                                                                                                                     then
