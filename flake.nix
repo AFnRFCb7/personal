@@ -1057,6 +1057,8 @@
                                                                                                                                                     runtimeInputs = [ failure pkgs.coreutils pkgs.diffutils pkgs.findutils pkgs.jq pkgs.inotify-tools pkgs.redis sequential ] ;
                                                                                                                                                     text =
                                                                                                                                                         let
+                                                                                                                                                            bad-resolve-file = log-16 alpha 13 ;
+
                                                                                                                                                             index = pad-16 alpha 5 ;
                                                                                                                                                             init =
                                                                                                                                                                 {
@@ -1210,7 +1212,7 @@
                                                                                                                                                                         sleep 1
                                                                                                                                                                         COUNT_SEVEN="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 24769
                                                                                                                                                                     done
-                                                                                                                                                                    EXPECTED_BAD_RESOLVE="\"message\",\"invalid-init\",\"${ init-message-file }\""
+                                                                                                                                                                    EXPECTED_BAD_RESOLVE="\"message\",\"invalid-init\",\"${ bad-resolve-file }\""
                                                                                                                                                                     OBSERVED_BAD_RESOLVE="$( head --lines 7 "$OUTPUT_FILE" | tail --lines 1 )" || failure 20277
                                                                                                                                                                     if [[ "$EXPECTED_BAD_RESOLVE" != "$OBSERVED_BAD_RESOLVE" ]]
                                                                                                                                                                     then
