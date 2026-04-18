@@ -2501,7 +2501,7 @@
                                                                                                                                 '' ;
                                                                                                                         } ;
                                                                                                                 in "${ application }/bin/resolve" ;
-                                                                                                }
+                                                                                                } ;
                                                                                         } ;
                                                                                     release =
                                                                                         { failure , pkgs , resources , seed , sequential , trace } :
