@@ -2499,7 +2499,8 @@
                                                                                                                                     echo 8473391382136319
                                                                                                                                     exit 15
                                                                                                                                 '' ;
-                                                                                                                        }
+                                                                                                                        } ;
+                                                                                                                in "${ application }/bin/resolve" ;
                                                                                                 }
                                                                                         } ;
                                                                                     release =
