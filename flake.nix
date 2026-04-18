@@ -1197,14 +1197,13 @@
                                                                                                                                                                     then
                                                                                                                                                                         failure 4857756770187742
                                                                                                                                                                     fi
-                                                                                                                                                                    # cat /home/${ config.personal.name }/resources/invalid-init/${ index }/resolve/d6f7e33e04336ec1/f76cca72fe96d8d9/resolve.sh >&2
-                                                                                                                                                                    # failure 6414245179582165
+                                                                                                                                                                    cat /home/${ config.personal.name }/resources/invalid-init/${ index }/resolve/d6f7e33e04336ec1/f76cca72fe96d8d9/resolve.sh >&2
+                                                                                                                                                                    failure 6414245179582165
                                                                                                                                                                     echo we are going to call the bad resolver and fail
                                                                                                                                                                     if /home/${ config.personal.name }/resources/invalid-init/${ index }/resolve/d6f7e33e04336ec1/f76cca72fe96d8d9/resolve.sh 9929554118572229 > /dev/null 2>&1
                                                                                                                                                                     then
                                                                                                                                                                         failure 8131657869889475 STATUS "$?"
                                                                                                                                                                     fi
-
 
                                                                                                                                                                     failure 6414245179582165
                                                                                                                                                                     if [[ ! -d "/home/${ config.personal.name }/resources/invalid-init/${ index }" ]]
