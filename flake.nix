@@ -1116,16 +1116,6 @@
                                                                                                                                                                     if [[ "$EXPECTED_INIT_JSON" != "$OBSERVED_INIT_JSON" ]]
                                                                                                                                                                     then
                                                                                                                                                                         VERBOSE_INIT_JSON="$( jq "." ${ init-message-file } )" || failure 23617
-                                                                                                                                                                        echo -en "3678398669363458\n"
-                                                                                                                                                                        echo -en "EXPECTED_INIT_JSON\n$EXPECTED_INIT_JSON\n"
-                                                                                                                                                                        EXPECTED=$( mktemp )
-                                                                                                                                                                        echo "$EXPECTED_INIT_JSON" | od -c > "$EXPECTED"
-                                                                                                                                                                        echo -en "OBSERVED_INIT_JSON\n$OBSERVED_INIT_JSON\n"
-                                                                                                                                                                        OBSERVED=$( mktemp )
-                                                                                                                                                                        echo "$OBSERVED_INIT_JSON" | od -c > "$OBSERVED" || true
-                                                                                                                                                                        echo DIFF
-                                                                                                                                                                        diff --unified "$EXPECTED" "$OBSERVED"
-                                                                                                                                                                        echo -en "3393445283548754\n"
                                                                                                                                                                         failure 8195484594960100 EXPECTED_INIT_JSON "$EXPECTED_INIT_JSON" OBSERVED_INIT_JSON "$OBSERVED_INIT_JSON" VERBOSE_INIT_JSON "$VERBOSE_INIT_JSON"
                                                                                                                                                                     fi
                                                                                                                                                                     # shellcheck disable=SC2016
@@ -1206,6 +1196,10 @@
                                                                                                                                                                     if [[ -e "/home/${ config.personal.name }/resources/invalid-release" ]]
                                                                                                                                                                     then
                                                                                                                                                                         failure 4857756770187742
+                                                                                                                                                                    fi
+                                                                                                                                                                    if /home/${ config.personal.name }/resources/invalid-init/${ index }/resolve/d6f7e33e04336ec1/f76cca72fe96d8d9/resolve.sh 9929554118572229
+                                                                                                                                                                    then
+                                                                                                                                                                        failure 8131657869889475
                                                                                                                                                                     fi
                                                                                                                                                                 '' ;
                                                                                                                                                 }
