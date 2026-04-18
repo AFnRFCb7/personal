@@ -1059,6 +1059,18 @@
                                                                                                                                                         let
                                                                                                                                                             good-init =
                                                                                                                                                                 {
+                                                                                                                                                                    json =
+                                                                                                                                                                        {
+                                                                                                                                                                            arguments = [ "9929554118572229" ] ;
+                                                                                                                                                                            has-script = "true" ;
+                                                                                                                                                                            has-standard-input = "false" ;
+                                                                                                                                                                            resolution-path = [ "d6f7e33e04336ec1" "f76cca72fe96d8d9" ] ;
+                                                                                                                                                                            script-file = "/nix/store/g1zd9vhwa3y2pghscl70s4a4s3vmicvh-resolve/bin/resolve" ;
+                                                                                                                                                                            standard-error-file = log-16 alpha 10 ;
+                                                                                                                                                                            standard-input-file = log-16 alpha 11 ;
+                                                                                                                                                                            standard-output-file = log-16 alpha 12 ;
+                                                                                                                                                                            status = "15" ;
+                                                                                                                                                                        } ;
                                                                                                                                                                     standard-error =
                                                                                                                                                                         ''
                                                                                                                                                                         '' ;
