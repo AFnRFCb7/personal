@@ -1071,7 +1071,7 @@
                                                                                                                                                                             has-script = "true" ;
                                                                                                                                                                             has-standard-input = "false" ;
                                                                                                                                                                             resolution-path = [ "d6f7e33e04336ec1" "f76cca72fe96d8d9" ] ;
-                                                                                                                                                                            script-file = "/nix/store/g1zd9vhwa3y2pghscl70s4a4s3vmicvh-resolve/bin/resolve" ;
+                                                                                                                                                                            script-file = "/nix/store/y4dhnfw1f576l6nlkxjwbg5mkljrhs4h-resolve/bin/resolve" ;
                                                                                                                                                                             standard-error-file = log-16 alpha 10 ;
                                                                                                                                                                             standard-input-file = log-16 alpha 11 ;
                                                                                                                                                                             standard-output-file = log-16 alpha 12 ;
@@ -1293,8 +1293,12 @@
                                                                                                                                                                         sleep 1
                                                                                                                                                                         COUNT_NINE="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 8631511829865393
                                                                                                                                                                     done
-                                                                                                                                                                    # EXPECTED_GOOD_RESOLVE="\"message\",\"valid-init\",\"${ good-init-resolve-file }\""
-                                                                                                                                                                    # OBSERVED_GOOD_INIT_RESOLVE="$( head --lines 8 "$OUTPUT_FILE" | tail --lines 1 )" || failure 20277
+                                                                                                                                                                    EXPECTED_GOOD_RESOLVE="\"message\",\"valid-init\",\"${ good-init-resolve-file }\""
+                                                                                                                                                                    OBSERVED_GOOD_RESOLVE="$( head --lines 8 "$OUTPUT_FILE" | tail --lines 1 )" || failure 20277
+                                                                                                                                                                    if [[ "$EXPECTED_GOOD_RESOLVE" != "$OBSERVED_GOOD_RESOLVE" ]]
+                                                                                                                                                                    then
+                                                                                                                                                                        failure 6729279153419344 EXPECTED_GOOD_RESOLVE "$EXPECTED_GOOD_RESOLVE" OBSERVED_GOOD_RESOLVE "$OBSERVED_GOOD_RESOLVE"
+                                                                                                                                                                    fi
                                                                                                                                                                 '' ;
                                                                                                                                                 }
                                                                                                                                         )
