@@ -3607,6 +3607,8 @@
                                                                                                                                             jq --raw-output "." "$PAYLOAD"
                                                                                                                                             RELEASE_FILE="$( jq --raw-output '."release-file" // empty' "$PAYLOAD" )" || failure 24568
                                                                                                                                             echo 6956165222656579 "RELEASE_FILE=$RELEASE_FILE"
+                                                                                                                                            KEYS="$( jq --raw-output "keys" "$PAYLOAD" )" || failure 9779212244464954
+                                                                                                                                            echo 6639957152815851 "KEYS=$KEYS"
                                                                                                                                             nohup "$RELEASE_FILE" &
                                                                                                                                         else
                                                                                                                                             echo "TYPE=$TYPE" "CHANNEL=$CHANNEL" "PAYLOAD=$PAYLOAD"
