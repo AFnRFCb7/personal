@@ -1151,7 +1151,7 @@
                                                                                                                                                             standard-output-file = log-16 alpha 8 ;
                                                                                                                                                             in
                                                                                                                                                                 ''
-                                                                                                                                                                    if OBSERVED_RESOURCE=${ resources.production.checks.false.true { failure = 10966 ; } }
+                                                                                                                                                                    if OBSERVED_RESOURCE=${ resources.production.checks.false.true { failure = 4712192148713563 ; } }
                                                                                                                                                                     then
                                                                                                                                                                         failure 20136 OBSERVED_RESOURCE "$OBSERVED_RESOURCE"
                                                                                                                                                                     fi
