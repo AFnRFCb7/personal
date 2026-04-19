@@ -1085,6 +1085,7 @@
                                                                                                                                                                         '' ;
                                                                                                                                                                     standard-output =
                                                                                                                                                                         ''
+                                                                                                                                                                            3292477133481244
                                                                                                                                                                         '' ;
                                                                                                                                                                 } ;
                                                                                                                                                             good-resolve =
@@ -2361,15 +2362,33 @@
                                                                                                                                 runtimeInputs = [ failure pkgs.coreutils ] ;
                                                                                                                                 text =
                                                                                                                                     ''
-                                                                                                                                        SUFFIX="$( tr -dc '0-9' </dev/urandom | head -c 8 )" || failure 4741951775161798
-                                                                                                                                        echo "$PREFIX$SUFFIX"
+                                                                                                                                        if [[ "$#" == 0 ]]
+                                                                                                                                        then
+                                                                                                                                            PREFIX="$( tr -dc '0-9' </dev/urandom | head -c 6 )" || failure 5936622335446384                                                                                                                                            SUFFIX="$( tr -dc '0-9' </dev/urandom | head -c 8 )" || failure 4741951775161798
+                                                                                                                                            SUFFIX="$( tr -dc '0-9' </dev/urandom | head -c 6 )" || failure 4741951775161798                                                                                                                                            SUFFIX="$( tr -dc '0-9' </dev/urandom | head -c 8 )" || failure 4741951775161798
+                                                                                                                                            echo "$PREFIX$SIGNATURE$SUFFIX"
+                                                                                                                                        elif [[ "$#" == 1 ]]
+                                                                                                                                        then
+                                                                                                                                            INPUT="$1"
+                                                                                                                                            grep --only-matching --extended-regexp '\b[0-9]{16}\b' "$INPUT" | sort | uniq --repeated
+                                                                                                                                        fi
                                                                                                                                     '' ;
                                                                                                                             } ;
                                                                                                                     in "${ application }/bin/nonce" ;
                                                                                                             in
                                                                                                                 ''
-                                                                                                                    export PREFIX=47419517
-                                                                                                                    wrap ${ nonce } nonce 0500 --inherit plain PREFIX --literal plain PATH --literal plain suffix --uuid 4741951780798554
+                                                                                                                    export SIGNATURE=3383
+                                                                                                                    wrap \
+                                                                                                                        ${ nonce } \
+                                                                                                                        nonce \
+                                                                                                                        0500 \
+                                                                                                                        --literal plain 1 \
+                                                                                                                        --literal plain INPUT \
+                                                                                                                        --inherit plain PREFIX \
+                                                                                                                        --literal plain PATH \
+                                                                                                                        --inherit plain SIGNATURE \
+                                                                                                                        --literal plain SUFFIX \
+                                                                                                                        --uuid 4741951780798554
                                                                                                                 '' ;
 
                                                                                                 } ;
