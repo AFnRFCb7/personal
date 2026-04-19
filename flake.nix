@@ -1100,6 +1100,7 @@
                                                                                                                                                                     arguments = [ "9929554118572229" ] ;
                                                                                                                                                                     has-script = "true" ;
                                                                                                                                                                     has-standard-input = "false" ;
+                                                                                                                                                                    release-file = release-file ;
                                                                                                                                                                     resolution-path = [ "b4a45784de5a710c" "c5db23113303796b" ] ;
                                                                                                                                                                     script-file = "/nix/store/y4dhnfw1f576l6nlkxjwbg5mkljrhs4h-resolve/bin/resolve" ;
                                                                                                                                                                     standard-error-file = log-16 alpha 10 ;
@@ -1129,6 +1130,10 @@
                                                                                                                                                                         } ;
                                                                                                                                                                 } ;
                                                                                                                                                             init-message-file = log-16 alpha 9 ;
+                                                                                                                                                            release =
+                                                                                                                                                                ''
+                                                                                                                                                                '' ;
+                                                                                                                                                            release-file = release-16 alpha 5 ;
                                                                                                                                                             script =
                                                                                                                                                                 ''
                                                                                                                                                                     #!/nix/store/mjhcjikhxps97mq5z54j4gjjfzgmsir5-bash-5.2p37/bin/bash
