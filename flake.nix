@@ -2396,7 +2396,7 @@
                                                                                                                                         elif [[ "$#" == 1 ]]
                                                                                                                                         then
                                                                                                                                             INPUT="$1"
-                                                                                                                                            grep --only-matching --extended-regexp "\b[0-9a-f]{16}\b" "$INPUT" | sort | uniq --repeated
+                                                                                                                                            grep --only-matching --extended-regexp '(^|[^0-9a-f])[0-9a-f]{16}([^0-9a-f]|$)' "$INPUT" | sort | uniq --repeated
                                                                                                                                         fi
                                                                                                                                     '' ;
                                                                                                                             } ;
