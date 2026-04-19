@@ -2368,9 +2368,12 @@
                                                                                                                                             case "$1" in
                                                                                                                                                 --decimal)
                                                                                                                                                     BASE=10
+                                                                                                                                                    shift
                                                                                                                                                     ;;
                                                                                                                                                 --hexadecimal)
                                                                                                                                                     BASE=16
+                                                                                                                                                    shift
+                                                                                                                                                    ;;
                                                                                                                                                 --input)
                                                                                                                                                     INPUT="$2"
                                                                                                                                                     shift 2
@@ -3017,12 +3020,14 @@
                                                                                                                                 gc-root "$GH"
                                                                                                                                 GPG=${ resources.production.product.gpg { failure = 16451 ; } }
                                                                                                                                 gc-root "$GPG"
+                                                                                                                                NONCE=${ resources.production.product.nonce { failure = 3193681222146392 ; } }
+                                                                                                                                gc-root "$NONCE"
                                                                                                                                 SECRETS=${ resources.production.product.secrets { failure = 22181 ; } }
                                                                                                                                 gc-root "$SECRETS"
                                                                                                                                 SSH=${ resources.production.product.ssh { failure = 11121 ; } }
                                                                                                                                 gc-root "$SSH"
-                                                                                                                                export BIN_PATH=${ builtins.concatStringsSep ":" ( builtins.map ( x : "${ x }/bin" ) [ "$GH" "$GPG" "$SECRETS" "$SSH" ] ) }
-                                                                                                                                export MAN_PATH=${ builtins.concatStringsSep ":" ( builtins.map ( x : "${ x }/share/man" ) [ "$GH" "$GPG" "$SECRETS" "$SSH" ] ) }
+                                                                                                                                export BIN_PATH=${ builtins.concatStringsSep ":" ( builtins.map ( x : "${ x }/bin" ) [ "$GH" "$GPG" "$NONCE" "$SECRETS" "$SSH" ] ) }
+                                                                                                                                export MAN_PATH=${ builtins.concatStringsSep ":" ( builtins.map ( x : "${ x }/share/man" ) [ "$GH" "$GPG" "$NONCE" "$SECRETS" "$SSH" ] ) }
                                                                                                                                 wrap ${ envrc } .envrc 0400 --inherit plain BIN_PATH --inherit plain MAN_PATH --uuid 30754
                                                                                                                             '' ;
                                                                                                             } ;
