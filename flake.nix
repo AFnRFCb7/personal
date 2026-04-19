@@ -3525,7 +3525,7 @@
                                                                                                                         then
                                                                                                                             echo 6992
                                                                                                                             SCRIPT_FILE="$( jq --raw-output '."script-file" // empty' "$PAYLOAD" )" || failure 14571
-                                                                                                                            echo 9635
+                                                                                                                            echo 9635 "SCRIPT_FILE=$SCRIPT_FILE"
                                                                                                                             STAMP="$( date +%s )" || failure 7521
                                                                                                                             echo 9821
                                                                                                                             STANDARD_ERROR_FILE="$( jq --raw-output '."standard-error-file" // empty' "$PAYLOAD" )" || failure 18867
