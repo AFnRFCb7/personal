@@ -1251,7 +1251,7 @@
                                                                                                                                                                     # cat /home/${ config.personal.name }/resources/invalid-init/${ index }/resolve/b4a45784de5a710c/c5db23113303796b/resolve.sh >&2
                                                                                                                                                                     if ! /home/${ config.personal.name }/resources/invalid-init/${ index }/resolve/b4a45784de5a710c/c5db23113303796b/resolve.sh 9929554118572229 >&2
                                                                                                                                                                     then
-                                                                                                                                                                        failure 8131657869889475 "$?"
+                                                                                                                                                                        failure 5864462541924729 "$?"
                                                                                                                                                                     fi
                                                                                                                                                                     COUNT_SEVEN=0
                                                                                                                                                                     while [[ "$COUNT_SEVEN" -lt "7" ]]
