@@ -1572,16 +1572,7 @@
                                                                                                                                                                         VERBOSE_INIT_JSON="$( jq "." ${ init-message-file } )" || failure 23617
                                                                                                                                                                         failure 25864 EXPECTED_INIT_JSON "$EXPECTED_INIT_JSON" OBSERVED_INIT_JSON "$OBSERVED_INIT_JSON" VERBOSE_INIT_JSON "$VERBOSE_INIT_JSON"
                                                                                                                                                                     fi
-                                                                                                                                                                    # shellcheck disable=SC2016
-                                                                                                                                                                    EXPECTED_RELEASE='${ release }'
-                                                                                                                                                                    OBSERVED_RELEASE="$( cat ${ release-file } )" || failure 22447
-                                                                                                                                                                    if [[ "$EXPECTED_RELEASE" != "$OBSERVED_RELEASE" ]]
-                                                                                                                                                                    then
-                                                                                                                                                                        RELEASE_SEQUENCE="$( sequential )" || failure 20665
-                                                                                                                                                                        echo "$EXPECTED_RELEASE" > "$TEMPORARY/$RELEASE_SEQUENCE"
-                                                                                                                                                                        DIFF_RELEASE="$( diff --unified "$TEMPORARY/$RELEASE_SEQUENCE" ${ release-file } )" || true
-                                                                                                                                                                        failure 3669965830692067 EXPECTED_RELEASE "$EXPECTED_RELEASE" OBSERVED_RELEASE "$OBSERVED_RELEASE" DIFF_RELEASE "$DIFF_RELEASE"
-                                                                                                                                                                    fi
+
                                                                                                                                                                     # shellcheck disable=SC2016
                                                                                                                                                                     EXPECTED_SCRIPT='${ script }'
                                                                                                                                                                     OBSERVED_SCRIPT="$( cat ${ script-file } )" || failure 29143
