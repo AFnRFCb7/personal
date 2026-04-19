@@ -1085,8 +1085,7 @@
                                                                                                                                                                         '' ;
                                                                                                                                                                     standard-output =
                                                                                                                                                                         ''
-                                                                                                                                                                            3292477133481244
-                                                                                                                                                                        '' ;
+                                                                                                                                                                            3292477133481244'' ;
                                                                                                                                                                 } ;
                                                                                                                                                             good-resolve =
                                                                                                                                                                 {
@@ -1295,7 +1294,7 @@
                                                                                                                                                                         GOOD_INIT_STANDARD_OUTPUT_SEQUENCE="$( sequential )" || failure 9219241536577672
                                                                                                                                                                         echo "$EXPECTED_GOOD_INIT_STANDARD_OUTPUT" > "$TEMPORARY/$GOOD_INIT_STANDARD_OUTPUT_SEQUENCE"
                                                                                                                                                                         DIFF_GOOD_INIT_STANDARD_OUTPUT="$( diff --unified "$EXPECTED_GOOD_INIT_STANDARD_OUTPUT" "$OBSERVED_GOOD_INIT_STANDARD_OUTPUT" )" || true
-                                                                                                                                                                        failure 6517233477928142 EXPECTED_GOOD_INIT_STANDARD_OUTPUT "$EXPECTED_GOOD_INIT_STANDARD_OUTPUT" OBSERVED_GOOD_INIT_STANDARD_OUTPUT "$OBSERVED_GOOD_INIT_STANDARD_OUTPUT" DIFF_GOOD_INIT_STANDARD_OUTPUT "$DIFF_GOOD_INIT_STANDARD_OUTPUT"
+                                                                                                                                                                        failure 2423837637322547 EXPECTED_GOOD_INIT_STANDARD_OUTPUT "$EXPECTED_GOOD_INIT_STANDARD_OUTPUT" OBSERVED_GOOD_INIT_STANDARD_OUTPUT "$OBSERVED_GOOD_INIT_STANDARD_OUTPUT" DIFF_GOOD_INIT_STANDARD_OUTPUT "$DIFF_GOOD_INIT_STANDARD_OUTPUT"
                                                                                                                                                                     fi
                                                                                                                                                                     failure 8799432489754527
                                                                                                                                                                     COUNT_EIGHT=0
