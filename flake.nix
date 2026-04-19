@@ -1281,12 +1281,11 @@
                                                                                                                                                                         DIFF_GOOD_INIT_STANDARD_ERROR="$( diff --unified "$EXPECTED_GOOD_INIT_STANDARD_ERROR" "$OBSERVED_GOOD_INIT_STANDARD_ERROR" )" || true
                                                                                                                                                                         failure 6641433375568169 EXPECTED_GOOD_INIT_STANDARD_ERROR "$EXPECTED_GOOD_INIT_STANDARD_ERROR" OBSERVED_GOOD_INIT_STANDARD_ERROR "$OBSERVED_GOOD_INIT_STANDARD_ERROR" DIFF_GOOD_INIT_STANDARD_ERROR "$DIFF_GOOD_INIT_STANDARD_ERROR"
                                                                                                                                                                     fi
-                                                                                                                                                                    ## failure 8799432489754527
                                                                                                                                                                     if [[ -e ${ good-init.json.standard-input-file } ]]
                                                                                                                                                                     then
                                                                                                                                                                         failure 3785958457935511
                                                                                                                                                                     fi
-                                                                                                                                                                    # failure 8799432489754527
+                                                                                                                                                                    ## failure 8799432489754527
                                                                                                                                                                     EXPECTED_GOOD_INIT_STANDARD_OUTPUT='${ good-init.standard-output }'
                                                                                                                                                                     OBSERVED_GOOD_INIT_STANDARD_OUTPUT="$( cat ${ good-init.json.standard-output-file } )" || failure 9189941118444955
                                                                                                                                                                     if [[ "$EXPECTED_GOOD_INIT_STANDARD_OUTPUT" != "$OBSERVED_GOOD_INIT_STANDARD_OUTPUT" ]]
@@ -1296,13 +1295,14 @@
                                                                                                                                                                         DIFF_GOOD_INIT_STANDARD_OUTPUT="$( diff --unified "$EXPECTED_GOOD_INIT_STANDARD_OUTPUT" "$OBSERVED_GOOD_INIT_STANDARD_OUTPUT" )" || true
                                                                                                                                                                         failure 2423837637322547 EXPECTED_GOOD_INIT_STANDARD_OUTPUT "$EXPECTED_GOOD_INIT_STANDARD_OUTPUT" OBSERVED_GOOD_INIT_STANDARD_OUTPUT "$OBSERVED_GOOD_INIT_STANDARD_OUTPUT" DIFF_GOOD_INIT_STANDARD_OUTPUT "$DIFF_GOOD_INIT_STANDARD_OUTPUT"
                                                                                                                                                                     fi
-                                                                                                                                                                    failure 8799432489754527
+                                                                                                                                                                    # failure 8799432489754527
                                                                                                                                                                     COUNT_EIGHT=0
                                                                                                                                                                     while [[ "$COUNT_EIGHT" -lt "8" ]]
                                                                                                                                                                     do
                                                                                                                                                                         sleep 1
                                                                                                                                                                         COUNT_EIGHT="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 8631511829865393
                                                                                                                                                                     done
+                                                                                                                                                                    failure 8799432489754527
                                                                                                                                                                     EXPECTED_GOOD_RELEASE="\"message\",\"valid-release\",\"${ good-resolve.file }\""
                                                                                                                                                                     OBSERVED_GOOD_RELEASE="$( head --lines 8 "$OUTPUT_FILE" | tail --lines 1 )" || failure 20277
                                                                                                                                                                     if [[ "$EXPECTED_GOOD_RELEASE" != "$OBSERVED_GOOD_RELEASE" ]]
@@ -2361,15 +2361,39 @@
                                                                                                                                 runtimeInputs = [ failure pkgs.coreutils ] ;
                                                                                                                                 text =
                                                                                                                                     ''
-                                                                                                                                        if [[ "$#" == 0 ]]
+                                                                                                                                        BASE=10
+                                                                                                                                        INPUT=
+                                                                                                                                        while [[ "$#" -gt 0 ]]
+                                                                                                                                        do
+                                                                                                                                            case "$1" in
+                                                                                                                                                --decimal)
+                                                                                                                                                    BASE=10
+                                                                                                                                                    ;;
+                                                                                                                                                --hexadecimal)
+                                                                                                                                                    BASE=16
+                                                                                                                                                --input)
+                                                                                                                                                    INPUT="$2"
+                                                                                                                                                    shift 2
+                                                                                                                                                    ;;
+                                                                                                                                                *)
+                                                                                                                                                    failure 8848222494314276 "$*"
+                                                                                                                                            esac
+                                                                                                                                        done
+                                                                                                                                        if [[ -z "$INPUT" ]]
                                                                                                                                         then
-                                                                                                                                            PREFIX="$( tr -dc '0-9' </dev/urandom | head -c 6 )" || failure 5936622335446384                                                                                                                                            SUFFIX="$( tr -dc '0-9' </dev/urandom | head -c 8 )" || failure 4741951775161798
-                                                                                                                                            SUFFIX="$( tr -dc '0-9' </dev/urandom | head -c 6 )" || failure 4741951775161798                                                                                                                                            SUFFIX="$( tr -dc '0-9' </dev/urandom | head -c 8 )" || failure 4741951775161798
+                                                                                                                                            if [[ "$BASE" == 10 ]]
+                                                                                                                                            then
+                                                                                                                                                PREFIX="$( tr -dc '0-9' </dev/urandom | head -c 6 )" || failure 5936622335446384
+                                                                                                                                            elif [[ "$BASE" == 16 ]]
+                                                                                                                                            then
+                                                                                                                                                PREFIX="$( tr -dc 'a-f' </dev/urandom | head -c 6 )" || failure 5535674693827615
+                                                                                                                                            fi
+                                                                                                                                            SUFFIX="$( tr -dc '0-9' </dev/urandom | head -c 6 )" || failure 4741951775161798
                                                                                                                                             echo "$PREFIX$SIGNATURE$SUFFIX"
                                                                                                                                         elif [[ "$#" == 1 ]]
                                                                                                                                         then
                                                                                                                                             INPUT="$1"
-                                                                                                                                            grep --only-matching --extended-regexp '\b[0-9]{16}\b' "$INPUT" | sort | uniq --repeated
+                                                                                                                                            grep --only-matching --extended-regexp "\b[0-9a-f]{6}$SIGNATURE[0-9]{6}\b" "$INPUT" | sort | uniq --repeated
                                                                                                                                         fi
                                                                                                                                     '' ;
                                                                                                                             } ;
@@ -2382,6 +2406,7 @@
                                                                                                                         nonce \
                                                                                                                         0500 \
                                                                                                                         --literal plain 1 \
+                                                                                                                        --literal plain BASE \
                                                                                                                         --literal plain INPUT \
                                                                                                                         --inherit plain PREFIX \
                                                                                                                         --literal plain PATH \
