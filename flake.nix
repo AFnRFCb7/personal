@@ -3533,7 +3533,7 @@
                                                                                                                             STANDARD_INPUT_FILE="$( jq --raw-output '."standard-input-file" // empty' "$PAYLOAD" )" || failure 7805
                                                                                                                             echo 2577
                                                                                                                             STANDARD_OUTPUT_FILE="$( jq --raw-output '."standard-output-file" // empty' "$PAYLOAD" )" || failure 31273
-                                                                                                                            echo 10912
+                                                                                                                            echo 10912 STANDARD_OUTPUT_FILE="$STANDARD_OUTPUT_FILE"
                                                                                                                             mkdir --parents "/home/${ config.personal.name }/resources/logs"
                                                                                                                             echo 20164
                                                                                                                             jq \
