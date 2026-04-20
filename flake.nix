@@ -234,8 +234,12 @@
                                                                                                                                                     while [[ "$#" -gt 0 ]]
                                                                                                                                                     do
                                                                                                                                                         case "$1" in
-                                                                                                                                                            --target)
-                                                                                                                                                                TARGET="$2"
+                                                                                                                                                            --init
+                                                                                                                                                                INIT="$2"
+                                                                                                                                                                shift 2
+                                                                                                                                                                ;;
+                                                                                                                                                            --release
+                                                                                                                                                                RELEASE="$2"
                                                                                                                                                                 shift 2
                                                                                                                                                                 ;;
                                                                                                                                                             *)
@@ -265,8 +269,12 @@
                                                                                                                                 while [[ "$#" -gt 0 ]]
                                                                                                                                 do
                                                                                                                                     case "$1" in
-                                                                                                                                        --target)
-                                                                                                                                            TARGET="$2"
+                                                                                                                                        --init
+                                                                                                                                            INIT="$2"
+                                                                                                                                            shift 2
+                                                                                                                                            ;;
+                                                                                                                                        --release
+                                                                                                                                            RELEASE="$2"
                                                                                                                                             shift 2
                                                                                                                                             ;;
                                                                                                                                         *)
@@ -299,7 +307,9 @@
                                                                                                                 --literal plain 1 \
                                                                                                                 --literal plain 2 \
                                                                                                                 --literal plain '#' \
-                                                                                                                --literal plain TARGET
+                                                                                                                --literal plain INIT \
+                                                                                                                --literal plain RELEASE \
+                                                                                                                --uuid 7483697565341694
                                                                                                         '' ;
                                                                                         } ;
                                                                                 in "${ application }/bin/init" ;
