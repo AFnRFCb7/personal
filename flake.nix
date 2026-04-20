@@ -231,11 +231,11 @@
                                                                                                                                             runtimeInputs = [ pkgs.coreutils pkgs.redis ] ;
                                                                                                                                             text =
                                                                                                                                                 ''
-                                                                                                                                                    while [[ "$?" -gt 0 ]]
+                                                                                                                                                    while [[ "$#" -gt 0 ]]
                                                                                                                                                     do
                                                                                                                                                         case "$1" in
                                                                                                                                                             --target)
-                                                                                                                                                                TARGET="$1"
+                                                                                                                                                                TARGET="$2"
                                                                                                                                                                 shift 2
                                                                                                                                                                 ;;
                                                                                                                                                             *)
@@ -262,11 +262,11 @@
                                                                                                                             ] ;
                                                                                                                         text =
                                                                                                                             ''
-                                                                                                                                while [[ "$?" -gt 0 ]]
+                                                                                                                                while [[ "$#" -gt 0 ]]
                                                                                                                                 do
                                                                                                                                     case "$1" in
                                                                                                                                         --target)
-                                                                                                                                            TARGET="$1"
+                                                                                                                                            TARGET="$2"
                                                                                                                                             shift 2
                                                                                                                                             ;;
                                                                                                                                         *)
@@ -292,7 +292,14 @@
                                                                                                             in "${ application }/post-test" ;
                                                                                                     in
                                                                                                         ''
-                                                                                                            wrap ${ post-test } test 0500
+                                                                                                            wrap \
+                                                                                                                ${ post-test } \
+                                                                                                                test \
+                                                                                                                0500 \
+                                                                                                                --literal plain 1 \
+                                                                                                                --literal plain 2 \
+                                                                                                                --literal plain '#' \
+                                                                                                                --literal plain TARGET
                                                                                                         '' ;
                                                                                         } ;
                                                                                 in "${ application }/bin/init" ;
