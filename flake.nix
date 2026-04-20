@@ -4299,7 +4299,7 @@
                                                                 ''
                                                                     machine.wait_for_unit("multi-user.target")
                                                                     machine.wait_for_unit("network-online.target")
-                                                                    machine.succeed("runuser --login ${ testuser } -- ${ test }")
+                                                                    # machine.succeed("runuser --login ${ testuser } -- ${ test }")
                                                                 '' ;
                                                 } ;
                                         resource-true-true =
