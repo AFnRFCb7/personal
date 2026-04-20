@@ -201,217 +201,6 @@
                                             {
                                                 checks =
                                                     {
-                                                        hook =
-                                                            ignore :
-                                                                {
-                                                                    init =
-                                                                        { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
-                                                                            let
-                                                                                application =
-                                                                                    pkgs.writeShellApplication
-                                                                                        {
-                                                                                            name = "init" ;
-                                                                                            runtimeInputs =
-                                                                                                [
-                                                                                                    pkgs.bash
-                                                                                                    failure
-                                                                                                    trace
-                                                                                                    (
-                                                                                                        pkgs.writeShellApplication
-                                                                                                            {
-                                                                                                                name = "outer" ;
-                                                                                                                runtimeInputs =
-                                                                                                                    [
-                                                                                                                        pkgs.bash
-                                                                                                                        failure
-                                                                                                                        (
-                                                                                                                            pkgs.writeShellApplication
-                                                                                                                                {
-                                                                                                                                    name = "inner" ;
-                                                                                                                                    runtimeInputs = [ failure pkgs.coreutils pkgs.yq-go ] ;
-                                                                                                                                    text =
-                                                                                                                                        ''
-                                                                                                                                            trace INNER "$*"
-                                                                                                                                            while [[ "$#" -gt 0 ]]
-                                                                                                                                            do
-                                                                                                                                                case "$1" in
-                                                                                                                                                    --init-exit-code)
-                                                                                                                                                        INIT_EXIT_CODE="$2"
-                                                                                                                                                        shift 2
-                                                                                                                                                        ;;
-                                                                                                                                                    --release-exit-code)
-                                                                                                                                                        RELEASE_EXIT_CODE="$2"
-                                                                                                                                                        shift 2
-                                                                                                                                                        ;;
-                                                                                                                                                    *)
-                                                                                                                                                        failure 14578
-                                                                                                                                                esac
-                                                                                                                                            done
-                                                                                                                                            if RESOURCE=${ resources.checks.resource { setup = setup : ''${ setup } --init-exit-code "$INIT_EXIT_CODE" --release-exit-code "$RELEASE_EXIT_CODE"'' ; } }
-                                                                                                                                            then
-                                                                                                                                                STATUS="$?"
-                                                                                                                                            else
-                                                                                                                                                STATUS="$?"
-                                                                                                                                            fi
-                                                                                                                                            # shellcheck disable=SC2016
-                                                                                                                                            yq eval --prettyPrint --arg RESOURCE "$RESOURCE" --arg SETUP_STATUS "$STATUS" '[ { "channel" : .[-1].channel , "init-status" : .[-1].status , "resource" : $RESOURCE , "setup-status" : $SETUP_STATUS } ]' /home/${ config.personal.name }/logs/log.yaml >> /mount/observed.yaml
-                                                                                                                                        '' ;
-                                                                                                                                }
-                                                                                                                        )
-                                                                                                                    ] ;
-                                                                                                                text =
-                                                                                                                    ''
-                                                                                                                        trace OUTER "$*"
-                                                                                                                        while [[ "$#" -gt 0 ]]
-                                                                                                                        do
-                                                                                                                            case "$1" in
-                                                                                                                                --depth)
-                                                                                                                                    DEPTH="$2"
-                                                                                                                                    shift 2
-                                                                                                                                    ;;
-                                                                                                                                --init-exit-code)
-                                                                                                                                    INIT_EXIT_CODE="$2"
-                                                                                                                                    shift 2
-                                                                                                                                    ;;
-                                                                                                                                --release-exit-code)
-                                                                                                                                    RELEASE_EXIT_CODE="$2"
-                                                                                                                                    shift 2
-                                                                                                                                    ;;
-                                                                                                                                *)
-                                                                                                                                    failure 2846
-                                                                                                                            esac
-                                                                                                                        done
-                                                                                                                        NEXT=$(( DEPTH - 1 ))
-                                                                                                                        if [[ "$NEXT" -ge 0 ]]
-                                                                                                                        then
-                                                                                                                            bash -c "$0 --depth $DEPTH --init-exit-code $INIT_EXIT_CODE --release-exit-code $RELEASE_EXIT_CODE"
-                                                                                                                        else
-                                                                                                                            bash -c "inner --init-exit-code $INIT_EXIT_CODE --release-exit-code $RELEASE_EXIT_CODE"
-                                                                                                                        fi
-                                                                                                                        # shellcheck disable=SC2016
-                                                                                                                        yq eval --prettyPrint --arg DEPTH "$DEPTH" '[ { "channel" : .[-1].channel , "depth" : $DEPTH , "init-status" : .[-1].status } ]' /home/${ config.personal.name }/logs/log.yaml >> /mount/observed.yaml
-                                                                                                                    '' ;
-                                                                                                            }
-                                                                                                    )
-                                                                                                ] ;
-                                                                                            text =
-                                                                                                ''
-                                                                                                    trace HOOK "$*"
-                                                                                                    trace 10010 "$*"
-                                                                                                    INIT_EXIT_CODE=0
-                                                                                                    trace 8532 "$*"
-                                                                                                    RELEASE_EXIT_CODE=0
-                                                                                                    trace 18566 "$*"
-                                                                                                    while [[ "$#" -gt 0 ]]
-                                                                                                    do
-                                                                                                        trace 30648
-                                                                                                        case "$1" in
-                                                                                                            --depth)
-                                                                                                                trace 7657
-                                                                                                                DEPTH="$2"
-                                                                                                                shift 2
-                                                                                                                ;;
-                                                                                                            --init-exit-code)
-                                                                                                                trace 22414
-                                                                                                                INIT_EXIT_CODE="$2"
-                                                                                                                shift 2
-                                                                                                                ;;
-                                                                                                            --release-exit-code)
-                                                                                                                trace 8458
-                                                                                                                RELEASE_EXIT_CODE="$2"
-                                                                                                                shift 2
-                                                                                                                ;;
-                                                                                                            *)
-                                                                                                                trace 8730
-                                                                                                                failure 4168
-                                                                                                        esac
-                                                                                                    done
-                                                                                                    trace 11577 "DEPTH=$DEPTH" "INIT_EXIT_CODE=$INIT_EXIT_CODE" "RELEASE_EXIT_CODE=$RELEASE_EXIT_CODE"
-                                                                                                    NEXT=$(( DEPTH - 1 ))
-                                                                                                    trace 9019
-                                                                                                    bash -c "outer --depth $NEXT --init-exit-code $INIT_EXIT_CODE --release-exit-code $RELEASE_EXIT_CODE"
-                                                                                                    trace 25864
-                                                                                                    mkdir --parents "/mount/observed/$DEPTH"
-                                                                                                    trace 2698
-                                                                                                    # shellcheck disable=SC2016
-                                                                                                    yq eval --prettyPrint --arg DEPTH "$DEPTH" '{ "channel" : .[-2].channel , "depth" : $DEPTH , "init-status" : .[-1].status }' /home/${ config.personal.name }/logs/log.yaml > /scratch/init.yaml
-                                                                                                    trace 1945
-                                                                                                    # shellcheck disable=SC2016
-                                                                                                    yq eval --prettyPrint --arg DEPTH '{ "channel" : .[-1].channel , "depth" : $DEPTH , "release-status" : .[-1].status }' /home/${ config.personal.name }/logs/log.yaml > /scratch/release.yaml
-                                                                                                    # shellcheck disable=SC2016
-                                                                                                    yq eval --prettyPrint --argfile INIT /scratch/init.yaml --argfile RELEASE /scratch/release.yaml '{ "init" : $INIT , "release" : $RELEASE }' >> /mount/observed.yaml
-                                                                                                '' ;
-                                                                                        } ;
-                                                                                in ''${ application }/bin/init "$@"'' ;
-                                                                    release =
-                                                                        { failure , pkgs , resources , seed , sequential , trace } :
-                                                                            let
-                                                                                application =
-                                                                                    pkgs.writeShellApplication
-                                                                                        {
-                                                                                            name = "release" ;
-                                                                                            runtimeInputs = [ pkgs.coreutils ] ;
-                                                                                            text =
-                                                                                                ''
-                                                                                                    echo 9577
-                                                                                                '' ;
-                                                                                        } ;
-                                                                                    in "${ application }/bin/release" ;
-                                                                    targets = [ "observed.yaml" ] ;
-                                                                } ;
-                                                        resource =
-                                                            ignore :
-                                                                {
-                                                                    init =
-                                                                        { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
-                                                                            let
-                                                                                application =
-                                                                                    pkgs.writeShellApplication
-                                                                                        {
-                                                                                            name = "init" ;
-                                                                                            runtimeInputs = [ failure pkgs.coreutils ] ;
-                                                                                            text =
-                                                                                                ''
-                                                                                                    INIT_EXIT_CODE=0
-                                                                                                    RELEASE_EXIT_CODE=0
-                                                                                                    while [[ "$#" -gt 0 ]]
-                                                                                                    do
-                                                                                                        case "$1" in
-                                                                                                            --init-exit-code)
-                                                                                                                INIT_EXIT_CODE="$2"
-                                                                                                                shift 2
-                                                                                                                ;;
-                                                                                                            --release-exit-code)
-                                                                                                                RELEASE_EXIT_CODE="$2"
-                                                                                                                shift 2
-                                                                                                                ;;
-                                                                                                            *)
-                                                                                                                failure 4168
-                                                                                                        esac
-                                                                                                    done
-                                                                                                    echo "$INIT_EXIT_CODE" > /mount/init-exit-code
-                                                                                                    echo "$RELEASE_EXIT_CODE" > /mount/release-exit-code
-                                                                                                    exit "$INIT_EXIT_CODE"
-                                                                                                '' ;
-                                                                                        } ;
-                                                                                in "${ application }/bin/init" ;
-                                                                    release =
-                                                                        { failure , pkgs , resources , seed , sequential , trace } :
-                                                                            let
-                                                                                application =
-                                                                                    pkgs.writeShellApplication
-                                                                                        {
-                                                                                            name = "release" ;
-                                                                                            runtimeInputs = [ failure pkgs.coreutils ] ;
-                                                                                            text =
-                                                                                                ''
-                                                                                                    RELEASE_EXIT_CODE="$( cat /mount/release-exit-code )" || failure 19859
-                                                                                                    exit "$RELEASE_EXIT_CODE"
-                                                                                                '' ;
-                                                                                        } ;
-                                                                                in "${ application }/bin/release" ;
-                                                                    targets = [ "init-exit-code" "release-exit-code" ] ;
-                                                                } ;
                                                     } ;
                                                 foobar =
                                                     {
@@ -1253,18 +1042,19 @@
                                                                                                                                                                     then
                                                                                                                                                                         failure 4857756770187742
                                                                                                                                                                     fi
-                                                                                                                                                                    # failure 8799432489754527
+                                                                                                                                                                    ## failure 8799432489754527
                                                                                                                                                                     if /home/${ config.personal.name }/resources/invalid-init/${ index }/resolve/b4a45784de5a710c/c5db23113303796b/resolve.sh 9929554118572229 >&2
                                                                                                                                                                     then
                                                                                                                                                                         failure 5864462541924729 "$?"
                                                                                                                                                                     fi
-                                                                                                                                                                    failure 8799432489754527
+                                                                                                                                                                    # failure 8799432489754527
                                                                                                                                                                     COUNT_SEVEN=0
                                                                                                                                                                     while [[ "$COUNT_SEVEN" -lt "7" ]]
                                                                                                                                                                     do
                                                                                                                                                                         sleep 1
                                                                                                                                                                         COUNT_SEVEN="$( wc "$OUTPUT_FILE" --lines | cut --delimiter " " --fields 1 )" || failure 24769
                                                                                                                                                                     done
+                                                                                                                                                                    failure 8799432489754527
                                                                                                                                                                     EXPECTED_GOOD_INIT_RESOLVE="\"message\",\"valid-init\",\"${ good-init-resolve-file }\""
                                                                                                                                                                     OBSERVED_GOOD_INIT_RESOLVE="$( head --lines 7 "$OUTPUT_FILE" | tail --lines 1 )" || failure 20277
                                                                                                                                                                     if [[ "$EXPECTED_GOOD_INIT_RESOLVE" != "$OBSERVED_GOOD_INIT_RESOLVE" ]]
