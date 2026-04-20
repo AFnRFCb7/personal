@@ -214,6 +214,51 @@
                                                                                             runtimeInputs = [ wrap ] ;
                                                                                             text =
                                                                                                 let
+                                                                                                    compare =
+                                                                                                        pkgs.writeShellApplication
+                                                                                                            {
+                                                                                                                name = "compare" ;
+                                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.redis ] ;
+                                                                                                                text =
+                                                                                                                    ''
+                                                                                                                        while [[ "$#" -gt 0 ]]
+                                                                                                                        do
+                                                                                                                            case "$1" in
+                                                                                                                                --channel)
+                                                                                                                                    UUID_CHANNEL="$2"
+                                                                                                                                    EXPECTED_CHANNEL="$3"
+                                                                                                                                    shift 3
+                                                                                                                                    ;;
+                                                                                                                                --message)
+                                                                                                                                    UUID_MESSAGE="$2"
+                                                                                                                                    EXPECTED_MESSAGE="$3"
+                                                                                                                                    shift 3
+                                                                                                                                    ;;
+                                                                                                                                --payload)
+                                                                                                                                    UUID_PAYLOAD="$2"
+                                                                                                                                    EXPECTED_PAYLOAD="$3"
+                                                                                                                                    shift 3
+                                                                                                                                    ;;
+                                                                                                                                *)
+                                                                                                                                    failure 8175862286564631 "$*"
+                                                                                                                                    ;;
+                                                                                                                            esac
+                                                                                                                        done
+                                                                                                                        read -r OBSERVED_MESSAGE OBSERVED_CHANNEL OBSERVED_PAYLOAD
+                                                                                                                        if [[ "$EXPECTED_MESSAGE" != "$OBSERVED_MESSAGE" ]]
+                                                                                                                        then
+                                                                                                                            failure "$UUID_MESSAGE" 9358462855663219 EXPECTED_MESSAGE "$EXPECTED_MESSAGE" OBSERVED_MESSAGE "$OBSERVED_MESSAGE"
+                                                                                                                        fi
+                                                                                                                        if [[ "$EXPECTED_CHANNEL" != "$OBSERVED_CHANNEL" ]]
+                                                                                                                        then
+                                                                                                                            failure "$UUID_CHANNEL" 3246855689569956 EXPECTED_CHANNEL "$EXPECTED_CHANNEL" OBSERVED_CHANNEL "$OBSERVED_CHANNEL"
+                                                                                                                        fi
+                                                                                                                        if [[ "$EXPECTED_PAYLOAD" != "$OBSERVED_PAYLOAD" ]]
+                                                                                                                        then
+                                                                                                                            failure "$UUID_PAYLOAD" 2376349973447483 EXPECTED_PAYLOAD "$EXPECTED_PAYLOAD" OBSERVED_PAYLOAD "$OBSERVED_PAYLOAD"
+                                                                                                                        fi
+                                                                                                                    '' ;
+                                                                                                            } ;
                                                                                                     post-test =
                                                                                                         let
                                                                                                             application =
@@ -228,7 +273,7 @@
                                                                                                                                     pkgs.writeShellApplication
                                                                                                                                         {
                                                                                                                                             name = "pre-test" ;
-                                                                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.redis ] ;
+                                                                                                                                            runtimeInputs = [ compare pkgs.coreutils pkgs.redis ] ;
                                                                                                                                             text =
                                                                                                                                                 ''
                                                                                                                                                     while [[ "$#" -gt 0 ]]
@@ -297,19 +342,6 @@
                                                                                                                                                         else
                                                                                                                                                             failure 5257632127293445 "We expected a failure here because INIT=$INIT but we observed $STATUS"
                                                                                                                                                         fi
-                                                                                                                                                    fi
-                                                                                                                                                    read -r MESSAGE CHANNEL PAYLOAD
-                                                                                                                                                    if [[ "message" != "$MESSAGE" ]]
-                                                                                                                                                    then
-                                                                                                                                                        failure 9592638195646427
-                                                                                                                                                    fi
-                                                                                                                                                    if [[ "valid-init" != "$CHANNEL" ]]
-                                                                                                                                                    then
-                                                                                                                                                        failure 5978231714352486
-                                                                                                                                                    fi
-                                                                                                                                                    if [[ "WTF" != "$PAYLOAD" ]]
-                                                                                                                                                    then
-                                                                                                                                                        failure 1989346315896953
                                                                                                                                                     fi
                                                                                                                                                 '' ;
                                                                                                                                         }
