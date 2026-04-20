@@ -236,7 +236,7 @@
                                                                                                                                                         case "$1" in
                                                                                                                                                             --init)
                                                                                                                                                                 INIT="$2"
-                                                                                                                                                                if [[ "$INIT" != "true" ]] && [[ "$RELEASE" != "false" ]]
+                                                                                                                                                                if [[ "$INIT" != "true" ]] && [[ "$INIT" != "false" ]]
                                                                                                                                                                 then
                                                                                                                                                                     failure 6955793956212518 "$INIT"
                                                                                                                                                                 fi
@@ -307,7 +307,7 @@
                                                                                                                                                     then
                                                                                                                                                         failure 5978231714352486
                                                                                                                                                     fi
-                                                                                                                                                    if [[ "WTF" != "$MESSAGE" ]]
+                                                                                                                                                    if [[ "WTF" != "$PAYLOAD" ]]
                                                                                                                                                     then
                                                                                                                                                         failure 1989346315896953
                                                                                                                                                     fi
