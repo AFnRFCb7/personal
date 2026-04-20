@@ -220,7 +220,46 @@
                                                                                                                 pkgs.writeShellApplication
                                                                                                                     {
                                                                                                                         name = "post-test" ;
-                                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.redis ] ;
+                                                                                                                        runtimeInputs =
+                                                                                                                            [
+                                                                                                                                pkgs.coreutils
+                                                                                                                                pkgs.redis
+                                                                                                                                (
+                                                                                                                                    pkgs.writeShellApplication
+                                                                                                                                        {
+                                                                                                                                            name = "pre-test" ;
+                                                                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.redis ] ;
+                                                                                                                                            text =
+                                                                                                                                                ''
+                                                                                                                                                    while [[ "$?" -gt 0 ]]
+                                                                                                                                                    do
+                                                                                                                                                        case "$1" in
+                                                                                                                                                            --target)
+                                                                                                                                                                TARGET="$1"
+                                                                                                                                                                shift 2
+                                                                                                                                                                ;;
+                                                                                                                                                            *)
+                                                                                                                                                                failure 3186874731515892 "$*"
+                                                                                                                                                                ;;
+                                                                                                                                                        esac
+                                                                                                                                                    done
+                                                                                                                                                    echo "TARGET=$TARGET"
+                                                                                                                                                    exec 3< <( timeout 1m redis-cli SUBSCRIBE invalid-init invalid-release stale-init valid-init valid-release )
+                                                                                                                                                    for INDEX in {1..5}
+                                                                                                                                                    do
+                                                                                                                                                        echo "We are skipping the first 5 messages - $INDEX/5 - because they are SUBSCRIPTION messages and uninformative."
+                                                                                                                                                        read -r <&3
+                                                                                                                                                    done
+                                                                                                                                                    if timeout 1s read -r <&3
+                                                                                                                                                    then
+                                                                                                                                                        failure 7951884354751442 "We are not expecting a 6th message but we got one anyway"
+                                                                                                                                                    else
+                                                                                                                                                        echo We are not expecting a 6th message yet and we are not surprised
+                                                                                                                                                    fi
+                                                                                                                                                '' ;
+                                                                                                                                        }
+                                                                                                                                )
+                                                                                                                            ] ;
                                                                                                                         text =
                                                                                                                             ''
                                                                                                                                 while [[ "$?" -gt 0 ]]
@@ -237,9 +276,9 @@
                                                                                                                                 done
                                                                                                                                 echo "TARGET=$TARGET"
                                                                                                                                 exec 3< <( timeout 1m redis-cli SUBSCRIBE invalid-init invalid-release stale-init valid-init valid-release )
-                                                                                                                                for i in {1..5}
+                                                                                                                                for INDEX in {1..5}
                                                                                                                                 do
-                                                                                                                                    echo We are skipping the first 5 messages because they are SUBSCRIPTION messages and uninformative.
+                                                                                                                                    echo "We are skipping the first 5 messages - $INDEX/5 - because they are SUBSCRIPTION messages and uninformative."
                                                                                                                                     read -r <&3
                                                                                                                                 done
                                                                                                                                 if timeout 1s read -r <&3
