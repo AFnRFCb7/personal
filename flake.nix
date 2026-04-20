@@ -380,7 +380,7 @@
                                                                                                                                 pre-test --init "$INIT" --release "$RELEASE"
                                                                                                                             '' ;
                                                                                                                     } ;
-                                                                                                            in "${ application }/post-test" ;
+                                                                                                            in "${ application }/bin/post-test" ;
                                                                                                     in
                                                                                                         ''
                                                                                                             wrap \
