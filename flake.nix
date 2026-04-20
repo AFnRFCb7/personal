@@ -270,11 +270,16 @@
                                                                                                                                                     RESOURCE_JSON="$( jq --null-input --compact-output --arg INIT "$INIT" --arg RELEASE "$RELEASE" '[ "checks" , "targets" , $INIT , $RELEASE ]' )"
                                                                                                                                                     if RESOURCE="$( resource --resource "$RESOURCE_JSON" )"
                                                                                                                                                     then
+                                                                                                                                                        STATUS="$?"
+                                                                                                                                                    else
+                                                                                                                                                        STATUS="$?"
+                                                                                                                                                    fi
+                                                                                                                                                    if [[ "$STATUS" == 0 ]]
+                                                                                                                                                    then
                                                                                                                                                         if [[ "$INIT" == true ]]
                                                                                                                                                         then
                                                                                                                                                             echo "We succesfully obtained the RESOURCE=$RESOURCE"
                                                                                                                                                         else
-                                                                                                                                                            STATUS="$?"
                                                                                                                                                             failure 4453576663237628 "We did not expect a failure here because INIT=$INIT but we observed $STATUS"
                                                                                                                                                         fi
                                                                                                                                                     else
