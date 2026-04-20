@@ -288,16 +288,28 @@
                                                                                                                                                         then
                                                                                                                                                             echo "We succesfully obtained the RESOURCE=$RESOURCE"
                                                                                                                                                         else
-                                                                                                                                                            failure 4453576663237628 "We did not expect a failure here because INIT=$INIT but we observed $STATUS"
+                                                                                                                                                            failure 4453576663237628 "We did not expect a failure here because INIT=$INIT but we observed $STATUS and obtained $RESOURCE"
                                                                                                                                                         fi
                                                                                                                                                     else
                                                                                                                                                         if [[ "$INIT" == false ]]
                                                                                                                                                         then
                                                                                                                                                             echo "We correctly failed to obtain the RESOURCE because INIT=$INIT"
                                                                                                                                                         else
-                                                                                                                                                            STATUS="$?"
                                                                                                                                                             failure 5257632127293445 "We expected a failure here because INIT=$INIT but we observed $STATUS"
                                                                                                                                                         fi
+                                                                                                                                                    fi
+                                                                                                                                                    read -r MESSAGE CHANNEL PAYLOAD
+                                                                                                                                                    if [[ "message" != "$MESSAGE" ]]
+                                                                                                                                                    then
+                                                                                                                                                        failure 9592638195646427
+                                                                                                                                                    fi
+                                                                                                                                                    if [[ "valid-init" != "$CHANNEL" ]]
+                                                                                                                                                    then
+                                                                                                                                                        failure 5978231714352486
+                                                                                                                                                    fi
+                                                                                                                                                    if [[ "WTF" != "$MESSAGE" ]]
+                                                                                                                                                    then
+                                                                                                                                                        failure 1989346315896953
                                                                                                                                                     fi
                                                                                                                                                 '' ;
                                                                                                                                         }
