@@ -255,6 +255,14 @@
                                                                                                                                                                 ;;
                                                                                                                                                         esac
                                                                                                                                                     done
+                                                                                                                                                    if [[ -z "$INIT" ]]
+                                                                                                                                                    then
+                                                                                                                                                        failure 1871763771129953
+                                                                                                                                                    fi
+                                                                                                                                                    if [[ -z "$RELEASE" ]]
+                                                                                                                                                    then
+                                                                                                                                                        failure 4957596197169642
+                                                                                                                                                    fi
                                                                                                                                                     exec 3< <( timeout 1m redis-cli SUBSCRIBE invalid-init invalid-release stale-init valid-init valid-release )
                                                                                                                                                     for INDEX in {1..5}
                                                                                                                                                     do
