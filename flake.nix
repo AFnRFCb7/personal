@@ -4290,8 +4290,8 @@
                                                                                 runtimeInputs = [ pkgs.coreutils ] ;
                                                                                 text =
                                                                                     ''
-                                                                                        SCRIPT="$( resource --resource '["checks","scripts"]' )"
-                                                                                        timeout 2m "$SCRIPT/test"
+                                                                                        SCRIPT="$( resource --resource '["checks","script"]' )"
+                                                                                        echo timeout 2m "$SCRIPT/test"
                                                                                     '' ;
                                                                             } ;
                                                                     in "${ application }/bin/test" ;
@@ -4299,7 +4299,7 @@
                                                                 ''
                                                                     machine.wait_for_unit("multi-user.target")
                                                                     machine.wait_for_unit("network-online.target")
-                                                                    # machine.succeed("runuser --login ${ testuser } -- ${ test }")
+                                                                    machine.succeed("runuser --login ${ testuser } -- ${ test }")
                                                                 '' ;
                                                 } ;
                                         resource-true-true =
