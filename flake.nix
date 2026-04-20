@@ -201,47 +201,61 @@
                                             {
                                                 checks =
                                                     {
-                                                        scripts =
+                                                        script =
                                                             ignore :
                                                                 {
                                                                     init =
                                                                         { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
                                                                             let
                                                                                 application =
-                                                                                    {
-                                                                                        name = "init" ;
-                                                                                        runtimeInputs = [ wrap ] ;
-                                                                                        text =
-                                                                                            let
-                                                                                                post-test =
-                                                                                                    let
-                                                                                                        application =
-                                                                                                            pkgs.writeShellApplication
-                                                                                                                {
-                                                                                                                    name = "post-test" ;
-                                                                                                                    runtimeInputs = [ pkgs.coreutils pkgs.redis ] ;
-                                                                                                                    text =
-                                                                                                                        ''
-                                                                                                                            exec 3< <( timeout 1m redis-cli SUBSCRIBE invalid-init invalid-release stale-init valid-init valid-release )
-                                                                                                                            for i in {1..5}
-                                                                                                                            do
-                                                                                                                                echo We are skipping the first 5 messages because they are SUBSCRIPTION messages and uninformative.
-                                                                                                                                read -r <&3
-                                                                                                                            done
-                                                                                                                            if timeout 1s read -r <&3
-                                                                                                                            then
-                                                                                                                                failure 6571724875474582 "We are not expecting a 6th message but we got one anyway"
-                                                                                                                            else
-                                                                                                                                echo We are not expecting a 6th message yet and we are not surpised
-                                                                                                                            fi
-                                                                                                                        '' ;
-                                                                                                                } ;
-                                                                                                        in "${ application }/post-test" ;
-                                                                                                in
-                                                                                                    ''
-                                                                                                        wrap ${ post-test } test 0500
-                                                                                                    '' ;
-                                                                                    } ;
+                                                                                    pkgs.writeShellApplication
+                                                                                        {
+                                                                                            name = "init" ;
+                                                                                            runtimeInputs = [ wrap ] ;
+                                                                                            text =
+                                                                                                let
+                                                                                                    post-test =
+                                                                                                        let
+                                                                                                            application =
+                                                                                                                pkgs.writeShellApplication
+                                                                                                                    {
+                                                                                                                        name = "post-test" ;
+                                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.redis ] ;
+                                                                                                                        text =
+                                                                                                                            ''
+                                                                                                                                while [[ "$?" -gt 0 ]]
+                                                                                                                                do
+                                                                                                                                    case "$1" in
+                                                                                                                                        --target)
+                                                                                                                                            TARGET="$1"
+                                                                                                                                            shift 2
+                                                                                                                                            ;;
+                                                                                                                                        *)
+                                                                                                                                            failure 7725171477728387 "$*"
+                                                                                                                                            ;;
+                                                                                                                                    esac
+                                                                                                                                done
+                                                                                                                                echo "TARGET=$TARGET"
+                                                                                                                                exec 3< <( timeout 1m redis-cli SUBSCRIBE invalid-init invalid-release stale-init valid-init valid-release )
+                                                                                                                                for i in {1..5}
+                                                                                                                                do
+                                                                                                                                    echo We are skipping the first 5 messages because they are SUBSCRIPTION messages and uninformative.
+                                                                                                                                    read -r <&3
+                                                                                                                                done
+                                                                                                                                if timeout 1s read -r <&3
+                                                                                                                                then
+                                                                                                                                    failure 6571724875474582 "We are not expecting a 6th message but we got one anyway"
+                                                                                                                                else
+                                                                                                                                    echo We are not expecting a 6th message yet and we are not surprised
+                                                                                                                                fi
+                                                                                                                            '' ;
+                                                                                                                    } ;
+                                                                                                            in "${ application }/post-test" ;
+                                                                                                    in
+                                                                                                        ''
+                                                                                                            wrap ${ post-test } test 0500
+                                                                                                        '' ;
+                                                                                        } ;
                                                                                 in "${ application }/bin/init" ;
                                                                     targets = [ "test" ] ;
                                                                 } ;
@@ -4168,8 +4182,8 @@
                                                                                 runtimeInputs = [ pkgs.coreutils ] ;
                                                                                 text =
                                                                                     ''
-                                                                                        SCRIPTS="$( resource --resource '["checks","scripts"]' )"
-                                                                                        timeout 2m "$SCRIPTS"
+                                                                                        SCRIPT="$( resource --resource '["checks","scripts"]' )"
+                                                                                        timeout 2m "$SCRIPT/test"
                                                                                     '' ;
                                                                             } ;
                                                                     in "${ application }/bin/test" ;
