@@ -278,6 +278,80 @@
                                                                                     targets = [ "5494881573568661" ] ;
                                                                                 } ;
                                                                     } ;
+                                                                true =
+                                                                    {
+                                                                        false =
+                                                                            ignore :
+                                                                                {
+                                                                                    init =
+                                                                                        { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
+                                                                                            let
+                                                                                                application =
+                                                                                                    pkgs.writeShellApplication
+                                                                                                        {
+                                                                                                            name = "init" ;
+                                                                                                            runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                            text =
+                                                                                                                ''
+                                                                                                                    touch /mount/9427941488926681
+                                                                                                                    echo 3346844943869582
+                                                                                                                    exit 53
+                                                                                                                '' ;
+                                                                                                        } ;
+                                                                                                in "${ application }/bin/init" ;
+                                                                                    release =
+                                                                                        { failure , pkgs , resources , seed , sequential , trace } :
+                                                                                            let
+                                                                                                application =
+                                                                                                    pkgs.writeShellApplication
+                                                                                                        {
+                                                                                                            name = "release" ;
+                                                                                                            runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                            text =
+                                                                                                                ''
+                                                                                                                    echo 3299938456476225
+                                                                                                                    exit 24
+                                                                                                                '' ;
+                                                                                                        } ;
+                                                                                                in "${ application }/bin/init" ;
+                                                                                    targets = [ "9427941488926681" ] ;
+                                                                                } ;
+                                                                        true =
+                                                                            ignore :
+                                                                                {
+                                                                                    init =
+                                                                                        { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
+                                                                                            let
+                                                                                                application =
+                                                                                                    pkgs.writeShellApplication
+                                                                                                        {
+                                                                                                            name = "init" ;
+                                                                                                            runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                            text =
+                                                                                                                ''
+                                                                                                                    touch /mount/5494881573568661
+                                                                                                                    echo 3148451947316331
+                                                                                                                '' ;
+                                                                                                        } ;
+                                                                                                in "${ application }/bin/init" ;
+                                                                                    release =
+                                                                                        { failure , pkgs , resources , seed , sequential , trace } :
+                                                                                            let
+                                                                                                application =
+                                                                                                    pkgs.writeShellApplication
+                                                                                                        {
+                                                                                                            name = "release" ;
+                                                                                                            runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                            text =
+                                                                                                                ''
+                                                                                                                    echo 4657737859987722
+                                                                                                                    exit 224
+                                                                                                                '' ;
+                                                                                                        } ;
+                                                                                                in "${ application }/bin/init" ;
+                                                                                    targets = [ "5494881573568661" ] ;
+                                                                                } ;
+                                                                    } ;
                                                             } ;
                                                     } ;
                                                 foobar =
