@@ -234,11 +234,11 @@
                                                                                                                                                     while [[ "$#" -gt 0 ]]
                                                                                                                                                     do
                                                                                                                                                         case "$1" in
-                                                                                                                                                            --init
+                                                                                                                                                            --init)
                                                                                                                                                                 INIT="$2"
                                                                                                                                                                 shift 2
                                                                                                                                                                 ;;
-                                                                                                                                                            --release
+                                                                                                                                                            --release)
                                                                                                                                                                 RELEASE="$2"
                                                                                                                                                                 shift 2
                                                                                                                                                                 ;;
@@ -269,11 +269,11 @@
                                                                                                                                 while [[ "$#" -gt 0 ]]
                                                                                                                                 do
                                                                                                                                     case "$1" in
-                                                                                                                                        --init
+                                                                                                                                        --init)
                                                                                                                                             INIT="$2"
                                                                                                                                             shift 2
                                                                                                                                             ;;
-                                                                                                                                        --release
+                                                                                                                                        --release)
                                                                                                                                             RELEASE="$2"
                                                                                                                                             shift 2
                                                                                                                                             ;;
