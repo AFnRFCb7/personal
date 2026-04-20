@@ -390,7 +390,9 @@
                                                                                                                 --literal plain 1 \
                                                                                                                 --literal plain 2 \
                                                                                                                 --literal plain '#' \
+                                                                                                                --literal plain INDEX \
                                                                                                                 --literal plain INIT \
+                                                                                                                --literal plain PATH \
                                                                                                                 --literal plain RELEASE \
                                                                                                                 --uuid 7483697565341694
                                                                                                         '' ;
