@@ -333,7 +333,6 @@
                                                                                                                                             ;;
                                                                                                                                     esac
                                                                                                                                 done
-                                                                                                                                echo "TARGET=$TARGET"
                                                                                                                                 exec 3< <( timeout 1m redis-cli SUBSCRIBE invalid-init invalid-release stale-init valid-init valid-release )
                                                                                                                                 for INDEX in {1..5}
                                                                                                                                 do
@@ -4291,7 +4290,7 @@
                                                                                 text =
                                                                                     ''
                                                                                         SCRIPT="$( resource --resource '["checks","script"]' )"
-                                                                                        echo timeout 2m "$SCRIPT/test"
+                                                                                        timeout 2m "$SCRIPT/test"
                                                                                     '' ;
                                                                             } ;
                                                                     in "${ application }/bin/test" ;
