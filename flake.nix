@@ -236,10 +236,18 @@
                                                                                                                                                         case "$1" in
                                                                                                                                                             --init)
                                                                                                                                                                 INIT="$2"
+                                                                                                                                                                if [[ "$INIT" != "true" ]] && [[ "$RELEASE" != "false" ]]
+                                                                                                                                                                then
+                                                                                                                                                                    failure 6955793956212518 "$INIT"
+                                                                                                                                                                fi
                                                                                                                                                                 shift 2
                                                                                                                                                                 ;;
                                                                                                                                                             --release)
                                                                                                                                                                 RELEASE="$2"
+                                                                                                                                                                if [[ "$RELEASE" != "true" ]] && [[ "$RELEASE" != "false" ]]
+                                                                                                                                                                then
+                                                                                                                                                                    failure 7365993421498947 "$RELEASE"
+                                                                                                                                                                fi
                                                                                                                                                                 shift 2
                                                                                                                                                                 ;;
                                                                                                                                                             *)
@@ -247,7 +255,6 @@
                                                                                                                                                                 ;;
                                                                                                                                                         esac
                                                                                                                                                     done
-                                                                                                                                                    echo "TARGET=$TARGET"
                                                                                                                                                     exec 3< <( timeout 1m redis-cli SUBSCRIBE invalid-init invalid-release stale-init valid-init valid-release )
                                                                                                                                                     for INDEX in {1..5}
                                                                                                                                                     do
@@ -260,6 +267,8 @@
                                                                                                                                                     else
                                                                                                                                                         echo We are not expecting a 6th message yet and we are not surprised
                                                                                                                                                     fi
+                                                                                                                                                    RESOURCE_JSON="$( jq --null-input --compact-output --arg INIT "$INIT" --arg RELEASE "$RELEASE" '[ "checks" , "targets" , $INIT , $RELEASE ]' )"
+                                                                                                                                                    RESOURCE="$( resource --resource "$RESOURCE_JSON" )"
                                                                                                                                                 '' ;
                                                                                                                                         }
                                                                                                                                 )
@@ -295,6 +304,7 @@
                                                                                                                                 else
                                                                                                                                     echo We are not expecting a 6th message yet and we are not surprised
                                                                                                                                 fi
+                                                                                                                                pre-test --init "$INIT" --release "$RELEASE"
                                                                                                                             '' ;
                                                                                                                     } ;
                                                                                                             in "${ application }/post-test" ;
