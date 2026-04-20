@@ -201,7 +201,50 @@
                                             {
                                                 checks =
                                                     {
-                                                        scripts = { } ;
+                                                        scripts =
+                                                            ignore :
+                                                                {
+                                                                    init =
+                                                                        { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
+                                                                            let
+                                                                                application =
+                                                                                    {
+                                                                                        name = "init" ;
+                                                                                        runtimeInputs = [ wrap ] ;
+                                                                                        text =
+                                                                                            let
+                                                                                                post-test =
+                                                                                                    let
+                                                                                                        application =
+                                                                                                            pkgs.writeShellApplication
+                                                                                                                {
+                                                                                                                    name = "post-test" ;
+                                                                                                                    runtimeInputs = [ pkgs.coreutils pkgs.redis ] ;
+                                                                                                                    text =
+                                                                                                                        ''
+                                                                                                                            exec 3< <( timeout 1m redis-cli SUBSCRIBE invalid-init invalid-release stale-init valid-init valid-release )
+                                                                                                                            for i in {1..5}
+                                                                                                                            do
+                                                                                                                                echo We are skipping the first 5 messages because they are SUBSCRIPTION messages and uninformative.
+                                                                                                                                read -r <&3
+                                                                                                                            done
+                                                                                                                            if timeout 1s read -r <&3
+                                                                                                                            then
+                                                                                                                                failure 6571724875474582 "We are not expecting a 6th message but we got one anyway"
+                                                                                                                            else
+                                                                                                                                echo We are not expecting a 6th message yet and we are not surpised
+                                                                                                                            fi
+                                                                                                                        '' ;
+                                                                                                                } ;
+                                                                                                        in "${ application }/post-test" ;
+                                                                                                in
+                                                                                                    ''
+                                                                                                        wrap ${ post-test } test 0500
+                                                                                                    '' ;
+                                                                                    } ;
+                                                                                in "${ application }/bin/init" ;
+                                                                    targets = [ "test" ] ;
+                                                                } ;
                                                         targets =
                                                             {
                                                                 false =
@@ -4109,6 +4152,34 @@
 #                                                                    machine.succeed("runuser --login ${ testuser } -- ${ test }")
 #                                                                '' ;
 #                                                } ;
+                                        resource--true-true =
+                                            pkgs.nixosTest
+                                                {
+                                                    name = "resource-true-true" ;
+                                                    nodes.machine = { ... } : { imports = builtins.concatLists [ [ user ] private ] ; } ;
+                                                    testScript =
+                                                        let
+                                                            test =
+                                                                let
+                                                                    application =
+                                                                        pkgs.writeShellApplication
+                                                                            {
+                                                                                name = "test" ;
+                                                                                runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                text =
+                                                                                    ''
+                                                                                        SCRIPTS="$( resource --resource '["checks","scripts"]' )"
+                                                                                        timeout 2m "$SCRIPTS"
+                                                                                    '' ;
+                                                                            } ;
+                                                                    in "${ application }/bin/test" ;
+                                                            in
+                                                                ''
+                                                                    machine.wait_for_unit("multi-user.target")
+                                                                    machine.wait_for_unit("network-online.target")
+                                                                    machine.succeed("runuser --login ${ testuser } -- ${ test }")
+                                                                '' ;
+                                                } ;
                                         resource-true-true =
                                             pkgs.nixosTest
                                                 {
