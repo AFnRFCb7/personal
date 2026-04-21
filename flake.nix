@@ -410,12 +410,12 @@
                                                                                                                                                     else
                                                                                                                                                         STATUS="$?"
                                                                                                                                                     fi
+                                                                                                                                                    printf -v RESOURCE_INDEX "%016d" "$ALPHA"
                                                                                                                                                     if [[ "$STATUS" == 0 ]]
                                                                                                                                                     then
                                                                                                                                                         if [[ "$INIT" == true ]]
                                                                                                                                                         then
                                                                                                                                                             echo "We successfully obtained the RESOURCE=$RESOURCE"
-                                                                                                                                                            printf -v RESOURCE_INDEX "%016d" "$ALPHA"
                                                                                                                                                             if [[ ! -d "/home/${ config.personal.name }/mounts/$RESOURCE_INDEX" ]]
                                                                                                                                                             then
                                                                                                                                                                 failure 3636983934497155
