@@ -342,6 +342,8 @@
                                                                                                                         name = "post-test" ;
                                                                                                                         runtimeInputs =
                                                                                                                             [
+                                                                                                                                block
+                                                                                                                                compare
                                                                                                                                 pkgs.coreutils
                                                                                                                                 pkgs.redis
                                                                                                                                 (
@@ -502,7 +504,7 @@
                                                                                                                                 fi
                                                                                                                                 echo 1863491612796318 1000 >&2
                                                                                                                                 exec 3< <( timeout 1m redis-cli SUBSCRIBE invalid-init invalid-release stale-init valid-init valid-release )
-                                                                                                                                echo 1863491612796318 >&2
+                                                                                                                                echo 1863491612796318 1050 >&2
                                                                                                                                 compare --message 6636697276572674 subscribe --channel 8221334634265348 invalid-init --message 9652249256897222 1 false 3<&3
                                                                                                                                 echo 1863491612796318 1100 >&2
                                                                                                                                 compare --message 9786493435349777 subscribe --channel 6831792573554772 invalid-release --message 9316976421659833 2 false 3<&3
