@@ -355,7 +355,7 @@
                                                                                                                                     pkgs.writeShellApplication
                                                                                                                                         {
                                                                                                                                             name = "pre-test" ;
-                                                                                                                                            runtimeInputs = [ block compare pkgs.coreutils pkgs.jq pkgs.redis ] ;
+                                                                                                                                            runtimeInputs = [ block compare failure pkgs.coreutils pkgs.jq pkgs.redis ] ;
                                                                                                                                             text =
                                                                                                                                                 ''
                                                                                                                                                     while [[ "$#" -gt 0 ]]
