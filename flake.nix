@@ -312,10 +312,6 @@
                                                                                                                         then
                                                                                                                             failure 9331276634154662 "$UUID_PAYLOAD"
                                                                                                                         fi
-                                                                                                                        if true
-                                                                                                                        then
-                                                                                                                            exit 0
-                                                                                                                        fi
                                                                                                                         read -r OBSERVED_MESSAGE OBSERVED_CHANNEL OBSERVED_PAYLOAD <&3
                                                                                                                         if [[ "$EXPECTED_MESSAGE" != "$OBSERVED_MESSAGE" ]]
                                                                                                                         then
