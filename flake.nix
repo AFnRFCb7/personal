@@ -363,7 +363,6 @@
                                                                                                                                                         case "$1" in
                                                                                                                                                             --alpha)
                                                                                                                                                                 ALPHA="$2"
-                                                                                                                                                                echo 9532163321453237 8145116662142355 ALPHA "$ALPHA" >&2
                                                                                                                                                                 shift 2
                                                                                                                                                                 ;;
                                                                                                                                                             --init)
@@ -487,7 +486,6 @@
                                                                                                                                     case "$1" in
                                                                                                                                         --alpha)
                                                                                                                                             ALPHA="$2"
-                                                                                                                                            echo 9532163321453237 6951237159591256 ALPHA "$ALPHA" >&2
                                                                                                                                             shift 2
                                                                                                                                             ;;
                                                                                                                                         --init)
@@ -527,7 +525,6 @@
                                                                                                                                 compare --message 2622487695526727 subscribe --channel 5991279582986675 valid-init --payload 9767887746875137 4 false 3<&3
                                                                                                                                 compare --message 8878565243153966 subscribe --channel 4957976869462859 valid-release --payload 7956118522212293 5 false 3<&3
                                                                                                                                 block --timeout 1 --uuid 8549964153339418 3<&3
-                                                                                                                                echo 9532163321453237 6436979358643912 ALPHA "$ALPHA" pre-test --alpha "$ALPHA" --init "$INIT" --release "$RELEASE" >&2
                                                                                                                                 pre-test --alpha "$ALPHA" --init "$INIT" --release "$RELEASE" 3<&3
                                                                                                                             '' ;
                                                                                                                     } ;
@@ -4462,7 +4459,7 @@
                                         resource--false-false =
                                             pkgs.nixosTest
                                                 {
-                                                    name = "resource-true-true" ;
+                                                    name = "resource-false-false" ;
                                                     nodes.machine = { ... } : { imports = builtins.concatLists [ [ user ] private ] ; } ;
                                                     testScript =
                                                         let
@@ -4490,6 +4487,35 @@
                                         resource--false-true =
                                             pkgs.nixosTest
                                                 {
+                                                    name = "resource-false-true" ;
+                                                    nodes.machine = { ... } : { imports = builtins.concatLists [ [ user ] private ] ; } ;
+                                                    testScript =
+                                                        let
+                                                            test =
+                                                                let
+                                                                    application =
+                                                                        pkgs.writeShellApplication
+                                                                            {
+                                                                                name = "test" ;
+                                                                                runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                text =
+                                                                                    ''
+                                                                                        SCRIPT="$( resource --resource '["checks","script"]' )"
+                                                                                        timeout 1m "$SCRIPT/test" --alpha 9 --init true --release false
+                                                                                    '' ;
+                                                                            } ;
+                                                                    in "${ application }/bin/test" ;
+                                                            in
+                                                                ''
+                                                                    machine.wait_for_unit("multi-user.target")
+                                                                    machine.wait_for_unit("network-online.target")
+                                                                    machine.succeed("runuser --login ${ testuser } -- ${ test }")
+                                                                '' ;
+                                                } ;
+                                        resource--
+                                        -false =
+                                            pkgs.nixosTest
+                                                {
                                                     name = "resource-true-true" ;
                                                     nodes.machine = { ... } : { imports = builtins.concatLists [ [ user ] private ] ; } ;
                                                     testScript =
@@ -4504,7 +4530,7 @@
                                                                                 text =
                                                                                     ''
                                                                                         SCRIPT="$( resource --resource '["checks","script"]' )"
-                                                                                        timeout 1m "$SCRIPT/test" --alpha 9 --init false --release true
+                                                                                        timeout 1m "$SCRIPT/test" --alpha 9 --init true --release false
                                                                                     '' ;
                                                                             } ;
                                                                     in "${ application }/bin/test" ;
