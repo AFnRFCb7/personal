@@ -363,6 +363,7 @@
                                                                                                                                                         case "$1" in
                                                                                                                                                             --alpha)
                                                                                                                                                                 ALPHA="$2"
+                                                                                                                                                                echo 9532163321453237 ALPHA "$ALPHA" >&2
                                                                                                                                                                 shift 2
                                                                                                                                                                 ;;
                                                                                                                                                             --init)
