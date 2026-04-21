@@ -316,7 +316,7 @@
                                                                                                                         then
                                                                                                                             exit 0
                                                                                                                         fi
-                                                                                                                        read -r OBSERVED_MESSAGE OBSERVED_CHANNEL OBSERVED_PAYLOAD
+                                                                                                                        read -r OBSERVED_MESSAGE OBSERVED_CHANNEL OBSERVED_PAYLOAD <&3
                                                                                                                         if [[ "$EXPECTED_MESSAGE" != "$OBSERVED_MESSAGE" ]]
                                                                                                                         then
                                                                                                                             failure "$UUID_MESSAGE" 9358462855663219 EXPECTED_MESSAGE "$EXPECTED_MESSAGE" OBSERVED_MESSAGE "$OBSERVED_MESSAGE"
