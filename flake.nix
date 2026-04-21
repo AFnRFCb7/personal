@@ -312,7 +312,23 @@
                                                                                                                         then
                                                                                                                             failure 9331276634154662 "$UUID_PAYLOAD"
                                                                                                                         fi
-                                                                                                                        read -r OBSERVED_MESSAGE OBSERVED_CHANNEL OBSERVED_PAYLOAD <&3
+
+                                                                                                                        while true; do
+                                                                                                                            read -r type <&3 || break
+                                                                                                                            [[ "$type" == "message" ]] || continue
+
+                                                                                                                            read -r channel <&3 || break
+                                                                                                                            read -r payload <&3 || break
+
+                                                                                                                            OBSERVED_MESSAGE="message"
+                                                                                                                            OBSERVED_CHANNEL="$channel"
+                                                                                                                            OBSERVED_PAYLOAD="$payload"
+
+                                                                                                                            # process here
+                                                                                                                        done
+                                                                                                                        read -r OBSERVED_MESSAGE <&3
+                                                                                                                        read -r OBSERVED_CHANNEL <&3
+                                                                                                                        read -r OBSERVED_PAYLOAD <&3
                                                                                                                         if [[ "$EXPECTED_MESSAGE" != "$OBSERVED_MESSAGE" ]]
                                                                                                                         then
                                                                                                                             failure "$UUID_MESSAGE" 9358462855663219 EXPECTED_MESSAGE "$EXPECTED_MESSAGE" OBSERVED_MESSAGE "$OBSERVED_MESSAGE"
@@ -496,7 +512,7 @@
                                                                                                                                 then
                                                                                                                                     failure 2148148795514418
                                                                                                                                 fi
-                                                                                                                                exec 3< <( timeout 1m redis-cli SUBSCRIBE invalid-init invalid-release stale-init valid-init valid-release )
+                                                                                                                                exec 3< <( timeout 1m redis-cli --json SUBSCRIBE invalid-init invalid-release stale-init valid-init valid-release )
                                                                                                                                 echo 1863491612796318 A
                                                                                                                                 compare --message 6636697276572674 subscribe --channel 8221334634265348 invalid-init --payload 9652249256897222 1 false 3<&3
                                                                                                                                 echo 1863491612796318 B
