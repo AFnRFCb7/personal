@@ -4512,8 +4512,7 @@
                                                                     machine.succeed("runuser --login ${ testuser } -- ${ test }")
                                                                 '' ;
                                                 } ;
-                                        resource--
-                                        -false =
+                                        resource--false-false =
                                             pkgs.nixosTest
                                                 {
                                                     name = "resource-true-true" ;
