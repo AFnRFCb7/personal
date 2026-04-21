@@ -457,7 +457,7 @@
                                                                                                                             ] ;
                                                                                                                         text =
                                                                                                                             ''
-                                                                                                                                echo 1863491612796318 >&2
+                                                                                                                                echo 1863491612796318 400 >&2
                                                                                                                                 while [[ "$#" -gt 0 ]]
                                                                                                                                 do
                                                                                                                                     case "$1" in
@@ -478,33 +478,33 @@
                                                                                                                                             ;;
                                                                                                                                     esac
                                                                                                                                 done
-                                                                                                                                echo 1863491612796318 >&2
+                                                                                                                                echo 1863491612796318 500 >&2
                                                                                                                                 printf -v RESOURCE_INDEX "%016d" "$ALPHA"
-                                                                                                                                echo 1863491612796318 >&2
+                                                                                                                                echo 1863491612796318 600 >&2
                                                                                                                                 if [[ -e "/home/${ config.personal.name }/resources/mounts/$RESOURCE_INDEX" ]]
                                                                                                                                 then
                                                                                                                                     failure 2798527332356525
                                                                                                                                 fi
-                                                                                                                                echo 1863491612796318 >&2
+                                                                                                                                echo 1863491612796318 700 >&2
                                                                                                                                 if [[ -e "/home/${ config.personal.name }/resources/release/$RESOURCE_INDEX" ]]
                                                                                                                                 then
                                                                                                                                     failure 4143117735632852
                                                                                                                                 fi
-                                                                                                                                echo 1863491612796318 >&2
+                                                                                                                                echo 1863491612796318 800 >&2
                                                                                                                                 if [[ -e "/home/${ config.personal.name }/resources/invalid-init/$RESOURCE_INDEX" ]]
                                                                                                                                 then
                                                                                                                                     failure 7245153876846418
                                                                                                                                 fi
-                                                                                                                                echo 1863491612796318 >&2
+                                                                                                                                echo 1863491612796318 900 >&2
                                                                                                                                 if [[ -e "/home/${ config.personal.name }/resources/invalid-release/$RESOURCE_INDEX" ]]
                                                                                                                                 then
                                                                                                                                     failure 2148148795514418
                                                                                                                                 fi
-                                                                                                                                echo 1863491612796318 >&2
+                                                                                                                                echo 1863491612796318 1000 >&2
                                                                                                                                 exec 3< <( timeout 1m redis-cli SUBSCRIBE invalid-init invalid-release stale-init valid-init valid-release )
                                                                                                                                 echo 1863491612796318 >&2
                                                                                                                                 compare --message 6636697276572674 subscribe --channel 8221334634265348 invalid-init --message 9652249256897222 1 false 3<&3
-                                                                                                                                echo 1863491612796318 >&2
+                                                                                                                                echo 1863491612796318 1100 >&2
                                                                                                                                 compare --message 9786493435349777 subscribe --channel 6831792573554772 invalid-release --message 9316976421659833 2 false 3<&3
                                                                                                                                 echo 1863491612796318 >&2
                                                                                                                                 compare --message 6437695441451879 subscribe --channel 1715249111511543 stale-init --message 2935593178593615 3 false 3<&3
@@ -4463,11 +4463,11 @@
                                                                                 runtimeInputs = [ pkgs.coreutils ] ;
                                                                                 text =
                                                                                     ''
-                                                                                        echo 1863491612796318 >&2
+                                                                                        echo 1863491612796318 100 >&2
                                                                                         SCRIPT="$( resource --resource '["checks","script"]' )"
-                                                                                        echo 1863491612796318 >&2
+                                                                                        echo 1863491612796318 200 >&2
                                                                                         timeout 1m "$SCRIPT/test" --alpha 0 --init true --release true
-                                                                                        echo 1863491612796318 >&2
+                                                                                        echo 1863491612796318 300 >&2
                                                                                     '' ;
                                                                             } ;
                                                                     in "${ application }/bin/test" ;
