@@ -412,9 +412,17 @@
                                                                                                                                                             then
                                                                                                                                                                 failure 3636983934497155
                                                                                                                                                             fi
-                                                                                                                                                            if [[ ! -d "/home/${ config.personal.name }/mounts/$RESOURCE_INDEX" ]]
+                                                                                                                                                            if [[ ! -d "/home/${ config.personal.name }/release/$RESOURCE_INDEX" ]]
                                                                                                                                                             then
                                                                                                                                                                 failure 4352844455814463
+                                                                                                                                                            fi
+                                                                                                                                                            if [[ -e "/home/${ config.personal.name }/invalid-init/$RESOURCE_INDEX" ]]
+                                                                                                                                                            then
+                                                                                                                                                                failure 4816533867684688
+                                                                                                                                                            fi
+                                                                                                                                                            if [[ -e "/home/${ config.personal.name }/invalid-release/$RESOURCE_INDEX" ]]
+                                                                                                                                                            then
+                                                                                                                                                                failure 7382429993944764
                                                                                                                                                             fi
                                                                                                                                                         else
                                                                                                                                                             failure 4453576663237628 "We did not expect a failure here because INIT=$INIT but we observed $STATUS and obtained $RESOURCE"
@@ -423,6 +431,22 @@
                                                                                                                                                         if [[ "$INIT" == false ]]
                                                                                                                                                         then
                                                                                                                                                             echo "We correctly failed to obtain the RESOURCE because INIT=$INIT"
+                                                                                                                                                            if [[ ! -d "/home/${ config.personal.name }/mounts/$RESOURCE_INDEX" ]]
+                                                                                                                                                            then
+                                                                                                                                                                failure 9773989932948459
+                                                                                                                                                            fi
+                                                                                                                                                            if [[ -e "/home/${ config.personal.name }/release/$RESOURCE_INDEX" ]]
+                                                                                                                                                            then
+                                                                                                                                                                failure 3646472541235173
+                                                                                                                                                            fi
+                                                                                                                                                            if [[ ! -d "/home/${ config.personal.name }/invalid-init/$RESOURCE_INDEX" ]]
+                                                                                                                                                            then
+                                                                                                                                                                failure 3861915312668885
+                                                                                                                                                            fi
+                                                                                                                                                            if [[ -e "/home/${ config.personal.name }/invalid-release/$RESOURCE_INDEX" ]]
+                                                                                                                                                            then
+                                                                                                                                                                failure 9431191685269584
+                                                                                                                                                            fi
                                                                                                                                                         else
                                                                                                                                                             failure 5257632127293445 "We expected a failure here because INIT=$INIT but we observed $STATUS"
                                                                                                                                                         fi
@@ -476,8 +500,8 @@
                                                                                                                                 compare --message 6437695441451879 subscribe --channel 1715249111511543 stale-init --message 2935593178593615 3 false
                                                                                                                                 compare --message 2622487695526727 subscribe --channel 5991279582986675 valid-init --message 9767887746875137 4 false
                                                                                                                                 compare --message 8878565243153966 subscribe --channel 4957976869462859 valid-release --message 7956118522212293 5 false
-                                                                                                                                block --timeout 1 --uuid 8549964153339418
-                                                                                                                                pre-test --alpha "$ALPHA" --init "$INIT" --release "$RELEASE" 3>&3
+                                                                                                                                # block --timeout 1 --uuid 8549964153339418
+                                                                                                                                # pre-test --alpha "$ALPHA" --init "$INIT" --release "$RELEASE" 3>&3
                                                                                                                             '' ;
                                                                                                                     } ;
                                                                                                             in "${ application }/bin/post-test" ;
