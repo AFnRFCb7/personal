@@ -459,7 +459,7 @@
                                                                                                                             ] ;
                                                                                                                         text =
                                                                                                                             ''
-                                                                                                                                echo 1863491612796318 400 >&2
+
                                                                                                                                 while [[ "$#" -gt 0 ]]
                                                                                                                                 do
                                                                                                                                     case "$1" in
@@ -507,13 +507,13 @@
                                                                                                                                 echo 1863491612796318 1050 >&2
                                                                                                                                 compare --message 6636697276572674 subscribe --channel 8221334634265348 invalid-init --payload 9652249256897222 1 false 3<&3
                                                                                                                                 echo 1863491612796318 1100 >&2
-                                                                                                                                compare --message 9786493435349777 subscribe --channel 6831792573554772 invalid-release --message 9316976421659833 2 false 3<&3
+                                                                                                                                compare --message 9786493435349777 subscribe --channel 6831792573554772 invalid-release --payload 9316976421659833 2 false 3<&3
                                                                                                                                 echo 1863491612796318 1200 >&2
-                                                                                                                                compare --message 6437695441451879 subscribe --channel 1715249111511543 stale-init --message 2935593178593615 3 false 3<&3
+                                                                                                                                compare --message 6437695441451879 subscribe --channel 1715249111511543 stale-init --payload 2935593178593615 3 false 3<&3
                                                                                                                                 echo 1863491612796318 1300 >&2
-                                                                                                                                compare --message 2622487695526727 subscribe --channel 5991279582986675 valid-init --message 9767887746875137 4 false 3<&3
+                                                                                                                                compare --message 2622487695526727 subscribe --channel 5991279582986675 valid-init --payload 9767887746875137 4 false 3<&3
                                                                                                                                 echo 1863491612796318 1400 >&2
-                                                                                                                                compare --message 8878565243153966 subscribe --channel 4957976869462859 valid-release --message 7956118522212293 5 false 3<&3
+                                                                                                                                compare --message 8878565243153966 subscribe --channel 4957976869462859 valid-release --payload 7956118522212293 5 false 3<&3
                                                                                                                                 echo 1863491612796318 1500 >&2
                                                                                                                                 echo block --timeout 1 --uuid 8549964153339418 3<&3
                                                                                                                                 echo 1863491612796318 1600 >&2
