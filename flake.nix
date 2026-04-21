@@ -418,7 +418,7 @@
                                                                                                                                                             echo "We successfully obtained the RESOURCE=$RESOURCE"
                                                                                                                                                             if [[ ! -d "/home/${ config.personal.name }/mounts/$RESOURCE_INDEX" ]]
                                                                                                                                                             then
-                                                                                                                                                                failure 3636983934497155
+                                                                                                                                                                failure 3636983934497155 RESOURCE "$RESOURCE" RESOURCE_INDEX "$RESOURCE_INDEX"
                                                                                                                                                             fi
                                                                                                                                                             if [[ ! -d "/home/${ config.personal.name }/release/$RESOURCE_INDEX" ]]
                                                                                                                                                             then
