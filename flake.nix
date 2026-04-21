@@ -241,7 +241,7 @@
                                                                                                                             echo We are not expecting a 6th message yet and we are not surprised
                                                                                                                         fi
                                                                                                                     '' ;
-                                                                                                            }
+                                                                                                            } ;
                                                                                                     compare =
                                                                                                         pkgs.writeShellApplication
                                                                                                             {
