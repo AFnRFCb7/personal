@@ -4463,8 +4463,11 @@
                                                                                 runtimeInputs = [ pkgs.coreutils ] ;
                                                                                 text =
                                                                                     ''
+                                                                                        echo 1863491612796318 >&2
                                                                                         SCRIPT="$( resource --resource '["checks","script"]' )"
-                                                                                        timeout 1m "$SCRIPT/test --alpha 0 --init true --release true"
+                                                                                        echo 1863491612796318 >&2
+                                                                                        timeout 1m "$SCRIPT/test" --alpha 0 --init true --release true
+                                                                                        echo 1863491612796318 >&2
                                                                                     '' ;
                                                                             } ;
                                                                     in "${ application }/bin/test" ;
