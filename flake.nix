@@ -354,6 +354,10 @@
                                                                                                                                                     while [[ "$#" -gt 0 ]]
                                                                                                                                                     do
                                                                                                                                                         case "$1" in
+                                                                                                                                                            --alpha)
+                                                                                                                                                                ALPHA="$2"
+                                                                                                                                                                shift 2
+                                                                                                                                                                ;;
                                                                                                                                                             --init)
                                                                                                                                                                 INIT="$2"
                                                                                                                                                                 if [[ "$INIT" != "true" ]] && [[ "$INIT" != "false" ]]
@@ -375,6 +379,10 @@
                                                                                                                                                                 ;;
                                                                                                                                                         esac
                                                                                                                                                     done
+                                                                                                                                                    if [[ -z "$ALPHA" ]]
+                                                                                                                                                    then
+                                                                                                                                                        failure 2468219387197693
+                                                                                                                                                    fi
                                                                                                                                                     if [[ -z "$INIT" ]]
                                                                                                                                                     then
                                                                                                                                                         failure 1871763771129953
@@ -428,12 +436,16 @@
                                                                                                                                             ;;
                                                                                                                                     esac
                                                                                                                                 done
+                                                                                                                                if [[ -e "/home/${ config.personal.name }/resources/mounts/$ALPHA" ]]
+                                                                                                                                then
+                                                                                                                                    failure 2798527332356525
+                                                                                                                                fiiii
                                                                                                                                 exec 3< <( timeout 1m redis-cli SUBSCRIBE invalid-init invalid-release stale-init valid-init valid-release )
                                                                                                                                 compare --message 6636697276572674 subscribe --channel 8221334634265348 invalid-init --message 9652249256897222 1 false
                                                                                                                                 compare --message 9786493435349777 subscribe --channel 6831792573554772 invalid-release --message 9316976421659833 2 false
                                                                                                                                 compare --message 6437695441451879 subscribe --channel 1715249111511543 stale-init --message 2935593178593615 3 false
                                                                                                                                 compare --message 2622487695526727 subscribe --channel 5991279582986675 valid-init --message 9767887746875137 4 false
-                                                                                                                                for INDEX in {2..5}
+                                                                                                                                for INDEX in {5..5}
                                                                                                                                 do
                                                                                                                                     echo "We are skipping the first 5 messages - $INDEX/5 - because they are SUBSCRIPTION messages and uninformative."
                                                                                                                                     read -r <&3
@@ -452,6 +464,7 @@
                                                                                                                 --literal plain 1 \
                                                                                                                 --literal plain 2 \
                                                                                                                 --literal plain '#' \
+                                                                                                                --literal plain ALPHA \
                                                                                                                 --literal plain INDEX \
                                                                                                                 --literal plain INIT \
                                                                                                                 --literal plain PATH \
