@@ -214,11 +214,39 @@
                                                                                             runtimeInputs = [ wrap ] ;
                                                                                             text =
                                                                                                 let
+                                                                                                    block =
+                                                                                                        pkgs.writeShellApplication
+                                                                                                            {
+                                                                                                                name = "block" ;
+                                                                                                                runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                                text =
+                                                                                                                    ''
+                                                                                                                        while [[ "$#" -gt 0 ]]
+                                                                                                                        do
+                                                                                                                            case "$1" in
+                                                                                                                                --timeout
+
+                                                                                                                                --uuid)
+                                                                                                                                    UUID="$2"
+                                                                                                                                    shift 2
+                                                                                                                                    ;;
+                                                                                                                                *)
+                                                                                                                                    failure 6734766152668717 "$*"
+                                                                                                                            esac
+                                                                                                                        done
+                                                                                                                        if timeout 1s read -r <&3
+                                                                                                                        then
+                                                                                                                            failure 7951884354751442 "We are not expecting a 6th message but we got one anyway"
+                                                                                                                        else
+                                                                                                                            echo We are not expecting a 6th message yet and we are not surprised
+                                                                                                                        fi
+                                                                                                                    '' ;
+                                                                                                            }
                                                                                                     compare =
                                                                                                         pkgs.writeShellApplication
                                                                                                             {
                                                                                                                 name = "compare" ;
-                                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.redis ] ;
+                                                                                                                runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                                 text =
                                                                                                                     ''
                                                                                                                         while [[ "$#" -gt 0 ]]
@@ -377,7 +405,7 @@
                                                                                                                                 else
                                                                                                                                     echo We are not expecting a 6th message yet and we are not surprised
                                                                                                                                 fi
-                                                                                                                                pre-test --init "$INIT" --release "$RELEASE"
+                                                                                                                                pre-test --init "$INIT" --release "$RELEASE" 3>&3
                                                                                                                             '' ;
                                                                                                                     } ;
                                                                                                             in "${ application }/bin/post-test" ;
