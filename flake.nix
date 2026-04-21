@@ -449,7 +449,7 @@
                                                                                                                                 compare --message 9786493435349777 subscribe --channel 6831792573554772 invalid-release --message 9316976421659833 2 false
                                                                                                                                 compare --message 6437695441451879 subscribe --channel 1715249111511543 stale-init --message 2935593178593615 3 false
                                                                                                                                 compare --message 2622487695526727 subscribe --channel 5991279582986675 valid-init --message 9767887746875137 4 false
-                                                                                                                                compare --message 8878565243153966 subscribe --channel 5991279582986675 valid-release --message 9767887746875137 5 false
+                                                                                                                                compare --message 8878565243153966 subscribe --channel 4957976869462859 valid-release --message 7956118522212293 5 false
                                                                                                                                 block --timeout 1 --uuid 8549964153339418
                                                                                                                                 pre-test --init "$INIT" --release "$RELEASE" 3>&3
                                                                                                                             '' ;
@@ -4398,7 +4398,7 @@
                                                                                 text =
                                                                                     ''
                                                                                         SCRIPT="$( resource --resource '["checks","script"]' )"
-                                                                                        timeout 2m "$SCRIPT/test"
+                                                                                        timeout 1m "$SCRIPT/test --alpha 0000000000000000 --init true --release true"
                                                                                     '' ;
                                                                             } ;
                                                                     in "${ application }/bin/test" ;
