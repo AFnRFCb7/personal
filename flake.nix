@@ -323,14 +323,17 @@
                                                                                                                         then
                                                                                                                             failure "$UUID_CHANNEL" 3246855689569956 EXPECTED_CHANNEL "$EXPECTED_CHANNEL" OBSERVED_CHANNEL "$OBSERVED_CHANNEL"
                                                                                                                         fi
-                                                                                                                        if [[ "$EXPECTED_PAYLOAD" != "$OBSERVED_PAYLOAD" ]]
+                                                                                                                        if [[ "$PAYLOAD_IS_JSON" == "true" ]]
                                                                                                                         then
-                                                                                                                            if [[ "$PAYLOAD_IS_JSON" == "true" ]]
+                                                                                                                            if [[ "$EXPECTED_PAYLOAD" != "$OBSERVED_PAYLOAD" ]]
                                                                                                                             then
                                                                                                                                 EXPECTED_VERBOSE_PAYLOAD="$( jq "." <<< "$EXPECTED_PAYLOAD" )" || failure 9639499296459275
                                                                                                                                 OBSERVED_VERBOSE_PAYLOAD="$( jq "." <<< "$OBSERVED_PAYLOAD" )" || failure 9639499296459275
                                                                                                                                 failure "$UUID_PAYLOAD" 2177767151764594 EXPECTED_PAYLOAD "$EXPECTED_PAYLOAD" OBSERVED_PAYLOAD "$OBSERVED_PAYLOAD" EXPECTED_VERBOSE_PAYLOAD "$EXPECTED_VERBOSE_PAYLOAD" OBSERVED_VERBOSE_PAYLOAD "$OBSERVED_VERBOSE_PAYLOAD"
-                                                                                                                            else
+                                                                                                                            fi
+                                                                                                                        else
+                                                                                                                            if [[ "$EXPECTED_PAYLOAD" != "$OBSERVED_PAYLOAD" ]]
+                                                                                                                            then
                                                                                                                                 failure "$UUID_PAYLOAD" 2376349973447483 EXPECTED_PAYLOAD "$EXPECTED_PAYLOAD" OBSERVED_PAYLOAD "$OBSERVED_PAYLOAD"
                                                                                                                             fi
                                                                                                                         fi
@@ -352,7 +355,7 @@
                                                                                                                                     pkgs.writeShellApplication
                                                                                                                                         {
                                                                                                                                             name = "pre-test" ;
-                                                                                                                                            runtimeInputs = [ block compare pkgs.coreutils pkgs.redis ] ;
+                                                                                                                                            runtimeInputs = [ block compare pkgs.coreutils pkgs.jq pkgs.redis ] ;
                                                                                                                                             text =
                                                                                                                                                 ''
                                                                                                                                                     while [[ "$#" -gt 0 ]]
@@ -503,10 +506,10 @@
                                                                                                                                 echo 1863491612796318 A
                                                                                                                                 compare --message 6636697276572674 subscribe --channel 8221334634265348 invalid-init --payload 9652249256897222 1 false 3<&3
                                                                                                                                 echo 1863491612796318 B
-                                                                                                                                echo compare --message 9786493435349777 subscribe --channel 6831792573554772 invalid-release --payload 9316976421659833 2 false 3<&3
-                                                                                                                                echo compare --message 6437695441451879 subscribe --channel 1715249111511543 stale-init --payload 2935593178593615 3 false 3<&3
-                                                                                                                                echo compare --message 2622487695526727 subscribe --channel 5991279582986675 valid-init --payload 9767887746875137 4 false 3<&3
-                                                                                                                                echo compare --message 8878565243153966 subscribe --channel 4957976869462859 valid-release --payload 7956118522212293 5 false 3<&3
+                                                                                                                                compare --message 9786493435349777 subscribe --channel 6831792573554772 invalid-release --payload 9316976421659833 2 false 3<&3
+                                                                                                                                compare --message 6437695441451879 subscribe --channel 1715249111511543 stale-init --payload 2935593178593615 3 false 3<&3
+                                                                                                                                compare --message 2622487695526727 subscribe --channel 5991279582986675 valid-init --payload 9767887746875137 4 false 3<&3
+                                                                                                                                compare --message 8878565243153966 subscribe --channel 4957976869462859 valid-release --payload 7956118522212293 5 false 3<&3
                                                                                                                                 echo block --timeout 1 --uuid 8549964153339418 3<&3
                                                                                                                                 echo pre-test --alpha "$ALPHA" --init "$INIT" --release "$RELEASE" 3<&3
                                                                                                                             '' ;
