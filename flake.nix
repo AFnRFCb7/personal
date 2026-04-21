@@ -225,7 +225,9 @@
                                                                                                                         do
                                                                                                                             case "$1" in
                                                                                                                                 --timeout
-
+                                                                                                                                    TIMEOUT="$2"
+                                                                                                                                    shift 2
+                                                                                                                                    ;;
                                                                                                                                 --uuid)
                                                                                                                                     UUID="$2"
                                                                                                                                     shift 2
@@ -235,7 +237,15 @@
                                                                                                                                     ;;
                                                                                                                             esac
                                                                                                                         done
-                                                                                                                        if timeout 1s read -r <&3
+                                                                                                                        if [[ -z "$TIMEOUT" ]]
+                                                                                                                        then
+                                                                                                                            failure 7269648125756695
+                                                                                                                        fi
+                                                                                                                        if [[ -z "$UUID" ]]
+                                                                                                                        then
+                                                                                                                            failure 1535338844795893
+                                                                                                                        fi
+                                                                                                                        if timeout "$TIMEOUT" read -r <&3
                                                                                                                         then
                                                                                                                             failure 7951884354751442 "We are not expecting a message but we got one anyway"
                                                                                                                         else
@@ -383,17 +393,13 @@
                                                                                                                                     esac
                                                                                                                                 done
                                                                                                                                 exec 3< <( timeout 1m redis-cli SUBSCRIBE invalid-init invalid-release stale-init valid-init valid-release )
-                                                                                                                                for INDEX in {1..5}
+                                                                                                                                compare --message 6636697276572674 subscribe --channel 8221334634265348 invalid-init --message 9652249256897222 ""
+                                                                                                                                for INDEX in {2..5}
                                                                                                                                 do
                                                                                                                                     echo "We are skipping the first 5 messages - $INDEX/5 - because they are SUBSCRIPTION messages and uninformative."
                                                                                                                                     read -r <&3
                                                                                                                                 done
-                                                                                                                                if timeout 1s read -r <&3
-                                                                                                                                then
-                                                                                                                                    failure 6571724875474582 "We are not expecting a 6th message but we got one anyway"
-                                                                                                                                else
-                                                                                                                                    echo We are not expecting a 6th message yet and we are not surprised
-                                                                                                                                fi
+                                                                                                                                block --timeout 1 --uuid 8549964153339418
                                                                                                                                 pre-test --init "$INIT" --release "$RELEASE" 3>&3
                                                                                                                             '' ;
                                                                                                                     } ;
