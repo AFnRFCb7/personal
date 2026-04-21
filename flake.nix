@@ -284,6 +284,34 @@
                                                                                                                                     ;;
                                                                                                                             esac
                                                                                                                         done
+                                                                                                                        if [[ -z "$UUID_CHANNEL" ]]
+                                                                                                                        then
+                                                                                                                            failure 3859676595588872
+                                                                                                                        fi
+                                                                                                                        if [[ -z "$EXPECTED_CHANNEL" ]]
+                                                                                                                        then
+                                                                                                                            failure 9262853791516192 "$UUID_CHANNEL"
+                                                                                                                        fi
+                                                                                                                        if [[ -z "$UUID_MESSAGE" ]]
+                                                                                                                        then
+                                                                                                                            failure 6758712567292483
+                                                                                                                        fi
+                                                                                                                        if [[ -z "$EXPECTED_MESSAGE" ]]
+                                                                                                                        then
+                                                                                                                            failure 9152341496876694 "$UUID_MESSAGE"
+                                                                                                                        fi
+                                                                                                                        if [[ -z "$UUID_PAYLOAD" ]]
+                                                                                                                        then
+                                                                                                                            failure 5765343548669263
+                                                                                                                        fi
+                                                                                                                        if [[ -z "$EXPECTED_PAYLOAD" ]]
+                                                                                                                        then
+                                                                                                                            failure 8569324665781814 "$UUID_PAYLOAD"
+                                                                                                                        fi
+                                                                                                                        if [[ -z "$PAYLOAD_IS_JSON" ]]
+                                                                                                                        then
+                                                                                                                            failure 9331276634154662 "$UUID_PAYLOAD"
+                                                                                                                        fi
                                                                                                                         read -r OBSERVED_MESSAGE OBSERVED_CHANNEL OBSERVED_PAYLOAD
                                                                                                                         if [[ "$EXPECTED_MESSAGE" != "$OBSERVED_MESSAGE" ]]
                                                                                                                         then
@@ -295,7 +323,14 @@
                                                                                                                         fi
                                                                                                                         if [[ "$EXPECTED_PAYLOAD" != "$OBSERVED_PAYLOAD" ]]
                                                                                                                         then
-                                                                                                                            failure "$UUID_PAYLOAD" 2376349973447483 EXPECTED_PAYLOAD "$EXPECTED_PAYLOAD" OBSERVED_PAYLOAD "$OBSERVED_PAYLOAD"
+                                                                                                                            if [[ "$PAYLOAD_IS_JSON" == "true" ]]
+                                                                                                                            then
+                                                                                                                                EXPECTED_VERBOSE_PAYLOAD="$( jq "." <<< "$EXPECTED_PAYLOAD" )" || failure 9639499296459275
+                                                                                                                                OBSERVED_VERBOSE_PAYLOAD="$( jq "." <<< "$OBSERVED_PAYLOAD" )" || failure 9639499296459275
+                                                                                                                                failure "$UUID_PAYLOAD" 2177767151764594 EXPECTED_PAYLOAD "$EXPECTED_PAYLOAD" OBSERVED_PAYLOAD "$OBSERVED_PAYLOAD" EXPECTED_VERBOSE_PAYLOAD "$EXPECTE
+                                                                                                                            else
+                                                                                                                                failure "$UUID_PAYLOAD" 2376349973447483 EXPECTED_PAYLOAD "$EXPECTED_PAYLOAD" OBSERVED_PAYLOAD "$OBSERVED_PAYLOAD"
+                                                                                                                            fi
                                                                                                                         fi
                                                                                                                     '' ;
                                                                                                             } ;
@@ -394,7 +429,8 @@
                                                                                                                                     esac
                                                                                                                                 done
                                                                                                                                 exec 3< <( timeout 1m redis-cli SUBSCRIBE invalid-init invalid-release stale-init valid-init valid-release )
-                                                                                                                                compare --message 6636697276572674 subscribe --channel 8221334634265348 invalid-init --message 9652249256897222 1
+                                                                                                                                compare --message 6636697276572674 subscribe --channel 8221334634265348 invalid-init --message 9652249256897222 1 false
+                                                                                                                                compare --message 9786493435349777 subscribe --channel 6831792573554772 invalid-init --message 9316976421659833 1 false
                                                                                                                                 for INDEX in {2..5}
                                                                                                                                 do
                                                                                                                                     echo "We are skipping the first 5 messages - $INDEX/5 - because they are SUBSCRIPTION messages and uninformative."
