@@ -406,7 +406,8 @@
                                                                                                                                                     then
                                                                                                                                                         if [[ "$INIT" == true ]]
                                                                                                                                                         then
-                                                                                                                                                            echo "We succesfully obtained the RESOURCE=$RESOURCE"
+                                                                                                                                                            echo "We successfully obtained the RESOURCE=$RESOURCE"
+
                                                                                                                                                         else
                                                                                                                                                             failure 4453576663237628 "We did not expect a failure here because INIT=$INIT but we observed $STATUS and obtained $RESOURCE"
                                                                                                                                                         fi
@@ -444,12 +445,12 @@
                                                                                                                                             ;;
                                                                                                                                     esac
                                                                                                                                 done
-                                                                                                                                RESOURCE_INDEX="$( printf -v padded "%016d" "$ALPHA" )" || failure 1221953174223761
+                                                                                                                                printf -v RESOURCE_INDEX "%016d" "$ALPHA"
                                                                                                                                 if [[ -e "/home/${ config.personal.name }/resources/mounts/$RESOURCE_INDEX" ]]
                                                                                                                                 then
                                                                                                                                     failure 2798527332356525
                                                                                                                                 fi
-                                                                                                                                exec 3< <( timeout 1m redis-cli SUBSCRIBE invalid-init invalid-release stale-init valid-init valid-release )
+                                                                                                                                exec 3< <( redis-cli SUBSCRIBE invalid-init invalid-release stale-init valid-init valid-release )
                                                                                                                                 compare --message 6636697276572674 subscribe --channel 8221334634265348 invalid-init --message 9652249256897222 1 false
                                                                                                                                 compare --message 9786493435349777 subscribe --channel 6831792573554772 invalid-release --message 9316976421659833 2 false
                                                                                                                                 compare --message 6437695441451879 subscribe --channel 1715249111511543 stale-init --message 2935593178593615 3 false
