@@ -487,7 +487,7 @@
                                                                                                                                     case "$1" in
                                                                                                                                         --alpha)
                                                                                                                                             ALPHA="$2"
-                                                                                                                                            echo 9532163321453237 ALPHA "$ALPHA"
+                                                                                                                                            echo 9532163321453237 ALPHA "$ALPHA" >&2
                                                                                                                                             shift 2
                                                                                                                                             ;;
                                                                                                                                         --init)
@@ -4476,7 +4476,7 @@
                                                                                 text =
                                                                                     ''
                                                                                         SCRIPT="$( resource --resource '["checks","script"]' )"
-                                                                                        echo 9532163321453237 timeout 1m "$SCRIPT/test" --alpha 9 --init false --release false
+                                                                                        echo 9532163321453237 timeout 1m "$SCRIPT/test" --alpha 9 --init false --release false >&2
                                                                                         timeout 1m "$SCRIPT/test" --alpha 9 --init false --release false
                                                                                     '' ;
                                                                             } ;
