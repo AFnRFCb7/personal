@@ -327,7 +327,7 @@
                                                                                                                             then
                                                                                                                                 EXPECTED_VERBOSE_PAYLOAD="$( jq "." <<< "$EXPECTED_PAYLOAD" )" || failure 9639499296459275
                                                                                                                                 OBSERVED_VERBOSE_PAYLOAD="$( jq "." <<< "$OBSERVED_PAYLOAD" )" || failure 9639499296459275
-                                                                                                                                failure "$UUID_PAYLOAD" 2177767151764594 EXPECTED_PAYLOAD "$EXPECTED_PAYLOAD" OBSERVED_PAYLOAD "$OBSERVED_PAYLOAD" EXPECTED_VERBOSE_PAYLOAD "$EXPECTE
+                                                                                                                                failure "$UUID_PAYLOAD" 2177767151764594 EXPECTED_PAYLOAD "$EXPECTED_PAYLOAD" OBSERVED_PAYLOAD "$OBSERVED_PAYLOAD" EXPECTED_VERBOSE_PAYLOAD "$EXPECTED_VERBOSE_PAYLOAD" OBSERVED_VERBOSE_PAYLOAD "$OBSERVED_VERBOSE_PAYLOAD"
                                                                                                                             else
                                                                                                                                 failure "$UUID_PAYLOAD" 2376349973447483 EXPECTED_PAYLOAD "$EXPECTED_PAYLOAD" OBSERVED_PAYLOAD "$OBSERVED_PAYLOAD"
                                                                                                                             fi
@@ -430,7 +430,9 @@
                                                                                                                                 done
                                                                                                                                 exec 3< <( timeout 1m redis-cli SUBSCRIBE invalid-init invalid-release stale-init valid-init valid-release )
                                                                                                                                 compare --message 6636697276572674 subscribe --channel 8221334634265348 invalid-init --message 9652249256897222 1 false
-                                                                                                                                compare --message 9786493435349777 subscribe --channel 6831792573554772 invalid-init --message 9316976421659833 1 false
+                                                                                                                                compare --message 9786493435349777 subscribe --channel 6831792573554772 invalid-release --message 9316976421659833 2 false
+                                                                                                                                compare --message 6437695441451879 subscribe --channel 1715249111511543 stale-init --message 2935593178593615 3 false
+                                                                                                                                compare --message 2622487695526727 subscribe --channel 5991279582986675 valid-init --message 9767887746875137 4 false
                                                                                                                                 for INDEX in {2..5}
                                                                                                                                 do
                                                                                                                                     echo "We are skipping the first 5 messages - $INDEX/5 - because they are SUBSCRIPTION messages and uninformative."
