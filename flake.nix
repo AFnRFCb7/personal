@@ -407,7 +407,15 @@
                                                                                                                                                         if [[ "$INIT" == true ]]
                                                                                                                                                         then
                                                                                                                                                             echo "We successfully obtained the RESOURCE=$RESOURCE"
-
+                                                                                                                                                            printf -v RESOURCE_INDEX "%016d" "$ALPHA"
+                                                                                                                                                            if [[ ! -d "/home/${ config.personal.name }/mounts/$RESOURCE_INDEX" ]]
+                                                                                                                                                            then
+                                                                                                                                                                failure 3636983934497155
+                                                                                                                                                            fi
+                                                                                                                                                            if [[ ! -d "/home/${ config.personal.name }/mounts/$RESOURCE_INDEX" ]]
+                                                                                                                                                            then
+                                                                                                                                                                failure 4352844455814463
+                                                                                                                                                            fi
                                                                                                                                                         else
                                                                                                                                                             failure 4453576663237628 "We did not expect a failure here because INIT=$INIT but we observed $STATUS and obtained $RESOURCE"
                                                                                                                                                         fi
