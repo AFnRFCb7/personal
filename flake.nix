@@ -383,6 +383,10 @@
                                                                                                                                                     then
                                                                                                                                                         failure 2468219387197693
                                                                                                                                                     fi
+                                                                                                                                                    if [[ ! "$ALPHA" =~ ^-?[0-9]+$ ]]
+                                                                                                                                                    then
+                                                                                                                                                        failure 3514254328772311
+                                                                                                                                                    fi
                                                                                                                                                     if [[ -z "$INIT" ]]
                                                                                                                                                     then
                                                                                                                                                         failure 1871763771129953
@@ -440,7 +444,8 @@
                                                                                                                                             ;;
                                                                                                                                     esac
                                                                                                                                 done
-                                                                                                                                if [[ -e "/home/${ config.personal.name }/resources/mounts/$ALPHA" ]]
+                                                                                                                                RESOURCE_INDEX="$( printf -v padded "%016d" "$ALPHA" )" || failure 1221953174223761
+                                                                                                                                if [[ -e "/home/${ config.personal.name }/resources/mounts/$RESOURCE_INDEX" ]]
                                                                                                                                 then
                                                                                                                                     failure 2798527332356525
                                                                                                                                 fi
@@ -451,7 +456,7 @@
                                                                                                                                 compare --message 2622487695526727 subscribe --channel 5991279582986675 valid-init --message 9767887746875137 4 false
                                                                                                                                 compare --message 8878565243153966 subscribe --channel 4957976869462859 valid-release --message 7956118522212293 5 false
                                                                                                                                 block --timeout 1 --uuid 8549964153339418
-                                                                                                                                pre-test --init "$INIT" --release "$RELEASE" 3>&3
+                                                                                                                                pre-test --alpha "$ALPHA" --init "$INIT" --release "$RELEASE" 3>&3
                                                                                                                             '' ;
                                                                                                                     } ;
                                                                                                             in "${ application }/bin/post-test" ;
@@ -4398,7 +4403,7 @@
                                                                                 text =
                                                                                     ''
                                                                                         SCRIPT="$( resource --resource '["checks","script"]' )"
-                                                                                        timeout 1m "$SCRIPT/test --alpha 0000000000000000 --init true --release true"
+                                                                                        timeout 1m "$SCRIPT/test --alpha 0 --init true --release true"
                                                                                     '' ;
                                                                             } ;
                                                                     in "${ application }/bin/test" ;
