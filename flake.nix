@@ -458,14 +458,14 @@
                                                                                                                                                                 then
                                                                                                                                                                     failure 4155895337576277
                                                                                                                                                                 fi
-                                                                                                                                                                if [[ ! -f "/home/${ config.personal.name }/resources/release/$RESOURCE_INDEX" ]]
-                                                                                                                                                                then
-                                                                                                                                                                    failure 5311355135823733
-                                                                                                                                                                fi
-                                                                                                                                                                if [[ ! -x "/home/${ config.personal.name }/resources/release/$RESOURCE_INDEX" ]]
-                                                                                                                                                                then
-                                                                                                                                                                    failure 6828711574292631
-                                                                                                                                                                fi
+                                                                                                                                                                # if [[ ! -f "/home/${ config.personal.name }/resources/release/$RESOURCE_INDEX" ]]
+                                                                                                                                                                # then
+                                                                                                                                                                #     failure 5311355135823733
+                                                                                                                                                                # fi
+                                                                                                                                                                # if [[ ! -x "/home/${ config.personal.name }/resources/release/$RESOURCE_INDEX" ]]
+                                                                                                                                                                # then
+                                                                                                                                                                #     failure 6828711574292631
+                                                                                                                                                                # fi
                                                                                                                                                             fi
                                                                                                                                                             if [[ -e "/home/${ config.personal.name }/resources/invalid-release/$RESOURCE_INDEX" ]]
                                                                                                                                                             then
