@@ -4476,8 +4476,35 @@
                                                                                 text =
                                                                                     ''
                                                                                         SCRIPT="$( resource --resource '["checks","script"]' )"
-                                                                                        echo 9532163321453237 7835137464582147 timeout 1m "$SCRIPT/test" --alpha 9 --init false --release false >&2
                                                                                         timeout 1m "$SCRIPT/test" --alpha 9 --init false --release false
+                                                                                    '' ;
+                                                                            } ;
+                                                                    in "${ application }/bin/test" ;
+                                                            in
+                                                                ''
+                                                                    machine.wait_for_unit("multi-user.target")
+                                                                    machine.wait_for_unit("network-online.target")
+                                                                    machine.succeed("runuser --login ${ testuser } -- ${ test }")
+                                                                '' ;
+                                                } ;
+                                        resource--false-true =
+                                            pkgs.nixosTest
+                                                {
+                                                    name = "resource-true-true" ;
+                                                    nodes.machine = { ... } : { imports = builtins.concatLists [ [ user ] private ] ; } ;
+                                                    testScript =
+                                                        let
+                                                            test =
+                                                                let
+                                                                    application =
+                                                                        pkgs.writeShellApplication
+                                                                            {
+                                                                                name = "test" ;
+                                                                                runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                text =
+                                                                                    ''
+                                                                                        SCRIPT="$( resource --resource '["checks","script"]' )"
+                                                                                        timeout 1m "$SCRIPT/test" --alpha 9 --init false --release true
                                                                                     '' ;
                                                                             } ;
                                                                     in "${ application }/bin/test" ;
