@@ -459,7 +459,6 @@
                                                                                                                             ] ;
                                                                                                                         text =
                                                                                                                             ''
-
                                                                                                                                 while [[ "$#" -gt 0 ]]
                                                                                                                                 do
                                                                                                                                     case "$1" in
@@ -480,45 +479,33 @@
                                                                                                                                             ;;
                                                                                                                                     esac
                                                                                                                                 done
-                                                                                                                                echo 1863491612796318 500 >&2
                                                                                                                                 printf -v RESOURCE_INDEX "%016d" "$ALPHA"
-                                                                                                                                echo 1863491612796318 600 >&2
                                                                                                                                 if [[ -e "/home/${ config.personal.name }/resources/mounts/$RESOURCE_INDEX" ]]
                                                                                                                                 then
                                                                                                                                     failure 2798527332356525
                                                                                                                                 fi
-                                                                                                                                echo 1863491612796318 700 >&2
                                                                                                                                 if [[ -e "/home/${ config.personal.name }/resources/release/$RESOURCE_INDEX" ]]
                                                                                                                                 then
                                                                                                                                     failure 4143117735632852
                                                                                                                                 fi
-                                                                                                                                echo 1863491612796318 800 >&2
                                                                                                                                 if [[ -e "/home/${ config.personal.name }/resources/invalid-init/$RESOURCE_INDEX" ]]
                                                                                                                                 then
                                                                                                                                     failure 7245153876846418
                                                                                                                                 fi
-                                                                                                                                echo 1863491612796318 900 >&2
                                                                                                                                 if [[ -e "/home/${ config.personal.name }/resources/invalid-release/$RESOURCE_INDEX" ]]
                                                                                                                                 then
                                                                                                                                     failure 2148148795514418
                                                                                                                                 fi
-                                                                                                                                echo 1863491612796318 1000 >&2
                                                                                                                                 exec 3< <( timeout 1m redis-cli SUBSCRIBE invalid-init invalid-release stale-init valid-init valid-release )
-                                                                                                                                echo 1863491612796318 1050 >&2
+                                                                                                                                echo 1863491612796318 A
                                                                                                                                 compare --message 6636697276572674 subscribe --channel 8221334634265348 invalid-init --payload 9652249256897222 1 false 3<&3
-                                                                                                                                echo 1863491612796318 1100 >&2
+                                                                                                                                echo 1863491612796318 B
                                                                                                                                 compare --message 9786493435349777 subscribe --channel 6831792573554772 invalid-release --payload 9316976421659833 2 false 3<&3
-                                                                                                                                echo 1863491612796318 1200 >&2
                                                                                                                                 compare --message 6437695441451879 subscribe --channel 1715249111511543 stale-init --payload 2935593178593615 3 false 3<&3
-                                                                                                                                echo 1863491612796318 1300 >&2
                                                                                                                                 compare --message 2622487695526727 subscribe --channel 5991279582986675 valid-init --payload 9767887746875137 4 false 3<&3
-                                                                                                                                echo 1863491612796318 1400 >&2
                                                                                                                                 compare --message 8878565243153966 subscribe --channel 4957976869462859 valid-release --payload 7956118522212293 5 false 3<&3
-                                                                                                                                echo 1863491612796318 1500 >&2
                                                                                                                                 echo block --timeout 1 --uuid 8549964153339418 3<&3
-                                                                                                                                echo 1863491612796318 1600 >&2
                                                                                                                                 echo pre-test --alpha "$ALPHA" --init "$INIT" --release "$RELEASE" 3<&3
-                                                                                                                                echo 1863491612796318 1700 >&2
                                                                                                                             '' ;
                                                                                                                     } ;
                                                                                                             in "${ application }/bin/post-test" ;
