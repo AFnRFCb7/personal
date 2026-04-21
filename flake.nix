@@ -4476,7 +4476,7 @@
                                                                                 text =
                                                                                     ''
                                                                                         SCRIPT="$( resource --resource '["checks","script"]' )"
-                                                                                        echo 9532163321453237 ALPHA "$ALPHA" timeout 1m "$SCRIPT/test" --alpha 9 --init false --release false
+                                                                                        echo 9532163321453237 timeout 1m "$SCRIPT/test" --alpha 9 --init false --release false
                                                                                         timeout 1m "$SCRIPT/test" --alpha 9 --init false --release false
                                                                                     '' ;
                                                                             } ;
