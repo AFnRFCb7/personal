@@ -232,13 +232,14 @@
                                                                                                                                     ;;
                                                                                                                                 *)
                                                                                                                                     failure 6734766152668717 "$*"
+                                                                                                                                    ;;
                                                                                                                             esac
                                                                                                                         done
                                                                                                                         if timeout 1s read -r <&3
                                                                                                                         then
-                                                                                                                            failure 7951884354751442 "We are not expecting a 6th message but we got one anyway"
+                                                                                                                            failure 7951884354751442 "We are not expecting a message but we got one anyway"
                                                                                                                         else
-                                                                                                                            echo We are not expecting a 6th message yet and we are not surprised
+                                                                                                                            echo We are not expecting a message and we did not get one
                                                                                                                         fi
                                                                                                                     '' ;
                                                                                                             } ;
