@@ -499,7 +499,7 @@
                                                                                                                                 then
                                                                                                                                     failure 2148148795514418
                                                                                                                                 fi
-                                                                                                                                exec 3< <( timeout 1m redis-cli --json SUBSCRIBE invalid-init invalid-release stale-init valid-init valid-release )
+                                                                                                                                exec 3< <( timeout 1m redis-cli SUBSCRIBE invalid-init invalid-release stale-init valid-init valid-release )
                                                                                                                                 echo 1863491612796318 A
                                                                                                                                 compare --message 6636697276572674 subscribe --channel 8221334634265348 invalid-init --payload 9652249256897222 1 false 3<&3
                                                                                                                                 echo 1863491612796318 B
