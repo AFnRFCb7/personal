@@ -4501,7 +4501,7 @@
                                                                                 text =
                                                                                     ''
                                                                                         SCRIPT="$( resource --resource '["checks","script"]' )"
-                                                                                        timeout 1m "$SCRIPT/test" --alpha 9 --init true --release false
+                                                                                        timeout 1m "$SCRIPT/test" --alpha 9 --init false --release true
                                                                                     '' ;
                                                                             } ;
                                                                     in "${ application }/bin/test" ;
@@ -4512,10 +4512,10 @@
                                                                     machine.succeed("runuser --login ${ testuser } -- ${ test }")
                                                                 '' ;
                                                 } ;
-                                        resource--false-false =
+                                        resource--true-false =
                                             pkgs.nixosTest
                                                 {
-                                                    name = "resource-true-true" ;
+                                                    name = "resource-true-false" ;
                                                     nodes.machine = { ... } : { imports = builtins.concatLists [ [ user ] private ] ; } ;
                                                     testScript =
                                                         let
