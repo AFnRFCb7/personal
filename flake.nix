@@ -423,6 +423,10 @@
                                                                                                                                 while [[ "$#" -gt 0 ]]
                                                                                                                                 do
                                                                                                                                     case "$1" in
+                                                                                                                                        --alpha)
+                                                                                                                                            ALPHA="$2"
+                                                                                                                                            shift 2
+                                                                                                                                            ;;
                                                                                                                                         --init)
                                                                                                                                             INIT="$2"
                                                                                                                                             shift 2
@@ -439,7 +443,7 @@
                                                                                                                                 if [[ -e "/home/${ config.personal.name }/resources/mounts/$ALPHA" ]]
                                                                                                                                 then
                                                                                                                                     failure 2798527332356525
-                                                                                                                                fiiii
+                                                                                                                                fi
                                                                                                                                 exec 3< <( timeout 1m redis-cli SUBSCRIBE invalid-init invalid-release stale-init valid-init valid-release )
                                                                                                                                 compare --message 6636697276572674 subscribe --channel 8221334634265348 invalid-init --message 9652249256897222 1 false
                                                                                                                                 compare --message 9786493435349777 subscribe --channel 6831792573554772 invalid-release --message 9316976421659833 2 false
