@@ -4473,7 +4473,7 @@
                                                                                 text =
                                                                                     ''
                                                                                         SCRIPT="$( resource --resource '["checks","script"]' )"
-                                                                                        timeout 1m "$SCRIPT/test" --alpha 0 --init false --release false
+                                                                                        timeout 1m "$SCRIPT/test" --alpha 9 --init false --release false
                                                                                     '' ;
                                                                             } ;
                                                                     in "${ application }/bin/test" ;
