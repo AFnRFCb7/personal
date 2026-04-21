@@ -224,7 +224,7 @@
                                                                                                                         while [[ "$#" -gt 0 ]]
                                                                                                                         do
                                                                                                                             case "$1" in
-                                                                                                                                --timeout
+                                                                                                                                --timeout)
                                                                                                                                     TIMEOUT="$2"
                                                                                                                                     shift 2
                                                                                                                                     ;;
@@ -276,7 +276,8 @@
                                                                                                                                 --payload)
                                                                                                                                     UUID_PAYLOAD="$2"
                                                                                                                                     EXPECTED_PAYLOAD="$3"
-                                                                                                                                    shift 3
+                                                                                                                                    PAYLOAD_IS_JSON="$4"
+                                                                                                                                    shift 4
                                                                                                                                     ;;
                                                                                                                                 *)
                                                                                                                                     failure 8175862286564631 "$*"
@@ -393,7 +394,7 @@
                                                                                                                                     esac
                                                                                                                                 done
                                                                                                                                 exec 3< <( timeout 1m redis-cli SUBSCRIBE invalid-init invalid-release stale-init valid-init valid-release )
-                                                                                                                                compare --message 6636697276572674 subscribe --channel 8221334634265348 invalid-init --message 9652249256897222 ""
+                                                                                                                                compare --message 6636697276572674 subscribe --channel 8221334634265348 invalid-init --message 9652249256897222 1
                                                                                                                                 for INDEX in {2..5}
                                                                                                                                 do
                                                                                                                                     echo "We are skipping the first 5 messages - $INDEX/5 - because they are SUBSCRIPTION messages and uninformative."
