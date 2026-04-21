@@ -413,7 +413,7 @@
                                                                                                                                                     printf -v RESOURCE_INDEX "%016d" "$ALPHA"
                                                                                                                                                     if [[ "$STATUS" == 0 ]]
                                                                                                                                                     then
-                                                                                                                                                        if [[ "$INIT" == true ]]
+                                                                                                                                                        if [[ "$INIT" == "true" ]]
                                                                                                                                                         then
                                                                                                                                                             echo "We successfully obtained the RESOURCE=$RESOURCE"
                                                                                                                                                             if [[ ! -d "/home/${ config.personal.name }/mounts/$RESOURCE_INDEX" ]]
@@ -436,20 +436,36 @@
                                                                                                                                                             failure 4453576663237628 "We did not expect a failure here because INIT=$INIT but we observed $STATUS and obtained $RESOURCE"
                                                                                                                                                         fi
                                                                                                                                                     else
-                                                                                                                                                        if [[ "$INIT" == false ]]
+                                                                                                                                                        if [[ "$INIT" != "true" ]]
                                                                                                                                                         then
                                                                                                                                                             echo "We correctly failed to obtain the RESOURCE because INIT=$INIT"
-                                                                                                                                                            if [[ ! -d "/home/${ config.personal.name }/mounts/$RESOURCE_INDEX" ]]
+                                                                                                                                                            if [[ "$RELEASE" == "true" ]]
                                                                                                                                                             then
-                                                                                                                                                                failure 9773989932948459
-                                                                                                                                                            fi
-                                                                                                                                                            if [[ -e "/home/${ config.personal.name }/release/$RESOURCE_INDEX" ]]
-                                                                                                                                                            then
-                                                                                                                                                                failure 3646472541235173
-                                                                                                                                                            fi
-                                                                                                                                                            if [[ ! -d "/home/${ config.personal.name }/invalid-init/$RESOURCE_INDEX" ]]
-                                                                                                                                                            then
-                                                                                                                                                                failure 3861915312668885
+                                                                                                                                                                if [[ -e "/home/${ config.personal.name }/mounts/$RESOURCE_INDEX" ]]
+                                                                                                                                                                then
+                                                                                                                                                                    failure 9773989932948459
+                                                                                                                                                                fi
+                                                                                                                                                                if [[ -e "/home/${ config.personal.name }/release/$RESOURCE_INDEX" ]]
+                                                                                                                                                                then
+                                                                                                                                                                    failure 3646472541235173
+                                                                                                                                                                fi
+                                                                                                                                                                if [[ ! -d "/home/${ config.personal.name }/invalid-init/$RESOURCE_INDEX" ]]
+                                                                                                                                                                then
+                                                                                                                                                                    failure 3861915312668885
+                                                                                                                                                                fi
+                                                                                                                                                            else
+                                                                                                                                                                if [[ ! -d "/home/${ config.personal.name }/mounts/$RESOURCE_INDEX" ]]
+                                                                                                                                                                then
+                                                                                                                                                                    failure 4155895337576277
+                                                                                                                                                                fi
+                                                                                                                                                                if [[ ! -f "/home/${ config.personal.name }/release/$RESOURCE_INDEX" ]]
+                                                                                                                                                                then
+                                                                                                                                                                    failure 5311355135823733
+                                                                                                                                                                fi
+                                                                                                                                                                if [[ ! -x "/home/${ config.personal.name }/release/$RESOURCE_INDEX" ]]
+                                                                                                                                                                then
+                                                                                                                                                                    failure 6828711574292631
+                                                                                                                                                                fi
                                                                                                                                                             fi
                                                                                                                                                             if [[ -e "/home/${ config.personal.name }/invalid-release/$RESOURCE_INDEX" ]]
                                                                                                                                                             then
