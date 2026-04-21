@@ -363,7 +363,7 @@
                                                                                                                                                         case "$1" in
                                                                                                                                                             --alpha)
                                                                                                                                                                 ALPHA="$2"
-                                                                                                                                                                echo 9532163321453237 ALPHA "$ALPHA" >&2
+                                                                                                                                                                echo 9532163321453237 8145116662142355 ALPHA "$ALPHA" >&2
                                                                                                                                                                 shift 2
                                                                                                                                                                 ;;
                                                                                                                                                             --init)
@@ -487,7 +487,7 @@
                                                                                                                                     case "$1" in
                                                                                                                                         --alpha)
                                                                                                                                             ALPHA="$2"
-                                                                                                                                            echo 9532163321453237 ALPHA "$ALPHA" >&2
+                                                                                                                                            echo 9532163321453237 6951237159591256 ALPHA "$ALPHA" >&2
                                                                                                                                             shift 2
                                                                                                                                             ;;
                                                                                                                                         --init)
@@ -527,7 +527,7 @@
                                                                                                                                 compare --message 2622487695526727 subscribe --channel 5991279582986675 valid-init --payload 9767887746875137 4 false 3<&3
                                                                                                                                 compare --message 8878565243153966 subscribe --channel 4957976869462859 valid-release --payload 7956118522212293 5 false 3<&3
                                                                                                                                 block --timeout 1 --uuid 8549964153339418 3<&3
-                                                                                                                                echo 9532163321453237 ALPHA "$ALPHA" pre-test --alpha "$ALPHA" --init "$INIT" --release "$RELEASE" >&2
+                                                                                                                                echo 9532163321453237 6436979358643912 ALPHA "$ALPHA" pre-test --alpha "$ALPHA" --init "$INIT" --release "$RELEASE" >&2
                                                                                                                                 pre-test --alpha "$ALPHA" --init "$INIT" --release "$RELEASE" 3<&3
                                                                                                                             '' ;
                                                                                                                     } ;
@@ -4476,7 +4476,7 @@
                                                                                 text =
                                                                                     ''
                                                                                         SCRIPT="$( resource --resource '["checks","script"]' )"
-                                                                                        echo 9532163321453237 timeout 1m "$SCRIPT/test" --alpha 9 --init false --release false >&2
+                                                                                        echo 9532163321453237 7835137464582147 timeout 1m "$SCRIPT/test" --alpha 9 --init false --release false >&2
                                                                                         timeout 1m "$SCRIPT/test" --alpha 9 --init false --release false
                                                                                     '' ;
                                                                             } ;
@@ -4504,10 +4504,8 @@
                                                                                 runtimeInputs = [ pkgs.coreutils ] ;
                                                                                 text =
                                                                                     ''
-                                                                                        echo 1863491612796318 100 >&2
                                                                                         SCRIPT="$( resource --resource '["checks","script"]' )"
-                                                                                        echo 1863491612796318 200 >&2
-                                                                                        timeout 1m "$SCRIPT/test" --alpha 0 --init true --release true
+                                                                                        timeout 1m "$SCRIPT/test" --alpha 9 --init true --release true
                                                                                         echo 1863491612796318 300 >&2
                                                                                     '' ;
                                                                             } ;
