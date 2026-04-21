@@ -458,6 +458,18 @@
                                                                                                                                 then
                                                                                                                                     failure 2798527332356525
                                                                                                                                 fi
+                                                                                                                                if [[ -e "/home/${ config.personal.name }/resources/release/$RESOURCE_INDEX" ]]
+                                                                                                                                then
+                                                                                                                                    failure 4143117735632852
+                                                                                                                                fi
+                                                                                                                                if [[ -e "/home/${ config.personal.name }/resources/invalid-init/$RESOURCE_INDEX" ]]
+                                                                                                                                then
+                                                                                                                                    failure 7245153876846418
+                                                                                                                                fi
+                                                                                                                                if [[ -e "/home/${ config.personal.name }/resources/invalid-release/$RESOURCE_INDEX" ]]
+                                                                                                                                then
+                                                                                                                                    failure 2148148795514418
+                                                                                                                                fi
                                                                                                                                 exec 3< <( redis-cli SUBSCRIBE invalid-init invalid-release stale-init valid-init valid-release )
                                                                                                                                 compare --message 6636697276572674 subscribe --channel 8221334634265348 invalid-init --message 9652249256897222 1 false
                                                                                                                                 compare --message 9786493435349777 subscribe --channel 6831792573554772 invalid-release --message 9316976421659833 2 false
@@ -482,6 +494,7 @@
                                                                                                                 --literal plain INIT \
                                                                                                                 --literal plain PATH \
                                                                                                                 --literal plain RELEASE \
+                                                                                                                --literal plain RESOURCE_INDEX \
                                                                                                                 --uuid 7483697565341694
                                                                                                         '' ;
                                                                                         } ;
