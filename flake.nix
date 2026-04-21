@@ -509,7 +509,7 @@
                                                                                                                                 compare --message 2622487695526727 subscribe --channel 5991279582986675 valid-init --payload 9767887746875137 4 false 3<&3
                                                                                                                                 compare --message 8878565243153966 subscribe --channel 4957976869462859 valid-release --payload 7956118522212293 5 false 3<&3
                                                                                                                                 block --timeout 1 --uuid 8549964153339418 3<&3
-                                                                                                                                echo pre-test --alpha "$ALPHA" --init "$INIT" --release "$RELEASE" 3<&3
+                                                                                                                                pre-test --alpha "$ALPHA" --init "$INIT" --release "$RELEASE" 3<&3
                                                                                                                             '' ;
                                                                                                                     } ;
                                                                                                             in "${ application }/bin/post-test" ;
