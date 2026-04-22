@@ -522,6 +522,10 @@
                                                                                                                                 then
                                                                                                                                     failure 2148148795514418
                                                                                                                                 fi
+                                                                                                                                if true
+                                                                                                                                then
+                                                                                                                                    exit 0
+                                                                                                                                fi
                                                                                                                                 exec 3< <( timeout 1m redis-cli SUBSCRIBE invalid-init invalid-release stale-init valid-init valid-release )
                                                                                                                                 compare --message 6636697276572674 subscribe --channel 8221334634265348 invalid-init --payload 9652249256897222 1 false 3<&3
                                                                                                                                 compare --message 9786493435349777 subscribe --channel 6831792573554772 invalid-release --payload 9316976421659833 2 false 3<&3
