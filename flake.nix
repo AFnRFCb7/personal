@@ -509,10 +509,10 @@
                                                                                                                                             ;;
                                                                                                                                     esac
                                                                                                                                 done
-                                                                                                                                if true
-                                                                                                                                then
-                                                                                                                                   exit 0
-                                                                                                                                fi
+#                                                                                                                                if true
+#                                                                                                                                then
+#                                                                                                                                    exit 0
+#                                                                                                                                fi
                                                                                                                                 printf -v RESOURCE_INDEX "%016d" "$ALPHA"
                                                                                                                                 if [[ -e "/home/${ config.personal.name }/resources/mounts/$RESOURCE_INDEX" ]]
                                                                                                                                 then
@@ -530,10 +530,10 @@
                                                                                                                                 then
                                                                                                                                     failure 2148148795514418
                                                                                                                                 fi
-                                                                                                                                # if true
-                                                                                                                                # then
-                                                                                                                                #     exit 0
-                                                                                                                                # fi
+                                                                                                                                if true
+                                                                                                                                then
+                                                                                                                                    exit 0
+                                                                                                                                fi
                                                                                                                                 exec 3< <( timeout 1m redis-cli SUBSCRIBE invalid-init invalid-release stale-init valid-init valid-release )
                                                                                                                                 if true
                                                                                                                                 then
