@@ -308,25 +308,21 @@
                                                                                                                         then
                                                                                                                             failure 8569324665781814 "$UUID_PAYLOAD"
                                                                                                                         fi
-##                                                                                                                        if true
-##                                                                                                                        then
-##                                                                                                                            exit 0
-##                                                                                                                        fi
                                                                                                                         if [[ -z "$PAYLOAD_IS_JSON" ]]
                                                                                                                         then
                                                                                                                             failure 9331276634154662 "$UUID_PAYLOAD"
                                                                                                                         fi
+##                                                                                                                        if true
+##                                                                                                                        then
+##                                                                                                                            exit 0
+##                                                                                                                        fi
+                                                                                                                        read -r OBSERVED_MESSAGE <&3
+                                                                                                                        read -r OBSERVED_CHANNEL <&3
+                                                                                                                        read -r OBSERVED_PAYLOAD <&3
 #                                                                                                                        if true
 #                                                                                                                        then
 #                                                                                                                            exit 0
 #                                                                                                                        fi
-                                                                                                                        read -r OBSERVED_MESSAGE <&3
-                                                                                                                        read -r OBSERVED_CHANNEL <&3
-                                                                                                                        read -r OBSERVED_PAYLOAD <&3
-                                                                                                                        if true
-                                                                                                                        then
-                                                                                                                            exit 0
-                                                                                                                        fi
                                                                                                                         if [[ "$EXPECTED_MESSAGE" != "$OBSERVED_MESSAGE" ]]
                                                                                                                         then
                                                                                                                             failure "$UUID_MESSAGE" 9358462855663219 EXPECTED_MESSAGE "$EXPECTED_MESSAGE" OBSERVED_MESSAGE "$OBSERVED_MESSAGE"
@@ -334,6 +330,10 @@
                                                                                                                         if [[ "$EXPECTED_CHANNEL" != "$OBSERVED_CHANNEL" ]]
                                                                                                                         then
                                                                                                                             failure "$UUID_CHANNEL" 3246855689569956 EXPECTED_CHANNEL "$EXPECTED_CHANNEL" OBSERVED_CHANNEL "$OBSERVED_CHANNEL"
+                                                                                                                        fi
+                                                                                                                        if true
+                                                                                                                        then
+                                                                                                                            exit 0
                                                                                                                         fi
                                                                                                                         if [[ "$PAYLOAD_IS_JSON" == "true" ]]
                                                                                                                         then
