@@ -325,10 +325,6 @@
                                                                                                                         fi
                                                                                                                         if [[ "$PAYLOAD_IS_JSON" == "true" ]]
                                                                                                                         then
-##                                                                                                                            if true
-##                                                                                                                            then
-##                                                                                                                                exit 0
-##                                                                                                                            fi
                                                                                                                             if [[ "$EXPECTED_PAYLOAD" != "$OBSERVED_PAYLOAD" ]]
                                                                                                                             then
                                                                                                                                 EXPECTED_VERBOSE_PAYLOAD="$( jq "." "$EXPECTED_PAYLOAD" )" || failure 9639499296459275
