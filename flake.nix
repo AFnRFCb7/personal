@@ -441,7 +441,7 @@
                                                                                                                                                             echo "We correctly failed to obtain the RESOURCE because INIT=$INIT"
                                                                                                                                                             if [[ "$RELEASE" == "true" ]]
                                                                                                                                                             then
-                                                                                                                                                                if [[ -e "/home/${ config.personal.name }/resources/mounts/$RESOURCE_INDEX" ]]
+                                                                                                                                                                if [[ -eq "/home/${ config.personal.name }/resources/mounts/$RESOURCE_INDEX" ]]
                                                                                                                                                                 then
                                                                                                                                                                     failure 9773989932948459
                                                                                                                                                                 fi
