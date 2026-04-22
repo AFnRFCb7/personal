@@ -509,6 +509,10 @@
                                                                                                                                             ;;
                                                                                                                                     esac
                                                                                                                                 done
+                                                                                                                                if true
+                                                                                                                                then
+                                                                                                                                    exit 0
+                                                                                                                                fi
                                                                                                                                 printf -v RESOURCE_INDEX "%016d" "$ALPHA"
                                                                                                                                 if [[ -e "/home/${ config.personal.name }/resources/mounts/$RESOURCE_INDEX" ]]
                                                                                                                                 then
