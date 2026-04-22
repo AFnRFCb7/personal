@@ -518,10 +518,10 @@
                                                                                                                                 then
                                                                                                                                     failure 7245153876846418
                                                                                                                                 fi
-                                                                                                                                if [[ -e "/home/${ config.personal.name }/resources/invalid-release/$RESOURCE_INDEX" ]]
-                                                                                                                                then
-                                                                                                                                    failure 2148148795514418
-                                                                                                                                fi
+                                                                                                                                # if [[ -e "/home/${ config.personal.name }/resources/invalid-release/$RESOURCE_INDEX" ]]
+                                                                                                                                # then
+                                                                                                                                #     failure 2148148795514418
+                                                                                                                                # fi
                                                                                                                                 if true
                                                                                                                                 then
                                                                                                                                     exit 0
