@@ -416,6 +416,7 @@
                                                                                                                                                         if [[ "$INIT" == "true" ]]
                                                                                                                                                         then
                                                                                                                                                             echo "We successfully obtained the RESOURCE=$RESOURCE"
+                                                                                                                                                            compare --message 3535136183545986 --channel valid-init --payload WRONG
                                                                                                                                                             if [[ ! -d "/home/${ config.personal.name }/resources/mounts/$RESOURCE_INDEX" ]]
                                                                                                                                                             then
                                                                                                                                                                 failure 3636983934497155 RESOURCE "$RESOURCE" RESOURCE_INDEX "$RESOURCE_INDEX" ALPHA "$ALPHA"
