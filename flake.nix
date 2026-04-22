@@ -519,11 +519,11 @@
                                                                                                                                     failure 2148148795514418
                                                                                                                                 fi
                                                                                                                                 exec 3< <( timeout 1m redis-cli SUBSCRIBE invalid-init invalid-release stale-init valid-init valid-release )
-                                                                                                                                compare --message 6636697276572674 subscribe --channel 8221334634265348 invalid-init --payload 9652249256897222 1 false 3<&3
                                                                                                                                 if true
                                                                                                                                 then
                                                                                                                                     exit 0
                                                                                                                                 fi
+                                                                                                                                compare --message 6636697276572674 subscribe --channel 8221334634265348 invalid-init --payload 9652249256897222 1 false 3<&3
                                                                                                                                 compare --message 9786493435349777 subscribe --channel 6831792573554772 invalid-release --payload 9316976421659833 2 false 3<&3
                                                                                                                                 compare --message 6437695441451879 subscribe --channel 1715249111511543 stale-init --payload 2935593178593615 3 false 3<&3
                                                                                                                                 compare --message 2622487695526727 subscribe --channel 5991279582986675 valid-init --payload 9767887746875137 4 false 3<&3
