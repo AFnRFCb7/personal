@@ -481,6 +481,10 @@
                                                                                                                             ] ;
                                                                                                                         text =
                                                                                                                             ''
+                                                                                                                                if true
+                                                                                                                                then
+                                                                                                                                    exit 0
+                                                                                                                                fi
                                                                                                                                 while [[ "$#" -gt 0 ]]
                                                                                                                                 do
                                                                                                                                     case "$1" in
