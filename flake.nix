@@ -260,10 +260,6 @@
                                                                                                                 runtimeInputs = [ failure pkgs.coreutils ] ;
                                                                                                                 text =
                                                                                                                     ''
-##                                                                                                                        if true
-##                                                                                                                        then
-##                                                                                                                            exit 0
-##                                                                                                                        fi
                                                                                                                         while [[ "$#" -gt 0 ]]
                                                                                                                         do
                                                                                                                             case "$1" in
@@ -288,14 +284,10 @@
                                                                                                                                     ;;
                                                                                                                             esac
                                                                                                                         done
-                                                                                                                        if true
-                                                                                                                        then
-                                                                                                                            exit 0
-                                                                                                                        fi
-                                                                                                                        if true
-                                                                                                                        then
-                                                                                                                            exit 0
-                                                                                                                        fi
+#                                                                                                                        if true
+#                                                                                                                        then
+#                                                                                                                            exit 0
+#                                                                                                                        fi
                                                                                                                         if [[ -z "$UUID_CHANNEL" ]]
                                                                                                                         then
                                                                                                                             failure 3859676595588872
@@ -319,6 +311,10 @@
                                                                                                                         if [[ -z "$EXPECTED_PAYLOAD" ]]
                                                                                                                         then
                                                                                                                             failure 8569324665781814 "$UUID_PAYLOAD"
+                                                                                                                        fi
+                                                                                                                        if true
+                                                                                                                        then
+                                                                                                                            exit 0
                                                                                                                         fi
                                                                                                                         if [[ -z "$PAYLOAD_IS_JSON" ]]
                                                                                                                         then
