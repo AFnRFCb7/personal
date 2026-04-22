@@ -284,10 +284,6 @@
                                                                                                                                     ;;
                                                                                                                             esac
                                                                                                                         done
-##                                                                                                                        if true
-##                                                                                                                        then
-##                                                                                                                            exit 0
-##                                                                                                                        fi
                                                                                                                         if [[ -z "$UUID_CHANNEL" ]]
                                                                                                                         then
                                                                                                                             failure 3859676595588872
@@ -312,21 +308,25 @@
                                                                                                                         then
                                                                                                                             failure 8569324665781814 "$UUID_PAYLOAD"
                                                                                                                         fi
-#                                                                                                                        if true
-#                                                                                                                        then
-#                                                                                                                            exit 0
-#                                                                                                                        fi
+##                                                                                                                        if true
+##                                                                                                                        then
+##                                                                                                                            exit 0
+##                                                                                                                        fi
                                                                                                                         if [[ -z "$PAYLOAD_IS_JSON" ]]
                                                                                                                         then
                                                                                                                             failure 9331276634154662 "$UUID_PAYLOAD"
                                                                                                                         fi
+#                                                                                                                        if true
+#                                                                                                                        then
+#                                                                                                                            exit 0
+#                                                                                                                        fi
+                                                                                                                        read -r OBSERVED_MESSAGE <&3
+                                                                                                                        read -r OBSERVED_CHANNEL <&3
+                                                                                                                        read -r OBSERVED_PAYLOAD <&3
                                                                                                                         if true
                                                                                                                         then
                                                                                                                             exit 0
                                                                                                                         fi
-                                                                                                                        read -r OBSERVED_MESSAGE <&3
-                                                                                                                        read -r OBSERVED_CHANNEL <&3
-                                                                                                                        read -r OBSERVED_PAYLOAD <&3
                                                                                                                         if [[ "$EXPECTED_MESSAGE" != "$OBSERVED_MESSAGE" ]]
                                                                                                                         then
                                                                                                                             failure "$UUID_MESSAGE" 9358462855663219 EXPECTED_MESSAGE "$EXPECTED_MESSAGE" OBSERVED_MESSAGE "$OBSERVED_MESSAGE"
@@ -339,8 +339,8 @@
                                                                                                                         then
                                                                                                                             if [[ "$EXPECTED_PAYLOAD" != "$OBSERVED_PAYLOAD" ]]
                                                                                                                             then
-                                                                                                                                EXPECTED_VERBOSE_PAYLOAD="$( jq "." <<< "$EXPECTED_PAYLOAD" )" || failure 9639499296459275
-                                                                                                                                OBSERVED_VERBOSE_PAYLOAD="$( jq "." <<< "$OBSERVED_PAYLOAD" )" || failure 9639499296459275
+                                                                                                                                EXPECTED_VERBOSE_PAYLOAD="$( jq "." "$EXPECTED_PAYLOAD" )" || failure 9639499296459275
+                                                                                                                                OBSERVED_VERBOSE_PAYLOAD="$( jq "." "$OBSERVED_PAYLOAD" )" || failure 9639499296459275
                                                                                                                                 failure "$UUID_PAYLOAD" 2177767151764594 EXPECTED_PAYLOAD "$EXPECTED_PAYLOAD" OBSERVED_PAYLOAD "$OBSERVED_PAYLOAD" EXPECTED_VERBOSE_PAYLOAD "$EXPECTED_VERBOSE_PAYLOAD" OBSERVED_VERBOSE_PAYLOAD "$OBSERVED_VERBOSE_PAYLOAD"
                                                                                                                             fi
                                                                                                                         else
