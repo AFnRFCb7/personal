@@ -323,16 +323,12 @@
                                                                                                                         then
                                                                                                                             failure "$UUID_CHANNEL" 3246855689569956 EXPECTED_CHANNEL "$EXPECTED_CHANNEL" OBSERVED_CHANNEL "$OBSERVED_CHANNEL"
                                                                                                                         fi
-##                                                                                                                        if true
-##                                                                                                                        then
-##                                                                                                                            exit 0
-##                                                                                                                        fi
                                                                                                                         if [[ "$PAYLOAD_IS_JSON" == "true" ]]
                                                                                                                         then
-#                                                                                                                            if true
-#                                                                                                                            then
-#                                                                                                                                exit 0
-#                                                                                                                            fi
+##                                                                                                                            if true
+##                                                                                                                            then
+##                                                                                                                                exit 0
+##                                                                                                                            fi
                                                                                                                             if [[ "$EXPECTED_PAYLOAD" != "$OBSERVED_PAYLOAD" ]]
                                                                                                                             then
                                                                                                                                 EXPECTED_VERBOSE_PAYLOAD="$( jq "." "$EXPECTED_PAYLOAD" )" || failure 9639499296459275
