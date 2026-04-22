@@ -481,10 +481,6 @@
                                                                                                                             ] ;
                                                                                                                         text =
                                                                                                                             ''
-                                                                                                                                if true
-                                                                                                                                then
-                                                                                                                                    exit 0
-                                                                                                                                fi
                                                                                                                                 while [[ "$#" -gt 0 ]]
                                                                                                                                 do
                                                                                                                                     case "$1" in
@@ -521,6 +517,10 @@
                                                                                                                                 if [[ -e "/home/${ config.personal.name }/resources/invalid-release/$RESOURCE_INDEX" ]]
                                                                                                                                 then
                                                                                                                                     failure 2148148795514418
+                                                                                                                                fi
+                                                                                                                                if true
+                                                                                                                                then
+                                                                                                                                    exit 0
                                                                                                                                 fi
                                                                                                                                 exec 3< <( timeout 1m redis-cli SUBSCRIBE invalid-init invalid-release stale-init valid-init valid-release )
                                                                                                                                 compare --message 6636697276572674 subscribe --channel 8221334634265348 invalid-init --payload 9652249256897222 1 false 3<&3
