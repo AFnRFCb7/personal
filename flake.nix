@@ -284,10 +284,10 @@
                                                                                                                                     ;;
                                                                                                                             esac
                                                                                                                         done
-#                                                                                                                        if true
-#                                                                                                                        then
-#                                                                                                                            exit 0
-#                                                                                                                        fi
+##                                                                                                                        if true
+##                                                                                                                        then
+##                                                                                                                            exit 0
+##                                                                                                                        fi
                                                                                                                         if [[ -z "$UUID_CHANNEL" ]]
                                                                                                                         then
                                                                                                                             failure 3859676595588872
@@ -312,13 +312,17 @@
                                                                                                                         then
                                                                                                                             failure 8569324665781814 "$UUID_PAYLOAD"
                                                                                                                         fi
-                                                                                                                        if true
-                                                                                                                        then
-                                                                                                                            exit 0
-                                                                                                                        fi
+#                                                                                                                        if true
+#                                                                                                                        then
+#                                                                                                                            exit 0
+#                                                                                                                        fi
                                                                                                                         if [[ -z "$PAYLOAD_IS_JSON" ]]
                                                                                                                         then
                                                                                                                             failure 9331276634154662 "$UUID_PAYLOAD"
+                                                                                                                        fi
+                                                                                                                        if true
+                                                                                                                        then
+                                                                                                                            exit 0
                                                                                                                         fi
                                                                                                                         read -r OBSERVED_MESSAGE <&3
                                                                                                                         read -r OBSERVED_CHANNEL <&3
