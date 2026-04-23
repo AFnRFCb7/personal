@@ -312,13 +312,9 @@
                                                                                                                         then
                                                                                                                             failure 9331276634154662 "$UUID_PAYLOAD"
                                                                                                                         fi
-                                                                                                                        echo 3527263455523546 >&2
                                                                                                                         read -r OBSERVED_MESSAGE <&3
-                                                                                                                        echo 7519284391931645 >&2
                                                                                                                         read -r OBSERVED_CHANNEL <&3
-                                                                                                                        echo 9384553183538698 >&2
                                                                                                                         read -r OBSERVED_PAYLOAD <&3
-                                                                                                                        echo 8135718835127697 >&2
                                                                                                                         if [[ "$EXPECTED_MESSAGE" != "$OBSERVED_MESSAGE" ]]
                                                                                                                         then
                                                                                                                             failure "$UUID_MESSAGE" 9358462855663219 EXPECTED_MESSAGE "$EXPECTED_MESSAGE" OBSERVED_MESSAGE "$OBSERVED_MESSAGE"
@@ -437,7 +433,13 @@
                                                                                                                                                             then
                                                                                                                                                                 failure 7382429993944764
                                                                                                                                                             fi
-                                                                                                                                                            # block --timeout 1 --uuid 7931775215552911
+                                                                                                                                                            block --timeout 1 --uuid 7931775215552911
+                                                                                                                                                            # if STALE="$( resource --resource "$RESOURCE_JSON" )"
+                                                                                                                                                            # then
+                                                                                                                                                            #     STATUS="$?"
+                                                                                                                                                            # else
+                                                                                                                                                            #     STATUS="$?"
+                                                                                                                                                            # fi
                                                                                                                                                         else
                                                                                                                                                             failure 4453576663237628 "We did not expect a failure here because INIT=$INIT but we observed $STATUS and obtained $RESOURCE"
                                                                                                                                                         fi
