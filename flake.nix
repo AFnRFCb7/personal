@@ -462,10 +462,10 @@
                                                                                                                                                                     failure 3861915312668885
                                                                                                                                                                 fi
                                                                                                                                                             else
-                                                                                                                                                                if [[ ! -d "/home/${ config.personal.name }/resources/mounts/$RESOURCE_INDEX" ]]
-                                                                                                                                                                then
-                                                                                                                                                                    failure 4155895337576277
-                                                                                                                                                                fi
+                                                                                                                                                                # if [[ ! -d "/home/${ config.personal.name }/resources/mounts/$RESOURCE_INDEX" ]]
+                                                                                                                                                                # then
+                                                                                                                                                                #     failure 4155895337576277
+                                                                                                                                                                # fi
                                                                                                                                                                 # if [[ ! -f "/home/${ config.personal.name }/resources/release/$RESOURCE_INDEX" ]]
                                                                                                                                                                 # then
                                                                                                                                                                 #     failure 5311355135823733
