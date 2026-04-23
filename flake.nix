@@ -416,7 +416,7 @@
                                                                                                                                                         if [[ "$INIT" == "true" ]]
                                                                                                                                                         then
                                                                                                                                                             echo "We successfully obtained the RESOURCE=$RESOURCE"
-                                                                                                                                                            # compare --message 3535136183545986 message --channel 5137269997313547 valid-init --payload 7791329815994911 true true 3<&3
+                                                                                                                                                            compare --message 3535136183545986 message --channel 5137269997313547 valid-init --payload 7791329815994911 true true 3<&3
                                                                                                                                                             if [[ ! -d "/home/${ config.personal.name }/resources/mounts/$RESOURCE_INDEX" ]]
                                                                                                                                                             then
                                                                                                                                                                 failure 3636983934497155 RESOURCE "$RESOURCE" RESOURCE_INDEX "$RESOURCE_INDEX" ALPHA "$ALPHA"
