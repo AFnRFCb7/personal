@@ -416,7 +416,7 @@
                                                                                                                                                         if [[ "$INIT" == "true" ]]
                                                                                                                                                         then
                                                                                                                                                             echo "We successfully obtained the RESOURCE=$RESOURCE"
-                                                                                                                                                            compare --message 3535136183545986 message --channel 5137269997313547 valid-init --payload 7791329815994911 true true
+                                                                                                                                                            # compare --message 3535136183545986 message --channel 5137269997313547 valid-init --payload 7791329815994911 true true
                                                                                                                                                             if [[ ! -d "/home/${ config.personal.name }/resources/mounts/$RESOURCE_INDEX" ]]
                                                                                                                                                             then
                                                                                                                                                                 failure 3636983934497155 RESOURCE "$RESOURCE" RESOURCE_INDEX "$RESOURCE_INDEX" ALPHA "$ALPHA"
@@ -433,7 +433,7 @@
                                                                                                                                                             then
                                                                                                                                                                 failure 7382429993944764
                                                                                                                                                             fi
-                                                                                                                                                            block --timeout 1 --uuid 7931775215552911
+                                                                                                                                                            # block --timeout 1 --uuid 7931775215552911
                                                                                                                                                         else
                                                                                                                                                             failure 4453576663237628 "We did not expect a failure here because INIT=$INIT but we observed $STATUS and obtained $RESOURCE"
                                                                                                                                                         fi
