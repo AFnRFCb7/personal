@@ -434,12 +434,9 @@
                                                                                                                                                                 failure 7382429993944764
                                                                                                                                                             fi
                                                                                                                                                             block --timeout 1 --uuid 7931775215552911
-                                                                                                                                                            # if STALE="$( resource --resource "$RESOURCE_JSON" )"
-                                                                                                                                                            # then
-                                                                                                                                                            #     STATUS="$?"
-                                                                                                                                                            # else
-                                                                                                                                                            #     STATUS="$?"
-                                                                                                                                                            # fi
+                                                                                                                                                            echo We created a fresh resource
+                                                                                                                                                            # STALE="$( resource --resource "$RESOURCE_JSON" )" || failure 6281312154776587
+                                                                                                                                                            # compare --message 1957279299293217 message --channel 9274416613622226 valid-init --payload 4377584982169473 true true 3<&3
                                                                                                                                                         else
                                                                                                                                                             failure 4453576663237628 "We did not expect a failure here because INIT=$INIT but we observed $STATUS and obtained $RESOURCE"
                                                                                                                                                         fi
@@ -462,6 +459,7 @@
                                                                                                                                                                     failure 3861915312668885
                                                                                                                                                                 fi
                                                                                                                                                             else
+                                                                                                                                                                true
                                                                                                                                                                 # if [[ ! -d "/home/${ config.personal.name }/resources/mounts/$RESOURCE_INDEX" ]]
                                                                                                                                                                 # then
                                                                                                                                                                 #     failure 4155895337576277
