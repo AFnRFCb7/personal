@@ -312,9 +312,13 @@
                                                                                                                         then
                                                                                                                             failure 9331276634154662 "$UUID_PAYLOAD"
                                                                                                                         fi
+                                                                                                                        echo 3527263455523546 >&2
                                                                                                                         read -r OBSERVED_MESSAGE <&3
+                                                                                                                        echo 7519284391931645 >&2
                                                                                                                         read -r OBSERVED_CHANNEL <&3
+                                                                                                                        echo 9384553183538698 >&2
                                                                                                                         read -r OBSERVED_PAYLOAD <&3
+                                                                                                                        echo 8135718835127697 >&2
                                                                                                                         if [[ "$EXPECTED_MESSAGE" != "$OBSERVED_MESSAGE" ]]
                                                                                                                         then
                                                                                                                             failure "$UUID_MESSAGE" 9358462855663219 EXPECTED_MESSAGE "$EXPECTED_MESSAGE" OBSERVED_MESSAGE "$OBSERVED_MESSAGE"
