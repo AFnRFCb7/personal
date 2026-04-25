@@ -327,8 +327,8 @@
                                                                                                                         then
                                                                                                                             if [[ "$EXPECTED_PAYLOAD" != "$OBSERVED_PAYLOAD" ]]
                                                                                                                             then
-                                                                                                                                EXPECTED_VERBOSE_PAYLOAD="$( yq eval --prettyPrint "$EXPECTED_PAYLOAD" )" || failure 9695639117138292
-                                                                                                                                OBSERVED_VERBOSE_PAYLOAD="$( yq eval --prettyPrint "$OBSERVED_PAYLOAD" )" || failure 3474923945839811
+                                                                                                                                EXPECTED_VERBOSE_PAYLOAD="$( yq --input-format=json eval --prettyPrint "." <<< "$EXPECTED_PAYLOAD" )" || failure 9695639117138292
+                                                                                                                                OBSERVED_VERBOSE_PAYLOAD="$( yq --input-format=json eval --prettyPrint "." <<< "$OBSERVED_PAYLOAD" )" || failure 3474923945839811
                                                                                                                                 failure "$UUID_PAYLOAD" 2177767151764594 EXPECTED_PAYLOAD "$EXPECTED_PAYLOAD" OBSERVED_PAYLOAD "$OBSERVED_PAYLOAD" EXPECTED_VERBOSE_PAYLOAD "$EXPECTED_VERBOSE_PAYLOAD" OBSERVED_VERBOSE_PAYLOAD "$OBSERVED_VERBOSE_PAYLOAD"
                                                                                                                             fi
                                                                                                                         else
