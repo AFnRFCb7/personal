@@ -428,10 +428,11 @@
                                                                                                                                                                     jq \
                                                                                                                                                                         --null-input \
                                                                                                                                                                         --compact-output \
-                                                                                                                                                                        --arg \
-                                                                                                                                                                        INDEX WRONG \
+                                                                                                                                                                        --arg RESOURCE_INDEX "$RESOURCE_INDEX" \
                                                                                                                                                                         '{
-                                                                                                                                                                            "arguments" : [ ]
+                                                                                                                                                                            "arguments" : [ ] ,
+                                                                                                                                                                            "has-standard-input" : "false" ,
+                                                                                                                                                                            "index" : "$RESOURCE_INDEX"
                                                                                                                                                                         }'
                                                                                                                                                                     )" || failure 4746453242187913
                                                                                                                                                                 compare --message 3535136183545986 message --channel 5137269997313547 valid-init --payload 7791329815994911 "$EXPECTED_FRESH" true 3<&3
@@ -485,7 +486,6 @@
                                                                                                                                             ;;
                                                                                                                                     esac
                                                                                                                                 done
-                                                                                                                                printf -v RESOURCE_INDEX "%016d" "$ALPHA"
                                                                                                                                 if [[ -e "/home/${ config.personal.name }/resources/mounts/$RESOURCE_INDEX" ]]
                                                                                                                                 then
                                                                                                                                     failure 2798527332356525
