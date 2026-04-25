@@ -445,12 +445,12 @@
                                                                                                                                                                         '{
                                                                                                                                                                             "arguments" : [ ] ,
                                                                                                                                                                             "has-standard-input" : "false" ,
-                                                                                                                                                                            "hash" : "$HASH ,
-                                                                                                                                                                            "index" : "$RESOURCE_INDEX" ,
-                                                                                                                                                                            "scripts-hash" : "$SCRIPTS_HASH" ,
+                                                                                                                                                                            "hash" : $HASH ,
+                                                                                                                                                                            "index" : $RESOURCE_INDEX ,
+                                                                                                                                                                            "scripts-hash" : $SCRIPTS_HASH ,
                                                                                                                                                                             "standard-error" : "" ,
                                                                                                                                                                             "standard-input" : "" ,
-                                                                                                                                                                            "standard-output" : "$STANDARD_OUTPUT"
+                                                                                                                                                                            "standard-output" : $STANDARD_OUTPUT
                                                                                                                                                                         }'
                                                                                                                                                                     )" || failure 4746453242187913
                                                                                                                                                                 compare --message 3535136183545986 message --channel 5137269997313547 valid-init --payload 7791329815994911 "$EXPECTED_FRESH" true 3<&3
