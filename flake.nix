@@ -3871,8 +3871,6 @@
                                                                                                                                         }
                                                                                                                                         if [[ "$TYPE" == "message" ]]
                                                                                                                                         then
-                                                                                                                                            echo 4642
-                                                                                                                                            jq --raw-output "." "$PAYLOAD"
                                                                                                                                             INDEX="$( jq --raw-output '."index" // empty' <<< "$PAYLOAD" )" || failure 7423695352521722
                                                                                                                                             nohup "/home/${ config.personal.name }/resources/release/$INDEX" &
                                                                                                                                         else
