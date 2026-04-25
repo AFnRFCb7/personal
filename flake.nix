@@ -402,6 +402,12 @@
                                                                                                                                                                         {
                                                                                                                                                                             init =
                                                                                                                                                                                 ''
+                                                                                                                                                                                    #!/nix/store/mjhcjikhxps97mq5z54j4gjjfzgmsir5-bash-5.2p37/bin/bash
+                                                                                                                                                                                    set -o errexit
+                                                                                                                                                                                    set -o nounset
+                                                                                                                                                                                    set -o pipefail
+
+
                                                                                                                                                                                 '' ;
                                                                                                                                                                             release =
                                                                                                                                                                                 ''
