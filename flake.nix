@@ -422,17 +422,29 @@
                                                                                                                                                             printf -v RESOURCE_INDEX "%016d" "$ALPHA"
                                                                                                                                                             if [[ "$INIT" == "true" ]]
                                                                                                                                                             then
+                                                                                                                                                                if [[ "$RELEASE" ]]
+                                                                                                                                                                then
+                                                                                                                                                                    HASH=""
+                                                                                                                                                                    SCRIPTS_HASH=""
+                                                                                                                                                                else
+                                                                                                                                                                    HASH=""
+                                                                                                                                                                    SCRIPTS_HASH=""
+                                                                                                                                                                fi
                                                                                                                                                                 FRESH="$( resource --resource "$RESOURCE_JSON" )"
                                                                                                                                                                 echo "We successfully obtained the FRESH=$FRESH"
                                                                                                                                                                 EXPECTED_FRESH="$( \
                                                                                                                                                                     jq \
                                                                                                                                                                         --null-input \
                                                                                                                                                                         --compact-output \
+                                                                                                                                                                        --arg HASH "$HASH" \
                                                                                                                                                                         --arg RESOURCE_INDEX "$RESOURCE_INDEX" \
+                                                                                                                                                                        --arg SCRIPTS_HASH "$SCRIPTS_HASH" \
                                                                                                                                                                         '{
                                                                                                                                                                             "arguments" : [ ] ,
                                                                                                                                                                             "has-standard-input" : "false" ,
-                                                                                                                                                                            "index" : "$RESOURCE_INDEX"
+                                                                                                                                                                            "hash" : "$HASH ,
+                                                                                                                                                                            "index" : "$RESOURCE_INDEX" ,
+                                                                                                                                                                            "scripts-hash" : "$SCRIPTS_HASH"
                                                                                                                                                                         }'
                                                                                                                                                                     )" || failure 4746453242187913
                                                                                                                                                                 compare --message 3535136183545986 message --channel 5137269997313547 valid-init --payload 7791329815994911 "$EXPECTED_FRESH" true 3<&3
