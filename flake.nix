@@ -426,9 +426,11 @@
                                                                                                                                                                 then
                                                                                                                                                                     HASH=""
                                                                                                                                                                     SCRIPTS_HASH=""
+                                                                                                                                                                    STANDARD_OUTPUT=""
                                                                                                                                                                 else
                                                                                                                                                                     HASH=""
                                                                                                                                                                     SCRIPTS_HASH=""
+                                                                                                                                                                    STANDARD_OUTPUT=""
                                                                                                                                                                 fi
                                                                                                                                                                 FRESH="$( resource --resource "$RESOURCE_JSON" )"
                                                                                                                                                                 echo "We successfully obtained the FRESH=$FRESH"
@@ -439,12 +441,16 @@
                                                                                                                                                                         --arg HASH "$HASH" \
                                                                                                                                                                         --arg RESOURCE_INDEX "$RESOURCE_INDEX" \
                                                                                                                                                                         --arg SCRIPTS_HASH "$SCRIPTS_HASH" \
+                                                                                                                                                                        --arg STANDARD_OUTPUT "$STANDARD_OUTPUT" \
                                                                                                                                                                         '{
                                                                                                                                                                             "arguments" : [ ] ,
                                                                                                                                                                             "has-standard-input" : "false" ,
                                                                                                                                                                             "hash" : "$HASH ,
                                                                                                                                                                             "index" : "$RESOURCE_INDEX" ,
-                                                                                                                                                                            "scripts-hash" : "$SCRIPTS_HASH"
+                                                                                                                                                                            "scripts-hash" : "$SCRIPTS_HASH" ,
+                                                                                                                                                                            "standard-error" : "" ,
+                                                                                                                                                                            "standard-input" : "" ,
+                                                                                                                                                                            "standard-output" : "$STANDARD_OUTPUT"
                                                                                                                                                                         }'
                                                                                                                                                                     )" || failure 4746453242187913
                                                                                                                                                                 compare --message 3535136183545986 message --channel 5137269997313547 valid-init --payload 7791329815994911 "$EXPECTED_FRESH" true 3<&3
@@ -3804,7 +3810,7 @@
                                                                                                     pkgs.writeShellApplication
                                                                                                         {
                                                                                                             name = "ExecStart" ;
-                                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.jq pkgs.redis pkgs.yq-go ] ;
+                                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.flock pkgs.jq pkgs.redis pkgs.yq-go ] ;
                                                                                                             text =
                                                                                                                 ''
                                                                                                                     failure ( ) {
@@ -3816,41 +3822,12 @@
                                                                                                                         echo "TYPE=$TYPE" "CHANNEL=$CHANNEL" "PAYLOAD=$PAYLOAD"
                                                                                                                         if [[ "$TYPE" == "message" ]]
                                                                                                                         then
-                                                                                                                            echo 6992
-                                                                                                                            SCRIPT_FILE="$( jq --raw-output '."script-file" // empty' "$PAYLOAD" )" || failure 14571
-                                                                                                                            echo 9635 "SCRIPT_FILE=$SCRIPT_FILE"
                                                                                                                             STAMP="$( date +%s )" || failure 7521
-                                                                                                                            echo 9821
-                                                                                                                            STANDARD_ERROR_FILE="$( jq --raw-output '."standard-error-file" // empty' "$PAYLOAD" )" || failure 18867
-                                                                                                                            echo 20847
-                                                                                                                            STANDARD_INPUT_FILE="$( jq --raw-output '."standard-input-file" // empty' "$PAYLOAD" )" || failure 7805
-                                                                                                                            echo 2577 "STANDARD_INPUT_FILE=$STANDARD_INPUT_FILE"
-                                                                                                                            STANDARD_OUTPUT_FILE="$( jq --raw-output '."standard-output-file" // empty' "$PAYLOAD" )" || failure 31273
-                                                                                                                            echo 10912 "STANDARD_OUTPUT_FILE=$STANDARD_OUTPUT_FILE"
+                                                                                                                            mkdir --parents "/home/${ config.personal.name }/resources/locks"
                                                                                                                             mkdir --parents "/home/${ config.personal.name }/resources/logs"
-                                                                                                                            echo 20164
-                                                                                                                            jq \
-                                                                                                                                --arg CHANNEL "$CHANNEL" \
-                                                                                                                                --rawfile SCRIPT "${ builtins.concatStringsSep "" [ "$" "{" "SCRIPT_FILE:-/dev/null" "}" ] }" \
-                                                                                                                                --argjson STAMP "$STAMP" \
-                                                                                                                                --rawfile STANDARD_ERROR "${ builtins.concatStringsSep "" [ "$" "{" "STANDARD_ERROR_FILE:-/dev/null" "}" ] }" \
-                                                                                                                                --rawfile STANDARD_INPUT "${ builtins.concatStringsSep "" [ "$" "{" "STANDARD_INPUT_FILE:-/dev/null" "}" ] }" \
-                                                                                                                                --rawfile STANDARD_OUTPUT "${ builtins.concatStringsSep "" [ "$" "{" "STANDARD_OUTPUT_FILE:-/dev/null" "}" ] }" \
-                                                                                                                                '
-                                                                                                                                .["channel"] = $CHANNEL
-                                                                                                                                |
-                                                                                                                                (if has("script-file") then del(."script-file") | .["script"] = $SCRIPT else . end)
-                                                                                                                                |
-                                                                                                                                .["stamp"] = $STAMP
-                                                                                                                                |
-                                                                                                                                (if has("standard-error-file") then del(."standard-error-file") | .["standard-error"] = $STANDARD_ERROR else . end)
-                                                                                                                                |
-                                                                                                                                (if has("standard-input-file") then del(."standard-input-file") | .["standard-input"] = $STANDARD_INPUT else . end)
-                                                                                                                                |
-                                                                                                                                (if has("standard-output-file") then del(."standard-output-file") | .["standard-output"] = $STANDARD_OUTPUT else . end)
-                                                                                                                                ' "$PAYLOAD" \
-                                                                                                                                | yq eval --prettyPrint '[.]' >> "/home/${ config.personal.name }/resources/logs/log.yaml" || failure 31275
-                                                                                                                            echo 25017
+                                                                                                                            exec 203 "/home/${ config.personal.name }/resources/locks/log"
+                                                                                                                            flock -x 203
+                                                                                                                            jq --arg CHANNEL "$CHANNEL" --argjson STAMP "$STAMP" . + { "channel" : $CHANNEL , "stamp" : $STAMP } <<< "$PAYLOAD" | yq eval --prettyPrint '[.]' >> "/home/${ config.personal.name }/resources/logs/log.yaml" || failure 4328192267613931
                                                                                                                         fi
                                                                                                                     done
                                                                                                                 '' ;
