@@ -504,6 +504,7 @@
                                                                                                                                             ;;
                                                                                                                                     esac
                                                                                                                                 done
+                                                                                                                                printf -v RESOURCE_INDEX "%016d" "$ALPHA"
                                                                                                                                 if [[ -e "/home/${ config.personal.name }/resources/mounts/$RESOURCE_INDEX" ]]
                                                                                                                                 then
                                                                                                                                     failure 2798527332356525
