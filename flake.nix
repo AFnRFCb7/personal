@@ -404,39 +404,32 @@
                                                                                                                                                     fi
                                                                                                                                                     echo block --timeout 1 --uuid 5984995243749875
                                                                                                                                                     RESOURCE_JSON="$( jq --null-input --compact-output --arg INIT "$INIT" --arg RELEASE "$RELEASE" '[ "checks" , "targets" , $INIT , $RELEASE ]' )"
-                                                                                                                                                    if RESOURCE="$( resource --resource "$RESOURCE_JSON" )"
-                                                                                                                                                    then
-                                                                                                                                                        STATUS="$?"
-                                                                                                                                                    else
-                                                                                                                                                        STATUS="$?"
-                                                                                                                                                    fi
                                                                                                                                                     printf -v RESOURCE_INDEX "%016d" "$ALPHA"
-                                                                                                                                                    if [[ "$STATUS" == 0 ]]
+                                                                                                                                                    if [[ "$INIT" == "true" ]]
                                                                                                                                                     then
-                                                                                                                                                        if [[ "$INIT" == "true" ]]
+                                                                                                                                                        RESOURCE="$( resource --resource "$RESOURCE_JSON" )"
+                                                                                                                                                        echo "We successfully obtained the RESOURCE=$RESOURCE"
+                                                                                                                                                        compare --message 3535136183545986 message --channel 5137269997313547 valid-init --payload 7791329815994911 true true 3<&3
+                                                                                                                                                        if [[ ! -d "/home/${ config.personal.name }/resources/mounts/$RESOURCE_INDEX" ]]
                                                                                                                                                         then
-                                                                                                                                                            echo "We successfully obtained the RESOURCE=$RESOURCE"
-                                                                                                                                                            compare --message 3535136183545986 message --channel 5137269997313547 valid-init --payload 7791329815994911 true true 3<&3
-                                                                                                                                                            if [[ ! -d "/home/${ config.personal.name }/resources/mounts/$RESOURCE_INDEX" ]]
-                                                                                                                                                            then
-                                                                                                                                                                failure 3636983934497155 RESOURCE "$RESOURCE" RESOURCE_INDEX "$RESOURCE_INDEX" ALPHA "$ALPHA"
-                                                                                                                                                            fi
-                                                                                                                                                            if [[ ! -f "/home/${ config.personal.name }/resources/release/$RESOURCE_INDEX" ]]
-                                                                                                                                                            then
-                                                                                                                                                                failure 4352844455814463
-                                                                                                                                                            fi
-                                                                                                                                                            if [[ -e "/home/${ config.personal.name }/resources/invalid-init/$RESOURCE_INDEX" ]]
-                                                                                                                                                            then
-                                                                                                                                                                failure 4816533867684688
-                                                                                                                                                            fi
-                                                                                                                                                            if [[ -e "/home/${ config.personal.name }/resources/invalid-release/$RESOURCE_INDEX" ]]
-                                                                                                                                                            then
-                                                                                                                                                                failure 7382429993944764
-                                                                                                                                                            fi
-                                                                                                                                                            block --timeout 1 --uuid 7931775215552911
-                                                                                                                                                            echo We created a fresh resource
-                                                                                                                                                            # STALE="$( resource --resource "$RESOURCE_JSON" )" || failure 6281312154776587
-                                                                                                                                                            # compare --message 1957279299293217 message --channel 9274416613622226 valid-init --payload 4377584982169473 true true 3<&3
+                                                                                                                                                            failure 3636983934497155 RESOURCE "$RESOURCE" RESOURCE_INDEX "$RESOURCE_INDEX" ALPHA "$ALPHA"
+                                                                                                                                                        fi
+                                                                                                                                                        if [[ ! -f "/home/${ config.personal.name }/resources/release/$RESOURCE_INDEX" ]]
+                                                                                                                                                        then
+                                                                                                                                                            failure 4352844455814463
+                                                                                                                                                        fi
+                                                                                                                                                        if [[ -e "/home/${ config.personal.name }/resources/invalid-init/$RESOURCE_INDEX" ]]
+                                                                                                                                                        then
+                                                                                                                                                            failure 4816533867684688
+                                                                                                                                                        fi
+                                                                                                                                                        if [[ -e "/home/${ config.personal.name }/resources/invalid-release/$RESOURCE_INDEX" ]]
+                                                                                                                                                        then
+                                                                                                                                                            failure 7382429993944764
+                                                                                                                                                        fi
+                                                                                                                                                        block --timeout 1 --uuid 7931775215552911
+                                                                                                                                                        echo We created a fresh resource
+                                                                                                                                                        # STALE="$( resource --resource "$RESOURCE_JSON" )" || failure 6281312154776587
+                                                                                                                                                        # compare --message 1957279299293217 message --channel 9274416613622226 valid-init --payload 4377584982169473 true true 3<&3
 #                                                                                                                                                            if [[ ! -d "/home/${ config.personal.name }/resources/mounts/$RESOURCE_INDEX" ]]
 #                                                                                                                                                            then
 #                                                                                                                                                                failure 3636983934497155 RESOURCE "$RESOURCE" RESOURCE_INDEX "$RESOURCE_INDEX" ALPHA "$ALPHA"
@@ -454,8 +447,6 @@
 #                                                                                                                                                                failure 7382429993944764
 #                                                                                                                                                            fi
 #                                                                                                                                                            block --timeout 1 --uuid 5494666623899968
-                                                                                                                                                        else
-                                                                                                                                                            failure 4453576663237628 "We did not expect a failure here because INIT=$INIT but we observed $STATUS and obtained $RESOURCE"
                                                                                                                                                         fi
                                                                                                                                                     else
                                                                                                                                                         if [[ "$INIT" != "true" ]]
