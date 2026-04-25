@@ -426,9 +426,9 @@
                                                                                                                                                             printf -v RESOURCE_INDEX "%016d" "$ALPHA"
                                                                                                                                                             if [[ "$INIT" == "true" ]]
                                                                                                                                                             then
-                                                                                                                                                                RESOURCE="$( resource --resource "$RESOURCE_JSON" )"
-                                                                                                                                                                echo "We successfully obtained the RESOURCE=$RESOURCE"
-
+                                                                                                                                                                FRESH="$( resource --resource "$RESOURCE_JSON" )"
+                                                                                                                                                                echo "We successfully obtained the FRESH=$FRESH"
+                                                                                                                                                                EXPECTED_FRESH="$( jq --null-input --compact-output '${ builtins.toJSON fresh }' )" || failure 4746453242187913
                                                                                                                                                                 compare --message 3535136183545986 message --channel 5137269997313547 valid-init --payload 7791329815994911 true true 3<&3
                                                                                                                                                                 if [[ ! -d "/home/${ config.personal.name }/resources/mounts/$RESOURCE_INDEX" ]]
                                                                                                                                                                 then
