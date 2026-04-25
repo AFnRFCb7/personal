@@ -3822,12 +3822,10 @@
                                                                                                                         echo "TYPE=$TYPE" "CHANNEL=$CHANNEL" "PAYLOAD=$PAYLOAD"
                                                                                                                         if [[ "$TYPE" == "message" ]]
                                                                                                                         then
-                                                                                                                            STAMP="$( date +%s )" || failure 7521
-                                                                                                                            mkdir --parents "/home/${ config.personal.name }/resources/locks"
-                                                                                                                            mkdir --parents "/home/${ config.personal.name }/resources/logs"
-                                                                                                                            exec 203 "/home/${ config.personal.name }/resources/locks/log"
-                                                                                                                            flock -x 203
-                                                                                                                            jq --arg CHANNEL "$CHANNEL" --argjson STAMP "$STAMP" . + { "channel" : $CHANNEL , "stamp" : $STAMP } <<< "$PAYLOAD" | yq eval --prettyPrint '[.]' >> "/home/${ config.personal.name }/resources/logs/log.yaml" || failure 4328192267613931
+                                                                                                                            STAMP="$( date +%s )" || failure 4936565359496611
+                                                                                                                            mkdir --parents /home/${ config.personal.name }/resources/locks
+                                                                                                                            mkdir --parents /home/${ config.personal.name }/resources/logs
+                                                                                                                            jq --arg CHANNEL "$CHANNEL" --argjson STAMP "$STAMP" . + { "channel" : $CHANNEL , "stamp" : $STAMP } <<< "$PAYLOAD" | flock /home/${ config.personal.name }/resources/locks/log -c 'yq eval --prettyPrint "[.]" >> /home/${ config.personal.name }/resources/logs/log.yaml'
                                                                                                                         fi
                                                                                                                     done
                                                                                                                 '' ;
