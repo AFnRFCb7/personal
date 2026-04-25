@@ -358,14 +358,56 @@
                                                                                                                                             runtimeInputs = [ block compare failure pkgs.coreutils pkgs.jq pkgs.redis ] ;
                                                                                                                                             text =
                                                                                                                                                 let
-                                                                                                                                                    init =
+                                                                                                                                                    scripts =
                                                                                                                                                         {
                                                                                                                                                             false =
-                                                                                                                                                                ''
-                                                                                                                                                                '' ;
+                                                                                                                                                                {
+                                                                                                                                                                    false =
+                                                                                                                                                                        {
+                                                                                                                                                                            init =
+                                                                                                                                                                                ''
+                                                                                                                                                                                '' ;
+                                                                                                                                                                            release =
+                                                                                                                                                                                ''
+                                                                                                                                                                                '' ;
+                                                                                                                                                                        } ;
+                                                                                                                                                                    true =
+                                                                                                                                                                        {
+                                                                                                                                                                            init =
+                                                                                                                                                                                ''
+                                                                                                                                                                                '' ;
+                                                                                                                                                                            release =
+                                                                                                                                                                                ''
+                                                                                                                                                                                '' ;
+                                                                                                                                                                        } ;
+                                                                                                                                                                } ;
                                                                                                                                                             true =
-                                                                                                                                                                ''
-                                                                                                                                                                '' ;
+                                                                                                                                                                {
+                                                                                                                                                                    false =
+                                                                                                                                                                        {
+                                                                                                                                                                            init =
+                                                                                                                                                                                ''
+                                                                                                                                                                                    #!/nix/store/mjhcjikhxps97mq5z54j4gjjfzgmsir5-bash-5.2p37/bin/bash
+                                                                                                                                                                                    set -o errexit
+                                                                                                                                                                                    set -o nounset
+                                                                                                                                                                                    set -o pipefail
+
+                                                                                                                                                                                    /nix/store/189kk9lm7aswyc09kfx0c6hci8ns14vz-init/bin/init
+                                                                                                                                                                                '' ;
+                                                                                                                                                                            release =
+                                                                                                                                                                                ''
+                                                                                                                                                                                '' ;
+                                                                                                                                                                        } ;
+                                                                                                                                                                    true =
+                                                                                                                                                                        {
+                                                                                                                                                                            init =
+                                                                                                                                                                                ''
+                                                                                                                                                                                '' ;
+                                                                                                                                                                            release =
+                                                                                                                                                                                ''
+                                                                                                                                                                                '' ;
+                                                                                                                                                                        } ;
+                                                                                                                                                                } ;
                                                                                                                                                         } ;
                                                                                                                                                     in
                                                                                                                                                         ''
@@ -421,13 +463,13 @@
                                                                                                                                                                 if [[ "$RELEASE" ]]
                                                                                                                                                                 then
                                                                                                                                                                     HASH=2f88a6f79000e8a73ce95a4bd7f867db012eedd008c4bb7e2284f58bcb3c498b0409987d0d717b4772447883cb9dea4e1959bb7a25b501c59128d58b2c7814f2
-                                                                                                                                                                    SCRIPT='${ init.true }'
+                                                                                                                                                                    SCRIPT='${ scripts.true.true.init }'
                                                                                                                                                                     SCRIPTS_HASH=ade1236dbf4c669c12b299752aaaecdf89602507fc9783e6018eb5a3ecdddce25e2b9e1bc819240a53ca356a0555becd3f471ee22d20f886644261f7cfbb6111
-                                                                                                                                                                    STANDARD_OUTPUT=4725766637963872
+                                                                                                                                                                    STANDARD_OUTPUT=3297495737778474
                                                                                                                                                                     TARGET=
                                                                                                                                                                 else
                                                                                                                                                                     HASH=e56397b002b44a48bab21d5889b4dc97b180731858995b07ac9ad3e0542b278445f9702283aadd01c9db7e51a407f6620fa080de7d20f28e5054a2a383a978c
-                                                                                                                                                                    SCRIPT='${ init.false }'
+                                                                                                                                                                    SCRIPT='${ scripts.true.false.init }'
                                                                                                                                                                     SCRIPTS_HASH=3d2f42210ddcd6d7b76c35619796077ad342615c752456478b634633389ddf2eced4cda940856ab7643698049cee0ec7bed3807946f959732c254feb20b9c515
                                                                                                                                                                     STANDARD_OUTPUT=5175697994459272
                                                                                                                                                                     TARGET=3297495737778474
