@@ -3825,7 +3825,7 @@
                                                                                                                             STAMP="$( date +%s )" || failure 4936565359496611
                                                                                                                             mkdir --parents /home/${ config.personal.name }/resources/locks
                                                                                                                             mkdir --parents /home/${ config.personal.name }/resources/logs
-                                                                                                                            jq --arg CHANNEL "$CHANNEL" --argjson STAMP "$STAMP" . + { "channel" : $CHANNEL , "stamp" : $STAMP } <<< "$PAYLOAD" | flock /home/${ config.personal.name }/resources/locks/log -c 'yq eval --prettyPrint "[.]" >> /home/${ config.personal.name }/resources/logs/log.yaml'
+                                                                                                                            jq --arg CHANNEL "$CHANNEL" --argjson STAMP "$STAMP" '. + { "channel" : $CHANNEL , "stamp" : $STAMP }' <<< "$PAYLOAD" | flock /home/${ config.personal.name }/resources/locks/log -c 'yq eval --prettyPrint "[.]" >> /home/${ config.personal.name }/resources/logs/log.yaml'
                                                                                                                         fi
                                                                                                                     done
                                                                                                                 '' ;
@@ -3873,11 +3873,8 @@
                                                                                                                                         then
                                                                                                                                             echo 4642
                                                                                                                                             jq --raw-output "." "$PAYLOAD"
-                                                                                                                                            RELEASE_FILE="$( jq --raw-output '."release-file" // empty' "$PAYLOAD" )" || failure 1941564993824889
-                                                                                                                                            echo 6956165222656579 "RELEASE_FILE=$RELEASE_FILE"
-                                                                                                                                            KEYS="$( jq --raw-output "keys" "$PAYLOAD" )" || failure 9779212244464954
-                                                                                                                                            echo 6639957152815851 "KEYS=$KEYS"
-                                                                                                                                            nohup "$RELEASE_FILE" &
+                                                                                                                                            INDEX="$( jq --raw-output '."index" // empty' <<< "$PAYLOAD" )" || failure 7423695352521722
+                                                                                                                                            nohup "/home/${ config.personal.name }/resources/release/$INDEX" &
                                                                                                                                         else
                                                                                                                                             echo "TYPE=$TYPE" "CHANNEL=$CHANNEL" "PAYLOAD=$PAYLOAD"
                                                                                                                                         fi
