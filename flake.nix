@@ -443,6 +443,7 @@
                                                                                                                                                                         --arg RESOURCE_INDEX "$RESOURCE_INDEX" \
                                                                                                                                                                         --arg SCRIPTS_HASH "$SCRIPTS_HASH" \
                                                                                                                                                                         --arg STANDARD_OUTPUT "$STANDARD_OUTPUT" \
+                                                                                                                                                                        --arg TARGET "$TARGET" \
                                                                                                                                                                         '{
                                                                                                                                                                             "arguments" : [ ] ,
                                                                                                                                                                             "has-standard-input" : "false" ,
