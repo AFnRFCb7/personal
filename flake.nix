@@ -428,7 +428,12 @@
                                                                                                                                                         fi
                                                                                                                                                         block --timeout 1 --uuid 7931775215552911
                                                                                                                                                         echo We created a fresh resource
-                                                                                                                                                    if
+                                                                                                                                                    else
+                                                                                                                                                        if RESOURCE="$( resource --resource "$RESOURCE_JSON" )"
+                                                                                                                                                        then
+                                                                                                                                                            failure 5647837249555965
+                                                                                                                                                        fi
+                                                                                                                                                    fi
                                                                                                                                                 '' ;
                                                                                                                                         }
                                                                                                                                 )
