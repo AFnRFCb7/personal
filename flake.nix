@@ -428,67 +428,7 @@
                                                                                                                                                         fi
                                                                                                                                                         block --timeout 1 --uuid 7931775215552911
                                                                                                                                                         echo We created a fresh resource
-                                                                                                                                                        # STALE="$( resource --resource "$RESOURCE_JSON" )" || failure 6281312154776587
-                                                                                                                                                        # compare --message 1957279299293217 message --channel 9274416613622226 valid-init --payload 4377584982169473 true true 3<&3
-#                                                                                                                                                            if [[ ! -d "/home/${ config.personal.name }/resources/mounts/$RESOURCE_INDEX" ]]
-#                                                                                                                                                            then
-#                                                                                                                                                                failure 3636983934497155 RESOURCE "$RESOURCE" RESOURCE_INDEX "$RESOURCE_INDEX" ALPHA "$ALPHA"
-#                                                                                                                                                            fi
-#                                                                                                                                                            if [[ ! -f "/home/${ config.personal.name }/resources/release/$RESOURCE_INDEX" ]]
-#                                                                                                                                                            then
-#                                                                                                                                                                failure 4352844455814463
-#                                                                                                                                                            fi
-#                                                                                                                                                            if [[ -e "/home/${ config.personal.name }/resources/invalid-init/$RESOURCE_INDEX" ]]
-#                                                                                                                                                            then
-#                                                                                                                                                                failure 4816533867684688
-#                                                                                                                                                            fi
-#                                                                                                                                                            if [[ -e "/home/${ config.personal.name }/resources/invalid-release/$RESOURCE_INDEX" ]]
-#                                                                                                                                                            then
-#                                                                                                                                                                failure 7382429993944764
-#                                                                                                                                                            fi
-#                                                                                                                                                            block --timeout 1 --uuid 5494666623899968
-                                                                                                                                                        fi
-                                                                                                                                                    else
-                                                                                                                                                        if [[ "$INIT" != "true" ]]
-                                                                                                                                                        then
-                                                                                                                                                            echo "We correctly failed to obtain the RESOURCE because INIT=$INIT"
-                                                                                                                                                            if [[ "$RELEASE" == "true" ]]
-                                                                                                                                                            then
-                                                                                                                                                                if [[ ! -d "/home/${ config.personal.name }/resources/mounts/$RESOURCE_INDEX" ]]
-                                                                                                                                                                then
-                                                                                                                                                                    failure 9773989932948459
-                                                                                                                                                                fi
-                                                                                                                                                                if [[ -e "/home/${ config.personal.name }/resources/release/$RESOURCE_INDEX" ]]
-                                                                                                                                                                then
-                                                                                                                                                                    failure 3646472541235173
-                                                                                                                                                                fi
-                                                                                                                                                                if [[ ! -d "/home/${ config.personal.name }/resources/invalid-init/$RESOURCE_INDEX" ]]
-                                                                                                                                                                then
-                                                                                                                                                                    failure 3861915312668885
-                                                                                                                                                                fi
-                                                                                                                                                            else
-                                                                                                                                                                true
-                                                                                                                                                                # if [[ ! -d "/home/${ config.personal.name }/resources/mounts/$RESOURCE_INDEX" ]]
-                                                                                                                                                                # then
-                                                                                                                                                                #     failure 4155895337576277
-                                                                                                                                                                # fi
-                                                                                                                                                                # if [[ ! -f "/home/${ config.personal.name }/resources/release/$RESOURCE_INDEX" ]]
-                                                                                                                                                                # then
-                                                                                                                                                                #     failure 5311355135823733
-                                                                                                                                                                # fi
-                                                                                                                                                                # if [[ ! -x "/home/${ config.personal.name }/resources/release/$RESOURCE_INDEX" ]]
-                                                                                                                                                                # then
-                                                                                                                                                                #     failure 6828711574292631
-                                                                                                                                                                # fi
-                                                                                                                                                            fi
-                                                                                                                                                            if [[ -e "/home/${ config.personal.name }/resources/invalid-release/$RESOURCE_INDEX" ]]
-                                                                                                                                                            then
-                                                                                                                                                                failure 9431191685269584
-                                                                                                                                                            fi
-                                                                                                                                                        else
-                                                                                                                                                            failure 5257632127293445 "We expected a failure here because INIT=$INIT but we observed $STATUS"
-                                                                                                                                                        fi
-                                                                                                                                                    fi
+                                                                                                                                                    if
                                                                                                                                                 '' ;
                                                                                                                                         }
                                                                                                                                 )
