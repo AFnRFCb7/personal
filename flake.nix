@@ -487,6 +487,7 @@
                                                                                                                                                                         --null-input \
                                                                                                                                                                         --compact-output \
                                                                                                                                                                         --arg HASH "$HASH" \
+                                                                                                                                                                        --arg RELEASE "$RELEASE" \
                                                                                                                                                                         --arg RESOURCE_INDEX "$RESOURCE_INDEX" \
                                                                                                                                                                         --arg SCRIPT "$SCRIPT" \
                                                                                                                                                                         --arg SCRIPTS_HASH "$SCRIPTS_HASH" \
@@ -498,6 +499,7 @@
                                                                                                                                                                             "hash" : $HASH ,
                                                                                                                                                                             "index" : $RESOURCE_INDEX ,
                                                                                                                                                                             "scripts-hash" : $SCRIPTS_HASH ,
+                                                                                                                                                                            "seed" : [ true , $RELEASE ] ,
                                                                                                                                                                             "targets" : { "expected" : $TARGET , observed : $TARGET } ,
                                                                                                                                                                             "script" : $SCRIPT ,
                                                                                                                                                                             "standard-error" : "" ,
