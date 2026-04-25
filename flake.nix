@@ -257,7 +257,7 @@
                                                                                                         pkgs.writeShellApplication
                                                                                                             {
                                                                                                                 name = "compare" ;
-                                                                                                                runtimeInputs = [ failure pkgs.coreutils ] ;
+                                                                                                                runtimeInputs = [ failure pkgs.coreutils pkgs.jq pkgs.yq ] ;
                                                                                                                 text =
                                                                                                                     ''
                                                                                                                         while [[ "$#" -gt 0 ]]
@@ -327,8 +327,8 @@
                                                                                                                         then
                                                                                                                             if [[ "$EXPECTED_PAYLOAD" != "$OBSERVED_PAYLOAD" ]]
                                                                                                                             then
-                                                                                                                                EXPECTED_VERBOSE_PAYLOAD="$( jq "." <<< "$EXPECTED_PAYLOAD" )" || failure 9695639117138292
-                                                                                                                                OBSERVED_VERBOSE_PAYLOAD="$( jq "." <<< "$OBSERVED_PAYLOAD" )" || failure 3474923945839811
+                                                                                                                                EXPECTED_VERBOSE_PAYLOAD="$( yq eval --prettyPrint "." <<< "$EXPECTED_PAYLOAD" )" || failure 9695639117138292
+                                                                                                                                OBSERVED_VERBOSE_PAYLOAD="$( yq eval --prettyPrint "." <<< "$OBSERVED_PAYLOAD" )" || failure 3474923945839811
                                                                                                                                 failure "$UUID_PAYLOAD" 2177767151764594 EXPECTED_PAYLOAD "$EXPECTED_PAYLOAD" OBSERVED_PAYLOAD "$OBSERVED_PAYLOAD" EXPECTED_VERBOSE_PAYLOAD "$EXPECTED_VERBOSE_PAYLOAD" OBSERVED_VERBOSE_PAYLOAD "$OBSERVED_VERBOSE_PAYLOAD"
                                                                                                                             fi
                                                                                                                         else
@@ -428,13 +428,13 @@
                                                                                                                                                                     SCRIPT=""
                                                                                                                                                                     SCRIPTS_HASH=ade1236dbf4c669c12b299752aaaecdf89602507fc9783e6018eb5a3ecdddce25e2b9e1bc819240a53ca356a0555becd3f471ee22d20f886644261f7cfbb6111
                                                                                                                                                                     STANDARD_OUTPUT=4725766637963872
-                                                                                                                                                                    TARGET=3297495737778474
+                                                                                                                                                                    TARGET=
                                                                                                                                                                 else
                                                                                                                                                                     HASH=e56397b002b44a48bab21d5889b4dc97b180731858995b07ac9ad3e0542b278445f9702283aadd01c9db7e51a407f6620fa080de7d20f28e5054a2a383a978c
                                                                                                                                                                     SCRIPT=""
                                                                                                                                                                     SCRIPTS_HASH=3d2f42210ddcd6d7b76c35619796077ad342615c752456478b634633389ddf2eced4cda940856ab7643698049cee0ec7bed3807946f959732c254feb20b9c515
                                                                                                                                                                     STANDARD_OUTPUT=5175697994459272
-                                                                                                                                                                    TARGET=2862437261978116
+                                                                                                                                                                    TARGET=3297495737778474
                                                                                                                                                                 fi
                                                                                                                                                                 FRESH="$( resource --resource "$RESOURCE_JSON" )"
                                                                                                                                                                 echo "We successfully obtained the FRESH=$FRESH"
