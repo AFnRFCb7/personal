@@ -424,9 +424,10 @@
                                                                                                                                                             then
                                                                                                                                                                 if [[ "$RELEASE" ]]
                                                                                                                                                                 then
-                                                                                                                                                                    HASH=""
-                                                                                                                                                                    SCRIPTS_HASH=""
-                                                                                                                                                                    STANDARD_OUTPUT=""
+                                                                                                                                                                    HASH="be56397b002b44a48bab21d5889b4dc97b180731858995b07ac9ad3e0542b278445f9702283aadd01c9db7e51a407f6620fa080de7d20f28e5054a2a383a978c"
+                                                                                                                                                                    SCRIPTS_HASH="3d2f42210ddcd6d7b76c35619796077ad342615c752456478b634633389ddf2eced4cda940856ab7643698049cee0ec7bed3807946f959732c254feb20b9c515"
+                                                                                                                                                                    STANDARD_OUTPUT="5175697994459272"
+                                                                                                                                                                    TARGET="2862437261978116"
                                                                                                                                                                 else
                                                                                                                                                                     HASH=""
                                                                                                                                                                     SCRIPTS_HASH=""
@@ -450,7 +451,8 @@
                                                                                                                                                                             "scripts-hash" : $SCRIPTS_HASH ,
                                                                                                                                                                             "standard-error" : "" ,
                                                                                                                                                                             "standard-input" : "" ,
-                                                                                                                                                                            "standard-output" : $STANDARD_OUTPUT
+                                                                                                                                                                            "standard-output" : $STANDARD_OUTPUT ,
+                                                                                                                                                                            "targets" : { "expected" : $TARGET , observed : $TARGET }
                                                                                                                                                                         }'
                                                                                                                                                                     )" || failure 4746453242187913
                                                                                                                                                                 compare --message 3535136183545986 message --channel 5137269997313547 valid-init --payload 7791329815994911 "$EXPECTED_FRESH" true 3<&3
