@@ -474,11 +474,11 @@
                                                                                                                                                                     STANDARD_OUTPUT=4725766637963872
                                                                                                                                                                     TARGET=3297495737778474
                                                                                                                                                                 else
-                                                                                                                                                                    HASH=e56397b002b44a48bab21d5889b4dc97b180731858995b07ac9ad3e0542b278445f9702283aadd01c9db7e51a407f6620fa080de7d20f28e5054a2a383a978c
-                                                                                                                                                                    SCRIPT='${ scripts.true.false.init }'
-                                                                                                                                                                    SCRIPTS_HASH=3d2f42210ddcd6d7b76c35619796077ad342615c752456478b634633389ddf2eced4cda940856ab7643698049cee0ec7bed3807946f959732c254feb20b9c515
-                                                                                                                                                                    STANDARD_OUTPUT=5175697994459272
-                                                                                                                                                                    TARGET=3297495737778474
+                                                                                                                                                                    HASH=
+                                                                                                                                                                    SCRIPT=
+                                                                                                                                                                    SCRIPTS_HASH=
+                                                                                                                                                                    STANDARD_OUTPUT=
+                                                                                                                                                                    TARGET=
                                                                                                                                                                 fi
                                                                                                                                                                 FRESH="$( resource --resource "$RESOURCE_JSON" )"
                                                                                                                                                                 echo "We successfully obtained the FRESH=$FRESH"
