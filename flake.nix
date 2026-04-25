@@ -466,9 +466,9 @@
                                                                                                                                                             printf -v RESOURCE_INDEX "%016d" "$ALPHA"
                                                                                                                                                             if [[ "$INIT" == "true" ]]
                                                                                                                                                             then
-                                                                                                                                                                if [[ "$RELEASE" ]]
+                                                                                                                                                                if [[ "$RELEASE" == "true" ]]
                                                                                                                                                                 then
-                                                                                                                                                                    HASH=be56397b002b44a48bab21d5889b4dc97b180731858995b07ac9ad3e0542b278445f9702283aadd01c9db7e51a407f6620fa080de7d20f28e5054a2a383a978c
+                                                                                                                                                                    HASH=2f88a6f79000e8a73ce95a4bd7f867db012eedd008c4bb7e2284f58bcb3c498b0409987d0d717b4772447883cb9dea4e1959bb7a25b501c59128d58b2c7814f2
                                                                                                                                                                     SCRIPT='${ scripts.true.true.init }'
                                                                                                                                                                     SCRIPTS_HASH=3d2f42210ddcd6d7b76c35619796077ad342615c752456478b634633389ddf2eced4cda940856ab7643698049cee0ec7bed3807946f959732c254feb20b9c515
                                                                                                                                                                     STANDARD_OUTPUT=4725766637963872
@@ -499,7 +499,7 @@
                                                                                                                                                                             "hash" : $HASH ,
                                                                                                                                                                             "index" : $RESOURCE_INDEX ,
                                                                                                                                                                             "scripts-hash" : $SCRIPTS_HASH ,
-                                                                                                                                                                            "seed" : [ true , $RELEASE ] ,
+                                                                                                                                                                            "seed" : [ "checks" , "targets" , "true" , $RELEASE ] ,
                                                                                                                                                                             "targets" : { "expected" : $TARGET , observed : $TARGET } ,
                                                                                                                                                                             "script" : $SCRIPT ,
                                                                                                                                                                             "standard-error" : "" ,
