@@ -362,10 +362,6 @@
                                                                                                                                                         {
                                                                                                                                                             arguments = [ ] ;
                                                                                                                                                             has-standard-input = "false" ;
-                                                                                                                                                            hash = "2f88a6f79000e8a73ce95a4bd7f867db012eedd008c4bb7e2284f58bcb3c498b0409987d0d717b4772447883cb9dea4e1959bb7a25b501c59128d58b2c7814f2" ;
-                                                                                                                                                            index = "" ;
-                                                                                                                                                            release-file = "" ;
-                                                                                                                                                            scripts-hash = "ade1236dbf4c669c12b299752aaaecdf89602507fc9783e6018eb5a3ecdddce25e2b9e1bc819240a53ca356a0555becd3f471ee22d20f886644261f7cfbb6111" ;
                                                                                                                                                             seed = [ "checks" "target" "true" "false" ] ;
                                                                                                                                                             targets = { "expected" = "3297495737778474" ; observed = "3297495737778474" ; } ;
                                                                                                                                                             script =
@@ -428,7 +424,16 @@
                                                                                                                                                             then
                                                                                                                                                                 FRESH="$( resource --resource "$RESOURCE_JSON" )"
                                                                                                                                                                 echo "We successfully obtained the FRESH=$FRESH"
-                                                                                                                                                                EXPECTED_FRESH="$( jq --null-input --compact-output --arg INDEX WRONG --argjson OBJECT '${ builtins.toJSON fresh }' '$OBJECT | .index = $INDEX' )" || failure 4746453242187913
+                                                                                                                                                                EXPECTED_FRESH="$( \
+                                                                                                                                                                    jq \
+                                                                                                                                                                        --null-input \
+                                                                                                                                                                        --compact-output \
+                                                                                                                                                                        --arg \
+                                                                                                                                                                        INDEX WRONG \
+                                                                                                                                                                        '{
+                                                                                                                                                                            "arguments" : [ ]
+                                                                                                                                                                        }'
+                                                                                                                                                                    )" || failure 4746453242187913
                                                                                                                                                                 compare --message 3535136183545986 message --channel 5137269997313547 valid-init --payload 7791329815994911 "$EXPECTED_FRESH" true 3<&3
                                                                                                                                                                 if [[ ! -d "/home/${ config.personal.name }/resources/mounts/$RESOURCE_INDEX" ]]
                                                                                                                                                                 then
