@@ -357,84 +357,104 @@
                                                                                                                                             name = "pre-test" ;
                                                                                                                                             runtimeInputs = [ block compare failure pkgs.coreutils pkgs.jq pkgs.redis ] ;
                                                                                                                                             text =
-                                                                                                                                                ''
-                                                                                                                                                    while [[ "$#" -gt 0 ]]
-                                                                                                                                                    do
-                                                                                                                                                        case "$1" in
-                                                                                                                                                            --alpha)
-                                                                                                                                                                ALPHA="$2"
-                                                                                                                                                                shift 2
-                                                                                                                                                                ;;
-                                                                                                                                                            --init)
-                                                                                                                                                                INIT="$2"
-                                                                                                                                                                if [[ "$INIT" != "true" ]] && [[ "$INIT" != "false" ]]
+                                                                                                                                                let
+                                                                                                                                                    fresh =
+                                                                                                                                                        {
+                                                                                                                                                            arguments = [ "" ] ;
+                                                                                                                                                            has-standard-input = "false" ;
+                                                                                                                                                            hash = "2f88a6f79000e8a73ce95a4bd7f867db012eedd008c4bb7e2284f58bcb3c498b0409987d0d717b4772447883cb9dea4e1959bb7a25b501c59128d58b2c7814f2" ;
+                                                                                                                                                            index = "" ;
+                                                                                                                                                            release-file = "" ;
+                                                                                                                                                            scripts-hash = "ade1236dbf4c669c12b299752aaaecdf89602507fc9783e6018eb5a3ecdddce25e2b9e1bc819240a53ca356a0555becd3f471ee22d20f886644261f7cfbb6111" ;
+                                                                                                                                                            seed = [ "checks" "target" "true" "false" ] ;
+                                                                                                                                                            targets = { "expected" = "3297495737778474" ; observed = "3297495737778474" ; } ;
+                                                                                                                                                            script =
+                                                                                                                                                                ''
+                                                                                                                                                                '' ;
+                                                                                                                                                            standard-error = "" ;
+                                                                                                                                                            standard-input = "" ;
+                                                                                                                                                            standard-output = "4725766637963872" ;
+                                                                                                                                                        } ;
+                                                                                                                                                    in
+                                                                                                                                                        ''
+                                                                                                                                                            while [[ "$#" -gt 0 ]]
+                                                                                                                                                            do
+                                                                                                                                                                case "$1" in
+                                                                                                                                                                    --alpha)
+                                                                                                                                                                        ALPHA="$2"
+                                                                                                                                                                        shift 2
+                                                                                                                                                                        ;;
+                                                                                                                                                                    --init)
+                                                                                                                                                                        INIT="$2"
+                                                                                                                                                                        if [[ "$INIT" != "true" ]] && [[ "$INIT" != "false" ]]
+                                                                                                                                                                        then
+                                                                                                                                                                            failure 6955793956212518 "$INIT"
+                                                                                                                                                                        fi
+                                                                                                                                                                        shift 2
+                                                                                                                                                                        ;;
+                                                                                                                                                                    --release)
+                                                                                                                                                                        RELEASE="$2"
+                                                                                                                                                                        if [[ "$RELEASE" != "true" ]] && [[ "$RELEASE" != "false" ]]
+                                                                                                                                                                        then
+                                                                                                                                                                            failure 7365993421498947 "$RELEASE"
+                                                                                                                                                                        fi
+                                                                                                                                                                        shift 2
+                                                                                                                                                                        ;;
+                                                                                                                                                                    *)
+                                                                                                                                                                        failure 3186874731515892 "$*"
+                                                                                                                                                                        ;;
+                                                                                                                                                                esac
+                                                                                                                                                            done
+                                                                                                                                                            if [[ -z "$ALPHA" ]]
+                                                                                                                                                            then
+                                                                                                                                                                failure 2468219387197693
+                                                                                                                                                            fi
+                                                                                                                                                            if [[ ! "$ALPHA" =~ ^-?[0-9]+$ ]]
+                                                                                                                                                            then
+                                                                                                                                                                failure 3514254328772311
+                                                                                                                                                            fi
+                                                                                                                                                            if [[ -z "$INIT" ]]
+                                                                                                                                                            then
+                                                                                                                                                                failure 1871763771129953
+                                                                                                                                                            fi
+                                                                                                                                                            if [[ -z "$RELEASE" ]]
+                                                                                                                                                            then
+                                                                                                                                                                failure 4957596197169642
+                                                                                                                                                            fi
+                                                                                                                                                            echo block --timeout 1 --uuid 5984995243749875
+                                                                                                                                                            RESOURCE_JSON="$( jq --null-input --compact-output --arg INIT "$INIT" --arg RELEASE "$RELEASE" '[ "checks" , "targets" , $INIT , $RELEASE ]' )"
+                                                                                                                                                            printf -v RESOURCE_INDEX "%016d" "$ALPHA"
+                                                                                                                                                            if [[ "$INIT" == "true" ]]
+                                                                                                                                                            then
+                                                                                                                                                                RESOURCE="$( resource --resource "$RESOURCE_JSON" )"
+                                                                                                                                                                echo "We successfully obtained the RESOURCE=$RESOURCE"
+
+                                                                                                                                                                compare --message 3535136183545986 message --channel 5137269997313547 valid-init --payload 7791329815994911 true true 3<&3
+                                                                                                                                                                if [[ ! -d "/home/${ config.personal.name }/resources/mounts/$RESOURCE_INDEX" ]]
                                                                                                                                                                 then
-                                                                                                                                                                    failure 6955793956212518 "$INIT"
+                                                                                                                                                                    failure 3636983934497155 RESOURCE "$RESOURCE" RESOURCE_INDEX "$RESOURCE_INDEX" ALPHA "$ALPHA"
                                                                                                                                                                 fi
-                                                                                                                                                                shift 2
-                                                                                                                                                                ;;
-                                                                                                                                                            --release)
-                                                                                                                                                                RELEASE="$2"
-                                                                                                                                                                if [[ "$RELEASE" != "true" ]] && [[ "$RELEASE" != "false" ]]
+                                                                                                                                                                if [[ ! -f "/home/${ config.personal.name }/resources/release/$RESOURCE_INDEX" ]]
                                                                                                                                                                 then
-                                                                                                                                                                    failure 7365993421498947 "$RELEASE"
+                                                                                                                                                                    failure 4352844455814463
                                                                                                                                                                 fi
-                                                                                                                                                                shift 2
-                                                                                                                                                                ;;
-                                                                                                                                                            *)
-                                                                                                                                                                failure 3186874731515892 "$*"
-                                                                                                                                                                ;;
-                                                                                                                                                        esac
-                                                                                                                                                    done
-                                                                                                                                                    if [[ -z "$ALPHA" ]]
-                                                                                                                                                    then
-                                                                                                                                                        failure 2468219387197693
-                                                                                                                                                    fi
-                                                                                                                                                    if [[ ! "$ALPHA" =~ ^-?[0-9]+$ ]]
-                                                                                                                                                    then
-                                                                                                                                                        failure 3514254328772311
-                                                                                                                                                    fi
-                                                                                                                                                    if [[ -z "$INIT" ]]
-                                                                                                                                                    then
-                                                                                                                                                        failure 1871763771129953
-                                                                                                                                                    fi
-                                                                                                                                                    if [[ -z "$RELEASE" ]]
-                                                                                                                                                    then
-                                                                                                                                                        failure 4957596197169642
-                                                                                                                                                    fi
-                                                                                                                                                    echo block --timeout 1 --uuid 5984995243749875
-                                                                                                                                                    RESOURCE_JSON="$( jq --null-input --compact-output --arg INIT "$INIT" --arg RELEASE "$RELEASE" '[ "checks" , "targets" , $INIT , $RELEASE ]' )"
-                                                                                                                                                    printf -v RESOURCE_INDEX "%016d" "$ALPHA"
-                                                                                                                                                    if [[ "$INIT" == "true" ]]
-                                                                                                                                                    then
-                                                                                                                                                        RESOURCE="$( resource --resource "$RESOURCE_JSON" )"
-                                                                                                                                                        echo "We successfully obtained the RESOURCE=$RESOURCE"
-                                                                                                                                                        compare --message 3535136183545986 message --channel 5137269997313547 valid-init --payload 7791329815994911 true true 3<&3
-                                                                                                                                                        if [[ ! -d "/home/${ config.personal.name }/resources/mounts/$RESOURCE_INDEX" ]]
-                                                                                                                                                        then
-                                                                                                                                                            failure 3636983934497155 RESOURCE "$RESOURCE" RESOURCE_INDEX "$RESOURCE_INDEX" ALPHA "$ALPHA"
-                                                                                                                                                        fi
-                                                                                                                                                        if [[ ! -f "/home/${ config.personal.name }/resources/release/$RESOURCE_INDEX" ]]
-                                                                                                                                                        then
-                                                                                                                                                            failure 4352844455814463
-                                                                                                                                                        fi
-                                                                                                                                                        if [[ -e "/home/${ config.personal.name }/resources/invalid-init/$RESOURCE_INDEX" ]]
-                                                                                                                                                        then
-                                                                                                                                                            failure 4816533867684688
-                                                                                                                                                        fi
-                                                                                                                                                        if [[ -e "/home/${ config.personal.name }/resources/invalid-release/$RESOURCE_INDEX" ]]
-                                                                                                                                                        then
-                                                                                                                                                            failure 7382429993944764
-                                                                                                                                                        fi
-                                                                                                                                                        block --timeout 1 --uuid 7931775215552911
-                                                                                                                                                        echo We created a fresh resource
-                                                                                                                                                    else
-                                                                                                                                                        if RESOURCE="$( resource --resource "$RESOURCE_JSON" )"
-                                                                                                                                                        then
-                                                                                                                                                            failure 5647837249555965
-                                                                                                                                                        fi
-                                                                                                                                                    fi
-                                                                                                                                                '' ;
+                                                                                                                                                                if [[ -e "/home/${ config.personal.name }/resources/invalid-init/$RESOURCE_INDEX" ]]
+                                                                                                                                                                then
+                                                                                                                                                                    failure 4816533867684688
+                                                                                                                                                                fi
+                                                                                                                                                                if [[ -e "/home/${ config.personal.name }/resources/invalid-release/$RESOURCE_INDEX" ]]
+                                                                                                                                                                then
+                                                                                                                                                                    failure 7382429993944764
+                                                                                                                                                                fi
+                                                                                                                                                                block --timeout 1 --uuid 7931775215552911
+                                                                                                                                                                echo We created a fresh resource
+                                                                                                                                                            else
+                                                                                                                                                                if RESOURCE="$( resource --resource "$RESOURCE_JSON" )"
+                                                                                                                                                                then
+                                                                                                                                                                    failure 5647837249555965
+                                                                                                                                                                fi
+                                                                                                                                                            fi
+                                                                                                                                                        '' ;
                                                                                                                                         }
                                                                                                                                 )
                                                                                                                             ] ;
