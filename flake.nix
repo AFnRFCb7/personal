@@ -266,7 +266,7 @@
                                                                                                                         while [[ "$#" -gt 0 ]]
                                                                                                                         do
                                                                                                                             case "$1" in
-                                                                                                                                --channel
+                                                                                                                                --channel)
                                                                                                                                     EXPECTED_CHANNEL="$2"
                                                                                                                                     shift 2
                                                                                                                                     ;;
