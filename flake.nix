@@ -4050,7 +4050,7 @@
                                                                                                                     ''
                                                                                                                         elif [[ "$2" == '${ builtins.toJSON path }' ]]
                                                                                                                         then
-                                                                                                                            RESOURCE=${ value { setup = setup : ''${ setup } "${ builtins.concatStringsSep "" [ "$" "{" "ARGUMENTS[@]:-" "}" ] }"'' ; } }
+                                                                                                                            RESOURCE=${ value { setup = setup : ''${ setup } ${ builtins.concatStringsSep "" [ "$" "{" "ARGUMENTS[@]:-" "}" ] }'' ; } }
                                                                                                                     ''
                                                                                                                 ] ;
                                                                                                         list = path : list : builtins.concatLists list ;
