@@ -515,7 +515,26 @@
                                                                                                                                                                     then
                                                                                                                                                                         failure 7758266671234918
                                                                                                                                                                     fi
-
+                                                                                                                                                                    if [[ ! -d "$DISTRACTOR" ]]
+                                                                                                                                                                    then
+                                                                                                                                                                        failure 5453259464551549
+                                                                                                                                                                    fi
+                                                                                                                                                                    if [[ ! -f "$DISTRACTOR/" ]]
+                                                                                                                                                                    then
+                                                                                                                                                                        failure 4384853381321331
+                                                                                                                                                                    fi
+                                                                                                                                                                    if [[ ! -f "/home/${ config.personal.name }/resources/release/$DISTRACTOR_INDEX ]]
+                                                                                                                                                                    then
+                                                                                                                                                                        failure 1511118195431968
+                                                                                                                                                                    fi
+                                                                                                                                                                    if [[ -e "/home/${ config.personal.name }/resources/invalid-init/$DISTRACTOR_INDEX ]]
+                                                                                                                                                                    then
+                                                                                                                                                                        failure 3132968762464388
+                                                                                                                                                                    fi
+                                                                                                                                                                    if [[ -e "/home/${ config.personal.name }/resources/invalid-release/$DISTRACTOR_INDEX ]]
+                                                                                                                                                                    then
+                                                                                                                                                                        failure 9414945493435833
+                                                                                                                                                                    fi
                                                                                                                                                                     FRESH=${ resources.checks.targets.true.true { failure = 1528926113851339 ; } }
                                                                                                                                                                     printf -v DISTRACTOR_INDEX "%016d" $(( ALPHA + 1 ))
                                                                                                                                                                     if [[ "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" != "$FRESH" ]]
