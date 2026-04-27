@@ -499,7 +499,9 @@
                                                                                                                                                             then
                                                                                                                                                                 if [[ "$RELEASE" == "true" ]]
                                                                                                                                                                 then
-                                                                                                                                                                    echo true
+                                                                                                                                                                    DISTRACTOR=${ resources.checks.true.true { failure = 8829996994479772 ; setup = setup : ''${ setup } 3564731485791737'' ; } }
+                                                                                                                                                                    printf -v DISTRACTOR_INDEX "%016d" "$ALPHA"
+                                                                                                                                                                    jq --null-input --compact-output --arg INDEX "$DISTRACTOR_INDEX" '{ "index" : $INDEX }' | compare --message 5186979821182979 message --channel 3798763547664795 valid-init --payload 8426317482255739 false true 3&<3
                                                                                                                                                                 fi
                                                                                                                                                                 if [[ ! -d "/home/${ config.personal.name }/resources/mounts/$RESOURCE_INDEX" ]]
                                                                                                                                                                 then
