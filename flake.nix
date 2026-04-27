@@ -507,6 +507,15 @@
                                                                                                                                                                     fi
                                                                                                                                                                     jq --null-input --compact-output --arg INDEX "$DISTRACTOR_INDEX" '{ "index" : $INDEX }' | compare --message 5186979821182979 message --channel 3798763547664795 valid-init --payload 8426317482255739 false true 3<&3
                                                                                                                                                                     block --timeout 1 --uuid 6925921732651899 3<&3
+                                                                                                                                                                    if [[ ! -d "$DISTRACTOR" ]]
+                                                                                                                                                                    then
+                                                                                                                                                                        failure 2832536726575513
+                                                                                                                                                                    fi
+                                                                                                                                                                    if [[ ! -f "$DISTRACTOR/" ]]
+                                                                                                                                                                    then
+                                                                                                                                                                        failure 7758266671234918
+                                                                                                                                                                    fi
+
                                                                                                                                                                     FRESH=${ resources.checks.targets.true.true { failure = 1528926113851339 ; } }
                                                                                                                                                                     printf -v DISTRACTOR_INDEX "%016d" $(( ALPHA + 1 ))
                                                                                                                                                                     if [[ "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" != "$FRESH" ]]
@@ -4568,7 +4577,7 @@
                                                                                 text =
                                                                                     ''
                                                                                         SCRIPT="$( resource --resource '["checks","script"]' )"
-                                                                                        timeout 1m "$SCRIPT/test" --alpha 9 --init false --release true
+                                                                                        timeout 1m "$SCRIPT/test" --alpha 8 --init false --release true
                                                                                     '' ;
                                                                             } ;
                                                                     in "${ application }/bin/test" ;
@@ -4596,7 +4605,7 @@
 #                                                                                text =
 #                                                                                    ''
 #                                                                                        SCRIPT="$( resource --resource '["checks","script"]' )"
-#                                                                                        timeout 1m "$SCRIPT/test" --alpha 9 --init true --release false
+#                                                                                        timeout 1m "$SCRIPT/test" --alpha 8 --init true --release false
 #                                                                                    '' ;
 #                                                                            } ;
 #                                                                    in "${ application }/bin/test" ;
