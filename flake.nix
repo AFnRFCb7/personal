@@ -225,7 +225,10 @@
                                                                                                                         do
                                                                                                                             case "$1" in
                                                                                                                                 --timeout)
-                                                                                                                                    TIMEOUT="$2"
+                                                                                                                                    if [[ ! "$TIMEOUT" =~ ^-?[0-9]+$ ]]
+                                                                                                                                    then
+                                                                                                                                        failure ff4b2472e9efae44 "$TIMEOUT"
+                                                                                                                                    fi
                                                                                                                                     shift 2
                                                                                                                                     ;;
                                                                                                                                 --uuid)
@@ -245,7 +248,7 @@
                                                                                                                         then
                                                                                                                             failure 1535338844795893
                                                                                                                         fi
-                                                                                                                        if timeout "$TIMEOUT" read -r <&3
+                                                                                                                        if timeout "$TIMEOUT" read -r -u 3
                                                                                                                         then
                                                                                                                             failure 7951884354751442 "We are not expecting a message but we got one anyway"
                                                                                                                         else
@@ -263,65 +266,70 @@
                                                                                                                         while [[ "$#" -gt 0 ]]
                                                                                                                         do
                                                                                                                             case "$1" in
-                                                                                                                                --channel)
-                                                                                                                                    UUID_CHANNEL="$2"
-                                                                                                                                    EXPECTED_CHANNEL="$3"
-                                                                                                                                    shift 3
+                                                                                                                                --channel
+                                                                                                                                    EXPECTED_CHANNEL="$2"
+                                                                                                                                    shift 2
                                                                                                                                     ;;
                                                                                                                                 --message)
-                                                                                                                                    UUID_MESSAGE="$2"
-                                                                                                                                    EXPECTED_MESSAGE="$3"
-                                                                                                                                    shift 3
+                                                                                                                                    EXPECTED_MESSAGE="$2"
+                                                                                                                                    shift 2
                                                                                                                                     ;;
                                                                                                                                 --payload)
-                                                                                                                                    UUID_PAYLOAD="$2"
-                                                                                                                                    EXPECTED_PAYLOAD="$3"
-                                                                                                                                    PAYLOAD_IS_JSON="$4"
-                                                                                                                                    shift 4
+                                                                                                                                    EXPECTED_PAYLOAD="$2"
+                                                                                                                                    PAYLOAD_IS_JSON="$3"
+                                                                                                                                    shift 3
+                                                                                                                                    ;;
+                                                                                                                                --timeout)
+                                                                                                                                    TIMEOUT="$2"
+                                                                                                                                    shift 2
+                                                                                                                                    if [[ ! "$TIMEOUT" =~ ^-?[0-9]+$ ]]
+                                                                                                                                    then
+                                                                                                                                        failure 1a9dadf7736235ea "$TIMEOUT"
+                                                                                                                                    fi
+                                                                                                                                    ;;
+                                                                                                                                --uuid
+                                                                                                                                    UUID="$2"
+                                                                                                                                    shift 2
                                                                                                                                     ;;
                                                                                                                                 *)
                                                                                                                                     failure 8175862286564631 "$*"
                                                                                                                                     ;;
                                                                                                                             esac
                                                                                                                         done
-                                                                                                                        if [[ -z "$UUID_CHANNEL" ]]
+                                                                                                                        if [[ -z "$UUID" ]]
                                                                                                                         then
-                                                                                                                            failure 3859676595588872
+                                                                                                                            failure d597a2fab86c6288
                                                                                                                         fi
                                                                                                                         if [[ -z "$EXPECTED_CHANNEL" ]]
                                                                                                                         then
-                                                                                                                            failure 9262853791516192 "$UUID_CHANNEL"
-                                                                                                                        fi
-                                                                                                                        if [[ -z "$UUID_MESSAGE" ]]
-                                                                                                                        then
-                                                                                                                            failure 6758712567292483
+                                                                                                                            failure 9262853791516192 "$UUID"
                                                                                                                         fi
                                                                                                                         if [[ -z "$EXPECTED_MESSAGE" ]]
                                                                                                                         then
-                                                                                                                            failure 9152341496876694 "$UUID_MESSAGE"
-                                                                                                                        fi
-                                                                                                                        if [[ -z "$UUID_PAYLOAD" ]]
-                                                                                                                        then
-                                                                                                                            failure 5765343548669263
+                                                                                                                            failure 9152341496876694 "$UUID"
                                                                                                                         fi
                                                                                                                         if [[ -z "$EXPECTED_PAYLOAD" ]]
                                                                                                                         then
-                                                                                                                            failure 8569324665781814 "$UUID_PAYLOAD"
+                                                                                                                            failure 8569324665781814 "$UUID"
                                                                                                                         fi
                                                                                                                         if [[ -z "$PAYLOAD_IS_JSON" ]]
                                                                                                                         then
-                                                                                                                            failure 9331276634154662 "$UUID_PAYLOAD"
+                                                                                                                            failure 9331276634154662 "$UUID"
                                                                                                                         fi
-                                                                                                                        read -r OBSERVED_MESSAGE <&3
-                                                                                                                        read -r OBSERVED_CHANNEL <&3
-                                                                                                                        read -r OBSERVED_PAYLOAD <&3
+                                                                                                                        if [[ -z "$TIMEOUT" ]]
+                                                                                                                        then
+                                                                                                                            failure d855cf3f4d0854ec "$UUID"
+                                                                                                                        fi
+                                                                                                                        read -r -t "$TIMEOUT" -u 3 OBSERVED_MESSAGE
+                                                                                                                        read -r -t "$TIMEOUT" -u 3 OBSERVED_CHANNEL <&3
+                                                                                                                        read -r -t "$TIMEOUT" -u 3 OBSERVED_PAYLOAD
                                                                                                                         if [[ "$EXPECTED_MESSAGE" != "$OBSERVED_MESSAGE" ]]
                                                                                                                         then
-                                                                                                                            failure "$UUID_MESSAGE" 9358462855663219 EXPECTED_MESSAGE "$EXPECTED_MESSAGE" OBSERVED_MESSAGE "$OBSERVED_MESSAGE"
+                                                                                                                            failure 9358462855663219 "$UUID" EXPECTED_MESSAGE "$EXPECTED_MESSAGE" OBSERVED_MESSAGE "$OBSERVED_MESSAGE"
                                                                                                                         fi
                                                                                                                         if [[ "$EXPECTED_CHANNEL" != "$OBSERVED_CHANNEL" ]]
                                                                                                                         then
-                                                                                                                            failure "$UUID_CHANNEL" 3246855689569956 EXPECTED_CHANNEL "$EXPECTED_CHANNEL" OBSERVED_CHANNEL "$OBSERVED_CHANNEL"
+                                                                                                                            failure 3246855689569956 "$UUID" EXPECTED_CHANNEL "$EXPECTED_CHANNEL" OBSERVED_CHANNEL "$OBSERVED_CHANNEL"
                                                                                                                         fi
                                                                                                                         if [[ "$PAYLOAD_IS_JSON" == "true" ]]
                                                                                                                         then
@@ -330,12 +338,12 @@
                                                                                                                             then
                                                                                                                                 EXPECTED_VERBOSE_PAYLOAD="$( yq --input-format=json eval --prettyPrint "." <<< "$EXPECTED_PAYLOAD" )" || failure 9695639117138292
                                                                                                                                 OBSERVED_VERBOSE_PAYLOAD="$( yq --input-format=json eval --prettyPrint "." <<< "$OBSERVED_PAYLOAD" )" || failure 3474923945839811
-                                                                                                                                failure "$UUID_PAYLOAD" 2177767151764594 EXPECTED_PAYLOAD "$EXPECTED_PAYLOAD" OBSERVED_PAYLOAD "$OBSERVED_PAYLOAD" EXPECTED_VERBOSE_PAYLOAD "$EXPECTED_VERBOSE_PAYLOAD" OBSERVED_VERBOSE_PAYLOAD "$OBSERVED_VERBOSE_PAYLOAD"
+                                                                                                                                failure 2177767151764594 "$UUID" EXPECTED_PAYLOAD "$EXPECTED_PAYLOAD" OBSERVED_PAYLOAD "$OBSERVED_PAYLOAD" EXPECTED_VERBOSE_PAYLOAD "$EXPECTED_VERBOSE_PAYLOAD" OBSERVED_VERBOSE_PAYLOAD "$OBSERVED_VERBOSE_PAYLOAD"
                                                                                                                             fi
                                                                                                                         else
                                                                                                                             if [[ "$EXPECTED_PAYLOAD" != "$OBSERVED_PAYLOAD" ]]
                                                                                                                             then
-                                                                                                                                failure "$UUID_PAYLOAD" 2376349973447483 EXPECTED_PAYLOAD "$EXPECTED_PAYLOAD" OBSERVED_PAYLOAD "$OBSERVED_PAYLOAD"
+                                                                                                                                failure 2376349973447483 "$UUID" EXPECTED_PAYLOAD "$EXPECTED_PAYLOAD" OBSERVED_PAYLOAD "$OBSERVED_PAYLOAD"
                                                                                                                             fi
                                                                                                                         fi
                                                                                                                     '' ;
@@ -486,7 +494,7 @@
                                                                                                                                                                                "seed" : [ "checks" , "targets" , "true" , "true" ] ,
                                                                                                                                                                                "status" : 0 ,
                                                                                                                                                                                "targets" : [ $TARGET ]
-                                                                                                                                                                            }' | compare --message 5186979821182979 message --channel 3798763547664795 valid-init --payload 8426317482255739 false true 3<&3
+                                                                                                                                                                            }' | compare --message message --channel valid-init --payload false true --timeout 1 --uuid 9237324739354352 3<&3
                                                                                                                                                                     block --timeout 1 --uuid 6925921732651899 3<&3
                                                                                                                                                                     if [[ ! -d "$DISTRACTOR" ]]
                                                                                                                                                                     then
@@ -524,14 +532,14 @@
                                                                                                                                                                     fi
 
 
-                                                                                                                                                                    jq --null-input --compact-output --arg INDEX "$FRESH_INDEX" '{ "index" : $INDEX }' | compare --message 4589384769813745 message --channel 4918839535918934 valid-init --payload 8566752125326932 false true 3<&3
+                                                                                                                                                                    jq --null-input --compact-output --arg INDEX "$FRESH_INDEX" '{ "index" : $INDEX }' | compare --message message --channel valid-init --payload false true --timeout 1 --uuid 1947194523387773 3<&3
                                                                                                                                                                     block --timeout 1 --uuid 9742525318757248 3<&3
                                                                                                                                                                     STALE=${ resources.checks.targets.true.true { failure = 3731249165757488 ; } }
                                                                                                                                                                     if [[ "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" != "$STALE" ]]
                                                                                                                                                                     then
                                                                                                                                                                         failure 6137457253542177 EXPECTED "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" OBSERVED "$STALE"
                                                                                                                                                                     fi
-                                                                                                                                                                    jq --null-input --compact-output --arg INDEX "$FRESH_INDEX" '{ "index" : $INDEX }' | compare --message 4589384769813745 message --channel 4918839535918934 valid-stale --payload 8566752125326932 false true 3<&3
+                                                                                                                                                                    jq --null-input --compact-output --arg INDEX "$FRESH_INDEX" '{ "index" : $INDEX }' | compare --message message --channel valid-stale --payload false true --timeout 1 --uuid 8855979245756384 3<&3
                                                                                                                                                                     block --timeout 1 --uuid 9742525318757248 3<&3
                                                                                                                                                                 fi
                                                                                                                                                                 if [[ ! -d "/home/${ config.personal.name }/resources/mounts/$RESOURCE_INDEX" ]]
@@ -602,11 +610,11 @@
                                                                                                                                     failure 2148148795514418
                                                                                                                                 fi
                                                                                                                                 exec 3< <( timeout 1m redis-cli SUBSCRIBE invalid-init invalid-release stale-init valid-init valid-release )
-                                                                                                                                compare --message 6636697276572674 subscribe --channel 8221334634265348 invalid-init --payload 9652249256897222 1 false 3<&3
-                                                                                                                                compare --message 9786493435349777 subscribe --channel 6831792573554772 invalid-release --payload 9316976421659833 2 false 3<&3
-                                                                                                                                compare --message 6437695441451879 subscribe --channel 1715249111511543 stale-init --payload 2935593178593615 3 false 3<&3
-                                                                                                                                compare --message 2622487695526727 subscribe --channel 5991279582986675 valid-init --payload 9767887746875137 4 false 3<&3
-                                                                                                                                compare --message 8878565243153966 subscribe --channel 4957976869462859 valid-release --payload 7956118522212293 5 false 3<&3
+                                                                                                                                compare --message subscribe --channel invalid-init --payload 1 --timeout 1 false --uuid 3376489199378444 3<&3
+                                                                                                                                compare --message subscribe --channel invalid-release --payload 2 false --timeout 1 --uuid 2339378822363186 3<&3
+                                                                                                                                compare --message subscribe --channel stale-init --payload  3 false --timeout 1 --uuid 3319464677934952 3<&3
+                                                                                                                                compare --message subscribe --channel valid-init --payload 4 false --timeout 1 --uuid 6233777653511116 3<&3
+                                                                                                                                compare --message subscribe --channel valid-release --payload 5 false --timeout 1 --uuid 3668165924724399 3<&3
                                                                                                                                 block --timeout 1 --uuid 8549964153339418 3<&3
                                                                                                                                 pre-test --alpha "$ALPHA" --init "$INIT" --release "$RELEASE" 3<&3
                                                                                                                             '' ;
