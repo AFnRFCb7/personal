@@ -201,6 +201,38 @@
                                             {
                                                 checks =
                                                     {
+                                                        distractor =
+                                                            ignore :
+                                                                {
+                                                                    init =
+                                                                        { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
+                                                                            let
+                                                                                application =
+                                                                                    pkgs.writeShellApplication
+                                                                                        {
+                                                                                            name = "init" ;
+                                                                                            runtimeInputs = [ pkgs.coreutil ] ;
+                                                                                            text =
+                                                                                                ''
+                                                                                                    echo 4666267519285534
+                                                                                                '' ;
+                                                                                        } ;
+                                                                                in "${ application }/bin/init" ;
+                                                                    release =
+                                                                        { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
+                                                                            let
+                                                                                application =
+                                                                                    pkgs.writeShellApplication
+                                                                                        {
+                                                                                            name = "release" ;
+                                                                                            runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                            text =
+                                                                                                ''
+                                                                                                    echo 8133731165748648
+                                                                                                '' ;
+                                                                                        } ;
+                                                                                in "${ application }/bin/release" ;
+                                                                } ;
                                                         script =
                                                             ignore :
                                                                 {
@@ -464,6 +496,9 @@
                                                                                                                                                             echo block --timeout 1 --uuid 5984995243749875
                                                                                                                                                             RESOURCE_JSON="$( jq --null-input --compact-output --arg INIT "$INIT" --arg RELEASE "$RELEASE" '[ "checks" , "targets" , $INIT , $RELEASE ]' )"
                                                                                                                                                             printf -v RESOURCE_INDEX "%016d" "$ALPHA"
+                                                                                                                                                            DISTRACTOR=${ resources.checks.distractor { } }
+                                                                                                                                                            compare message valid-init wrong 3<&3
+                                                                                                                                                            block 3<&3
                                                                                                                                                             if [[ "$INIT" == "true" ]]
                                                                                                                                                             then
                                                                                                                                                                 if [[ "$RELEASE" == "true" ]]
