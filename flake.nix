@@ -219,7 +219,7 @@
                                                                                         } ;
                                                                                 in "${ application }/bin/init" ;
                                                                     release =
-                                                                        { failure ,pkgs , resources , seed , sequential , trace } :
+                                                                        { failure , pkgs , resources , seed , sequential , trace } :
                                                                             let
                                                                                 application =
                                                                                     pkgs.writeShellApplication
@@ -4421,7 +4421,7 @@
                                                             resources-directory = "/build/resources" ;
                                                         } ;
                                                 in
-                                                    factory.check { expected = "/nix/store/v3n2jkkv9sc5dq7ijd59nqyhkj8p0km7-setup/bin/setup" ; mkDerivation = pkgs.stdenv.mkDerivation ; } ;
+                                                    factory.check { expected = "/nix/store/hdbxq7pwwwpll8awi3vbgsk1ahlgn9hm-setup/bin/setup" ; mkDerivation = pkgs.stdenv.mkDerivation ; } ;
 #                                        resource-false-false =
 #                                            pkgs.nixosTest
 #                                                {
