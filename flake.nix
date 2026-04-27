@@ -4100,6 +4100,7 @@
                                                                                                                 if [[ ! -f "$STANDARD_INPUT_FILE" ]]
                                                                                                                 then
                                                                                                                     failure 9545742882553268 "$STANDARD_INPUT_FILE"
+                                                                                                                fi
                                                                                                                 shift 2
                                                                                                                 ;;
                                                                                                             *)
