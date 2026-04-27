@@ -4050,8 +4050,23 @@
                                                                                                                     ''
                                                                                                                         elif [[ "$2" == '${ builtins.toJSON path }' ]]
                                                                                                                         then
-                                                                                                                            #shellcheck disable=SC2068
-                                                                                                                            RESOURCE=${ value { setup = setup : ''${ setup } ${ builtins.concatStringsSep "" [ "$" "{" "ARGUMENTS[@]:-" "}" ] }'' ; } }
+                                                                                                                            if [[ -n "$STANDARD_INPUT" ]]
+                                                                                                                            then
+                                                                                                                                #shellcheck disable=SC2068
+                                                                                                                                RESOURCE=${ value { setup = setup : ''${ setup } ${ builtins.concatStringsSep "" [ "$" "{" "ARGUMENTS[@]:-" "}" ] } <<< "$STANDARD_INPUT"'' ; } }
+                                                                                                                            elif [[ -n "$STANDARD_INPUT_FILE" ]]
+                                                                                                                            then
+                                                                                                                                #shellcheck disable=SC2068
+                                                                                                                                RESOURCE=${ value { setup = setup : ''${ setup } ${ builtins.concatStringsSep "" [ "$" "{" "ARGUMENTS[@]:-" "}" ] } < "$STANDARD_INPUT_FILE"'' ; } }
+                                                                                                                            elif [[ -t 0 ]]
+                                                                                                                            then
+                                                                                                                                #shellcheck disable=SC2068
+                                                                                                                                RESOURCE=${ value { setup = setup : ''${ setup } ${ builtins.concatStringsSep "" [ "$" "{" "ARGUMENTS[@]:-" "}" ] }'' ; } }
+                                                                                                                            else
+                                                                                                                            then
+                                                                                                                                #shellcheck disable=SC2068
+                                                                                                                                RESOURCE=${ value { setup = setup : ''${ setup } ${ builtins.concatStringsSep "" [ "$" "{" "ARGUMENTS[@]:-" "}" ] } <&0'' ; } }
+                                                                                                                            fi
                                                                                                                     ''
                                                                                                                 ] ;
                                                                                                         list = path : list : builtins.concatLists list ;
