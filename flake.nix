@@ -505,7 +505,7 @@
                                                                                                                                                                     then
                                                                                                                                                                         failure 9444738884197263 EXPECTED "/home/${ config.personal.name }/resources/mounts/$DISTRACTOR_INDEX" OBSERVED "$DISTRACTOR"
                                                                                                                                                                     fi
-                                                                                                                                                                    jq --null-input --compact-output --arg INDEX "$DISTRACTOR_INDEX" '{ "index" : $INDEX }' | compare --message 5186979821182979 message --channel 3798763547664795 valid-init --payload 8426317482255739 false true 3&<3
+                                                                                                                                                                    jq --null-input --compact-output --arg INDEX "$DISTRACTOR_INDEX" '{ "index" : $INDEX }' | compare --message 5186979821182979 message --channel 3798763547664795 valid-init --payload 8426317482255739 false true 3<&3
                                                                                                                                                                     block --timeout 1 --uuid 6925921732651899 3<&3
                                                                                                                                                                     FRESH=${ resources.checks.targets.true.true { failure = 1528926113851339 ; } }
                                                                                                                                                                     printf -v DISTRACTOR_INDEX "%016d" $(( ALPHA + 1 ))
@@ -513,6 +513,8 @@
                                                                                                                                                                     then
                                                                                                                                                                         failure 3883449685255688 EXPECTED "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" OBSERVED "$FRESH"
                                                                                                                                                                     fi
+
+
                                                                                                                                                                     jq --null-input --compact-output --arg INDEX "$FRESH_INDEX" '{ "index" : $INDEX }' | compare --message 4589384769813745 message --channel 4918839535918934 valid-init --payload 8566752125326932 false true 3<&3
                                                                                                                                                                     block --timeout 1 --uuid 9742525318757248 3<&3
                                                                                                                                                                     STALE=${ resources.checks.targets.true.true { failure = 3731249165757488 ; } }
