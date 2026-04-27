@@ -4050,6 +4050,7 @@
                                                                                                                     ''
                                                                                                                         elif [[ "$2" == '${ builtins.toJSON path }' ]]
                                                                                                                         then
+                                                                                                                            #shellcheck disable=SC2068
                                                                                                                             RESOURCE=${ value { setup = setup : ''${ setup } ${ builtins.concatStringsSep "" [ "$" "{" "ARGUMENTS[@]:-" "}" ] }'' ; } }
                                                                                                                     ''
                                                                                                                 ] ;
@@ -4061,6 +4062,8 @@
                                                                                                 ''
                                                                                                     export DERIVATION=${ derivation }
                                                                                                     ARGUMENTS=()
+                                                                                                    STANDARD_INPUT=
+                                                                                                    STANDARD_INPUT_FILE=
                                                                                                     while [[ "$#" -gt 0 ]]
                                                                                                     do
                                                                                                         case "$1" in
@@ -4072,6 +4075,14 @@
                                                                                                                 # shellcheck disable=SC2140,SC2016
                                                                                                                 ${ builtins.concatStringsSep "\n" conditions }
                                                                                                                 echo "$RESOURCE"
+                                                                                                                shift 2
+                                                                                                                ;;
+                                                                                                            --standard-input)
+                                                                                                                STANDARD_INPUT="$2"
+                                                                                                                shift 2
+                                                                                                                ;;
+                                                                                                            --standard-input-file)
+                                                                                                                STANDARD_INPUT_FILE="$2"
                                                                                                                 shift 2
                                                                                                                 ;;
                                                                                                             *)
