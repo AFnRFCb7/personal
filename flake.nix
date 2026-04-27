@@ -4097,6 +4097,9 @@
                                                                                                                 ;;
                                                                                                             --standard-input-file)
                                                                                                                 STANDARD_INPUT_FILE="$2"
+                                                                                                                if [[ ! -f "$STANDARD_INPUT_FILE" ]]
+                                                                                                                then
+                                                                                                                    failure 9545742882553268 "$STANDARD_INPUT_FILE"
                                                                                                                 shift 2
                                                                                                                 ;;
                                                                                                             *)
