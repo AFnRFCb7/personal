@@ -536,7 +536,7 @@
                                                                                                                                                                         failure 9414945493435833
                                                                                                                                                                     fi
                                                                                                                                                                     FRESH=${ resources.checks.targets.true.true { failure = 1528926113851339 ; } }
-                                                                                                                                                                    printf -v DISTRACTOR_INDEX "%016d" $(( ALPHA + 1 ))
+                                                                                                                                                                    printf -v FRESH_INDEX "%016d" $(( ALPHA + 1 ))
                                                                                                                                                                     if [[ "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" != "$FRESH" ]]
                                                                                                                                                                     then
                                                                                                                                                                         failure 3883449685255688 EXPECTED "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" OBSERVED "$FRESH"
@@ -4652,7 +4652,7 @@
                                                                                 text =
                                                                                     ''
                                                                                         SCRIPT="$( resource --resource '["checks","script"]' )"
-                                                                                        timeout 1m "$SCRIPT/test" --alpha 9 --init true --release true
+                                                                                        timeout 1m "$SCRIPT/test" --alpha 8 --init true --release true
                                                                                         echo 1863491612796318 300 >&2
                                                                                     '' ;
                                                                             } ;
