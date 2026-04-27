@@ -357,6 +357,7 @@
                                                                                                                         fi
                                                                                                                         if [[ "$PAYLOAD_IS_JSON" == "true" ]]
                                                                                                                         then
+                                                                                                                            EXPECTED_PAYLOAD="$( cat )" || failure 1393872535428486
                                                                                                                             if [[ "$EXPECTED_PAYLOAD" != "$OBSERVED_PAYLOAD" ]]
                                                                                                                             then
                                                                                                                                 EXPECTED_VERBOSE_PAYLOAD="$( yq --input-format=json eval --prettyPrint "." <<< "$EXPECTED_PAYLOAD" )" || failure 9695639117138292
@@ -496,8 +497,8 @@
                                                                                                                                                             block --timeout 1 --uuid 5984995243749875 3<&3
                                                                                                                                                             printf -v DISTRACTOR_INDEX "%016d" "$ALPHA"
                                                                                                                                                             DISTRACTOR=${ resources.checks.distractor { } }
-                                                                                                                                                            compare message valid-init wrong 3<&3
-                                                                                                                                                            block 3<&3
+                                                                                                                                                            jq --null-input --compact-output --arg INDEX "$DISTRACTOR_INDEX" '{ "index" : $INDEX }' | compare message valid-init "WRONG" 3<&3
+                                                                                                                                                            block --timeout 1 --uuid 4761383777294366 3<&3
                                                                                                                                                             RESOURCE_JSON="$( jq --null-input --compact-output --arg INIT "$INIT" --arg RELEASE "$RELEASE" '[ "checks" , "targets" , $INIT , $RELEASE ]' )"
                                                                                                                                                             printf -v RESOURCE_INDEX "%016d" "$ALPHA"
                                                                                                                                                             if [[ "$INIT" == "true" ]]
