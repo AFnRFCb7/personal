@@ -497,7 +497,7 @@
                                                                                                                                                             block --timeout 1 --uuid 5984995243749875 3<&3
                                                                                                                                                             DISTRACTOR=${ resources.checks.distractor { } }
                                                                                                                                                             printf -v DISTRACTOR_INDEX "%016d" "$ALPHA"
-                                                                                                                                                            if [[ "/home/${ config.personal.name }/resources/mounts/$DISTRACTOR_INDEX" !="$DISTRACTOR" ]]
+                                                                                                                                                            if [[ "/home/${ config.personal.name }/resources/mounts/$DISTRACTOR_INDEX" != "$DISTRACTOR" ]]
                                                                                                                                                             then
                                                                                                                                                                 failure 6612824255781955 EXPECTED "/home/${ config.personal.name }/resources/mounts/$DISTRACTOR_INDEX" OBSERVED "$DISTRACTOR"
                                                                                                                                                             fi
