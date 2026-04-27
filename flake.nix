@@ -4063,7 +4063,6 @@
                                                                                                                                 #shellcheck disable=SC2068
                                                                                                                                 RESOURCE=${ value { setup = setup : ''${ setup } ${ builtins.concatStringsSep "" [ "$" "{" "ARGUMENTS[@]:-" "}" ] }'' ; } }
                                                                                                                             else
-                                                                                                                            then
                                                                                                                                 #shellcheck disable=SC2068
                                                                                                                                 RESOURCE=${ value { setup = setup : ''${ setup } ${ builtins.concatStringsSep "" [ "$" "{" "ARGUMENTS[@]:-" "}" ] } <&0'' ; } }
                                                                                                                             fi
