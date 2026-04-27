@@ -201,38 +201,6 @@
                                             {
                                                 checks =
                                                     {
-                                                        distractor =
-                                                            ignore :
-                                                                {
-                                                                    init =
-                                                                        { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
-                                                                            let
-                                                                                application =
-                                                                                    pkgs.writeShellApplication
-                                                                                        {
-                                                                                            name = "init" ;
-                                                                                            runtimeInputs = [ pkgs.coreutils ] ;
-                                                                                            text =
-                                                                                                ''
-                                                                                                    echo 4666267519285534
-                                                                                                '' ;
-                                                                                        } ;
-                                                                                in "${ application }/bin/init" ;
-                                                                    release =
-                                                                        { failure , pkgs , resources , seed , sequential , trace } :
-                                                                            let
-                                                                                application =
-                                                                                    pkgs.writeShellApplication
-                                                                                        {
-                                                                                            name = "release" ;
-                                                                                            runtimeInputs = [ pkgs.coreutils ] ;
-                                                                                            text =
-                                                                                                ''
-                                                                                                    echo 8133731165748648
-                                                                                                '' ;
-                                                                                        } ;
-                                                                                in "${ application }/bin/release" ;
-                                                                } ;
                                                         script =
                                                             ignore :
                                                                 {
@@ -505,7 +473,20 @@
                                                                                                                                                                     then
                                                                                                                                                                         failure 9444738884197263 EXPECTED "/home/${ config.personal.name }/resources/mounts/$DISTRACTOR_INDEX" OBSERVED "$DISTRACTOR"
                                                                                                                                                                     fi
-                                                                                                                                                                    jq --null-input --compact-output --arg INDEX "$DISTRACTOR_INDEX" '{ "index" : $INDEX }' | compare --message 5186979821182979 message --channel 3798763547664795 valid-init --payload 8426317482255739 false true 3<&3
+                                                                                                                                                                    jq \
+                                                                                                                                                                        --null-input \
+                                                                                                                                                                        --compact-output \
+                                                                                                                                                                        --arg ARGUMENT 3564731485791737 \
+                                                                                                                                                                        --arg INDEX "$DISTRACTOR_INDEX" \
+                                                                                                                                                                        --arg TARGET 2862437261978116 \
+                                                                                                                                                                            '{
+                                                                                                                                                                               "arguments" : [ $ARGUMENT ] ,
+                                                                                                                                                                               "has-standard-input" : false ,
+                                                                                                                                                                               "index" : $INDEX ,
+                                                                                                                                                                               "seed" : [ "checks" , "targets" , "true" , "true" ] ,
+                                                                                                                                                                               "status" : 0 ,
+                                                                                                                                                                               "targets" : [ $TARGET ]
+                                                                                                                                                                            }' | compare --message 5186979821182979 message --channel 3798763547664795 valid-init --payload 8426317482255739 false true 3<&3
                                                                                                                                                                     block --timeout 1 --uuid 6925921732651899 3<&3
                                                                                                                                                                     if [[ ! -d "$DISTRACTOR" ]]
                                                                                                                                                                     then
