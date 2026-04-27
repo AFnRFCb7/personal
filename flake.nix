@@ -219,7 +219,7 @@
                                                                                         } ;
                                                                                 in "${ application }/bin/init" ;
                                                                     release =
-                                                                        { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
+                                                                        { failure ,pkgs , resources , seed , sequential , trace } :
                                                                             let
                                                                                 application =
                                                                                     pkgs.writeShellApplication
@@ -493,12 +493,13 @@
                                                                                                                                                             then
                                                                                                                                                                 failure 4957596197169642
                                                                                                                                                             fi
-                                                                                                                                                            echo block --timeout 1 --uuid 5984995243749875
-                                                                                                                                                            RESOURCE_JSON="$( jq --null-input --compact-output --arg INIT "$INIT" --arg RELEASE "$RELEASE" '[ "checks" , "targets" , $INIT , $RELEASE ]' )"
-                                                                                                                                                            printf -v RESOURCE_INDEX "%016d" "$ALPHA"
+                                                                                                                                                            block --timeout 1 --uuid 5984995243749875 3<&3
+                                                                                                                                                            printf -v DISTRACTOR_INDEX "%016d" "$ALPHA"
                                                                                                                                                             DISTRACTOR=${ resources.checks.distractor { } }
                                                                                                                                                             compare message valid-init wrong 3<&3
                                                                                                                                                             block 3<&3
+                                                                                                                                                            RESOURCE_JSON="$( jq --null-input --compact-output --arg INIT "$INIT" --arg RELEASE "$RELEASE" '[ "checks" , "targets" , $INIT , $RELEASE ]' )"
+                                                                                                                                                            printf -v RESOURCE_INDEX "%016d" "$ALPHA"
                                                                                                                                                             if [[ "$INIT" == "true" ]]
                                                                                                                                                             then
                                                                                                                                                                 if [[ "$RELEASE" == "true" ]]
