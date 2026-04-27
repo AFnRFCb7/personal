@@ -211,7 +211,7 @@
                                                                                     pkgs.writeShellApplication
                                                                                         {
                                                                                             name = "init" ;
-                                                                                            runtimeInputs = [ pkgs.coreutil ] ;
+                                                                                            runtimeInputs = [ pkgs.coreutils ] ;
                                                                                             text =
                                                                                                 ''
                                                                                                     echo 4666267519285534
