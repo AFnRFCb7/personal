@@ -225,6 +225,7 @@
                                                                                                                         do
                                                                                                                             case "$1" in
                                                                                                                                 --timeout)
+                                                                                                                                    TIMEOUT="$2"
                                                                                                                                     if [[ ! "$TIMEOUT" =~ ^-?[0-9]+$ ]]
                                                                                                                                     then
                                                                                                                                         failure ff4b2472e9efae44 "$TIMEOUT"
