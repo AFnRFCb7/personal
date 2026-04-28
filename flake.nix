@@ -287,7 +287,7 @@
                                                                                                                                         failure 1a9dadf7736235ea "$TIMEOUT"
                                                                                                                                     fi
                                                                                                                                     ;;
-                                                                                                                                --uuid
+                                                                                                                                --uuid)
                                                                                                                                     UUID="$2"
                                                                                                                                     shift 2
                                                                                                                                     ;;
