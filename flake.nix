@@ -608,9 +608,8 @@
                                                                                                                                                                         --uuid 6554776672562944
                                                                                                                                                                     jq --null-input --compact-output --arg INDEX "$FRESH_INDEX" '{ "index" : $INDEX }' | compare --message message --channel valid-init --payload false true --timeout 1 --uuid 1947194523387773 3<&3
                                                                                                                                                                     block --timeout 1 --uuid 9742525318757248 3<&3
+                                                                                                                                                                    echo We created a fresh resource
                                                                                                                                                                 fi
-                                                                                                                                                                block --timeout 1 --uuid 7931775215552911
-                                                                                                                                                                echo We created a fresh resource
                                                                                                                                                             else
                                                                                                                                                                 true
                                                                                                                                                             fi
@@ -831,7 +830,7 @@
                                                                                                             text =
                                                                                                                 ''
                                                                                                                     touch /mount/2862437261978116
-                                                                                                                    echo 5175697994459272
+                                                                                                                    echo -en 5175697994459272
                                                                                                                 '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/init" ;
