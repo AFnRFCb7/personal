@@ -550,7 +550,7 @@
                                                                                                                                                                         --compact-output \
                                                                                                                                                                         --arg ARGUMENT 3564731485791737 \
                                                                                                                                                                         --arg INDEX "$DISTRACTOR_INDEX" \
-                                                                                                                                                                        --rawfile ${ scripts.true.true.init } \
+                                                                                                                                                                        --rawfile SCRIPT ${ scripts.true.true.init } \
                                                                                                                                                                         --arg TARGET 2862437261978116 \
                                                                                                                                                                             '{
                                                                                                                                                                                "arguments" : [ $ARGUMENT ] ,
@@ -559,7 +559,10 @@
                                                                                                                                                                                "seed" : [ "checks" , "targets" , "true" , "true" ] ,
                                                                                                                                                                                "status" : 0 ,
                                                                                                                                                                                "targets" : [ $TARGET ] ,
-                                                                                                                                                                               "script" : "$SCRIPT"
+                                                                                                                                                                               "script" : $SCRIPT ,
+                                                                                                                                                                               "standard-error" : "" ,
+                                                                                                                                                                               "standard-input" : "" ,
+                                                                                                                                                                               "standard-output" : ""
                                                                                                                                                                             }' | compare --message message --channel valid-init --payload false true --timeout 1 --uuid 7689926124362862 3<&3
                                                                                                                                                                     block --timeout 1 --uuid 6925921732651899 3<&3
                                                                                                                                                                     files \
@@ -576,6 +579,7 @@
                                                                                                                                                                         --null-input \
                                                                                                                                                                         --compact-output \
                                                                                                                                                                         --arg INDEX "$FRESH_INDEX" \
+                                                                                                                                                                        --arg SCRIPT ${ scripts.true.true.init } \
                                                                                                                                                                         --arg TARGET 2862437261978116 \
                                                                                                                                                                             '{
                                                                                                                                                                                "arguments" : [ ] ,
@@ -583,7 +587,11 @@
                                                                                                                                                                                "index" : $INDEX ,
                                                                                                                                                                                "seed" : [ "checks" , "targets" , "true" , "true" ] ,
                                                                                                                                                                                "status" : 0 ,
-                                                                                                                                                                               "targets" : [ $TARGET ]
+                                                                                                                                                                               "targets" : [ $TARGET ] ,
+                                                                                                                                                                               "script" : $SCRIPT ,
+                                                                                                                                                                               "standard-error" : "" ,
+                                                                                                                                                                               "standard-input" : "" ,
+                                                                                                                                                                               "standard-output" : ""
                                                                                                                                                                             }' | compare --message message --channel valid-init --payload false true --timeout 1 --uuid 9696444126143543 3<&3
                                                                                                                                                                     block --timeout 1 --uuid 5523352333297834 3<&3
                                                                                                                                                                     files \
