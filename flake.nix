@@ -625,8 +625,9 @@
                                                                                                                                             ;;
                                                                                                                                     esac
                                                                                                                                 done
-                                                                                                                                if true ; then exit 0 ; fi
+                                                                                                                                # if true ; then exit 0 ; fi
                                                                                                                                 block --timeout 1 --uuid 4899964636364281 3<&3
+                                                                                                                                if true ; then exit 0 ; fi
                                                                                                                                 printf -v ALPHA_INDEX "%016d" "$ALPHA"
                                                                                                                                 files \
                                                                                                                                     --does-not-exist "/home/${ config.personal.name }/resources/mounts/$ALPHA_INDEX" \
