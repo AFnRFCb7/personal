@@ -564,7 +564,7 @@
                                                                                                                                                                                "script" : $SCRIPT ,
                                                                                                                                                                                "standard-error" : "" ,
                                                                                                                                                                                "standard-input" : "" ,
-                                                                                                                                                                               "standard-output" : ""
+                                                                                                                                                                               "standard-output" : $STANDARD_OUTPUT
                                                                                                                                                                             }' | compare --message message --channel valid-init --payload false true --timeout 1 --uuid 7689926124362862 3<&3
                                                                                                                                                                     block --timeout 1 --uuid 6925921732651899 3<&3
                                                                                                                                                                     files \
