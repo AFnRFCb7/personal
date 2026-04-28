@@ -624,6 +624,22 @@
                                                                                                                                             ;;
                                                                                                                                     esac
                                                                                                                                 done
+                                                                                                                                if [[ -z "$ALPHA" ]]
+                                                                                                                                then
+                                                                                                                                    failure 2987265819228115
+                                                                                                                                fi
+                                                                                                                                if [[ ! "$ALPHA" =~ ^-?[0-9]+$ ]]
+                                                                                                                                then
+                                                                                                                                    failure 4368143965676452
+                                                                                                                                fi
+                                                                                                                                if [[ -z "$INIT" ]]
+                                                                                                                                then
+                                                                                                                                    failure 6984279614593412
+                                                                                                                                fi
+                                                                                                                                if [[ -z "$RELEASE" ]]
+                                                                                                                                then
+                                                                                                                                    failure 9276983686635566
+                                                                                                                                fi
                                                                                                                                 block --timeout 1 --uuid 4899964636364281 3<&3
                                                                                                                                 printf -v ALPHA_INDEX "%016d" "$ALPHA"
                                                                                                                                 ## if true ; then exit 0 ; fi
