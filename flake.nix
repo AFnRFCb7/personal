@@ -548,7 +548,6 @@
                                                                                                                                                                         --compact-output \
                                                                                                                                                                         --arg ARGUMENT 3564731485791737 \
                                                                                                                                                                         --arg INDEX "$DISTRACTOR_INDEX" \
-                                                                                                                                                                        --arg SCRIPT '${ scripts.true.true.init }` \
                                                                                                                                                                         --arg TARGET 2862437261978116 \
                                                                                                                                                                             '{
                                                                                                                                                                                "arguments" : [ $ARGUMENT ] ,
@@ -557,7 +556,7 @@
                                                                                                                                                                                "seed" : [ "checks" , "targets" , "true" , "true" ] ,
                                                                                                                                                                                "status" : 0 ,
                                                                                                                                                                                "targets" : [ $TARGET ] ,
-                                                                                                                                                                               "script" : $SCRIPT
+                                                                                                                                                                               "script" : "$SCRIPT"
                                                                                                                                                                             }' | compare --message message --channel valid-init --payload false true --timeout 1 --uuid 7689926124362862 3<&3
                                                                                                                                                                     block --timeout 1 --uuid 6925921732651899 3<&3
                                                                                                                                                                     files \
