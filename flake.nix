@@ -346,6 +346,60 @@
                                                                                                                                 failure 2376349973447483 "$UUID" EXPECTED_PAYLOAD "$EXPECTED_PAYLOAD" OBSERVED_PAYLOAD "$OBSERVED_PAYLOAD"
                                                                                                                             fi
                                                                                                                         fi
+
+                                                                                                                    '' ;
+                                                                                                            } ;
+                                                                                                    files =
+                                                                                                        pkgs.writeShellApplication
+                                                                                                            {
+                                                                                                                name = "files" ;
+                                                                                                                runtimeInputs = [ failure pkgs.coreutils ] ;
+                                                                                                                text =
+                                                                                                                    ''
+                                                                                                                        while [[ "$#" -gt 0 ]]
+                                                                                                                        do
+                                                                                                                            case "$1" in
+                                                                                                                                --executable)
+                                                                                                                                    if [[ ! -x "$2" ]]
+                                                                                                                                    then
+                                                                                                                                        failure 1578895953757495 "$*"
+                                                                                                                                    fi
+                                                                                                                                    shift 2
+                                                                                                                                --file)
+                                                                                                                                    if [[ ! -f "$2" ]]
+                                                                                                                                    then
+                                                                                                                                        failure 8859813773476672
+                                                                                                                                    fi
+                                                                                                                                    shift 2
+                                                                                                                                    ;;
+                                                                                                                                --directory)
+                                                                                                                                    if [[ ! -d "$2" ]]
+                                                                                                                                    then
+                                                                                                                                        failure 6552799518838238 "$*"
+                                                                                                                                    fi
+                                                                                                                                    shift 2
+                                                                                                                                        ;;
+                                                                                                                                --equals)
+                                                                                                                                    if [[ "$2" != "$3" ]]
+                                                                                                                                    then
+                                                                                                                                        failure 4889758824445288 "$*"
+                                                                                                                                    fi
+                                                                                                                                    shift 3
+                                                                                                                                    ;;
+                                                                                                                                --does-not-exist)
+                                                                                                                                    if [[ -e "$2" ]]
+                                                                                                                                    then
+                                                                                                                                        failure  3686358689564748 "$*"
+                                                                                                                                    fi
+                                                                                                                                    shift 2
+                                                                                                                                    ;;
+                                                                                                                                --uuid)
+                                                                                                                                    shift 2
+                                                                                                                                *)
+                                                                                                                                    failure 6712481499337853 "$*"
+                                                                                                                                    ;;
+                                                                                                                            esac
+                                                                                                                        done
                                                                                                                     '' ;
                                                                                                             } ;
                                                                                                     post-test =
@@ -358,13 +412,15 @@
                                                                                                                             [
                                                                                                                                 block
                                                                                                                                 compare
+                                                                                                                                failure
+                                                                                                                                files
                                                                                                                                 pkgs.coreutils
                                                                                                                                 pkgs.redis
                                                                                                                                 (
                                                                                                                                     pkgs.writeShellApplication
                                                                                                                                         {
                                                                                                                                             name = "pre-test" ;
-                                                                                                                                            runtimeInputs = [ block compare failure pkgs.coreutils pkgs.jq pkgs.redis ] ;
+                                                                                                                                            runtimeInputs = [ block compare failure files pkgs.coreutils pkgs.jq pkgs.redis ] ;
                                                                                                                                             text =
                                                                                                                                                 let
                                                                                                                                                     scripts =
@@ -471,16 +527,19 @@
                                                                                                                                                                 failure 4957596197169642
                                                                                                                                                             fi
                                                                                                                                                             block --timeout 1 --uuid 5984995243749875 3<&3
+                                                                                                                                                            printf -v ALPHA_INDEX "%016d" "$ALPHA"
+                                                                                                                                                            files \
+                                                                                                                                                                --does-not-exist "/home/${ config.personal.name }/resources/mounts/$ALPHA_INDEX" \
+                                                                                                                                                                --does-not-exist "/home/${ config.personal.name }/resources/release/$ALPHA_INDEX" \
+                                                                                                                                                                --does-not-exist "/home/${ config.personal.name }/resources/invalid-init/$ALPHA_INDEX" \
+                                                                                                                                                                --does-not-exist "/home/${ config.personal.name }/resources/invalid-release/$ALPHA_INDEX" \
+                                                                                                                                                                --uuid 7299736113522788
                                                                                                                                                             if [[ "$INIT" == "true" ]]
                                                                                                                                                             then
                                                                                                                                                                 if [[ "$RELEASE" == "true" ]]
                                                                                                                                                                 then
                                                                                                                                                                     DISTRACTOR=${ resources.checks.targets.true.true { failure = 8829996994479772 ; setup = setup : ''${ setup } 3564731485791737'' ; } }
                                                                                                                                                                     printf -v DISTRACTOR_INDEX "%016d" "$ALPHA"
-                                                                                                                                                                    if [[ "/home/${ config.personal.name }/resources/mounts/$DISTRACTOR_INDEX" != "$DISTRACTOR" ]]
-                                                                                                                                                                    then
-                                                                                                                                                                        failure 9444738884197263 EXPECTED "/home/${ config.personal.name }/resources/mounts/$DISTRACTOR_INDEX" OBSERVED "$DISTRACTOR"
-                                                                                                                                                                    fi
                                                                                                                                                                     jq \
                                                                                                                                                                         --null-input \
                                                                                                                                                                         --compact-output \
@@ -496,67 +555,40 @@
                                                                                                                                                                                "targets" : [ $TARGET ]
                                                                                                                                                                             }' | compare --message message --channel valid-init --payload false true --timeout 1 --uuid 9237324739354352 3<&3
                                                                                                                                                                     block --timeout 1 --uuid 6925921732651899 3<&3
-                                                                                                                                                                    if [[ ! -d "$DISTRACTOR" ]]
-                                                                                                                                                                    then
-                                                                                                                                                                        failure 2832536726575513
-                                                                                                                                                                    fi
-                                                                                                                                                                    if [[ ! -f "$DISTRACTOR/" ]]
-                                                                                                                                                                    then
-                                                                                                                                                                        failure 7758266671234918
-                                                                                                                                                                    fi
-                                                                                                                                                                    if [[ ! -d "$DISTRACTOR" ]]
-                                                                                                                                                                    then
-                                                                                                                                                                        failure 5453259464551549
-                                                                                                                                                                    fi
-                                                                                                                                                                    if [[ ! -f "$DISTRACTOR/" ]]
-                                                                                                                                                                    then
-                                                                                                                                                                        failure 4384853381321331
-                                                                                                                                                                    fi
-                                                                                                                                                                    if [[ ! -f "/home/${ config.personal.name }/resources/release/$DISTRACTOR_INDEX" ]]
-                                                                                                                                                                    then
-                                                                                                                                                                        failure 1511118195431968
-                                                                                                                                                                    fi
-                                                                                                                                                                    if [[ -e "/home/${ config.personal.name }/resources/invalid-init/$DISTRACTOR_INDEX" ]]
-                                                                                                                                                                    then
-                                                                                                                                                                        failure 3132968762464388
-                                                                                                                                                                    fi
-                                                                                                                                                                    if [[ -e "/home/${ config.personal.name }/resources/invalid-release/$DISTRACTOR_INDEX" ]]
-                                                                                                                                                                    then
-                                                                                                                                                                        failure 9414945493435833
-                                                                                                                                                                    fi
+                                                                                                                                                                    files \
+                                                                                                                                                                        --equals "/home/${ config.personal.name }/resources/mounts/$DISTRACTOR_INDEX" "$DISTRACTOR" \
+                                                                                                                                                                        --directory "$DISTRACTOR" \
+                                                                                                                                                                        --file "$DISTRACTOR/" \
+                                                                                                                                                                        --executable "/home/${ config.personal.name }/resources/release/$DISTRACTOR_INDEX" \
+                                                                                                                                                                        --does-not-exist "/home/${ config.personal.name }/resources/invalid-init/$DISTRACTOR_INDEX" \
+                                                                                                                                                                        --does-not-exist "/home/${ config.personal.name }/resources/invalid-release/$DISTRACTOR_INDEX" \
+                                                                                                                                                                        --uuid 6764498451529627
                                                                                                                                                                     FRESH=${ resources.checks.targets.true.true { failure = 1528926113851339 ; } }
                                                                                                                                                                     printf -v FRESH_INDEX "%016d" $(( ALPHA + 1 ))
-                                                                                                                                                                    if [[ "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" != "$FRESH" ]]
-                                                                                                                                                                    then
-                                                                                                                                                                        failure 3883449685255688 EXPECTED "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" OBSERVED "$FRESH"
-                                                                                                                                                                    fi
-
-
+                                                                                                                                                                    jq \
+                                                                                                                                                                        --null-input \
+                                                                                                                                                                        --compact-output \
+                                                                                                                                                                        --arg INDEX "$FRESH_INDEX" \
+                                                                                                                                                                        --arg TARGET 2862437261978116 \
+                                                                                                                                                                            '{
+                                                                                                                                                                               "arguments" : [ ] ,
+                                                                                                                                                                               "has-standard-input" : false ,
+                                                                                                                                                                               "index" : $INDEX ,
+                                                                                                                                                                               "seed" : [ "checks" , "targets" , "true" , "true" ] ,
+                                                                                                                                                                               "status" : 0 ,
+                                                                                                                                                                               "targets" : [ $TARGET ]
+                                                                                                                                                                            }' | compare --message message --channel valid-init --payload false true --timeout 1 --uuid 9237324739354352 3<&3
+                                                                                                                                                                    block --timeout 1 --uuid 5523352333297834 3<&3
+                                                                                                                                                                    files \
+                                                                                                                                                                        --equals "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" "$FRESH" \
+                                                                                                                                                                        --directory "$FRESH" \
+                                                                                                                                                                        --file "$FRESH/" \
+                                                                                                                                                                        --executable "/home/${ config.personal.name }/resources/release/$FRESH_INDEX" \
+                                                                                                                                                                        --does-not-exist "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX" \
+                                                                                                                                                                        --does-not-exist "/home/${ config.personal.name }/resources/invalid-release/$FRESH_INDEX" \
+                                                                                                                                                                        --uuid 6554776672562944
                                                                                                                                                                     jq --null-input --compact-output --arg INDEX "$FRESH_INDEX" '{ "index" : $INDEX }' | compare --message message --channel valid-init --payload false true --timeout 1 --uuid 1947194523387773 3<&3
                                                                                                                                                                     block --timeout 1 --uuid 9742525318757248 3<&3
-                                                                                                                                                                    STALE=${ resources.checks.targets.true.true { failure = 3731249165757488 ; } }
-                                                                                                                                                                    if [[ "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" != "$STALE" ]]
-                                                                                                                                                                    then
-                                                                                                                                                                        failure 6137457253542177 EXPECTED "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" OBSERVED "$STALE"
-                                                                                                                                                                    fi
-                                                                                                                                                                    jq --null-input --compact-output --arg INDEX "$FRESH_INDEX" '{ "index" : $INDEX }' | compare --message message --channel valid-stale --payload false true --timeout 1 --uuid 8855979245756384 3<&3
-                                                                                                                                                                    block --timeout 1 --uuid 9742525318757248 3<&3
-                                                                                                                                                                fi
-                                                                                                                                                                if [[ ! -d "/home/${ config.personal.name }/resources/mounts/$RESOURCE_INDEX" ]]
-                                                                                                                                                                then
-                                                                                                                                                                    failure 3636983934497155 RESOURCE "$RESOURCE" RESOURCE_INDEX "$RESOURCE_INDEX" ALPHA "$ALPHA"
-                                                                                                                                                                fi
-                                                                                                                                                                if [[ ! -f "/home/${ config.personal.name }/resources/release/$RESOURCE_INDEX" ]]
-                                                                                                                                                                then
-                                                                                                                                                                    failure 4352844455814463
-                                                                                                                                                                fi
-                                                                                                                                                                if [[ -e "/home/${ config.personal.name }/resources/invalid-init/$RESOURCE_INDEX" ]]
-                                                                                                                                                                then
-                                                                                                                                                                    failure 4816533867684688
-                                                                                                                                                                fi
-                                                                                                                                                                if [[ -e "/home/${ config.personal.name }/resources/invalid-release/$RESOURCE_INDEX" ]]
-                                                                                                                                                                then
-                                                                                                                                                                    failure 7382429993944764
                                                                                                                                                                 fi
                                                                                                                                                                 block --timeout 1 --uuid 7931775215552911
                                                                                                                                                                 echo We created a fresh resource
@@ -592,23 +624,14 @@
                                                                                                                                             ;;
                                                                                                                                     esac
                                                                                                                                 done
-                                                                                                                                printf -v RESOURCE_INDEX "%016d" "$ALPHA"
-                                                                                                                                if [[ -e "/home/${ config.personal.name }/resources/mounts/$RESOURCE_INDEX" ]]
-                                                                                                                                then
-                                                                                                                                    failure 2798527332356525
-                                                                                                                                fi
-                                                                                                                                if [[ -e "/home/${ config.personal.name }/resources/release/$RESOURCE_INDEX" ]]
-                                                                                                                                then
-                                                                                                                                    failure 4143117735632852
-                                                                                                                                fi
-                                                                                                                                if [[ -e "/home/${ config.personal.name }/resources/invalid-init/$RESOURCE_INDEX" ]]
-                                                                                                                                then
-                                                                                                                                    failure 7245153876846418
-                                                                                                                                fi
-                                                                                                                                if [[ -e "/home/${ config.personal.name }/resources/invalid-release/$RESOURCE_INDEX" ]]
-                                                                                                                                then
-                                                                                                                                    failure 2148148795514418
-                                                                                                                                fi
+                                                                                                                                block --timeout 1 --uuid 4899964636364281 3<&3
+                                                                                                                                printf -v ALPHA_INDEX "%016d" "$ALPHA"
+                                                                                                                                files \
+                                                                                                                                    --does-not-exist "/home/${ config.personal.name }/resources/mounts/$ALPHA_INDEX" \
+                                                                                                                                    --does-not-exist "/home/${ config.personal.name }/resources/release/$ALPHA_INDEX" \
+                                                                                                                                    --does-not-exist "/home/${ config.personal.name }/resources/invalid-init/$ALPHA_INDEX" \
+                                                                                                                                    --does-not-exist "/home/${ config.personal.name }/resources/invalid-release/$ALPHA_INDEX" \
+                                                                                                                                    --uuid 1289673385791639
                                                                                                                                 exec 3< <( timeout 1m redis-cli SUBSCRIBE invalid-init invalid-release stale-init valid-init valid-release )
                                                                                                                                 compare --message subscribe --channel invalid-init --payload 1 --timeout 1 false --uuid 3376489199378444 3<&3
                                                                                                                                 compare --message subscribe --channel invalid-release --payload 2 false --timeout 1 --uuid 2339378822363186 3<&3
@@ -616,6 +639,12 @@
                                                                                                                                 compare --message subscribe --channel valid-init --payload 4 false --timeout 1 --uuid 6233777653511116 3<&3
                                                                                                                                 compare --message subscribe --channel valid-release --payload 5 false --timeout 1 --uuid 3668165924724399 3<&3
                                                                                                                                 block --timeout 1 --uuid 8549964153339418 3<&3
+                                                                                                                                files \
+                                                                                                                                    --does-not-exist "/home/${ config.personal.name }/resources/mounts/$ALPHA_INDEX" \
+                                                                                                                                    --does-not-exist "/home/${ config.personal.name }/resources/release/$ALPHA_INDEX" \
+                                                                                                                                    --does-not-exist "/home/${ config.personal.name }/resources/invalid-init/$ALPHA_INDEX" \
+                                                                                                                                    --does-not-exist "/home/${ config.personal.name }/resources/invalid-release/$ALPHA_INDEX" \
+                                                                                                                                    --uuid 1289673385791639
                                                                                                                                 pre-test --alpha "$ALPHA" --init "$INIT" --release "$RELEASE" 3<&3
                                                                                                                             '' ;
                                                                                                                     } ;
