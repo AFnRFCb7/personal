@@ -545,12 +545,14 @@
                                                                                                                                                                 then
                                                                                                                                                                     DISTRACTOR=${ resources.checks.targets.true.true { failure = 8829996994479772 ; setup = setup : ''${ setup } 3564731485791737'' ; } }
                                                                                                                                                                     printf -v DISTRACTOR_INDEX "%016d" "$ALPHA"
+                                                                                                                                                                    STANDARD_OUTPUT=5175697994459272
                                                                                                                                                                     jq \
                                                                                                                                                                         --null-input \
                                                                                                                                                                         --compact-output \
                                                                                                                                                                         --arg ARGUMENT 3564731485791737 \
                                                                                                                                                                         --arg INDEX "$DISTRACTOR_INDEX" \
                                                                                                                                                                         --rawfile SCRIPT ${ scripts.true.true.init } \
+                                                                                                                                                                        --arg STANDARD_OUTPUT "$STANDARD_OUTPUT" \
                                                                                                                                                                         --arg TARGET 2862437261978116 \
                                                                                                                                                                             '{
                                                                                                                                                                                "arguments" : [ $ARGUMENT ] ,
@@ -580,6 +582,7 @@
                                                                                                                                                                         --compact-output \
                                                                                                                                                                         --arg INDEX "$FRESH_INDEX" \
                                                                                                                                                                         --arg SCRIPT ${ scripts.true.true.init } \
+                                                                                                                                                                        --arg STANDARD_OUTPUT "$STANDARD_OUTPUT" \
                                                                                                                                                                         --arg TARGET 2862437261978116 \
                                                                                                                                                                             '{
                                                                                                                                                                                "arguments" : [ ] ,
@@ -591,7 +594,7 @@
                                                                                                                                                                                "script" : $SCRIPT ,
                                                                                                                                                                                "standard-error" : "" ,
                                                                                                                                                                                "standard-input" : "" ,
-                                                                                                                                                                               "standard-output" : ""
+                                                                                                                                                                               "standard-output" : $STANDARD_OUTPUT
                                                                                                                                                                             }' | compare --message message --channel valid-init --payload false true --timeout 1 --uuid 9696444126143543 3<&3
                                                                                                                                                                     block --timeout 1 --uuid 5523352333297834 3<&3
                                                                                                                                                                     files \
