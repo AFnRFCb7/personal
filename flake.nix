@@ -663,10 +663,10 @@
                                                                                                                 --literal plain 2 \
                                                                                                                 --literal plain '#' \
                                                                                                                 --literal plain ALPHA \
+                                                                                                                --literal plain ALPHA_INDEX \
                                                                                                                 --literal plain INIT \
                                                                                                                 --literal plain PATH \
                                                                                                                 --literal plain RELEASE \
-                                                                                                                --literal plain RESOURCE_INDEX \
                                                                                                                 --uuid 7483697565341694
                                                                                                         '' ;
                                                                                         } ;
