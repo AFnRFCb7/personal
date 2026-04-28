@@ -545,7 +545,7 @@
                                                                                                                                                                 then
                                                                                                                                                                     DISTRACTOR=${ resources.checks.targets.true.true { failure = 8829996994479772 ; setup = setup : ''${ setup } 3564731485791737'' ; } }
                                                                                                                                                                     printf -v DISTRACTOR_INDEX "%016d" "$ALPHA"
-                                                                                                                                                                    STANDARD_OUTPUT=5175697994459272
+                                                                                                                                                                    STANDARD_OUTPUT='5175697994459272\n'
                                                                                                                                                                     jq \
                                                                                                                                                                         --null-input \
                                                                                                                                                                         --compact-output \
