@@ -396,6 +396,7 @@
                                                                                                                                     ;;
                                                                                                                                 --uuid)
                                                                                                                                     shift 2
+                                                                                                                                    ;;
                                                                                                                                 *)
                                                                                                                                     failure 6712481499337853 "$*"
                                                                                                                                     ;;
@@ -625,10 +626,12 @@
                                                                                                                                             ;;
                                                                                                                                     esac
                                                                                                                                 done
-                                                                                                                                # if true ; then exit 0 ; fi
+                                                                                                                                ## if true ; then exit 0 ; fi
                                                                                                                                 block --timeout 1 --uuid 4899964636364281 3<&3
+                                                                                                                                #
                                                                                                                                 if true ; then exit 0 ; fi
                                                                                                                                 printf -v ALPHA_INDEX "%016d" "$ALPHA"
+                                                                                                                                if true ; then exit 0 ; fi
                                                                                                                                 files \
                                                                                                                                     --does-not-exist "/home/${ config.personal.name }/resources/mounts/$ALPHA_INDEX" \
                                                                                                                                     --does-not-exist "/home/${ config.personal.name }/resources/release/$ALPHA_INDEX" \
