@@ -339,6 +339,8 @@
                                                                                                                             then
                                                                                                                                 EXPECTED_VERBOSE_PAYLOAD="$( yq --input-format=json eval --prettyPrint "." <<< "$EXPECTED_PAYLOAD" )" || failure 9695639117138292
                                                                                                                                 OBSERVED_VERBOSE_PAYLOAD="$( yq --input-format=json eval --prettyPrint "." <<< "$OBSERVED_PAYLOAD" )" || failure 3474923945839811
+                                                                                                                                printf '%q\n' "$EXPECTED_PAYLOAD"
+                                                                                                                                printf '%q\n' "$OBSERVED_PAYLOAD"
                                                                                                                                 failure 2177767151764594 "$UUID" EXPECTED_PAYLOAD "$EXPECTED_PAYLOAD" OBSERVED_PAYLOAD "$OBSERVED_PAYLOAD" EXPECTED_VERBOSE_PAYLOAD "$EXPECTED_VERBOSE_PAYLOAD" OBSERVED_VERBOSE_PAYLOAD "$OBSERVED_VERBOSE_PAYLOAD"
                                                                                                                             fi
                                                                                                                         else
@@ -721,7 +723,7 @@
                                                                                                             text =
                                                                                                                 ''
                                                                                                                     touch /mount/9427941488926681
-                                                                                                                    echo 3346844943869582
+                                                                                                                    echo -en "3346844943869582"
                                                                                                                     exit 117
                                                                                                                 '' ;
                                                                                                         } ;
@@ -736,7 +738,7 @@
                                                                                                             runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                             text =
                                                                                                                 ''
-                                                                                                                    echo 3299938456476225
+                                                                                                                    echo -en "3299938456476225"
                                                                                                                     exit 169
                                                                                                                 '' ;
                                                                                                         } ;
@@ -757,7 +759,7 @@
                                                                                                             text =
                                                                                                                 ''
                                                                                                                     touch /mount/5494881573568661
-                                                                                                                    echo 3148451947316331
+                                                                                                                    echo -en "3148451947316331"
                                                                                                                     exit 114
                                                                                                                 '' ;
                                                                                                         } ;
@@ -772,7 +774,7 @@
                                                                                                             runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                             text =
                                                                                                                 ''
-                                                                                                                    echo 4657737859987722
+                                                                                                                    echo -en "4657737859987722"
                                                                                                                 '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/init" ;
@@ -795,7 +797,7 @@
                                                                                                             text =
                                                                                                                 ''
                                                                                                                     touch /mount/3297495737778474
-                                                                                                                    echo 4725766637963872
+                                                                                                                    echo -en "4725766637963872"
                                                                                                                 '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/init" ;
@@ -809,7 +811,7 @@
                                                                                                             runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                             text =
                                                                                                                 ''
-                                                                                                                    echo 6116634951182671
+                                                                                                                    echo -en "6116634951182671"
                                                                                                                     exit 53
                                                                                                                 '' ;
                                                                                                         } ;
@@ -844,7 +846,7 @@
                                                                                                             runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                             text =
                                                                                                                 ''
-                                                                                                                    echo 1954271241196411
+                                                                                                                    echo -en 1954271241196411
                                                                                                                 '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/init" ;
@@ -875,7 +877,7 @@
                                                                                                     in
                                                                                                         ''
                                                                                                             touch /mount/.envrc
-                                                                                                            echo 24545
+                                                                                                            echo -en "9346192144868518"
                                                                                                         '' ;
                                                                                         } ;
                                                                                     in "${ application }/bin/init" ;
@@ -889,7 +891,7 @@
                                                                                             runtimeInputs = [ pkgs.coreutils ] ;
                                                                                             text =
                                                                                                 ''
-                                                                                                    echo 11660
+                                                                                                    echo -en "8364111457123239"
                                                                                                 '' ;
                                                                                         } ;
                                                                                     in "${ application }/bin/release" ;
