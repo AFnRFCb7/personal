@@ -624,6 +624,10 @@
                                                                                                                                             ;;
                                                                                                                                     esac
                                                                                                                                 done
+                                                                                                                                if true
+                                                                                                                                then
+                                                                                                                                    exit 0
+                                                                                                                                fi
                                                                                                                                 block --timeout 1 --uuid 4899964636364281 3<&3
                                                                                                                                 printf -v ALPHA_INDEX "%016d" "$ALPHA"
                                                                                                                                 files \
