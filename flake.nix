@@ -365,6 +365,7 @@
                                                                                                                                         failure 1578895953757495 "$*"
                                                                                                                                     fi
                                                                                                                                     shift 2
+                                                                                                                                    ;;
                                                                                                                                 --file)
                                                                                                                                     if [[ ! -f "$2" ]]
                                                                                                                                     then
@@ -624,7 +625,7 @@
                                                                                                                                             ;;
                                                                                                                                     esac
                                                                                                                                 done
-                                                                                                                                # if true ; then exit 0 ; fi
+                                                                                                                                ## if true ; then exit 0 ; fi
                                                                                                                                 block --timeout 1 --uuid 4899964636364281 3<&3
                                                                                                                                 printf -v ALPHA_INDEX "%016d" "$ALPHA"
                                                                                                                                 files \
@@ -633,8 +634,9 @@
                                                                                                                                     --does-not-exist "/home/${ config.personal.name }/resources/invalid-init/$ALPHA_INDEX" \
                                                                                                                                     --does-not-exist "/home/${ config.personal.name }/resources/invalid-release/$ALPHA_INDEX" \
                                                                                                                                     --uuid 1289673385791639
-                                                                                                                                if true ; then exit 0 ; fi
+                                                                                                                                # if true ; then exit 0 ; fi
                                                                                                                                 exec 3< <( timeout 1m redis-cli SUBSCRIBE invalid-init invalid-release stale-init valid-init valid-release )
+                                                                                                                                if true ; then exit 0 ; fi
                                                                                                                                 compare --message subscribe --channel invalid-init --payload 1 --timeout 1 false --uuid 3376489199378444 3<&3
                                                                                                                                 compare --message subscribe --channel invalid-release --payload 2 false --timeout 1 --uuid 2339378822363186 3<&3
                                                                                                                                 compare --message subscribe --channel stale-init --payload  3 false --timeout 1 --uuid 3319464677934952 3<&3
