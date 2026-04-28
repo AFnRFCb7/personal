@@ -469,14 +469,16 @@
                                                                                                                                                                     true =
                                                                                                                                                                         {
                                                                                                                                                                             init =
-                                                                                                                                                                                ''
-                                                                                                                                                                                    #!/nix/store/mjhcjikhxps97mq5z54j4gjjfzgmsir5-bash-5.2p37/bin/bash
-                                                                                                                                                                                    set -o errexit
-                                                                                                                                                                                    set -o nounset
-                                                                                                                                                                                    set -o pipefail
+                                                                                                                                                                                builtins.toFile
+                                                                                                                                                                                    "script"
+                                                                                                                                                                                    ''
+                                                                                                                                                                                        #!/nix/store/mjhcjikhxps97mq5z54j4gjjfzgmsir5-bash-5.2p37/bin/bash
+                                                                                                                                                                                        set -o errexit
+                                                                                                                                                                                        set -o nounset
+                                                                                                                                                                                        set -o pipefail
 
-                                                                                                                                                                                    /nix/store/189kk9lm7aswyc09kfx0c6hci8ns14vz-init/bin/init
-                                                                                                                                                                                '' ;
+                                                                                                                                                                                        /nix/store/189kk9lm7aswyc09kfx0c6hci8ns14vz-init/bin/init
+                                                                                                                                                                                    '' ;
                                                                                                                                                                             release =
                                                                                                                                                                                 ''
                                                                                                                                                                                 '' ;
@@ -548,6 +550,7 @@
                                                                                                                                                                         --compact-output \
                                                                                                                                                                         --arg ARGUMENT 3564731485791737 \
                                                                                                                                                                         --arg INDEX "$DISTRACTOR_INDEX" \
+                                                                                                                                                                        --rawfile ${ scripts.true.true.init } \
                                                                                                                                                                         --arg TARGET 2862437261978116 \
                                                                                                                                                                             '{
                                                                                                                                                                                "arguments" : [ $ARGUMENT ] ,
