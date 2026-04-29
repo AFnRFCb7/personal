@@ -261,7 +261,7 @@
                                                                                                         pkgs.writeShellApplication
                                                                                                             {
                                                                                                                 name = "compare" ;
-                                                                                                                runtimeInputs = [ failure pkgs.coreutils pkgs.diffutils pkgs.jd pkgs.jq pkgs.yq-go ] ;
+                                                                                                                runtimeInputs = [ failure pkgs.coreutils pkgs.diffutils pkgs.jq pkgs.yq-go ] ;
                                                                                                                 text =
                                                                                                                     ''
                                                                                                                         while [[ "$#" -gt 0 ]]
@@ -345,7 +345,7 @@
                                                                                                                                 echo "$EXPECTED_PRINT_PAYLOAD" > "$EXPECTED_FILE"
                                                                                                                                 OBSERVED_FILE="$( mktemp )" || failure
                                                                                                                                 echo "$OBSERVED_PRINT_PAYLOAD" > "$OBSERVED_FILE"
-                                                                                                                                DIFF="$( jd "$EXPECTED_FILE" "$OBSERVED_FILE" )" || true
+                                                                                                                                DIFF="$( diff --unified "$EXPECTED_FILE" "$OBSERVED_FILE" )" || true
                                                                                                                                 failure 2177767151764594 "$UUID" EXPECTED_PAYLOAD "$EXPECTED_PAYLOAD" OBSERVED_PAYLOAD "$OBSERVED_PAYLOAD" EXPECTED_PRINT_PAYLOAD "$EXPECTED_PRINT_PAYLOAD" OBSERVED_PRINT_PAYLOAD "$OBSERVED_PRINT_PAYLOAD" "$EXPECTED_PRINT_PAYLOAD" OBSERVED_PRINT_PAYLOAD "$OBSERVED_PRINT_PAYLOAD" DIFF "$DIFF"
                                                                                                                             fi
                                                                                                                         else
