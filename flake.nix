@@ -552,7 +552,8 @@
                                                                                                                                                                 then
                                                                                                                                                                     DISTRACTOR=${ resources.checks.targets.true.true { failure = 8829996994479772 ; setup = setup : ''${ setup } 3564731485791737'' ; } }
                                                                                                                                                                     printf -v DISTRACTOR_INDEX "%016d" "$ALPHA"
-                                                                                                                                                                    STANDARD_OUTPUT='5175697994459272'
+                                                                                                                                                                    STANDARD_OUTPUT=5175697994459272
+                                                                                                                                                                    TARGET=2862437261978116
                                                                                                                                                                     jq \
                                                                                                                                                                         --null-input \
                                                                                                                                                                         --compact-output \
@@ -560,7 +561,7 @@
                                                                                                                                                                         --arg INDEX "$DISTRACTOR_INDEX" \
                                                                                                                                                                         --rawfile SCRIPT ${ scripts.true.true.init } \
                                                                                                                                                                         --arg STANDARD_OUTPUT "$STANDARD_OUTPUT" \
-                                                                                                                                                                        --arg TARGET 2862437261978116 \
+                                                                                                                                                                        --arg TARGET "$TARGET" \
                                                                                                                                                                             '{
                                                                                                                                                                                "arguments" : [ $ARGUMENT ] ,
                                                                                                                                                                                "has-standard-input" : false ,
@@ -577,21 +578,21 @@
                                                                                                                                                                     files \
                                                                                                                                                                         --equals "/home/${ config.personal.name }/resources/mounts/$DISTRACTOR_INDEX" "$DISTRACTOR" \
                                                                                                                                                                         --directory "$DISTRACTOR" \
-                                                                                                                                                                        --file "$DISTRACTOR/2862437261978116" \
+                                                                                                                                                                        --file "$DISTRACTOR/$TARGET" \
                                                                                                                                                                         --executable "/home/${ config.personal.name }/resources/release/$DISTRACTOR_INDEX" \
                                                                                                                                                                         --does-not-exist "/home/${ config.personal.name }/resources/invalid-init/$DISTRACTOR_INDEX" \
                                                                                                                                                                         --does-not-exist "/home/${ config.personal.name }/resources/invalid-release/$DISTRACTOR_INDEX" \
                                                                                                                                                                         --uuid 6764498451529627
                                                                                                                                                                     echo We created a distractor resource
                                                                                                                                                                     FRESH=${ resources.checks.targets.true.true { failure = 1528926113851339 ; } }
-                                                                                                                                                                    printf -v FRESH_INDEX "%016d" $(( ALPHA + 1 ))
+                                                                                                                                                                    printf -v FRESH_INDEX "%016d" $(( ALPHA + 6 ))
                                                                                                                                                                     jq \
                                                                                                                                                                         --null-input \
                                                                                                                                                                         --compact-output \
                                                                                                                                                                         --arg INDEX "$FRESH_INDEX" \
                                                                                                                                                                         --arg SCRIPT ${ scripts.true.true.init } \
                                                                                                                                                                         --arg STANDARD_OUTPUT "$STANDARD_OUTPUT" \
-                                                                                                                                                                        --arg TARGET 2862437261978116 \
+                                                                                                                                                                        --arg TARGET "$TARGET" \
                                                                                                                                                                             '{
                                                                                                                                                                                "arguments" : [ ] ,
                                                                                                                                                                                "has-standard-input" : false ,
@@ -608,7 +609,7 @@
                                                                                                                                                                     files \
                                                                                                                                                                         --equals "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" "$FRESH" \
                                                                                                                                                                         --directory "$FRESH" \
-                                                                                                                                                                        --file "$FRESH/" \
+                                                                                                                                                                        --file "$FRESH/$TARGET" \
                                                                                                                                                                         --executable "/home/${ config.personal.name }/resources/release/$FRESH_INDEX" \
                                                                                                                                                                         --does-not-exist "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX" \
                                                                                                                                                                         --does-not-exist "/home/${ config.personal.name }/resources/invalid-release/$FRESH_INDEX" \
