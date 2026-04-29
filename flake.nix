@@ -337,12 +337,11 @@
                                                                                                                             EXPECTED_PAYLOAD="$( cat )" || failure 1393872535428486
                                                                                                                             if [[ "$EXPECTED_PAYLOAD" != "$OBSERVED_PAYLOAD" ]]
                                                                                                                             then
-                                                                                                                                EXPECTED_VERBOSE_PAYLOAD="$( yq --input-format=json eval --prettyPrint "." <<< "$EXPECTED_PAYLOAD" )" || failure 9695639117138292
-                                                                                                                                OBSERVED_VERBOSE_PAYLOAD="$( yq --input-format=json eval --prettyPrint "." <<< "$OBSERVED_PAYLOAD" )" || failure 3474923945839811
+                                                                                                                                EXPECTED_PRINT_PAYLOAD="$( yq --input-format=json eval --prettyPrint "." <<< "$EXPECTED_PAYLOAD" )" || failure 9695639117138292
+                                                                                                                                OBSERVED_PRINT_PAYLOAD="$( yq --input-format=json eval --prettyPrint "." <<< "$OBSERVED_PAYLOAD" )" || failure 3474923945839811
                                                                                                                                 EXPECTED_PRINT_PAYLOAD="$( printf '%q\n' "$EXPECTED_PAYLOAD" )" || failure 4118273929999765
                                                                                                                                 OBSERVED_PRINT_PAYLOAD="$( printf '%q\n' "$OBSERVED_PAYLOAD" )" || failure 6573627312252449
-                                                                                                                                DIFF="$( diff --unified "$EXPECTED_PRINT_PAYLOAD" "$OBSERVED_PRINT_PAYLOAD" )" || failure 4139877123358579
-                                                                                                                                failure 2177767151764594 "$UUID" EXPECTED_PAYLOAD "$EXPECTED_PAYLOAD" OBSERVED_PAYLOAD "$OBSERVED_PAYLOAD" EXPECTED_VERBOSE_PAYLOAD "$EXPECTED_VERBOSE_PAYLOAD" OBSERVED_VERBOSE_PAYLOAD "$OBSERVED_VERBOSE_PAYLOAD" DIFF "$DIFF"
+                                                                                                                                failure 2177767151764594 "$UUID" EXPECTED_PAYLOAD "$EXPECTED_PAYLOAD" OBSERVED_PAYLOAD "$OBSERVED_PAYLOAD" EXPECTED_PRINT_PAYLOAD "$EXPECTED_PRINT_PAYLOAD" OBSERVED_PRINT_PAYLOAD "$OBSERVED_PRINT_PAYLOAD" "$EXPECTED_PRINT_PAYLOAD" OBSERVED_PRINT_PAYLOAD "$OBSERVED_PRINT_PAYLOAD"
                                                                                                                             fi
                                                                                                                         else
                                                                                                                             if [[ "$EXPECTED_PAYLOAD" != "$OBSERVED_PAYLOAD" ]]
@@ -1266,8 +1265,8 @@
                                                                                                                                                                     OBSERVED_INIT_JSON="$( jq --compact-output "." ${ init-message-file } )" || failure 9412
                                                                                                                                                                     if [[ "$EXPECTED_INIT_JSON" != "$OBSERVED_INIT_JSON" ]]
                                                                                                                                                                     then
-                                                                                                                                                                        VERBOSE_INIT_JSON="$( jq "." ${ init-message-file } )" || failure 23617
-                                                                                                                                                                        failure 16098 EXPECTED_INIT_JSON "$EXPECTED_INIT_JSON" OBSERVED_INIT_JSON "$OBSERVED_INIT_JSON" VERBOSE_INIT_JSON "$VERBOSE_INIT_JSON"
+                                                                                                                                                                        PRINT_INIT_JSON="$( jq "." ${ init-message-file } )" || failure 23617
+                                                                                                                                                                        failure 16098 EXPECTED_INIT_JSON "$EXPECTED_INIT_JSON" OBSERVED_INIT_JSON "$OBSERVED_INIT_JSON" PRINT_INIT_JSON "$PRINT_INIT_JSON"
                                                                                                                                                                     fi
                                                                                                                                                                     # shellcheck disable=SC2016
                                                                                                                                                                     EXPECTED_RELEASE='${ release }'
@@ -1428,8 +1427,8 @@
                                                                                                                                                 OBSERVED_RELEASE_JSON="$( jq --compact-output "." ${ release-message-file } )" || failure 20816 ${ release-message-file }
                                                                                                                                                 if [[ "$EXPECTED_RELEASE_JSON" != "$OBSERVED_RELEASE_JSON" ]]
                                                                                                                                                 then
-                                                                                                                                                    VERBOSE_RELEASE_JSON="$( jq "." ${ release-message-file } )" || failure 18266
-                                                                                                                                                    failure 25932 EXPECTED_RELEASE_JSON "$EXPECTED_RELEASE_JSON" OBSERVED_RELEASE_JSON "$OBSERVED_RELEASE_JSON" VERBOSE_RELEASE_JSON "$VERBOSE_RELEASE_JSON"
+                                                                                                                                                    PRINT_RELEASE_JSON="$( jq "." ${ release-message-file } )" || failure 18266
+                                                                                                                                                    failure 25932 EXPECTED_RELEASE_JSON "$EXPECTED_RELEASE_JSON" OBSERVED_RELEASE_JSON "$OBSERVED_RELEASE_JSON" PRINT_RELEASE_JSON "$PRINT_RELEASE_JSON"
                                                                                                                                                 fi
                                                                                                                                                 EXPECTED_SCRIPT='${ script }'
                                                                                                                                                 OBSERVED_SCRIPT="$( cat ${ script-file } )" || failure 19776
@@ -1614,8 +1613,8 @@
                                                                                                                                                                     OBSERVED_INIT_JSON="$( jq --compact-output "." ${ init-message-file } )" || failure 9412
                                                                                                                                                                     if [[ "$EXPECTED_INIT_JSON" != "$OBSERVED_INIT_JSON" ]]
                                                                                                                                                                     then
-                                                                                                                                                                        VERBOSE_INIT_JSON="$( jq "." ${ init-message-file } )" || failure 23617
-                                                                                                                                                                        failure 8195484594960100 EXPECTED_INIT_JSON "$EXPECTED_INIT_JSON" OBSERVED_INIT_JSON "$OBSERVED_INIT_JSON" VERBOSE_INIT_JSON "$VERBOSE_INIT_JSON"
+                                                                                                                                                                        PRINT_INIT_JSON="$( jq "." ${ init-message-file } )" || failure 23617
+                                                                                                                                                                        failure 8195484594960100 EXPECTED_INIT_JSON "$EXPECTED_INIT_JSON" OBSERVED_INIT_JSON "$OBSERVED_INIT_JSON" PRINT_INIT_JSON "$PRINT_INIT_JSON"
                                                                                                                                                                     fi
                                                                                                                                                                     # shellcheck disable=SC2016
                                                                                                                                                                     EXPECTED_SCRIPT='${ script }'
@@ -1723,8 +1722,8 @@
                                                                                                                                                                     OBSERVED_GOOD_INIT_RESOLVE_JSON="$( jq --compact-output "." ${ good-init-resolve-file } )" || failure 1916621691452317
                                                                                                                                                                     if [[ "$EXPECTED_GOOD_INIT_RESOLVE_JSON" != "$OBSERVED_GOOD_INIT_RESOLVE_JSON" ]]
                                                                                                                                                                     then
-                                                                                                                                                                        VERBOSE_GOOD_INIT_RESOLVE_JSON="$( jq "." ${ good-init-resolve-file } )" || failure 8997333792138166
-                                                                                                                                                                        failure 5972293388135472 EXPECTED_GOOD_INIT_RESOLVE_JSON "$EXPECTED_GOOD_INIT_RESOLVE_JSON" OBSERVED_GOOD_INIT_RESOLVE_JSON "$OBSERVED_GOOD_INIT_RESOLVE_JSON" VERBOSE_GOOD_INIT_RESOLVE_JSON "$VERBOSE_GOOD_INIT_RESOLVE_JSON"
+                                                                                                                                                                        PRINT_GOOD_INIT_RESOLVE_JSON="$( jq "." ${ good-init-resolve-file } )" || failure 8997333792138166
+                                                                                                                                                                        failure 5972293388135472 EXPECTED_GOOD_INIT_RESOLVE_JSON "$EXPECTED_GOOD_INIT_RESOLVE_JSON" OBSERVED_GOOD_INIT_RESOLVE_JSON "$OBSERVED_GOOD_INIT_RESOLVE_JSON" PRINT_GOOD_INIT_RESOLVE_JSON "$PRINT_GOOD_INIT_RESOLVE_JSON"
                                                                                                                                                                     fi
                                                                                                                                                                     EXPECTED_RELEASE=${ release }
                                                                                                                                                                     OBSERVED_RELEASE="$( cat ${ release-file } )" || failure 2451821366891961
@@ -1875,8 +1874,8 @@
                                                                                                                                                 OBSERVED_RELEASE_JSON="$( jq --compact-output "." ${ release-message-file } )" || failure 20816 ${ release-message-file }
                                                                                                                                                 if [[ "$EXPECTED_RELEASE_JSON" != "$OBSERVED_RELEASE_JSON" ]]
                                                                                                                                                 then
-                                                                                                                                                    VERBOSE_RELEASE_JSON="$( jq "." ${ release-message-file } )" || failure 18266
-                                                                                                                                                    failure 25932 EXPECTED_RELEASE_JSON "$EXPECTED_RELEASE_JSON" OBSERVED_RELEASE_JSON "$OBSERVED_RELEASE_JSON" VERBOSE_RELEASE_JSON "$VERBOSE_RELEASE_JSON"
+                                                                                                                                                    PRINT_RELEASE_JSON="$( jq "." ${ release-message-file } )" || failure 18266
+                                                                                                                                                    failure 25932 EXPECTED_RELEASE_JSON "$EXPECTED_RELEASE_JSON" OBSERVED_RELEASE_JSON "$OBSERVED_RELEASE_JSON" PRINT_RELEASE_JSON "$PRINT_RELEASE_JSON"
                                                                                                                                                 fi
                                                                                                                                                 EXPECTED_SCRIPT='${ script }'
                                                                                                                                                 OBSERVED_SCRIPT="$( cat ${ script-file } )" || failure 19776
@@ -2018,8 +2017,8 @@
                                                                                                                                                                     OBSERVED_INIT_JSON="$( jq --compact-output "." ${ init-message-file } )" || failure 28702
                                                                                                                                                                     if [[ "$EXPECTED_INIT_JSON" != "$OBSERVED_INIT_JSON" ]]
                                                                                                                                                                     then
-                                                                                                                                                                        VERBOSE_INIT_JSON="$( jq "." ${ init-message-file } )" || failure 23617
-                                                                                                                                                                        failure 25864 EXPECTED_INIT_JSON "$EXPECTED_INIT_JSON" OBSERVED_INIT_JSON "$OBSERVED_INIT_JSON" VERBOSE_INIT_JSON "$VERBOSE_INIT_JSON"
+                                                                                                                                                                        PRINT_INIT_JSON="$( jq "." ${ init-message-file } )" || failure 23617
+                                                                                                                                                                        failure 25864 EXPECTED_INIT_JSON "$EXPECTED_INIT_JSON" OBSERVED_INIT_JSON "$OBSERVED_INIT_JSON" PRINT_INIT_JSON "$PRINT_INIT_JSON"
                                                                                                                                                                     fi
 
                                                                                                                                                                     # shellcheck disable=SC2016
@@ -2172,8 +2171,8 @@
                                                                                                                                                 OBSERVED_RELEASE_JSON="$( jq --compact-output "." ${ release-message-file } )" || failure 17324 ${ release-message-file }
                                                                                                                                                 if [[ "$EXPECTED_RELEASE_JSON" != "$OBSERVED_RELEASE_JSON" ]]
                                                                                                                                                 then
-                                                                                                                                                    VERBOSE_RELEASE_JSON="$( jq "." ${ release-message-file } )" || failure 18266
-                                                                                                                                                    failure 25932 EXPECTED_RELEASE_JSON "$EXPECTED_RELEASE_JSON" OBSERVED_RELEASE_JSON "$OBSERVED_RELEASE_JSON" VERBOSE_RELEASE_JSON "$VERBOSE_RELEASE_JSON"
+                                                                                                                                                    PRINT_RELEASE_JSON="$( jq "." ${ release-message-file } )" || failure 18266
+                                                                                                                                                    failure 25932 EXPECTED_RELEASE_JSON "$EXPECTED_RELEASE_JSON" OBSERVED_RELEASE_JSON "$OBSERVED_RELEASE_JSON" PRINT_RELEASE_JSON "$PRINT_RELEASE_JSON"
                                                                                                                                                 fi
                                                                                                                                                 EXPECTED_SCRIPT='${ script }'
                                                                                                                                                 OBSERVED_SCRIPT="$( cat ${ script-file } )" || failure 19776
@@ -2317,8 +2316,8 @@
                                                                                                                                                                     OBSERVED_INIT_JSON="$( jq --compact-output "." ${ init-message-file } )" || failure 9412
                                                                                                                                                                     if [[ "$EXPECTED_INIT_JSON" != "$OBSERVED_INIT_JSON" ]]
                                                                                                                                                                     then
-                                                                                                                                                                        VERBOSE_INIT_JSON="$( jq "." ${ init-message-file } )" || failure 23617
-                                                                                                                                                                        failure 16098 EXPECTED_INIT_JSON "$EXPECTED_INIT_JSON" OBSERVED_INIT_JSON "$OBSERVED_INIT_JSON" VERBOSE_INIT_JSON "$VERBOSE_INIT_JSON"
+                                                                                                                                                                        PRINT_INIT_JSON="$( jq "." ${ init-message-file } )" || failure 23617
+                                                                                                                                                                        failure 16098 EXPECTED_INIT_JSON "$EXPECTED_INIT_JSON" OBSERVED_INIT_JSON "$OBSERVED_INIT_JSON" PRINT_INIT_JSON "$PRINT_INIT_JSON"
                                                                                                                                                                     fi
                                                                                                                                                                     # shellcheck disable=SC2016
                                                                                                                                                                     EXPECTED_RELEASE='${ release }'
@@ -2479,8 +2478,8 @@
                                                                                                                                                 OBSERVED_RELEASE_JSON="$( jq --compact-output "." ${ release-message-file } )" || failure 20816 ${ release-message-file }
                                                                                                                                                 if [[ "$EXPECTED_RELEASE_JSON" != "$OBSERVED_RELEASE_JSON" ]]
                                                                                                                                                 then
-                                                                                                                                                    VERBOSE_RELEASE_JSON="$( jq "." ${ release-message-file } )" || failure 18266
-                                                                                                                                                    failure 25932 EXPECTED_RELEASE_JSON "$EXPECTED_RELEASE_JSON" OBSERVED_RELEASE_JSON "$OBSERVED_RELEASE_JSON" VERBOSE_RELEASE_JSON "$VERBOSE_RELEASE_JSON"
+                                                                                                                                                    PRINT_RELEASE_JSON="$( jq "." ${ release-message-file } )" || failure 18266
+                                                                                                                                                    failure 25932 EXPECTED_RELEASE_JSON "$EXPECTED_RELEASE_JSON" OBSERVED_RELEASE_JSON "$OBSERVED_RELEASE_JSON" PRINT_RELEASE_JSON "$PRINT_RELEASE_JSON"
                                                                                                                                                 fi
                                                                                                                                                 EXPECTED_SCRIPT='${ script }'
                                                                                                                                                 OBSERVED_SCRIPT="$( cat ${ script-file } )" || failure 19776
@@ -2566,7 +2565,7 @@
                                                                                                                         --literal plain STANDARD_ERROR_SEQUENCE \
                                                                                                                         --literal plain STANDARD_OUTPUT_SEQUENCE \
                                                                                                                         --literal plain TEMPORARY \
-                                                                                                                        --literal plain VERBOSE_RELEASE_JSON \
+                                                                                                                        --literal plain PRINT_RELEASE_JSON \
                                                                                                                         --literal plain WC_SIX \
                                                                                                                         --literal plain WC_EIGHT \
                                                                                                                         --uuid 20437
@@ -2608,7 +2607,7 @@
                                                                                                                         --literal plain STANDARD_ERROR_SEQUENCE \
                                                                                                                         --literal plain STANDARD_OUTPUT_SEQUENCE \
                                                                                                                         --literal plain TEMPORARY \
-                                                                                                                        --literal plain VERBOSE_RELEASE_JSON \
+                                                                                                                        --literal plain PRINT_RELEASE_JSON \
                                                                                                                         --literal plain WC_SIX \
                                                                                                                         --literal plain WC_EIGHT \
                                                                                                                         --uuid 21038
@@ -2650,7 +2649,7 @@
                                                                                                                         --literal plain STANDARD_ERROR_SEQUENCE \
                                                                                                                         --literal plain STANDARD_OUTPUT_SEQUENCE \
                                                                                                                         --literal plain TEMPORARY \
-                                                                                                                        --literal plain VERBOSE_RELEASE_JSON \
+                                                                                                                        --literal plain PRINT_RELEASE_JSON \
                                                                                                                         --literal plain WC_SIX \
                                                                                                                         --literal plain WC_EIGHT \
                                                                                                                         --uuid 11009
@@ -2692,7 +2691,7 @@
                                                                                                                         --literal plain STANDARD_ERROR_SEQUENCE \
                                                                                                                         --literal plain STANDARD_OUTPUT_SEQUENCE \
                                                                                                                         --literal plain TEMPORARY \
-                                                                                                                        --literal plain VERBOSE_RELEASE_JSON \
+                                                                                                                        --literal plain PRINT_RELEASE_JSON \
                                                                                                                         --literal plain WC_SIX \
                                                                                                                         --literal plain WC_EIGHT \
                                                                                                                         --uuid 19713
