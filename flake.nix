@@ -377,7 +377,7 @@
                                                                                                                                 --file)
                                                                                                                                     if [[ ! -f "$2" ]]
                                                                                                                                     then
-                                                                                                                                        failure 8859813773476672
+                                                                                                                                        failure 8859813773476672 "$*"
                                                                                                                                     fi
                                                                                                                                     shift 2
                                                                                                                                     ;;
