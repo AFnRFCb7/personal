@@ -484,7 +484,7 @@
                                                                                                                                                                                         set -o nounset
                                                                                                                                                                                         set -o pipefail
 
-                                                                                                                                                                                        /nix/store/189kk9lm7aswyc09kfx0c6hci8ns14vz-init/bin/init
+                                                                                                                                                                                        /nix/store/qfcw4rcx08yqnfjj7ndxhcqbi719z9m2-init/bin/init
                                                                                                                                                                                     '' ;
                                                                                                                                                                             release =
                                                                                                                                                                                 ''
