@@ -261,7 +261,7 @@
                                                                                                         pkgs.writeShellApplication
                                                                                                             {
                                                                                                                 name = "compare" ;
-                                                                                                                runtimeInputs = [ failure pkgs.coreutils pkgs.jq pkgs.yq-go ] ;
+                                                                                                                runtimeInputs = [ failure pkgs.coreutils pkgs.diffutils pkgs.jq pkgs.yq-go ] ;
                                                                                                                 text =
                                                                                                                     ''
                                                                                                                         while [[ "$#" -gt 0 ]]
