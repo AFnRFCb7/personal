@@ -606,7 +606,7 @@
                                                                                                                                                             fi
                                                                                                                                                             block --timeout 1 --uuid 5984995243749875 3<&3
                                                                                                                                                             files \
-                                                                                                                                                                --ceiling $(( ALPHA + 1 )) \
+                                                                                                                                                                --ceiling "$ALPHA" \
                                                                                                                                                                 --uuid 7299736113522788
                                                                                                                                                             if [[ "$INIT" == "true" ]]
                                                                                                                                                             then
@@ -638,7 +638,7 @@
                                                                                                                                                                             }' | compare --message message --channel valid-init --payload false true --timeout 1 --uuid 7689926124362862 3<&3
                                                                                                                                                                     block --timeout 1 --uuid 6925921732651899 3<&3
                                                                                                                                                                     files \
-                                                                                                                                                                        --ceiling $(( DISTRACTOR + 1 )) \
+                                                                                                                                                                        --ceiling "$DISTRACTOR" \
                                                                                                                                                                         --equals "/home/${ config.personal.name }/resources/mounts/$DISTRACTOR_INDEX" "$DISTRACTOR" \
                                                                                                                                                                         --directory "$DISTRACTOR" \
                                                                                                                                                                         --file "$DISTRACTOR/$TARGET" \
