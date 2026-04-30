@@ -414,16 +414,18 @@
                                                                                                                         do
                                                                                                                             case "$1" in
                                                                                                                                 --ceiling)
-                                                                                                                                    INDEX="$2"
+                                                                                                                                    ALPHA="$2"
+                                                                                                                                    BETA="$3"
+                                                                                                                                    printf -v BETA_PRIME "%016d" $(( ALPHA + BETA ))
                                                                                                                                     SEQUENTIAL="$( cat /home/${ config.personal.name }/resources/sequential/sequential.counter )" || failure 6923965577116329
-                                                                                                                                    if [[ "$INDEX" != "$SEQUENTIAL" ]]
+                                                                                                                                    if [[ "$BETA_PRIME" != "$SEQUENTIAL" ]]
                                                                                                                                     then
                                                                                                                                         failure 1149448538394568 INDEX "$INDEX" SEQUENTIAL "$SEQUENTIAL" "$*"
                                                                                                                                     fi
-                                                                                                                                    ceiling /home/${ config.personal.name }/mounts "$INDEX"
-                                                                                                                                    ceiling /home/${ config.personal.name }/release "$INDEX"
-                                                                                                                                    ceiling /home/${ config.personal.name }/invalid-init "$INDEX"
-                                                                                                                                    ceiling /home/${ config.personal.name }/invalid-release "$INDEX"
+                                                                                                                                    ceiling /home/${ config.personal.name }/mounts "$ALPHA"
+                                                                                                                                    ceiling /home/${ config.personal.name }/release "$ALPHA"
+                                                                                                                                    ceiling /home/${ config.personal.name }/invalid-init "$ALPHA"
+                                                                                                                                    ceiling /home/${ config.personal.name }/invalid-release "$ALPHA"
                                                                                                                                     shift 2
                                                                                                                                     ;;
                                                                                                                                 --does-not-exist)
@@ -606,7 +608,7 @@
                                                                                                                                                             fi
                                                                                                                                                             block --timeout 1 --uuid 5984995243749875 3<&3
                                                                                                                                                             files \
-                                                                                                                                                                --ceiling "$ALPHA" \
+                                                                                                                                                                --ceiling "$ALPHA" "$ALPHA" \
                                                                                                                                                                 --uuid 7299736113522788
                                                                                                                                                             if [[ "$INIT" == "true" ]]
                                                                                                                                                             then
@@ -638,7 +640,7 @@
                                                                                                                                                                             }' | compare --message message --channel valid-init --payload false true --timeout 1 --uuid 7689926124362862 3<&3
                                                                                                                                                                     block --timeout 1 --uuid 6925921732651899 3<&3
                                                                                                                                                                     files \
-                                                                                                                                                                        --ceiling "$DISTRACTOR_INDEX" \
+                                                                                                                                                                        --ceiling "$DISTRACTOR_INDEX" $(( ALPHA + 6 )) \
                                                                                                                                                                         --equals "/home/${ config.personal.name }/resources/mounts/$DISTRACTOR_INDEX" "$DISTRACTOR" \
                                                                                                                                                                         --directory "$DISTRACTOR" \
                                                                                                                                                                         --file "$DISTRACTOR/$TARGET" \
@@ -670,7 +672,7 @@
                                                                                                                                                                             }' | compare --message message --channel valid-init --payload false true --timeout 1 --uuid 9696444126143543 3<&3
                                                                                                                                                                     block --timeout 1 --uuid 5523352333297834 3<&3
                                                                                                                                                                     files \
-                                                                                                                                                                        --ceiling "$FRESH_INDEX" \
+                                                                                                                                                                        --ceiling "$FRESH_INDEX" $(( ALPHA + 6 )) \
                                                                                                                                                                         --equals "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" "$FRESH" \
                                                                                                                                                                         --not-equals "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" "$DISTRACTOR" \
                                                                                                                                                                         --directory "$FRESH" \
