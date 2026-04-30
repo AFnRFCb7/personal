@@ -431,7 +431,7 @@
                                                                                                                                     ceiling /home/${ config.personal.name }/release "$DELTA_PRIME"
                                                                                                                                     ceiling /home/${ config.personal.name }/invalid-init "$DELTA_PRIME"
                                                                                                                                     ceiling /home/${ config.personal.name }/invalid-release "$DELTA_PRIME"
-                                                                                                                                    shift 3
+                                                                                                                                    shift 4
                                                                                                                                     ;;
                                                                                                                                 --does-not-exist)
                                                                                                                                     if [[ -e "$2" ]]
