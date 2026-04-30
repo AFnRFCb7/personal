@@ -369,7 +369,7 @@
                                                                                                                             case "$1" in
                                                                                                                                 --ceiling)
                                                                                                                                     INDEX="$2"
-                                                                                                                                    SEQUENTIAL="$( cat /home/${ config.personal.name }/sequential/sequential.counter )" || failure 6923965577116329
+                                                                                                                                    SEQUENTIAL="$( cat /home/${ config.personal.name }/resources/sequential/sequential.counter )" || failure 6923965577116329
                                                                                                                                     if [[ "$INDEX" != "$SEQUENTIAL" ]]
                                                                                                                                     then
                                                                                                                                         failure 1149448538394568 INDEX "$INDEX" SEQUENTIAL "$SEQUENTIAL" "$*"
@@ -622,9 +622,8 @@
                                                                                                                                                                                "standard-input" : "" ,
                                                                                                                                                                                "standard-output" : $STANDARD_OUTPUT
                                                                                                                                                                             }' | compare --message message --channel valid-init --payload false true --timeout 1 --uuid 9696444126143543 3<&3
-                                                                                                                                                                    ## if true ; then exit 0 ; fi
                                                                                                                                                                     block --timeout 1 --uuid 5523352333297834 3<&3
-                                                                                                                                                                    # if true ; then exit 0 ; fi
+                                                                                                                                                                    ## if true ; then exit 0 ; fi
                                                                                                                                                                     files \
                                                                                                                                                                         --equals "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" "$FRESH" \
                                                                                                                                                                         --not-equals "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" "$DISTRACTOR" \
@@ -634,7 +633,7 @@
                                                                                                                                                                         --does-not-exist "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX" \
                                                                                                                                                                         --does-not-exist "/home/${ config.personal.name }/resources/invalid-release/$FRESH_INDEX" \
                                                                                                                                                                         --uuid 6554776672562944
-                                                                                                                                                                    if true ; then exit 0 ; fi
+                                                                                                                                                                    # if true ; then exit 0 ; fi
                                                                                                                                                                     echo We created a fresh resource
                                                                                                                                                                 fi
                                                                                                                                                             else
