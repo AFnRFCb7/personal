@@ -417,7 +417,7 @@
                                                                                                                                     ALPHA="$2"
                                                                                                                                     BETA="$3"
                                                                                                                                     SEQUENTIAL="$( cat /home/${ config.personal.name }/resources/sequential/sequential.counter )" || failure 6923965577116329
-                                                                                                                                    if [[ "$BETA" != "$SEQUENTIAL" ]]
+                                                                                                                                    if [[ $(( ALPHA + BETA )) != "$SEQUENTIAL" ]]
                                                                                                                                     then
                                                                                                                                         failure 1149448538394568 ALPHA "$ALPHA" BETA "$BETA" SEQUENTIAL "$SEQUENTIAL" "$*"
                                                                                                                                     fi
