@@ -568,7 +568,7 @@
                                                                                                                                                             block --timeout 1 --uuid 5984995243749875 3<&3
                                                                                                                                                             printf -v ALPHA_INDEX "%016d" $(( ALPHA ))
                                                                                                                                                             files \
-                                                                                                                                                                --ceiling "$ALPHA_INDEX" \
+                                                                                                                                                                --ceiling "$ALPHA" \
                                                                                                                                                                 --does-not-exist "/home/${ config.personal.name }/resources/mounts/$ALPHA_INDEX" \
                                                                                                                                                                 --does-not-exist "/home/${ config.personal.name }/resources/release/$ALPHA_INDEX" \
                                                                                                                                                                 --does-not-exist "/home/${ config.personal.name }/resources/invalid-init/$ALPHA_INDEX" \
