@@ -617,7 +617,7 @@
                                                                                                                                                                     # if true ; then exit 0 ; fi
                                                                                                                                                                     files \
                                                                                                                                                                         --equals "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" "$FRESH" \
-                                                                                                                                                                        --not-equals "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" "$STALE" \
+                                                                                                                                                                        --not-equals "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" "$DISTRACTOR" \
                                                                                                                                                                         --directory "$FRESH" \
                                                                                                                                                                         --file "$FRESH/$TARGET" \
                                                                                                                                                                         --executable "/home/${ config.personal.name }/resources/release/$FRESH_INDEX" \
