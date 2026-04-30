@@ -361,7 +361,28 @@
                                                                                                         pkgs.writeShellApplication
                                                                                                             {
                                                                                                                 name = "files" ;
-                                                                                                                runtimeInputs = [ failure pkgs.coreutils pkgs.findutils ] ;
+                                                                                                                runtimeInputs =
+                                                                                                                    [
+                                                                                                                        (
+                                                                                                                            pkgs.writeShellApplication
+                                                                                                                                {
+                                                                                                                                    name = "ceiling" ;
+                                                                                                                                    runtimeInputs = [ failure pkgs.findutils ] ;
+                                                                                                                                    text =
+                                                                                                                                        ''
+                                                                                                                                            ROOT="$1"
+                                                                                                                                            INDEX="$2"
+                                                                                                                                            if [[ -d "$ROOT" ]]
+                                                                                                                                            then
+                                                                                                                                                ZERO="$( find "$ROOT" -type f -mindepth 1 | while read -r FILE ; do if [[ "$FILE" > "$INDEX" ]] || "$FILE" = "$INDEX" ]] ; then echo "$NAME" ; fi ; done )" || failure
+                                                                                                                                            fi
+                                                                                                                                        '' ;
+                                                                                                                                }
+                                                                                                                        )
+                                                                                                                        failure
+                                                                                                                        pkgs.coreutils
+                                                                                                                        pkgs.findutils
+                                                                                                                    ] ;
                                                                                                                 text =
                                                                                                                     ''
                                                                                                                         while [[ "$#" -gt 0 ]]
@@ -383,7 +404,7 @@
                                                                                                                                             then
                                                                                                                                                 failure 5432931755677443 FILE "$FILE" NAME "$NAME" "$*"
                                                                                                                                             fi
-                                                                                                                                        done < <(find /home/${config.personal.name}/mounts -type f -print0)
+                                                                                                                                        done < <( find /home/${config.personal.name}/mounts -type f -print0 )
                                                                                                                                     fi
                                                                                                                                     shift 2
                                                                                                                                     ;;
