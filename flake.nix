@@ -425,7 +425,7 @@
                                                                                                                                     ceiling /home/${ config.personal.name }/release "$ALPHA"
                                                                                                                                     ceiling /home/${ config.personal.name }/invalid-init "$ALPHA"
                                                                                                                                     ceiling /home/${ config.personal.name }/invalid-release "$ALPHA"
-                                                                                                                                    shift 2
+                                                                                                                                    shift 3
                                                                                                                                     ;;
                                                                                                                                 --does-not-exist)
                                                                                                                                     if [[ -e "$2" ]]
