@@ -585,13 +585,13 @@
                                                                                                                                                                         --uuid 6764498451529627
                                                                                                                                                                     echo We created a distractor resource
                                                                                                                                                                     FRESH=${ resources.checks.targets.true.true { failure = 1528926113851339 ; } }
-                                                                                                                                                                    J=$(( ALPHA + 14 ))
+                                                                                                                                                                    J=$(( ALPHA + 6 ))
                                                                                                                                                                     printf -v FRESH_INDEX "%016d" "$J"
                                                                                                                                                                     jq \
                                                                                                                                                                         --null-input \
                                                                                                                                                                         --compact-output \
                                                                                                                                                                         --arg INDEX "$FRESH_INDEX" \
-                                                                                                                                                                        --arg SCRIPT ${ scripts.true.true.init } \
+                                                                                                                                                                        --raw-file SCRIPT ${ scripts.true.true.init } \
                                                                                                                                                                         --arg STANDARD_OUTPUT "$STANDARD_OUTPUT" \
                                                                                                                                                                         --arg TARGET "$TARGET" \
                                                                                                                                                                             '{
