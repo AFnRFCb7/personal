@@ -416,10 +416,13 @@
                                                                                                                                 --ceiling)
                                                                                                                                     ALPHA="$2"
                                                                                                                                     BETA="$3"
+                                                                                                                                    GAMMA=$(( ALPHA + BETA ))
+                                                                                                                                    printf -v GAMMA_PRIME "%016d" "$GAMMA"
                                                                                                                                     SEQUENTIAL="$( cat /home/${ config.personal.name }/resources/sequential/sequential.counter )" || failure 6923965577116329
-                                                                                                                                    if [[ $(( ALPHA + BETA )) != "$SEQUENTIAL" ]]
+                                                                                                                                    printf -v SEQUENTIAL_PRIME "%016d" "$SEQUENTIAL"
+                                                                                                                                    if [[ "$GAMMA_PRIME" != "$SEQUENTIAL" ]]
                                                                                                                                     then
-                                                                                                                                        failure 1149448538394568 ALPHA "$ALPHA" BETA "$BETA" SEQUENTIAL "$SEQUENTIAL" "$*"
+                                                                                                                                        failure 1149448538394568 ALPHA "$ALPHA" BETA "$BETA" GAMMA "$GAMMA" GAMMA_PRIME "$GAMMA_PRIME" SEQUENTIAL "$SEQUENTIAL" SEQUENTIAL "$SEQUENTIAL_PRIME" "$*"
                                                                                                                                     fi
                                                                                                                                     ceiling /home/${ config.personal.name }/mounts "$ALPHA"
                                                                                                                                     ceiling /home/${ config.personal.name }/release "$ALPHA"
