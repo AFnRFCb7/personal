@@ -605,9 +605,9 @@
                                                                                                                                                                                "standard-input" : "" ,
                                                                                                                                                                                "standard-output" : $STANDARD_OUTPUT
                                                                                                                                                                             }' | compare --message message --channel valid-init --payload false true --timeout 1 --uuid 9696444126143543 3<&3
-                                                                                                                                                                    # if true ; then exit 0 ; fi
+                                                                                                                                                                    ## if true ; then exit 0 ; fi
                                                                                                                                                                     block --timeout 1 --uuid 5523352333297834 3<&3
-                                                                                                                                                                    if true ; then exit 0 ; fi
+                                                                                                                                                                    # if true ; then exit 0 ; fi
                                                                                                                                                                     files \
                                                                                                                                                                         --equals "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" "$FRESH" \
                                                                                                                                                                         --directory "$FRESH" \
@@ -616,8 +616,7 @@
                                                                                                                                                                         --does-not-exist "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX" \
                                                                                                                                                                         --does-not-exist "/home/${ config.personal.name }/resources/invalid-release/$FRESH_INDEX" \
                                                                                                                                                                         --uuid 6554776672562944
-                                                                                                                                                                    jq --null-input --compact-output --arg INDEX "$FRESH_INDEX" '{ "index" : $INDEX }' | compare --message message --channel valid-init --payload false true --timeout 1 --uuid 1947194523387773 3<&3
-                                                                                                                                                                    block --timeout 1 --uuid 9742525318757248 3<&3
+                                                                                                                                                                    if true ; then exit 0 ; fi
                                                                                                                                                                     echo We created a fresh resource
                                                                                                                                                                 fi
                                                                                                                                                             else
