@@ -379,7 +379,7 @@
                                                                                                                                         while IFS= read -r -d $'\0' FILE
                                                                                                                                         do
                                                                                                                                             NAME="$( basename "$FILE" )" || failure 2964517676218564
-                                                                                                                                            if [[ "$NAME" >= "$INDEX" ]]
+                                                                                                                                            if [[ "$NAME" \> "$INDEX" ]] || [[ "$NAME" = "$INDEX" ]]
                                                                                                                                             then
                                                                                                                                                 failure 5432931755677443 FILE "$FILE" NAME "$NAME" "$*"
                                                                                                                                             fi
