@@ -420,7 +420,7 @@
                                                                                                                                     printf -v GAMMA_PRIME "%016d" "$GAMMA"
                                                                                                                                     SEQUENTIAL="$( cat /home/${ config.personal.name }/resources/sequential/sequential.counter )" || failure 6923965577116329
                                                                                                                                     printf -v SEQUENTIAL_PRIME "%016d" "$SEQUENTIAL"
-                                                                                                                                    if [[ "$GAMMA_PRIME" != "$SEQUENTIAL" ]]
+                                                                                                                                    if [[ "$GAMMA_PRIME" != "$SEQUENTIAL_PRIME" ]]
                                                                                                                                     then
                                                                                                                                         failure 1149448538394568 ALPHA "$ALPHA" BETA "$BETA" GAMMA "$GAMMA" GAMMA_PRIME "$GAMMA_PRIME" SEQUENTIAL "$SEQUENTIAL" SEQUENTIAL "$SEQUENTIAL_PRIME" "$*"
                                                                                                                                     fi
