@@ -367,6 +367,15 @@
                                                                                                                         while [[ "$#" -gt 0 ]]
                                                                                                                         do
                                                                                                                             case "$1" in
+                                                                                                                                --ceiling)
+                                                                                                                                    INDEX="$2"
+                                                                                                                                    SEQUENTIAL="$( cat /home/${ config.personal.name }/sequential/sequential.counter )" || failure 6923965577116329
+                                                                                                                                    if [[ "$INDEX" != "$SEQUENTIAL" ]]
+                                                                                                                                    then
+                                                                                                                                        failure 1149448538394568 INDEX "$INDEX" SEQUENTIAL "$SEQUENTIAL" "$*"
+                                                                                                                                    fi
+                                                                                                                                    shift 2
+                                                                                                                                    ;;
                                                                                                                                 --does-not-exist)
                                                                                                                                     if [[ -e "$2" ]]
                                                                                                                                     then
@@ -548,6 +557,7 @@
                                                                                                                                                             block --timeout 1 --uuid 5984995243749875 3<&3
                                                                                                                                                             printf -v ALPHA_INDEX "%016d" "$ALPHA"
                                                                                                                                                             files \
+                                                                                                                                                                --ceiling "$ALPHA_INDEX" \
                                                                                                                                                                 --does-not-exist "/home/${ config.personal.name }/resources/mounts/$ALPHA_INDEX" \
                                                                                                                                                                 --does-not-exist "/home/${ config.personal.name }/resources/release/$ALPHA_INDEX" \
                                                                                                                                                                 --does-not-exist "/home/${ config.personal.name }/resources/invalid-init/$ALPHA_INDEX" \
