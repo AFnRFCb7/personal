@@ -418,7 +418,7 @@
                                                                                                                                     BETA="$3"
                                                                                                                                     GAMMA="$4"
                                                                                                                                     DELTA=$(( ALPHA + BETA ))
-                                                                                                                                    EPSILON=$(( DELTA + GAMMA ))
+                                                                                                                                    EPSILON=$(( ALPHA + GAMMA ))
                                                                                                                                     printf -v DELTA_PRIME "%016d" "$DELTA"
                                                                                                                                     printf -v EPSILON_PRIME "%016d" "$EPSILON"
                                                                                                                                     SEQUENTIAL="$( cat /home/${ config.personal.name }/resources/sequential/sequential.counter )" || failure 6923965577116329
