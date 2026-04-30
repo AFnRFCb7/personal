@@ -590,7 +590,7 @@
                                                                                                                                                                         --null-input \
                                                                                                                                                                         --compact-output \
                                                                                                                                                                         --arg INDEX "$FRESH_INDEX" \
-                                                                                                                                                                        --raw-file SCRIPT ${ scripts.true.true.init } \
+                                                                                                                                                                        --rawfile SCRIPT ${ scripts.true.true.init } \
                                                                                                                                                                         --arg STANDARD_OUTPUT "$STANDARD_OUTPUT" \
                                                                                                                                                                         --arg TARGET "$TARGET" \
                                                                                                                                                                             '{
