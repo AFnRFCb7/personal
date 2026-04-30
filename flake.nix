@@ -367,17 +367,38 @@
                                                                                                                             pkgs.writeShellApplication
                                                                                                                                 {
                                                                                                                                     name = "ceiling" ;
-                                                                                                                                    runtimeInputs = [ failure pkgs.findutils ] ;
+                                                                                                                                    runtimeInputs =
+                                                                                                                                        [
+                                                                                                                                            (
+                                                                                                                                                pkgs.writeShellApplication
+                                                                                                                                                    {
+                                                                                                                                                        name = "ceiling" ;
+                                                                                                                                                        runtimeInputs = [ failure pkgs.coreutils ] ;
+                                                                                                                                                        text =
+                                                                                                                                                            ''
+                                                                                                                                                                FILE="$1"
+                                                                                                                                                                INDEX="$2"
+                                                                                                                                                                NAME="$( basename "$FILE" )" || failure 6413594228638844
+                                                                                                                                                                if [[ "$NAME" > "$INDEX" ]] || [[ "$NAME" = "$INDEX" ]]
+                                                                                                                                                                then
+                                                                                                                                                                    echo "$NAME"
+                                                                                                                                                                fi
+                                                                                                                                                            '' ;
+                                                                                                                                                    }
+                                                                                                                                            )
+                                                                                                                                            failure
+                                                                                                                                            pkgs.findutils
+                                                                                                                                        ] ;
                                                                                                                                     text =
                                                                                                                                         ''
                                                                                                                                             ROOT="$1"
                                                                                                                                             INDEX="$2"
                                                                                                                                             if [[ -d "$ROOT" ]]
                                                                                                                                             then
-                                                                                                                                                ZERO="$( find "$ROOT" -type f -mindepth 1 | while read -r FILE ; do NAME="$( basename $FILE" )" || failure 8121844612939793 ; if [[ "$FILE" > "$INDEX" ]] || "$FILE" = "$INDEX" ]] ; then echo "$NAME" ; fi ; done )" || failure 7516122857653918 ROOT "$ROOT" INDEX "$INDEX"
+                                                                                                                                                ZERO="$( find "$ROOT" -type f -mindepth 1 -exec ceiling {} "$INDEX" )" || failure 7516122857653918 ROOT "$ROOT" INDEX "$INDEX"
                                                                                                                                                 if [[ -n "$ZERO" ]]
                                                                                                                                                 then
-                                                                                                                                                    failure 4894458326934832 ROOT "$ROOT" INDEX "$INDEX" ZERO "$ZE8121844612939793RO"
+                                                                                                                                                    failure 4894458326934832 ROOT "$ROOT" INDEX "$INDEX" ZERO "$ZERO"
                                                                                                                                                 fi
                                                                                                                                             fi
                                                                                                                                         '' ;
@@ -399,17 +420,10 @@
                                                                                                                                     then
                                                                                                                                         failure 1149448538394568 INDEX "$INDEX" SEQUENTIAL "$SEQUENTIAL" "$*"
                                                                                                                                     fi
-                                                                                                                                    if [[ -d /home/${ config.personal.name }/mounts ]]
-                                                                                                                                    then
-                                                                                                                                        while IFS= read -r -d $'\0' FILE
-                                                                                                                                        do
-                                                                                                                                            NAME="$( basename "$FILE" )" || failure 2964517676218564
-                                                                                                                                            if [[ "$NAME" > "$INDEX" ]] || [[ "$NAME" = "$INDEX" ]]
-                                                                                                                                            then
-                                                                                                                                                failure 5432931755677443 FILE "$FILE" NAME "$NAME" "$*"
-                                                                                                                                            fi
-                                                                                                                                        done < <( find /home/${config.personal.name}/mounts -type f -print0 )
-                                                                                                                                    fi
+                                                                                                                                    ceiling /home/${ config.personal.name }/mounts "$INDEX"
+                                                                                                                                    ceiling /home/${ config.personal.name }/release "$INDEX"
+                                                                                                                                    ceiling /home/${ config.personal.name }/invalid-init "$INDEX"
+                                                                                                                                    ceiling /home/${ config.personal.name }/invalid-release "$INDEX"
                                                                                                                                     shift 2
                                                                                                                                     ;;
                                                                                                                                 --does-not-exist)
