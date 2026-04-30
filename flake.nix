@@ -638,7 +638,7 @@
                                                                                                                                                                             }' | compare --message message --channel valid-init --payload false true --timeout 1 --uuid 7689926124362862 3<&3
                                                                                                                                                                     block --timeout 1 --uuid 6925921732651899 3<&3
                                                                                                                                                                     files \
-                                                                                                                                                                        --ceiling "$DISTRACTOR" \
+                                                                                                                                                                        --ceiling "$DISTRACTOR_INDEX" \
                                                                                                                                                                         --equals "/home/${ config.personal.name }/resources/mounts/$DISTRACTOR_INDEX" "$DISTRACTOR" \
                                                                                                                                                                         --directory "$DISTRACTOR" \
                                                                                                                                                                         --file "$DISTRACTOR/$TARGET" \
@@ -669,8 +669,8 @@
                                                                                                                                                                                "standard-output" : $STANDARD_OUTPUT
                                                                                                                                                                             }' | compare --message message --channel valid-init --payload false true --timeout 1 --uuid 9696444126143543 3<&3
                                                                                                                                                                     block --timeout 1 --uuid 5523352333297834 3<&3
-                                                                                                                                                                    ## if true ; then exit 0 ; fi
                                                                                                                                                                     files \
+                                                                                                                                                                        --ceiling "$FRESH_INDEX" \
                                                                                                                                                                         --equals "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" "$FRESH" \
                                                                                                                                                                         --not-equals "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" "$DISTRACTOR" \
                                                                                                                                                                         --directory "$FRESH" \
@@ -679,7 +679,6 @@
                                                                                                                                                                         --does-not-exist "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX" \
                                                                                                                                                                         --does-not-exist "/home/${ config.personal.name }/resources/invalid-release/$FRESH_INDEX" \
                                                                                                                                                                         --uuid 6554776672562944
-                                                                                                                                                                    # if true ; then exit 0 ; fi
                                                                                                                                                                     echo We created a fresh resource
                                                                                                                                                                 fi
                                                                                                                                                             else
