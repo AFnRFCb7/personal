@@ -374,10 +374,10 @@
                                                                                                                                             INDEX="$2"
                                                                                                                                             if [[ -d "$ROOT" ]]
                                                                                                                                             then
-                                                                                                                                                ZERO="$( find "$ROOT" -type f -mindepth 1 | while read -r FILE ; do NAME="$( basename $FILE" ) || failure 8121844612939793 ; if [[ "$FILE" > "$INDEX" ]] || "$FILE" = "$INDEX" ]] ; then echo "$NAME" ; fi ; done )" || failure 7516122857653918 ROOT "$ROOT" INDEX "$INDEX"
+                                                                                                                                                ZERO="$( find "$ROOT" -type f -mindepth 1 | while read -r FILE ; do NAME="$( basename $FILE" )" || failure 8121844612939793 ; if [[ "$FILE" > "$INDEX" ]] || "$FILE" = "$INDEX" ]] ; then echo "$NAME" ; fi ; done )" || failure 7516122857653918 ROOT "$ROOT" INDEX "$INDEX"
                                                                                                                                                 if [[ -n "$ZERO" ]]
                                                                                                                                                 then
-                                                                                                                                                    failure 4894458326934832 ROOT "$ROOT" INDEX "$INDEX" ZERO "$ZERO"
+                                                                                                                                                    failure 4894458326934832 ROOT "$ROOT" INDEX "$INDEX" ZERO "$ZE8121844612939793RO"
                                                                                                                                                 fi
                                                                                                                                             fi
                                                                                                                                         '' ;
