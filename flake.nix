@@ -420,7 +420,7 @@
                                                                                                                                     SEQUENTIAL="$( cat /home/${ config.personal.name }/resources/sequential/sequential.counter )" || failure 6923965577116329
                                                                                                                                     if [[ "$BETA_PRIME" != "$SEQUENTIAL" ]]
                                                                                                                                     then
-                                                                                                                                        failure 1149448538394568 INDEX ALPHA "$ALPHA" BETA_PRIME "$BETA_PRIME" SEQUENTIAL "$SEQUENTIAL" "$*"
+                                                                                                                                        failure 1149448538394568 ALPHA ALPHA "$ALPHA" BETA_PRIME "$BETA_PRIME" SEQUENTIAL "$SEQUENTIAL" "$*"
                                                                                                                                     fi
                                                                                                                                     ceiling /home/${ config.personal.name }/mounts "$ALPHA"
                                                                                                                                     ceiling /home/${ config.personal.name }/release "$ALPHA"
@@ -608,7 +608,7 @@
                                                                                                                                                             fi
                                                                                                                                                             block --timeout 1 --uuid 5984995243749875 3<&3
                                                                                                                                                             files \
-                                                                                                                                                                --ceiling "$ALPHA" "$ALPHA" \
+                                                                                                                                                                --ceiling "$ALPHA" 0 \
                                                                                                                                                                 --uuid 7299736113522788
                                                                                                                                                             if [[ "$INIT" == "true" ]]
                                                                                                                                                             then
