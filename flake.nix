@@ -605,7 +605,6 @@
                                                                                                                                                                 failure 4957596197169642
                                                                                                                                                             fi
                                                                                                                                                             block --timeout 1 --uuid 5984995243749875 3<&3
-                                                                                                                                                            printf -v ALPHA_INDEX "%016d" $(( ALPHA ))
                                                                                                                                                             files \
                                                                                                                                                                 --ceiling "$ALPHA"
                                                                                                                                                                 --uuid 7299736113522788
