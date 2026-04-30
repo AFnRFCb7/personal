@@ -374,6 +374,17 @@
                                                                                                                                     then
                                                                                                                                         failure 1149448538394568 INDEX "$INDEX" SEQUENTIAL "$SEQUENTIAL" "$*"
                                                                                                                                     fi
+                                                                                                                                    if [[ -d /home/${ config.personal.name }/mounts ]]
+                                                                                                                                    then
+                                                                                                                                        while IFS= read -r -d $'\0' FILE
+                                                                                                                                        do
+                                                                                                                                            NAME="$( basename "$FILE" )" || failure 2964517676218564
+                                                                                                                                            if [[ "$NAME" >= "$INDEX" ]]
+                                                                                                                                            then
+                                                                                                                                                failure 5432931755677443 FILE "$FILE" NAME "$NAME" "$*"
+                                                                                                                                            fi
+                                                                                                                                        done < <(find /home/${config.personal.name}/mounts -type f -print0)
+                                                                                                                                    fi
                                                                                                                                     shift 2
                                                                                                                                     ;;
                                                                                                                                 --does-not-exist)
@@ -555,7 +566,7 @@
                                                                                                                                                                 failure 4957596197169642
                                                                                                                                                             fi
                                                                                                                                                             block --timeout 1 --uuid 5984995243749875 3<&3
-                                                                                                                                                            printf -v ALPHA_INDEX "%016d" "$ALPHA"
+                                                                                                                                                            printf -v ALPHA_INDEX "%016d" $(( ALPHA ))
                                                                                                                                                             files \
                                                                                                                                                                 --ceiling "$ALPHA_INDEX" \
                                                                                                                                                                 --does-not-exist "/home/${ config.personal.name }/resources/mounts/$ALPHA_INDEX" \
@@ -568,7 +579,7 @@
                                                                                                                                                                 if [[ "$RELEASE" == "true" ]]
                                                                                                                                                                 then
                                                                                                                                                                     DISTRACTOR=${ resources.checks.targets.true.true { failure = 8829996994479772 ; setup = setup : ''${ setup } 3564731485791737'' ; } }
-                                                                                                                                                                    printf -v DISTRACTOR_INDEX "%016d" "$ALPHA"
+                                                                                                                                                                    printf -v DISTRACTOR_INDEX "%016d" $(( ALPHA + 2 ))
                                                                                                                                                                     STANDARD_OUTPUT=5175697994459272
                                                                                                                                                                     TARGET=2862437261978116
                                                                                                                                                                     jq \
@@ -602,7 +613,7 @@
                                                                                                                                                                         --uuid 6764498451529627
                                                                                                                                                                     echo We created a distractor resource
                                                                                                                                                                     FRESH=${ resources.checks.targets.true.true { failure = 1528926113851339 ; } }
-                                                                                                                                                                    printf -v FRESH_INDEX "%016d" $(( ALPHA + 6 ))
+                                                                                                                                                                    printf -v FRESH_INDEX "%016d" $(( ALPHA + 8 ))
                                                                                                                                                                     jq \
                                                                                                                                                                         --null-input \
                                                                                                                                                                         --compact-output \
@@ -682,17 +693,14 @@
                                                                                                                                     failure 9276983686635566
                                                                                                                                 fi
                                                                                                                                 block --timeout 1 --uuid 4899964636364281 3<&3
-                                                                                                                                printf -v ALPHA_INDEX "%016d" "$ALPHA"
-                                                                                                                                ## if true ; then exit 0 ; fi
+                                                                                                                                printf -v ALPHA_INDEX "%016d" $(( ALPHA ))
                                                                                                                                 files \
                                                                                                                                     --does-not-exist "/home/${ config.personal.name }/resources/mounts/$ALPHA_INDEX" \
                                                                                                                                     --does-not-exist "/home/${ config.personal.name }/resources/release/$ALPHA_INDEX" \
                                                                                                                                     --does-not-exist "/home/${ config.personal.name }/resources/invalid-init/$ALPHA_INDEX" \
                                                                                                                                     --does-not-exist "/home/${ config.personal.name }/resources/invalid-release/$ALPHA_INDEX" \
                                                                                                                                     --uuid 1289673385791639
-                                                                                                                                # if true ; then exit 0 ; fi
                                                                                                                                 exec 3< <( timeout 1m redis-cli SUBSCRIBE invalid-init invalid-release stale-init valid-init valid-release )
-                                                                                                                                # if true ; then exit 0 ; fi
                                                                                                                                 compare --message subscribe --channel invalid-init --payload 1 false --timeout 1 --uuid 3376489199378444 3<&3
                                                                                                                                 compare --message subscribe --channel invalid-release --payload 2 false --timeout 1 --uuid 2339378822363186 3<&3
                                                                                                                                 compare --message subscribe --channel stale-init --payload  3 false --timeout 1 --uuid 3319464677934952 3<&3
@@ -4646,7 +4654,7 @@
                                                                                 text =
                                                                                     ''
                                                                                         SCRIPT="$( resource --resource '["checks","script"]' )"
-                                                                                        timeout 1m "$SCRIPT/test" --alpha 8 --init false --release false
+                                                                                        timeout 1m "$SCRIPT/test" --alpha 6 --init false --release false
                                                                                     '' ;
                                                                             } ;
                                                                     in "${ application }/bin/test" ;
@@ -4674,7 +4682,7 @@
                                                                                 text =
                                                                                     ''
                                                                                         SCRIPT="$( resource --resource '["checks","script"]' )"
-                                                                                        timeout 1m "$SCRIPT/test" --alpha 8 --init false --release true
+                                                                                        timeout 1m "$SCRIPT/test" --alpha 6 --init false --release true
                                                                                     '' ;
                                                                             } ;
                                                                     in "${ application }/bin/test" ;
@@ -4702,7 +4710,7 @@
 #                                                                                text =
 #                                                                                    ''
 #                                                                                        SCRIPT="$( resource --resource '["checks","script"]' )"
-#                                                                                        timeout 1m "$SCRIPT/test" --alpha 8 --init true --release false
+#                                                                                        timeout 1m "$SCRIPT/test" --alpha 6 --init true --release false
 #                                                                                    '' ;
 #                                                                            } ;
 #                                                                    in "${ application }/bin/test" ;
@@ -4730,7 +4738,7 @@
                                                                                 text =
                                                                                     ''
                                                                                         SCRIPT="$( resource --resource '["checks","script"]' )"
-                                                                                        timeout 1m "$SCRIPT/test" --alpha 8 --init true --release true
+                                                                                        timeout 1m "$SCRIPT/test" --alpha 6 --init true --release true
                                                                                         echo 1863491612796318 300 >&2
                                                                                     '' ;
                                                                             } ;
