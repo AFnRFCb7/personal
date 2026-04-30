@@ -585,8 +585,7 @@
                                                                                                                                                                         --uuid 6764498451529627
                                                                                                                                                                     echo We created a distractor resource
                                                                                                                                                                     FRESH=${ resources.checks.targets.true.true { failure = 1528926113851339 ; } }
-                                                                                                                                                                    J=$(( ALPHA + 6 ))
-                                                                                                                                                                    printf -v FRESH_INDEX "%016d" "$J"
+                                                                                                                                                                    printf -v FRESH_INDEX "%016d" $(( ALPHA + 6 ))
                                                                                                                                                                     jq \
                                                                                                                                                                         --null-input \
                                                                                                                                                                         --compact-output \
