@@ -361,7 +361,7 @@
                                                                                                         pkgs.writeShellApplication
                                                                                                             {
                                                                                                                 name = "files" ;
-                                                                                                                runtimeInputs = [ failure pkgs.coreutils ] ;
+                                                                                                                runtimeInputs = [ failure pkgs.coreutils pkgs.findutils ] ;
                                                                                                                 text =
                                                                                                                     ''
                                                                                                                         while [[ "$#" -gt 0 ]]
