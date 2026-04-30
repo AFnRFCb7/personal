@@ -416,18 +416,21 @@
                                                                                                                                 --ceiling)
                                                                                                                                     ALPHA="$2"
                                                                                                                                     BETA="$3"
-                                                                                                                                    GAMMA=$(( ALPHA + BETA ))
-                                                                                                                                    printf -v GAMMA_PRIME "%016d" "$GAMMA"
+                                                                                                                                    GAMMA="$4"
+                                                                                                                                    DELTA=$(( ALPHA + BETA ))
+                                                                                                                                    EPSILON=$(( DELTA + GAMMA ))
+                                                                                                                                    printf -v DELTA_PRIME "%016d" "$DELTA"
+                                                                                                                                    printf -v EPSILON_PRIME "%016d" "$EPSILON"
                                                                                                                                     SEQUENTIAL="$( cat /home/${ config.personal.name }/resources/sequential/sequential.counter )" || failure 6923965577116329
                                                                                                                                     printf -v SEQUENTIAL_PRIME "%016d" "$SEQUENTIAL"
-                                                                                                                                    if [[ "$GAMMA_PRIME" != "$SEQUENTIAL_PRIME" ]]
+                                                                                                                                    if [[ "$EPSILON_PRIME" != "$SEQUENTIAL_PRIME" ]]
                                                                                                                                     then
-                                                                                                                                        failure 1149448538394568 ALPHA "$ALPHA" BETA "$BETA" GAMMA "$GAMMA" GAMMA_PRIME "$GAMMA_PRIME" SEQUENTIAL "$SEQUENTIAL" SEQUENTIAL "$SEQUENTIAL_PRIME" "$*"
+                                                                                                                                        failure 1149448538394568 ALPHA "$ALPHA" BETA "$BETA" GAMMA "$GAMMA" DELTA "$DELTA" EPSILON "$EPSILON" DELTA_PRIME "$DELTA_PRIME" EPSILON_PRIME "$EPSILON_PRIME" SEQUENTIAL "$SEQUENTIAL" SEQUENTIAL "$SEQUENTIAL_PRIME" "$*"
                                                                                                                                     fi
-                                                                                                                                    ceiling /home/${ config.personal.name }/mounts "$ALPHA"
-                                                                                                                                    ceiling /home/${ config.personal.name }/release "$ALPHA"
-                                                                                                                                    ceiling /home/${ config.personal.name }/invalid-init "$ALPHA"
-                                                                                                                                    ceiling /home/${ config.personal.name }/invalid-release "$ALPHA"
+                                                                                                                                    ceiling /home/${ config.personal.name }/mounts "$DELTA_PRIME"
+                                                                                                                                    ceiling /home/${ config.personal.name }/release "$DELTA_PRIME"
+                                                                                                                                    ceiling /home/${ config.personal.name }/invalid-init "$DELTA_PRIME"
+                                                                                                                                    ceiling /home/${ config.personal.name }/invalid-release "$DELTA_PRIME"
                                                                                                                                     shift 3
                                                                                                                                     ;;
                                                                                                                                 --does-not-exist)
@@ -610,7 +613,7 @@
                                                                                                                                                             fi
                                                                                                                                                             block --timeout 1 --uuid 5984995243749875 3<&3
                                                                                                                                                             files \
-                                                                                                                                                                --ceiling "$ALPHA" 0 \
+                                                                                                                                                                --ceiling "$ALPHA" 0 0 \
                                                                                                                                                                 --uuid 7299736113522788
                                                                                                                                                             if [[ "$INIT" == "true" ]]
                                                                                                                                                             then
@@ -642,7 +645,7 @@
                                                                                                                                                                             }' | compare --message message --channel valid-init --payload false true --timeout 1 --uuid 7689926124362862 3<&3
                                                                                                                                                                     block --timeout 1 --uuid 6925921732651899 3<&3
                                                                                                                                                                     files \
-                                                                                                                                                                        --ceiling "$DISTRACTOR_INDEX" $(( ALPHA + 6 )) \
+                                                                                                                                                                        --ceiling "$ALPHA" 2 6 \
                                                                                                                                                                         --equals "/home/${ config.personal.name }/resources/mounts/$DISTRACTOR_INDEX" "$DISTRACTOR" \
                                                                                                                                                                         --directory "$DISTRACTOR" \
                                                                                                                                                                         --file "$DISTRACTOR/$TARGET" \
@@ -674,7 +677,7 @@
                                                                                                                                                                             }' | compare --message message --channel valid-init --payload false true --timeout 1 --uuid 9696444126143543 3<&3
                                                                                                                                                                     block --timeout 1 --uuid 5523352333297834 3<&3
                                                                                                                                                                     files \
-                                                                                                                                                                        --ceiling "$FRESH_INDEX" $(( ALPHA + 6 )) \
+                                                                                                                                                                        --ceiling "$ALPHA" 8 6 \
                                                                                                                                                                         --equals "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" "$FRESH" \
                                                                                                                                                                         --not-equals "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" "$DISTRACTOR" \
                                                                                                                                                                         --directory "$FRESH" \
