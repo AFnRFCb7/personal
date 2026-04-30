@@ -367,6 +367,20 @@
                                                                                                                         while [[ "$#" -gt 0 ]]
                                                                                                                         do
                                                                                                                             case "$1" in
+                                                                                                                                --does-not-exist)
+                                                                                                                                    if [[ -e "$2" ]]
+                                                                                                                                    then
+                                                                                                                                        failure  3686358689564748 "$*"
+                                                                                                                                    fi
+                                                                                                                                    shift 2
+                                                                                                                                    ;;
+                                                                                                                                --equals)
+                                                                                                                                    if [[ "$2" != "$3" ]]
+                                                                                                                                    then
+                                                                                                                                        failure 4889758824445288 "$*"
+                                                                                                                                    fi
+                                                                                                                                    shift 3
+                                                                                                                                    ;;
                                                                                                                                 --executable)
                                                                                                                                     if [[ ! -x "$2" ]]
                                                                                                                                     then
@@ -388,19 +402,12 @@
                                                                                                                                     fi
                                                                                                                                     shift 2
                                                                                                                                         ;;
-                                                                                                                                --equals)
-                                                                                                                                    if [[ "$2" != "$3" ]]
+                                                                                                                                --not-equals)
+                                                                                                                                    if [[ "$2" == "$3" ]]
                                                                                                                                     then
-                                                                                                                                        failure 4889758824445288 "$*"
+                                                                                                                                        failure 9371313715938914 "$*"
                                                                                                                                     fi
                                                                                                                                     shift 3
-                                                                                                                                    ;;
-                                                                                                                                --does-not-exist)
-                                                                                                                                    if [[ -e "$2" ]]
-                                                                                                                                    then
-                                                                                                                                        failure  3686358689564748 "$*"
-                                                                                                                                    fi
-                                                                                                                                    shift 2
                                                                                                                                     ;;
                                                                                                                                 --uuid)
                                                                                                                                     shift 2
@@ -610,6 +617,7 @@
                                                                                                                                                                     # if true ; then exit 0 ; fi
                                                                                                                                                                     files \
                                                                                                                                                                         --equals "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" "$FRESH" \
+                                                                                                                                                                        --not-equals "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" "$STALE" \
                                                                                                                                                                         --directory "$FRESH" \
                                                                                                                                                                         --file "$FRESH/$TARGET" \
                                                                                                                                                                         --executable "/home/${ config.personal.name }/resources/release/$FRESH_INDEX" \
