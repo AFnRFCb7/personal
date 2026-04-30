@@ -416,11 +416,10 @@
                                                                                                                                 --ceiling)
                                                                                                                                     ALPHA="$2"
                                                                                                                                     BETA="$3"
-                                                                                                                                    printf -v BETA_PRIME "%016d" $(( ALPHA + BETA ))
                                                                                                                                     SEQUENTIAL="$( cat /home/${ config.personal.name }/resources/sequential/sequential.counter )" || failure 6923965577116329
-                                                                                                                                    if [[ "$BETA_PRIME" != "$SEQUENTIAL" ]]
+                                                                                                                                    if [[ "$BETA" != "$SEQUENTIAL" ]]
                                                                                                                                     then
-                                                                                                                                        failure 1149448538394568 ALPHA ALPHA "$ALPHA" BETA_PRIME "$BETA_PRIME" SEQUENTIAL "$SEQUENTIAL" "$*"
+                                                                                                                                        failure 1149448538394568 ALPHA "$ALPHA" BETA "$BETA" SEQUENTIAL "$SEQUENTIAL" "$*"
                                                                                                                                     fi
                                                                                                                                     ceiling /home/${ config.personal.name }/mounts "$ALPHA"
                                                                                                                                     ceiling /home/${ config.personal.name }/release "$ALPHA"
