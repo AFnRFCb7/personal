@@ -415,6 +415,7 @@
                                                                                                                     ''
                                                                                                                         while [[ "$#" -gt 0 ]]
                                                                                                                         do
+                                                                                                                            echo 7521793223743459 "$@" >&2
                                                                                                                             case "$1" in
                                                                                                                                 --ceiling)
                                                                                                                                     ALPHA="$2"
@@ -648,7 +649,7 @@
                                                                                                                                                                                "standard-output" : $STANDARD_OUTPUT ,
                                                                                                                                                                             }' | compare --message message --channel valid-init --payload false true --timeout 1 --uuid 7689926124362862 3<&3
                                                                                                                                                                     block --timeout 1 --uuid 6925921732651899 3<&3
-                                                                                                                                                                    if true ; then exit 0 ; fi
+                                                                                                                                                                    ### if true ; then exit 0 ; fi
                                                                                                                                                                     files \
                                                                                                                                                                         --ceiling "$ALPHA" 2 6 \
                                                                                                                                                                         --equals "/home/${ config.personal.name }/resources/mounts/$DISTRACTOR_INDEX" "$DISTRACTOR" \
@@ -658,7 +659,7 @@
                                                                                                                                                                         --does-not-exist "/home/${ config.personal.name }/resources/invalid-init/$DISTRACTOR_INDEX" \
                                                                                                                                                                         --does-not-exist "/home/${ config.personal.name }/resources/invalid-release/$DISTRACTOR_INDEX" \
                                                                                                                                                                         --uuid 6764498451529627
-                                                                                                                                                                    ### if true ; then exit 0 ; fi
+                                                                                                                                                                    if true ; then exit 0 ; fi
                                                                                                                                                                     echo We created a distractor resource
                                                                                                                                                                     if true ; then exit 0 ; fi
                                                                                                                                                                     FRESH=${ resources.checks.targets.true.true { failure = 1528926113851339 ; } }
