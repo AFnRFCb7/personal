@@ -703,6 +703,18 @@
                                                                                                                                                                                "index" : $INDEX ,
                                                                                                                                                                                "seed" : [ "checks" , "targets" , "true" , "true" ] ,
                                                                                                                                                                                "targets" : [ $TARGET ]
+                                                                                                                                                                            }' >&2
+                                                                                                                                                                    jq \
+                                                                                                                                                                        --null-input \
+                                                                                                                                                                        --compact-output \
+                                                                                                                                                                        --arg INDEX "$FRESH_INDEX" \
+                                                                                                                                                                        --arg TARGET "$TARGET" \
+                                                                                                                                                                            '{
+                                                                                                                                                                               "arguments" : [ ] ,
+                                                                                                                                                                               "has-standard-input" : false ,
+                                                                                                                                                                               "index" : $INDEX ,
+                                                                                                                                                                               "seed" : [ "checks" , "targets" , "true" , "true" ] ,
+                                                                                                                                                                               "targets" : [ $TARGET ]
                                                                                                                                                                             }' | compare --message message --channel stale-init --payload false true --timeout 1 --uuid 9696444126143543 3<&3
                                                                                                                                                                     if true ; then exit 0 ; fi
                                                                                                                                                                     block --timeout 1 --uuid 1128612887735568 3<&3
