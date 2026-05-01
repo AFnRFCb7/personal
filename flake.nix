@@ -713,7 +713,7 @@
                                                                                                                                                                         --uuid 6764498451529627
                                                                                                                                                                     # if true ; then exit 0 ; fi
                                                                                                                                                                     echo We created a distractor resource
-                                                                                                                                                                    if true ; then exit 0 ; fi
+                                                                                                                                                                    # if true ; then exit 0 ; fi
                                                                                                                                                                     FRESH=${ resources.checks.targets.true.true { failure = 1528926113851339 ; } }
                                                                                                                                                                     printf -v FRESH_INDEX "%016d" $(( ALPHA + 8 ))
                                                                                                                                                                     jq \
