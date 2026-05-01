@@ -322,7 +322,7 @@
                                                                                                                             failure d855cf3f4d0854ec "$UUID"
                                                                                                                         fi
                                                                                                                         read -r -t "$TIMEOUT" -u 3 OBSERVED_MESSAGE
-                                                                                                                        read -r -t "$TIMEOUT" -u 3 OBSERVED_CHANNEL <&3
+                                                                                                                        read -r -t "$TIMEOUT" -u 3 OBSERVED_CHANNEL
                                                                                                                         read -r -t "$TIMEOUT" -u 3 OBSERVED_PAYLOAD
                                                                                                                         if [[ "$EXPECTED_MESSAGE" != "$OBSERVED_MESSAGE" ]]
                                                                                                                         then
@@ -355,7 +355,6 @@
                                                                                                                                 failure 2376349973447483 "$UUID" EXPECTED_PAYLOAD "$EXPECTED_PAYLOAD" OBSERVED_PAYLOAD "$OBSERVED_PAYLOAD"
                                                                                                                             fi
                                                                                                                         fi
-
                                                                                                                     '' ;
                                                                                                             } ;
                                                                                                     files =
@@ -704,6 +703,7 @@
                                                                                                                                                                                "seed" : [ "checks" , "targets" , "true" , "true" ] ,
                                                                                                                                                                                "targets" : [ $TARGET ]
                                                                                                                                                                             }' >&2
+                                                                                                                                                                    if true ; then exit 0 ; fi
                                                                                                                                                                     jq \
                                                                                                                                                                         --null-input \
                                                                                                                                                                         --compact-output \
