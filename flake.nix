@@ -622,8 +622,9 @@
                                                                                                                                                             then
                                                                                                                                                                 if [[ "$RELEASE" == "true" ]]
                                                                                                                                                                 then
-                                                                                                                                                                    if true ; then exit 0 ; fi
+                                                                                                                                                                    # if true ; then exit 0 ; fi
                                                                                                                                                                     DISTRACTOR=${ resources.checks.targets.true.true { failure = 8829996994479772 ; setup = setup : ''${ setup } 3564731485791737'' ; } }
+                                                                                                                                                                    if true ; then exit 0 ; fi
                                                                                                                                                                     printf -v DISTRACTOR_INDEX "%016d" $(( ALPHA + 2 ))
                                                                                                                                                                     STANDARD_OUTPUT=5175697994459272
                                                                                                                                                                     TARGET=2862437261978116
