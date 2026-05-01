@@ -714,7 +714,7 @@
                                                                                                                                                                     echo We created a distractor resource
                                                                                                                                                                     echo 7614675314761742 "$0" >&2
                                                                                                                                                                     FRESH=${ resources.checks.targets.true.true { failure = 1891569344331285 ; } }
-                                                                                                                                                                    printf -v FRESH_INDEX "%016d" $(( ALPHA + 2 ))
+                                                                                                                                                                    printf -v FRESH_INDEX "%016d" $(( ALPHA + 8 ))
                                                                                                                                                                     jq \
                                                                                                                                                                         --null-input \
                                                                                                                                                                         --compact-output \
