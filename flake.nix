@@ -690,7 +690,6 @@
                                                                                                                                                                         --uuid 6554776672562944
                                                                                                                                                                     echo We created a fresh resource
                                                                                                                                                                     STALE=${ resources.checks.targets.true.true { failure = 2464995515661662 ; } }
-                                                                                                                                                                    # if true ; then exit 0 ; fi
                                                                                                                                                                     jq \
                                                                                                                                                                         --null-input \
                                                                                                                                                                         --compact-output \
@@ -703,7 +702,7 @@
                                                                                                                                                                                "seed" : [ "checks" , "targets" , "true" , "true" ] ,
                                                                                                                                                                                "targets" : [ $TARGET ]
                                                                                                                                                                             }' >&2
-                                                                                                                                                                    if true ; then exit 0 ; fi
+                                                                                                                                                                    # if true ; then exit 0 ; fi
                                                                                                                                                                     jq \
                                                                                                                                                                         --null-input \
                                                                                                                                                                         --compact-output \
