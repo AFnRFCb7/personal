@@ -334,7 +334,7 @@
                                                                                                                         fi
                                                                                                                         if [[ "$PAYLOAD_IS_JSON" == "true" ]]
                                                                                                                         then
-                                                                                                                            if true ; then exit 0 ; fi
+                                                                                                                            if true ;Fdr then exit 0 ; fi
                                                                                                                             EXPECTED_PAYLOAD="$( cat )" || failure 1393872535428486
                                                                                                                             if [[ "$EXPECTED_PAYLOAD" != "$OBSERVED_PAYLOAD" ]]
                                                                                                                             then
@@ -3385,15 +3385,10 @@
                                                                                                                     '' ;
                                                                                                             in
                                                                                                                 ''
-                                                                                                                    trace 22520
                                                                                                                     GITHUB_CONTROL_PATH=${ resources.production.dot-ssh.control-path.github { failure = 12555 ; } }
-                                                                                                                    trace 25834 "GITHUB_CONTROL_PATH=$GITHUB_CONTROL_PATH"
                                                                                                                     gc-root "$GITHUB_CONTROL_PATH"
-                                                                                                                    trace 27831
                                                                                                                     export GITHUB_CONTROL_PATH
-                                                                                                                    trace 32106
                                                                                                                     GITHUB_IDENTITY_RESOURCE=${ resources.production.age.plaintext.dot-ssh.github.identity { failure = 21662 ; } }
-                                                                                                                    trace 7105
                                                                                                                     gc-root "$GITHUB_IDENTITY_RESOURCE"
                                                                                                                     export GITHUB_IDENTITY_FILE="$GITHUB_IDENTITY_RESOURCE/plaintext"
                                                                                                                     GITHUB_KNOWN_RESOURCE=${ resources.production.age.plaintext.dot-ssh.github.known-hosts { failure = 15323 ; } }
@@ -3749,7 +3744,6 @@
                                                                                                         ''
                                                                                                             echo -en "$1" > /mount/holder
                                                                                                             chmod 0400 /mount/holder
-                                                                                                            trace 23398 "INDEX=$INDEX"
                                                                                                         '' ;
                                                                                                 } ;
                                                                                     in ''${ application }/bin/init "${ builtins.concatStringsSep "" [ "$" "{" "@:-" "}" ] }"'' ;
@@ -4599,7 +4593,7 @@
                                                             resources-directory = "/build/resources" ;
                                                         } ;
                                                 in
-                                                    factory.check { expected = "/nix/store/drmjny88zybjhhyav7lghyps3ci8fxfs-setup/bin/setup" ; mkDerivation = pkgs.stdenv.mkDerivation ; } ;
+                                                    factory.check { expected = "/nix/store/xc3cq3fa8j8y6bsjxb74saw0xh139vg8-setup/bin/setup" ; mkDerivation = pkgs.stdenv.mkDerivation ; } ;
 #                                        resource-false-false =
 #                                            pkgs.nixosTest
 #                                                {
