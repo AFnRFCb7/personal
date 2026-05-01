@@ -418,6 +418,10 @@
                                                                                                                             echo 7521793223743459 "$@" >&2
                                                                                                                             case "$1" in
                                                                                                                                 --ceiling)
+                                                                                                                                    if [[ "$#" -lt 4 ]]
+                                                                                                                                    then
+                                                                                                                                        failure 6245698427752989 "$*"
+                                                                                                                                    fi
                                                                                                                                     ALPHA="$2"
                                                                                                                                     BETA="$3"
                                                                                                                                     GAMMA="$4"
