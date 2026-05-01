@@ -473,6 +473,7 @@
                                                                                                                                         failure 1578895953757495 "$*"
                                                                                                                                     fi
                                                                                                                                     shift 2
+                                                                                                                                    shift 2
                                                                                                                                     ;;
                                                                                                                                 --file)
                                                                                                                                     if [[ "$#" -lt 2 ]]
@@ -518,6 +519,7 @@
                                                                                                                                     failure 6712481499337853 "$*"
                                                                                                                                     ;;
                                                                                                                             esac
+                                                                                                                            echo 9665836875358839 "$@" >&2
                                                                                                                         done
                                                                                                                     '' ;
                                                                                                             } ;
@@ -607,10 +609,18 @@
                                                                                                                                                             do
                                                                                                                                                                 case "$1" in
                                                                                                                                                                     --alpha)
+                                                                                                                                                                        if [[ "$#" -lt 2 ]]
+                                                                                                                                                                        then
+                                                                                                                                                                            failure 3253579886131153 "$*"
+                                                                                                                                                                        fi
                                                                                                                                                                         ALPHA="$2"
                                                                                                                                                                         shift 2
                                                                                                                                                                         ;;
                                                                                                                                                                     --init)
+                                                                                                                                                                        if [[ "$#" -lt 2 ]]
+                                                                                                                                                                        then
+                                                                                                                                                                            failure 7356781469476321 "$*"
+                                                                                                                                                                        fi
                                                                                                                                                                         INIT="$2"
                                                                                                                                                                         if [[ "$INIT" != "true" ]] && [[ "$INIT" != "false" ]]
                                                                                                                                                                         then
@@ -619,6 +629,10 @@
                                                                                                                                                                         shift 2
                                                                                                                                                                         ;;
                                                                                                                                                                     --release)
+                                                                                                                                                                        if [[ "$#" -lt 2 ]]
+                                                                                                                                                                        then
+                                                                                                                                                                            failure 6729112877839317 "$*"
+                                                                                                                                                                        fi
                                                                                                                                                                         RELEASE="$2"
                                                                                                                                                                         if [[ "$RELEASE" != "true" ]] && [[ "$RELEASE" != "false" ]]
                                                                                                                                                                         then
@@ -626,6 +640,12 @@
                                                                                                                                                                         fi
                                                                                                                                                                         shift 2
                                                                                                                                                                         ;;
+                                                                                                                                                                    --uuid)
+                                                                                                                                                                        if [[ "$#" -lt 2 ]]
+                                                                                                                                                                        then
+                                                                                                                                                                            failure 6293418861389592 "$*"
+                                                                                                                                                                        fi
+                                                                                                                                                                        shift 2
                                                                                                                                                                     *)
                                                                                                                                                                         failure 3186874731515892 "$*"
                                                                                                                                                                         ;;
@@ -835,7 +855,7 @@
                                                                                                                                     --does-not-exist "/home/${ config.personal.name }/resources/invalid-init/$ALPHA_INDEX" \
                                                                                                                                     --does-not-exist "/home/${ config.personal.name }/resources/invalid-release/$ALPHA_INDEX" \
                                                                                                                                     --uuid 1289673385791639
-                                                                                                                                pre-test --alpha "$ALPHA" --init "$INIT" --release "$RELEASE" 3<&3
+                                                                                                                                pre-test --alpha "$ALPHA" --init "$INIT" --release "$RELEASE" --uuid 3316116883378534 3<&3
                                                                                                                             '' ;
                                                                                                                     } ;
                                                                                                             in "${ application }/bin/post-test" ;
