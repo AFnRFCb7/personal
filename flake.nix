@@ -690,14 +690,12 @@
                                                                                                                                                                         --does-not-exist "/home/${ config.personal.name }/resources/invalid-release/$FRESH_INDEX" \
                                                                                                                                                                         --uuid 6554776672562944
                                                                                                                                                                     echo We created a fresh resource
-                                                                                                                                                                    if true ; then exit 0 ; fi
                                                                                                                                                                     STALE=${ resources.checks.targets.true.true { failure = 2464995515661662 ; } }
+                                                                                                                                                                    if true ; then exit 0 ; fi
                                                                                                                                                                     jq \
                                                                                                                                                                         --null-input \
                                                                                                                                                                         --compact-output \
                                                                                                                                                                         --arg INDEX "$FRESH_INDEX" \
-                                                                                                                                                                        --rawfile SCRIPT ${ scripts.true.true.init } \
-                                                                                                                                                                        --arg STANDARD_OUTPUT "$STANDARD_OUTPUT" \
                                                                                                                                                                         --arg TARGET "$TARGET" \
                                                                                                                                                                             '{
                                                                                                                                                                                "arguments" : [ ] ,
