@@ -264,7 +264,6 @@
                                                                                                                 runtimeInputs = [ failure pkgs.coreutils pkgs.diffutils pkgs.jq pkgs.yq-go ] ;
                                                                                                                 text =
                                                                                                                     ''
-                                                                                                                        if true ; then exit 0 ; fi
                                                                                                                         while [[ "$#" -gt 0 ]]
                                                                                                                         do
                                                                                                                             case "$1" in
@@ -298,7 +297,6 @@
                                                                                                                                     ;;
                                                                                                                             esac
                                                                                                                         done
-                                                                                                                        if true ; then exit 0 ; fi
                                                                                                                         if [[ -z "$UUID" ]]
                                                                                                                         then
                                                                                                                             failure d597a2fab86c6288
@@ -336,7 +334,6 @@
                                                                                                                         fi
                                                                                                                         if [[ "$PAYLOAD_IS_JSON" == "true" ]]
                                                                                                                         then
-                                                                                                                            if true ; then exit 0 ; fi
                                                                                                                             EXPECTED_PAYLOAD="$( cat )" || failure 1393872535428486
                                                                                                                             if [[ "$EXPECTED_PAYLOAD" != "$OBSERVED_PAYLOAD" ]]
                                                                                                                             then
@@ -735,6 +732,7 @@
                                                                                                                                                                                "standard-input" : "" ,
                                                                                                                                                                                "standard-output" : $STANDARD_OUTPUT
                                                                                                                                                                             }' | compare --message message --channel valid-init --payload false true --timeout 1 --uuid 8112271667271429 3<&3
+                                                                                                                                                                    block --timeout 1 --uuid 5984866654686298 3<&3
                                                                                                                                                                     export FRESH
                                                                                                                                                                     export FRESH_INDEX
                                                                                                                                                                 fi
