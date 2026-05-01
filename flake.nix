@@ -956,7 +956,7 @@
                                                                                                                     echo -en 5175697994459272
                                                                                                                 '' ;
                                                                                                         } ;
-                                                                                                in "${ application }/bin/init" ;
+                                                                                                in ''${ application }/bin/init "$@"'' ;
                                                                                     release =
                                                                                         { failure , pkgs , resources , seed , sequential , trace } :
                                                                                             let
