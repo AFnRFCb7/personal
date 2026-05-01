@@ -442,13 +442,21 @@
                                                                                                                                     shift 4
                                                                                                                                     ;;
                                                                                                                                 --does-not-exist)
+                                                                                                                                    if [[ "$#" -lt 2 ]]
+                                                                                                                                    then
+                                                                                                                                        failure 2634964638877756 "$*"
+                                                                                                                                    fi
                                                                                                                                     if [[ -e "$2" ]]
                                                                                                                                     then
-                                                                                                                                        failure  3686358689564748 "$*"
+                                                                                                                                        failure 3686358689564748 "$*"
                                                                                                                                     fi
                                                                                                                                     shift 2
                                                                                                                                     ;;
                                                                                                                                 --equals)
+                                                                                                                                    if [[ "$#" -lt 3 ]]
+                                                                                                                                    then
+                                                                                                                                        failure 4863349623889189 "$*"
+                                                                                                                                    fi
                                                                                                                                     if [[ "$2" != "$3" ]]
                                                                                                                                     then
                                                                                                                                         failure 4889758824445288 "$*"
@@ -456,6 +464,10 @@
                                                                                                                                     shift 3
                                                                                                                                     ;;
                                                                                                                                 --executable)
+                                                                                                                                    if [[ "$#" -lt 2 ]]
+                                                                                                                                    then
+                                                                                                                                        failure 8646391832956534 "$*"
+                                                                                                                                    fi
                                                                                                                                     if [[ ! -x "$2" ]]
                                                                                                                                     then
                                                                                                                                         failure 1578895953757495 "$*"
@@ -463,6 +475,10 @@
                                                                                                                                     shift 2
                                                                                                                                     ;;
                                                                                                                                 --file)
+                                                                                                                                    if [[ "$#" -lt 2 ]]
+                                                                                                                                    then
+                                                                                                                                        failure 4351941615743464 "$*"
+                                                                                                                                    fi
                                                                                                                                     if [[ ! -f "$2" ]]
                                                                                                                                     then
                                                                                                                                         failure 8859813773476672 "$*"
@@ -470,13 +486,21 @@
                                                                                                                                     shift 2
                                                                                                                                     ;;
                                                                                                                                 --directory)
+                                                                                                                                    if [[ "$#" -lt 2 ]]
+                                                                                                                                    then
+                                                                                                                                        failure 6663338412166177 "$*"
+                                                                                                                                    fi
                                                                                                                                     if [[ ! -d "$2" ]]
                                                                                                                                     then
                                                                                                                                         failure 6552799518838238 "$*"
                                                                                                                                     fi
                                                                                                                                     shift 2
-                                                                                                                                        ;;
+                                                                                                                                    ;;
                                                                                                                                 --not-equals)
+                                                                                                                                    if [[ "$#" -lt 3 ]]
+                                                                                                                                    then
+                                                                                                                                        failure 8676529545266119 "$*"
+                                                                                                                                    fi
                                                                                                                                     if [[ "$2" == "$3" ]]
                                                                                                                                     then
                                                                                                                                         failure 9371313715938914 "$*"
@@ -484,6 +508,10 @@
                                                                                                                                     shift 3
                                                                                                                                     ;;
                                                                                                                                 --uuid)
+                                                                                                                                    if [[ "$#" -lt 2 ]]
+                                                                                                                                    then
+                                                                                                                                        failure 8553559657979292 "$*"
+                                                                                                                                    fi
                                                                                                                                     shift 2
                                                                                                                                     ;;
                                                                                                                                 *)
