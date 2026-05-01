@@ -623,7 +623,6 @@
                                                                                                                                                                 if [[ "$RELEASE" == "true" ]]
                                                                                                                                                                 then
                                                                                                                                                                     DISTRACTOR=${ resources.checks.targets.true.true { failure = 8829996994479772 ; setup = setup : ''${ setup } 3564731485791737'' ; } }
-                                                                                                                                                                    ## if true ; then exit 0 ; fi
                                                                                                                                                                     printf -v DISTRACTOR_INDEX "%016d" $(( ALPHA + 2 ))
                                                                                                                                                                     STANDARD_OUTPUT=5175697994459272
                                                                                                                                                                     TARGET=2862437261978116
@@ -648,9 +647,9 @@
                                                                                                                                                                                "standard-input" : "" ,
                                                                                                                                                                                "standard-output" : $STANDARD_OUTPUT ,
                                                                                                                                                                             }' | compare --message message --channel valid-init --payload false true --timeout 1 --uuid 7689926124362862 3<&3
-                                                                                                                                                                    # if true ; then exit 0 ; fi
+                                                                                                                                                                    ## if true ; then exit 0 ; fi
                                                                                                                                                                     block --timeout 1 --uuid 6925921732651899 3<&3
-                                                                                                                                                                    if true ; then exit 0 ; fi
+                                                                                                                                                                    # if true ; then exit 0 ; fi
                                                                                                                                                                     files \
                                                                                                                                                                         --ceiling "$ALPHA" 2 6 \
                                                                                                                                                                         --equals "/home/${ config.personal.name }/resources/mounts/$DISTRACTOR_INDEX" "$DISTRACTOR" \
@@ -660,6 +659,7 @@
                                                                                                                                                                         --does-not-exist "/home/${ config.personal.name }/resources/invalid-init/$DISTRACTOR_INDEX" \
                                                                                                                                                                         --does-not-exist "/home/${ config.personal.name }/resources/invalid-release/$DISTRACTOR_INDEX" \
                                                                                                                                                                         --uuid 6764498451529627
+                                                                                                                                                                    if true ; then exit 0 ; fi
                                                                                                                                                                     echo We created a distractor resource
                                                                                                                                                                     if true ; then exit 0 ; fi
                                                                                                                                                                     FRESH=${ resources.checks.targets.true.true { failure = 1528926113851339 ; } }
