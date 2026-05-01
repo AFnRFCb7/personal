@@ -715,6 +715,26 @@
                                                                                                                                                                     echo 7614675314761742 "$0" >&2
                                                                                                                                                                     FRESH=${ resources.checks.targets.true.true { failure = 1891569344331285 ; } }
                                                                                                                                                                     printf -v FRESH_INDEX "%016d" $(( ALPHA + 2 ))
+                                                                                                                                                                    jq \
+                                                                                                                                                                        --null-input \
+                                                                                                                                                                        --compact-output \
+                                                                                                                                                                        --arg INDEX "$FRESH_INDEX" \
+                                                                                                                                                                        --rawfile SCRIPT ${ scripts.true.true.init } \
+                                                                                                                                                                        --arg STANDARD_OUTPUT "$STANDARD_OUTPUT" \
+                                                                                                                                                                        --arg TARGET "$TARGET" \
+                                                                                                                                                                            '{
+                                                                                                                                                                               "arguments" : [ ] ,
+                                                                                                                                                                               "has-standard-input" : false ,
+                                                                                                                                                                               "index" : $INDEX ,
+                                                                                                                                                                               "seed" : [ "checks" , "targets" , "true" , "true" ] ,
+                                                                                                                                                                               "status" : 0 ,
+                                                                                                                                                                               "targets" : [ $TARGET ] ,
+                                                                                                                                                                               "transient" : -1 ,
+                                                                                                                                                                               "script" : $SCRIPT ,
+                                                                                                                                                                               "standard-error" : "" ,
+                                                                                                                                                                               "standard-input" : "" ,
+                                                                                                                                                                               "standard-output" : $STANDARD_OUTPUT
+                                                                                                                                                                            }' | compare --message message --channel valid-init --payload false true --timeout 1 --uuid 7689926124362862 3<&3
                                                                                                                                                                     export FRESH
                                                                                                                                                                     export FRESH_INDEX
                                                                                                                                                                 fi
