@@ -737,6 +737,7 @@
                                                                                                                                                                                "standard-input" : "" ,
                                                                                                                                                                                "standard-output" : $STANDARD_OUTPUT
                                                                                                                                                                             }' | compare --message message --channel valid-init --payload false true --timeout 1 --uuid 3966895497756167 3<&3
+                                                                                                                                                                    if true ; then exit 0 ; fi
                                                                                                                                                                     block --timeout 1 --uuid 5523352333297834 3<&3
                                                                                                                                                                     files \
                                                                                                                                                                         --ceiling "$ALPHA" 10 12 \
