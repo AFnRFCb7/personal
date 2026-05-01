@@ -709,32 +709,6 @@
                                                                                                                                                                         --does-not-exist "/home/${ config.personal.name }/resources/invalid-release/$DISTRACTOR_INDEX" \
                                                                                                                                                                         --uuid 6764498451529627
                                                                                                                                                                     echo We created a distractor resource
-                                                                                                                                                                    echo 7614675314761742 "$0" >&2
-                                                                                                                                                                    FRESH=${ resources.checks.targets.true.true { failure = 1891569344331285 ; } }
-                                                                                                                                                                    printf -v FRESH_INDEX "%016d" $(( ALPHA + 8 ))
-                                                                                                                                                                    jq \
-                                                                                                                                                                        --null-input \
-                                                                                                                                                                        --compact-output \
-                                                                                                                                                                        --arg INDEX "$FRESH_INDEX" \
-                                                                                                                                                                        --rawfile SCRIPT ${ scripts.true.true.init } \
-                                                                                                                                                                        --arg STANDARD_OUTPUT "$STANDARD_OUTPUT" \
-                                                                                                                                                                        --arg TARGET "$TARGET" \
-                                                                                                                                                                            '{
-                                                                                                                                                                               "arguments" : [ ] ,
-                                                                                                                                                                               "has-standard-input" : false ,
-                                                                                                                                                                               "index" : $INDEX ,
-                                                                                                                                                                               "seed" : [ "checks" , "targets" , "true" , "true" ] ,
-                                                                                                                                                                               "status" : 0 ,
-                                                                                                                                                                               "targets" : [ $TARGET ] ,
-                                                                                                                                                                               "transient" : -1 ,
-                                                                                                                                                                               "script" : $SCRIPT ,
-                                                                                                                                                                               "standard-error" : "" ,
-                                                                                                                                                                               "standard-input" : "" ,
-                                                                                                                                                                               "standard-output" : $STANDARD_OUTPUT
-                                                                                                                                                                            }' | compare --message message --channel valid-init --payload false true --timeout 1 --uuid 8112271667271429 3<&3
-                                                                                                                                                                    block --timeout 1 --uuid 5984866654686298 3<&3
-                                                                                                                                                                    export FRESH
-                                                                                                                                                                    export FRESH_INDEX
                                                                                                                                                                 fi
                                                                                                                                                             else
                                                                                                                                                                 true
