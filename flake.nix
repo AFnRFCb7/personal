@@ -712,6 +712,8 @@
                                                                                                                                                                         --does-not-exist "/home/${ config.personal.name }/resources/invalid-release/$DISTRACTOR_INDEX" \
                                                                                                                                                                         --uuid 6764498451529627
                                                                                                                                                                     echo We created a distractor resource
+                                                                                                                                                                    FRESH=${ resources.checks.targets.true.true { failure = 1891569344331285 ; } }
+                                                                                                                                                                    export FRESH
                                                                                                                                                                 fi
                                                                                                                                                             else
                                                                                                                                                                 true
