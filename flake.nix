@@ -691,7 +691,7 @@
                                                                                                                                                                         --uuid 6554776672562944
                                                                                                                                                                     echo We created a fresh resource
                                                                                                                                                                     STALE=${ resources.checks.targets.true.true { failure = 2464995515661662 ; } }
-                                                                                                                                                                    if true ; then exit 0 ; fi
+                                                                                                                                                                    # if true ; then exit 0 ; fi
                                                                                                                                                                     jq \
                                                                                                                                                                         --null-input \
                                                                                                                                                                         --compact-output \
@@ -704,6 +704,7 @@
                                                                                                                                                                                "seed" : [ "checks" , "targets" , "true" , "true" ] ,
                                                                                                                                                                                "targets" : [ $TARGET ]
                                                                                                                                                                             }' | compare --message message --channel stale-init --payload false true --timeout 1 --uuid 9696444126143543 3<&3
+                                                                                                                                                                    if true ; then exit 0 ; fi
                                                                                                                                                                     block --timeout 1 --uuid 1128612887735568 3<&3
                                                                                                                                                                     files \
                                                                                                                                                                         --ceiling "$ALPHA" 10 12 \
