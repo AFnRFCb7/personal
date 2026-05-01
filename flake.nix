@@ -712,7 +712,7 @@
                                                                                                                                                                         --does-not-exist "/home/${ config.personal.name }/resources/invalid-release/$DISTRACTOR_INDEX" \
                                                                                                                                                                         --uuid 6764498451529627
                                                                                                                                                                     echo We created a distractor resource
-                                                                                                                                                                    echo 0 "$0" >&2
+                                                                                                                                                                    echo 7614675314761742 "$0" >&2
                                                                                                                                                                     FRESH=${ resources.checks.targets.true.true { failure = 1891569344331285 ; } }
                                                                                                                                                                     printf -v FRESH_INDEX "%016d" $(( ALPHA + 2 ))
                                                                                                                                                                     export FRESH
