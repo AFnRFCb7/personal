@@ -734,7 +734,7 @@
                                                                                                                                                                                "standard-error" : "" ,
                                                                                                                                                                                "standard-input" : "" ,
                                                                                                                                                                                "standard-output" : $STANDARD_OUTPUT
-                                                                                                                                                                            }' | compare --message message --channel valid-init --payload false true --timeout 1 --uuid 7689926124362862 3<&3
+                                                                                                                                                                            }' | compare --message message --channel valid-init --payload false true --timeout 1 --uuid 8112271667271429 3<&3
                                                                                                                                                                     export FRESH
                                                                                                                                                                     export FRESH_INDEX
                                                                                                                                                                 fi
