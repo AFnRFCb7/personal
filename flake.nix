@@ -702,7 +702,7 @@
                                                                                                                                                                                "seed" : [ "checks" , "targets" , "true" , "true" ] ,
                                                                                                                                                                                "targets" : [ $TARGET ]
                                                                                                                                                                             }' >&2
-                                                                                                                                                                    # if true ; then exit 0 ; fi
+                                                                                                                                                                    if true ; then exit 0 ; fi
                                                                                                                                                                     jq \
                                                                                                                                                                         --null-input \
                                                                                                                                                                         --compact-output \
