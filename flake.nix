@@ -639,10 +639,11 @@
                                                                                                                                                                                "seed" : [ "checks" , "targets" , "true" , "true" ] ,
                                                                                                                                                                                "status" : 0 ,
                                                                                                                                                                                "targets" : [ $TARGET ] ,
+                                                                                                                                                                               "transient" : -1 ,
                                                                                                                                                                                "script" : $SCRIPT ,
                                                                                                                                                                                "standard-error" : "" ,
                                                                                                                                                                                "standard-input" : "" ,
-                                                                                                                                                                               "standard-output" : $STANDARD_OUTPUT
+                                                                                                                                                                               "standard-output" : $STANDARD_OUTPUT ,
                                                                                                                                                                             }' | compare --message message --channel valid-init --payload false true --timeout 1 --uuid 7689926124362862 3<&3
                                                                                                                                                                     block --timeout 1 --uuid 6925921732651899 3<&3
                                                                                                                                                                     files \
@@ -671,6 +672,7 @@
                                                                                                                                                                                "seed" : [ "checks" , "targets" , "true" , "true" ] ,
                                                                                                                                                                                "status" : 0 ,
                                                                                                                                                                                "targets" : [ $TARGET ] ,
+                                                                                                                                                                               "transient" : -1 ,
                                                                                                                                                                                "script" : $SCRIPT ,
                                                                                                                                                                                "standard-error" : "" ,
                                                                                                                                                                                "standard-input" : "" ,
