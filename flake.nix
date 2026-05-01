@@ -298,6 +298,7 @@
                                                                                                                                     ;;
                                                                                                                             esac
                                                                                                                         done
+                                                                                                                        if true ; then exit 0 ; fi
                                                                                                                         if [[ -z "$UUID" ]]
                                                                                                                         then
                                                                                                                             failure d597a2fab86c6288
@@ -691,6 +692,7 @@
                                                                                                                                                                         --does-not-exist "/home/${ config.personal.name }/resources/invalid-release/$FRESH_INDEX" \
                                                                                                                                                                         --uuid 6554776672562944
                                                                                                                                                                     echo We created a fresh resource
+                                                                                                                                                                    if true ; then exit 0 ; fi
                                                                                                                                                                     STALE=${ resources.checks.targets.true.true { failure = 2464995515661662 ; } }
                                                                                                                                                                     jq \
                                                                                                                                                                         --null-input \
