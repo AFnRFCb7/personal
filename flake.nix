@@ -674,7 +674,7 @@
                                                                                                                                                                 if [[ "$RELEASE" == "true" ]]
                                                                                                                                                                 then
                                                                                                                                                                     DISTRACTOR=${ resources.checks.targets.true.true { failure = 8829996994479772 ; setup = setup : ''${ setup } 3564731485791737'' ; } }
-                                                                                                                                                                    printf -v DISTRACTOR_INDEX "%016d" $(( ALPHA + 2 ))
+                                                                                                                                                                    printf -v DISTRACTOR_INDEX "%016d" $(( ALPHA + 4 ))
                                                                                                                                                                     STANDARD_OUTPUT=5175697994459272
                                                                                                                                                                     TARGET=2862437261978116
                                                                                                                                                                     jq \
@@ -710,7 +710,7 @@
                                                                                                                                                                         --uuid 6764498451529627
                                                                                                                                                                     echo We created a distractor resource
                                                                                                                                                                     FRESH=${ resources.checks.targets.true.true { failure = 3438984915657231 ; } }
-                                                                                                                                                                    printf -v FRESH_INDEX "%016d" $(( ALPHA + 8 ))
+                                                                                                                                                                    printf -v FRESH_INDEX "%016d" $(( ALPHA + 12 ))
                                                                                                                                                                     jq \
                                                                                                                                                                         --null-input \
                                                                                                                                                                         --compact-output \
