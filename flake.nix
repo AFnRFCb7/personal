@@ -566,7 +566,7 @@
                                                                                                                                                                                 '' ;
                                                                                                                                                                             resolve =
                                                                                                                                                                                 {
-                                                                                                                                                                                    init2 =
+                                                                                                                                                                                    init =
                                                                                                                                                                                         builtins.toFile
                                                                                                                                                                                             "script"
                                                                                                                                                                                             ''
