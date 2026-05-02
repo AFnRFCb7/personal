@@ -833,7 +833,7 @@
                                                                                                                                                                     STALE=${ resources.checks.targets.true.true { failure = 7378826536491738 ; } }
                                                                                                                                                                     block --timeout 1 --uuid 3651865773299727 3<&3
                                                                                                                                                                     files \
-                                                                                                                                                                        --ceiling "$ALPHA" 8 19 \
+                                                                                                                                                                        --ceiling "$ALPHA" 8 26 \
                                                                                                                                                                         --equals "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" "$STALE" \
                                                                                                                                                                         --equals "$STALE" "$FRESH" \
                                                                                                                                                                         --not-equals "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" "$DISTRACTOR" \
