@@ -810,7 +810,7 @@
                                                                                                                                                                                "has-standard-input" : false ,
                                                                                                                                                                                "index" : $INDEX ,
                                                                                                                                                                                "script" : $SCRIPT ,
-                                                                                                                                                                               "seed" : [ "checks" , "targets" , "true" , "true" ] ,
+                                                                                                                                                                               "seed" : [ "checks" , "targets" , "true" , "false" ] ,
                                                                                                                                                                                "standard-error" : "" ,
                                                                                                                                                                                "standard-input" : "" ,
                                                                                                                                                                                "standard-output" : $STANDARD_OUTPUT ,
