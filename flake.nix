@@ -848,8 +848,8 @@
                                                                                                                                                                     echo We created a stale resource
                                                                                                                                                                 fi
                                                                                                                                                             else
-                                                                                                                                                                STANDARD_OUTPUT=
-                                                                                                                                                                TARGET=
+                                                                                                                                                                STANDARD_OUTPUT=5595899262358754
+                                                                                                                                                                TARGET=7298653741425622
                                                                                                                                                                 if [[ "$RELEASE" == "true" ]]
                                                                                                                                                                 then
                                                                                                                                                                     if FRESH=${ resources.checks.targets.false.true { failure = 4524846869486114 ; } }
