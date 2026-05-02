@@ -665,7 +665,7 @@
                                                                                                                                                             then
                                                                                                                                                                 failure 4957596197169642
                                                                                                                                                             fi
-                                                                                                                                                            block --timeout 1 --uuid 5984995243749875 3<&3
+                                                                                                                                                            block --timeout 10 --uuid 5984995243749875 3<&3
                                                                                                                                                             files \
                                                                                                                                                                 --ceiling "$ALPHA" 0 0 \
                                                                                                                                                                 --uuid 7299736113522788
