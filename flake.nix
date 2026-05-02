@@ -761,13 +761,13 @@
                                                                                                                                                                     DISTRACTOR=${ resources.checks.targets.true.false { failure = 1965713756848597 ; setup = setup : ''${ setup } 2764421667212817'' ; } }
                                                                                                                                                                     printf -v DISTRACTOR_INDEX "%016d" $(( ALPHA + 4 ))
                                                                                                                                                                     STANDARD_OUTPUT=5175697994459272
-                                                                                                                                                                    TARGET=2862437261978116
+                                                                                                                                                                    TARGET=3297495737778474
                                                                                                                                                                     jq \
                                                                                                                                                                         --null-input \
                                                                                                                                                                         --compact-output \
                                                                                                                                                                         --arg ARGUMENT 2764421667212817 \
                                                                                                                                                                         --arg INDEX "$DISTRACTOR_INDEX" \
-                                                                                                                                                                        --rawfile SCRIPT ${ scripts.true.true.init } \
+                                                                                                                                                                        --rawfile SCRIPT ${ scripts.true.false.init } \
                                                                                                                                                                         --arg STANDARD_OUTPUT "$STANDARD_OUTPUT" \
                                                                                                                                                                         --arg TARGET "$TARGET" \
                                                                                                                                                                             '{
