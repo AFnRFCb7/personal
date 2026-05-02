@@ -710,7 +710,7 @@
                                                                                                                                                                         --uuid 6764498451529627
                                                                                                                                                                     echo We created a distractor resource
                                                                                                                                                                     FRESH=${ resources.checks.targets.true.true { failure = 3438984915657231 ; } }
-                                                                                                                                                                    printf -v FRESH_INDEX "%016d" $(( ALPHA + 2 ))
+                                                                                                                                                                    printf -v FRESH_INDEX "%016d" $(( ALPHA + 8 ))
                                                                                                                                                                     jq \
                                                                                                                                                                         --null-input \
                                                                                                                                                                         --compact-output \
@@ -733,8 +733,9 @@
                                                                                                                                                                             }' | compare --message message --channel valid-init --payload false true --timeout 1 --uuid 8535513643619133 3<&3
                                                                                                                                                                     block --timeout 1 --uuid 7411277161553272 3<&3
                                                                                                                                                                     files \
-                                                                                                                                                                        --ceiling "$ALPHA" 2 6 \
+                                                                                                                                                                        --ceiling "$ALPHA" 8 12 \
                                                                                                                                                                         --equals "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" "$FRESH" \
+                                                                                                                                                                        --not-equals "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" "$DISTRACTOR" \
                                                                                                                                                                         --directory "$FRESH" \
                                                                                                                                                                         --file "$FRESH/$TARGET" \
                                                                                                                                                                         --executable "/home/${ config.personal.name }/resources/release/$FRESH_INDEX" \
