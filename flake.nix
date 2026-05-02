@@ -564,6 +564,14 @@
                                                                                                                                                                             release =
                                                                                                                                                                                 ''
                                                                                                                                                                                 '' ;
+                                                                                                                                                                            resolve =
+                                                                                                                                                                                {
+                                                                                                                                                                                    init =
+                                                                                                                                                                                        builtins.toFile
+                                                                                                                                                                                            "script"
+                                                                                                                                                                                            ''
+                                                                                                                                                                                            '' ;
+                                                                                                                                                                                } ;
                                                                                                                                                                         } ;
                                                                                                                                                                 } ;
                                                                                                                                                             true =
@@ -942,7 +950,24 @@
                                                                                                                                                                                "standard-input" : "" ,
                                                                                                                                                                                "standard-output" : "80a06bfd7ad9ba81" ,
                                                                                                                                                                                "status" : 0
-                                                                                                                                                                            }' | compare --message message --channel invalid-init --payload false true --timeout 1 --uuid d05da718c3674522 3<&3
+                                                                                                                                                                            }' | compare --message message --channel valid-init --payload false true --timeout 1 --uuid d05da718c3674522 3<&3
+                                                                                                                                                                    jq \
+                                                                                                                                                                        --null-input \
+                                                                                                                                                                        --compact-output \
+                                                                                                                                                                        --arg INDEX "$FRESH_INDEX" \
+                                                                                                                                                                        --rawfile SCRIPT ${ scripts.false.true.resolve } \
+                                                                                                                                                                        --arg TARGET "$TARGET" \
+                                                                                                                                                                            '{
+                                                                                                                                                                               "index" : $INDEX ,
+                                                                                                                                                                               "resolve-path" : [ "d9aeea696dd06d63" ] ,
+                                                                                                                                                                               "script" : $SCRIPT ,
+                                                                                                                                                                               "seed" : [ "checks" , "targets" , "false" , "true" ] ,
+                                                                                                                                                                               "standard-error" : "" ,
+                                                                                                                                                                               "standard-input" : "" ,
+                                                                                                                                                                               "standard-output" : "80a06bfd7ad9ba81" ,
+                                                                                                                                                                               "status" : 0
+                                                                                                                                                                            }' | compare --message message --channel valid-release
+                                                                                                                                                                             --payload false true --timeout 1 --uuid 1118336254258565 3<&3
                                                                                                                                                                     block --timeout 1 --uuid 1875f81650ebb984 3<&3
                                                                                                                                                                     files \
                                                                                                                                                                         --ceiling "$ALPHA" 8 18 \
