@@ -711,7 +711,7 @@
                                                                                                                                                                         --does-not-exist "/home/${ config.personal.name }/resources/invalid-release/$DISTRACTOR_INDEX" \
                                                                                                                                                                         --uuid 6764498451529627
                                                                                                                                                                     echo We created a distractor resource
-                                                                                                                                                                    FRESH=${ resources.checks.targets.true.true { failure = 3438984915657231 ; } }
+                                                                                                                                                                    FRESH=${ resources.checks.targets.true.false { failure = 3438984915657231 ; } }
                                                                                                                                                                     printf -v FRESH_INDEX "%016d" $(( ALPHA + 12 ))
                                                                                                                                                                     jq \
                                                                                                                                                                         --null-input \
