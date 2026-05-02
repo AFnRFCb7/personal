@@ -711,7 +711,7 @@
                                                                                                                                                                         --does-not-exist "/home/${ config.personal.name }/resources/invalid-release/$DISTRACTOR_INDEX" \
                                                                                                                                                                         --uuid 6764498451529627
                                                                                                                                                                     echo We created a distractor resource
-                                                                                                                                                                    FRESH=${ resources.checks.targets.true.false { failure = 3438984915657231 ; } }
+                                                                                                                                                                    FRESH=${ resources.checks.targets.true.true { failure = 3438984915657231 ; } }
                                                                                                                                                                     printf -v FRESH_INDEX "%016d" $(( ALPHA + 12 ))
                                                                                                                                                                     jq \
                                                                                                                                                                         --null-input \
@@ -725,7 +725,7 @@
                                                                                                                                                                                "has-standard-input" : false ,
                                                                                                                                                                                "index" : $INDEX ,
                                                                                                                                                                                "script" : $SCRIPT ,
-                                                                                                                                                                               "seed" : [ "checks" , "targets" , "true" , "false" ] ,
+                                                                                                                                                                               "seed" : [ "checks" , "targets" , "true" , "true" ] ,
                                                                                                                                                                                "standard-error" : "" ,
                                                                                                                                                                                "standard-input" : "" ,
                                                                                                                                                                                "standard-output" : $STANDARD_OUTPUT ,
@@ -796,7 +796,7 @@
                                                                                                                                                                         --does-not-exist "/home/${ config.personal.name }/resources/invalid-release/$DISTRACTOR_INDEX" \
                                                                                                                                                                         --uuid 5686665366486275
                                                                                                                                                                     echo We created a distractor resource
-                                                                                                                                                                    FRESH=${ resources.checks.targets.true.true { failure = 2198254319735746 ; } }
+                                                                                                                                                                    FRESH=${ resources.checks.targets.true.false { failure = 2198254319735746 ; } }
                                                                                                                                                                     printf -v FRESH_INDEX "%016d" $(( ALPHA + 12 ))
                                                                                                                                                                     jq \
                                                                                                                                                                         --null-input \
