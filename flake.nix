@@ -745,26 +745,6 @@
                                                                                                                                                                     echo We created a fresh resource
                                                                                                                                                                     echo 9263261373659134 "$0" >&2
                                                                                                                                                                     STALE=${ resources.checks.targets.true.true { failure = 4599312279872888 ; } }
-                                                                                                                                                                    jq \
-                                                                                                                                                                        --null-input \
-                                                                                                                                                                        --compact-output \
-                                                                                                                                                                        --arg INDEX "$FRESH_INDEX" \
-                                                                                                                                                                        --rawfile SCRIPT ${ scripts.true.true.init } \
-                                                                                                                                                                        --arg STANDARD_OUTPUT "$STANDARD_OUTPUT" \
-                                                                                                                                                                        --arg TARGET "$TARGET" \
-                                                                                                                                                                            '{
-                                                                                                                                                                               "arguments" : [ ] ,
-                                                                                                                                                                               "has-standard-input" : false ,
-                                                                                                                                                                               "index" : $INDEX ,
-                                                                                                                                                                               "seed" : [ "checks" , "targets" , "true" , "true" ] ,
-                                                                                                                                                                               "status" : 0 ,
-                                                                                                                                                                               "targets" : [ $TARGET ] ,
-                                                                                                                                                                               "transient" : -1 ,
-                                                                                                                                                                               "script" : $SCRIPT ,
-                                                                                                                                                                               "standard-error" : "" ,
-                                                                                                                                                                               "standard-input" : "" ,
-                                                                                                                                                                               "standard-output" : $STANDARD_OUTPUT
-                                                                                                                                                                            }' | compare --message message --channel valid-init --payload false true --timeout 1 --uuid 6782883285719428 3<&3
                                                                                                                                                                     block --timeout 1 --uuid 2497785224611422 3<&3
                                                                                                                                                                     files \
                                                                                                                                                                         --ceiling "$ALPHA" 8 12 \
