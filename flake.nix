@@ -743,6 +743,7 @@
                                                                                                                                                                         --does-not-exist "/home/${ config.personal.name }/resources/invalid-release/$FRESH_INDEX" \
                                                                                                                                                                         --uuid 9485816288686382
                                                                                                                                                                     echo We created a fresh resource
+                                                                                                                                                                    echo 9263261373659134 "$0" >&2
                                                                                                                                                                     STALE=${ resources.checks.targets.true.true { failure = 4599312279872888 ; } }
                                                                                                                                                                     jq \
                                                                                                                                                                         --null-input \
