@@ -557,8 +557,10 @@
                                                                                                                                                                     true =
                                                                                                                                                                         {
                                                                                                                                                                             init =
-                                                                                                                                                                                ''
-                                                                                                                                                                                '' ;
+                                                                                                                                                                                builtins.toFile
+                                                                                                                                                                                    "script"
+                                                                                                                                                                                    ''
+                                                                                                                                                                                    '' ;
                                                                                                                                                                             release =
                                                                                                                                                                                 ''
                                                                                                                                                                                 '' ;
@@ -846,6 +848,7 @@
                                                                                                                                                                     echo We created a stale resource
                                                                                                                                                                 fi
                                                                                                                                                             else
+                                                                                                                                                                STANDARD_OUTPUT=
                                                                                                                                                                 if [[ "$RELEASE" == "true" ]]
                                                                                                                                                                 then
                                                                                                                                                                     if FRESH=${ resources.checks.targets.false.true { failure = 4524846869486114 ; } }
@@ -857,7 +860,7 @@
                                                                                                                                                                         --null-input \
                                                                                                                                                                         --compact-output \
                                                                                                                                                                         --arg INDEX "$FRESH_INDEX" \
-                                                                                                                                                                        --rawfile SCRIPT ${ scripts.true.false.init } \
+                                                                                                                                                                        --rawfile SCRIPT ${ scripts.false.true.init } \
                                                                                                                                                                         --arg STANDARD_OUTPUT "$STANDARD_OUTPUT" \
                                                                                                                                                                         --arg TARGET "$TARGET" \
                                                                                                                                                                             '{
