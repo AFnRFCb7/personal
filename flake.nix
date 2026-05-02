@@ -722,14 +722,14 @@
                                                                                                                                                                                "arguments" : [ ] ,
                                                                                                                                                                                "has-standard-input" : false ,
                                                                                                                                                                                "index" : $INDEX ,
-                                                                                                                                                                               "seed" : [ "checks" , "targets" , "true" , "true" ] ,
-                                                                                                                                                                               "status" : 0 ,
-                                                                                                                                                                               "targets" : [ $TARGET ] ,
-                                                                                                                                                                               "transient" : -1 ,
                                                                                                                                                                                "script" : $SCRIPT ,
+                                                                                                                                                                               "seed" : [ "checks" , "targets" , "true" , "true" ] ,
                                                                                                                                                                                "standard-error" : "" ,
                                                                                                                                                                                "standard-input" : "" ,
                                                                                                                                                                                "standard-output" : $STANDARD_OUTPUT
+                                                                                                                                                                               "status" : 0 ,
+                                                                                                                                                                               "targets" : [ $TARGET ] ,
+                                                                                                                                                                               "transient" : -1
                                                                                                                                                                             }' | compare --message message --channel valid-init --payload false true --timeout 1 --uuid 8535513643619133 3<&3
                                                                                                                                                                     block --timeout 1 --uuid 7411277161553272 3<&3
                                                                                                                                                                     files \
