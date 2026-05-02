@@ -898,7 +898,7 @@
                                                                                                                                                                         --uuid 1433129797798735
                                                                                                                                                                     log "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/log.sh"
                                                                                                                                                                     echo We failed to create a resource
-                                                                                                                                                                    /home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/resolve/d9aeea696dd06d63/resolve.sh 3e098e62e5c17e09
+                                                                                                                                                                    "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/resolve/d9aeea696dd06d63/resolve.sh" 3e098e62e5c17e09
                                                                                                                                                                     jq \
                                                                                                                                                                         --null-input \
                                                                                                                                                                         --compact-output \
@@ -932,7 +932,7 @@
                                                                                                                                                                         --uuid bf72dfd89bcd450d
                                                                                                                                                                     log "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/log.sh"
                                                                                                                                                                     echo We failed to resolve a resource
-                                                                                                                                                                    /home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/resolve/d9aeea696dd06d63/resolve.sh bad6df6cec492731
+                                                                                                                                                                    "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/resolve/d9aeea696dd06d63/resolve.sh" bad6df6cec492731
                                                                                                                                                                     jq \
                                                                                                                                                                         --null-input \
                                                                                                                                                                         --compact-output \
