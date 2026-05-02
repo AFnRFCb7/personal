@@ -762,7 +762,7 @@
                                                                                                                                                                 else
                                                                                                                                                                     DISTRACTOR=${ resources.checks.targets.true.false { failure = 1965713756848597 ; setup = setup : ''${ setup } 2764421667212817'' ; } }
                                                                                                                                                                     printf -v DISTRACTOR_INDEX "%016d" $(( ALPHA + 4 ))
-                                                                                                                                                                    STANDARD_OUTPUT=5175697994459272
+                                                                                                                                                                    STANDARD_OUTPUT=4725766637963872
                                                                                                                                                                     TARGET=3297495737778474
                                                                                                                                                                     jq \
                                                                                                                                                                         --null-input \
@@ -846,7 +846,12 @@
                                                                                                                                                                     echo We created a stale resource
                                                                                                                                                                 fi
                                                                                                                                                             else
-                                                                                                                                                                true
+                                                                                                                                                                if [[ "$RELEASE" == "true" ]]
+                                                                                                                                                                then
+                                                                                                                                                                    true
+                                                                                                                                                                else
+                                                                                                                                                                    true
+                                                                                                                                                                fi
                                                                                                                                                             fi
                                                                                                                                                         '' ;
                                                                                                                                         }
