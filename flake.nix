@@ -848,7 +848,43 @@
                                                                                                                                                             else
                                                                                                                                                                 if [[ "$RELEASE" == "true" ]]
                                                                                                                                                                 then
-                                                                                                                                                                    true
+                                                                                                                                                                    if FRESH=${ resources.checks.targets.false.true { failure = 4524846869486114 ; } }
+                                                                                                                                                                    then
+                                                                                                                                                                        failure 5213962914665347
+                                                                                                                                                                    fi
+                                                                                                                                                                    printf -v FRESH_INDEX "%016d" $(( ALPHA + 12 ))
+                                                                                                                                                                    jq \
+                                                                                                                                                                        --null-input \
+                                                                                                                                                                        --compact-output \
+                                                                                                                                                                        --arg INDEX "$FRESH_INDEX" \
+                                                                                                                                                                        --rawfile SCRIPT ${ scripts.true.false.init } \
+                                                                                                                                                                        --arg STANDARD_OUTPUT "$STANDARD_OUTPUT" \
+                                                                                                                                                                        --arg TARGET "$TARGET" \
+                                                                                                                                                                            '{
+                                                                                                                                                                               "arguments" : [ ] ,
+                                                                                                                                                                               "has-standard-input" : false ,
+                                                                                                                                                                               "index" : $INDEX ,
+                                                                                                                                                                               "script" : $SCRIPT ,
+                                                                                                                                                                               "seed" : [ "checks" , "targets" , "true" , "false" ] ,
+                                                                                                                                                                               "standard-error" : "" ,
+                                                                                                                                                                               "standard-input" : "" ,
+                                                                                                                                                                               "standard-output" : $STANDARD_OUTPUT ,
+                                                                                                                                                                               "status" : 0 ,
+                                                                                                                                                                               "targets" : [ $TARGET ] ,
+                                                                                                                                                                               "transient" : -1
+                                                                                                                                                                            }' | compare --message message --channel invalid-init --payload false true --timeout 1 --uuid 7462874244171449 3<&3
+                                                                                                                                                                    block --timeout 1 --uuid 2336958223494764 3<&3
+                                                                                                                                                                    files \
+                                                                                                                                                                        --ceiling "$ALPHA" 8 18 \
+                                                                                                                                                                        --equals "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" "$FRESH" \
+                                                                                                                                                                        --not-equals "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" "$DISTRACTOR" \
+                                                                                                                                                                        --directory "$FRESH" \
+                                                                                                                                                                        --file "$FRESH/$TARGET" \
+                                                                                                                                                                        --executable "/home/${ config.personal.name }/resources/release/$FRESH_INDEX" \
+                                                                                                                                                                        --does-not-exist "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX" \
+                                                                                                                                                                        --does-not-exist "/home/${ config.personal.name }/resources/invalid-release/$FRESH_INDEX" \
+                                                                                                                                                                        --uuid 1433129797798735
+                                                                                                                                                                    echo We created a fresh resource
                                                                                                                                                                 else
                                                                                                                                                                     true
                                                                                                                                                                 fi
