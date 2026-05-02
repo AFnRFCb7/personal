@@ -849,6 +849,7 @@
                                                                                                                                                                 fi
                                                                                                                                                             else
                                                                                                                                                                 STANDARD_OUTPUT=
+                                                                                                                                                                TARGET=
                                                                                                                                                                 if [[ "$RELEASE" == "true" ]]
                                                                                                                                                                 then
                                                                                                                                                                     if FRESH=${ resources.checks.targets.false.true { failure = 4524846869486114 ; } }
@@ -868,7 +869,7 @@
                                                                                                                                                                                "has-standard-input" : false ,
                                                                                                                                                                                "index" : $INDEX ,
                                                                                                                                                                                "script" : $SCRIPT ,
-                                                                                                                                                                               "seed" : [ "checks" , "targets" , "true" , "false" ] ,
+                                                                                                                                                                               "seed" : [ "checks" , "targets" , "false" , "true" ] ,
                                                                                                                                                                                "standard-error" : "" ,
                                                                                                                                                                                "standard-input" : "" ,
                                                                                                                                                                                "standard-output" : $STANDARD_OUTPUT ,
