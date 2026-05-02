@@ -726,7 +726,7 @@
                                                                                                                                                                                "seed" : [ "checks" , "targets" , "true" , "true" ] ,
                                                                                                                                                                                "standard-error" : "" ,
                                                                                                                                                                                "standard-input" : "" ,
-                                                                                                                                                                               "standard-output" : $STANDARD_OUTPUT
+                                                                                                                                                                               "standard-output" : $STANDARD_OUTPUT ,
                                                                                                                                                                                "status" : 0 ,
                                                                                                                                                                                "targets" : [ $TARGET ] ,
                                                                                                                                                                                "transient" : -1
