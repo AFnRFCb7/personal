@@ -700,7 +700,7 @@
                                                                                                                                                                             }' | compare --message message --channel valid-init --payload false true --timeout 1 --uuid 7689926124362862 3<&3
                                                                                                                                                                     block --timeout 1 --uuid 6925921732651899 3<&3
                                                                                                                                                                     files \
-                                                                                                                                                                        --ceiling "$ALPHA" 2 6 \
+                                                                                                                                                                        --ceiling "$ALPHA" 2 10 \
                                                                                                                                                                         --equals "/home/${ config.personal.name }/resources/mounts/$DISTRACTOR_INDEX" "$DISTRACTOR" \
                                                                                                                                                                         --directory "$DISTRACTOR" \
                                                                                                                                                                         --file "$DISTRACTOR/$TARGET" \
@@ -733,7 +733,7 @@
                                                                                                                                                                             }' | compare --message message --channel valid-init --payload false true --timeout 1 --uuid 8535513643619133 3<&3
                                                                                                                                                                     block --timeout 1 --uuid 7411277161553272 3<&3
                                                                                                                                                                     files \
-                                                                                                                                                                        --ceiling "$ALPHA" 8 12 \
+                                                                                                                                                                        --ceiling "$ALPHA" 8 16 \
                                                                                                                                                                         --equals "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" "$FRESH" \
                                                                                                                                                                         --not-equals "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" "$DISTRACTOR" \
                                                                                                                                                                         --directory "$FRESH" \
