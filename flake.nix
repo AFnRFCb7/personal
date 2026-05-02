@@ -4794,7 +4794,7 @@
                                                                                 runtimeInputs = [ pkgs.coreutils ] ;
                                                                                 text =
                                                                                     ''
-                                                                                        SCRIPT="$( resource --resource '["checks","script"]' )"
+                                                                                        SCRIPT="$( resource --argument 9165533725487361 --resource '["checks","script"]' )"
                                                                                         timeout 1m "$SCRIPT/test" --alpha 6 --init true --release true
                                                                                         echo 1863491612796318 300 >&2
                                                                                     '' ;
