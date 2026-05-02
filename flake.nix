@@ -689,14 +689,14 @@
                                                                                                                                                                                "arguments" : [ $ARGUMENT ] ,
                                                                                                                                                                                "has-standard-input" : false ,
                                                                                                                                                                                "index" : $INDEX ,
-                                                                                                                                                                               "seed" : [ "checks" , "targets" , "true" , "true" ] ,
-                                                                                                                                                                               "status" : 0 ,
-                                                                                                                                                                               "targets" : [ $TARGET ] ,
-                                                                                                                                                                               "transient" : -1 ,
                                                                                                                                                                                "script" : $SCRIPT ,
+                                                                                                                                                                               "seed" : [ "checks" , "targets" , "true" , "true" ] ,
                                                                                                                                                                                "standard-error" : "" ,
                                                                                                                                                                                "standard-input" : "" ,
-                                                                                                                                                                               "standard-output" : $STANDARD_OUTPUT
+                                                                                                                                                                               "standard-output" : $STANDARD_OUTPUT ,
+                                                                                                                                                                               "status" : 0 ,
+                                                                                                                                                                               "targets" : [ $TARGET ] ,
+                                                                                                                                                                               "transient" : -1
                                                                                                                                                                             }' | compare --message message --channel valid-init --payload false true --timeout 1 --uuid 7689926124362862 3<&3
                                                                                                                                                                     block --timeout 1 --uuid 6925921732651899 3<&3
                                                                                                                                                                     files \
