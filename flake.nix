@@ -903,7 +903,7 @@
                                                                                                                                                                         --null-input \
                                                                                                                                                                         --compact-output \
                                                                                                                                                                         --arg INDEX "$FRESH_INDEX" \
-                                                                                                                                                                        --rawfile SCRIPT ${ scripts.false.true.resolve } \
+                                                                                                                                                                        --rawfile SCRIPT ${ scripts.false.true.resolve.init } \
                                                                                                                                                                         --arg TARGET "$TARGET" \
                                                                                                                                                                             '{
                                                                                                                                                                                "arguments" : [ "3e098e62e5c17e09" ] ,
@@ -937,7 +937,7 @@
                                                                                                                                                                         --null-input \
                                                                                                                                                                         --compact-output \
                                                                                                                                                                         --arg INDEX "$FRESH_INDEX" \
-                                                                                                                                                                        --rawfile SCRIPT ${ scripts.false.true.resolve } \
+                                                                                                                                                                        --rawfile SCRIPT ${ scripts.false.true.resolve.init } \
                                                                                                                                                                         --arg TARGET "$TARGET" \
                                                                                                                                                                             '{
                                                                                                                                                                                "arguments" : [ "bad6df6cec492731" ] ,
@@ -955,7 +955,7 @@
                                                                                                                                                                         --null-input \
                                                                                                                                                                         --compact-output \
                                                                                                                                                                         --arg INDEX "$FRESH_INDEX" \
-                                                                                                                                                                        --rawfile SCRIPT ${ scripts.false.true.resolve } \
+                                                                                                                                                                        --rawfile SCRIPT ${ scripts.false.true.resolve.init } \
                                                                                                                                                                         --arg TARGET "$TARGET" \
                                                                                                                                                                             '{
                                                                                                                                                                                "index" : $INDEX ,
