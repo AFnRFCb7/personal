@@ -899,13 +899,14 @@
                                                                                                                                                                     #
                                                                                                                                                                     # If it was its correct value then
                                                                                                                                                                     #
-                                                                                                                                                                    #    --equals "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" "$FRESH" \
-                                                                                                                                                                    #    --directory "$FRESH" \
-                                                                                                                                                                    #    --file "$FRESH/$TARGET" \
+
                                                                                                                                                                     #
                                                                                                                                                                     # would pass
                                                                                                                                                                     files \
                                                                                                                                                                         --ceiling "$ALPHA" 4 10 \
+                                                                                                                                                                        --equals "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" "$FRESH" \
+                                                                                                                                                                        --directory "$FRESH" \
+                                                                                                                                                                        --file "$FRESH/$TARGET" \
                                                                                                                                                                         --does-not-exist "/home/${ config.personal.name }/resources/release/$FRESH_INDEX" \
                                                                                                                                                                         --executable "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/log.sh" \
                                                                                                                                                                         --executable "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/resolve.sh" \
