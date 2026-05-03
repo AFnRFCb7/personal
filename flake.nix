@@ -470,7 +470,6 @@
                                                                                                                                         failure 1578895953757495 "$*"
                                                                                                                                     fi
                                                                                                                                     shift 2
-                                                                                                                                    shift 2
                                                                                                                                     ;;
                                                                                                                                 --file)
                                                                                                                                     if [[ "$#" -lt 2 ]]
