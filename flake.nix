@@ -896,7 +896,6 @@
                                                                                                                                                                         --directory "$FRESH" \
                                                                                                                                                                         --file "$FRESH/$TARGET" \
                                                                                                                                                                         --does-not-exist "/home/${ config.personal.name }/resources/release/$FRESH_INDEX" \
-                                                                                                                                                                        --executable "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/log.sh" \
                                                                                                                                                                         --executable "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/resolve.sh" \
                                                                                                                                                                         --executable "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/resolve/d9aeea696dd06d63/resolve.sh" \
                                                                                                                                                                         --does-not-exist "/home/${ config.personal.name }/resources/invalid-release/$FRESH_INDEX" \
@@ -2540,7 +2539,29 @@
                                                                                                     pkgs.writeShellApplication
                                                                                                         {
                                                                                                             name = "ExecStart" ;
-                                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.flock pkgs.jq pkgs.redis pkgs.yq-go ] ;
+                                                                                                            runtimeInputs =
+                                                                                                                [
+                                                                                                                    (
+                                                                                                                        pkgs.writeShellApplication
+                                                                                                                            {
+                                                                                                                                name = "log" ;
+                                                                                                                                runtimeInputs = [ pkgs.flock pkgs.jq ] ;
+                                                                                                                                text =
+                                                                                                                                    ''
+                                                                                                                                        CHANNEL="$1"
+                                                                                                                                        STAMP="$2"
+                                                                                                                                        PAYLOAD="$3"
+                                                                                                                                        TARGET="$4"
+                                                                                                                                        jq --arg CHANNEL "$CHANNEL" --argjson STAMP "$STAMP" '. + { "channel" : $CHANNEL , "stamp" : $STAMP }' <<< "$PAYLOAD" | flock /home/${ config.personal.name }/resources/locks/log -c 'yq eval --prettyPrint "[.]" >> "$TARGET"
+                                                                                                                                    '' ;
+                                                                                                                            }
+                                                                                                                    )
+                                                                                                                    pkgs.coreutils
+                                                                                                                    pkgs.flock
+                                                                                                                    pkgs.jq
+                                                                                                                    pkgs.redis
+                                                                                                                    pkgs.yq-go
+                                                                                                                ] ;
                                                                                                             text =
                                                                                                                 ''
                                                                                                                     failure ( ) {
@@ -2555,6 +2576,7 @@
                                                                                                                             STAMP="$( date +%s )" || failure 4936565359496611
                                                                                                                             mkdir --parents /home/${ config.personal.name }/resources/locks
                                                                                                                             mkdir --parents /home/${ config.personal.name }/resources/logs
+                                                                                                                            log "$CHANNEL" "$STAMP" "$PAYLOAD"
                                                                                                                             jq --arg CHANNEL "$CHANNEL" --argjson STAMP "$STAMP" '. + { "channel" : $CHANNEL , "stamp" : $STAMP }' <<< "$PAYLOAD" | flock /home/${ config.personal.name }/resources/locks/log -c 'yq eval --prettyPrint "[.]" >> /home/${ config.personal.name }/resources/logs/log.yaml'
                                                                                                                         fi
                                                                                                                     done
