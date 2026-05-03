@@ -2559,6 +2559,7 @@
                                                                                                                             }
                                                                                                                     )
                                                                                                                     pkgs.coreutils
+                                                                                                                    pkgs.findutils
                                                                                                                     pkgs.flock
                                                                                                                     pkgs.jq
                                                                                                                     pkgs.redis
@@ -2579,6 +2580,15 @@
                                                                                                                             mkdir --parents /home/${ config.personal.name }/resources/locks
                                                                                                                             mkdir --parents /home/${ config.personal.name }/resources/logs
                                                                                                                             log "$CHANNEL" "$STAMP" "$PAYLOAD" /home/${ config.personal.name }/resources/logs/log.yaml
+                                                                                                                            INDEX="$( jq --raw-output ".index" <<< "$PAYLOAD" )" || failure 6161227368692165
+                                                                                                                            find /home/${ config.personal.name }/invalid-init /home/${ config.personal.name }/invalid-release -mindepth 1 -maxdepth 1 -type d | while read -r DIRECTORY
+                                                                                                                            do
+                                                                                                                                NAME="$( basename "$DIRECTORY" )" || failure 7296472521871757
+                                                                                                                                if [[ "$INDEX" == "$NAME" ]]
+                                                                                                                                then
+                                                                                                                                    log "$CHANNEL" "$STAMP" "$PAYLOAD" "$DIRECTORY/log.yaml"
+                                                                                                                                fi
+                                                                                                                            done
                                                                                                                         fi
                                                                                                                     done
                                                                                                                 '' ;
