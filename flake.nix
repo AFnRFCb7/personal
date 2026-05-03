@@ -560,6 +560,12 @@
                                                                                                                                                                                 builtins.toFile
                                                                                                                                                                                     "script"
                                                                                                                                                                                     ''
+                                                                                                                                                                                        #!/nix/store/mjhcjikhxps97mq5z54j4gjjfzgmsir5-bash-5.2p37/bin/bash
+                                                                                                                                                                                        set -o errexit
+                                                                                                                                                                                        set -o nounset
+                                                                                                                                                                                        set -o pipefail
+
+                                                                                                                                                                                        /nix/store/zp158z04y8a09cravpnxxc8lm37hnwiv-init/bin/init
                                                                                                                                                                                     '' ;
                                                                                                                                                                             release =
                                                                                                                                                                                 ''
@@ -856,7 +862,7 @@
                                                                                                                                                                     echo We created a stale resource
                                                                                                                                                                 fi
                                                                                                                                                             else
-                                                                                                                                                                TARGET=7298653741425622
+                                                                                                                                                                TARGET=5494881573568661
                                                                                                                                                                 if [[ "$RELEASE" == "true" ]]
                                                                                                                                                                 then
                                                                                                                                                                     if FRESH=${ resources.checks.targets.false.true { failure = 4524846869486114 ; } }
@@ -878,9 +884,9 @@
                                                                                                                                                                                "seed" : [ "checks" , "targets" , "false" , "true" ] ,
                                                                                                                                                                                "standard-error" : "" ,
                                                                                                                                                                                "standard-input" : "" ,
-                                                                                                                                                                               "standard-output" : "003b191d9fde8af6" ,
-                                                                                                                                                                               "status" : 0 ,
-                                                                                                                                                                               "targets" : [ $TARGET ] ,
+                                                                                                                                                                               "standard-output" : "3148451947316331" ,
+                                                                                                                                                                               "status" : 114 ,
+                                                                                                                                                                               "targets" : { "expected" : [ $TARGET ] , "observed" : [ $TARGET ] } ,
                                                                                                                                                                                "transient" : -1
                                                                                                                                                                             }' | compare --message message --channel invalid-init --payload false true --timeout 1 --uuid 7462874244171449 3<&3
                                                                                                                                                                     block --timeout 1 --uuid 2336958223494764 3<&3
