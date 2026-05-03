@@ -1222,6 +1222,7 @@
                                                                                                                             then
                                                                                                                                 exit 144
                                                                                                                             elif [[ "$1" == "8363144534251594" ]]
+                                                                                                                            then
                                                                                                                                 exit
                                                                                                                             else
                                                                                                                                 failure 4526652885524383 "$*"
