@@ -2552,7 +2552,9 @@
                                                                                                                                         STAMP="$2"
                                                                                                                                         PAYLOAD="$3"
                                                                                                                                         TARGET="$4"
-                                                                                                                                        jq --arg CHANNEL "$CHANNEL" --argjson STAMP "$STAMP" '. + { "channel" : $CHANNEL , "stamp" : $STAMP }' <<< "$PAYLOAD" | flock /home/${ config.personal.name }/resources/locks/log -c 'yq eval --prettyPrint "[.]" >> "$TARGET"
+                                                                                                                                        exec 203 > /home/${ config.personal.name }/resources/locks/log
+                                                                                                                                        flock -x 203
+                                                                                                                                        jq --arg CHANNEL "$CHANNEL" --argjson STAMP "$STAMP" '. + { "channel" : $CHANNEL , "stamp" : $STAMP }' <<< "$PAYLOAD" | yq eval --prettyPrint "[.]" >> "$TARGET"
                                                                                                                                     '' ;
                                                                                                                             }
                                                                                                                     )
@@ -2576,8 +2578,7 @@
                                                                                                                             STAMP="$( date +%s )" || failure 4936565359496611
                                                                                                                             mkdir --parents /home/${ config.personal.name }/resources/locks
                                                                                                                             mkdir --parents /home/${ config.personal.name }/resources/logs
-                                                                                                                            log "$CHANNEL" "$STAMP" "$PAYLOAD"
-                                                                                                                            jq --arg CHANNEL "$CHANNEL" --argjson STAMP "$STAMP" '. + { "channel" : $CHANNEL , "stamp" : $STAMP }' <<< "$PAYLOAD" | flock /home/${ config.personal.name }/resources/locks/log -c 'yq eval --prettyPrint "[.]" >> /home/${ config.personal.name }/resources/logs/log.yaml'
+                                                                                                                            log "$CHANNEL" "$STAMP" "$PAYLOAD" /home/${ config.personal.name }/resources/logs/log.yaml
                                                                                                                         fi
                                                                                                                     done
                                                                                                                 '' ;
