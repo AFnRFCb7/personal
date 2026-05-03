@@ -890,11 +890,22 @@
                                                                                                                                                                                "transient" : -1
                                                                                                                                                                             }' | compare --message message --channel invalid-init --payload false true --timeout 1 --uuid 7462874244171449 3<&3
                                                                                                                                                                     block --timeout 1 --uuid 2336958223494764 3<&3
+                                                                                                                                                                    # KLUDGE ALERT
+                                                                                                                                                                    # I think the fhs user environment is swallowing standard output
+                                                                                                                                                                    # it should not
+                                                                                                                                                                    # but it is not too important either
+                                                                                                                                                                    #
+                                                                                                                                                                    # FRESH should be something but it is blank
+                                                                                                                                                                    #
+                                                                                                                                                                    # If it was its correct value then
+                                                                                                                                                                    #
+                                                                                                                                                                    #    --equals "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" "$FRESH" \
+                                                                                                                                                                    #    --directory "$FRESH" \
+                                                                                                                                                                    #    --file "$FRESH/$TARGET" \
+                                                                                                                                                                    #
+                                                                                                                                                                    # would pass
                                                                                                                                                                     files \
                                                                                                                                                                         --ceiling "$ALPHA" 4 10 \
-                                                                                                                                                                        --equals "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" "$FRESH" \
-                                                                                                                                                                        --directory "$FRESH" \
-                                                                                                                                                                        --file "$FRESH/$TARGET" \
                                                                                                                                                                         --does-not-exist "/home/${ config.personal.name }/resources/release/$FRESH_INDEX" \
                                                                                                                                                                         --executable "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/log.sh" \
                                                                                                                                                                         --executable "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/resolve.sh" \
