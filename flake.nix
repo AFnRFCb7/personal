@@ -901,7 +901,7 @@
                                                                                                                                                                         --does-not-exist "/home/${ config.personal.name }/resources/invalid-release/$FRESH_INDEX" \
                                                                                                                                                                         --uuid 1433129797798735
                                                                                                                                                                     echo We failed to create a resource
-                                                                                                                                                                    "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/resolve/d9aeea696dd06d63/resolve.sh" 3e098e62e5c17e09
+                                                                                                                                                                    "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/resolve/d9aeea696dd06d63/resolve.sh" 9554464665854115
                                                                                                                                                                     jq \
                                                                                                                                                                         --null-input \
                                                                                                                                                                         --compact-output \
@@ -909,7 +909,7 @@
                                                                                                                                                                         --rawfile SCRIPT ${ scripts.false.true.resolve.init } \
                                                                                                                                                                         --arg TARGET "$TARGET" \
                                                                                                                                                                             '{
-                                                                                                                                                                               "arguments" : [ "3e098e62e5c17e09" ] ,
+                                                                                                                                                                               "arguments" : [ "9554464665854115" ] ,
                                                                                                                                                                                "has-standard-input" : false ,
                                                                                                                                                                                "index" : $INDEX ,
                                                                                                                                                                                "resolve-path" : [ "d9aeea696dd06d63" ] ,
@@ -934,7 +934,7 @@
                                                                                                                                                                         --does-not-exist "/home/${ config.personal.name }/resources/invalid-release/$FRESH_INDEX" \
                                                                                                                                                                         --uuid bf72dfd89bcd450d
                                                                                                                                                                     echo We failed to resolve a resource
-                                                                                                                                                                    "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/resolve/d9aeea696dd06d63/resolve.sh" bad6df6cec492731
+                                                                                                                                                                    "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/resolve/d9aeea696dd06d63/resolve.sh" 8363144534251594
                                                                                                                                                                     jq \
                                                                                                                                                                         --null-input \
                                                                                                                                                                         --compact-output \
