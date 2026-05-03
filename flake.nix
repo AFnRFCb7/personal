@@ -889,6 +889,8 @@
                                                                                                                                                                                "transient" : -1
                                                                                                                                                                             }' | compare --message message --channel invalid-init --payload false true --timeout 1 --uuid 7462874244171449 3<&3
                                                                                                                                                                     block --timeout 1 --uuid 2336958223494764 3<&3
+                                                                                                                                                                    echo INDEX "$INDEX" >&2
+                                                                                                                                                                    ${ pkgs.findutils }/bin/find /home/emory/resources >&2
                                                                                                                                                                     files \
                                                                                                                                                                         --ceiling "$ALPHA" 4 10 \
                                                                                                                                                                         --equals "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" "$FRESH" \
