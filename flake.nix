@@ -1205,6 +1205,31 @@
                                                                                                                 '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/init" ;
+                                                                                    init-resolutions =
+                                                                                        {
+                                                                                            d9aeea696dd06d63 =
+                                                                                                { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
+                                                                                                    let
+                                                                                                        application =
+                                                                                                            pkgs.writeShellApplication
+                                                                                                                {
+                                                                                                                    name = "resolve" ;
+                                                                                                                    runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                                    text =
+                                                                                                                        ''
+                                                                                                                            if [[ "$1" == "9554464665854115" ]
+                                                                                                                            then
+                                                                                                                                exit 144
+                                                                                                                            elif [[ "$1" == "8363144534251594" ]
+                                                                                                                                exit
+                                                                                                                            else
+                                                                                                                                failure 4526652885524383 "$*"
+                                                                                                                            fi
+                                                                                                                        '' ;
+                                                                                                                } ;
+                                                                                                        in "${ application }/bin/resolve" ;
+
+                                                                                        } ;
                                                                                     release =
                                                                                         { failure , pkgs , resources , seed , sequential , trace } :
                                                                                             let
