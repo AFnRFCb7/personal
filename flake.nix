@@ -1208,7 +1208,7 @@
                                                                                     init-resolutions =
                                                                                         {
                                                                                             d9aeea696dd06d63 =
-                                                                                                { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
+                                                                                                { failure , pkgs , resolve-path , resources , seed , sequential , trace } :
                                                                                                     let
                                                                                                         application =
                                                                                                             pkgs.writeShellApplication
