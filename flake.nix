@@ -2552,7 +2552,7 @@
                                                                                                                                         STAMP="$2"
                                                                                                                                         PAYLOAD="$3"
                                                                                                                                         TARGET="$4"
-                                                                                                                                        exec 203 > /home/${ config.personal.name }/resources/locks/log
+                                                                                                                                        exec 203> /home/${ config.personal.name }/resources/locks/log
                                                                                                                                         flock -x 203
                                                                                                                                         jq --arg CHANNEL "$CHANNEL" --argjson STAMP "$STAMP" '. + { "channel" : $CHANNEL , "stamp" : $STAMP }' <<< "$PAYLOAD" | yq eval --prettyPrint "[.]" >> "$TARGET"
                                                                                                                                     '' ;
