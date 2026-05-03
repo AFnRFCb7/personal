@@ -2036,48 +2036,6 @@
                                                                             } ;
                                                                     in
                                                                         {
-                                                                            checks =
-                                                                                ignore :
-                                                                                    {
-                                                                                        depth = 1 ;
-                                                                                        init =
-                                                                                            { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
-                                                                                                let
-                                                                                                    application =
-                                                                                                        pkgs.writeShellApplication
-                                                                                                            {
-                                                                                                                name = "init" ;
-                                                                                                                runtimeInputs = [ gc-root wrap ] ;
-                                                                                                                text =
-                                                                                                                    let
-                                                                                                                        envrc =
-                                                                                                                            let
-                                                                                                                                application =
-                                                                                                                                   pkgs.writeShellApplication
-                                                                                                                                        {
-                                                                                                                                            name = "envrc" ;
-                                                                                                                                            text =
-                                                                                                                                                ''
-                                                                                                                                                    export PATH=$BIN_PATH
-                                                                                                                                                    # shellcheck disable=SC2153
-                                                                                                                                                    export MANPATH=$MAN_PATH
-                                                                                                                                                    export TEMPORARY="/home/${ config.personal.name }/resources/mounts/$INDEX/temporary"
-                                                                                                                                                '' ;
-                                                                                                                                        } ;
-                                                                                                                                in "${ application }/bin/envrc" ;
-                                                                                                                        in
-                                                                                                                            ''
-                                                                                                                                CHECKS=${ resources.production.product.checks { failure = 23739 ; } }
-                                                                                                                                gc-root "$CHECKS"
-                                                                                                                                export BIN_PATH=${ builtins.concatStringsSep ":" ( builtins.map ( x : "${ x }/bin" ) [ "$CHECKS" ] ) }
-                                                                                                                                export MAN_PATH=${ builtins.concatStringsSep ":" ( builtins.map ( x : "${ x }/share/man" ) [ "$CHECKS" ] ) }
-                                                                                                                                mkdir --parents /mount/temporary
-                                                                                                                                wrap ${ envrc } .envrc 0400 --inherit plain BIN_PATH --inherit plain INDEX --inherit plain MAN_PATH --uuid 24290
-                                                                                                                            '' ;
-                                                                                                            } ;
-                                                                                                    in "${ application }/bin/init" ;
-                                                                                        targets = [ ".envrc" "temporary" ] ;
-                                                                                    } ;
                                                                             home =
                                                                                 ignore :
                                                                                     {
@@ -2129,27 +2087,6 @@
                                                                 } ;
                                                         product =
                                                             {
-                                                                checks =
-                                                                    ignore :
-                                                                        {
-                                                                            init =
-                                                                                { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
-                                                                                    let
-                                                                                        application =
-                                                                                            pkgs.writeShellApplication
-                                                                                                {
-                                                                                                    name = "init" ;
-                                                                                                    runtimeInputs = [ gc-root pkgs.coreutils ] ;
-                                                                                                    text =
-                                                                                                        ''
-                                                                                                            BIN=${ resources.production.bin.checks { failure = 10519 ; } }
-                                                                                                            gc-root "$BIN"
-                                                                                                            ln --symbolic "$BIN" /mount/bin
-                                                                                                        '' ;
-                                                                                                } ;
-                                                                                        in "${ application }/bin/init" ;
-                                                                            targets = [ "bin" ] ;
-                                                                        } ;
                                                                 gh =
                                                                     ignore :
                                                                         {
