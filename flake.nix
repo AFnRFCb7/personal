@@ -347,7 +347,7 @@
                                                                                                                                 OBSERVED_FILE="$( mktemp )" || failure
                                                                                                                                 echo "$OBSERVED_PRINT_PAYLOAD" > "$OBSERVED_FILE"
                                                                                                                                 DIFF="$( diff --unified "$EXPECTED_FILE" "$OBSERVED_FILE" )" || true
-                                                                                                                                failure 2177767151764594 "$UUID" EXPECTED_PAYLOAD "$EXPECTED_PAYLOAD" OBSERVED_PAYLOAD "$OBSERVED_PAYLOAD" EXPECTED_PRINT_PAYLOAD "$EXPECTED_PRINT_PAYLOAD" OBSERVED_PRINT_PAYLOAD "$OBSERVED_PRINT_PAYLOAD" "$EXPECTED_PRINT_PAYLOAD" OBSERVED_PRINT_PAYLOAD "$OBSERVED_PRINT_PAYLOAD" DIFF "$DIFF"
+                                                                                                                                failure 2177767151764594 "$UUID" EXPECTED_PAYLOAD "$EXPECTED_PAYLOAD" OBSERVED_PAYLOAD "$OBSERVED_PAYLOAD" EXPECTED_PRINT_PAYLOAD "$EXPECTED_PRINT_PAYLOAD" OBSERVED_PRINT_PAYLOAD "$OBSERVED_PRINT_PAYLOAD" "" "" DIFF "$DIFF"
                                                                                                                             fi
                                                                                                                         else
                                                                                                                             if [[ "$EXPECTED_PAYLOAD" != "$OBSERVED_PAYLOAD" ]]
