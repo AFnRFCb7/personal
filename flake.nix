@@ -1148,7 +1148,7 @@
                                                                                                                         ''  ;
                                                                                                                 } ;
                                                                                                         in "${ application }/bin/resolve" ;
-                                                                                            d9aeea696dd06d63 =
+                                                                                            e50f56bc04aa2a80 =
                                                                                                 { direction , failure , pkgs , resolve-path , resources , seed , sequential , trace } :
                                                                                                     let
                                                                                                         application =
