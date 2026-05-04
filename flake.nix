@@ -1129,7 +1129,22 @@
                                                                                                                 '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/init" ;
-
+                                                                                    init-resolutions =
+                                                                                        {
+                                                                                            d9aeea696dd06d63 =
+                                                                                                { direction , failure , pkgs , resolve-path , resources , seed , sequential , trace } :
+                                                                                                    let
+                                                                                                        application =
+                                                                                                            pkgs.writeShellApplication
+                                                                                                                {
+                                                                                                                    name = "resolve" ;
+                                                                                                                    runtimeInputs = [ ] ;
+                                                                                                                    text =
+                                                                                                                        ''
+                                                                                                                        ''  ;
+                                                                                                                } ;
+                                                                                                        in "${ application }/bin/resolve" ;
+                                                                                        } ;
                                                                                     release =
                                                                                         { failure , pkgs , resources , seed , sequential , trace } :
                                                                                             let
