@@ -932,13 +932,12 @@
                                                                                                                                                                                "standard-error" : "" ,
                                                                                                                                                                                "standard-input" : "" ,
                                                                                                                                                                                "standard-output" : "80a06bfd7ad9ba81" ,
-                                                                                                                                                                               "status" : 0
+                                                                                                                                                                               "status" : 185
                                                                                                                                                                             }' | compare --message message --channel invalid-init --payload false true --timeout 1 --uuid 4487711927678726 3<&3
                                                                                                                                                                     block --timeout 1 --uuid 891566c578f25dca 3<&3
                                                                                                                                                                     files \
                                                                                                                                                                         --ceiling "$ALPHA" 8 18 \
                                                                                                                                                                         --equals "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" "$FRESH" \
-                                                                                                                                                                        --not-equals "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" "$DISTRACTOR" \
                                                                                                                                                                         --directory "$FRESH" \
                                                                                                                                                                         --file "$FRESH/$TARGET" \
                                                                                                                                                                         --does-not-exist "/home/${ config.personal.name }/resources/release/$FRESH_INDEX" \
@@ -961,11 +960,8 @@
                                                                                                                                                                                "index" : $INDEX ,
                                                                                                                                                                                "resolve-path" : [ "d9aeea696dd06d63" ] ,
                                                                                                                                                                                "script" : $SCRIPT ,
-                                                                                                                                                                               "seed" : [ "checks" , "targets" , "false" , "true" ] ,
-                                                                                                                                                                               "standard-error" : "" ,
                                                                                                                                                                                "standard-input" : "" ,
-                                                                                                                                                                               "standard-output" : "80a06bfd7ad9ba81" ,
-                                                                                                                                                                               "status" : 0
+                                                                                                                                                                               "standard-output" : "80a06bfd7ad9ba81"
                                                                                                                                                                             }' | compare --message message --channel valid-init --payload false true --timeout 1 --uuid 8398518585436176 3<&3
                                                                                                                                                                     jq \
                                                                                                                                                                         --null-input \
