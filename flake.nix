@@ -566,6 +566,13 @@
                                                                                                                                                                                     '' ;
                                                                                                                                                                             release =
                                                                                                                                                                                 ''
+                                                                                                                                                                                    #!/nix/store/mjhcjikhxps97mq5z54j4gjjfzgmsir5-bash-5.2p37/bin/bash
+                                                                                                                                                                                    set -o errexit
+                                                                                                                                                                                    set -o errexit
+                                                                                                                                                                                    set -o nounset
+                                                                                                                                                                                    set -o pipefail
+
+                                                                                                                                                                                    /nix/store/zp158z04y8a09cravpnxxc8lm37hnwiv-init/bin/init
                                                                                                                                                                                 '' ;
                                                                                                                                                                             resolve =
                                                                                                                                                                                 {
