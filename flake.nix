@@ -897,9 +897,11 @@
                                                                                                                                                                         --does-not-exist "/home/${ config.personal.name }/resources/release/$FRESH_INDEX" \
                                                                                                                                                                         --executable "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/resolve.sh" \
                                                                                                                                                                         --executable "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/resolve/d9aeea696dd06d63/resolve.sh" \
+                                                                                                                                                                        --executable "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/resolve/e50f56bc04aa2a80/resolve.sh" \
                                                                                                                                                                         --does-not-exist "/home/${ config.personal.name }/resources/invalid-release/$FRESH_INDEX" \
                                                                                                                                                                         --uuid 1433129797798735
                                                                                                                                                                     echo We failed to create a resource
+                                                                                                                                                                    if true ; then exit 0 ; fi
                                                                                                                                                                     "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/resolve/d9aeea696dd06d63/resolve.sh" 9554464665854115
                                                                                                                                                                     jq \
                                                                                                                                                                         --null-input \
@@ -1141,6 +1143,22 @@
                                                                                                                     runtimeInputs = [ ] ;
                                                                                                                     text =
                                                                                                                         ''
+                                                                                                                            echo 7669863784911683
+                                                                                                                            exit 185
+                                                                                                                        ''  ;
+                                                                                                                } ;
+                                                                                                        in "${ application }/bin/resolve" ;
+                                                                                            d9aeea696dd06d63 =
+                                                                                                { direction , failure , pkgs , resolve-path , resources , seed , sequential , trace } :
+                                                                                                    let
+                                                                                                        application =
+                                                                                                            pkgs.writeShellApplication
+                                                                                                                {
+                                                                                                                    name = "resolve" ;
+                                                                                                                    runtimeInputs = [ ] ;
+                                                                                                                    text =
+                                                                                                                        ''
+                                                                                                                            echo 4777793896555116
                                                                                                                         ''  ;
                                                                                                                 } ;
                                                                                                         in "${ application }/bin/resolve" ;
