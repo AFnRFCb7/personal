@@ -613,8 +613,18 @@
                                                                                                                                                                                         set -o errexit
                                                                                                                                                                                         set -o nounset
                                                                                                                                                                                         set -o pipefail
+                                                                                                                                                                                        machine #     "
+                                                                                                                                                                                        echo 7669863784911683
+                                                                                                                                                                                        if [[ \"$1\" == \"\" ]]
+                                                                                                                                                                                        then
+                                                                                                                                                                                            exit 185
+                                                                                                                                                                                        elif [[ \"$1\" == \"\" ]]
+                                                                                                                                                                                        then
+                                                                                                                                                                                            exit
+                                                                                                                                                                                        else
+                                                                                                                                                                                            failure 6126927632687914
+                                                                                                                                                                                        fi
 
-                                                                                                                                                                                        /nix/store/qfcw4rcx08yqnfjj7ndxhcqbi719z9m2-init/bin/init
                                                                                                                                                                                     '' ;
                                                                                                                                                                             release =
                                                                                                                                                                                 ''
