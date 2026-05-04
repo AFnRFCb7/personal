@@ -901,8 +901,9 @@
                                                                                                                                                                         --does-not-exist "/home/${ config.personal.name }/resources/invalid-release/$FRESH_INDEX" \
                                                                                                                                                                         --uuid 1433129797798735
                                                                                                                                                                     echo We failed to create a resource
-                                                                                                                                                                    if true ; then exit 0 ; fi
+                                                                                                                                                                    # if true ; then exit 0 ; fi
                                                                                                                                                                     "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/resolve/d9aeea696dd06d63/resolve.sh" 9554464665854115
+                                                                                                                                                                    if true ; then exit 0 ; fi
                                                                                                                                                                     jq \
                                                                                                                                                                         --null-input \
                                                                                                                                                                         --compact-output \
@@ -943,7 +944,7 @@
                                                                                                                                                                         --rawfile SCRIPT ${ scripts.false.true.resolve.init } \
                                                                                                                                                                         --arg TARGET "$TARGET" \
                                                                                                                                                                             '{
-                                                                                                                                                                               "arguments" : [ "bad6df6cec492731" ] ,
+                                                                                                                                                                               "arguments" : [ "8363144534251594" ] ,
                                                                                                                                                                                "has-standard-input" : false ,
                                                                                                                                                                                "index" : $INDEX ,
                                                                                                                                                                                "resolve-path" : [ "d9aeea696dd06d63" ] ,
