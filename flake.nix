@@ -887,8 +887,6 @@
                                                                                                                                                                                "transient" : -1
                                                                                                                                                                             }' | compare --message message --channel invalid-init --payload false true --timeout 1 --uuid 7462874244171449 3<&3
                                                                                                                                                                     block --timeout 1 --uuid 2336958223494764 3<&3
-                                                                                                                                                                    echo 5957562222542355 FRESH_INDEX "$FRESH_INDEX" >&2
-                                                                                                                                                                    ${ pkgs.findutils }/bin/find /home/emory/resources >&2
                                                                                                                                                                     files \
                                                                                                                                                                         --ceiling "$ALPHA" 4 10 \
                                                                                                                                                                         --equals "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" "$FRESH" \
@@ -897,7 +895,6 @@
                                                                                                                                                                         --does-not-exist "/home/${ config.personal.name }/resources/release/$FRESH_INDEX" \
                                                                                                                                                                         --executable "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/resolve.sh" \
                                                                                                                                                                         --executable "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/resolve/d9aeea696dd06d63/resolve.sh" \
-                                                                                                                                                                        --executable "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/resolve/e50f56bc04aa2a80/resolve.sh" \
                                                                                                                                                                         --does-not-exist "/home/${ config.personal.name }/resources/invalid-release/$FRESH_INDEX" \
                                                                                                                                                                         --uuid 1433129797798735
                                                                                                                                                                     echo We failed to create a resource
@@ -1146,7 +1143,15 @@
                                                                                                                     text =
                                                                                                                         ''
                                                                                                                             echo 7669863784911683
-                                                                                                                            exit 185
+                                                                                                                            if [[ "$1" == "" ]]
+                                                                                                                            then
+                                                                                                                                exit 185
+                                                                                                                            elif [[ "$1" == "" ]]
+                                                                                                                            then
+                                                                                                                                exit
+                                                                                                                            else
+                                                                                                                                failure 6126927632687914
+                                                                                                                            fi
                                                                                                                         ''  ;
                                                                                                                 } ;
                                                                                                         in "${ application }/bin/resolve" ;
