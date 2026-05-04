@@ -959,7 +959,7 @@
                                                                                                                                                                                "standard-input" : "" ,
                                                                                                                                                                                "standard-output" : "80a06bfd7ad9ba81" ,
                                                                                                                                                                                "status" : 0
-                                                                                                                                                                            }' | compare --message message --channel valid-init --payload false true --timeout 1 --uuid d05da718c3674522 3<&3
+                                                                                                                                                                            }' | compare --message message --channel valid-init --payload false true --timeout 1 --uuid 8398518585436176 3<&3
                                                                                                                                                                     jq \
                                                                                                                                                                         --null-input \
                                                                                                                                                                         --compact-output \
