@@ -902,7 +902,10 @@
                                                                                                                                                                         --uuid 1433129797798735
                                                                                                                                                                     echo We failed to create a resource
                                                                                                                                                                     # if true ; then exit 0 ; fi
-                                                                                                                                                                    "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/resolve/d9aeea696dd06d63/resolve.sh" 9554464665854115
+                                                                                                                                                                    if "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/resolve/d9aeea696dd06d63/resolve.sh" 9554464665854115
+                                                                                                                                                                    then
+                                                                                                                                                                        failure 1446655397623276
+                                                                                                                                                                    fi
                                                                                                                                                                     if true ; then exit 0 ; fi
                                                                                                                                                                     jq \
                                                                                                                                                                         --null-input \
