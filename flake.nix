@@ -575,11 +575,19 @@
                                                                                                                                                                                             ''
                                                                                                                                                                                                 #!/nix/store/mjhcjikhxps97mq5z54j4gjjfzgmsir5-bash-5.2p37/bin/bash
                                                                                                                                                                                                 set -o errexit
-                                                                                                                                                                                                set -o errexit
                                                                                                                                                                                                 set -o nounset
                                                                                                                                                                                                 set -o pipefail
 
-                                                                                                                                                                                                /nix/store/zp158z04y8a09cravpnxxc8lm37hnwiv-init/bin/init
+                                                                                                                                                                                                echo 7669863784911683
+                                                                                                                                                                                                if [[ \"$1\" == \"\" ]]
+                                                                                                                                                                                                then
+                                                                                                                                                                                                    exit 185
+                                                                                                                                                                                                elif [[ \"$1\" == \"\" ]]
+                                                                                                                                                                                                then
+                                                                                                                                                                                                    exit
+                                                                                                                                                                                                else
+                                                                                                                                                                                                    failure 6126927632687914
+                                                                                                                                                                                                fi
                                                                                                                                                                                             '' ;
                                                                                                                                                                                 } ;
                                                                                                                                                                         } ;
@@ -609,21 +617,6 @@
                                                                                                                                                                                 builtins.toFile
                                                                                                                                                                                     "script"
                                                                                                                                                                                     ''
-                                                                                                                                                                                        #!/nix/store/mjhcjikhxps97mq5z54j4gjjfzgmsir5-bash-5.2p37/bin/bash
-                                                                                                                                                                                        set -o errexit
-                                                                                                                                                                                        set -o nounset
-                                                                                                                                                                                        set -o pipefail
-                                                                                                                                                                                        machine #     "
-                                                                                                                                                                                        echo 7669863784911683
-                                                                                                                                                                                        if [[ \"$1\" == \"\" ]]
-                                                                                                                                                                                        then
-                                                                                                                                                                                            exit 185
-                                                                                                                                                                                        elif [[ \"$1\" == \"\" ]]
-                                                                                                                                                                                        then
-                                                                                                                                                                                            exit
-                                                                                                                                                                                        else
-                                                                                                                                                                                            failure 6126927632687914
-                                                                                                                                                                                        fi
                                                                                                                                                                                     '' ;
                                                                                                                                                                             release =
                                                                                                                                                                                 ''
