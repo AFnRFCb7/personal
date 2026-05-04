@@ -892,7 +892,7 @@
                                                                                                                                                                                "status" : 114 ,
                                                                                                                                                                                "targets" : { "expected" : [ $TARGET ] , "observed" : [ $TARGET ] } ,
                                                                                                                                                                                "transient" : -1
-                                                                                                                                                                            }' | compare --message message --channel invalid-init --payload false true --timeout 1 --uuid 7462874244171449 3<&3
+                                                                                                                                                                            }' | compare --message message --channel invalid-init --payload false true --timeout 1 --uuid 9746578686273853 3<&3
                                                                                                                                                                     block --timeout 1 --uuid 2336958223494764 3<&3
                                                                                                                                                                     files \
                                                                                                                                                                         --ceiling "$ALPHA" 4 10 \
@@ -916,7 +916,6 @@
                                                                                                                                                                         --rawfile SCRIPT ${ scripts.false.true.resolve.init } \
                                                                                                                                                                         --arg TARGET "$TARGET" \
                                                                                                                                                                             '{
-                                                                                                                                                                                "kludge" : true ,
                                                                                                                                                                                "arguments" : [ "9554464665854115" ] ,
                                                                                                                                                                                "has-standard-input" : false ,
                                                                                                                                                                                "index" : $INDEX ,
@@ -927,7 +926,7 @@
                                                                                                                                                                                "standard-input" : "" ,
                                                                                                                                                                                "standard-output" : "80a06bfd7ad9ba81" ,
                                                                                                                                                                                "status" : 0
-                                                                                                                                                                            }' | compare --message message --channel invalid-init --payload false true --timeout 1 --uuid 7462874244171449 3<&3
+                                                                                                                                                                            }' | compare --message message --channel invalid-init --payload false true --timeout 1 --uuid 4487711927678726 3<&3
                                                                                                                                                                     block --timeout 1 --uuid 891566c578f25dca 3<&3
                                                                                                                                                                     files \
                                                                                                                                                                         --ceiling "$ALPHA" 8 18 \
