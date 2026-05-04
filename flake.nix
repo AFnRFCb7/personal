@@ -916,6 +916,7 @@
                                                                                                                                                                         --rawfile SCRIPT ${ scripts.false.true.resolve.init } \
                                                                                                                                                                         --arg TARGET "$TARGET" \
                                                                                                                                                                             '{
+                                                                                                                                                                                "kludge" : true ,
                                                                                                                                                                                "arguments" : [ "9554464665854115" ] ,
                                                                                                                                                                                "has-standard-input" : false ,
                                                                                                                                                                                "index" : $INDEX ,
