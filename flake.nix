@@ -578,7 +578,7 @@
                                                                                                                                                                                                 set -o nounset
                                                                                                                                                                                                 set -o pipefail
 
-                                                                                                                                                                                                echo 7669863784911683
+                                                                                                                                                                                                echo -en 7669863784911683
                                                                                                                                                                                                 if [[ "$1" == 9554464665854115 ]]
                                                                                                                                                                                                 then
                                                                                                                                                                                                     exit 185
@@ -1159,7 +1159,7 @@
                                                                                                                             then
                                                                                                                                 exit
                                                                                                                             else
-                                                                                                                                failure 6126927632687914 "$*"
+                                                                                                                                failure 6126927632687914 "$*" "ALPHA$*BETA"
                                                                                                                             fi''  ;
                                                                                                                 } ;
                                                                                                         in "${ application }/bin/resolve" ;
