@@ -2589,14 +2589,28 @@
                                                                                                                             mkdir --parents /home/${ config.personal.name }/resources/logs
                                                                                                                             log "$CHANNEL" "$STAMP" "$PAYLOAD" /home/${ config.personal.name }/resources/logs/log.yaml
                                                                                                                             INDEX="$( jq --raw-output ".index" <<< "$PAYLOAD" )" || failure 6161227368692165
-                                                                                                                            find /home/${ config.personal.name }/resources/invalid-init /home/${ config.personal.name }/resources/invalid-release -mindepth 1 -maxdepth 1 -type d | while read -r DIRECTORY
-                                                                                                                            do
-                                                                                                                                NAME="$( basename "$DIRECTORY" )" || failure 7296472521871757
-                                                                                                                                if [[ "$INDEX" == "$NAME" ]]
-                                                                                                                                then
-                                                                                                                                    log "$CHANNEL" "$STAMP" "$PAYLOAD" "$DIRECTORY/log.yaml"
-                                                                                                                                fi
-                                                                                                                            done
+                                                                                                                            if [[ -d /home/${ config.personal.name }/resources/invalid-init ]]
+                                                                                                                            then
+                                                                                                                                find /home/${ config.personal.name }/resources/invalid-init | while read -r DIRECTORY
+                                                                                                                                do
+                                                                                                                                    NAME="$( basename "$DIRECTORY" )" || failure 7296472521871757
+                                                                                                                                    if [[ "$INDEX" == "$NAME" ]]
+                                                                                                                                    then
+                                                                                                                                        log "$CHANNEL" "$STAMP" "$PAYLOAD" "$DIRECTORY/log.yaml"
+                                                                                                                                    fi
+                                                                                                                                done
+                                                                                                                            fi
+                                                                                                                            if [[ -d /home/${ config.personal.name }/resources/invalid-release ]]
+                                                                                                                            then
+                                                                                                                                find /home/${ config.personal.name }/resources/invalid-release -mindepth 1 -maxdepth 1 -type d | while read -r DIRECTORY
+                                                                                                                                do
+                                                                                                                                    NAME="$( basename "$DIRECTORY" )" || failure 6955924246161292
+                                                                                                                                    if [[ "$INDEX" == "$NAME" ]]
+                                                                                                                                    then
+                                                                                                                                        log "$CHANNEL" "$STAMP" "$PAYLOAD" "$DIRECTORY/log.yaml"
+                                                                                                                                    fi
+                                                                                                                                done
+                                                                                                                            fi
                                                                                                                         fi
                                                                                                                     done
                                                                                                                 '' ;
