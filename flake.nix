@@ -930,7 +930,7 @@
                                                                                                                                                                                "resolve-path" : [ "d9aeea696dd06d63" ] ,
                                                                                                                                                                                "script" : $SCRIPT ,
                                                                                                                                                                                "standard-input" : "" ,
-                                                                                                                                                                               "standard-output" : "7669863784911683" ,
+                                                                                                                                                                               "standard-output" :  q"7669863784911683" ,
                                                                                                                                                                                "status" : 185
                                                                                                                                                                             }' | compare --message message --channel invalid-init --payload false true --timeout 1 --uuid 4487711927678726 3<&3
                                                                                                                                                                     block --timeout 1 --uuid 891566c578f25dca 3<&3
