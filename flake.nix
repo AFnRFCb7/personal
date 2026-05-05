@@ -1159,7 +1159,6 @@
                                                                                                                             then
                                                                                                                                 exit
                                                                                                                             else
-                                                                                                                                echo "ALPHA$*BETA"
                                                                                                                                 failure 6126927632687914 "$*"
                                                                                                                             fi''  ;
                                                                                                                 } ;
