@@ -1159,7 +1159,8 @@
                                                                                                                             then
                                                                                                                                 exit
                                                                                                                             else
-                                                                                                                                failure 6126927632687914 "$*" "ALPHA$*BETA"
+                                                                                                                                echo "ALPHA$*BETA"
+                                                                                                                                failure 6126927632687914 "$*"
                                                                                                                             fi''  ;
                                                                                                                 } ;
                                                                                                         in "${ application }/bin/resolve" ;
