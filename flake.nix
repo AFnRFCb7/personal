@@ -929,6 +929,7 @@
                                                                                                                                                                                "index" : $INDEX ,
                                                                                                                                                                                "resolve-path" : [ "d9aeea696dd06d63" ] ,
                                                                                                                                                                                "script" : $SCRIPT ,
+                                                                                                                                                                               "standard-error" : "" ,
                                                                                                                                                                                "standard-input" : "" ,
                                                                                                                                                                                "standard-output" :  "7669863784911683" ,
                                                                                                                                                                                "status" : 185
