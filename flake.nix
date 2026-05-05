@@ -2589,7 +2589,7 @@
                                                                                                                             mkdir --parents /home/${ config.personal.name }/resources/logs
                                                                                                                             log "$CHANNEL" "$STAMP" "$PAYLOAD" /home/${ config.personal.name }/resources/logs/log.yaml
                                                                                                                             INDEX="$( jq --raw-output ".index" <<< "$PAYLOAD" )" || failure 6161227368692165
-                                                                                                                            find /home/${ config.personal.name }/invalid-init /home/${ config.personal.name }/invalid-release -mindepth 1 -maxdepth 1 -type d | while read -r DIRECTORY
+                                                                                                                            find /home/${ config.personal.name }/resources/invalid-init /home/${ config.personal.name }/resources/invalid-release -mindepth 1 -maxdepth 1 -type d | while read -r DIRECTORY
                                                                                                                             do
                                                                                                                                 NAME="$( basename "$DIRECTORY" )" || failure 7296472521871757
                                                                                                                                 if [[ "$INDEX" == "$NAME" ]]
