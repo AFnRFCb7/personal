@@ -946,6 +946,7 @@
                                                                                                                                                                         --does-not-exist "/home/${ config.personal.name }/resources/invalid-release/$FRESH_INDEX" \
                                                                                                                                                                         --uuid 7461217399553378
                                                                                                                                                                     echo We failed to resolve a resource
+                                                                                                                                                                    if true ; then exit 0 ; fi
                                                                                                                                                                     "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/resolve/d9aeea696dd06d63/resolve.sh" 8363144534251594
                                                                                                                                                                     jq \
                                                                                                                                                                         --null-input \
