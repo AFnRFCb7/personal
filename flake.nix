@@ -874,6 +874,7 @@
                                                                                                                                                                     echo We created a stale resource
                                                                                                                                                                 fi
                                                                                                                                                             else
+                                                                                                                                                                if true ; then exit 59 ; fi
                                                                                                                                                                 TARGET=5494881573568661
                                                                                                                                                                 if [[ "$RELEASE" == "true" ]]
                                                                                                                                                                 then
@@ -918,6 +919,7 @@
                                                                                                                                                                     then
                                                                                                                                                                         failure 1446655397623276
                                                                                                                                                                     fi
+                                                                                                                                                                    if true ; then exit 59 ; fi
                                                                                                                                                                     jq \
                                                                                                                                                                         --null-input \
                                                                                                                                                                         --compact-output \
