@@ -913,6 +913,7 @@
                                                                                                                                                                         --does-not-exist "/home/${ config.personal.name }/resources/invalid-release/$FRESH_INDEX" \
                                                                                                                                                                         --uuid 1433129797798735
                                                                                                                                                                     echo We failed to create a resource
+                                                                                                                                                                    if true ; then exit 59 ; fi
                                                                                                                                                                     if "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/resolve/d9aeea696dd06d63/resolve.sh" 9554464665854115
                                                                                                                                                                     then
                                                                                                                                                                         failure 1446655397623276
