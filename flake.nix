@@ -679,6 +679,7 @@
                                                                                                                                                                         ;;
                                                                                                                                                                 esac
                                                                                                                                                             done
+                                                                                                                                                            if true ; then exit 59 ; fi
                                                                                                                                                             if [[ -z "$ALPHA" ]]
                                                                                                                                                             then
                                                                                                                                                                 failure 2468219387197693
