@@ -699,6 +699,7 @@
                                                                                                                                                             files \
                                                                                                                                                                 --ceiling "$ALPHA" 0 2 \
                                                                                                                                                                 --uuid 7299736113522788
+                                                                                                                                                            if true ; then exit 59 ; fi
                                                                                                                                                             if [[ "$INIT" == "true" ]]
                                                                                                                                                             then
                                                                                                                                                                 if [[ "$RELEASE" == "true" ]]
@@ -878,6 +879,7 @@
                                                                                                                                                                 TARGET=5494881573568661
                                                                                                                                                                 if [[ "$RELEASE" == "true" ]]
                                                                                                                                                                 then
+                                                                                                                                                                    if true ; then exit 59 ; fi
                                                                                                                                                                     if FRESH=${ resources.checks.targets.false.true { failure = 4524846869486114 ; } }
                                                                                                                                                                     then
                                                                                                                                                                         failure 5213962914665347
