@@ -962,6 +962,7 @@
                                                                                                                                                                                "standard-input" : "" ,
                                                                                                                                                                                "standard-output" : "7669863784911683"
                                                                                                                                                                             }' | compare --message message --channel valid-init --payload false true --timeout 1 --uuid 8398518585436176 3<&3
+                                                                                                                                                                    if true ; then exit 59 ; fi
                                                                                                                                                                     jq \
                                                                                                                                                                         --null-input \
                                                                                                                                                                         --compact-output \
@@ -977,6 +978,7 @@
                                                                                                                                                                             }' | compare --message message --channel valid-release --payload false true --timeout 1 --uuid 1118336254258565 3<&3
                                                                                                                                                                     if true ; then exit 59 ; fi
                                                                                                                                                                     block --timeout 1 --uuid 1875f81650ebb984 3<&3
+                                                                                                                                                                    if true ; then exit 59 ; fi
                                                                                                                                                                     files \
                                                                                                                                                                         --ceiling "$ALPHA" 8 18 \
                                                                                                                                                                         --equals "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" "$FRESH" \
