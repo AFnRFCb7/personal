@@ -2677,6 +2677,7 @@
                                                                                                                 ''
                                                                                                                     redis-cli SUBSCRIBE valid-init | while read -r TYPE  && read -r CHANNEL && read -r PAYLOAD
                                                                                                                     do
+                                                                                                                        id
                                                                                                                         nohup iteration "$TYPE" "$CHANNEL" "$PAYLOAD" &
                                                                                                                     done
                                                                                                                 '' ;
