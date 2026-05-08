@@ -3190,7 +3190,6 @@
                                                                                     ''
                                                                                         SCRIPT="$( resource --resource '["checks","script"]' )"
                                                                                         timeout 1m "$SCRIPT/test" --alpha 6 --init true --release true
-                                                                                        if true ; then exit 59 ; fi
                                                                                     '' ;
                                                                             } ;
                                                                     in "${ application }/bin/test" ;
