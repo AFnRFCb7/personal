@@ -973,7 +973,7 @@
                                                                                                                                                                             '{
                                                                                                                                                                                "index" : $INDEX ,
                                                                                                                                                                                "script" : "WRONG" ,
-                                                                                                                                                                               "seed" : '${ builtins.toString path }' ,
+                                                                                                                                                                               "seed" : '[ "WRONG" ]' ,
                                                                                                                                                                                "standard-output" : "WRONG"
                                                                                                                                                                             }' | compare --message message --channel invalid-release --payload false true --timeout 1 --uuid 1118336254258565 3<&3
                                                                                                                                                                     if true ; then exit 0 ; fi
