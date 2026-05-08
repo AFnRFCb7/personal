@@ -3188,9 +3188,10 @@
                                                                                 runtimeInputs = [ pkgs.coreutils ] ;
                                                                                 text =
                                                                                     ''
-                                                                                        if true ; then exit 59 ; fi
                                                                                         SCRIPT="$( resource --resource '["checks","script"]' )"
+                                                                                        if true ; then exit 59 ; fi
                                                                                         timeout 1m "$SCRIPT/test" --alpha 6 --init true --release true
+                                                                                        if true ; then exit 59 ; fi
                                                                                     '' ;
                                                                             } ;
                                                                     in "${ application }/bin/test" ;
