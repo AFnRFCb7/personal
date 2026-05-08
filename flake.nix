@@ -880,7 +880,8 @@
                                                                                                                                                             else
                                                                                                                                                                 if [[ "$RELEASE" == "true" ]]
                                                                                                                                                                 then
-                                                                                                                                                                    # if true ; then exit 0 ; fi
+                                                                                                                                                                    if true ; then echo 3575598161931938 "INIT=$INIT" "RELEASE=$RELEASE" ; fi
+                                                                                                                                                                    if true ; then exit 59 ; fi
                                                                                                                                                                     TARGET=5494881573568661
                                                                                                                                                                     if FRESH=${ resources.checks.targets.false.true { failure = 4524846869486114 ; } }
                                                                                                                                                                     then
@@ -1061,6 +1062,22 @@
                                                                                                                                     --does-not-exist "/home/${ config.personal.name }/resources/invalid-release/$ALPHA_INDEX" \
                                                                                                                                     --uuid 1289673385791639
                                                                                                                                 pre-test --alpha "$ALPHA" --init "$INIT" --release "$RELEASE" --uuid 3316116883378534 3<&3
+                                                                                                                                if [[ "$INIT" == "true" ]]
+                                                                                                                                then
+                                                                                                                                    if [[ "$RELEASE" == "true" ]]
+                                                                                                                                    then
+                                                                                                                                        true
+                                                                                                                                    else
+                                                                                                                                        true
+                                                                                                                                    fi
+                                                                                                                                else
+                                                                                                                                    if [[ "$RELEASE" == "true" ]]
+                                                                                                                                    then
+                                                                                                                                        true
+                                                                                                                                    else
+                                                                                                                                        true
+                                                                                                                                    fi
+                                                                                                                                fi
                                                                                                                             '' ;
                                                                                                                     } ;
                                                                                                             in "${ application }/bin/post-test" ;
