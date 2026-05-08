@@ -703,7 +703,7 @@
                                                                                                                                                             # if true ; then exit 0 ; fi
                                                                                                                                                             if [[ "$INIT" == "true" ]]
                                                                                                                                                             then
-                                                                                                                                                                if true ; then exit 0 ; fi
+                                                                                                                                                                # if true ; then exit 0 ; fi
                                                                                                                                                                 if [[ "$RELEASE" == "true" ]]
                                                                                                                                                                 then
                                                                                                                                                                     DISTRACTOR=${ resources.checks.targets.true.true { failure = 8829996994479772 ; setup = setup : ''${ setup } 3564731485791737'' ; } }
@@ -878,6 +878,7 @@
                                                                                                                                                                     echo We created a stale resource
                                                                                                                                                                 fi
                                                                                                                                                             else
+                                                                                                                                                                if true ; then exit 0 ; fi
                                                                                                                                                                 TARGET=5494881573568661
                                                                                                                                                                 if [[ "$RELEASE" == "true" ]]
                                                                                                                                                                 then
