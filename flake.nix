@@ -339,7 +339,7 @@
                                                                                                                             then
                                                                                                                                 EXPECTED_PRINT_PAYLOAD="$( yq --input-format=json eval --prettyPrint "." <<< "$EXPECTED_PAYLOAD" )" || failure 9695639117138292
                                                                                                                                 echo "$OBSERVED_PAYLOAD" >&2
-                                                                                                                                OBSERVED_PRINT_PAYLOAD="$( yq --input-format=json eval --prettyPrint "." <<< "$OBSERVED_PAYLOAD" )" || failure 3474923945839811
+                                                                                                                                OBSERVED_PRINT_PAYLOAD="$( yq --input-format=json eval --prettyPrint "." <<< "$OBSERVED_PAYLOAD" )" || failure 3474923945839811 "$OBSERVED_PAYLOAD"
                                                                                                                                 # EXPECTED_PRINT_PAYLOAD="$( printf '%q\n' "$EXPECTED_PAYLOAD" )" || failure 4118273929999765
                                                                                                                                 # OBSERVED_PRINT_PAYLOAD="$( printf '%q\n' "$OBSERVED_PAYLOAD" )" || failure 6573627312252449
                                                                                                                                 EXPECTED_FILE="$( mktemp )" || failure 1812352358347461
