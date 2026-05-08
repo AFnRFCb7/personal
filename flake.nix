@@ -567,7 +567,7 @@
                                                                                                                                                                             release =
                                                                                                                                                                                 let
                                                                                                                                                                                     application =
-                                                                                                                                                                                        pkgs.writeShellApplicatin
+                                                                                                                                                                                        pkgs.writeShellApplication
                                                                                                                                                                                             {
                                                                                                                                                                                                 name = "release" ;
                                                                                                                                                                                                 text =
@@ -979,8 +979,8 @@
                                                                                                                                                                         --arg TARGET "$TARGET" \
                                                                                                                                                                             '{
                                                                                                                                                                                "index" : $INDEX ,
-                                                                                                                                                                               "script" : "WRONG" ,
-                                                                                                                                                                               "seed" : '[ "WRONG" ]' ,
+                                                                                                                                                                               "script" : $SCRIPT ,
+                                                                                                                                                                               "seed" : [ "checks" , "targets" , "false" , "true" ] ,
                                                                                                                                                                                "standard-output" : "WRONG"
                                                                                                                                                                             }' | compare --message message --channel valid-release --payload false true --timeout 1 --uuid 1118336254258565 3<&3
                                                                                                                                                                     if true ; then exit 0 ; fi
