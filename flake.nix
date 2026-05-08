@@ -878,10 +878,11 @@
                                                                                                                                                                     echo We created a stale resource
                                                                                                                                                                 fi
                                                                                                                                                             else
-                                                                                                                                                                if true ; then exit 0 ; fi
+                                                                                                                                                                # if true ; then exit 0 ; fi
                                                                                                                                                                 TARGET=5494881573568661
                                                                                                                                                                 if [[ "$RELEASE" == "true" ]]
                                                                                                                                                                 then
+                                                                                                                                                                    # if true ; then exit 0 ; fi
                                                                                                                                                                     if FRESH=${ resources.checks.targets.false.true { failure = 4524846869486114 ; } }
                                                                                                                                                                     then
                                                                                                                                                                         failure 5213962914665347
