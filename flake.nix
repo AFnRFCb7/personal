@@ -791,7 +791,7 @@
                                                                                                                                                                         --uuid 5556886441562925
                                                                                                                                                                     echo We created a stale resource
                                                                                                                                                                 else
-                                                                                                                                                                    if true ; then exit 0 ; fi
+                                                                                                                                                                    # if true ; then exit 0 ; fi
                                                                                                                                                                     DISTRACTOR=${ resources.checks.targets.true.false { failure = 1965713756848597 ; setup = setup : ''${ setup } 2764421667212817'' ; } }
                                                                                                                                                                     printf -v DISTRACTOR_INDEX "%016d" $(( ALPHA + 4 ))
                                                                                                                                                                     STANDARD_OUTPUT=4725766637963872
