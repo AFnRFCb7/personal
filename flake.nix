@@ -632,7 +632,6 @@
                                                                                                                                                         } ;
                                                                                                                                                     in
                                                                                                                                                         ''
-                                                                                                                                                            if true ; then exit 59 ; fi
                                                                                                                                                             while [[ "$#" -gt 0 ]]
                                                                                                                                                             do
                                                                                                                                                                 case "$1" in
