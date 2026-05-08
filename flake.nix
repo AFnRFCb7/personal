@@ -570,8 +570,10 @@
                                                                                                                                                                                         pkgs.writeShellApplication
                                                                                                                                                                                             {
                                                                                                                                                                                                 name = "release" ;
+                                                                                                                                                                                                runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                                                                                                                 text =
                                                                                                                                                                                                     ''
+                                                                                                                                                                                                        echo 4657737859987722
                                                                                                                                                                                                     '' ;
                                                                                                                                                                                             } ;
                                                                                                                                                                                     in "${ application }/bin/release" ;
@@ -981,8 +983,8 @@
                                                                                                                                                                                "script" : $SCRIPT ,
                                                                                                                                                                                "seed" : [ "checks" , "targets" , "false" , "true" ] ,
                                                                                                                                                                                "standard-output" : "4657737859987722"
-                                                                                                                                                                            }' | compare --message message --channel valid-release --payload false true --timeout 1 --uuid 1118336254258565 3<&3
-                                                                                                                                                                    block --timeout 10 --uuid 1875f81650ebb984 3<&3
+                                                                                                                                                                            }' | compare --message message --channel valid-release --payload false true --timeout 10 --uuid 1118336254258565 3<&3
+                                                                                                                                                                    block --timeout 1 --uuid 1875f81650ebb984 3<&3
                                                                                                                                                                     if true ; then exit 0 ; fi
                                                                                                                                                                     files \
                                                                                                                                                                         --ceiling "$ALPHA" 8 18 \
