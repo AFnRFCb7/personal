@@ -2667,7 +2667,6 @@
                                                                                                                 ''
                                                                                                                     redis-cli SUBSCRIBE valid-init | while read -r TYPE  && read -r CHANNEL && read -r PAYLOAD
                                                                                                                     do
-                                                                                                                        id
                                                                                                                         nohup iteration "$TYPE" "$CHANNEL" "$PAYLOAD" &
                                                                                                                     done
                                                                                                                 '' ;
@@ -2676,33 +2675,6 @@
                                                                                         User = config.personal.name ;
                                                                                     } ;
                                                                                 wantedBy = [ "multi-user.target" ] ;
-                                                                            } ;
-                                                                        purge-trace =
-                                                                            {
-                                                                                description =
-                                                                                    ''
-                                                                                        Purge the trace
-                                                                                    '' ;
-                                                                                serviceConfig =
-                                                                                    {
-                                                                                        ExecStart =
-                                                                                            let
-                                                                                                application =
-                                                                                                    pkgs.writeShellApplication
-                                                                                                        {
-                                                                                                            name = "ExecStart" ;
-                                                                                                            runtimeInputs = [ pkgs.coreutils pkgs.flock ] ;
-                                                                                                            text =
-                                                                                                                ''
-                                                                                                                    exec 203> /home/${ config.personal.name }/resources/trace.lock
-                                                                                                                    flock -x 203
-                                                                                                                    ARCHIVE="$( mktemp --suffix ".tar.xz" )" || exit 63
-                                                                                                                    tar --create --file "$ARCHIVE" --remove-files /home/${ config.personal.name }/resources/logs/trace.log.yaml
-                                                                                                                    rm /home/${ config.personal.name }/resources/trace.lock
-                                                                                                                '' ;
-                                                                                                        } ;
-                                                                                                in "${ application }/bin/ExecStart" ;
-                                                                                    } ;
                                                                             } ;
                                                                     } ;
                                                                 timers =
