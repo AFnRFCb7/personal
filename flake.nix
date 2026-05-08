@@ -321,9 +321,9 @@
                                                                                                                         then
                                                                                                                             failure d855cf3f4d0854ec "$UUID"
                                                                                                                         fi
-                                                                                                                        read -r -t "$TIMEOUT" -u 3 OBSERVED_MESSAGE || failure 8957413633575761 TIMEOUT "$TIMEOUT" UUID "$UUID"
-                                                                                                                        read -r -t "$TIMEOUT" -u 3 OBSERVED_CHANNEL || failure 3194389162774953 TIMEOUT "$TIMEOUT" UUID "$UUID"
-                                                                                                                        read -r -t "$TIMEOUT" -u 3 OBSERVED_PAYLOAD || failure 8294241659373935 TIMEOUT "$TIMEOUT" UUID "$UUID"
+                                                                                                                        read -r -t "$TIMEOUT" -u 3 OBSERVED_MESSAGE || failure 8957413633575761 MESSAGE TIMEOUT "$TIMEOUT" UUID "$UUID"
+                                                                                                                        read -r -t "$TIMEOUT" -u 3 OBSERVED_CHANNEL || failure 3194389162774953 CHANNEL TIMEOUT "$TIMEOUT" UUID "$UUID"
+                                                                                                                        read -r -t "$TIMEOUT" -u 3 OBSERVED_PAYLOAD || failure 8294241659373935 PAYLOAD TIMEOUT "$TIMEOUT" UUID "$UUID"
                                                                                                                         if [[ "$EXPECTED_MESSAGE" != "$OBSERVED_MESSAGE" ]]
                                                                                                                         then
                                                                                                                             failure 9358462855663219 "$UUID" EXPECTED_MESSAGE "$EXPECTED_MESSAGE" OBSERVED_MESSAGE "$OBSERVED_MESSAGE"
@@ -947,7 +947,6 @@
                                                                                                                                                                         --uuid 1919721337591632
                                                                                                                                                                     echo We failed to resolve a resource
                                                                                                                                                                     "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/resolve/d9aeea696dd06d63/resolve.sh" 8363144534251594
-                                                                                                                                                                    ## if true ; then exit 0 ; fi
                                                                                                                                                                     jq \
                                                                                                                                                                         --null-input \
                                                                                                                                                                         --compact-output \
@@ -975,7 +974,7 @@
                                                                                                                                                                                "script" : "WRONG" ,
                                                                                                                                                                                "seed" : '[ "WRONG" ]' ,
                                                                                                                                                                                "standard-output" : "WRONG"
-                                                                                                                                                                            }' | compare --message message --channel invalid-release --payload false true --timeout 1 --uuid 1118336254258565 3<&3
+                                                                                                                                                                            }' | compare --message message --channel valid-release --payload false true --timeout 1 --uuid 1118336254258565 3<&3
                                                                                                                                                                     if true ; then exit 0 ; fi
                                                                                                                                                                     block --timeout 1 --uuid 1875f81650ebb984 3<&3
                                                                                                                                                                     if true ; then exit 0 ; fi
