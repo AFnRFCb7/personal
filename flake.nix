@@ -877,11 +877,12 @@
                                                                                                                                                                 if [[ "$RELEASE" == "true" ]]
                                                                                                                                                                 then
                                                                                                                                                                     TARGET=5494881573568661
-                                                                                                                                                                    if true ; then exit 0 ; fi
+                                                                                                                                                                    # if true ; then exit 0 ; fi
                                                                                                                                                                     if FRESH=${ resources.checks.targets.false.true { failure = 4524846869486114 ; } }
                                                                                                                                                                     then
                                                                                                                                                                         failure 5213962914665347
                                                                                                                                                                     fi
+                                                                                                                                                                    if true ; then exit 0 ; fi
                                                                                                                                                                     printf -v FRESH_INDEX "%016d" $(( ALPHA + 4 ))
                                                                                                                                                                     jq \
                                                                                                                                                                         --null-input \
