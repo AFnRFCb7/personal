@@ -1062,6 +1062,7 @@
                                                                                                             in "${ application }/bin/post-test" ;
                                                                                                     in
                                                                                                         ''
+                                                                                                            if true ; then exit 59 ; fi
                                                                                                             wrap \
                                                                                                                 ${ post-test } \
                                                                                                                 test \
