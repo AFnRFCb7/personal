@@ -988,7 +988,6 @@
                                                                                                                                                                         --uuid bf72dfd89bcd450d
                                                                                                                                                                     echo We resolved a resource
                                                                                                                                                                 else
-                                                                                                                                                                    failure 4636717553961528
                                                                                                                                                                     true
                                                                                                                                                                 fi
                                                                                                                                                             fi
