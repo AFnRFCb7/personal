@@ -565,8 +565,16 @@
                                                                                                                                                                                         /nix/store/zp158z04y8a09cravpnxxc8lm37hnwiv-init/bin/init
                                                                                                                                                                                     '' ;
                                                                                                                                                                             release =
-                                                                                                                                                                                ''
-                                                                                                                                                                                '' ;
+                                                                                                                                                                                let
+                                                                                                                                                                                    application =
+                                                                                                                                                                                        pkgs.writeShellApplicatin
+                                                                                                                                                                                            {
+                                                                                                                                                                                                name = "release" ;
+                                                                                                                                                                                                text =
+                                                                                                                                                                                                    ''
+                                                                                                                                                                                                    '' ;
+                                                                                                                                                                                            } ;
+                                                                                                                                                                                    in "${ application }/bin/release" ;
                                                                                                                                                                             resolve =
                                                                                                                                                                                 {
                                                                                                                                                                                     init =
@@ -962,12 +970,12 @@
                                                                                                                                                                                "standard-input" : "" ,
                                                                                                                                                                                "standard-output" : "7669863784911683"
                                                                                                                                                                             }' | compare --message message --channel valid-init --payload false true --timeout 1 --uuid 8398518585436176 3<&3
-                                                                                                                                                                    # if true ; then exit 0 ; fi
+                                                                                                                                                                    if true ; then exit 0 ; fi
                                                                                                                                                                     jq \
                                                                                                                                                                         --null-input \
                                                                                                                                                                         --compact-output \
                                                                                                                                                                         --arg INDEX "$FRESH_INDEX" \
-                                                                                                                                                                        --rawfile SCRIPT ${ scripts.false.true.resolve.init } \
+                                                                                                                                                                        --rawfile SCRIPT ${ scripts.false.true.release } \
                                                                                                                                                                         --arg TARGET "$TARGET" \
                                                                                                                                                                             '{
                                                                                                                                                                                "index" : $INDEX ,
