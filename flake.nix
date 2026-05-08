@@ -2545,6 +2545,7 @@
                                                                         resource-logger =
                                                                             {
                                                                                 after = [ "network.target" "redis.service" "resource.service" ] ;
+                                                                                enable = false ;
                                                                                 requires = [ "redis.service" "resource.service" ] ;
                                                                                 serviceConfig =
                                                                                     {
@@ -2637,6 +2638,7 @@
                                                                                     ''
                                                                                         Releases the resources
                                                                                     '' ;
+                                                                                enable = false ;
                                                                                 serviceConfig =
                                                                                     {
                                                                                         ExecStart =
