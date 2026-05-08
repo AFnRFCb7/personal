@@ -2545,7 +2545,7 @@
                                                                         resource-logger =
                                                                             {
                                                                                 after = [ "network.target" "redis.service" "resource.service" ] ;
-                                                                                enable = false ;
+                                                                                enable = true ;
                                                                                 requires = [ "redis.service" "resource.service" ] ;
                                                                                 serviceConfig =
                                                                                     {
