@@ -1062,8 +1062,6 @@
                                                                                                             in "${ application }/bin/post-test" ;
                                                                                                     in
                                                                                                         ''
-                                                                                                            if true ; then echo 7766794194916487 >&2 ; fi
-                                                                                                            if true ; then echo exit 59 ; fi
                                                                                                             wrap \
                                                                                                                 ${ post-test } \
                                                                                                                 test \
