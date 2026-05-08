@@ -695,7 +695,6 @@
                                                                                                                                                             then
                                                                                                                                                                 failure 4957596197169642
                                                                                                                                                             fi
-                                                                                                                                                            if true ; then exit 59 ; fi
                                                                                                                                                             block --timeout 1 --uuid 5984995243749875 3<&3
                                                                                                                                                             files \
                                                                                                                                                                 --ceiling "$ALPHA" 0 2 \
