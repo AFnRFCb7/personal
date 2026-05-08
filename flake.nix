@@ -321,9 +321,9 @@
                                                                                                                         then
                                                                                                                             failure d855cf3f4d0854ec "$UUID"
                                                                                                                         fi
-                                                                                                                        read -r -t "$TIMEOUT" -u 3 OBSERVED_MESSAGE
-                                                                                                                        read -r -t "$TIMEOUT" -u 3 OBSERVED_CHANNEL
-                                                                                                                        read -r -t "$TIMEOUT" -u 3 OBSERVED_PAYLOAD
+                                                                                                                        read -r -t "$TIMEOUT" -u 3 OBSERVED_MESSAGE || failure 8957413633575761 TIMEOUT "$TIMEOUT" UUID "$UUID"
+                                                                                                                        read -r -t "$TIMEOUT" -u 3 OBSERVED_CHANNEL || failure 3194389162774953 TIMEOUT "$TIMEOUT" UUID "$UUID"
+                                                                                                                        read -r -t "$TIMEOUT" -u 3 OBSERVED_PAYLOAD || failure 8294241659373935 TIMEOUT "$TIMEOUT" UUID "$UUID"
                                                                                                                         if [[ "$EXPECTED_MESSAGE" != "$OBSERVED_MESSAGE" ]]
                                                                                                                         then
                                                                                                                             failure 9358462855663219 "$UUID" EXPECTED_MESSAGE "$EXPECTED_MESSAGE" OBSERVED_MESSAGE "$OBSERVED_MESSAGE"
@@ -964,16 +964,16 @@
                                                                                                                                                                                "standard-output" : "7669863784911683"
                                                                                                                                                                             }' | compare --message message --channel valid-init --payload false true --timeout 1 --uuid 8398518585436176 3<&3
                                                                                                                                                                     # if true ; then exit 0 ; fi
-#                                                                                                                                                                    jq \
-#                                                                                                                                                                        --null-input \
-#                                                                                                                                                                        --compact-output \
-#                                                                                                                                                                        --arg INDEX "$FRESH_INDEX" \
-#                                                                                                                                                                        --rawfile SCRIPT ${ scripts.false.true.resolve.init } \
-#                                                                                                                                                                        --arg TARGET "$TARGET" \
-#                                                                                                                                                                            '{
-#                                                                                                                                                                               "index" : $INDEX
-#                                                                                                                                                                            }' | compare --message message --channel valid-release --payload false true --timeout 1 --uuid 1118336254258565 3<&3
-#                                                                                                                                                                    if true ; then exit 0 ; fi
+                                                                                                                                                                    jq \
+                                                                                                                                                                        --null-input \
+                                                                                                                                                                        --compact-output \
+                                                                                                                                                                        --arg INDEX "$FRESH_INDEX" \
+                                                                                                                                                                        --rawfile SCRIPT ${ scripts.false.true.resolve.init } \
+                                                                                                                                                                        --arg TARGET "$TARGET" \
+                                                                                                                                                                            '{
+                                                                                                                                                                               "index" : $INDEX
+                                                                                                                                                                            }' | compare --message message --channel valid-release --payload false true --timeout 1 --uuid 1118336254258565 3<&3
+                                                                                                                                                                    if true ; then exit 0 ; fi
                                                                                                                                                                     block --timeout 1 --uuid 1875f81650ebb984 3<&3
                                                                                                                                                                     if true ; then exit 0 ; fi
                                                                                                                                                                     files \
