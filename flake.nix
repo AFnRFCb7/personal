@@ -679,7 +679,6 @@
                                                                                                                                                                         ;;
                                                                                                                                                                 esac
                                                                                                                                                             done
-                                                                                                                                                            if true ; then exit 59 ; fi
                                                                                                                                                             if [[ -z "$ALPHA" ]]
                                                                                                                                                             then
                                                                                                                                                                 failure 2468219387197693
@@ -700,7 +699,6 @@
                                                                                                                                                             files \
                                                                                                                                                                 --ceiling "$ALPHA" 0 2 \
                                                                                                                                                                 --uuid 7299736113522788
-                                                                                                                                                            if true ; then exit 59 ; fi
                                                                                                                                                             if [[ "$INIT" == "true" ]]
                                                                                                                                                             then
                                                                                                                                                                 if [[ "$RELEASE" == "true" ]]
@@ -876,11 +874,9 @@
                                                                                                                                                                     echo We created a stale resource
                                                                                                                                                                 fi
                                                                                                                                                             else
-                                                                                                                                                                if true ; then exit 59 ; fi
                                                                                                                                                                 TARGET=5494881573568661
                                                                                                                                                                 if [[ "$RELEASE" == "true" ]]
                                                                                                                                                                 then
-                                                                                                                                                                    if true ; then exit 59 ; fi
                                                                                                                                                                     if FRESH=${ resources.checks.targets.false.true { failure = 4524846869486114 ; } }
                                                                                                                                                                     then
                                                                                                                                                                         failure 5213962914665347
@@ -917,12 +913,10 @@
                                                                                                                                                                         --does-not-exist "/home/${ config.personal.name }/resources/invalid-release/$FRESH_INDEX" \
                                                                                                                                                                         --uuid 1433129797798735
                                                                                                                                                                     echo We failed to create a resource
-                                                                                                                                                                    if true ; then exit 59 ; fi
                                                                                                                                                                     if "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/resolve/d9aeea696dd06d63/resolve.sh" 9554464665854115
                                                                                                                                                                     then
                                                                                                                                                                         failure 1446655397623276
                                                                                                                                                                     fi
-                                                                                                                                                                    if true ; then exit 59 ; fi
                                                                                                                                                                     jq \
                                                                                                                                                                         --null-input \
                                                                                                                                                                         --compact-output \
@@ -941,7 +935,6 @@
                                                                                                                                                                                "status" : 185
                                                                                                                                                                             }' | compare --message message --channel invalid-init --payload false true --timeout 1 --uuid 4487711927678726 3<&3
                                                                                                                                                                     block --timeout 1 --uuid 891566c578f25dca 3<&3
-                                                                                                                                                                    if true ; then exit 59 ; fi
                                                                                                                                                                     files \
                                                                                                                                                                         --ceiling "$ALPHA" 8 14 \
                                                                                                                                                                         --equals "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" "$FRESH" \
@@ -953,9 +946,7 @@
                                                                                                                                                                         --does-not-exist "/home/${ config.personal.name }/resources/invalid-release/$FRESH_INDEX" \
                                                                                                                                                                         --uuid 1919721337591632
                                                                                                                                                                     echo We failed to resolve a resource
-                                                                                                                                                                    if true ; then exit 59 ; fi
                                                                                                                                                                     "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/resolve/d9aeea696dd06d63/resolve.sh" 8363144534251594
-                                                                                                                                                                    if true ; then exit 59 ; fi
                                                                                                                                                                     jq \
                                                                                                                                                                         --null-input \
                                                                                                                                                                         --compact-output \
@@ -971,7 +962,6 @@
                                                                                                                                                                                "standard-input" : "" ,
                                                                                                                                                                                "standard-output" : "7669863784911683"
                                                                                                                                                                             }' | compare --message message --channel valid-init --payload false true --timeout 1 --uuid 8398518585436176 3<&3
-                                                                                                                                                                    if true ; then exit 59 ; fi
                                                                                                                                                                     jq \
                                                                                                                                                                         --null-input \
                                                                                                                                                                         --compact-output \
@@ -985,9 +975,7 @@
                                                                                                                                                                                "standard-input" : "" ,
                                                                                                                                                                                "standard-output" : "7669863784911683" ,
                                                                                                                                                                             }' | compare --message message --channel valid-release --payload false true --timeout 1 --uuid 1118336254258565 3<&3
-                                                                                                                                                                    if true ; then exit 59 ; fi
                                                                                                                                                                     block --timeout 1 --uuid 1875f81650ebb984 3<&3
-                                                                                                                                                                    if true ; then exit 59 ; fi
                                                                                                                                                                     files \
                                                                                                                                                                         --ceiling "$ALPHA" 8 18 \
                                                                                                                                                                         --equals "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" "$FRESH" \
@@ -2638,7 +2626,7 @@
                                                                                     ''
                                                                                         Releases the resources
                                                                                     '' ;
-                                                                                enable = true ;
+                                                                                enable = false ;
                                                                                 serviceConfig =
                                                                                     {
                                                                                         ExecStart =
@@ -3198,7 +3186,6 @@
                                                                                 runtimeInputs = [ pkgs.coreutils ] ;
                                                                                 text =
                                                                                     ''
-                                                                                        if true ; then exit 59 ; fi
                                                                                         SCRIPT="$( resource --resource '["checks","script"]' )"
                                                                                         timeout 1m "$SCRIPT/test" --alpha 6 --init true --release false
                                                                                     '' ;
