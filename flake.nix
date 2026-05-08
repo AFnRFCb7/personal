@@ -632,7 +632,7 @@
                                                                                                                                                         } ;
                                                                                                                                                     in
                                                                                                                                                         ''
-                                                                                                                                                            if true ; then exit 0 ; fi
+                                                                                                                                                            # if true ; then exit 0 ; fi
                                                                                                                                                             while [[ "$#" -gt 0 ]]
                                                                                                                                                             do
                                                                                                                                                                 case "$1" in
@@ -700,10 +700,10 @@
                                                                                                                                                             files \
                                                                                                                                                                 --ceiling "$ALPHA" 0 2 \
                                                                                                                                                                 --uuid 7299736113522788
-                                                                                                                                                            if true ; then exit 59 ; fi
+                                                                                                                                                            # if true ; then exit 0 ; fi
                                                                                                                                                             if [[ "$INIT" == "true" ]]
                                                                                                                                                             then
-                                                                                                                                                                if true ; then exit 59 ; fi
+                                                                                                                                                                if true ; then exit 0 ; fi
                                                                                                                                                                 if [[ "$RELEASE" == "true" ]]
                                                                                                                                                                 then
                                                                                                                                                                     DISTRACTOR=${ resources.checks.targets.true.true { failure = 8829996994479772 ; setup = setup : ''${ setup } 3564731485791737'' ; } }
@@ -791,7 +791,7 @@
                                                                                                                                                                         --uuid 5556886441562925
                                                                                                                                                                     echo We created a stale resource
                                                                                                                                                                 else
-                                                                                                                                                                    if true ; then exit 59 ; fi
+                                                                                                                                                                    if true ; then exit 0 ; fi
                                                                                                                                                                     DISTRACTOR=${ resources.checks.targets.true.false { failure = 1965713756848597 ; setup = setup : ''${ setup } 2764421667212817'' ; } }
                                                                                                                                                                     printf -v DISTRACTOR_INDEX "%016d" $(( ALPHA + 4 ))
                                                                                                                                                                     STANDARD_OUTPUT=4725766637963872
