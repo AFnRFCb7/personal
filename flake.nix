@@ -1263,31 +1263,6 @@
                                                                                                                 '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/init" ;
-                                                                                    release-resolutions =
-                                                                                        {
-                                                                                            ec36b9ba523f094d =
-                                                                                                { direction , failure , pkgs , resolve-path , resources , seed , sequential , trace } :
-                                                                                                    let
-                                                                                                        application =
-                                                                                                            pkgs.writeShellApplication
-                                                                                                                {
-                                                                                                                    name = "resolve" ;
-                                                                                                                    runtimeInputs = [ ] ;
-                                                                                                                    text =
-                                                                                                                        ''
-                                                                                                                            echo -en 7669863784911683
-                                                                                                                            if [[ "$1" == 7482446721679967 ]]
-                                                                                                                            then
-                                                                                                                                exit 208
-                                                                                                                            elif [[ "$1" == 7151639144478587 ]]
-                                                                                                                            then
-                                                                                                                                exit
-                                                                                                                            else
-                                                                                                                                failure 6126927632687914 "$*"
-                                                                                                                            fi''  ;
-                                                                                                                } ;
-                                                                                                        in "${ application }/bin/resolve" ;
-                                                                                        } ;
                                                                                     release =
                                                                                         { failure , pkgs , resources , seed , sequential , trace } :
                                                                                             let
