@@ -1019,7 +1019,7 @@
                                                                                                                                                                                "standard-error" : "" ,
                                                                                                                                                                                "standard-input" : "" ,
                                                                                                                                                                                "standard-output" : "3346844943869582" ,
-                                                                                                                                                                               "status" : 114 ,
+                                                                                                                                                                               "status" : 117 ,
                                                                                                                                                                                "targets" : { "expected" : [ $TARGET ] , "observed" : [ $TARGET ] } ,
                                                                                                                                                                                "transient" : -1
                                                                                                                                                                             }' | compare --message message --channel invalid-init --payload false true --timeout 1 --uuid 9138135958783964 3<&3
@@ -1064,11 +1064,11 @@
                                                                                                                                                                         --file "$FRESH/$TARGET" \
                                                                                                                                                                         --does-not-exist "/home/${ config.personal.name }/resources/release/$FRESH_INDEX" \
                                                                                                                                                                         --executable "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/resolve.sh" \
-                                                                                                                                                                        --executable "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/resolve/d9aeea696dd06d63/resolve.sh" \
+                                                                                                                                                                        --executable "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/resolve/c9280c3c179cb81a/resolve.sh" \
                                                                                                                                                                         --does-not-exist "/home/${ config.personal.name }/resources/invalid-release/$FRESH_INDEX" \
                                                                                                                                                                         --uuid 5499964149571681
                                                                                                                                                                     echo We failed to resolve a resource
-                                                                                                                                                                    "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/resolve/d9aeea696dd06d63/resolve.sh" 3495889519513568
+                                                                                                                                                                    "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/resolve/c9280c3c179cb81a/resolve.sh" 7151639144478587
                                                                                                                                                                     jq \
                                                                                                                                                                         --null-input \
                                                                                                                                                                         --compact-output \
@@ -1076,10 +1076,10 @@
                                                                                                                                                                         --rawfile SCRIPT ${ scripts.false.true.resolve.init } \
                                                                                                                                                                         --arg TARGET "$TARGET" \
                                                                                                                                                                             '{
-                                                                                                                                                                               "arguments" : [ "8363144534251594" ] ,
+                                                                                                                                                                               "arguments" : [ "7151639144478587" ] ,
                                                                                                                                                                                "has-standard-input" : false ,
                                                                                                                                                                                "index" : $INDEX ,
-                                                                                                                                                                               "resolve-path" : [ "d9aeea696dd06d63" ] ,
+                                                                                                                                                                               "resolve-path" : [ "c9280c3c179cb81a" ] ,
                                                                                                                                                                                "script" : $SCRIPT ,
                                                                                                                                                                                "standard-input" : "" ,
                                                                                                                                                                                "standard-output" : "7669863784911683"
@@ -1252,7 +1252,7 @@
                                                                                                                             if [[ "$1" == 7482446721679967 ]]
                                                                                                                             then
                                                                                                                                 exit 208
-                                                                                                                            elif [[ "$1" == 8363144534251594 ]]
+                                                                                                                            elif [[ "$1" == 7151639144478587 ]]
                                                                                                                             then
                                                                                                                                 exit
                                                                                                                             else
