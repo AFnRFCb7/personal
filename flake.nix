@@ -1263,31 +1263,31 @@
                                                                                                                 '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/init" ;
-#                                                                                    release-resolutions =
-#                                                                                        {
-#                                                                                            ec36b9ba523f094d =
-#                                                                                                { direction , failure , pkgs , resolve-path , resources , seed , sequential , trace } :
-#                                                                                                    let
-#                                                                                                        application =
-#                                                                                                            pkgs.writeShellApplication
-#                                                                                                                {
-#                                                                                                                    name = "resolve" ;
-#                                                                                                                    runtimeInputs = [ ] ;
-#                                                                                                                    text =
-#                                                                                                                        ''
-#                                                                                                                            echo -en 7669863784911683
-#                                                                                                                            if [[ "$1" == 7482446721679967 ]]
-#                                                                                                                            then
-#                                                                                                                                exit 208
-#                                                                                                                            elif [[ "$1" == 7151639144478587 ]]
-#                                                                                                                            then
-#                                                                                                                                exit
-#                                                                                                                            else
-#                                                                                                                                failure 6126927632687914 "$*"
-#                                                                                                                            fi''  ;
-#                                                                                                                } ;
-#                                                                                                        in "${ application }/bin/resolve" ;
-#                                                                                        } ;
+                                                                                    release-resolutions =
+                                                                                        {
+                                                                                            ec36b9ba523f094d =
+                                                                                                { direction , failure , pkgs , resolve-path , resources , seed , sequential , trace } :
+                                                                                                    let
+                                                                                                        application =
+                                                                                                            pkgs.writeShellApplication
+                                                                                                                {
+                                                                                                                    name = "resolve" ;
+                                                                                                                    runtimeInputs = [ ] ;
+                                                                                                                    text =
+                                                                                                                        ''
+                                                                                                                            echo -en 7669863784911683
+                                                                                                                            if [[ "$1" == 7482446721679967 ]]
+                                                                                                                            then
+                                                                                                                                exit 208
+                                                                                                                            elif [[ "$1" == 7151639144478587 ]]
+                                                                                                                            then
+                                                                                                                                exit
+                                                                                                                            else
+                                                                                                                                failure 6126927632687914 "$*"
+                                                                                                                            fi''  ;
+                                                                                                                } ;
+                                                                                                        in "${ application }/bin/resolve" ;
+                                                                                        } ;
                                                                                     release =
                                                                                         { failure , pkgs , resources , seed , sequential , trace } :
                                                                                             let
@@ -3296,34 +3296,34 @@
                                                         } ;
                                                 in
                                                     factory.check { expected = "/nix/store/ayrqjrkz54hkjl2d79i4dqdmrb8q76a4-setup/bin/setup" ; mkDerivation = pkgs.stdenv.mkDerivation ; } ;
-                                        resource--false-false =
-                                            pkgs.nixosTest
-                                                {
-                                                    name = "resource-false-false" ;
-                                                    nodes.machine = { ... } : { imports = builtins.concatLists [ [ user ] private ] ; } ;
-                                                    testScript =
-                                                        let
-                                                            test =
-                                                                let
-                                                                    application =
-                                                                        pkgs.writeShellApplication
-                                                                            {
-                                                                                name = "test" ;
-                                                                                runtimeInputs = [ pkgs.coreutils ] ;
-                                                                                text =
-                                                                                    ''
-                                                                                        SCRIPT="$( resource --resource '["checks","script"]' )"
-                                                                                        timeout 1m "$SCRIPT/test" --alpha 6 --init false --release false
-                                                                                    '' ;
-                                                                            } ;
-                                                                    in "${ application }/bin/test" ;
-                                                            in
-                                                                ''
-                                                                    machine.wait_for_unit("multi-user.target")
-                                                                    machine.wait_for_unit("network-online.target")
-                                                                    machine.succeed("runuser --login ${ testuser } -- ${ test }")
-                                                                '' ;
-                                                } ;
+#                                        resource--false-false =
+#                                            pkgs.nixosTest
+#                                                {
+#                                                    name = "resource-false-false" ;
+#                                                    nodes.machine = { ... } : { imports = builtins.concatLists [ [ user ] private ] ; } ;
+#                                                    testScript =
+#                                                        let
+#                                                            test =
+#                                                                let
+#                                                                    application =
+#                                                                        pkgs.writeShellApplication
+#                                                                            {
+#                                                                                name = "test" ;
+#                                                                                runtimeInputs = [ pkgs.coreutils ] ;
+#                                                                                text =
+#                                                                                    ''
+#                                                                                        SCRIPT="$( resource --resource '["checks","script"]' )"
+#                                                                                        timeout 1m "$SCRIPT/test" --alpha 6 --init false --release false
+#                                                                                    '' ;
+#                                                                            } ;
+#                                                                    in "${ application }/bin/test" ;
+#                                                            in
+#                                                                ''
+#                                                                    machine.wait_for_unit("multi-user.target")
+#                                                                    machine.wait_for_unit("network-online.target")
+#                                                                    machine.succeed("runuser --login ${ testuser } -- ${ test }")
+#                                                                '' ;
+#                                                } ;
                                         resource--false-true =
                                             pkgs.nixosTest
                                                 {
