@@ -545,8 +545,14 @@
                                                                                                                                                                     false =
                                                                                                                                                                         {
                                                                                                                                                                             init =
-                                                                                                                                                                                ''
-                                                                                                                                                                                '' ;
+                                                                                                                                                                                let
+                                                                                                                                                                                    application =
+                                                                                                                                                                                        pkgs.writeShellApplication
+                                                                                                                                                                                            {
+                                                                                                                                                                                                name = "init" ;
+                                                                                                                                                                                                text = "/nix/store/xpf9hr2bfzc7fs4qf1szr3dzswm7k4vv-init/bin/init" ;
+                                                                                                                                                                                            } ;
+                                                                                                                                                                                    in "${ application }/bin/init" ;
                                                                                                                                                                             release =
                                                                                                                                                                                 ''
                                                                                                                                                                                 '' ;
@@ -992,7 +998,7 @@
                                                                                                                                                                         --uuid 3242249797342583
                                                                                                                                                                     echo We resolved a resource
                                                                                                                                                                 else
-                                                                                                                                                                    TARGET=5494881573568661
+                                                                                                                                                                    TARGET=9427941488926681
                                                                                                                                                                     if FRESH=${ resources.checks.targets.false.false { failure = 3762281293673372 ; } }
                                                                                                                                                                     then
                                                                                                                                                                         failure 8218882526454666
@@ -1002,7 +1008,7 @@
                                                                                                                                                                         --null-input \
                                                                                                                                                                         --compact-output \
                                                                                                                                                                         --arg INDEX "$FRESH_INDEX" \
-                                                                                                                                                                        --rawfile SCRIPT ${ scripts.false.true.init } \
+                                                                                                                                                                        --rawfile SCRIPT ${ scripts.false.false.init } \
                                                                                                                                                                         --arg TARGET "$TARGET" \
                                                                                                                                                                             '{
                                                                                                                                                                                "arguments" : [ ] ,
@@ -1017,7 +1023,7 @@
                                                                                                                                                                                "targets" : { "expected" : [ $TARGET ] , "observed" : [ $TARGET ] } ,
                                                                                                                                                                                "transient" : -1
                                                                                                                                                                             }' | compare --message message --channel invalid-init --payload false true --timeout 1 --uuid 9138135958783964 3<&3
-                                                                                                                                                                    block --timeout 1 --uuid 2336958223494764 3<&3
+                                                                                                                                                                    block --timeout 1 --uuid 3477585267872325 3<&3
                                                                                                                                                                     files \
                                                                                                                                                                         --ceiling "$ALPHA" 4 10 \
                                                                                                                                                                         --equals "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" "$FRESH" \
@@ -1025,13 +1031,13 @@
                                                                                                                                                                         --file "$FRESH/$TARGET" \
                                                                                                                                                                         --does-not-exist "/home/${ config.personal.name }/resources/release/$FRESH_INDEX" \
                                                                                                                                                                         --executable "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/resolve.sh" \
-                                                                                                                                                                        --executable "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/resolve/d9aeea696dd06d63/resolve.sh" \
+                                                                                                                                                                        --executable "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/resolve/c9280c3c179cb81a3/resolve.sh" \
                                                                                                                                                                         --does-not-exist "/home/${ config.personal.name }/resources/invalid-release/$FRESH_INDEX" \
-                                                                                                                                                                        --uuid 1433129797798735
+                                                                                                                                                                        --uuid 1136919975781834
                                                                                                                                                                     echo We failed to create a resource
-                                                                                                                                                                    if "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/resolve/d9aeea696dd06d63/resolve.sh" 9554464665854115
+                                                                                                                                                                    if "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/resolve/c9280c3c179cb81a/resolve.sh" 9554464665854115
                                                                                                                                                                     then
-                                                                                                                                                                        failure 1446655397623276
+                                                                                                                                                                        failure 9523578354168279
                                                                                                                                                                     fi
                                                                                                                                                                     jq \
                                                                                                                                                                         --null-input \
@@ -1049,8 +1055,8 @@
                                                                                                                                                                                "standard-input" : "" ,
                                                                                                                                                                                "standard-output" :  "7669863784911683" ,
                                                                                                                                                                                "status" : 185
-                                                                                                                                                                            }' | compare --message message --channel invalid-init --payload false true --timeout 1 --uuid 4487711927678726 3<&3
-                                                                                                                                                                    block --timeout 1 --uuid 891566c578f25dca 3<&3
+                                                                                                                                                                            }' | compare --message message --channel invalid-init --payload false true --timeout 1 --uuid 6677293467823958 3<&3
+                                                                                                                                                                    block --timeout 1 --uuid 6631241829779291a 3<&3
                                                                                                                                                                     files \
                                                                                                                                                                         --ceiling "$ALPHA" 8 14 \
                                                                                                                                                                         --equals "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" "$FRESH" \
@@ -1060,9 +1066,9 @@
                                                                                                                                                                         --executable "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/resolve.sh" \
                                                                                                                                                                         --executable "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/resolve/d9aeea696dd06d63/resolve.sh" \
                                                                                                                                                                         --does-not-exist "/home/${ config.personal.name }/resources/invalid-release/$FRESH_INDEX" \
-                                                                                                                                                                        --uuid 1919721337591632
+                                                                                                                                                                        --uuid 5499964149571681
                                                                                                                                                                     echo We failed to resolve a resource
-                                                                                                                                                                    "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/resolve/d9aeea696dd06d63/resolve.sh" 8363144534251594
+                                                                                                                                                                    "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/resolve/d9aeea696dd06d63/resolve.sh" 3495889519513568
                                                                                                                                                                     jq \
                                                                                                                                                                         --null-input \
                                                                                                                                                                         --compact-output \
@@ -1077,7 +1083,7 @@
                                                                                                                                                                                "script" : $SCRIPT ,
                                                                                                                                                                                "standard-input" : "" ,
                                                                                                                                                                                "standard-output" : "7669863784911683"
-                                                                                                                                                                            }' | compare --message message --channel valid-init --payload false true --timeout 1 --uuid 8398518585436176 3<&3
+                                                                                                                                                                            }' | compare --message message --channel valid-init --payload false true --timeout 1 --uuid 9328879138585611 3<&3
                                                                                                                                                                     jq \
                                                                                                                                                                         --null-input \
                                                                                                                                                                         --compact-output \
@@ -1230,6 +1236,31 @@
                                                                                                                 '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/init" ;
+                                                                                    init-resolutions =
+                                                                                        {
+                                                                                            c9280c3c179cb81a =
+                                                                                                { direction , failure , pkgs , resolve-path , resources , seed , sequential , trace } :
+                                                                                                    let
+                                                                                                        application =
+                                                                                                            pkgs.writeShellApplication
+                                                                                                                {
+                                                                                                                    name = "resolve" ;
+                                                                                                                    runtimeInputs = [ ] ;
+                                                                                                                    text =
+                                                                                                                        ''
+                                                                                                                            echo -en 7669863784911683
+                                                                                                                            if [[ "$1" == 9554464665854115 ]]
+                                                                                                                            then
+                                                                                                                                exit 185
+                                                                                                                            elif [[ "$1" == 8363144534251594 ]]
+                                                                                                                            then
+                                                                                                                                exit
+                                                                                                                            else
+                                                                                                                                failure 6126927632687914 "$*"
+                                                                                                                            fi''  ;
+                                                                                                                } ;
+                                                                                                        in "${ application }/bin/resolve" ;
+                                                                                        } ;
                                                                                     release =
                                                                                         { failure , pkgs , resources , seed , sequential , trace } :
                                                                                             let
