@@ -1109,6 +1109,7 @@
                                                                                                                                                                         --executable "/home/${ config.personal.name }/resources/invalid-release/$FRESH_INDEX/resolve.sh" \
                                                                                                                                                                         --executable "/home/${ config.personal.name }/resources/invalid-release/$FRESH_INDEX/resolve/ec36b9ba523f094d/resolve.sh" \
                                                                                                                                                                         --uuid 2952237333687496
+                                                                                                                                                                    # WTF
                                                                                                                                                                     jq \
                                                                                                                                                                         --null-input \
                                                                                                                                                                         --compact-output \
