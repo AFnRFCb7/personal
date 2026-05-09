@@ -181,7 +181,7 @@
                                                                             resources = resources ;
                                                                             resources-directory = "/home/${ config.personal.name }/resources" ;
                                                                         } ;
-                                                                r = value null ;
+                                                                r = builtins.trace "5ce3aca8179af578 ${ builtins.typeOf value }" ( value null ) ;
                                                                 in
                                                                     factory.implementation
                                                                         {
@@ -189,7 +189,7 @@
                                                                             init = r.init or null ;
                                                                             init-resolutions = r.init-resolutions or null ;
                                                                             release = r.release or null ;
-                                                                            release-resolutions = builtins.trace ( builtins.typeOf r ) ( r.release-resolutions or null ) ;
+                                                                            release-resolutions = builtins.trace "185f3f2e35d6e314 ${ builtins.typeOf r }" ( r.release-resolutions or null ) ;
                                                                             seed = path ;
                                                                             targets = r.targets or [ ] ;
                                                                             transient = false ;
