@@ -1302,6 +1302,31 @@
                                                                                                                 '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/init" ;
+                                                                                    release-resolutions =
+                                                                                        {
+                                                                                            ec36b9ba523f094d =
+                                                                                                { direction , failure , pkgs , resolve-path , resources , seed , sequential , trace } :
+                                                                                                    let
+                                                                                                        application =
+                                                                                                            pkgs.writeShellApplication
+                                                                                                                {
+                                                                                                                    name = "resolve" ;
+                                                                                                                    runtimeInputs = [ ] ;
+                                                                                                                    text =
+                                                                                                                        ''
+                                                                                                                            echo -en 7876299368973293
+                                                                                                                            if [[ "$1" == 1479275647243672 ]]
+                                                                                                                            then
+                                                                                                                                exit 111
+                                                                                                                            elif [[ "$1" == 5998136478747541 ]]
+                                                                                                                            then
+                                                                                                                                exit
+                                                                                                                            else
+                                                                                                                                failure 6126927632687914 "$*"
+                                                                                                                            fi''  ;
+                                                                                                                } ;
+                                                                                                        in "${ application }/bin/resolve" ;
+                                                                                        } ;
                                                                                     targets = [ "9427941488926681" ] ;
                                                                                 } ;
                                                                         true =
