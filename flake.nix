@@ -1015,10 +1015,10 @@
                                                                                                                                                                                "has-standard-input" : false ,
                                                                                                                                                                                "index" : $INDEX ,
                                                                                                                                                                                "script" : $SCRIPT ,
-                                                                                                                                                                               "seed" : [ "checks" , "targets" , "false" , "true" ] ,
+                                                                                                                                                                               "seed" : [ "checks" , "targets" , "false" , "false" ] ,
                                                                                                                                                                                "standard-error" : "" ,
                                                                                                                                                                                "standard-input" : "" ,
-                                                                                                                                                                               "standard-output" : "3148451947316331" ,
+                                                                                                                                                                               "standard-output" : "3346844943869582" ,
                                                                                                                                                                                "status" : 114 ,
                                                                                                                                                                                "targets" : { "expected" : [ $TARGET ] , "observed" : [ $TARGET ] } ,
                                                                                                                                                                                "transient" : -1
@@ -1035,9 +1035,9 @@
                                                                                                                                                                         --does-not-exist "/home/${ config.personal.name }/resources/invalid-release/$FRESH_INDEX" \
                                                                                                                                                                         --uuid 1136919975781834
                                                                                                                                                                     echo We failed to create a resource
-                                                                                                                                                                    if "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/resolve/c9280c3c179cb81a/resolve.sh" 9554464665854115
+                                                                                                                                                                    if "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/resolve/c9280c3c179cb81a/resolve.sh" 7482446721679967
                                                                                                                                                                     then
-                                                                                                                                                                        failure 9523578354168279
+                                                                                                                                                                        failure 5127357481675282
                                                                                                                                                                     fi
                                                                                                                                                                     jq \
                                                                                                                                                                         --null-input \
@@ -1249,9 +1249,9 @@
                                                                                                                     text =
                                                                                                                         ''
                                                                                                                             echo -en 7669863784911683
-                                                                                                                            if [[ "$1" == 9554464665854115 ]]
+                                                                                                                            if [[ "$1" == 7482446721679967 ]]
                                                                                                                             then
-                                                                                                                                exit 185
+                                                                                                                                exit 208
                                                                                                                             elif [[ "$1" == 8363144534251594 ]]
                                                                                                                             then
                                                                                                                                 exit
