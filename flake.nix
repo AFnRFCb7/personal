@@ -649,8 +649,26 @@
                                                                                                                                                                                         /nix/store/qfcw4rcx08yqnfjj7ndxhcqbi719z9m2-init/bin/init
                                                                                                                                                                                     '' ;
                                                                                                                                                                             release =
-                                                                                                                                                                                ''
-                                                                                                                                                                                '' ;
+                                                                                                                                                                                let
+                                                                                                                                                                                    application =
+                                                                                                                                                                                        pkgs.writeShellApplication
+                                                                                                                                                                                            {
+                                                                                                                                                                                                name = "release" ;
+                                                                                                                                                                                                text =
+                                                                                                                                                                                                    ''
+                                                                                                                                                                                                        echo -en 7669863784911683q
+                                                                                                                                                                                                        if [[ \"$1\" == 7482446721679967 ]]
+                                                                                                                                                                                                        then
+                                                                                                                                                                                                            exit 208
+                                                                                                                                                                                                        elif [[ \"$1\" == 7151639144478587 ]]
+                                                                                                                                                                                                        then
+                                                                                                                                                                                                            exit
+                                                                                                                                                                                                        else
+                                                                                                                                                                                                            failure 6126927632687914 \"$*\"
+                                                                                                                                                                                                        fi
+                                                                                                                                                                                                    '' ;
+                                                                                                                                                                                            } ;
+                                                                                                                                                                                    in "${ application }/bin/release" ;
                                                                                                                                                                         } ;
                                                                                                                                                                 } ;
                                                                                                                                                         } ;
