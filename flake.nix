@@ -603,10 +603,10 @@
                                                                                                                                                                                                 set -o pipefail
 
                                                                                                                                                                                                 echo -en 7669863784911683
-                                                                                                                                                                                                if [[ "$1" == 9554464665854115 ]]
+                                                                                                                                                                                                if [[ "$1" == 7482446721679967 ]]
                                                                                                                                                                                                 then
-                                                                                                                                                                                                    exit 185
-                                                                                                                                                                                                elif [[ "$1" == 8363144534251594 ]]
+                                                                                                                                                                                                    exit 208
+                                                                                                                                                                                                elif [[ "$1" == 7151639144478587 ]]
                                                                                                                                                                                                 then
                                                                                                                                                                                                     exit
                                                                                                                                                                                                 else
@@ -1066,7 +1066,7 @@
                                                                                                                                                                                "standard-error" : "" ,
                                                                                                                                                                                "standard-input" : "" ,
                                                                                                                                                                                "standard-output" :  "7669863784911683" ,
-                                                                                                                                                                               "status" : 185
+                                                                                                                                                                               "status" : 208
                                                                                                                                                                             }' | compare --message message --channel invalid-init --payload false true --timeout 1 --uuid 6677293467823958 3<&3
                                                                                                                                                                     block --timeout 1 --uuid 6631241829779291a 3<&3
                                                                                                                                                                     files \
