@@ -1305,31 +1305,6 @@
                                                                                                 in "${ application }/bin/init" ;
                                                                                     targets = [ "9427941488926681" ] ;
                                                                                 } ;
-                                                                                    init-resolutions =
-                                                                                        {
-                                                                                            c9280c3c179cb81a =
-                                                                                                { direction , failure , pkgs , resolve-path , resources , seed , sequential , trace } :
-                                                                                                    let
-                                                                                                        application =
-                                                                                                            pkgs.writeShellApplication
-                                                                                                                {
-                                                                                                                    name = "resolve" ;
-                                                                                                                    runtimeInputs = [ ] ;
-                                                                                                                    text =
-                                                                                                                        ''
-                                                                                                                            echo -en 7669863784911683
-                                                                                                                            if [[ "$1" == 7482446721679967 ]]
-                                                                                                                            then
-                                                                                                                                exit 208
-                                                                                                                            elif [[ "$1" == 7151639144478587 ]]
-                                                                                                                            then
-                                                                                                                                exit
-                                                                                                                            else
-                                                                                                                                failure 6126927632687914 "$*"
-                                                                                                                            fi''  ;
-                                                                                                                } ;
-                                                                                                        in "${ application }/bin/resolve" ;
-                                                                                        } ;
                                                                         true =
                                                                             ignore :
                                                                                 {
