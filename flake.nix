@@ -575,8 +575,7 @@
                                                                                                                                                                                                                     exit
                                                                                                                                                                                                                 else
                                                                                                                                                                                                                     failure 6126927632687914 "$*"
-                                                                                                                                                                                                                fi
-                                                                                                                                                                                                            '' ;
+                                                                                                                                                                                                                fi'' ;
                                                                                                                                                                                                     } ;
                                                                                                                                                                                             in "${ application }/bin/init" ;
                                                                                                                                                                                 } ;
