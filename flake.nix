@@ -189,7 +189,7 @@
                                                                             init = r.init or null ;
                                                                             init-resolutions = r.init-resolutions or null ;
                                                                             release = r.release or null ;
-                                                                            release-resolutions = r.release-resolutions or null ;
+                                                                            release-resolutions = r.release-resolutions ; # or null ;
                                                                             seed = path ;
                                                                             targets = r.targets or [ ] ;
                                                                             transient = false ;
