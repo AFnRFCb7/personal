@@ -945,7 +945,7 @@
                                                                                                                                                                         --null-input \
                                                                                                                                                                         --compact-output \
                                                                                                                                                                         --arg INDEX "$FRESH_INDEX" \
-                                                                                                                                                                        --rawfile SCRIPT ${ scripts.false.true.resolve.init } \
+                                                                                                                                                                        --rawfile SCRIPT ${ scripts.false.false.resolve.init } \
                                                                                                                                                                         --arg TARGET "$TARGET" \
                                                                                                                                                                             '{
                                                                                                                                                                                "arguments" : [ "9554464665854115" ] ,
