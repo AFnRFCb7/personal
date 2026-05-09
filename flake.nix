@@ -570,7 +570,6 @@
                                                                                                                                                                                         pkgs.writeShellApplication
                                                                                                                                                                                             {
                                                                                                                                                                                                 name = "release" ;
-                                                                                                                                                                                                runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                                                                                                                 text =
                                                                                                                                                                                                     ''
                                                                                                                                                                                                         /nix/store/baqdlg538bdxj07hr8n72jlpcfjhdnws-release/bin/release
