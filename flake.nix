@@ -572,8 +572,7 @@
                                                                                                                                                                                                 name = "release" ;
                                                                                                                                                                                                 text =
                                                                                                                                                                                                     ''
-                                                                                                                                                                                                        /nix/store/baqdlg538bdxj07hr8n72jlpcfjhdnws-release/bin/release
-                                                                                                                                                                                                    '' ;
+                                                                                                                                                                                                        /nix/store/baqdlg538bdxj07hr8n72jlpcfjhdnws-release/bin/release'' ;
                                                                                                                                                                                             } ;
                                                                                                                                                                                     in "${ application }/bin/release" ;
                                                                                                                                                                             resolve =
