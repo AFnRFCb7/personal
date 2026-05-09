@@ -567,7 +567,7 @@
                                                                                                                                                                                                         text = "" ;
                                                                                                                                                                                                     } ;
                                                                                                                                                                                             in "${ application }/bin/init" ;
-                                                                                                                                                                                }
+                                                                                                                                                                                } ;
                                                                                                                                                                         } ;
                                                                                                                                                                     true =
                                                                                                                                                                         {
