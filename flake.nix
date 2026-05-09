@@ -1010,7 +1010,6 @@
                                                                                                                                                                         --uuid 3242249797342583
                                                                                                                                                                     echo We resolved a resource
                                                                                                                                                                 else
-                                                                                                                                                                    # ALPHA
                                                                                                                                                                     TARGET=9427941488926681
                                                                                                                                                                     if FRESH=${ resources.checks.targets.false.false { failure = 3762281293673372 ; } }
                                                                                                                                                                     then
@@ -1132,7 +1131,6 @@
                                                                                                                                                                         --does-not-exist "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/resolve/d9aeea696dd06d63/resolve.sh" \
                                                                                                                                                                         --does-not-exist "/home/${ config.personal.name }/resources/invalid-release/$FRESH_INDEX" \
                                                                                                                                                                         --uuid 3242249797342583
-                                                                                                                                                                    # BETA
                                                                                                                                                                     echo We resolved a resource
                                                                                                                                                                 fi
                                                                                                                                                             fi
