@@ -1109,29 +1109,11 @@
                                                                                                                                                                         --executable "/home/${ config.personal.name }/resources/invalid-release/$FRESH_INDEX/resolve.sh" \
                                                                                                                                                                         --executable "/home/${ config.personal.name }/resources/invalid-release/$FRESH_INDEX/resolve/ec36b9ba523f094d/resolve.sh" \
                                                                                                                                                                         --uuid 2952237333687496
+                                                                                                                                                                    if "/home/${ config.personal.name }/resources/invalid-release/$FRESH_INDEX/resolve/ec36b9ba523f094d/resolve.sh" 1479275647243672
+                                                                                                                                                                    then
+                                                                                                                                                                        failure 9153213577858634
+                                                                                                                                                                    fi
                                                                                                                                                                     # WTF
-                                                                                                                                                                    jq \
-                                                                                                                                                                        --null-input \
-                                                                                                                                                                        --compact-output \
-                                                                                                                                                                        --arg INDEX "$FRESH_INDEX" \
-                                                                                                                                                                        --rawfile SCRIPT ${ scripts.false.true.release } \
-                                                                                                                                                                        --arg TARGET "$TARGET" \
-                                                                                                                                                                            '{
-                                                                                                                                                                               "index" : $INDEX ,
-                                                                                                                                                                               "script" : $SCRIPT ,
-                                                                                                                                                                               "seed" : [ "checks" , "targets" , "false" , "true" ] ,
-                                                                                                                                                                               "standard-output" : "4657737859987722"
-                                                                                                                                                                            }' | compare --message message --channel valid-release --payload false true --timeout 60 --uuid 1118336254258565 3<&3
-                                                                                                                                                                    block --timeout 1 --uuid 1875f81650ebb984 3<&3
-                                                                                                                                                                    files \
-                                                                                                                                                                        --ceiling "$ALPHA" 8 23 \
-                                                                                                                                                                        --equals "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" "$FRESH" \
-                                                                                                                                                                        --does-not-exist "$FRESH" \
-                                                                                                                                                                        --does-not-exist "/home/${ config.personal.name }/resources/release/$FRESH_INDEX" \
-                                                                                                                                                                        --does-not-exist "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/resolve.sh" \
-                                                                                                                                                                        --does-not-exist "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/resolve/d9aeea696dd06d63/resolve.sh" \
-                                                                                                                                                                        --does-not-exist "/home/${ config.personal.name }/resources/invalid-release/$FRESH_INDEX" \
-                                                                                                                                                                        --uuid 3242249797342583
                                                                                                                                                                     echo We resolved a resource
                                                                                                                                                                 fi
                                                                                                                                                             fi
@@ -3295,34 +3277,34 @@
                                                         } ;
                                                 in
                                                     factory.check { expected = "/nix/store/ayrqjrkz54hkjl2d79i4dqdmrb8q76a4-setup/bin/setup" ; mkDerivation = pkgs.stdenv.mkDerivation ; } ;
-#                                        resource--false-false =
-#                                            pkgs.nixosTest
-#                                                {
-#                                                    name = "resource-false-false" ;
-#                                                    nodes.machine = { ... } : { imports = builtins.concatLists [ [ user ] private ] ; } ;
-#                                                    testScript =
-#                                                        let
-#                                                            test =
-#                                                                let
-#                                                                    application =
-#                                                                        pkgs.writeShellApplication
-#                                                                            {
-#                                                                                name = "test" ;
-#                                                                                runtimeInputs = [ pkgs.coreutils ] ;
-#                                                                                text =
-#                                                                                    ''
-#                                                                                        SCRIPT="$( resource --resource '["checks","script"]' )"
-#                                                                                        timeout 1m "$SCRIPT/test" --alpha 6 --init false --release false
-#                                                                                    '' ;
-#                                                                            } ;
-#                                                                    in "${ application }/bin/test" ;
-#                                                            in
-#                                                                ''
-#                                                                    machine.wait_for_unit("multi-user.target")
-#                                                                    machine.wait_for_unit("network-online.target")
-#                                                                    machine.succeed("runuser --login ${ testuser } -- ${ test }")
-#                                                                '' ;
-#                                                } ;
+                                        resource--false-false =
+                                            pkgs.nixosTest
+                                                {
+                                                    name = "resource-false-false" ;
+                                                    nodes.machine = { ... } : { imports = builtins.concatLists [ [ user ] private ] ; } ;
+                                                    testScript =
+                                                        let
+                                                            test =
+                                                                let
+                                                                    application =
+                                                                        pkgs.writeShellApplication
+                                                                            {
+                                                                                name = "test" ;
+                                                                                runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                text =
+                                                                                    ''
+                                                                                        SCRIPT="$( resource --resource '["checks","script"]' )"
+                                                                                        timeout 1m "$SCRIPT/test" --alpha 6 --init false --release false
+                                                                                    '' ;
+                                                                            } ;
+                                                                    in "${ application }/bin/test" ;
+                                                            in
+                                                                ''
+                                                                    machine.wait_for_unit("multi-user.target")
+                                                                    machine.wait_for_unit("network-online.target")
+                                                                    machine.succeed("runuser --login ${ testuser } -- ${ test }")
+                                                                '' ;
+                                                } ;
                                         resource--false-true =
                                             pkgs.nixosTest
                                                 {
