@@ -573,7 +573,7 @@
                                                                                                                                                                                                 runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                                                                                                                 text =
                                                                                                                                                                                                     ''
-                                                                                                                                                                                                        echo 4657737859987722
+                                                                                                                                                                                                        /nix/store/baqdlg538bdxj07hr8n72jlpcfjhdnws-release/bin/release
                                                                                                                                                                                                     '' ;
                                                                                                                                                                                             } ;
                                                                                                                                                                                     in "${ application }/bin/release" ;
