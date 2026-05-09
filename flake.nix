@@ -546,13 +546,7 @@
                                                                                                                                                                         {
                                                                                                                                                                             init =
                                                                                                                                                                                 let
-                                                                                                                                                                                    application =
-                                                                                                                                                                                        pkgs.writeShellApplication
-                                                                                                                                                                                            {
-                                                                                                                                                                                                name = "init" ;
-                                                                                                                                                                                                text = "/nix/store/xpf9hr2bfzc7fs4qf1szr3dzswm7k4vv-init/bin/init" ;
-                                                                                                                                                                                            } ;
-                                                                                                                                                                                    in "${ application }/bin/init" ;
+                                                                                                                                                                                    application = "" ;
                                                                                                                                                                             release =
                                                                                                                                                                                 ''
                                                                                                                                                                                 '' ;
