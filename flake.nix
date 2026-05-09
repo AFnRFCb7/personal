@@ -1055,7 +1055,7 @@
                                                                                                                                                                         --null-input \
                                                                                                                                                                         --compact-output \
                                                                                                                                                                         --arg INDEX "$FRESH_INDEX" \
-                                                                                                                                                                        --rawfile SCRIPT ${ scripts.false.true.resolve.release } \
+                                                                                                                                                                        --rawfile SCRIPT ${ scripts.false.true.resolve.init } \
                                                                                                                                                                         --arg TARGET "$TARGET" \
                                                                                                                                                                             '{
                                                                                                                                                                                "arguments" : [ "7482446721679967" ] ,
