@@ -1138,6 +1138,7 @@
                                                                                                                                                                         --executable "/home/${ config.personal.name }/resources/invalid-release/$FRESH_INDEX/resolve.sh" \
                                                                                                                                                                         --executable "/home/${ config.personal.name }/resources/invalid-release/$FRESH_INDEX/resolve/c5cd75e157ecd42b/resolve.sh" \
                                                                                                                                                                         --uuid 2952237333687496
+                                                                                                                                                                    echo We resolved the init of a resource
                                                                                                                                                                     if "/home/${ config.personal.name }/resources/invalid-release/$FRESH_INDEX/resolve/ec36b9ba523f094d/resolve.sh" 7486835568334252
                                                                                                                                                                     then
                                                                                                                                                                         failure 9153213577858634
@@ -1147,6 +1148,21 @@
                                                                                                                                                                     then
                                                                                                                                                                         failure 2947678287368849
                                                                                                                                                                     fi
+                                                                                                                                                                    jq \
+                                                                                                                                                                        --null-input \
+                                                                                                                                                                        --compact-output \
+                                                                                                                                                                        --arg INDEX "$FRESH_INDEX" \
+                                                                                                                                                                        --rawfile SCRIPT ${ scripts.false.false.resolve.init } \
+                                                                                                                                                                        --arg TARGET "$TARGET" \
+                                                                                                                                                                            '{
+                                                                                                                                                                               "arguments" : [ "4597174954562694" ] ,
+                                                                                                                                                                               "has-standard-input" : false ,
+                                                                                                                                                                               "index" : $INDEX ,
+                                                                                                                                                                               "resolve-path" : [ "ec36b9ba523f094d" ] ,
+                                                                                                                                                                               "script" : $SCRIPT ,
+                                                                                                                                                                               "standard-input" : "" ,
+                                                                                                                                                                               "standard-output" : "7669863784911683"
+                                                                                                                                                                            }' | compare --message message --channel invalid-release --payload false true --timeout 1 --uuid 7239616579231963 3<&3
                                                                                                                                                                     # "/home/${ config.personal.name }/resources/invalid-release/$FRESH_INDEX/resolve/c5cd75e157ecd42b/resolve.sh" 7486835568334252
                                                                                                                                                                 fi
                                                                                                                                                             fi
