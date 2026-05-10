@@ -1143,7 +1143,6 @@
                                                                                                                                                                         '{
                                                                                                                                                                            "index" : $INDEX ,
                                                                                                                                                                            "resolve-path" : [ "ec36b9ba523f094d" ] ,
-                                                                                                                                                                           "script" : $SCRIPT ,
                                                                                                                                                                            "standard-input" : "" ,
                                                                                                                                                                            "standard-output" : "7669863784911683" ,
                                                                                                                                                                            "status" : $STATUS
