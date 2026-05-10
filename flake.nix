@@ -1145,9 +1145,8 @@
                                                                                                                                                                            "seed" : [ "checks" , "targets" , "false" , false" ] ,
                                                                                                                                                                            "standard-error" : "" ,
                                                                                                                                                                            "standard-output" : "329993845647622" ,
-                                                                                                                                                                           "status: 197
+                                                                                                                                                                           "status: 169
                                                                                                                                                                         }' | compare --message message --channel invalid-release --payload false true --timeout 10 --uuid 4737219971119968 3<&3
-
                                                                                                                                                                     block --timeout 1 --uuid 7322152747664447
                                                                                                                                                                     files \
                                                                                                                                                                         --ceiling "$ALPHA" 8 18 \
@@ -1155,7 +1154,7 @@
                                                                                                                                                                         --equals "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" "$FRESH" \
                                                                                                                                                                         --directory "$FRESH" \
                                                                                                                                                                         --file "$FRESH/$TARGET" \
-                                                                                                                                                                        --executable "/home/${ config.personal.name }/resources/release/$FRESH_INDEX" \
+                                                                                                                                                                        --does-not-exist "/home/${ config.personal.name }/resources/release/$FRESH_INDEX" \
                                                                                                                                                                         --does-not-exist "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/resolve.sh" \
                                                                                                                                                                         --does-not-exist "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/resolve/ec36b9ba523f094d/resolve.sh" \
                                                                                                                                                                         --does-not-exist "/home/${ config.personal.name }/resources/invalid-release/$FRESH_INDEX/resolve.sh" \
