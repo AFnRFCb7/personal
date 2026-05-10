@@ -1355,7 +1355,7 @@
                                                                                                                     exit 169
                                                                                                                 '' ;
                                                                                                         } ;
-                                                                                                in "${ application }/bin/resolve" ;
+                                                                                                in "${ application }/bin/release" ;
                                                                                     release-resolutions =
                                                                                         {
                                                                                             c5cd75e157ecd42b =
