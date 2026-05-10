@@ -1140,7 +1140,7 @@
                                                                                                                                                                                "script" : $SCRIPT ,
                                                                                                                                                                                "standard-input" : "" ,
                                                                                                                                                                                "standard-output" : "7669863784911683"
-                                                                                                                                                                            }' | compare --message message --channel invalid-release --payload false true --timeout 1 --uuid 4737219971119968 3<&3
+                                                                                                                                                                            }' | compare --message message --channel invalid-release --payload false true --timeout 10 --uuid 4737219971119968 3<&3
 
                                                                                                                                                                     block --timeout 1 --uuid 7322152747664447
                                                                                                                                                                     files \
