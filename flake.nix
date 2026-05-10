@@ -1132,18 +1132,22 @@
                                                                                                                                                                         --equals "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" "$FRESH" \
                                                                                                                                                                         --directory "$FRESH" \
                                                                                                                                                                         --file "$FRESH/$TARGET" \
-                                                                                                                                                                        --does-not-exist "/home/${ config.personal.name }/resources/release/$FRESH_INDEX" \
+                                                                                                                                                                        --executable "/home/${ config.personal.name }/resources/release/$FRESH_INDEX" \
                                                                                                                                                                         --does-not-exist "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/resolve.sh" \
                                                                                                                                                                         --does-not-exist "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/resolve/ec36b9ba523f094d/resolve.sh" \
                                                                                                                                                                         --executable "/home/${ config.personal.name }/resources/invalid-release/$FRESH_INDEX/resolve.sh" \
-                                                                                                                                                                        --executable "/home/${ config.personal.name }/resources/invalid-release/$FRESH_INDEX/resolve/ec36b9ba523f094d/resolve.sh" \
+                                                                                                                                                                        --executable "/home/${ config.personal.name }/resources/invalid-release/$FRESH_INDEX/resolve/c5cd75e157ecd42b/resolve.sh" \
                                                                                                                                                                         --uuid 2952237333687496
-                                                                                                                                                                    if "/home/${ config.personal.name }/resources/invalid-release/$FRESH_INDEX/resolve/ec36b9ba523f094d/resolve.sh" 1479275647243672
+                                                                                                                                                                    if "/home/${ config.personal.name }/resources/invalid-release/$FRESH_INDEX/resolve/ec36b9ba523f094d/resolve.sh" 7486835568334252
                                                                                                                                                                     then
                                                                                                                                                                         failure 9153213577858634
                                                                                                                                                                     fi
-                                                                                                                                                                    # WTF
                                                                                                                                                                     echo We resolved a resource
+                                                                                                                                                                    if ! /home/${ config.personal.name }/resources/invalid-release/$FRESH_INDEX/resolve/ec36b9ba523f094d/resolve.sh 4597174954562694
+                                                                                                                                                                    then
+                                                                                                                                                                        failure 2947678287368849
+                                                                                                                                                                    fi
+                                                                                                                                                                    # "/home/${ config.personal.name }/resources/invalid-release/$FRESH_INDEX/resolve/c5cd75e157ecd42b/resolve.sh" 7486835568334252
                                                                                                                                                                 fi
                                                                                                                                                             fi
                                                                                                                                                             # block --timeout 1 --uuid 8293659991281846
@@ -1315,7 +1319,7 @@
                                                                                                 in "${ application }/bin/init" ;
                                                                                     release-resolutions =
                                                                                         {
-                                                                                            ec36b9ba523f094d =
+                                                                                            c5cd75e157ecd42b =
                                                                                                 { direction , failure , pkgs , resolve-path , resources , seed , sequential , trace } :
                                                                                                     let
                                                                                                         application =
@@ -1326,14 +1330,14 @@
                                                                                                                     text =
                                                                                                                         ''
                                                                                                                             echo -en 7876299368973293
-                                                                                                                            if [[ "$1" == 1479275647243672 ]]
+                                                                                                                            if [[ "$1" == 4597174954562694 ]]
                                                                                                                             then
                                                                                                                                 exit 111
                                                                                                                             elif [[ "$1" == 5998136478747541 ]]
                                                                                                                             then
-                                                                                                                                exit
+                                                                                                                                exit 244
                                                                                                                             else
-                                                                                                                                failure 6126927632687914 "$*"
+                                                                                                                                failure 7486835568334252 "$*"
                                                                                                                             fi''  ;
                                                                                                                 } ;
                                                                                                         in "${ application }/bin/resolve" ;
