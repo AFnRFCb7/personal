@@ -1192,7 +1192,6 @@
                                                                                                                                                                         --executable "/home/${ config.personal.name }/resources/invalid-release/$FRESH_INDEX/resolve/c5cd75e157ecd42b/resolve.sh" \
                                                                                                                                                                         --uuid 1241561655493619
                                                                                                                                                                     echo We failed to resolve the release of a resource
-
                                                                                                                                                                     "/home/${ config.personal.name }/resources/invalid-release/$FRESH_INDEX/resolve/c5cd75e157ecd42b/resolve.sh" 7486835568334252
                                                                                                                                                                     jq \
                                                                                                                                                                         --null-input \
@@ -1222,7 +1221,7 @@
                                                                                                                                                                         --executable "/home/${ config.personal.name }/resources/invalid-release/$FRESH_INDEX/resolve.sh" \
                                                                                                                                                                         --executable "/home/${ config.personal.name }/resources/invalid-release/$FRESH_INDEX/resolve/c5cd75e157ecd42b/resolve.sh" \
                                                                                                                                                                         --uuid 1241561655493619
-                                                                                                                                                                    echo We resolved the release
+                                                                                                                                                                    echo We resolved the release of a resource2
                                                                                                                                                                 fi
                                                                                                                                                             fi
                                                                                                                                                             # block --timeout 1 --uuid 8293659991281846
