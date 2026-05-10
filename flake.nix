@@ -1131,15 +1131,15 @@
                                                                                                                                                                         --compact-output \
                                                                                                                                                                         --arg INDEX "$FRESH_INDEX" \
                                                                                                                                                                         --rawfile SCRIPT ${ scripts.false.false.resolve.init } \
+                                                                                                                                                                        --argjson STATUS "$STATUS" \
                                                                                                                                                                         --arg TARGET "$TARGET" \
                                                                                                                                                                             '{
-                                                                                                                                                                               "arguments" : [ "7151639144478587" ] ,
-                                                                                                                                                                               "has-standard-input" : false ,
                                                                                                                                                                                "index" : $INDEX ,
                                                                                                                                                                                "resolve-path" : [ "ec36b9ba523f094d" ] ,
                                                                                                                                                                                "script" : $SCRIPT ,
                                                                                                                                                                                "standard-input" : "" ,
-                                                                                                                                                                               "standard-output" : "7669863784911683"
+                                                                                                                                                                               "standard-output" : "7669863784911683" ,
+                                                                                                                                                                               "status" : $STATUS
                                                                                                                                                                             }' | compare --message message --channel invalid-release --payload false true --timeout 10 --uuid 4737219971119968 3<&3
 
                                                                                                                                                                     block --timeout 1 --uuid 7322152747664447
