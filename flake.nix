@@ -1138,7 +1138,7 @@
                                                                                                                                                                         --null-input \
                                                                                                                                                                         --compact-output \
                                                                                                                                                                         --arg INDEX "$FRESH_INDEX" \
-                                                                                                                                                                        --rawfile SCRIPT ${ scripts.false.false.resolve.release }
+                                                                                                                                                                        --rawfile SCRIPT ${ scripts.false.false.resolve.release } \
                                                                                                                                                                         '{
                                                                                                                                                                            "index" : $INDEX ,
                                                                                                                                                                            "script" : $SCRIPT
