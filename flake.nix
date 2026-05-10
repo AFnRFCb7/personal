@@ -1143,7 +1143,9 @@
                                                                                                                                                                            "index" : $INDEX ,
                                                                                                                                                                            "script" : $SCRIPT ,
                                                                                                                                                                            "seed" : [ "checks" , "targets" , "false" , false" ] ,
-                                                                                                                                                                           "standard-error" : ""
+                                                                                                                                                                           "standard-error" : "" ,
+                                                                                                                                                                           "standard-output" : "127" ,
+                                                                                                                                                                           "status: 197
                                                                                                                                                                         }' | compare --message message --channel invalid-release --payload false true --timeout 10 --uuid 4737219971119968 3<&3
 
                                                                                                                                                                     block --timeout 1 --uuid 7322152747664447
