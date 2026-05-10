@@ -1179,7 +1179,7 @@
                                                                                                                                                                            "status" : 169
                                                                                                                                                                         }' | compare --message message --channel invalid-release --payload false true --timeout 1 --uuid 9164892789912192 3<&3
 
-                                                                                                                                                                    echo We resolved a resource
+                                                                                                                                                                    echo We failed to resolve the release of a resourc
                                                                                                                                                                     if ! "/home/${ config.personal.name }/resources/invalid-release/$FRESH_INDEX/resolve/ec36b9ba523f094d/resolve.sh" 4597174954562694
                                                                                                                                                                     then
                                                                                                                                                                         failure 2947678287368849
