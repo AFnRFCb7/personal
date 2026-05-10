@@ -1165,6 +1165,19 @@
                                                                                                                                                                     then
                                                                                                                                                                         failure 9153213577858634
                                                                                                                                                                     fi
+                                                                                                                                                                    jq \
+                                                                                                                                                                        --null-input \
+                                                                                                                                                                        --compact-output \
+                                                                                                                                                                        --arg INDEX "$FRESH_INDEX" \
+                                                                                                                                                                        --rawfile SCRIPT ${ scripts.false.false.resolve.release } \
+                                                                                                                                                                        '{
+                                                                                                                                                                           "index" : $INDEX ,
+                                                                                                                                                                           "script" : $SCRIPT ,
+                                                                                                                                                                           "resolution-path" : [ "c5cd75e157ecd42b" ] ,
+                                                                                                                                                                           "standard-error" : "" ,
+                                                                                                                                                                           "standard-output" : "3299938456476225" ,
+                                                                                                                                                                           "status" : 169
+                                                                                                                                                                        }' | compare --message message --channel invalid-release --payload false true --timeout 1 --uuid 9164892789912192 3<&3
 
                                                                                                                                                                     echo We resolved a resource
                                                                                                                                                                     if ! "/home/${ config.personal.name }/resources/invalid-release/$FRESH_INDEX/resolve/ec36b9ba523f094d/resolve.sh" 4597174954562694
