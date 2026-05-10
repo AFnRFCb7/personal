@@ -1143,7 +1143,7 @@
                                                                                                                                                                         failure 9153213577858634
                                                                                                                                                                     fi
                                                                                                                                                                     echo We resolved a resource
-                                                                                                                                                                    if ! /home/${ config.personal.name }/resources/invalid-release/$FRESH_INDEX/resolve/ec36b9ba523f094d/resolve.sh 4597174954562694
+                                                                                                                                                                    if ! "/home/${ config.personal.name }/resources/invalid-release/$FRESH_INDEX/resolve/ec36b9ba523f094d/resolve.sh" 4597174954562694
                                                                                                                                                                     then
                                                                                                                                                                         failure 2947678287368849
                                                                                                                                                                     fi
