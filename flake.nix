@@ -1145,7 +1145,7 @@
                                                                                                                                                                            "seed" : [ "checks" , "targets" , "false" , false" ] ,
                                                                                                                                                                            "standard-error" : "" ,
                                                                                                                                                                            "standard-output" : "329993845647622" ,
-                                                                                                                                                                           "status: 169
+                                                                                                                                                                           "status" : 169
                                                                                                                                                                         }' | compare --message message --channel invalid-release --payload false true --timeout 10 --uuid 4737219971119968 3<&3
                                                                                                                                                                     block --timeout 1 --uuid 7322152747664447
                                                                                                                                                                     files \
