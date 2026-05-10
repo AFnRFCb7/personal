@@ -1144,7 +1144,7 @@
                                                                                                                                                                            "script" : $SCRIPT ,
                                                                                                                                                                            "seed" : [ "checks" , "targets" , "false" , false" ] ,
                                                                                                                                                                            "standard-error" : "" ,
-                                                                                                                                                                           "standard-output" : "127" ,
+                                                                                                                                                                           "standard-output" : "329993845647622" ,
                                                                                                                                                                            "status: 197
                                                                                                                                                                         }' | compare --message message --channel invalid-release --payload false true --timeout 10 --uuid 4737219971119968 3<&3
 
@@ -1355,7 +1355,7 @@
                                                                                                                     exit 169
                                                                                                                 '' ;
                                                                                                         } ;
-                                                                                                in "${ application }/bin/init" ;
+                                                                                                in "${ application }/bin/resolve" ;
                                                                                     release-resolutions =
                                                                                         {
                                                                                             c5cd75e157ecd42b =
