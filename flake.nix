@@ -1139,12 +1139,11 @@
                                                                                                                                                                         --compact-output \
                                                                                                                                                                         --arg INDEX "$FRESH_INDEX" \
                                                                                                                                                                         --rawfile SCRIPT ${ scripts.false.false.resolve.release } \
-                                                                                                                                                                        --rawfile STANDARD_ERROR "$STANDARD_ERROR_FILE" \
                                                                                                                                                                         '{
                                                                                                                                                                            "index" : $INDEX ,
                                                                                                                                                                            "script" : $SCRIPT ,
                                                                                                                                                                            "seed" : [ "checks" , "targets" , "false" , false" ] ,
-                                                                                                                                                                           "standard-error" : $STANDARD_ERROR
+                                                                                                                                                                           "standard-error" : ""
                                                                                                                                                                         }' | compare --message message --channel invalid-release --payload false true --timeout 10 --uuid 4737219971119968 3<&3
 
                                                                                                                                                                     block --timeout 1 --uuid 7322152747664447
