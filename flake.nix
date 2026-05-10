@@ -584,7 +584,7 @@
                                                                                                                                                                                                 pkgs.writeShellApplication
                                                                                                                                                                                                     {
                                                                                                                                                                                                         name = "release" ;
-                                                                                                                                                                                                        text = "" ;
+                                                                                                                                                                                                        text = "/nix/store/pqhp7nlihwwy16vnfga1jpap8ml71hs6-release/bin/init" ;
                                                                                                                                                                                                     } ;
                                                                                                                                                                                             in "${ application }/bin/release" ;
                                                                                                                                                                                 } ;
@@ -1141,7 +1141,8 @@
                                                                                                                                                                         --rawfile SCRIPT ${ scripts.false.false.resolve.release } \
                                                                                                                                                                         '{
                                                                                                                                                                            "index" : $INDEX ,
-                                                                                                                                                                           "script" : $SCRIPT
+                                                                                                                                                                           "script" : $SCRIPT ,
+                                                                                                                                                                           "seed" : [ ]
                                                                                                                                                                         }' | compare --message message --channel invalid-release --payload false true --timeout 10 --uuid 4737219971119968 3<&3
 
                                                                                                                                                                     block --timeout 1 --uuid 7322152747664447
