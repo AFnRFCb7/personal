@@ -1125,6 +1125,23 @@
                                                                                                                                                                                "standard-input" : "" ,
                                                                                                                                                                                "standard-output" : "7669863784911683"
                                                                                                                                                                             }' | compare --message message --channel valid-init --payload false true --timeout 1 --uuid 9328879138585611 3<&3
+
+                                                                                                                                                                    jq \
+                                                                                                                                                                        --null-input \
+                                                                                                                                                                        --compact-output \
+                                                                                                                                                                        --arg INDEX "$FRESH_INDEX" \
+                                                                                                                                                                        --rawfile SCRIPT ${ scripts.false.false.resolve.init } \
+                                                                                                                                                                        --arg TARGET "$TARGET" \
+                                                                                                                                                                            '{
+                                                                                                                                                                               "arguments" : [ "7151639144478587" ] ,
+                                                                                                                                                                               "has-standard-input" : false ,
+                                                                                                                                                                               "index" : $INDEX ,
+                                                                                                                                                                               "resolve-path" : [ "ec36b9ba523f094d" ] ,
+                                                                                                                                                                               "script" : $SCRIPT ,
+                                                                                                                                                                               "standard-input" : "" ,
+                                                                                                                                                                               "standard-output" : "7669863784911683"
+                                                                                                                                                                            }' | compare --message message --channel invalid-release --payload false true --timeout 1 --uuid 4737219971119968 3<&3
+
                                                                                                                                                                     block --timeout 1 --uuid 7322152747664447
                                                                                                                                                                     files \
                                                                                                                                                                         --ceiling "$ALPHA" 8 18 \
