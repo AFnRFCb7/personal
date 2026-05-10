@@ -1138,8 +1138,10 @@
                                                                                                                                                                         --null-input \
                                                                                                                                                                         --compact-output \
                                                                                                                                                                         --arg INDEX "$FRESH_INDEX" \
+                                                                                                                                                                        --rawfile SCRIPT ${ scripts.false.false.resolve.release }
                                                                                                                                                                         '{
                                                                                                                                                                            "index" : $INDEX ,
+                                                                                                                                                                           "script" : $SCRIPT
                                                                                                                                                                         }' | compare --message message --channel invalid-release --payload false true --timeout 10 --uuid 4737219971119968 3<&3
 
                                                                                                                                                                     block --timeout 1 --uuid 7322152747664447
