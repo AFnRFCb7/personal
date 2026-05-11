@@ -1416,8 +1416,8 @@
 #                                                                                                                } ;
 #                                                                                                        in "${ application }/bin/resolve" ;
 #                                                                                        } ;
-#                                                                                    targets = [ "9427941488926681" ] ;
-#                                                                                } ;
+                                                                                    targets = [ "9427941488926681" ] ;
+                                                                                } ;
                                                                         true =
                                                                             ignore :
                                                                                 {
