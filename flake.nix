@@ -1391,31 +1391,31 @@
                                                                                                                 '' ;
                                                                                                         } ;
                                                                                                 in "${ application }/bin/release" ;
-#                                                                                    release-resolutions =
-#                                                                                        {
-#                                                                                            c5cd75e157ecd42b =
-#                                                                                                { direction , failure , pkgs , resolve-path , resources , seed , sequential , trace } :
-#                                                                                                    let
-#                                                                                                        application =
-#                                                                                                            pkgs.writeShellApplication
-#                                                                                                                {
-#                                                                                                                    name = "resolve" ;
-#                                                                                                                    runtimeInputs = [ ] ;
-#                                                                                                                    text =
-#                                                                                                                        ''
-#                                                                                                                            echo -en 7876299368973293
-#                                                                                                                            if [[ "$1" == 4597174954562694 ]]
-#                                                                                                                            then
-#                                                                                                                                exit 111
-#                                                                                                                            elif [[ "$1" == 5998136478747541 ]]
-#                                                                                                                            then
-#                                                                                                                                exit 244
-#                                                                                                                            else
-#                                                                                                                                failure 7486835568334252 "$*"
-#                                                                                                                            fi''  ;
-#                                                                                                                } ;
-#                                                                                                        in "${ application }/bin/resolve" ;
-#                                                                                        } ;
+                                                                                    release-resolutions =
+                                                                                        {
+                                                                                            c5cd75e157ecd42b =
+                                                                                                { direction , failure , pkgs , resolve-path , resources , seed , sequential , trace } :
+                                                                                                    let
+                                                                                                        application =
+                                                                                                            pkgs.writeShellApplication
+                                                                                                                {
+                                                                                                                    name = "resolve" ;
+                                                                                                                    runtimeInputs = [ ] ;
+                                                                                                                    text =
+                                                                                                                        ''
+                                                                                                                            echo -en 7876299368973293
+                                                                                                                            if [[ "$1" == 4597174954562694 ]]
+                                                                                                                            then
+                                                                                                                                exit 111
+                                                                                                                            elif [[ "$1" == 5998136478747541 ]]
+                                                                                                                            then
+                                                                                                                                exit 244
+                                                                                                                            else
+                                                                                                                                failure 7486835568334252 "$*"
+                                                                                                                            fi''  ;
+                                                                                                                } ;
+                                                                                                        in "${ application }/bin/resolve" ;
+                                                                                        } ;
                                                                                     targets = [ "9427941488926681" ] ;
                                                                                 } ;
                                                                         true =
