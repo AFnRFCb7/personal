@@ -521,162 +521,6 @@
                                                                                                             } ;
                                                                                                     post-test =
                                                                                                         let
-
-                                                                                                                                                    scripts =
-                                                                                                                                                        {
-                                                                                                                                                            false =
-                                                                                                                                                                {
-                                                                                                                                                                    false =
-                                                                                                                                                                        {
-                                                                                                                                                                            init =
-                                                                                                                                                                                let
-                                                                                                                                                                                    application =
-                                                                                                                                                                                        pkgs.writeShellApplication
-                                                                                                                                                                                            {
-                                                                                                                                                                                                name = "init" ;
-                                                                                                                                                                                                text = "/nix/store/xpf9hr2bfzc7fs4qf1szr3dzswm7k4vv-init/bin/init" ;
-                                                                                                                                                                                            } ;
-                                                                                                                                                                                    in "${ application }/bin/init" ;
-                                                                                                                                                                            release =
-                                                                                                                                                                                ''
-                                                                                                                                                                                '' ;
-                                                                                                                                                                            resolve =
-                                                                                                                                                                                {
-                                                                                                                                                                                    init =
-                                                                                                                                                                                        let
-                                                                                                                                                                                            application =
-                                                                                                                                                                                                pkgs.writeShellApplication
-                                                                                                                                                                                                    {
-                                                                                                                                                                                                        name = "init" ;
-                                                                                                                                                                                                        text =
-                                                                                                                                                                                                            ''
-                                                                                                                                                                                                                echo -en 7669863784911683
-                                                                                                                                                                                                                if [[ "$1" == 7482446721679967 ]]
-                                                                                                                                                                                                                then
-                                                                                                                                                                                                                    exit 208
-                                                                                                                                                                                                                elif [[ "$1" == 7151639144478587 ]]
-                                                                                                                                                                                                                then
-                                                                                                                                                                                                                    exit
-                                                                                                                                                                                                                else
-                                                                                                                                                                                                                    failure 6126927632687914 "$*"
-                                                                                                                                                                                                                fi'' ;
-                                                                                                                                                                                                    } ;
-                                                                                                                                                                                            in "${ application }/bin/init" ;
-                                                                                                                                                                                    release =
-                                                                                                                                                                                        let
-                                                                                                                                                                                            application =
-                                                                                                                                                                                                pkgs.writeShellApplication
-                                                                                                                                                                                                    {
-                                                                                                                                                                                                        name = "release" ;
-                                                                                                                                                                                                        text = "/nix/store/pqhp7nlihwwy16vnfga1jpap8ml71hs6-release/bin/release" ;
-                                                                                                                                                                                                    } ;
-                                                                                                                                                                                            in "${ application }/bin/release" ;
-                                                                                                                                                                                } ;
-                                                                                                                                                                        } ;
-                                                                                                                                                                    true =
-                                                                                                                                                                        {
-                                                                                                                                                                            init =
-                                                                                                                                                                                builtins.toFile
-                                                                                                                                                                                    "script"
-                                                                                                                                                                                    ''
-                                                                                                                                                                                        #!/nix/store/mjhcjikhxps97mq5z54j4gjjfzgmsir5-bash-5.2p37/bin/bash
-                                                                                                                                                                                        set -o errexit
-                                                                                                                                                                                        set -o nounset
-                                                                                                                                                                                        set -o pipefail
-
-                                                                                                                                                                                        /nix/store/zp158z04y8a09cravpnxxc8lm37hnwiv-init/bin/init
-                                                                                                                                                                                    '' ;
-                                                                                                                                                                            release =
-                                                                                                                                                                                let
-                                                                                                                                                                                    application =
-                                                                                                                                                                                        pkgs.writeShellApplication
-                                                                                                                                                                                            {
-                                                                                                                                                                                                name = "release" ;
-                                                                                                                                                                                                text = "/nix/store/baqdlg538bdxj07hr8n72jlpcfjhdnws-release/bin/release" ;
-                                                                                                                                                                                            } ;
-                                                                                                                                                                                    in "${ application }/bin/release" ;
-                                                                                                                                                                            resolve =
-                                                                                                                                                                                {
-                                                                                                                                                                                    init =
-                                                                                                                                                                                        builtins.toFile
-                                                                                                                                                                                            "script"
-                                                                                                                                                                                            ''
-                                                                                                                                                                                                #!/nix/store/mjhcjikhxps97mq5z54j4gjjfzgmsir5-bash-5.2p37/bin/bash
-                                                                                                                                                                                                set -o errexit
-                                                                                                                                                                                                set -o nounset
-                                                                                                                                                                                                set -o pipefail
-
-                                                                                                                                                                                                echo -en 7669863784911683
-                                                                                                                                                                                                if [[ "$1" == 9554464665854115 ]]
-                                                                                                                                                                                                then
-                                                                                                                                                                                                    exit 185
-                                                                                                                                                                                                elif [[ "$1" == 8363144534251594 ]]
-                                                                                                                                                                                                then
-                                                                                                                                                                                                    exit
-                                                                                                                                                                                                else
-                                                                                                                                                                                                    failure 6126927632687914 "$*"
-                                                                                                                                                                                                fi
-                                                                                                                                                                                            '' ;
-                                                                                                                                                                                } ;
-                                                                                                                                                                        } ;
-                                                                                                                                                                } ;
-                                                                                                                                                            true =
-                                                                                                                                                                {
-                                                                                                                                                                    false =
-                                                                                                                                                                        {
-                                                                                                                                                                            init =
-                                                                                                                                                                                builtins.toFile
-                                                                                                                                                                                    "script"
-                                                                                                                                                                                    ''
-                                                                                                                                                                                        #!/nix/store/mjhcjikhxps97mq5z54j4gjjfzgmsir5-bash-5.2p37/bin/bash
-                                                                                                                                                                                        set -o errexit
-                                                                                                                                                                                        set -o nounset
-                                                                                                                                                                                        set -o pipefail
-
-                                                                                                                                                                                        /nix/store/7l2i4v0ajggraxg79mwc0pqxlc8yhjcf-init/bin/init
-                                                                                                                                                                                    '' ;
-                                                                                                                                                                            release =
-                                                                                                                                                                                ''
-                                                                                                                                                                                '' ;
-                                                                                                                                                                        } ;
-                                                                                                                                                                    true =
-                                                                                                                                                                        {
-                                                                                                                                                                            init =
-                                                                                                                                                                                builtins.toFile
-                                                                                                                                                                                    "script"
-                                                                                                                                                                                    ''
-                                                                                                                                                                                        #!/nix/store/mjhcjikhxps97mq5z54j4gjjfzgmsir5-bash-5.2p37/bin/bash
-                                                                                                                                                                                        set -o errexit
-                                                                                                                                                                                        set -o nounset
-                                                                                                                                                                                        set -o pipefail
-
-                                                                                                                                                                                        /nix/store/qfcw4rcx08yqnfjj7ndxhcqbi719z9m2-init/bin/init
-                                                                                                                                                                                    '' ;
-                                                                                                                                                                            release =
-                                                                                                                                                                                let
-                                                                                                                                                                                    application =
-                                                                                                                                                                                        pkgs.writeShellApplication
-                                                                                                                                                                                            {
-                                                                                                                                                                                                name = "release" ;
-                                                                                                                                                                                                text =
-                                                                                                                                                                                                    ''
-                                                                                                                                                                                                        echo -en 7669863784911683q
-                                                                                                                                                                                                        if [[ \"$1\" == 7482446721679967 ]]
-                                                                                                                                                                                                        then
-                                                                                                                                                                                                            exit 208
-                                                                                                                                                                                                        elif [[ \"$1\" == 7151639144478587 ]]
-                                                                                                                                                                                                        then
-                                                                                                                                                                                                            exit
-                                                                                                                                                                                                        else
-                                                                                                                                                                                                            failure 6126927632687914 \"$*\"
-                                                                                                                                                                                                        fi
-                                                                                                                                                                                                    '' ;
-                                                                                                                                                                                            } ;
-                                                                                                                                                                                    in "${ application }/bin/release" ;
-                                                                                                                                                                        } ;
-                                                                                                                                                                } ;
-                                                                                                                                                        } ;
-
                                                                                                             application =
                                                                                                                 pkgs.writeShellApplication
                                                                                                                     {
@@ -818,42 +662,6 @@
                                                                                                                                                                         --uuid 5556886441562925
                                                                                                                                                                     echo We created a stale resource
                                                                                                                                                                 else
-                                                                                                                                                                    DISTRACTOR=${ resources.checks.targets.true.false { failure = 1965713756848597 ; setup = setup : ''${ setup } 2764421667212817'' ; } }
-                                                                                                                                                                    printf -v DISTRACTOR_INDEX "%016d" $(( ALPHA + 4 ))
-                                                                                                                                                                    STANDARD_OUTPUT=4725766637963872
-                                                                                                                                                                    TARGET=3297495737778474
-                                                                                                                                                                    jq \
-                                                                                                                                                                        --null-input \
-                                                                                                                                                                        --compact-output \
-                                                                                                                                                                        --arg ARGUMENT 2764421667212817 \
-                                                                                                                                                                        --arg INDEX "$DISTRACTOR_INDEX" \
-                                                                                                                                                                        --rawfile SCRIPT ${ scripts.true.false.init } \
-                                                                                                                                                                        --arg STANDARD_OUTPUT "$STANDARD_OUTPUT" \
-                                                                                                                                                                        --arg TARGET "$TARGET" \
-                                                                                                                                                                            '{
-                                                                                                                                                                               "arguments" : [ $ARGUMENT ] ,
-                                                                                                                                                                               "has-standard-input" : false ,
-                                                                                                                                                                               "index" : $INDEX ,
-                                                                                                                                                                               "script" : $SCRIPT ,
-                                                                                                                                                                               "seed" : [ "checks" , "targets" , "true" , "false" ] ,
-                                                                                                                                                                               "standard-error" : "" ,
-                                                                                                                                                                               "standard-input" : "" ,
-                                                                                                                                                                               "standard-output" : $STANDARD_OUTPUT ,
-                                                                                                                                                                               "status" : 0 ,
-                                                                                                                                                                               "targets" : [ $TARGET ] ,
-                                                                                                                                                                               "transient" : -1
-                                                                                                                                                                            }' | compare --message message --channel valid-init --payload false true --timeout 1 --uuid 6784546776754448 3<&3
-                                                                                                                                                                    block --timeout 1 --uuid 7866414393983313 3<&3
-                                                                                                                                                                    files \
-                                                                                                                                                                        --ceiling "$ALPHA" 2 10 \
-                                                                                                                                                                        --equals "/home/${ config.personal.name }/resources/mounts/$DISTRACTOR_INDEX" "$DISTRACTOR" \
-                                                                                                                                                                        --directory "$DISTRACTOR" \
-                                                                                                                                                                        --file "$DISTRACTOR/$TARGET" \
-                                                                                                                                                                        --executable "/home/${ config.personal.name }/resources/release/$DISTRACTOR_INDEX" \
-                                                                                                                                                                        --does-not-exist "/home/${ config.personal.name }/resources/invalid-init/$DISTRACTOR_INDEX" \
-                                                                                                                                                                        --does-not-exist "/home/${ config.personal.name }/resources/invalid-release/$DISTRACTOR_INDEX" \
-                                                                                                                                                                        --uuid 5686665366486275
-                                                                                                                                                                    echo We created a distractor resource
                                                                                                                                                                     FRESH=${ resources.checks.targets.true.false { failure = 2198254319735746 ; } }
                                                                                                                                                                     printf -v FRESH_INDEX "%016d" $(( ALPHA + 12 ))
                                                                                                                                                                     jq \
@@ -1297,7 +1105,42 @@
                                                                                                                                             --uuid 6764498451529627
                                                                                                                                         echo We created a distractor resource
                                                                                                                                     else
-                                                                                                                                        true
+                                                                                                                                        DISTRACTOR=${ resources.checks.targets.true.false { failure = 1965713756848597 ; setup = setup : ''${ setup } 2764421667212817'' ; } }
+                                                                                                                                        printf -v DISTRACTOR_INDEX "%016d" $(( ALPHA + 4 ))
+                                                                                                                                        STANDARD_OUTPUT=4725766637963872
+                                                                                                                                        TARGET=3297495737778474
+                                                                                                                                        jq \
+                                                                                                                                            --null-input \
+                                                                                                                                            --compact-output \
+                                                                                                                                            --arg ARGUMENT 2764421667212817 \
+                                                                                                                                            --arg INDEX "$DISTRACTOR_INDEX" \
+                                                                                                                                            --rawfile SCRIPT ${ scripts.true.false.init } \
+                                                                                                                                            --arg STANDARD_OUTPUT "$STANDARD_OUTPUT" \
+                                                                                                                                            --arg TARGET "$TARGET" \
+                                                                                                                                                '{
+                                                                                                                                                   "arguments" : [ $ARGUMENT ] ,
+                                                                                                                                                   "has-standard-input" : false ,
+                                                                                                                                                   "index" : $INDEX ,
+                                                                                                                                                   "script" : $SCRIPT ,
+                                                                                                                                                   "seed" : [ "checks" , "targets" , "true" , "false" ] ,
+                                                                                                                                                   "standard-error" : "" ,
+                                                                                                                                                   "standard-input" : "" ,
+                                                                                                                                                   "standard-output" : $STANDARD_OUTPUT ,
+                                                                                                                                                   "status" : 0 ,
+                                                                                                                                                   "targets" : [ $TARGET ] ,
+                                                                                                                                                   "transient" : -1
+                                                                                                                                                }' | compare --message message --channel valid-init --payload false true --timeout 1 --uuid 6784546776754448 3<&3
+                                                                                                                                        block --timeout 1 --uuid 7866414393983313 3<&3
+                                                                                                                                        files \
+                                                                                                                                            --ceiling "$ALPHA" 2 10 \
+                                                                                                                                            --equals "/home/${ config.personal.name }/resources/mounts/$DISTRACTOR_INDEX" "$DISTRACTOR" \
+                                                                                                                                            --directory "$DISTRACTOR" \
+                                                                                                                                            --file "$DISTRACTOR/$TARGET" \
+                                                                                                                                            --executable "/home/${ config.personal.name }/resources/release/$DISTRACTOR_INDEX" \
+                                                                                                                                            --does-not-exist "/home/${ config.personal.name }/resources/invalid-init/$DISTRACTOR_INDEX" \
+                                                                                                                                            --does-not-exist "/home/${ config.personal.name }/resources/invalid-release/$DISTRACTOR_INDEX" \
+                                                                                                                                            --uuid 5686665366486275
+                                                                                                                                        echo We created a distractor resource
                                                                                                                                     fi
                                                                                                                                 else
                                                                                                                                     if [[ "$RELEASE" == "true" ]]
@@ -1325,6 +1168,160 @@
                                                                                                                                     fi
                                                                                                                                 fi
                                                                                                                             '' ;
+                                                                                                                    } ;
+                                                                                                                scripts =
+                                                                                                                    {
+                                                                                                                        false =
+                                                                                                                            {
+                                                                                                                                false =
+                                                                                                                                    {
+                                                                                                                                        init =
+                                                                                                                                            let
+                                                                                                                                                application =
+                                                                                                                                                    pkgs.writeShellApplication
+                                                                                                                                                        {
+                                                                                                                                                            name = "init" ;
+                                                                                                                                                            text = "/nix/store/xpf9hr2bfzc7fs4qf1szr3dzswm7k4vv-init/bin/init" ;
+                                                                                                                                                        } ;
+                                                                                                                                                in "${ application }/bin/init" ;
+                                                                                                                                        release =
+                                                                                                                                            ''
+                                                                                                                                            '' ;
+                                                                                                                                        resolve =
+                                                                                                                                            {
+                                                                                                                                                init =
+                                                                                                                                                    let
+                                                                                                                                                        application =
+                                                                                                                                                            pkgs.writeShellApplication
+                                                                                                                                                                {
+                                                                                                                                                                    name = "init" ;
+                                                                                                                                                                    text =
+                                                                                                                                                                        ''
+                                                                                                                                                                            echo -en 7669863784911683
+                                                                                                                                                                            if [[ "$1" == 7482446721679967 ]]
+                                                                                                                                                                            then
+                                                                                                                                                                                exit 208
+                                                                                                                                                                            elif [[ "$1" == 7151639144478587 ]]
+                                                                                                                                                                            then
+                                                                                                                                                                                exit
+                                                                                                                                                                            else
+                                                                                                                                                                                failure 6126927632687914 "$*"
+                                                                                                                                                                            fi'' ;
+                                                                                                                                                                } ;
+                                                                                                                                                        in "${ application }/bin/init" ;
+                                                                                                                                                release =
+                                                                                                                                                    let
+                                                                                                                                                        application =
+                                                                                                                                                            pkgs.writeShellApplication
+                                                                                                                                                                {
+                                                                                                                                                                    name = "release" ;
+                                                                                                                                                                    text = "/nix/store/pqhp7nlihwwy16vnfga1jpap8ml71hs6-release/bin/release" ;
+                                                                                                                                                                } ;
+                                                                                                                                                        in "${ application }/bin/release" ;
+                                                                                                                                            } ;
+                                                                                                                                    } ;
+                                                                                                                                true =
+                                                                                                                                    {
+                                                                                                                                        init =
+                                                                                                                                            builtins.toFile
+                                                                                                                                                "script"
+                                                                                                                                                ''
+                                                                                                                                                    #!/nix/store/mjhcjikhxps97mq5z54j4gjjfzgmsir5-bash-5.2p37/bin/bash
+                                                                                                                                                    set -o errexit
+                                                                                                                                                    set -o nounset
+                                                                                                                                                    set -o pipefail
+
+                                                                                                                                                    /nix/store/zp158z04y8a09cravpnxxc8lm37hnwiv-init/bin/init
+                                                                                                                                                '' ;
+                                                                                                                                        release =
+                                                                                                                                            let
+                                                                                                                                                application =
+                                                                                                                                                    pkgs.writeShellApplication
+                                                                                                                                                        {
+                                                                                                                                                            name = "release" ;
+                                                                                                                                                            text = "/nix/store/baqdlg538bdxj07hr8n72jlpcfjhdnws-release/bin/release" ;
+                                                                                                                                                        } ;
+                                                                                                                                                in "${ application }/bin/release" ;
+                                                                                                                                        resolve =
+                                                                                                                                            {
+                                                                                                                                                init =
+                                                                                                                                                    builtins.toFile
+                                                                                                                                                        "script"
+                                                                                                                                                        ''
+                                                                                                                                                            #!/nix/store/mjhcjikhxps97mq5z54j4gjjfzgmsir5-bash-5.2p37/bin/bash
+                                                                                                                                                            set -o errexit
+                                                                                                                                                            set -o nounset
+                                                                                                                                                            set -o pipefail
+
+                                                                                                                                                            echo -en 7669863784911683
+                                                                                                                                                            if [[ "$1" == 9554464665854115 ]]
+                                                                                                                                                            then
+                                                                                                                                                                exit 185
+                                                                                                                                                            elif [[ "$1" == 8363144534251594 ]]
+                                                                                                                                                            then
+                                                                                                                                                                exit
+                                                                                                                                                            else
+                                                                                                                                                                failure 6126927632687914 "$*"
+                                                                                                                                                            fi
+                                                                                                                                                        '' ;
+                                                                                                                                            } ;
+                                                                                                                                    } ;
+                                                                                                                            } ;
+                                                                                                                        true =
+                                                                                                                            {
+                                                                                                                                false =
+                                                                                                                                    {
+                                                                                                                                        init =
+                                                                                                                                            builtins.toFile
+                                                                                                                                                "script"
+                                                                                                                                                ''
+                                                                                                                                                    #!/nix/store/mjhcjikhxps97mq5z54j4gjjfzgmsir5-bash-5.2p37/bin/bash
+                                                                                                                                                    set -o errexit
+                                                                                                                                                    set -o nounset
+                                                                                                                                                    set -o pipefail
+
+                                                                                                                                                    /nix/store/7l2i4v0ajggraxg79mwc0pqxlc8yhjcf-init/bin/init
+                                                                                                                                                '' ;
+                                                                                                                                        release =
+                                                                                                                                            ''
+                                                                                                                                            '' ;
+                                                                                                                                    } ;
+                                                                                                                                true =
+                                                                                                                                    {
+                                                                                                                                        init =
+                                                                                                                                            builtins.toFile
+                                                                                                                                                "script"
+                                                                                                                                                ''
+                                                                                                                                                    #!/nix/store/mjhcjikhxps97mq5z54j4gjjfzgmsir5-bash-5.2p37/bin/bash
+                                                                                                                                                    set -o errexit
+                                                                                                                                                    set -o nounset
+                                                                                                                                                    set -o pipefail
+
+                                                                                                                                                    /nix/store/qfcw4rcx08yqnfjj7ndxhcqbi719z9m2-init/bin/init
+                                                                                                                                                '' ;
+                                                                                                                                        release =
+                                                                                                                                            let
+                                                                                                                                                application =
+                                                                                                                                                    pkgs.writeShellApplication
+                                                                                                                                                        {
+                                                                                                                                                            name = "release" ;
+                                                                                                                                                            text =
+                                                                                                                                                                ''
+                                                                                                                                                                    echo -en 7669863784911683q
+                                                                                                                                                                    if [[ \"$1\" == 7482446721679967 ]]
+                                                                                                                                                                    then
+                                                                                                                                                                        exit 208
+                                                                                                                                                                    elif [[ \"$1\" == 7151639144478587 ]]
+                                                                                                                                                                    then
+                                                                                                                                                                        exit
+                                                                                                                                                                    else
+                                                                                                                                                                        failure 6126927632687914 \"$*\"
+                                                                                                                                                                    fi
+                                                                                                                                                                '' ;
+                                                                                                                                                        } ;
+                                                                                                                                                in "${ application }/bin/release" ;
+                                                                                                                                    } ;
+                                                                                                                            } ;
                                                                                                                     } ;
                                                                                                             in "${ application }/bin/post-test" ;
                                                                                                     in
