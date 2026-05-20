@@ -1171,7 +1171,29 @@
                                                                                                                                 else
                                                                                                                                     if [[ "$RELEASE" == "true" ]]
                                                                                                                                     then
-                                                                                                                                        true
+                                                                                                                                        jq \
+                                                                                                                                            --null-input \
+                                                                                                                                            --compact-output \
+                                                                                                                                            --arg INDEX "$DISTRACTOR_INDEX" \
+                                                                                                                                            --rawfile SCRIPT ${ scripts.true.true.release } \
+                                                                                                                                            --arg STANDARD_OUTPUT "$STANDARD_OUTPUT" \
+                                                                                                                                                '{
+                                                                                                                                                   "index" : $INDEX ,
+                                                                                                                                                   "script" : $SCRIPT ,
+                                                                                                                                                   "seed" : [ "checks" , "targets" , "true" , "true" ] ,
+                                                                                                                                                   "standard-output" : $STANDARD_OUTPUT ,
+                                                                                                                                                   "transient" : -1
+                                                                                                                                                }' | compare --message message --channel valid-init --payload false true --timeout 1 --uuid 23829 3<&3
+                                                                                                                                        block --timeout 1 --uuid 7866414393983313 3<&3
+                                                                                                                                        files \
+                                                                                                                                            --ceiling "$ALPHA" 2 10 \
+                                                                                                                                            --equals "/home/${ config.personal.name }/resources/mounts/$DISTRACTOR_INDEX" "$DISTRACTOR" \
+                                                                                                                                            --directory "$DISTRACTOR" \
+                                                                                                                                            --file "$DISTRACTOR/$TARGET" \
+                                                                                                                                            --executable "/home/${ config.personal.name }/resources/release/$DISTRACTOR_INDEX" \
+                                                                                                                                            --does-not-exist "/home/${ config.personal.name }/resources/invalid-init/$DISTRACTOR_INDEX" \
+                                                                                                                                            --does-not-exist "/home/${ config.personal.name }/resources/invalid-release/$DISTRACTOR_INDEX" \
+                                                                                                                                            --uuid 5686665366486275
                                                                                                                                     else
                                                                                                                                         true
                                                                                                                                     fi
