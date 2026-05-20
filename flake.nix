@@ -1407,6 +1407,7 @@
                                                                                                                 --literal plain '#' \
                                                                                                                 --literal plain ALPHA \
                                                                                                                 --literal plain ALPHA_INDEX \
+                                                                                                                --literal plain ARGUMENT \
                                                                                                                 --literal plain ARGUMENTS \
                                                                                                                 --literal plain DERIVATION \
                                                                                                                 --literal plain DISTRACTOR \
