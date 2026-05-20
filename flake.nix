@@ -191,7 +191,7 @@
                                                                             init-resolutions = r.init-resolutions or resolutions ;
                                                                             release = r.release or null ;
                                                                             release-resolutions = r.release-resolutions or resolutions ;
-                                                                            seed = path ;
+                                                                            seed = r.path or path ;
                                                                             targets = r.targets or [ ] ;
                                                                             transient = r.transient or false ;
                                                                         } ;
@@ -1197,12 +1197,11 @@
                                                                                                                                                    "arguments" : [ $ARGUMENT ] ,
                                                                                                                                                    "has-standard-input" : false ,
                                                                                                                                                    "index" : $INDEX ,
-                                                                                                                                                   "script" : $SCRIPT ,
                                                                                                                                                    "seed" : [ "checks" , "targets" , "false" , "true" ] ,
                                                                                                                                                    "standard-error" : "" ,
                                                                                                                                                    "standard-input" : "" ,
                                                                                                                                                    "status" : 114 ,
-                                                                                                                                                   "targets" : { expected $TARGET , observed : $TARGET} ,
+                                                                                                                                                   "targets" : { expected $TARGET , observed : $TARGET } ,
                                                                                                                                                    "transient" : -1
                                                                                                                                                 }' | compare --message message --channel invalid-init --payload false true --timeout 1 --uuid 31155 3<&3
                                                                                                                                         block --timeout 1 --uuid 6925921732651899 3<&3
@@ -2608,11 +2607,10 @@
                                                                                                     runtimeInputs = [ pkgs.git ] ;
                                                                                                     text =
                                                                                                         ''
-                                                                                                            git init
-                                                                                                            git remote add origin
-                                                                                                            git fetch origin
-                                                                                                            git checkout
-
+                                                                                                            git init 2>&1
+                                                                                                            git remote add origin ${ config.personal.secrets.remote.https } 2>&1
+                                                                                                            git fetch origin ${ config.personal.secrets.branch } 2>&1
+                                                                                                            git checkout origin/${ config.personal.secrets.branch }
                                                                                                         '' ;
                                                                                                 } ;
                                                                                         in "${ application }/bin/init" ;
