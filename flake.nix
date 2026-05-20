@@ -1404,16 +1404,14 @@
                                                                                                                                 true =
                                                                                                                                     {
                                                                                                                                         init =
-                                                                                                                                            builtins.toFile
-                                                                                                                                                "script"
-                                                                                                                                                ''
-                                                                                                                                                    #!/nix/store/mjhcjikhxps97mq5z54j4gjjfzgmsir5-bash-5.2p37/bin/bash
-                                                                                                                                                    set -o errexit
-                                                                                                                                                    set -o nounset
-                                                                                                                                                    set -o pipefail
-
-                                                                                                                                                    /nix/store/qfcw4rcx08yqnfjj7ndxhcqbi719z9m2-init/bin/init
-                                                                                                                                                '' ;
+                                                                                                                                            let
+                                                                                                                                                application =
+                                                                                                                                                    pkgs.writeShellApplication
+                                                                                                                                                        {
+                                                                                                                                                            name = "init" ;
+                                                                                                                                                            text = "/nix/store/qfcw4rcx08yqnfjj7ndxhcqbi719z9m2-init/bin/init" ;
+                                                                                                                                                        } ;
+                                                                                                                                            in "${ application }/bin/init" ;
                                                                                                                                         release =
                                                                                                                                             let
                                                                                                                                                 application =
