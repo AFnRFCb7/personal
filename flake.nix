@@ -521,25 +521,7 @@
                                                                                                             } ;
                                                                                                     post-test =
                                                                                                         let
-                                                                                                            application =
-                                                                                                                pkgs.writeShellApplication
-                                                                                                                    {
-                                                                                                                        name = "post-test" ;
-                                                                                                                        runtimeInputs =
-                                                                                                                            [
-                                                                                                                                block
-                                                                                                                                compare
-                                                                                                                                failure
-                                                                                                                                files
-                                                                                                                                pkgs.coreutils
-                                                                                                                                pkgs.redis
-                                                                                                                                (
-                                                                                                                                    pkgs.writeShellApplication
-                                                                                                                                        {
-                                                                                                                                            name = "pre-test" ;
-                                                                                                                                            runtimeInputs = [ block compare failure files pkgs.coreutils pkgs.jq pkgs.redis ] ;
-                                                                                                                                            text =
-                                                                                                                                                let
+
                                                                                                                                                     scripts =
                                                                                                                                                         {
                                                                                                                                                             false =
@@ -694,6 +676,26 @@
                                                                                                                                                                         } ;
                                                                                                                                                                 } ;
                                                                                                                                                         } ;
+
+                                                                                                            application =
+                                                                                                                pkgs.writeShellApplication
+                                                                                                                    {
+                                                                                                                        name = "post-test" ;
+                                                                                                                        runtimeInputs =
+                                                                                                                            [
+                                                                                                                                block
+                                                                                                                                compare
+                                                                                                                                failure
+                                                                                                                                files
+                                                                                                                                pkgs.coreutils
+                                                                                                                                pkgs.redis
+                                                                                                                                (
+                                                                                                                                    pkgs.writeShellApplication
+                                                                                                                                        {
+                                                                                                                                            name = "pre-test" ;
+                                                                                                                                            runtimeInputs = [ block compare failure files pkgs.coreutils pkgs.jq pkgs.redis ] ;
+                                                                                                                                            text =
+                                                                                                                                                let
                                                                                                                                                     in
                                                                                                                                                         ''
                                                                                                                                                             while [[ "$#" -gt 0 ]]
