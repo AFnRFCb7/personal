@@ -229,7 +229,7 @@
                                                                                                                     fi
                                                                                                                     BODY_FILE="$2"
                                                                                                                     shift 2
-                                                                                                                    ;;                                                                                                                        ;;
+                                                                                                                    ;;
                                                                                                                 *)
                                                                                                                     failure 10751
                                                                                                                     ;;
