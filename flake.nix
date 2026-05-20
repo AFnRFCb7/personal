@@ -1952,7 +1952,7 @@
                                                                                             } ;
                                                                                         dot-ssh =
                                                                                             {
-                                                                                                github =
+                                                                                                github1 =
                                                                                                     {
                                                                                                         identity =
                                                                                                             ignore :
@@ -1989,7 +1989,7 @@
                                                                                                         known-hosts = decrypt ;
                                                                                                     } ;
                                                                                             } ;
-                                                                                        github =
+                                                                                        github2 =
                                                                                             {
                                                                                                 token = null ;
                                                                                             } ;
@@ -2433,7 +2433,7 @@
                                                                                         } ;
                                                                             }
                                                                             {
-                                                                                github = null ;
+                                                                                github3 = null ;
                                                                                 mobile = null ;
                                                                             } ;
                                                                 } ;
@@ -2718,7 +2718,7 @@
                                                                                         {
                                                                                             mobile = decrypt ;
                                                                                         } ;
-                                                                                    github =
+                                                                                    github4 =
                                                                                         {
                                                                                             token = decrypt ;
                                                                                         } ;
