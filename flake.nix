@@ -1242,6 +1242,7 @@
                                                                                                                                                    "has-standard-input" : false ,
                                                                                                                                                    "index" : $INDEX ,
                                                                                                                                                    "seed" : [ "checks" , "targets" , "false" , "true" ] ,
+                                                                                                                                                   "script" : $SCRIPT ,
                                                                                                                                                    "standard-error" : "" ,
                                                                                                                                                    "standard-input" : "" ,
                                                                                                                                                    "status" : 114 ,
@@ -1338,16 +1339,14 @@
                                                                                                                                 true =
                                                                                                                                     {
                                                                                                                                         init =
-                                                                                                                                            builtins.toFile
-                                                                                                                                                "script"
-                                                                                                                                                ''
-                                                                                                                                                    #!/nix/store/mjhcjikhxps97mq5z54j4gjjfzgmsir5-bash-5.2p37/bin/bash
-                                                                                                                                                    set -o errexit
-                                                                                                                                                    set -o nounset
-                                                                                                                                                    set -o pipefail
-
-                                                                                                                                                    /nix/store/zp158z04y8a09cravpnxxc8lm37hnwiv-init/bin/init
-                                                                                                                                                '' ;
+                                                                                                                                            let
+                                                                                                                                                application =
+                                                                                                                                                    pkgs.writeShellApplication
+                                                                                                                                                        {
+                                                                                                                                                            name = "init" ;
+                                                                                                                                                            text = "/nix/store/zp158z04y8a09cravpnxxc8lm37hnwiv-init/bin/init" ;
+                                                                                                                                                        } ;
+                                                                                                                                                in "${ application }/bin/init" ;
                                                                                                                                         release =
                                                                                                                                             let
                                                                                                                                                 application =
