@@ -2634,8 +2634,6 @@
                                                                                                                 runtimeInputs = [ pkgs.age pkgs.coreutils ] ;
                                                                                                                 text =
                                                                                                                     ''
-                                                                                                                        REPOSITORY=${ resources.production.secrets.ciphertext { failure = 9749 ; } }
-                                                                                                                        age --decrypt "$REPOSITORY/${ seed.path }" --identity
                                                                                                                     '' ;
                                                                                                             } ;
                                                                                                     in "${ application }/bin/init" ;
