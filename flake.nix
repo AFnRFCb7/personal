@@ -1180,14 +1180,13 @@
                                                                                                                                         fi
                                                                                                                                         printf -v DISTRACTOR_INDEX "%016d" $(( ALPHA + 4 ))
                                                                                                                                         STANDARD_OUTPUT=5175697994459272
-                                                                                                                                        TARGET=2862437261978116
+                                                                                                                                        TARGET=5494881573568661
                                                                                                                                         jq \
                                                                                                                                             --null-input \
                                                                                                                                             --compact-output \
                                                                                                                                             --arg ARGUMENT 3564731485791737 \
                                                                                                                                             --arg INDEX "$DISTRACTOR_INDEX" \
                                                                                                                                             --rawfile SCRIPT ${ scripts.false.true.init } \
-                                                                                                                                            --arg STANDARD_OUTPUT "$STANDARD_OUTPUT" \
                                                                                                                                             --arg TARGET "$TARGET" \
                                                                                                                                                 '{
                                                                                                                                                    "arguments" : [ $ARGUMENT ] ,
@@ -1197,9 +1196,8 @@
                                                                                                                                                    "seed" : [ "checks" , "targets" , "false" , "true" ] ,
                                                                                                                                                    "standard-error" : "" ,
                                                                                                                                                    "standard-input" : "" ,
-                                                                                                                                                   "standard-output" : $STANDARD_OUTPUT ,
-                                                                                                                                                   "status" : 0 ,
-                                                                                                                                                   "targets" : [ $TARGET ] ,
+                                                                                                                                                   "status" : 114 ,
+                                                                                                                                                   "targets" : { expected $TARGET , observed : $TARGET} ,
                                                                                                                                                    "transient" : -1
                                                                                                                                                 }' | compare --message message --channel invalid-init --payload false true --timeout 1 --uuid 31155 3<&3
                                                                                                                                         block --timeout 1 --uuid 6925921732651899 3<&3
