@@ -1025,7 +1025,7 @@
                                                                                                                                                                     echo We resolved the release of a resource2
                                                                                                                                                                 fi
                                                                                                                                                             fi
-                                                                                                                                                            # block --timeout 1 --uuid 8293659991281846
+                                                                                                                                                            block --timeout 1 --uuid 8293659991281846
                                                                                                                                                         '' ;
                                                                                                                                         }
                                                                                                                                 )
@@ -2547,27 +2547,66 @@
                                                                         } ;
                                                             } ;
                                                         secrets =
-                                                            ignore :
-                                                                {
-                                                                    init =
-                                                                        { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
-                                                                            let
-                                                                                application =
-                                                                                    pkgs.writeShellApplication
-                                                                                        {
-                                                                                            name = "init" ;
-                                                                                            runtimeInputs = [ pkgs.git ] ;
-                                                                                            text =
-                                                                                                ''
-                                                                                                    git init
-                                                                                                    git remote add origin
-                                                                                                    git fetch origin
-                                                                                                    git checkout
+                                                            {
+                                                                ciphertext =
+                                                                    ignore :
+                                                                        {
+                                                                            init =
+                                                                                { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
+                                                                                    let
+                                                                                        application =
+                                                                                            pkgs.writeShellApplication
+                                                                                                {
+                                                                                                    name = "init" ;
+                                                                                                    runtimeInputs = [ pkgs.git ] ;
+                                                                                                    text =
+                                                                                                        ''
+                                                                                                            git init
+                                                                                                            git remote add origin
+                                                                                                            git fetch origin
+                                                                                                            git checkout
 
-                                                                                                '' ;
+                                                                                                        '' ;
+                                                                                                } ;
+                                                                                        in "${ application }/bin/init" ;
+                                                                            targets = [ ] ;
+                                                                        } ;
+                                                                    plaintext =
+                                                                        let
+                                                                            decrypt =
+                                                                                ignore :
+                                                                                    {
+                                                                                        init =
+                                                                                            { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
+                                                                                                let
+                                                                                                    application =
+                                                                                                        pkgs.writeShellApplication
+                                                                                                            {
+                                                                                                                name = "init" ;
+                                                                                                                runtimeInputs = [ pkgs.age pkgs.coreutils ] ;
+                                                                                                                text =
+                                                                                                                    ''
+                                                                                                                    '' ;
+                                                                                                            } ;
+                                                                                                    in "${ application }/bin/init" ;
+                                                                                        target = [ ] ;
+                                                                                    } ;
+                                                                            in
+                                                                                {
+                                                                                    dot-gnupg =
+                                                                                        {
+                                                                                            ownertrust = decrypt ;
+                                                                                            secret-keys = decrypt ;
                                                                                         } ;
-                                                                                in "${ application }/bin/init" ;
-                                                                    targets = [ ] ;
+                                                                                    dot-ssh =
+                                                                                        {
+                                                                                            mobile = decrypt ;
+                                                                                        } ;
+                                                                                    github =
+                                                                                        {
+                                                                                            token = decrypt ;
+                                                                                        }
+                                                                                } ;
                                                                 } ;
                                                         temporary =
                                                             {
