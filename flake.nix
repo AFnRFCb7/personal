@@ -2587,7 +2587,7 @@
                                                                                         } ;
                                                                                 in "${ application }/bin/init" ;
                                                                     targets = [ ] ;
-                                                                }
+                                                                } ;
                                                         temporary =
                                                             {
                                                                 argument =
