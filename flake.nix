@@ -1126,7 +1126,7 @@
                                                                                                                                                    "standard-output" : $STANDARD_OUTPUT ,
                                                                                                                                                    "targets" : [ $TARGET ] ,
                                                                                                                                                    "transient" : -1
-                                                                                                                                                }' | compare --message message --channel valid-init --payload false true --timeout 1 --uuid 7689926124362862 3<&3
+                                                                                                                                                }' | compare --message message --channel valid-init --payload false true --timeout 1 --uuid 6829 3<&3
                                                                                                                                         block --timeout 1 --uuid 6925921732651899 3<&3
                                                                                                                                         files \
                                                                                                                                             --ceiling "$ALPHA" 2 10 \
@@ -1206,7 +1206,7 @@
                                                                                                                                                    "status" : 0 ,
                                                                                                                                                    "targets" : [ $TARGET ] ,
                                                                                                                                                    "transient" : -1
-                                                                                                                                                }' | compare --message message --channel invalid-init --payload false true --timeout 1 --uuid 7689926124362862 3<&3
+                                                                                                                                                }' | compare --message message --channel invalid-init --payload false true --timeout 1 --uuid 31155 3<&3
                                                                                                                                         block --timeout 1 --uuid 6925921732651899 3<&3
                                                                                                                                         files \
                                                                                                                                             --ceiling "$ALPHA" 2 10 \
@@ -2634,6 +2634,8 @@
                                                                                                                 runtimeInputs = [ pkgs.age pkgs.coreutils ] ;
                                                                                                                 text =
                                                                                                                     ''
+                                                                                                                        REPOSITORY=${ resources.production.secrets.ciphertext { failure = 9749 ; } }
+                                                                                                                        age --decrypt "$REPOSITORY/${ seed.path }" --identity
                                                                                                                     '' ;
                                                                                                             } ;
                                                                                                     in "${ application }/bin/init" ;
