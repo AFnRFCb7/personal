@@ -184,16 +184,19 @@
                                                                 r = value null ;
                                                                 in
                                                                     factory.implementation
-                                                                        {
-                                                                            depth = r.depth or 0 ;
-                                                                            init = r.init or null ;
-                                                                            init-resolutions = r.init-resolutions or null ;
-                                                                            release = r.release or null ;
-                                                                            release-resolutions = r.release-resolutions or null ;
-                                                                            seed = path ;
-                                                                            targets = r.targets or [ ] ;
-                                                                            transient = false ;
-                                                                        } ;
+                                                                        let
+                                                                            resolutions = { ignore = null ; issue = null ; } ;
+                                                                            in
+                                                                                {
+                                                                                    depth = r.depth or 0 ;
+                                                                                    init = r.init or null ;
+                                                                                    init-resolutions = r.init-resolutions or resolutions ;
+                                                                                    release = r.release or null ;
+                                                                                    release-resolutions = r.release-resolutions or resolutions ;
+                                                                                    seed = path ;
+                                                                                    targets = r.targets or [ ] ;
+                                                                                    transient = false ;
+                                                                                } ;
                                                 }
                                                 resources___ ;
                                         # the raw implementation
