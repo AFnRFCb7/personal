@@ -1292,6 +1292,17 @@
                                                                                                                                     --does-not-exist "/home/${ config.personal.name }/resources/invalid-init/$ALPHA_INDEX" \
                                                                                                                                     --does-not-exist "/home/${ config.personal.name }/resources/invalid-release/$ALPHA_INDEX" \
                                                                                                                                     --uuid 1289673385791639
+                                                                                                                                if [[ "$INIT" == "true" ]]
+                                                                                                                                then
+                                                                                                                                    if [[ "$RELEASE" == "true" ]]
+                                                                                                                                    then
+                                                                                                                                        true
+                                                                                                                                    else
+                                                                                                                                        true
+                                                                                                                                    fi
+                                                                                                                                else
+                                                                                                                                    true
+                                                                                                                                fi
                                                                                                                                 pre-test --alpha "$ALPHA" --init "$INIT" --release "$RELEASE" --uuid 3316116883378534 3<&3
                                                                                                                                 if [[ "$INIT" == "true" ]]
                                                                                                                                 then
