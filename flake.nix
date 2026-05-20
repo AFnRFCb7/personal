@@ -193,7 +193,7 @@
                                                                             release-resolutions = r.release-resolutions or resolutions ;
                                                                             seed = path ;
                                                                             targets = r.targets or [ ] ;
-                                                                            transient = false ;
+                                                                            transient = r.transient or false ;
                                                                         } ;
                                                 }
                                                 resources___ ;
@@ -1407,7 +1407,7 @@
                                                                                                                 --literal plain '#' \
                                                                                                                 --literal plain ALPHA \
                                                                                                                 --literal plain ALPHA_INDEX \
-                                                                                                                --literal plain ARGUMENT \
+                                                                                                                --literal plain ARGUMENTS \
                                                                                                                 --literal plain DERIVATION \
                                                                                                                 --literal plain DISTRACTOR \
                                                                                                                 --literal plain DISTRACTOR_INDEX \
