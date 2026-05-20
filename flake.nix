@@ -2608,9 +2608,10 @@
                                                                                                     text =
                                                                                                         ''
                                                                                                             git init 2>&1
-                                                                                                            git remote add origin ${ config.personal.secrets.remote.https } 2>&1
-                                                                                                            git fetch origin ${ config.personal.secrets.branch } 2>&1
-                                                                                                            git checkout origin/${ config.personal.secrets.branch }
+                                                                                                            git remote add https ${ config.personal.secrets.remotes.https } 2>&1
+                                                                                                            git remote add ssh ${ config.personal.secrets.remotes.ssh } 2>&1
+                                                                                                            git fetch https ${ config.personal.secrets.branch } 2>&1
+                                                                                                            git checkout ${ config.personal.secrets.branch }
                                                                                                         '' ;
                                                                                                 } ;
                                                                                         in "${ application }/bin/init" ;
