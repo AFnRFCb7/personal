@@ -621,6 +621,10 @@
                                                                                                                                                             then
                                                                                                                                                                 failure 3514254328772311
                                                                                                                                                             fi
+                                                                                                                                                            if [[ -z "$DISTRACTOR_INDEX" ]]
+                                                                                                                                                            then
+                                                                                                                                                                failure 12412
+                                                                                                                                                            fi
                                                                                                                                                             if [[ -z "$INIT" ]]
                                                                                                                                                             then
                                                                                                                                                                 failure 1871763771129953
@@ -628,6 +632,14 @@
                                                                                                                                                             if [[ -z "$RELEASE" ]]
                                                                                                                                                             then
                                                                                                                                                                 failure 4957596197169642
+                                                                                                                                                            fi
+                                                                                                                                                            if [[ -z "$STANDARD_OUTPUT" ]]
+                                                                                                                                                            then
+                                                                                                                                                                failure 18984
+                                                                                                                                                            fi
+                                                                                                                                                            if [[ -z "$TARGET" ]]
+                                                                                                                                                            then
+                                                                                                                                                                failure 28032
                                                                                                                                                             fi
                                                                                                                                                             block --timeout 1 --uuid 5984995243749875 3<&3
                                                                                                                                                             files \
