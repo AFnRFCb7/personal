@@ -219,7 +219,7 @@
 #                                                                                                            fi
 #                                                                                                        '' ;
 #                                                                                                } ;
-                                                                                        in "${ application }/bin/resolve" ;
+#                                                                                        in "${ application }/bin/resolve" ;
                                                                     } ;
                                                                 in
                                                                     factory.implementation
