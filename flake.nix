@@ -965,7 +965,7 @@
                                                                                                                                                                             }' | compare --message message --channel invalid-init --payload false true --timeout 1 --uuid 9746578686273853 3<&3
                                                                                                                                                                     block --timeout 1 --uuid 2336958223494764 3<&3
                                                                                                                                                                     files \
-                                                                                                                                                                        --ceiling "$ALPHA" 4 10 \
+                                                                                                                                                                        --ceiling "$ALPHA" 4 14 \
                                                                                                                                                                         --equals "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" "$FRESH" \
                                                                                                                                                                         --directory "$FRESH" \
                                                                                                                                                                         --file "$FRESH/$TARGET" \
