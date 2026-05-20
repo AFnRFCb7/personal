@@ -1372,6 +1372,7 @@
                                                                                                                 --literal plain RELEASE \
                                                                                                                 --literal plain SCRIPT \
                                                                                                                 --literal plain STANDARD_OUTPUT \
+                                                                                                                --literal plain TARGET \
                                                                                                                 --uuid 7483697565341694
                                                                                                         '' ;
                                                                                         } ;
