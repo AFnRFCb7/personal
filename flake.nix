@@ -1917,83 +1917,83 @@
                                                                             targets = [ ".git" "dot-gnupg" "dot-ssh" "github" ] ;
                                                                         } ;
                                                                     plaintext =
-                                                                        _visitor.implementation
-                                                                            {
-                                                                                decrypt =
-                                                                                    ignore :
-                                                                                        {
-                                                                                            init =
-                                                                                                { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
-                                                                                                    let
-                                                                                                        application =
-                                                                                                            pkgs.writeShellApplication
-                                                                                                                {
-                                                                                                                    name = "init" ;
-                                                                                                                    runtimeInputs = [ pkgs.age pkgs.coreutils ] ;
-                                                                                                                    text =
-                                                                                                                        ''
-                                                                                                                            echo false > /mount/flag
-                                                                                                                            SECRETS=${ resources.production.age.ciphertext { failure = 11236 ; } }
-                                                                                                                            git -C "$SECRETS" fetch https ${ config.personal.secrets.branch } 2>&1
-                                                                                                                            git -C "$SECRETS" checkout https/${ config.personal.secrets.branch } 2>&1
-                                                                                                                            age --decrypt --identity ${ config.personal.agenix } --output /mount/plaintext "$SECRETS/${ builtins.concatStringsSep "/" path }.asc.age"
-                                                                                                                            chmod 0400 /mount/plaintext
-                                                                                                                        '' ;
-                                                                                                                } ;
-                                                                                                            in "${ application }/bin/init" ;
-                                                                                            targets = [ "flag" "plaintext" ] ;
-                                                                                        } ;
-                                                                            }
-                                                                            {
-                                                                                dot-gnupg =
+                                                                        let
+                                                                            decrypt =
+                                                                                ignore :
                                                                                     {
-                                                                                        ownertrust = decrypt ;
-                                                                                        secret-keys = decrypt ;
+                                                                                        init =
+                                                                                            { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
+                                                                                                let
+                                                                                                    application =
+                                                                                                        pkgs.writeShellApplication
+                                                                                                            {
+                                                                                                                name = "init" ;
+                                                                                                                runtimeInputs = [ pkgs.age pkgs.coreutils ] ;
+                                                                                                                text =
+                                                                                                                    ''
+                                                                                                                        echo false > /mount/flag
+                                                                                                                        SECRETS=${ resources.production.age.ciphertext { failure = 11236 ; } }
+                                                                                                                        git -C "$SECRETS" fetch https ${ config.personal.secrets.branch } 2>&1
+                                                                                                                        git -C "$SECRETS" checkout https/${ config.personal.secrets.branch } 2>&1
+                                                                                                                        age --decrypt --identity ${ config.personal.agenix } --output /mount/plaintext "$SECRETS/${ builtins.concatStringsSep "/" seed }.asc.age"
+                                                                                                                        chmod 0400 /mount/plaintext
+                                                                                                                    '' ;
+                                                                                                            } ;
+                                                                                                        in "${ application }/bin/init" ;
+                                                                                        targets = [ "flag" "plaintext" ] ;
                                                                                     } ;
-                                                                                dot-ssh =
+                                                                            in
+                                                                                _visitor.implementation
                                                                                     {
+                                                                                        dot-gnupg =
+                                                                                            {
+                                                                                                ownertrust = decrypt ;
+                                                                                                secret-keys = decrypt ;
+                                                                                            } ;
+                                                                                        dot-ssh =
+                                                                                            {
+                                                                                                github =
+                                                                                                    {
+                                                                                                        identity =
+                                                                                                            ignore :
+                                                                                                                {
+                                                                                                                    init =
+                                                                                                                        { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
+                                                                                                                            let
+                                                                                                                                application =
+                                                                                                                                    pkgs.writeShellApplication
+                                                                                                                                        {
+
+                                                                                                                                        } ;
+                                                                                                                                    in "${ application }/bin/init" ;
+                                                                                                                    release =
+                                                                                                                        { } :
+                                                                                                                            let
+                                                                                                                                application =
+                                                                                                                                    pkgs.writeShellApplication
+                                                                                                                                        {
+                                                                                                                                            name = "release" ;
+                                                                                                                                            runtimeInputs = [ ] ;
+                                                                                                                                            text =
+                                                                                                                                                ''
+                                                                                                                                                '' ;
+                                                                                                                                        } ;
+                                                                                                                                in "${ application }/bin/release" ;
+                                                                                                                    targets = [ "plaintext" ] ;
+                                                                                                                } ;
+                                                                                                        known-hosts = decrypt ;
+                                                                                                    } ;
+                                                                                                mobile =
+                                                                                                    {
+                                                                                                        identity = decrypt ;
+                                                                                                        known-hosts = decrypt ;
+                                                                                                    } ;
+                                                                                            } ;
                                                                                         github =
                                                                                             {
-                                                                                                identity =
-                                                                                                    ignore :
-                                                                                                        {
-                                                                                                            init =
-                                                                                                                { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
-                                                                                                                    let
-                                                                                                                        application =
-                                                                                                                            pkgs.writeShellApplication
-                                                                                                                                {
-
-                                                                                                                                } ;
-                                                                                                                            in "${ application }/bin/init" ;
-                                                                                                            release =
-                                                                                                                { } :
-                                                                                                                    let
-                                                                                                                        application =
-                                                                                                                            pkgs.writeShellApplication
-                                                                                                                                {
-                                                                                                                                    name = "release" ;
-                                                                                                                                    runtimeInputs = [ ] ;
-                                                                                                                                    text =
-                                                                                                                                        ''
-                                                                                                                                        '' ;
-                                                                                                                                } ;
-                                                                                                                        in "${ application }/bin/release" ;
-                                                                                                            targets = [ "plaintext" ] ;
-                                                                                                        } ;
-                                                                                                known-hosts = decrypt ;
-                                                                                            } ;
-                                                                                        mobile =
-                                                                                            {
-                                                                                                identity = decrypt ;
-                                                                                                known-hosts = decrypt ;
+                                                                                                token = null ;
                                                                                             } ;
                                                                                     } ;
-                                                                                github =
-                                                                                    {
-                                                                                        token = null ;
-                                                                                    } ;
-                                                                            } ;
                                                             } ;
                                                         bin =
                                                             {
