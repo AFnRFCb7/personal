@@ -663,6 +663,7 @@
                                                                                                                                                                     block --timeout 1 --uuid 7411277161553272 3<&3
                                                                                                                                                                     files \
                                                                                                                                                                         --ceiling "$ALPHA" 8 18 \
+                                                                                                                                                                        --not-equals "$FRESH_INDEX" "$DISTRACTOR_INDEX" \
                                                                                                                                                                         --equals "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" "$FRESH" \
                                                                                                                                                                         --not-equals "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" "$DISTRACTOR" \
                                                                                                                                                                         --directory "$FRESH" \
