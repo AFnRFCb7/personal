@@ -1182,7 +1182,45 @@
                                                                                                                                 else
                                                                                                                                     if [[ "$RELEASE" == "true" ]]
                                                                                                                                     then
-                                                                                                                                        true
+                                                                                                                                        if DISTRACTOR=${ resources.checks.targets.false.true { failure = 8829996994479772 ; setup = setup : ''${ setup } 3564731485791737'' ; } }
+                                                                                                                                        then
+                                                                                                                                            failure 18156
+                                                                                                                                        fi
+                                                                                                                                        printf -v DISTRACTOR_INDEX "%016d" $(( ALPHA + 4 ))
+                                                                                                                                        STANDARD_OUTPUT=5175697994459272
+                                                                                                                                        TARGET=2862437261978116
+                                                                                                                                        jq \
+                                                                                                                                            --null-input \
+                                                                                                                                            --compact-output \
+                                                                                                                                            --arg ARGUMENT 3564731485791737 \
+                                                                                                                                            --arg INDEX "$DISTRACTOR_INDEX" \
+                                                                                                                                            --rawfile SCRIPT ${ scripts.false.true.init } \
+                                                                                                                                            --arg STANDARD_OUTPUT "$STANDARD_OUTPUT" \
+                                                                                                                                            --arg TARGET "$TARGET" \
+                                                                                                                                                '{
+                                                                                                                                                   "arguments" : [ $ARGUMENT ] ,
+                                                                                                                                                   "has-standard-input" : false ,
+                                                                                                                                                   "index" : $INDEX ,
+                                                                                                                                                   "script" : $SCRIPT ,
+                                                                                                                                                   "seed" : [ "checks" , "targets" , "false" , "true" ] ,
+                                                                                                                                                   "standard-error" : "" ,
+                                                                                                                                                   "standard-input" : "" ,
+                                                                                                                                                   "standard-output" : $STANDARD_OUTPUT ,
+                                                                                                                                                   "status" : 0 ,
+                                                                                                                                                   "targets" : [ $TARGET ] ,
+                                                                                                                                                   "transient" : -1
+                                                                                                                                                }' | compare --message message --channel invalid-init --payload false true --timeout 1 --uuid 7689926124362862 3<&3
+                                                                                                                                        block --timeout 1 --uuid 6925921732651899 3<&3
+                                                                                                                                        files \
+                                                                                                                                            --ceiling "$ALPHA" 2 10 \
+                                                                                                                                            --equals "/home/${ config.personal.name }/resources/mounts/$DISTRACTOR_INDEX" "$DISTRACTOR" \
+                                                                                                                                            --directory "$DISTRACTOR" \
+                                                                                                                                            --file "$DISTRACTOR/$TARGET" \
+                                                                                                                                            --executable "/home/${ config.personal.name }/resources/release/$DISTRACTOR_INDEX" \
+                                                                                                                                            --does-not-exist "/home/${ config.personal.name }/resources/invalid-init/$DISTRACTOR_INDEX" \
+                                                                                                                                            --does-not-exist "/home/${ config.personal.name }/resources/invalid-release/$DISTRACTOR_INDEX" \
+                                                                                                                                            --uuid 6764498451529627
+                                                                                                                                        echo We created a distractor resource
                                                                                                                                     else
                                                                                                                                         true
                                                                                                                                     fi
