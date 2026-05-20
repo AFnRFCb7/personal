@@ -182,7 +182,25 @@
                                                                             resources-directory = "/home/${ config.personal.name }/resources" ;
                                                                         } ;
                                                                 r = value null ;
-                                                                resolutions = { ignore = null ; issue = null ; } ;
+                                                                resolutions =
+                                                                    {
+                                                                        ignore = null ;
+                                                                        issue =
+                                                                            ignore :
+                                                                                 { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
+                                                                                    let
+                                                                                        application =
+                                                                                            pkgs.writeShellApplication
+                                                                                                {
+                                                                                                    name = "resolve" ;
+                                                                                                    runtimeInputs = [ ] ;
+                                                                                                    text =
+                                                                                                        ''
+                                                                                                        '' ;
+                                                                                                } ;
+                                                                                        in "${ application }/bin/resolve" ;
+
+                                                                    } ;
                                                                 in
                                                                     factory.implementation
                                                                         {
