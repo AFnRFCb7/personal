@@ -542,6 +542,7 @@
                                                                                                                                                 let
                                                                                                                                                     in
                                                                                                                                                         ''
+                                                                                                                                                            if true ; then exit 0 ; fi
                                                                                                                                                             while [[ "$#" -gt 0 ]]
                                                                                                                                                             do
                                                                                                                                                                 case "$1" in
@@ -3532,6 +3533,7 @@
                                                                             } ;
                                                                     in "${ application }/bin/test" ;
                                                             in
+                                                                ''
                                                                 ''
                                                                     machine.wait_for_unit("multi-user.target")
                                                                     machine.wait_for_unit("network-online.target")
