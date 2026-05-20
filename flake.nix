@@ -1168,6 +1168,8 @@
                                                                                                                                         echo We created a distractor resource
                                                                                                                                     fi
                                                                                                                                 else
+                                                                                                                                    DISTRACTOR_INDEX=WTF
+                                                                                                                                    STANDARD_OUTPUT=WTF
                                                                                                                                     if [[ "$RELEASE" == "true" ]]
                                                                                                                                     then
                                                                                                                                         jq \
