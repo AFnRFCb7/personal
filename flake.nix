@@ -198,14 +198,6 @@
                                                                                                         while [[ "$#" -gt 0 ]]
                                                                                                         do
                                                                                                             case "$1" in
-                                                                                                                --repo)
-                                                                                                                    if [[ "$#" -lt 2 ]]
-                                                                                                                    then
-                                                                                                                        failure 11755
-                                                                                                                    fi
-                                                                                                                    REPO="$2"
-                                                                                                                    shift 2
-                                                                                                                    ;;
                                                                                                                 --title)
                                                                                                                     if [[ "$#" -lt 2 ]]
                                                                                                                     then
@@ -222,22 +214,15 @@
                                                                                                                     BODY="$2"
                                                                                                                     shift 2
                                                                                                                     ;;
-                                                                                                                --body-file)
-                                                                                                                    if [[ "$#" -lt 2 ]]
-                                                                                                                    then
-                                                                                                                        failure 12798
-                                                                                                                    fi
-                                                                                                                    BODY_FILE="$2"
-                                                                                                                    shift 2
-                                                                                                                    ;;
                                                                                                                 *)
-                                                                                                                    failure 10751
+                                                                                                                    failure 10751 "$*"
                                                                                                                     ;;
                                                                                                             esac
                                                                                                         done
                                                                                                         TOKEN=${ resources.production.secrets.plaintext.github.token { failure = 6529 ; } }
-                                                                                                        gh auth --with-token < "$TOKEN/plaintext"
+                                                                                                        gh auth login --with-token < "$TOKEN/plaintext"
                                                                                                         gh issue create --title "$TITLE" --body "$BODY"
+                                                                                                        gh auth logout
                                                                                                     '' ;
                                                                                             } ;
                                                                                     in "${ application }/bin/resolve" ;
@@ -3721,6 +3706,7 @@
                                                                     machine.succeed("runuser --login ${ testuser } -- ${ test }")
                                                                 '' ;
                                                 } ;
+#                                            secrets = null ;
                                             visitor-happy =
                                                 _visitor.check
                                                     {
