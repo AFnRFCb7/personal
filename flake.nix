@@ -1032,7 +1032,6 @@
                                                                                                                             ] ;
                                                                                                                         text =
                                                                                                                             ''
-                                                                                                                                if true ; then exit 0 ; fi
                                                                                                                                 while [[ "$#" -gt 0 ]]
                                                                                                                                 do
                                                                                                                                     case "$1" in
@@ -2583,6 +2582,9 @@
                                                                                                 ''
                                                                                                     git init
                                                                                                     git remote add origin
+                                                                                                    git fetch origin
+                                                                                                    git checkout
+
                                                                                                 '' ;
                                                                                         } ;
                                                                                 in "${ application }/bin/init" ;
