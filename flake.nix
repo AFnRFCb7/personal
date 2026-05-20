@@ -1107,8 +1107,6 @@
                                                                                                                                     then
                                                                                                                                         DISTRACTOR=${ resources.checks.targets.true.true { failure = 8829996994479772 ; setup = setup : ''${ setup } 3564731485791737'' ; } }
                                                                                                                                         printf -v DISTRACTOR_INDEX "%016d" $(( ALPHA + 4 ))
-                                                                                                                                        STANDARD_OUTPUT=5175697994459272
-                                                                                                                                        TARGET=2862437261978116
                                                                                                                                         jq \
                                                                                                                                             --null-input \
                                                                                                                                             --compact-output \
@@ -1126,7 +1124,6 @@
                                                                                                                                                    "standard-error" : "" ,
                                                                                                                                                    "standard-input" : "" ,
                                                                                                                                                    "standard-output" : $STANDARD_OUTPUT ,
-                                                                                                                                                   "status" : 0 ,
                                                                                                                                                    "targets" : [ $TARGET ] ,
                                                                                                                                                    "transient" : -1
                                                                                                                                                 }' | compare --message message --channel valid-init --payload false true --timeout 1 --uuid 7689926124362862 3<&3
