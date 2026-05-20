@@ -185,21 +185,41 @@
                                                                 resolutions =
                                                                     {
                                                                         ignore = null ;
-                                                                        issue =
-                                                                            ignore :
-                                                                                 { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
-                                                                                    let
-                                                                                        application =
-                                                                                            pkgs.writeShellApplication
-                                                                                                {
-                                                                                                    name = "resolve" ;
-                                                                                                    runtimeInputs = [ ] ;
-                                                                                                    text =
-                                                                                                        ''
-                                                                                                        '' ;
-                                                                                                } ;
+#                                                                        issue =
+#                                                                            ignore :
+#                                                                                 { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
+#                                                                                    let
+#                                                                                        application =
+#                                                                                            pkgs.writeShellApplication
+#                                                                                                {
+#                                                                                                    name = "resolve" ;
+#                                                                                                    runtimeInputs = [ ] ;
+#                                                                                                    text =
+#                                                                                                        ''
+#                                                                                                            REPO="${1:-}"
+#                                                                                                            TITLE="${2:-}"
+#                                                                                                            BODY_FILE="${3:-}"
+#
+#                                                                                                            if [[ -z "${REPO}" || -z "${TITLE}" ]]; then
+#                                                                                                                echo "Usage:"
+#                                                                                                                echo "  $0 owner/repo \"Issue title\" [body-file]"
+#                                                                                                                exit 1
+#                                                                                                            fi
+#
+#                                                                                                            if [[ -n "${BODY_FILE}" ]]; then
+#                                                                                                                gh issue create \
+#                                                                                                                    --repo "${REPO}" \
+#                                                                                                                    --title "${TITLE}" \
+#                                                                                                                    --body-file "${BODY_FILE}"
+#                                                                                                            else
+#                                                                                                                gh issue create \
+#                                                                                                                    --repo "${REPO}" \
+#                                                                                                                    --title "${TITLE}" \
+#                                                                                                                    --body "Created from script."
+#                                                                                                            fi
+#                                                                                                        '' ;
+#                                                                                                } ;
                                                                                         in "${ application }/bin/resolve" ;
-
                                                                     } ;
                                                                 in
                                                                     factory.implementation
