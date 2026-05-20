@@ -1245,7 +1245,7 @@
                                                                                                                                                    "standard-error" : "" ,
                                                                                                                                                    "standard-input" : "" ,
                                                                                                                                                    "status" : 114 ,
-                                                                                                                                                   "targets" : { expected $TARGET , observed : $TARGET } ,
+                                                                                                                                                   "targets" : { expected : $TARGET , observed : $TARGET } ,
                                                                                                                                                    "transient" : -1
                                                                                                                                                 }' | compare --message message --channel invalid-init --payload false true --timeout 1 --uuid 31155 3<&3
                                                                                                                                         block --timeout 1 --uuid 6925921732651899 3<&3
@@ -1922,7 +1922,7 @@
                                                                     plaintext =
                                                                         _visitor.implementation
                                                                             {
-                                                                                null =
+                                                                                decrypt =
                                                                                     path : value : ignore :
                                                                                         {
                                                                                             init =
@@ -1950,20 +1950,20 @@
                                                                             {
                                                                                 dot-gnupg =
                                                                                     {
-                                                                                        ownertrust = null ;
-                                                                                        secret-keys = null ;
+                                                                                        ownertrust = decrypt ;
+                                                                                        secret-keys = decrypt ;
                                                                                     } ;
                                                                                 dot-ssh =
                                                                                     {
                                                                                         github =
                                                                                             {
-                                                                                                identity = null ;
-                                                                                                known-hosts = null ;
+                                                                                                identity = decrypt ;
+                                                                                                known-hosts = decrypt ;
                                                                                             } ;
                                                                                         mobile =
                                                                                             {
-                                                                                                identity = null ;
-                                                                                                known-hosts = null ;
+                                                                                                identity = decrypt ;
+                                                                                                known-hosts = decrypt ;
                                                                                             } ;
                                                                                     } ;
                                                                                 github =
