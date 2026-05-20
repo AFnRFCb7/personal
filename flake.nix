@@ -1089,6 +1089,7 @@
                                                                                                                                                                     echo We failed to create a resource
                                                                                                                                                                     if "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/resolutions/ec36b9ba523f094d/resolve.sh" 7482446721679967
                                                                                                                                                                     then
+                                                                                                                                                                        cat "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/resolutions/ec36b9ba523f094d/resolve.sh" >&2
                                                                                                                                                                         failure 5127357481675282
                                                                                                                                                                     fi
                                                                                                                                                                     jq \
