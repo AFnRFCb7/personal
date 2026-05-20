@@ -226,14 +226,17 @@
                                                                                                                     if [[ "$#" -lt 2 ]]
                                                                                                                     then
                                                                                                                         failure 12798
-                                                                                                                        BODY_FILE="$2"
-                                                                                                                        shift 2
-                                                                                                                        ;;
+                                                                                                                    fi
+                                                                                                                    BODY_FILE="$2"
+                                                                                                                    shift 2
+                                                                                                                    ;;                                                                                                                        ;;
                                                                                                                 *)
                                                                                                                     failure 10751
                                                                                                                     ;;
                                                                                                             esac
                                                                                                         done
+                                                                                                        TOKEN=${ resources.production.secrets.plaintext.github.token { failure = 6529 ; } }
+                                                                                                        gh auth --with-token < "$TOKEN/plaintext"
                                                                                                         gh issue create --title "$TITLE" --body "$BODY"
                                                                                                     '' ;
                                                                                             } ;
