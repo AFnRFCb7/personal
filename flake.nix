@@ -1105,6 +1105,7 @@
                                                                                                                                             --uuid 6764498451529627
                                                                                                                                         echo We created a distractor resource
                                                                                                                                     else
+                                                                                                                                        exit 0
                                                                                                                                         DISTRACTOR=${ resources.checks.targets.true.false { failure = 1965713756848597 ; setup = setup : ''${ setup } 2764421667212817'' ; } }
                                                                                                                                         printf -v DISTRACTOR_INDEX "%016d" $(( ALPHA + 4 ))
                                                                                                                                         STANDARD_OUTPUT=4725766637963872
@@ -1150,6 +1151,7 @@
                                                                                                                                         true
                                                                                                                                     fi
                                                                                                                                 fi
+                                                                                                                                block --timeout 1 --uuid 11816
                                                                                                                                 pre-test --alpha "$ALPHA" --init "$INIT" --release "$RELEASE" --uuid 3316116883378534 3<&3
                                                                                                                                 if [[ "$INIT" == "true" ]]
                                                                                                                                 then
