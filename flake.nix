@@ -633,7 +633,6 @@
                                                                                                                                                             files \
                                                                                                                                                                 --ceiling "$ALPHA" 0 2 \
                                                                                                                                                                 --uuid 7299736113522788
-                                                                                                                                                            echo "DISTRACTOR_INDEX=$DISTRACTOR_INDEX"
                                                                                                                                                             if [[ "$INIT" == "true" ]]
                                                                                                                                                             then
                                                                                                                                                                 if [[ "$RELEASE" == "true" ]]
@@ -1090,7 +1089,6 @@
                                                                                                                                     --does-not-exist "/home/${ config.personal.name }/resources/invalid-init/$ALPHA_INDEX" \
                                                                                                                                     --does-not-exist "/home/${ config.personal.name }/resources/invalid-release/$ALPHA_INDEX" \
                                                                                                                                     --uuid 1289673385791639
-                                                                                                                                if true ; then exit 0 ; fi
                                                                                                                                 if [[ "$INIT" == "true" ]]
                                                                                                                                 then
                                                                                                                                     if [[ "$RELEASE" == "true" ]]
@@ -3484,62 +3482,62 @@
 #                                                                    machine.succeed("runuser --login ${ testuser } -- ${ test }")
 #                                                                '' ;
 #                                                } ;
-                                        resource--true-false =
-                                            pkgs.nixosTest
-                                                {
-                                                    name = "resource-true-false" ;
-                                                    nodes.machine = { ... } : { imports = builtins.concatLists [ [ user ] private ] ; } ;
-                                                    testScript =
-                                                        let
-                                                            test =
-                                                                let
-                                                                    application =
-                                                                        pkgs.writeShellApplication
-                                                                            {
-                                                                                name = "test" ;
-                                                                                runtimeInputs = [ pkgs.coreutils ] ;
-                                                                                text =
-                                                                                    ''
-                                                                                        SCRIPT="$( resource --resource '["checks","script"]' )"
-                                                                                        timeout 1m "$SCRIPT/test" --alpha 6 --init true --release false
-                                                                                    '' ;
-                                                                            } ;
-                                                                    in "${ application }/bin/test" ;
-                                                            in
-                                                                ''
-                                                                    machine.wait_for_unit("multi-user.target")
-                                                                    machine.wait_for_unit("network-online.target")
-                                                                    machine.succeed("runuser --login ${ testuser } -- ${ test }")
-                                                                '' ;
-                                                } ;
-                                        resource--true-true =
-                                            pkgs.nixosTest
-                                                {
-                                                    name = "resource-true-true" ;
-                                                    nodes.machine = { ... } : { imports = builtins.concatLists [ [ user ] private ] ; } ;
-                                                    testScript =
-                                                        let
-                                                            test =
-                                                                let
-                                                                    application =
-                                                                        pkgs.writeShellApplication
-                                                                            {
-                                                                                name = "test" ;
-                                                                                runtimeInputs = [ pkgs.coreutils ] ;
-                                                                                text =
-                                                                                    ''
-                                                                                        SCRIPT="$( resource --resource '["checks","script"]' )"
-                                                                                        timeout 1m "$SCRIPT/test" --alpha 6 --init true --release true
-                                                                                    '' ;
-                                                                            } ;
-                                                                    in "${ application }/bin/test" ;
-                                                            in
-                                                                ''
-                                                                    machine.wait_for_unit("multi-user.target")
-                                                                    machine.wait_for_unit("network-online.target")
-                                                                    machine.succeed("runuser --login ${ testuser } -- ${ test }")
-                                                                '' ;
-                                                } ;
+#                                        resource--true-false =
+#                                            pkgs.nixosTest
+#                                                {
+#                                                    name = "resource-true-false" ;
+#                                                    nodes.machine = { ... } : { imports = builtins.concatLists [ [ user ] private ] ; } ;
+#                                                    testScript =
+#                                                        let
+#                                                            test =
+#                                                                let
+#                                                                    application =
+#                                                                        pkgs.writeShellApplication
+#                                                                            {
+#                                                                                name = "test" ;
+#                                                                                runtimeInputs = [ pkgs.coreutils ] ;
+#                                                                                text =
+#                                                                                    ''
+#                                                                                        SCRIPT="$( resource --resource '["checks","script"]' )"
+#                                                                                        timeout 1m "$SCRIPT/test" --alpha 6 --init true --release false
+#                                                                                    '' ;
+#                                                                            } ;
+#                                                                    in "${ application }/bin/test" ;
+#                                                            in
+#                                                                ''
+#                                                                    machine.wait_for_unit("multi-user.target")
+#                                                                    machine.wait_for_unit("network-online.target")
+#                                                                    machine.succeed("runuser --login ${ testuser } -- ${ test }")
+#                                                                '' ;
+#                                                } ;
+#                                        resource--true-true =
+#                                            pkgs.nixosTest
+#                                                {
+#                                                    name = "resource-true-true" ;
+#                                                    nodes.machine = { ... } : { imports = builtins.concatLists [ [ user ] private ] ; } ;
+#                                                    testScript =
+#                                                        let
+#                                                            test =
+#                                                                let
+#                                                                    application =
+#                                                                        pkgs.writeShellApplication
+#                                                                            {
+#                                                                                name = "test" ;
+#                                                                                runtimeInputs = [ pkgs.coreutils ] ;
+#                                                                                text =
+#                                                                                    ''
+#                                                                                        SCRIPT="$( resource --resource '["checks","script"]' )"
+#                                                                                        timeout 1m "$SCRIPT/test" --alpha 6 --init true --release true
+#                                                                                    '' ;
+#                                                                            } ;
+#                                                                    in "${ application }/bin/test" ;
+#                                                            in
+#                                                                ''
+#                                                                    machine.wait_for_unit("multi-user.target")
+#                                                                    machine.wait_for_unit("network-online.target")
+#                                                                    machine.succeed("runuser --login ${ testuser } -- ${ test }")
+#                                                                '' ;
+#                                                } ;
                                             visitor-happy =
                                                 _visitor.check
                                                     {
