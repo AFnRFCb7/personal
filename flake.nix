@@ -1362,9 +1362,16 @@
                                                                                                                 --literal plain '#' \
                                                                                                                 --literal plain ALPHA \
                                                                                                                 --literal plain ALPHA_INDEX \
+                                                                                                                --literal plain ARGUMENT \
+                                                                                                                --literal plain DERIVATION \
+                                                                                                                --literal plain DISTRACTOR \
+                                                                                                                --literal plain DISTRACTOR_INDEX \
+                                                                                                                --literal plain INDEX \
                                                                                                                 --literal plain INIT \
                                                                                                                 --literal plain PATH \
                                                                                                                 --literal plain RELEASE \
+                                                                                                                --literal plain SCRIPT \
+                                                                                                                --literal plain STANDARD_OUTPUT \
                                                                                                                 --uuid 7483697565341694
                                                                                                         '' ;
                                                                                         } ;
