@@ -466,6 +466,8 @@
                                                                                                                                     fi
                                                                                                                                     if [[ ! -x "$2" ]]
                                                                                                                                     then
+                                                                                                                                        DIRECTORY="$( dirname "$2" )" || failure 13096
+                                                                                                                                        find "$DIRECTORY" >&2
                                                                                                                                         failure 1578895953757495 "$*"
                                                                                                                                     fi
                                                                                                                                     shift 2
