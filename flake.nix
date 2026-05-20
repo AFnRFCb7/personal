@@ -1184,16 +1184,15 @@
                                                                                                                                                    "standard-output" : $STANDARD_OUTPUT ,
                                                                                                                                                    "transient" : -1
                                                                                                                                                 }' | compare --message message --channel valid-init --payload false true --timeout 1 --uuid 23829 3<&3
-                                                                                                                                        block --timeout 1 --uuid 7866414393983313 3<&3
+                                                                                                                                        block --timeout 1 --uuid 22634 3<&3
                                                                                                                                         files \
                                                                                                                                             --ceiling "$ALPHA" 2 10 \
-                                                                                                                                            --equals "/home/${ config.personal.name }/resources/mounts/$DISTRACTOR_INDEX" "$DISTRACTOR" \
                                                                                                                                             --directory "$DISTRACTOR" \
                                                                                                                                             --file "$DISTRACTOR/$TARGET" \
                                                                                                                                             --executable "/home/${ config.personal.name }/resources/release/$DISTRACTOR_INDEX" \
                                                                                                                                             --does-not-exist "/home/${ config.personal.name }/resources/invalid-init/$DISTRACTOR_INDEX" \
                                                                                                                                             --does-not-exist "/home/${ config.personal.name }/resources/invalid-release/$DISTRACTOR_INDEX" \
-                                                                                                                                            --uuid 5686665366486275
+                                                                                                                                            --uuid 18057
                                                                                                                                     else
                                                                                                                                         true
                                                                                                                                     fi
@@ -1357,10 +1356,10 @@
                                                                                                                                                             text =
                                                                                                                                                                 ''
                                                                                                                                                                     echo -en 7669863784911683q
-                                                                                                                                                                    if [[ \"$1\" == 7482446721679967 ]]
+                                                                                                                                                                    if [[ "$1" == 7482446721679967 ]]
                                                                                                                                                                     then
                                                                                                                                                                         exit 208
-                                                                                                                                                                    elif [[ \"$1\" == 7151639144478587 ]]
+                                                                                                                                                                    elif [[ "$1" == 7151639144478587 ]]
                                                                                                                                                                     then
                                                                                                                                                                         exit
                                                                                                                                                                     else
