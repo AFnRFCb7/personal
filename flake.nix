@@ -2635,7 +2635,7 @@
                                                                                                                         SECRETS=${ resources.production.secrets.ciphertext { failure = 21253 ; } }
                                                                                                                         git -C "$SECRETS" fetch https ${ config.personal.secrets.branch }
                                                                                                                         git -C "SECRETS" checkout ${ config.personal.secrets.branch }
-                                                                                                                        age --decrypt --identity ${ config.personal.agenix } --output /mount/plaintext "$SECRETS/${ builtins.concatStringsSep "/" seed }.asc.age
+                                                                                                                        age --decrypt --identity ${ config.personal.agenix } --output /mount/plaintext "$SECRETS/${ builtins.concatStringsSep "/" seed }.asc.age"
                                                                                                                     '' ;
                                                                                                             } ;
                                                                                                     in "${ application }/bin/init" ;
