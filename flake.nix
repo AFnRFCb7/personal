@@ -1450,7 +1450,7 @@
                                                                                                                 --literal plain '#' \
                                                                                                                 --literal plain ALPHA \
                                                                                                                 --literal plain ALPHA_INDEX \
-                                                                                                                --literal plain ARGUMENTS \
+                                                                                                                --literal plain ARGUMENT \
                                                                                                                 --literal plain DERIVATION \
                                                                                                                 --literal plain DISTRACTOR \
                                                                                                                 --literal plain DISTRACTOR_INDEX \
