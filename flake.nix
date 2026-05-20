@@ -577,6 +577,14 @@
                                                                                                                                                                         fi
                                                                                                                                                                         shift 2
                                                                                                                                                                         ;;
+                                                                                                                                                                    --target)
+                                                                                                                                                                        if [[ "$#" -lt 1 ]]
+                                                                                                                                                                        then
+                                                                                                                                                                            failure 5298
+                                                                                                                                                                        fi
+                                                                                                                                                                        TARGET="$1"
+                                                                                                                                                                        shift 2
+                                                                                                                                                                        ;;
                                                                                                                                                                     --uuid)
                                                                                                                                                                         if [[ "$#" -lt 2 ]]
                                                                                                                                                                         then
@@ -1152,7 +1160,7 @@
                                                                                                                                     fi
                                                                                                                                 fi
                                                                                                                                 block --timeout 1 --uuid 11816
-                                                                                                                                pre-test --alpha "$ALPHA" --init "$INIT" --release "$RELEASE" --uuid 3316116883378534 3<&3
+                                                                                                                                pre-test --alpha "$ALPHA" --init "$INIT" --release "$RELEASE" --target "$TARGET" --uuid 3316116883378534 3<&3
                                                                                                                                 if [[ "$INIT" == "true" ]]
                                                                                                                                 then
                                                                                                                                     if [[ "$RELEASE" == "true" ]]
