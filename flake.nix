@@ -2568,6 +2568,26 @@
                                                                             targets = [ "bin" ] ;
                                                                         } ;
                                                             } ;
+                                                        secrets =
+                                                            ignore :
+                                                                {
+                                                                    init =
+                                                                        { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
+                                                                            let
+                                                                                application =
+                                                                                    pkgs.writeShellApplication
+                                                                                        {
+                                                                                            name = "init" ;
+                                                                                            runtimeInputs = [ pkgs.git ] ;
+                                                                                            text =
+                                                                                                ''
+                                                                                                    git init
+                                                                                                    git remote add origin
+                                                                                                '' ;
+                                                                                        } ;
+                                                                                in "${ application }/bin/init" ;
+                                                                    targets = [ ] ;
+                                                                }
                                                         temporary =
                                                             {
                                                                 argument =
