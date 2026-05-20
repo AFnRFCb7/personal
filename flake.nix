@@ -182,21 +182,19 @@
                                                                             resources-directory = "/home/${ config.personal.name }/resources" ;
                                                                         } ;
                                                                 r = value null ;
+                                                                resolutions = { ignore = null ; issue = null ; } ;
                                                                 in
                                                                     factory.implementation
-                                                                        let
-                                                                            resolutions = { ignore = null ; issue = null ; } ;
-                                                                            in
-                                                                                {
-                                                                                    depth = r.depth or 0 ;
-                                                                                    init = r.init or null ;
-                                                                                    init-resolutions = r.init-resolutions or resolutions ;
-                                                                                    release = r.release or null ;
-                                                                                    release-resolutions = r.release-resolutions or resolutions ;
-                                                                                    seed = path ;
-                                                                                    targets = r.targets or [ ] ;
-                                                                                    transient = false ;
-                                                                                } ;
+                                                                        {
+                                                                            depth = r.depth or 0 ;
+                                                                            init = r.init or null ;
+                                                                            init-resolutions = r.init-resolutions or resolutions ;
+                                                                            release = r.release or null ;
+                                                                            release-resolutions = r.release-resolutions or resolutions ;
+                                                                            seed = path ;
+                                                                            targets = r.targets or [ ] ;
+                                                                            transient = false ;
+                                                                        } ;
                                                 }
                                                 resources___ ;
                                         # the raw implementation
