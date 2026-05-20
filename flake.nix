@@ -186,7 +186,7 @@
                                                                     {
                                                                         ignore = null ;
                                                                         issue =
-                                                                             { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
+                                                                             { failure , pkgs , resolution-path , resources , seed , sequential , trace } :
                                                                                 let
                                                                                     application =
                                                                                         pkgs.writeShellApplication
