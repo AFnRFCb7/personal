@@ -195,27 +195,46 @@
                                                                                                 runtimeInputs = [ ] ;
                                                                                                 text =
                                                                                                     ''
-                                                                                                        REPO="${1:-}"
-                                                                                                        TITLE="${2:-}"
-                                                                                                        BODY_FILE="${3:-}"
-
-                                                                                                        if [[ -z "${REPO}" || -z "${TITLE}" ]]; then
-                                                                                                            echo "Usage:"
-                                                                                                            echo "  $0 owner/repo \"Issue title\" [body-file]"
-                                                                                                            exit 1
-                                                                                                        fi
-
-                                                                                                        if [[ -n "${BODY_FILE}" ]]; then
-                                                                                                            gh issue create \
-                                                                                                                --repo "${REPO}" \
-                                                                                                                --title "${TITLE}" \
-                                                                                                                --body-file "${BODY_FILE}"
-                                                                                                        else
-                                                                                                            gh issue create \
-                                                                                                                --repo "${REPO}" \
-                                                                                                                --title "${TITLE}" \
-                                                                                                                --body "Created from script."
-                                                                                                        fi
+                                                                                                        while [[ "$#" -gt 0 ]]
+                                                                                                        do
+                                                                                                            case "$1" in
+                                                                                                                --repo)
+                                                                                                                    if [[ "$#" -lt 2 ]]
+                                                                                                                    then
+                                                                                                                        failure 11755
+                                                                                                                    fi
+                                                                                                                    REPO="$2"
+                                                                                                                    shift 2
+                                                                                                                    ;;
+                                                                                                                --title)
+                                                                                                                    if [[ "$#" -lt 2 ]]
+                                                                                                                    then
+                                                                                                                        failure 23816
+                                                                                                                    fi
+                                                                                                                    TITLE="$2"
+                                                                                                                    shift 2
+                                                                                                                    ;;
+                                                                                                                --body)
+                                                                                                                    if [[ "$#" -lt 2 ]]
+                                                                                                                    then
+                                                                                                                        failure 7518
+                                                                                                                    fi
+                                                                                                                    BODY="$2"
+                                                                                                                    shift 2
+                                                                                                                    ;;
+                                                                                                                --body-file)
+                                                                                                                    if [[ "$#" -lt 2 ]]
+                                                                                                                    then
+                                                                                                                        failure 12798
+                                                                                                                        BODY_FILE="$2"
+                                                                                                                        shift 2
+                                                                                                                        ;;
+                                                                                                                *)
+                                                                                                                    failure 10751
+                                                                                                                    ;;
+                                                                                                            esac
+                                                                                                        done
+                                                                                                        gh issue create --title "$TITLE" --body "$BODY"
                                                                                                     '' ;
                                                                                             } ;
                                                                                     in "${ application }/bin/resolve" ;
