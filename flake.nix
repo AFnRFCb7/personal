@@ -585,6 +585,14 @@
                                                                                                                                                                         fi
                                                                                                                                                                         shift 2
                                                                                                                                                                         ;;
+                                                                                                                                                                    --standard-output)
+                                                                                                                                                                        if [[ "$#" -lt 1 ]]
+                                                                                                                                                                        then
+                                                                                                                                                                            failure 14522
+                                                                                                                                                                        fi
+                                                                                                                                                                        STANDARD_OUTPUT="$2"
+                                                                                                                                                                        shift 2
+                                                                                                                                                                        ;;
                                                                                                                                                                     --target)
                                                                                                                                                                         if [[ "$#" -lt 1 ]]
                                                                                                                                                                         then
@@ -625,6 +633,7 @@
                                                                                                                                                             files \
                                                                                                                                                                 --ceiling "$ALPHA" 0 2 \
                                                                                                                                                                 --uuid 7299736113522788
+                                                                                                                                                            echo "DISTRACTOR_INDEX=$DISTRACTOR_INDEX"
                                                                                                                                                             if [[ "$INIT" == "true" ]]
                                                                                                                                                             then
                                                                                                                                                                 if [[ "$RELEASE" == "true" ]]
@@ -1080,6 +1089,7 @@
                                                                                                                                     --does-not-exist "/home/${ config.personal.name }/resources/invalid-init/$ALPHA_INDEX" \
                                                                                                                                     --does-not-exist "/home/${ config.personal.name }/resources/invalid-release/$ALPHA_INDEX" \
                                                                                                                                     --uuid 1289673385791639
+                                                                                                                                if true ; then exit 0 ; fi
                                                                                                                                 if [[ "$INIT" == "true" ]]
                                                                                                                                 then
                                                                                                                                     if [[ "$RELEASE" == "true" ]]
@@ -1167,7 +1177,7 @@
                                                                                                                                     fi
                                                                                                                                 fi
                                                                                                                                 block --timeout 1 --uuid 11816
-                                                                                                                                pre-test --alpha "$ALPHA" --distractor-index "$DISTRACTOR_INDEX" --init "$INIT" --release "$RELEASE" --target "$TARGET" --uuid 3316116883378534 3<&3
+                                                                                                                                pre-test --alpha "$ALPHA" --distractor-index "$DISTRACTOR_INDEX" --init "$INIT" --release "$RELEASE" --standard-output "$STANDARD_OUTPUT" --target "$TARGET" --uuid 3316116883378534 3<&3
                                                                                                                                 if [[ "$INIT" == "true" ]]
                                                                                                                                 then
                                                                                                                                     if [[ "$RELEASE" == "true" ]]
