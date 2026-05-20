@@ -553,6 +553,14 @@
                                                                                                                                                                         ALPHA="$2"
                                                                                                                                                                         shift 2
                                                                                                                                                                         ;;
+                                                                                                                                                                    --distractor-index)
+                                                                                                                                                                        if [[ "$#" -lt 1 ]]
+                                                                                                                                                                        then
+                                                                                                                                                                            failure 13121 "$*"
+                                                                                                                                                                        fi
+                                                                                                                                                                        DISTRACTOR_INDEX="$2"
+                                                                                                                                                                        shift 2
+                                                                                                                                                                        ;;
                                                                                                                                                                     --init)
                                                                                                                                                                         if [[ "$#" -lt 2 ]]
                                                                                                                                                                         then
@@ -1072,7 +1080,6 @@
                                                                                                                                     --does-not-exist "/home/${ config.personal.name }/resources/invalid-init/$ALPHA_INDEX" \
                                                                                                                                     --does-not-exist "/home/${ config.personal.name }/resources/invalid-release/$ALPHA_INDEX" \
                                                                                                                                     --uuid 1289673385791639
-                                                                                                                                if true ; then exit 0 ; fi
                                                                                                                                 if [[ "$INIT" == "true" ]]
                                                                                                                                 then
                                                                                                                                     if [[ "$RELEASE" == "true" ]]
@@ -1160,7 +1167,7 @@
                                                                                                                                     fi
                                                                                                                                 fi
                                                                                                                                 block --timeout 1 --uuid 11816
-                                                                                                                                pre-test --alpha "$ALPHA" --init "$INIT" --release "$RELEASE" --target "$TARGET" --uuid 3316116883378534 3<&3
+                                                                                                                                pre-test --alpha "$ALPHA" --distractor-index "$DISTRACTOR_INDEX" --init "$INIT" --release "$RELEASE" --target "$TARGET" --uuid 3316116883378534 3<&3
                                                                                                                                 if [[ "$INIT" == "true" ]]
                                                                                                                                 then
                                                                                                                                     if [[ "$RELEASE" == "true" ]]
