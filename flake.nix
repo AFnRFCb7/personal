@@ -1113,7 +1113,6 @@
                                                                                                                                             --uuid 6764498451529627
                                                                                                                                         echo We created a distractor resource
                                                                                                                                     else
-                                                                                                                                        exit 0
                                                                                                                                         DISTRACTOR=${ resources.checks.targets.true.false { failure = 1965713756848597 ; setup = setup : ''${ setup } 2764421667212817'' ; } }
                                                                                                                                         printf -v DISTRACTOR_INDEX "%016d" $(( ALPHA + 4 ))
                                                                                                                                         STANDARD_OUTPUT=4725766637963872
