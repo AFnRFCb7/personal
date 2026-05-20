@@ -1161,7 +1161,7 @@
                                                                                                                                             --arg STANDARD_OUTPUT "$STANDARD_OUTPUT" \
                                                                                                                                             --arg TARGET "$TARGET" \
                                                                                                                                                 '{
-                                                                                                                                                   "arguments" [ $ARGUMENT ] ,
+                                                                                                                                                   "arguments" : [ $ARGUMENT ] ,
                                                                                                                                                    "has-standard-input" : false ,
                                                                                                                                                    "index" : $INDEX ,
                                                                                                                                                    "script" : $SCRIPT ,
@@ -1923,7 +1923,7 @@
                                                                         _visitor.implementation
                                                                             {
                                                                                 decrypt =
-                                                                                    path : value : ignore :
+                                                                                    ignore :
                                                                                         {
                                                                                             init =
                                                                                                 { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
@@ -1957,7 +1957,33 @@
                                                                                     {
                                                                                         github =
                                                                                             {
-                                                                                                identity = decrypt ;
+                                                                                                identity =
+                                                                                                    ignore :
+                                                                                                        {
+                                                                                                            init =
+                                                                                                                { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
+                                                                                                                    let
+                                                                                                                        application =
+                                                                                                                            pkgs.writeShellApplication
+                                                                                                                                {
+
+                                                                                                                                } ;
+                                                                                                                            in "${ application }/bin/init" ;
+                                                                                                            release =
+                                                                                                                { } :
+                                                                                                                    let
+                                                                                                                        application =
+                                                                                                                            pkgs.writeShellApplication
+                                                                                                                                {
+                                                                                                                                    name = "release" ;
+                                                                                                                                    runtimeInputs = [ ] ;
+                                                                                                                                    text =
+                                                                                                                                        ''
+                                                                                                                                        '' ;
+                                                                                                                                } ;
+                                                                                                                        in "${ application }/bin/release" ;
+                                                                                                            targets = [ "plaintext" ] ;
+                                                                                                        } ;
                                                                                                 known-hosts = decrypt ;
                                                                                             } ;
                                                                                         mobile =
