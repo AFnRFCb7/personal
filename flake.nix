@@ -2605,7 +2605,7 @@
                                                                                     github =
                                                                                         {
                                                                                             token = decrypt ;
-                                                                                        }
+                                                                                        } ;
                                                                                 } ;
                                                                 } ;
                                                         temporary =
