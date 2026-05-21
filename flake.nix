@@ -796,7 +796,7 @@
                                                                                                                         ALPHA_CONDITION="$( alpha-condition "$@" )" || failure 14402
                                                                                                                         ## if true ; then exit 0 ; fi
                                                                                                                         INIT_CONDITION="$( init-condition "$@" )" || failure 7005
-                                                                                                                        if true ; then exit 0 ; fi
+                                                                                                                        # if true ; then exit 0 ; fi
                                                                                                                         RELEASE_CONDITION="$( release-condition "$@" )" || failure 17709
                                                                                                                         STANDARD_OUTPUT="$( standard-output-value "$@" )" || failure 10277
                                                                                                                         DISTRACTOR_INIT_CHANNEL="$( distractor-init-channel-value "$@" )" || failure 23974
