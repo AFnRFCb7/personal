@@ -272,7 +272,7 @@
                                                                                                     alpha-stage =
                                                                                                         pkgs.writeShellApplication
                                                                                                             {
-                                                                                                                name = "alpha" ;
+                                                                                                                name = "alpha-stage" ;
                                                                                                                 runtimeInputs = [ alpha-condition compare failure init-condition pkgs.jq release-condition ] ;
                                                                                                                 text =
                                                                                                                     ''
@@ -301,12 +301,21 @@
                                                                                                                                 fi
                                                                                                                             fi
                                                                                                                         fi
-                                                                                                                        echo "$ALPHA_CONDITION" "$DISTRACTOR"
                                                                                                                         DISTRACTOR_CHANNEL="$( distractor-channel ${ arguments } )" || failure 23974
                                                                                                                         jq \
                                                                                                                             --null-input \
                                                                                                                             '{
                                                                                                                             }' | compare --message message --channel "$CHANNEL" --payload --uuid 25555
+                                                                                                                        if [[ "$INIT_CONDITION" == "false" ]]
+                                                                                                                        then
+                                                                                                                        jq \
+                                                                                                                            --null-input \
+                                                                                                                            '{
+                                                                                                                            }' | compare --message message --channel "$CHANNEL" --payload --uuid 7021
+                                                                                                                        fi
+                                                                                                                        files --uuid 12121
+                                                                                                                        block --timeout 1 --uuid 10525
+                                                                                                                        echo "$ALPHA_CONDITION" "$DISTRACTOR" "$DISTRACTOR_CHANNEL"
                                                                                                                     '' ;
                                                                                                             } ;
                                                                                                     arguments = ''"${ builtins.concatStringsSep "" [ "$" "{" "@" "}" ] }"'' ;
