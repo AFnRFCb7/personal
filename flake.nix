@@ -394,6 +394,7 @@
                                                                                                                     ''
                                                                                                                         while [[ "$#" -gt 0 ]]
                                                                                                                         do
+                                                                                                                            echo 6698 "$*"
                                                                                                                             case "$1" in
                                                                                                                                 --channel)
                                                                                                                                     EXPECTED_CHANNEL="$2"
@@ -1621,7 +1622,7 @@
                                                                                                                     application =
                                                                                                                         pkgs.writeShellApplication
                                                                                                                             {
-                                                                                                                                name = "snapshot" ;
+                                                                                                                                name = "immutable" ;
                                                                                                                                 runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
                                                                                                                                 text =
                                                                                                                                     ''
@@ -1632,14 +1633,17 @@
                                                                                                                                             git commit -am "" --allow-empty --allow-empty-message
                                                                                                                                         fi
                                                                                                                                         git push origin HEAD
+                                                                                                                                        BRANCH="$( git rev-parse HEAD )" || failure 25502
+                                                                                                                                        COMMIT="$( git rev-parse HEAD )" || failure 30677
+                                                                                                                                        IMMUTABLE=${ resources.production.private.immutable { failure = 5663 ; setup = setup : ''${ setup } "$BRANCH" "$COMMIT"'' ; } }
                                                                                                                                     '' ;
                                                                                                                             } ;
-                                                                                                                    in "${ application }/bin/snapshot" ;
+                                                                                                                    in "${ application }/bin/immutable" ;
                                                                                                             in
                                                                                                                 ''
                                                                                                                     git init 2>&1
                                                                                                                     git config alias.mirror "!${ mirror }"
-                                                                                                                    git config alias.snapshot "!${ snapshot }"
+                                                                                                                    git config alias.immutable "!${ immutable }"
                                                                                                                     export GIT_SSH_COMMAND ${ resources.production.bin.ssh { failure = 14260 ; } }/bin/ssh
                                                                                                                     git config core.sshCommand "$GIT_SSH_COMMAND"
                                                                                                                     git config user.email ${ config.personal.repository.private.email }
