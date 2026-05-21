@@ -2488,6 +2488,7 @@
                                                                     targets = [ ] ;
                                                                     transient = true ;
                                                                 } ;
+                                                    } ;
                                             } ;
                                         password-less-core =
                                             derivation : target :
