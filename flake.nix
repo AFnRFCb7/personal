@@ -1220,7 +1220,7 @@
                                                                                                                                             failure 18156
                                                                                                                                         fi
                                                                                                                                         printf -v DISTRACTOR_INDEX "%016d" $(( ALPHA + 4 ))
-                                                                                                                                        STANDARD_OUTPUT=5175697994459272
+                                                                                                                                        STANDARD_OUTPUT=3148451947316331
                                                                                                                                         TARGET=5494881573568661
                                                                                                                                         jq \
                                                                                                                                             --null-input \
@@ -1240,7 +1240,7 @@
                                                                                                                                                    "standard-input" : "" ,
                                                                                                                                                    "standard-output" : $STANDARD_OUTPUT ,
                                                                                                                                                    "status" : 114 ,
-                                                                                                                                                   "targets" : { expected : $TARGET , observed : $TARGET } ,
+                                                                                                                                                   "targets" : { expected : [ $TARGET ], observed : [ $TARGET ] } ,
                                                                                                                                                    "transient" : -1
                                                                                                                                                 }' | compare --message message --channel invalid-init --payload false true --timeout 1 --uuid 31155 3<&3
                                                                                                                                         block --timeout 1 --uuid 6925921732651899 3<&3
