@@ -2184,7 +2184,7 @@
                                                                                             text =
                                                                                                 ''
                                                                                                     git init 2>&1
-                                                                                                    export GIT_SSH_COMMAND ${ scripts.production.bin.ssh }/bin/ssh
+                                                                                                    export GIT_SSH_COMMAND ${ resources.production.bin.ssh }/bin/ssh
                                                                                                     git config core.sshCommand "$GIT_SSH_COMMAND"
                                                                                                     git config user.email ${ config.personal.repository.private.email }
                                                                                                     git config user.name ${ config.personal.repository.private.name }
