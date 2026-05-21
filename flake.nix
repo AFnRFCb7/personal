@@ -273,7 +273,7 @@
                                                                                                         pkgs.writeShellApplication
                                                                                                             {
                                                                                                                 name = "alpha" ;
-                                                                                                                runtimeInputs = [ alpha-condition failure init-condition release-condition ] ;
+                                                                                                                runtimeInputs = [ alpha-condition compare failure init-condition pkgs.jq release-condition ] ;
                                                                                                                 text =
                                                                                                                     ''
                                                                                                                         ALPHA_CONDITION="$( alpha-condition ${ arguments } )" || failure 14402
@@ -301,7 +301,12 @@
                                                                                                                                 fi
                                                                                                                             fi
                                                                                                                         fi
-                                                                                                                        echo "$DISTRACTOR"
+                                                                                                                        echo "$ALPHA_CONDITION" "$DISTRACTOR"
+                                                                                                                        DISTRACTOR_CHANNEL="$( distractor-channel ${ arguments } )" || failure 23974
+                                                                                                                        jq \
+                                                                                                                            --null-input \
+                                                                                                                            '{
+                                                                                                                            }' | compare --message message --channel "$CHANNEL" --payload --uuid 25555
                                                                                                                     '' ;
                                                                                                             } ;
                                                                                                     arguments = ''"${ builtins.concatStringsSep "" [ "$" "{" "@" "}" ] }"'' ;
@@ -445,6 +450,22 @@
                                                                                                                             then
                                                                                                                                 failure 2376349973447483 "$UUID" EXPECTED_PAYLOAD "$EXPECTED_PAYLOAD" OBSERVED_PAYLOAD "$OBSERVED_PAYLOAD"
                                                                                                                             fi
+                                                                                                                        fi
+                                                                                                                    '' ;
+                                                                                                            } ;
+                                                                                                    distractor-channel-value =
+                                                                                                        pkgs.writeShellApplication
+                                                                                                            {
+                                                                                                                name = "distractor-channel-value" ;
+                                                                                                                runtimeInputs = [ failure init-condition ] ;
+                                                                                                                text =
+                                                                                                                    ''
+                                                                                                                        INIT_CONDITION="$( init-condition ${ arguments } )" || failure 20560
+                                                                                                                        if [[ "$INIT_CONDITION" == "true" ]]
+                                                                                                                        then
+                                                                                                                            echo "valid-init"
+                                                                                                                        else
+                                                                                                                            echo "invalid-init"
                                                                                                                         fi
                                                                                                                     '' ;
                                                                                                             } ;
