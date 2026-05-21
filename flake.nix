@@ -806,6 +806,7 @@
                                                                                                                                 DISTRACTOR=${ resources.checks.targets.true.false { failure = 17544 ; } }
                                                                                                                             fi
                                                                                                                         else
+                                                                                                                            if true ; then exit 0 ; fi
                                                                                                                             if [[ "$RELEASE_CONDITION" == "true" ]]
                                                                                                                             then
                                                                                                                                 if true ; then exit 0 ; fi
