@@ -843,13 +843,6 @@
                                                                                                                             --arg DISTRACTOR_INDEX "$DISTRACTOR_INDEX" \
                                                                                                                             --arg STANDARD_OUTPUT "$STANDARD_OUTPUT" \
                                                                                                                             '{
-                                                                                                                                "wtf" : true ,
-                                                                                                                                "arguments" : [ ] ,
-                                                                                                                                "has-standard-input" : false ,
-                                                                                                                                "index" : $DISTRACTOR_INDEX ,
-                                                                                                                                "standard-error" : "" ,
-                                                                                                                                "standard-input" : "" ,
-                                                                                                                                "standard-output" : $STANDARD_OUTPUT
                                                                                                                             }' | compare --message message --channel "$DISTRACTOR_INIT_CHANNEL" --payload --uuid 25555 <&3
                                                                                                                         if [[ "$INIT_CONDITION" == "false" ]]
                                                                                                                         then
