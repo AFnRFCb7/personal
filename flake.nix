@@ -796,10 +796,13 @@
                                                                                                                         ALPHA_CONDITION="$( alpha-condition "$@" )" || failure 14402
                                                                                                                         ## if true ; then exit 0 ; fi
                                                                                                                         INIT_CONDITION="$( init-condition "$@" )" || failure 7005
-                                                                                                                        if true ; then exit 0 ; fi
+                                                                                                                        ## if true ; then exit 0 ; fi
                                                                                                                         RELEASE_CONDITION="$( release-condition "$@" )" || failure 17709
+                                                                                                                        # if true ; then exit 0 ; fi
                                                                                                                         STANDARD_OUTPUT="$( standard-output-value "$@" )" || failure 10277
+                                                                                                                        if true ; then exit 0 ; fi
                                                                                                                         DISTRACTOR_INIT_CHANNEL="$( distractor-init-channel-value "$@" )" || failure 23974
+                                                                                                                        if true ; then exit 0 ; fi
                                                                                                                         DISTRACTOR_RELEASE_CHANNEL="$( distractor-release-channel-value "$@" )" || failure 23012
                                                                                                                         if true ; then exit 0 ; fi
                                                                                                                         printf -v DISTRACTOR_INDEX "%016d" $(( ALPHA_CONDITION + 4 ))
