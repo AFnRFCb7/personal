@@ -1975,7 +1975,7 @@
                                                                                                                                                     ;;
                                                                                                                                             esac
                                                                                                                                         done
-                                                                                                                                        SECRETS=${ resources.production.age.ciphertext { failure = 144434 ; } }
+                                                                                                                                        SECRETS=${ resources.production.secrets.ciphertext { failure = 144434 ; } }
                                                                                                                                         GIT_SSH_COMMAND_RESOURCE=${ resources.production.bin.ssh { failure = 10240 ; } }
                                                                                                                                         export GIT_SSH_COMMAND="$GIT_SSH_COMMAND_RESOURCE/ssh"
                                                                                                                                         git -C "$SECRETS" fetch ssh "${ config.personal.secrets.branch }"
@@ -2169,7 +2169,7 @@
                                                                                                 text =
                                                                                                     ''
                                                                                                         git init 2>&1
-                                                                                                        git remote add origin ${ config.personal.formation.remote }
+                                                                                                        git remote add origin ${ config.personal.repository.private.remote }
                                                                                                     '' ;
                                                                                             } ;
                                                                                     in "${ application }/bin/init" ;
