@@ -276,12 +276,12 @@
                                                                                                                 runtimeInputs = [ alpha-condition compare distractor-init-channel-value failure init-condition pkgs.jq release-condition ] ;
                                                                                                                 text =
                                                                                                                     ''
-                                                                                                                        # if true ; then exit 0 ; fi
+                                                                                                                        ## if true ; then exit 0 ; fi
                                                                                                                         compare --message subscribe --channel invalid-init --payload 1 --timeout 1 --uuid 27606 <&3
                                                                                                                         compare --message subscribe --channel invalid-release --payload 2 --timeout 1 --uuid 26959 <&3
                                                                                                                         compare --message subscribe --channel valid-init --payload 3 --timeout 1 --uuid 4666 <&3
                                                                                                                         compare --message subscribe --channel valid-release --payload 4 --timeout 1 --uuid 20782 <&3
-                                                                                                                        if true ; then exit 0 ; fi
+                                                                                                                        # if true ; then exit 0 ; fi
                                                                                                                         ALPHA_CONDITION="$( alpha-condition "$@" )" || failure 14402
                                                                                                                         INIT_CONDITION="$( init-condition "$@" )" || failure 7005
                                                                                                                         RELEASE_CONDITION="$( release-condition "$@" )" || failure 17709
