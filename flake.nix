@@ -1960,7 +1960,7 @@
                                                                                                                                                     list = path : list : builtins.concatLists list ;
                                                                                                                                                     set = path : set : builtins.concatLists ( builtins.attrValues set ) ;
                                                                                                                                                 }
-                                                                                                                                                resources.production.age.plaintext ;
+                                                                                                                                                resources.production.secrets.plaintext ;
                                                                                                                                         in
                                                                                                                                     ''
                                                                                                                                         : "${ builtins.concatStringsSep "" [ "$" "{" "DERIVATION:?must be exported" "}" ] }"
@@ -2169,7 +2169,7 @@
                                                                                                 text =
                                                                                                     ''
                                                                                                         git init 2>&1
-
+                                                                                                        git remote add origin ${ config.personal.formation.remote }
                                                                                                     '' ;
                                                                                             } ;
                                                                                     in "${ application }/bin/init" ;
