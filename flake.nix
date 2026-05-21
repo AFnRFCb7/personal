@@ -320,7 +320,7 @@
                                                                                                                         files \
                                                                                                                             --uuid 12121
                                                                                                                         block --timeout 1 --uuid 10525
-                                                                                                                        echo "$ALPHA_CONDITION" "$DISTRACTOR" "$DISTRACTOR_CHANNEL"
+                                                                                                                        echo "We have created a distractor" ALPHA_CONDITION "$ALPHA_CONDITION" DISTRACTOR "$DISTRACTOR" DISTRACTOR_CHANNEL "$DISTRACTOR_CHANNEL"
                                                                                                                     '' ;
                                                                                                             } ;
                                                                                                     arguments = ''"${ builtins.concatStringsSep "" [ "$" "{" "@" "}" ] }"'' ;
@@ -836,7 +836,7 @@
                                                                                                         pkgs.writeShellApplication
                                                                                                             {
                                                                                                                 name = "test" ;
-                                                                                                                runtimeInputs = [ alpha-stage beta-stage pkgs.redis-cli ] ;
+                                                                                                                runtimeInputs = [ alpha-stage beta-stage pkgs.redis ] ;
                                                                                                                 text =
                                                                                                                     ''
                                                                                                                         exec 3< <( redis-cli SUBSCRIBE invalid-init invalid-release valid-init valid-release )
