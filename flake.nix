@@ -840,8 +840,8 @@
                                                                                                                 text =
                                                                                                                     ''
                                                                                                                         exec 3< <( redis-cli SUBSCRIBE invalid-init invalid-release valid-init valid-release )
-                                                                                                                        alpha-stage ${ arguments } <3
-                                                                                                                        beta-stage ${ arguments } <3 &
+                                                                                                                        alpha-stage ${ arguments } <&3
+                                                                                                                        beta-stage ${ arguments } <&3 &
                                                                                                                     '' ;
                                                                                                             } ;
                                                                                                     in
