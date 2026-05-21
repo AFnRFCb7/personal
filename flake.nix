@@ -810,11 +810,11 @@
                                                                                                                         RELEASE_CONDITION="$( release-condition "$@" )" || failure 17709
                                                                                                                         ## if true ; then exit 0 ; fi
                                                                                                                         STANDARD_OUTPUT="$( standard-output-value "$@" )" || failure 10277
-                                                                                                                        # if true ; then exit 0 ; fi
+                                                                                                                        ## if true ; then exit 0 ; fi
                                                                                                                         DISTRACTOR_INIT_CHANNEL="$( distractor-init-channel-value "$@" )" || failure 23974
                                                                                                                         DISTRACTOR_RELEASE_CHANNEL="$( distractor-release-channel-value "$@" )" || failure 23012
                                                                                                                         printf -v DISTRACTOR_INDEX "%016d" $(( ALPHA_CONDITION + 4 ))
-                                                                                                                        if true ; then exit 0 ; fi
+                                                                                                                        ## if true ; then exit 0 ; fi
                                                                                                                         if [[ "$INIT_CONDITION" == "true" ]]
                                                                                                                         then
                                                                                                                             if [[ "$RELEASE_CONDITION" == "true" ]]
@@ -837,7 +837,7 @@
                                                                                                                                 fi
                                                                                                                             fi
                                                                                                                         fi
-                                                                                                                        if true ; then exit 0 ; fi
+                                                                                                                        # if true ; then exit 0 ; fi
                                                                                                                         jq \
                                                                                                                             --null-input \
                                                                                                                             --argjson DISTRACTOR_INDEX "$DISTRACTOR_INDEX" \
