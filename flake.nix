@@ -851,7 +851,7 @@
                                                                                                             } ;
                                                                                                     in
                                                                                                         ''
-                                                                                                            wrap ${ test }/bin/test test 0500 --literal plain "@" --uuid 7483697565341694
+                                                                                                            wrap ${ test }/bin/test test 0500 --literal plain "@" --literal plain DERIVATION --uuid 7483697565341694
                                                                                                         '' ;
                                                                                         } ;
                                                                                 in "${ application }/bin/init" ;
