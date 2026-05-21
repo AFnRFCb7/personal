@@ -855,6 +855,7 @@
                                                                                                                         if true ; then exit 0 ; fi
                                                                                                                         files \
                                                                                                                             --uuid 12121
+                                                                                                                        echo "STANDARD_OUTPUT" "$STANDARD_OUTPUT"
                                                                                                                         echo "We have created a distractor" ALPHA_CONDITION "$ALPHA_CONDITION" DISTRACTOR "$DISTRACTOR" DISTRACTOR_INIT_CHANNEL "$DISTRACTOR_INIT_CHANNEL" DISTRACTOR_RELEASE_CHANNEL "$DISTRACTOR_RELEASE_CHANNEL" DISTRACTOR_INDEX "$DISTRACTOR_INDEX"
                                                                                                                     '' ;
                                                                                                             } ;
