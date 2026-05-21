@@ -269,70 +269,6 @@
                                                                                                                         echo "$1"
                                                                                                                     '' ;
                                                                                                             } ;
-                                                                                                    alpha-stage =
-                                                                                                        pkgs.writeShellApplication
-                                                                                                            {
-                                                                                                                name = "alpha-stage" ;
-                                                                                                                runtimeInputs = [ alpha-condition compare distractor-init-channel-value failure init-condition pkgs.jq release-condition ] ;
-                                                                                                                text =
-                                                                                                                    ''
-                                                                                                                        # if true ; then exit 0 ; fi
-                                                                                                                        echo 1 | compare --message subscribe --channel invalid-init --payload --timeout 1 --uuid 27606 <&3
-                                                                                                                        if true ; then exit 0 ; fi
-                                                                                                                        echo 2 | compare --message subscribe --channel invalid-release --payload --timeout 1 --uuid 26959 <&3
-                                                                                                                        echo 3 | compare --message subscribe --channel valid-init --payload --timeout 1 --uuid 4666 <&3
-                                                                                                                        echo 4 | compare --message subscribe --channel valid-release --payload --timeout 1 --uuid 20782 <&3
-                                                                                                                        if true ; then exit 0 ; fi
-                                                                                                                        ALPHA_CONDITION="$( alpha-condition "$@" )" || failure 14402
-                                                                                                                        INIT_CONDITION="$( init-condition "$@" )" || failure 7005
-                                                                                                                        RELEASE_CONDITION="$( release-condition "$@" )" || failure 17709
-                                                                                                                        if true ; then exit 0 ; fi
-                                                                                                                        if [[ "$INIT_CONDITION" == "true" ]]
-                                                                                                                        then
-                                                                                                                            if [[ "$RELEASE_CONDITION" == "true" ]]
-                                                                                                                            then
-                                                                                                                                DISTRACTOR=${ resources.checks.targets.true.true { failure = 2829 ; } }
-                                                                                                                            else
-                                                                                                                                DISTRACTOR=${ resources.checks.targets.true.false { failure = 17544 ; } }
-                                                                                                                            fi
-                                                                                                                        else
-                                                                                                                            if [[ "$RELEASE_CONDITION" == "true" ]]
-                                                                                                                            then
-                                                                                                                                if ! DISTRACTOR=${ resources.checks.targets.false.true { failure = 13074 ; } }
-                                                                                                                                then
-                                                                                                                                    failure 26505
-                                                                                                                                fi
-                                                                                                                            else
-                                                                                                                                if ! DISTRACTOR=${ resources.checks.targets.false.false { failure = 27401 ; } }
-                                                                                                                                then
-                                                                                                                                    failure 22382
-                                                                                                                                fi
-                                                                                                                            fi
-                                                                                                                        fi
-                                                                                                                        if true ; then exit 0 ; fi
-                                                                                                                        DISTRACTOR_INIT_CHANNEL="$( distractor-init-channel-value "$@" )" || failure 23974
-                                                                                                                        if true ; then exit 0 ; fi
-                                                                                                                        jq \
-                                                                                                                            --null-input \
-                                                                                                                            '{
-                                                                                                                            }' | compare --message message --channel "$DISTRACTOR_INIT_CHANNEL" --payload --uuid 25555 <&3
-                                                                                                                        if true ; then exit 0 ; fi
-                                                                                                                        if [[ "$INIT_CONDITION" == "false" ]]
-                                                                                                                        then
-                                                                                                                        jq \
-                                                                                                                            --null-input \
-                                                                                                                            '{
-                                                                                                                            }' | compare --message message --channel "$CHANNEL" --payload --uuid 7021 <&3
-                                                                                                                        fi
-                                                                                                                        if true ; then exit 0 ; fi
-                                                                                                                        block --timeout 1 --uuid 10525 <&3
-                                                                                                                        if true ; then exit 0 ; fi
-                                                                                                                        files \
-                                                                                                                            --uuid 12121
-                                                                                                                        if true ; then exit 0 ; fi
-                                                                                                                        echo "We have created a distractor" ALPHA_CONDITION "$ALPHA_CONDITION" DISTRACTOR "$DISTRACTOR" DISTRACTOR_INIT_CHANNEL "$DISTRACTOR_INIT_CHANNEL"
-                                                                                                                    '' ;
-                                                                                                            } ;
                                                                                                     beta-stage =
                                                                                                         pkgs.writeShellApplication
                                                                                                             {
@@ -405,7 +341,7 @@
                                                                                                                                     shift 2
                                                                                                                                     ;;
                                                                                                                                 --payload)
-                                                                                                                                    EXPECTED_PAYLOAD="$( jq --compact-output "." <&2 )" || failure 32657
+                                                                                                                                    EXPECTED_PAYLOAD="$( cat )" || failure 32657
                                                                                                                                     shift
                                                                                                                                     ;;
                                                                                                                                 --timeout)
@@ -822,15 +758,79 @@
                                                                                                                         } ;
                                                                                                                 } ;
                                                                                                         } ;
+                                                                                                    stage-alpha =
+                                                                                                        pkgs.writeShellApplication
+                                                                                                            {
+                                                                                                                name = "stage-alpha" ;
+                                                                                                                runtimeInputs = [ alpha-condition compare distractor-init-channel-value failure init-condition pkgs.jq release-condition ] ;
+                                                                                                                text =
+                                                                                                                    ''
+                                                                                                                        # if true ; then exit 0 ; fi
+                                                                                                                        echo 1 | compare --message subscribe --channel invalid-init --payload --timeout 1 --uuid 27606 <&3
+                                                                                                                        if true ; then exit 0 ; fi
+                                                                                                                        echo 2 | compare --message subscribe --channel invalid-release --payload --timeout 1 --uuid 26959 <&3
+                                                                                                                        echo 3 | compare --message subscribe --channel valid-init --payload --timeout 1 --uuid 4666 <&3
+                                                                                                                        echo 4 | compare --message subscribe --channel valid-release --payload --timeout 1 --uuid 20782 <&3
+                                                                                                                        if true ; then exit 0 ; fi
+                                                                                                                        ALPHA_CONDITION="$( alpha-condition "$@" )" || failure 14402
+                                                                                                                        INIT_CONDITION="$( init-condition "$@" )" || failure 7005
+                                                                                                                        RELEASE_CONDITION="$( release-condition "$@" )" || failure 17709
+                                                                                                                        if true ; then exit 0 ; fi
+                                                                                                                        if [[ "$INIT_CONDITION" == "true" ]]
+                                                                                                                        then
+                                                                                                                            if [[ "$RELEASE_CONDITION" == "true" ]]
+                                                                                                                            then
+                                                                                                                                DISTRACTOR=${ resources.checks.targets.true.true { failure = 2829 ; } }
+                                                                                                                            else
+                                                                                                                                DISTRACTOR=${ resources.checks.targets.true.false { failure = 17544 ; } }
+                                                                                                                            fi
+                                                                                                                        else
+                                                                                                                            if [[ "$RELEASE_CONDITION" == "true" ]]
+                                                                                                                            then
+                                                                                                                                if ! DISTRACTOR=${ resources.checks.targets.false.true { failure = 13074 ; } }
+                                                                                                                                then
+                                                                                                                                    failure 26505
+                                                                                                                                fi
+                                                                                                                            else
+                                                                                                                                if ! DISTRACTOR=${ resources.checks.targets.false.false { failure = 27401 ; } }
+                                                                                                                                then
+                                                                                                                                    failure 22382
+                                                                                                                                fi
+                                                                                                                            fi
+                                                                                                                        fi
+                                                                                                                        if true ; then exit 0 ; fi
+                                                                                                                        DISTRACTOR_INIT_CHANNEL="$( distractor-init-channel-value "$@" )" || failure 23974
+                                                                                                                        if true ; then exit 0 ; fi
+                                                                                                                        jq \
+                                                                                                                            --null-input \
+                                                                                                                            '{
+                                                                                                                            }' | compare --message message --channel "$DISTRACTOR_INIT_CHANNEL" --payload --uuid 25555 <&3
+                                                                                                                        if true ; then exit 0 ; fi
+                                                                                                                        if [[ "$INIT_CONDITION" == "false" ]]
+                                                                                                                        then
+                                                                                                                        jq \
+                                                                                                                            --null-input \
+                                                                                                                            '{
+                                                                                                                            }' | compare --message message --channel "$CHANNEL" --payload --uuid 7021 <&3
+                                                                                                                        fi
+                                                                                                                        if true ; then exit 0 ; fi
+                                                                                                                        block --timeout 1 --uuid 10525 <&3
+                                                                                                                        if true ; then exit 0 ; fi
+                                                                                                                        files \
+                                                                                                                            --uuid 12121
+                                                                                                                        if true ; then exit 0 ; fi
+                                                                                                                        echo "We have created a distractor" ALPHA_CONDITION "$ALPHA_CONDITION" DISTRACTOR "$DISTRACTOR" DISTRACTOR_INIT_CHANNEL "$DISTRACTOR_INIT_CHANNEL"
+                                                                                                                    '' ;
+                                                                                                            } ;
                                                                                                     test =
                                                                                                         pkgs.writeShellApplication
                                                                                                             {
                                                                                                                 name = "test" ;
-                                                                                                                runtimeInputs = [ alpha-stage beta-stage pkgs.redis ] ;
+                                                                                                                runtimeInputs = [ beta-stage pkgs.redis stage-alpha ] ;
                                                                                                                 text =
                                                                                                                     ''
                                                                                                                         exec 3< <( redis-cli SUBSCRIBE invalid-init invalid-release valid-init valid-release )
-                                                                                                                        alpha-stage "$@" <&3
+                                                                                                                        stage-alpha "$@" <&3
                                                                                                                         beta-stage "$@" <&3 &
                                                                                                                     '' ;
                                                                                                             } ;
