@@ -840,7 +840,7 @@
                                                                                                                         # if true ; then exit 0 ; fi
                                                                                                                         jq \
                                                                                                                             --null-input \
-                                                                                                                            --argjson DISTRACTOR_INDEX "$DISTRACTOR_INDEX" \
+                                                                                                                            --arg DISTRACTOR_INDEX "$DISTRACTOR_INDEX" \
                                                                                                                             --arg STANDARD_OUTPUT "$STANDARD_OUTPUT" \
                                                                                                                             '{
                                                                                                                                 "wtf" : true ,
