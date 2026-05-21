@@ -273,9 +273,14 @@
                                                                                                         pkgs.writeShellApplication
                                                                                                             {
                                                                                                                 name = "alpha-stage" ;
-                                                                                                                runtimeInputs = [ alpha-condition compare failure init-condition pkgs.jq release-condition ] ;
+                                                                                                                runtimeInputs = [ alpha-condition compare failure init-condition pkgs.jq pkgs.redis release-condition ] ;
                                                                                                                 text =
                                                                                                                     ''
+                                                                                                                        exec 3< <( redis-cli SUBSCRIBE invalid-init invalid-release valid-init valid-release )
+                                                                                                                        compare --message subscribe --channel invalid-init --payload 1
+                                                                                                                        compare --message subscribe --channel invalid-release --payload 2
+                                                                                                                        compare --message subscribe --channel valid-init --payload 3
+                                                                                                                        compare --message subscribe --channel valid-release --payload 4
                                                                                                                         ALPHA_CONDITION="$( alpha-condition ${ arguments } )" || failure 14402
                                                                                                                         INIT_CONDITION="$( init-condition ${ arguments } )" || failure 7005
                                                                                                                         RELEASE_CONDITION="$( release-condition ${ arguments } )" || failure 17709
@@ -313,12 +318,22 @@
                                                                                                                             '{
                                                                                                                             }' | compare --message message --channel "$CHANNEL" --payload --uuid 7021
                                                                                                                         fi
-                                                                                                                        files --uuid 12121
+                                                                                                                        files \
+                                                                                                                            --uuid 12121
                                                                                                                         block --timeout 1 --uuid 10525
                                                                                                                         echo "$ALPHA_CONDITION" "$DISTRACTOR" "$DISTRACTOR_CHANNEL"
                                                                                                                     '' ;
                                                                                                             } ;
                                                                                                     arguments = ''"${ builtins.concatStringsSep "" [ "$" "{" "@" "}" ] }"'' ;
+                                                                                                    beta-stage =
+                                                                                                        pkgs.writeShellApplication
+                                                                                                            {
+                                                                                                                name = "beta-stage" ;
+                                                                                                                runtimeInputs = [ ] ;
+                                                                                                                text =
+                                                                                                                    ''
+                                                                                                                    '' ;
+                                                                                                            } ;
                                                                                                     block =
                                                                                                         pkgs.writeShellApplication
                                                                                                             {
@@ -381,9 +396,18 @@
                                                                                                                                     shift 2
                                                                                                                                     ;;
                                                                                                                                 --payload)
-                                                                                                                                    EXPECTED_PAYLOAD="$2"
-                                                                                                                                    PAYLOAD_IS_JSON="$3"
-                                                                                                                                    shift 3
+                                                                                                                                    if [[ -t 0 ]]
+                                                                                                                                    then
+                                                                                                                                        PAYLOAD_IS_JSON=false
+                                                                                                                                        EXPECTED_PAYLOAD="$2"
+                                                                                                                                        OBSERVED_PAYLOAD="$3"
+                                                                                                                                        shift 3
+                                                                                                                                    else
+                                                                                                                                        PAYLOAD_IS_JSON=true
+                                                                                                                                        EXPECTED_PAYLOAD="$( jq "." )" || failure 32657
+                                                                                                                                        OBSERVED_PAYLOAD="$2"
+                                                                                                                                        shift 2
+                                                                                                                                    fi
                                                                                                                                     ;;
                                                                                                                                 --timeout)
                                                                                                                                     TIMEOUT="$2"
@@ -439,7 +463,6 @@
                                                                                                                         fi
                                                                                                                         if [[ "$PAYLOAD_IS_JSON" == "true" ]]
                                                                                                                         then
-                                                                                                                            EXPECTED_PAYLOAD="$( cat )" || failure 1393872535428486
                                                                                                                             if [[ "$EXPECTED_PAYLOAD" != "$OBSERVED_PAYLOAD" ]]
                                                                                                                             then
                                                                                                                                 EXPECTED_PRINT_PAYLOAD="$( yq --input-format=json eval --prettyPrint "." <<< "$EXPECTED_PAYLOAD" )" || failure 9695639117138292
@@ -814,13 +837,11 @@
                                                                                                         pkgs.writeShellApplication
                                                                                                             {
                                                                                                                 name = "test" ;
-                                                                                                                runtimeInputs =
-                                                                                                                    [
-                                                                                                                        alpha-stage
-                                                                                                                    ] ;
+                                                                                                                runtimeInputs = [ alpha-stage beta-stage ] ;
                                                                                                                 text =
                                                                                                                     ''
                                                                                                                         alpha-stage ${ arguments }
+                                                                                                                        beta-stage ${ arguments } &
                                                                                                                     '' ;
                                                                                                             } ;
                                                                                                     in
