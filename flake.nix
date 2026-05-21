@@ -2372,7 +2372,7 @@
                                                                                                                                     } ;
                                                                                                                             in "${ application }/bin/release" ;
                                                                                                                 targets = [ "plaintext" ] ;
-                                                                                                            }
+                                                                                                            } ;
                                                                                                     known-hosts = decrypt ;
                                                                                                 } ;
                                                                                             mobile =
