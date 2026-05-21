@@ -2444,49 +2444,31 @@
                                                                                 } ;
                                                                 } ;
                                                         temporary =
-                                                            {
-                                                                argument =
-                                                                    ignore :
-                                                                        {
-                                                                            init =
-                                                                                { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
-                                                                                    let
-                                                                                        application =
-                                                                                            pkgs.writeShellApplication
-                                                                                                {
-                                                                                                    name = "init" ;
-                                                                                                    runtimeInputs = [ pkgs.coreutils ] ;
-                                                                                                    text =
-                                                                                                        ''
-                                                                                                            echo -en "$1" > /mount/holder
-                                                                                                            chmod 0400 /mount/holder
-                                                                                                        '' ;
-                                                                                                } ;
-                                                                                    in ''${ application }/bin/init "${ builtins.concatStringsSep "" [ "$" "{" "@:-" "}" ] }"'' ;
-                                                                            targets = [ "holder" ] ;
-                                                                        } ;
-                                                                redis =
-                                                                    ignore :
-                                                                        {
-                                                                            init =
-                                                                                { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
-                                                                                    let
-                                                                                        application =
-                                                                                            pkgs.writeShellApplication
-                                                                                                {
-                                                                                                    name = "init" ;
-                                                                                                    runtimeInputs = [ pkgs.coreutils pkgs.redis ] ;
-                                                                                                    text =
-                                                                                                        ''
-                                                                                                            touch /mount/holder
-                                                                                                            redis-cli --csv SUBSCRIBE invalid-init invalid-release stale-init valid-init valid-release > /mount/holder &
-                                                                                                        '' ;
-                                                                                                } ;
-                                                                                    in "${ application }/bin/init" ;
-                                                                            targets = [ "holder" ] ;
-                                                                        } ;
-                                                            } ;
-                                                    } ;
+                                                            ignore :
+                                                                {
+                                                                    init =
+                                                                        { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
+                                                                            let
+                                                                                application =
+                                                                                    pkgs.writeShellApplication
+                                                                                        {
+                                                                                            name = "init" ;
+                                                                                            text = "" ;
+                                                                                        } ;
+                                                                            in ''${ application }/bin/init "${ builtins.concatStringsSep "" [ "$" "{" "@:-" "}" ] }"'' ;
+                                                                    release =
+                                                                        { failure , pkgs , resources , seed , sequential , trace } :
+                                                                            let
+                                                                                application =
+                                                                                    pkgs.writeShellApplication
+                                                                                        {
+                                                                                            name = "release" ;
+                                                                                            text = "" ;
+                                                                                        } ;
+                                                                                in "${ application }/bin/release" ;
+                                                                    targets = [ ] ;
+                                                                    transient = true ;
+                                                                } ;
                                             } ;
                                         password-less-core =
                                             derivation : target :
