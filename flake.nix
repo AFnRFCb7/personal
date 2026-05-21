@@ -784,7 +784,17 @@
                                                                                                         pkgs.writeShellApplication
                                                                                                             {
                                                                                                                 name = "stage-alpha" ;
-                                                                                                                runtimeInputs = [ alpha-condition compare distractor-init-channel-value distractor-release-channel-value failure init-condition pkgs.jq release-condition standard-output-value ] ;
+                                                                                                                runtimeInputs =
+                                                                                                                    [
+                                                                                                                        alpha-condition
+                                                                                                                        compare
+                                                                                                                        distractor-init-channel-value
+                                                                                                                        distractor-release-channel-value
+                                                                                                                        failure init-condition
+                                                                                                                        pkgs.jq
+                                                                                                                        release-condition
+                                                                                                                        standard-output-value
+                                                                                                                    ] ;
                                                                                                                 text =
                                                                                                                     ''
                                                                                                                         echo 1 | compare --message subscribe --channel invalid-init --timeout 10 --uuid 27606 3<&3
@@ -802,9 +812,7 @@
                                                                                                                         STANDARD_OUTPUT="$( standard-output-value "$@" )" || failure 10277
                                                                                                                         # if true ; then exit 0 ; fi
                                                                                                                         DISTRACTOR_INIT_CHANNEL="$( distractor-init-channel-value "$@" )" || failure 23974
-                                                                                                                        if true ; then exit 0 ; fi
                                                                                                                         DISTRACTOR_RELEASE_CHANNEL="$( distractor-release-channel-value "$@" )" || failure 23012
-                                                                                                                        if true ; then exit 0 ; fi
                                                                                                                         printf -v DISTRACTOR_INDEX "%016d" $(( ALPHA_CONDITION + 4 ))
                                                                                                                         if true ; then exit 0 ; fi
                                                                                                                         if [[ "$INIT_CONDITION" == "true" ]]
