@@ -791,7 +791,7 @@
                                                                                                                 text =
                                                                                                                     ''
                                                                                                                         # if true ; then exit 0 ; fi
-                                                                                                                        echo 1 | compare --message subscribe --channel invalid-init --timeout 1 --uuid 27606 <&3
+                                                                                                                        echo 1 | compare --message subscribe --channel invalid-init --timeout 1 --uuid 27606 3<&3
                                                                                                                         if true ; then exit 0 ; fi
                                                                                                                         echo 2 | compare --message subscribe --channel invalid-release --timeout 1 --uuid 26959 <&3
                                                                                                                         echo 3 | compare --message subscribe --channel valid-init --timeout 1 --uuid 4666 <&3
@@ -882,6 +882,29 @@
                                                                                                                             fi
                                                                                                                         fi
                                                                                                                         echo "We have constructed the fresh resource" FRESH "$FRESH" ALPHA_CONDITION "$ALPHA_CONDITION" INIT_CONDITION "$INIT_CONDITION" RELEASE_CONDITION "$RELEASE_CONDITION" STANDARD_OUTPUT "$STANDARD_OUTPUT"
+                                                                                                                        if [[ "$INIT_CONDITION" == "true" ]]
+                                                                                                                        then
+                                                                                                                            if [[ "$RELEASE_CONDITION" == "true" ]]
+                                                                                                                            then
+                                                                                                                                STALE=${ resources.checks.targets.true.true { failure = 14779 ; setup = setup : ''${ setup } "$ARGUMENT"'' ; } }
+                                                                                                                            else
+                                                                                                                                STALE=${ resources.checks.targets.true.false { failure = 23347 ; setup = setup : ''${ setup } "$ARGUMENT"'' ; } }
+                                                                                                                            fi
+                                                                                                                        else
+                                                                                                                            if [[ "$RELEASE_CONDITION" == "true" ]]
+                                                                                                                            then
+                                                                                                                                if STALE=${ resources.checks.targets.false.true { failure = 28390 ; setup = setup : ''${ setup } "$ARGUMENT"'' ; } }
+                                                                                                                                then
+                                                                                                                                    failure 22548
+                                                                                                                                fi
+                                                                                                                            else
+                                                                                                                                if STALE=${ resources.checks.targets.false.false { failure = 20176 ; setup = setup : ''${ setup } "$ARGUMENT"'' ; } }
+                                                                                                                                then
+                                                                                                                                    failure 32322
+                                                                                                                                fi
+                                                                                                                            fi
+                                                                                                                        fi
+                                                                                                                        echo "We have constructed the stale resource" STALE "$STALE" ALPHA_CONDITION "$ALPHA_CONDITION" INIT_CONDITION "$INIT_CONDITION" RELEASE_CONDITION "$RELEASE_CONDITION" STANDARD_OUTPUT "$STANDARD_OUTPUT"
                                                                                                                     '' ;
                                                                                                             } ;
                                                                                                     stage-gamma =
