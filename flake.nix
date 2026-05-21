@@ -406,12 +406,14 @@
                                                                                                                                 --payload)
                                                                                                                                     if [[ -t 0 ]]
                                                                                                                                     then
+                                                                                                                                        echo 16084
                                                                                                                                         PAYLOAD_IS_JSON=false
                                                                                                                                         EXPECTED_PAYLOAD="$2"
                                                                                                                                         shift 2
                                                                                                                                     else
+                                                                                                                                        echo 7881
                                                                                                                                         PAYLOAD_IS_JSON=true
-                                                                                                                                        EXPECTED_PAYLOAD="$( jq --compact-output "." )" || failure 32657
+                                                                                                                                        EXPECTED_PAYLOAD="$( jq --compact-output "." <&2 )" || failure 32657
                                                                                                                                         shift
                                                                                                                                     fi
                                                                                                                                     ;;
@@ -1570,65 +1572,85 @@
                                                                                 } ;
                                                             } ;
                                                         private =
-                                                            ignore :
-                                                                {
-                                                                    init =
-                                                                        { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
-                                                                            let
-                                                                                application =
-                                                                                    pkgs.writeShellApplication
-                                                                                        {
-                                                                                            name = "init" ;
-                                                                                            runtimeInputs = [ pkgs.git ] ;
-                                                                                            text =
-                                                                                                let
-                                                                                                    mirror =
-                                                                                                        let
-                                                                                                            application =
-                                                                                                                pkgs.writeShellApplication
-                                                                                                                    {
-                                                                                                                        name = "mirror" ;
-                                                                                                                        runtimeInputs = [ ] ;
-                                                                                                                        text =
-                                                                                                                            ''
-                                                                                                                            '' ;
-                                                                                                                    } ;
-                                                                                                            in "${ application }/bin/mirror" ;
-                                                                                                    snapshot =
-                                                                                                        let
-                                                                                                            application =
-                                                                                                                pkgs.writeShellApplication
-                                                                                                                    {
-                                                                                                                        name = "snapshot" ;
-                                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
-                                                                                                                        text =
-                                                                                                                            ''
-                                                                                                                                git submodule foreach 'if ! timeout 1m git commit -a --verbose --allow-empty --allow-empty-message ; then git commit -am "" --allow-empty --allow-empty-message ; fi'
-                                                                                                                                git submodule foreach 'git push origin HEAD'
-                                                                                                                                if ! timeout 1m git commit -a --verbose --allow-empty --allow-empty-message
-                                                                                                                                then
-                                                                                                                                    git commit -am "" --allow-empty --allow-empty-message
-                                                                                                                                fi
-                                                                                                                                git push origin HEAD
-                                                                                                                            '' ;
-                                                                                                                    } ;
-                                                                                                            in "${ application }/bin/snapshot" ;
-                                                                                                    in
+                                                            {
+                                                                immutable =
+                                                                    ignore :
+                                                                        {
+                                                                            init =
+                                                                                { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
+                                                                                    let
+                                                                                        application =
+                                                                                            pkgs.writeShellApplication
+                                                                                                {
+                                                                                                    name = "init" ;
+                                                                                                    runtimeInputs = [ ] ;
+                                                                                                    text =
                                                                                                         ''
-                                                                                                            git init 2>&1
-                                                                                                            git config alias.mirror "!${ mirror }"
-                                                                                                            git config alias.snapshot "!${ snapshot }"
-                                                                                                            export GIT_SSH_COMMAND ${ resources.production.bin.ssh { failure = 14260 ; } }/bin/ssh
-                                                                                                            git config core.sshCommand "$GIT_SSH_COMMAND"
-                                                                                                            git config user.email ${ config.personal.repository.private.email }
-                                                                                                            git config user.name ${ config.personal.repository.private.name }
-                                                                                                            git remote add origin ${ config.personal.repository.private.remote } 2>&1
-                                                                                                            git fetch origin ${ config.personal.repository.private.remote } 2>&1
                                                                                                         '' ;
-                                                                                        } ;
-                                                                                in "${ application }/bin/init" ;
-                                                                    targets = [ ] ;
-                                                                } ;
+                                                                                                } ;
+                                                                                        in "${ application }/bin/init" ;
+                                                                            targets = [ ] ;
+                                                                        } ;
+                                                                mutable =
+                                                                    ignore :
+                                                                        {
+                                                                            init =
+                                                                                { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
+                                                                                    let
+                                                                                        application =
+                                                                                            pkgs.writeShellApplication
+                                                                                                {
+                                                                                                    name = "init" ;
+                                                                                                    runtimeInputs = [ pkgs.git ] ;
+                                                                                                    text =
+                                                                                                        let
+                                                                                                            mirror =
+                                                                                                                let
+                                                                                                                    application =
+                                                                                                                        pkgs.writeShellApplication
+                                                                                                                            {
+                                                                                                                                name = "mirror" ;
+                                                                                                                                runtimeInputs = [ ] ;
+                                                                                                                                text =
+                                                                                                                                    ''
+                                                                                                                                    '' ;
+                                                                                                                            } ;
+                                                                                                                    in "${ application }/bin/mirror" ;
+                                                                                                            snapshot =
+                                                                                                                let
+                                                                                                                    application =
+                                                                                                                        pkgs.writeShellApplication
+                                                                                                                            {
+                                                                                                                                name = "snapshot" ;
+                                                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
+                                                                                                                                text =
+                                                                                                                                    ''
+                                                                                                                                        git submodule foreach 'if ! timeout 1m git commit -a --verbose --allow-empty --allow-empty-message ; then git commit -am "" --allow-empty --allow-empty-message ; fi'
+                                                                                                                                        git submodule foreach 'git push origin HEAD'
+                                                                                                                                        if ! timeout 1m git commit -a --verbose --allow-empty --allow-empty-message
+                                                                                                                                        then
+                                                                                                                                            git commit -am "" --allow-empty --allow-empty-message
+                                                                                                                                        fi
+                                                                                                                                        git push origin HEAD
+                                                                                                                                    '' ;
+                                                                                                                            } ;
+                                                                                                                    in "${ application }/bin/snapshot" ;
+                                                                                                            in
+                                                                                                                ''
+                                                                                                                    git init 2>&1
+                                                                                                                    git config alias.mirror "!${ mirror }"
+                                                                                                                    git config alias.snapshot "!${ snapshot }"
+                                                                                                                    export GIT_SSH_COMMAND ${ resources.production.bin.ssh { failure = 14260 ; } }/bin/ssh
+                                                                                                                    git config core.sshCommand "$GIT_SSH_COMMAND"
+                                                                                                                    git config user.email ${ config.personal.repository.private.email }
+                                                                                                                    git config user.name ${ config.personal.repository.private.name }
+                                                                                                                    git remote add origin ${ config.personal.repository.private.remote } 2>&1
+                                                                                                                    git fetch origin ${ config.personal.repository.private.remote } 2>&1
+                                                                                                                '' ;
+                                                                                                } ;
+                                                                                        in "${ application }/bin/init" ;
+                                                                            targets = [ ] ;
+                                                                        } ;
                                                         product =
                                                             {
                                                                 gh =
