@@ -838,17 +838,23 @@
                                                                                                                             then
                                                                                                                                 FRESH=${ resources.checks.targets.true.true { failure = 32618 ; setup = setup : ''${ setup } $STANDARD_OUTPUT'' ; } }
                                                                                                                             else
-                                                                                                                                true
+                                                                                                                                FRESH=${ resources.checks.targets.true.false { failure = 5420 ; setup = setup : ''${ setup } $STANDARD_OUTPUT'' ; } }
                                                                                                                             fi
                                                                                                                         else
                                                                                                                             if [[ "$RELEASE_CONDITION" == "true" ]]
                                                                                                                             then
-                                                                                                                                true
+                                                                                                                                if FRESH=${ resources.checks.targets.false.true { failure = 6677 ; setup = setup : ''${ setup } $STANDARD_OUTPUT'' ; } }
+                                                                                                                                then
+                                                                                                                                    failure 11332
+                                                                                                                                fi
                                                                                                                             else
-                                                                                                                                true
+                                                                                                                                if FRESH=${ resources.checks.targets.false.false { failure = 27839 ; setup = setup : ''${ setup } $STANDARD_OUTPUT'' ; } }
+                                                                                                                                then
+                                                                                                                                    failure 17466
+                                                                                                                                fi
                                                                                                                             fi
                                                                                                                         fi
-                                                                                                                        echo "We have constructed the resource" ALPHA_CONDITION "$ALPHA_CONDITION" INIT_CONDITION "$INIT_CONDITION" RELEASE_CONDITION "$RELEASE_CONDITION"
+                                                                                                                        echo "We have constructed the fresh resource" ALPHA_CONDITION "$ALPHA_CONDITION" INIT_CONDITION "$INIT_CONDITION" RELEASE_CONDITION "$RELEASE_CONDITION" STANDARD_OUTPUT "$STANDARD_OUTPUT"
                                                                                                                     '' ;
                                                                                                             } ;
                                                                                                     stage-gamma =
