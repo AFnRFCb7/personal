@@ -828,6 +828,26 @@
                                                                                                                 runtimeInputs = [ ] ;
                                                                                                                 text =
                                                                                                                     ''
+                                                                                                                        ALPHA_CONDITION="$( alpha-condition "$@" )" || failure 14402
+                                                                                                                        INIT_CONDITION="$( init-condition "$@" )" || failure 7005
+                                                                                                                        RELEASE_CONDITION="$( release-condition "$@" )" || failure 17709
+                                                                                                                        if [[ "$INIT_CONDITION" == "true" ]]
+                                                                                                                        then
+                                                                                                                            if [[ "$RELEASE_CONDITION" == "true" ]]
+                                                                                                                            then
+                                                                                                                                true
+                                                                                                                            else
+                                                                                                                                true
+                                                                                                                            fi
+                                                                                                                        else
+                                                                                                                            if [[ "$RELEASE_CONDITION" == "true" ]]
+                                                                                                                            then
+                                                                                                                                true
+                                                                                                                            else
+                                                                                                                                true
+                                                                                                                            fi
+                                                                                                                        fi
+                                                                                                                        echo "We have constructed the resource" ALPHA_CONDITION "$ALPHA_CONDITION" INIT_CONDITION "$INIT_CONDITION" RELEASE_CONDITION "$RELEASE_CONDITION"
                                                                                                                     '' ;
                                                                                                             } ;
                                                                                                     stage-gamma =
