@@ -848,7 +848,7 @@
                                                                                                                                 }' | compare --message message --channel "$DISTRACTOR_RELEASE_CHANNEL" --payload --uuid 7021 <&3
                                                                                                                         fi
                                                                                                                         block --timeout 1 --uuid 10525 <&3
-                                                                                                                        if true ; then exit 0 ; fi
+                                                                                                                        # if true ; then exit 0 ; fi
                                                                                                                         files \
                                                                                                                             --uuid 12121
                                                                                                                         echo "We have created a distractor" ALPHA_CONDITION "$ALPHA_CONDITION" DISTRACTOR "$DISTRACTOR" DISTRACTOR_INIT_CHANNEL "$DISTRACTOR_INIT_CHANNEL" DISTRACTOR_RELEASE_CHANNEL "$DISTRACTOR_RELEASE_CHANNEL"
