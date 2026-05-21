@@ -404,7 +404,7 @@
                                                                                                                                     else
                                                                                                                                         PAYLOAD_IS_JSON=true
                                                                                                                                         EXPECTED_PAYLOAD="$( jq --compact-output "." )" || failure 32657
-                                                                                                                                        OBSERVED_PAYLOAD="$2""
+                                                                                                                                        OBSERVED_PAYLOAD="$2"
                                                                                                                                         shift 2
                                                                                                                                     fi
                                                                                                                                     ;;
