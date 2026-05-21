@@ -278,6 +278,7 @@
                                                                                                                     ''
                                                                                                                         # if true ; then exit 0 ; fi
                                                                                                                         compare --message subscribe --channel invalid-init --payload 1 --timeout 1 --uuid 27606 <&3
+                                                                                                                        if true ; then exit 0 ; fi
                                                                                                                         compare --message subscribe --channel invalid-release --payload 2 --timeout 1 --uuid 26959 <&3
                                                                                                                         compare --message subscribe --channel valid-init --payload 3 --timeout 1 --uuid 4666 <&3
                                                                                                                         compare --message subscribe --channel valid-release --payload 4 --timeout 1 --uuid 20782 <&3
@@ -1599,13 +1600,16 @@
                                                                                                                 pkgs.writeShellApplication
                                                                                                                     {
                                                                                                                         name = "snapshot" ;
-                                                                                                                        runtimeInputs = [ ] ;
+                                                                                                                        runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
                                                                                                                         text =
                                                                                                                             ''
-                                                                                                                                if timeout 1m git commit -a --verbose --allow-empty
+                                                                                                                                git submodule foreach 'if ! timeout 1m git commit -a --verbose --allow-empty --allow-empty-message ; then git commit -am "" --allow-empty --allow-empty-message ; fi'
+                                                                                                                                git submodule foreach 'git push origin HEAD'
+                                                                                                                                if ! timeout 1m git commit -a --verbose --allow-empty --allow-empty-message
                                                                                                                                 then
                                                                                                                                     git commit -am "" --allow-empty --allow-empty-message
                                                                                                                                 fi
+                                                                                                                                git push origin HEAD
                                                                                                                             '' ;
                                                                                                                     } ;
                                                                                                             in "${ application }/bin/snapshot" ;
