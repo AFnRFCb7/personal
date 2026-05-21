@@ -387,9 +387,7 @@
                                                                                                                         then
                                                                                                                             failure 9152341496876694 "$UUID"
                                                                                                                         fi
-                                                                                                                        echo 5703
                                                                                                                         EXPECTED_PAYLOAD="$( cat )" || failure 29375
-                                                                                                                        echo 4088
                                                                                                                         if [[ -z "$TIMEOUT" ]]
                                                                                                                         then
                                                                                                                             failure d855cf3f4d0854ec "$UUID"
@@ -790,9 +788,7 @@
                                                                                                                 runtimeInputs = [ alpha-condition compare distractor-init-channel-value distractor-release-channel-value failure init-condition pkgs.jq release-condition ] ;
                                                                                                                 text =
                                                                                                                     ''
-                                                                                                                        ## if true ; then exit 0 ; fi
                                                                                                                         echo 1 | compare --message subscribe --channel invalid-init --timeout 1 --uuid 27606 3<&3
-                                                                                                                        ## if true ; then exit 0 ; fi
                                                                                                                         echo 2 | compare --message subscribe --channel invalid-release --timeout 1 --uuid 26959 3<&3
                                                                                                                         echo 3 | compare --message subscribe --channel valid-init --timeout 1 --uuid 4666 3<&3
                                                                                                                         echo 4 | compare --message subscribe --channel valid-release --timeout 1 --uuid 20782 3<&3
@@ -803,6 +799,7 @@
                                                                                                                         # if true ; then exit 0 ; fi
                                                                                                                         if [[ "$INIT_CONDITION" == "true" ]]
                                                                                                                         then
+                                                                                                                            if true ; then exit 0 ; fi
                                                                                                                             if [[ "$RELEASE_CONDITION" == "true" ]]
                                                                                                                             then
                                                                                                                                 DISTRACTOR=${ resources.checks.targets.true.true { failure = 2829 ; } }
@@ -810,6 +807,7 @@
                                                                                                                                 DISTRACTOR=${ resources.checks.targets.true.false { failure = 17544 ; } }
                                                                                                                             fi
                                                                                                                         else
+                                                                                                                            if true ; then exit 0 ; fi
                                                                                                                             if [[ "$RELEASE_CONDITION" == "true" ]]
                                                                                                                             then
                                                                                                                                 if ! DISTRACTOR=${ resources.checks.targets.false.true { failure = 13074 ; } }
