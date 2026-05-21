@@ -817,15 +817,14 @@
                                                                                                                                 fi
                                                                                                                             fi
                                                                                                                         fi
-                                                                                                                        # if true ; then exit 0 ; fi
+                                                                                                                        ## if true ; then exit 0 ; fi
                                                                                                                         DISTRACTOR_INIT_CHANNEL="$( distractor-init-channel-value "$@" )" || failure 23974
                                                                                                                         DISTRACTOR_RELEASE_CHANNEL="$( distractor-release-channel-value "$@" )" || failure 23012
-                                                                                                                        if true ; then exit 0 ; fi
+                                                                                                                        # if true ; then exit 0 ; fi
                                                                                                                         jq \
                                                                                                                             --null-input \
                                                                                                                             '{
                                                                                                                             }' | compare --message message --channel "$DISTRACTOR_INIT_CHANNEL" --payload --uuid 25555 <&3
-                                                                                                                        if true ; then exit 0 ; fi
                                                                                                                         if [[ "$INIT_CONDITION" == "false" ]]
                                                                                                                         then
                                                                                                                         jq \
@@ -833,12 +832,10 @@
                                                                                                                             '{
                                                                                                                             }' | compare --message message --channel "$DISTRACTOR_RELEASE_CHANNEL" --payload --uuid 7021 <&3
                                                                                                                         fi
-                                                                                                                        if true ; then exit 0 ; fi
                                                                                                                         block --timeout 1 --uuid 10525 <&3
                                                                                                                         if true ; then exit 0 ; fi
                                                                                                                         files \
                                                                                                                             --uuid 12121
-                                                                                                                        if true ; then exit 0 ; fi
                                                                                                                         echo "We have created a distractor" ALPHA_CONDITION "$ALPHA_CONDITION" DISTRACTOR "$DISTRACTOR" DISTRACTOR_INIT_CHANNEL "$DISTRACTOR_INIT_CHANNEL" DISTRACTOR_RELEASE_CHANNEL "$DISTRACTOR_RELEASE_CHANNEL"
                                                                                                                     '' ;
                                                                                                             } ;
