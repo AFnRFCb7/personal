@@ -406,6 +406,22 @@
                                                                                                                         fi
                                                                                                                     '' ;
                                                                                                             } ;
+                                                                                                    distractor-release-channel-value =
+                                                                                                        pkgs.writeShellApplication
+                                                                                                            {
+                                                                                                                name = "distractor-release-channel-value" ;
+                                                                                                                runtimeInputs = [ failure release-condition ] ;
+                                                                                                                text =
+                                                                                                                    ''
+                                                                                                                        RELEASE_CONDITION="$( release-condition "$@" )" || failure 13339
+                                                                                                                        if [[ "$INIT_CONDITION" == "true" ]]
+                                                                                                                        then
+                                                                                                                            echo "valid-release"
+                                                                                                                        else
+                                                                                                                            echo "invalid-release"
+                                                                                                                        fi
+                                                                                                                    '' ;
+                                                                                                            } ;
                                                                                                     files =
                                                                                                         pkgs.writeShellApplication
                                                                                                             {
@@ -742,11 +758,11 @@
                                                                                                         pkgs.writeShellApplication
                                                                                                             {
                                                                                                                 name = "stage-alpha" ;
-                                                                                                                runtimeInputs = [ alpha-condition compare distractor-init-channel-value failure init-condition pkgs.jq release-condition ] ;
+                                                                                                                runtimeInputs = [ alpha-condition compare distractor-init-channel-value distractor-release-channel-value failure init-condition pkgs.jq release-condition ] ;
                                                                                                                 text =
                                                                                                                     ''
                                                                                                                         # if true ; then exit 0 ; fi
-                                                                                                                        echo 1 | compare --message subscribe --channel invalid-init --payload --timeout 1 --uuid 27606 <&3
+                                                                                                                        echo 1 | compare --message subscribe --channel invalid-init --timeout 1 --uuid 27606 <&3
                                                                                                                         if true ; then exit 0 ; fi
                                                                                                                         echo 2 | compare --message subscribe --channel invalid-release --payload --timeout 1 --uuid 26959 <&3
                                                                                                                         echo 3 | compare --message subscribe --channel valid-init --payload --timeout 1 --uuid 4666 <&3
@@ -780,6 +796,7 @@
                                                                                                                         fi
                                                                                                                         if true ; then exit 0 ; fi
                                                                                                                         DISTRACTOR_INIT_CHANNEL="$( distractor-init-channel-value "$@" )" || failure 23974
+                                                                                                                        DISTRACTOR_RELEASE_CHANNEL="$( distractor-release-channel-value "$@" )" || failure 23012
                                                                                                                         if true ; then exit 0 ; fi
                                                                                                                         jq \
                                                                                                                             --null-input \
