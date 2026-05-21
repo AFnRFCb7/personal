@@ -851,7 +851,7 @@
                                                                                                             } ;
                                                                                                     in
                                                                                                         ''
-                                                                                                            wrap ${ test }/bin/test test 0500 --literal plain "@" --literal plain DERIVATION --uuid 7483697565341694
+                                                                                                            wrap ${ test }/bin/test test 0500 --literal plain "@" --literal plain DERIVATION --literal plain PATH --uuid 7483697565341694
                                                                                                         '' ;
                                                                                         } ;
                                                                                 in "${ application }/bin/init" ;
@@ -1582,7 +1582,18 @@
                                                                                             runtimeInputs = [ pkgs.git ] ;
                                                                                             text =
                                                                                                 let
-                                                                                                    snapshot =
+                                                                                                    mirror =
+                                                                                                        let
+                                                                                                            application =
+                                                                                                                pkgs.writeShellApplication
+                                                                                                                    {
+                                                                                                                        name = "mirror" ;
+                                                                                                                        runtimeInputs = [ ] ;
+                                                                                                                        text =
+                                                                                                                            ''
+                                                                                                                            '' ;
+                                                                                                                    } ;
+                                                                                                            in "${ application }/bin/mirror" ;                                                                                                    snapshot =
                                                                                                         let
                                                                                                             application =
                                                                                                                 pkgs.writeShellApplication
@@ -1597,6 +1608,7 @@
                                                                                                     in
                                                                                                         ''
                                                                                                             git init 2>&1
+                                                                                                            git config alias.mirror "!${ mirror }"
                                                                                                             git config alias.snapshot "!${ snapshot }"
                                                                                                             export GIT_SSH_COMMAND ${ resources.production.bin.ssh { failure = 14260 ; } }/bin/ssh
                                                                                                             git config core.sshCommand "$GIT_SSH_COMMAND"
