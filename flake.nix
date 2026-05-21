@@ -826,12 +826,13 @@
                                                                                                                                 fi
                                                                                                                             fi
                                                                                                                         fi
-                                                                                                                        # if true ; then exit 0 ; fi
+                                                                                                                        ## if true ; then exit 0 ; fi
                                                                                                                         jq \
                                                                                                                             --null-input \
                                                                                                                             --argjson DISTRACTOR_INDEX "$DISTRACTOR_INDEX" \
                                                                                                                             --arg STANDARD_OUTPUT "$STANDARD_OUTPUT" \
                                                                                                                             '{
+                                                                                                                                "wtf" : true ,
                                                                                                                                 "arguments" : [ ] ,
                                                                                                                                 "has-standard-input" : false ,
                                                                                                                                 "index" : $DISTRACTOR_INDEX ,
@@ -841,10 +842,10 @@
                                                                                                                             }' | compare --message message --channel "$DISTRACTOR_INIT_CHANNEL" --payload --uuid 25555 <&3
                                                                                                                         if [[ "$INIT_CONDITION" == "false" ]]
                                                                                                                         then
-                                                                                                                        jq \
-                                                                                                                            --null-input \
-                                                                                                                            '{
-                                                                                                                            }' | compare --message message --channel "$DISTRACTOR_RELEASE_CHANNEL" --payload --uuid 7021 <&3
+                                                                                                                            jq \
+                                                                                                                                --null-input \
+                                                                                                                                '{
+                                                                                                                                }' | compare --message message --channel "$DISTRACTOR_RELEASE_CHANNEL" --payload --uuid 7021 <&3
                                                                                                                         fi
                                                                                                                         block --timeout 1 --uuid 10525 <&3
                                                                                                                         if true ; then exit 0 ; fi
