@@ -804,7 +804,6 @@
                                                                                                                                 DISTRACTOR=${ resources.checks.targets.true.false { failure = 17544 ; } }
                                                                                                                             fi
                                                                                                                         else
-                                                                                                                            # if true ; then exit 0 ; fi
                                                                                                                             if [[ "$RELEASE_CONDITION" == "true" ]]
                                                                                                                             then
                                                                                                                                 if DISTRACTOR=${ resources.checks.targets.false.true { failure = 13074 ; } }
@@ -818,7 +817,7 @@
                                                                                                                                 fi
                                                                                                                             fi
                                                                                                                         fi
-                                                                                                                        if true ; then exit 0 ; fi
+                                                                                                                        # if true ; then exit 0 ; fi
                                                                                                                         DISTRACTOR_INIT_CHANNEL="$( distractor-init-channel-value "$@" )" || failure 23974
                                                                                                                         DISTRACTOR_RELEASE_CHANNEL="$( distractor-release-channel-value "$@" )" || failure 23012
                                                                                                                         if true ; then exit 0 ; fi
