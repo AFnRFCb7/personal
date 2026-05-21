@@ -1571,7 +1571,7 @@
                                                                                                 in "${ application }/bin/init" ;
                                                                                     targets = [ ".envrc" ] ;
                                                                                 } ;
-                                                            } ;
+                                                                    } ;
                                                         private =
                                                             {
                                                                 immutable =
@@ -1636,6 +1636,7 @@
                                                                                                                                         BRANCH="$( git rev-parse HEAD )" || failure 25502
                                                                                                                                         COMMIT="$( git rev-parse HEAD )" || failure 30677
                                                                                                                                         IMMUTABLE=${ resources.production.private.immutable { failure = 5663 ; setup = setup : ''${ setup } "$BRANCH" "$COMMIT"'' ; } }
+                                                                                                                                        echo "$IMMUTABLE"
                                                                                                                                     '' ;
                                                                                                                             } ;
                                                                                                                     in "${ application }/bin/immutable" ;
@@ -1655,6 +1656,7 @@
                                                                                         in "${ application }/bin/init" ;
                                                                             targets = [ ] ;
                                                                         } ;
+                                                            } ;
                                                         product =
                                                             {
                                                                 gh =
