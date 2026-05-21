@@ -2359,7 +2359,7 @@
                                                                                                                                     } ;
                                                                                                                             in "${ application }/bin/init" ;
                                                                                                                 release =
-                                                                                                                    { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
+                                                                                                                    { failure , pkgs , resources , seed , sequential , trace } :
                                                                                                                         let
                                                                                                                             application =
                                                                                                                                 pkgs.writeShellApplication
@@ -3375,6 +3375,7 @@
                                                                     machine.succeed("runuser --login ${ testuser } -- ${ test }")
                                                                 '' ;
                                                 } ;
+#                                            private = null ;
 #                                            secrets = null ;
                                             visitor-happy =
                                                 _visitor.check
