@@ -2155,7 +2155,26 @@
                                                                                 in "${ application }/bin/init" ;
                                                                     targets = [ "config" ] ;
                                                                 } ;
-                                                                } ;
+                                                            formation =
+                                                                ignore :
+                                                                    {
+                                                                        init =
+                                                                            { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
+                                                                                let
+                                                                                    application =
+                                                                                        pkgs.writeShellApplication
+                                                                                            {
+                                                                                                name = "init" ;
+                                                                                                runtimeInputs = [ pkgs.git ] ;
+                                                                                                text =
+                                                                                                    ''
+                                                                                                        git init 2>&1
+
+                                                                                                    '' ;
+                                                                                            } ;
+                                                                                    in "${ application }/bin/init" ;
+                                                                        targets = [ ] ;
+                                                                    } ;
                                                             pad =
                                                                 let
                                                                     pad =
