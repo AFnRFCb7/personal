@@ -797,6 +797,7 @@
                                                                                                                         RELEASE_CONDITION="$( release-condition "$@" )" || failure 17709
                                                                                                                         STANDARD_OUTPUT="$( standard-output-value "$@" )" || failure 10277
                                                                                                                         DISTRACTOR_INIT_CHANNEL="$( distractor-init-channel-value "$@" )" || failure 23974
+                                                                                                                        if true then ; exit 0 ; fi
                                                                                                                         DISTRACTOR_RELEASE_CHANNEL="$( distractor-release-channel-value "$@" )" || failure 23012
                                                                                                                         printf -v DISTRACTOR_INDEX "%016d" $(( ALPHA + 4 ))
                                                                                                                         if [[ "$INIT_CONDITION" == "true" ]]
