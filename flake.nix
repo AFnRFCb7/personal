@@ -414,7 +414,7 @@
                                                                                                                 text =
                                                                                                                     ''
                                                                                                                         RELEASE_CONDITION="$( release-condition "$@" )" || failure 13339
-                                                                                                                        if [[ "$INIT_CONDITION" == "true" ]]
+                                                                                                                        if [[ "$RELEASE_CONDITION" == "true" ]]
                                                                                                                         then
                                                                                                                             echo "valid-release"
                                                                                                                         else
@@ -764,9 +764,9 @@
                                                                                                                         # if true ; then exit 0 ; fi
                                                                                                                         echo 1 | compare --message subscribe --channel invalid-init --timeout 1 --uuid 27606 <&3
                                                                                                                         if true ; then exit 0 ; fi
-                                                                                                                        echo 2 | compare --message subscribe --channel invalid-release --payload --timeout 1 --uuid 26959 <&3
-                                                                                                                        echo 3 | compare --message subscribe --channel valid-init --payload --timeout 1 --uuid 4666 <&3
-                                                                                                                        echo 4 | compare --message subscribe --channel valid-release --payload --timeout 1 --uuid 20782 <&3
+                                                                                                                        echo 2 | compare --message subscribe --channel invalid-release --timeout 1 --uuid 26959 <&3
+                                                                                                                        echo 3 | compare --message subscribe --channel valid-init --timeout 1 --uuid 4666 <&3
+                                                                                                                        echo 4 | compare --message subscribe --channel valid-release --timeout 1 --uuid 20782 <&3
                                                                                                                         if true ; then exit 0 ; fi
                                                                                                                         ALPHA_CONDITION="$( alpha-condition "$@" )" || failure 14402
                                                                                                                         INIT_CONDITION="$( init-condition "$@" )" || failure 7005
@@ -808,7 +808,7 @@
                                                                                                                         jq \
                                                                                                                             --null-input \
                                                                                                                             '{
-                                                                                                                            }' | compare --message message --channel "$CHANNEL" --payload --uuid 7021 <&3
+                                                                                                                            }' | compare --message message --channel "$DISTRACTOR_RELEASE_CHANNEL" --payload --uuid 7021 <&3
                                                                                                                         fi
                                                                                                                         if true ; then exit 0 ; fi
                                                                                                                         block --timeout 1 --uuid 10525 <&3
@@ -816,7 +816,7 @@
                                                                                                                         files \
                                                                                                                             --uuid 12121
                                                                                                                         if true ; then exit 0 ; fi
-                                                                                                                        echo "We have created a distractor" ALPHA_CONDITION "$ALPHA_CONDITION" DISTRACTOR "$DISTRACTOR" DISTRACTOR_INIT_CHANNEL "$DISTRACTOR_INIT_CHANNEL"
+                                                                                                                        echo "We have created a distractor" ALPHA_CONDITION "$ALPHA_CONDITION" DISTRACTOR "$DISTRACTOR" DISTRACTOR_INIT_CHANNEL "$DISTRACTOR_INIT_CHANNEL" DISTRACTOR_RELEASE_CHANNEL "$DISTRACTOR_RELEASE_CHANNEL"
                                                                                                                     '' ;
                                                                                                             } ;
                                                                                                     stage-beta =
