@@ -825,17 +825,18 @@
                                                                                                         pkgs.writeShellApplication
                                                                                                             {
                                                                                                                 name = "stage-beta" ;
-                                                                                                                runtimeInputs = [ ] ;
+                                                                                                                runtimeInputs = [ alpha-condition init-condition release-condition standard-output-value ] ;
                                                                                                                 text =
                                                                                                                     ''
                                                                                                                         ALPHA_CONDITION="$( alpha-condition "$@" )" || failure 14402
                                                                                                                         INIT_CONDITION="$( init-condition "$@" )" || failure 7005
                                                                                                                         RELEASE_CONDITION="$( release-condition "$@" )" || failure 17709
+                                                                                                                        STANDARD_OUTPUT="$( standard-output-value )" || failure 22866
                                                                                                                         if [[ "$INIT_CONDITION" == "true" ]]
                                                                                                                         then
                                                                                                                             if [[ "$RELEASE_CONDITION" == "true" ]]
                                                                                                                             then
-                                                                                                                                true
+                                                                                                                                FRESH=${ resources.checks.targets.true.true { failure = 32618 ; setup = setup : ''${ setup } $STANDARD_OUTPUT'' ; } }
                                                                                                                             else
                                                                                                                                 true
                                                                                                                             fi
@@ -857,6 +858,33 @@
                                                                                                                 runtimeInputs = [ ] ;
                                                                                                                 text =
                                                                                                                     ''
+                                                                                                                    '' ;
+                                                                                                            } ;
+                                                                                                    standard-output-value =
+                                                                                                        pkgs.writeShellApplication
+                                                                                                            {
+                                                                                                                name = "stage-gamma" ;
+                                                                                                                runtimeInputs = [ failure init-condition release-condition ] ;
+                                                                                                                text =
+                                                                                                                    ''
+                                                                                                                        INIT_CONDITION="$( init-condition "$@" )" || failure 15442
+                                                                                                                        RELEASE_CONDITION="$( release-condition "$@" )" || failure 24351
+                                                                                                                        if [[ "$INIT_CONDITION" == "true" ]]
+                                                                                                                        then
+                                                                                                                            if [[ "$RELEASE_CONDITION" == "true" ]]
+                                                                                                                            then
+                                                                                                                                echo
+                                                                                                                            else
+                                                                                                                                echo
+                                                                                                                            fi
+                                                                                                                        else
+                                                                                                                            if [[ "$RELEASE_CONDITION" == "true" ]]
+                                                                                                                            then
+                                                                                                                                echo
+                                                                                                                            else
+                                                                                                                                echo
+                                                                                                                            fi
+                                                                                                                        fi
                                                                                                                     '' ;
                                                                                                             } ;
                                                                                                     test =
