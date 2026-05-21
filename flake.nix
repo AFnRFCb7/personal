@@ -842,7 +842,7 @@
                                                                                                                             --compact-output \
                                                                                                                             --null-input \
                                                                                                                             '{
-                                                                                                                            }' | compare --message message --channel "$DISTRACTOR_INIT_CHANNEL" --payload --uuid 25555 <&3
+                                                                                                                            }' | compare --message message --channel "$DISTRACTOR_INIT_CHANNEL" --payload --uuid 25555 3<&3
                                                                                                                         if [[ "$INIT_CONDITION" == "false" ]]
                                                                                                                         then
                                                                                                                             jq \
