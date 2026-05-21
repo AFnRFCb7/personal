@@ -863,19 +863,19 @@
                                                                                                                         then
                                                                                                                             if [[ "$RELEASE_CONDITION" == "true" ]]
                                                                                                                             then
-                                                                                                                                FRESH=${ resources.checks.targets.true.true { failure = 32618 ; setup = setup : ''${ setup } $ARGUMENT'' ; } }
+                                                                                                                                FRESH=${ resources.checks.targets.true.true { failure = 32618 ; setup = setup : ''${ setup } "$ARGUMENT"'' ; } }
                                                                                                                             else
-                                                                                                                                FRESH=${ resources.checks.targets.true.false { failure = 5420 ; setup = setup : ''${ setup } $ARGUMENT'' ; } }
+                                                                                                                                FRESH=${ resources.checks.targets.true.false { failure = 5420 ; setup = setup : ''${ setup } "$ARGUMENT"'' ; } }
                                                                                                                             fi
                                                                                                                         else
                                                                                                                             if [[ "$RELEASE_CONDITION" == "true" ]]
                                                                                                                             then
-                                                                                                                                if FRESH=${ resources.checks.targets.false.true { failure = 6677 ; setup = setup : ''${ setup } $ARGUMENT'' ; } }
+                                                                                                                                if FRESH=${ resources.checks.targets.false.true { failure = 6677 ; setup = setup : ''${ setup } "$ARGUMENT"'' ; } }
                                                                                                                                 then
                                                                                                                                     failure 11332
                                                                                                                                 fi
                                                                                                                             else
-                                                                                                                                if FRESH=${ resources.checks.targets.false.false { failure = 27839 ; setup = setup : ''${ setup } $ARGUMENT'' ; } }
+                                                                                                                                if FRESH=${ resources.checks.targets.false.false { failure = 27839 ; setup = setup : ''${ setup } "$ARGUMENT"'' ; } }
                                                                                                                                 then
                                                                                                                                     failure 17466
                                                                                                                                 fi
