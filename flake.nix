@@ -837,7 +837,7 @@
                                                                                                                                 fi
                                                                                                                             fi
                                                                                                                         fi
-                                                                                                                        # if true ; then exit 0 ; fi
+                                                                                                                        if true ; then exit 0 ; fi
                                                                                                                         jq \
                                                                                                                             --compact-output \
                                                                                                                             --null-input \
@@ -848,6 +848,7 @@
                                                                                                                         if [[ "$INIT_CONDITION" == "false" ]]
                                                                                                                         then
                                                                                                                             jq \
+                                                                                                                                --compact-output \
                                                                                                                                 --null-input \
                                                                                                                                 '{
                                                                                                                                 }' | compare --message message --channel "$DISTRACTOR_RELEASE_CHANNEL" --payload --uuid 7021 <&3
