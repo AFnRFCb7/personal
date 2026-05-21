@@ -2342,7 +2342,37 @@
                                                                                         {
                                                                                             github =
                                                                                                 {
-                                                                                                    identity = decrypt ;
+                                                                                                    identity =
+                                                                                                        ignore :
+                                                                                                            {
+                                                                                                                init =
+                                                                                                                    { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
+                                                                                                                        let
+                                                                                                                            application =
+                                                                                                                                pkgs.writeShellApplication
+                                                                                                                                    {
+                                                                                                                                        name = "init" ;
+                                                                                                                                        runtimeInputs = [ ] ;
+                                                                                                                                        text =
+                                                                                                                                            ''
+                                                                                                                                            '' ;
+                                                                                                                                    } ;
+                                                                                                                            in "${ application }/bin/init" ;
+                                                                                                                release =
+                                                                                                                    { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
+                                                                                                                        let
+                                                                                                                            application =
+                                                                                                                                pkgs.writeShellApplication
+                                                                                                                                    {
+                                                                                                                                        name = "release" ;
+                                                                                                                                        runtimeInputs = [ ] ;
+                                                                                                                                        text =
+                                                                                                                                            ''
+                                                                                                                                            '' ;
+                                                                                                                                    } ;
+                                                                                                                            in "${ application }/bin/release" ;
+                                                                                                                targets = [ "plaintext" ] ;
+                                                                                                            }
                                                                                                     known-hosts = decrypt ;
                                                                                                 } ;
                                                                                             mobile =
