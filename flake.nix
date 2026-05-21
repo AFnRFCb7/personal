@@ -268,7 +268,7 @@
                                                                                                                     ''
                                                                                                                         echo "$1"
                                                                                                                     '' ;
-                                                                                                            }
+                                                                                                            } ;
                                                                                                     alpha-stage =
                                                                                                         pkgs.writeShellApplication
                                                                                                             {
