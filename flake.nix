@@ -837,12 +837,10 @@
                                                                                                                                 fi
                                                                                                                             fi
                                                                                                                         fi
-                                                                                                                        if true ; then exit 0 ; fi
+                                                                                                                        # if true ; then exit 0 ; fi
                                                                                                                         jq \
                                                                                                                             --compact-output \
                                                                                                                             --null-input \
-                                                                                                                            --arg DISTRACTOR_INDEX "$DISTRACTOR_INDEX" \
-                                                                                                                            --arg STANDARD_OUTPUT "$STANDARD_OUTPUT" \
                                                                                                                             '{
                                                                                                                             }' | compare --message message --channel "$DISTRACTOR_INIT_CHANNEL" --payload --uuid 25555 <&3
                                                                                                                         if [[ "$INIT_CONDITION" == "false" ]]
