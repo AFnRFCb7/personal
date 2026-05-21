@@ -273,10 +273,9 @@
                                                                                                         pkgs.writeShellApplication
                                                                                                             {
                                                                                                                 name = "alpha-stage" ;
-                                                                                                                runtimeInputs = [ alpha-condition compare failure init-condition pkgs.jq pkgs.redis release-condition ] ;
+                                                                                                                runtimeInputs = [ alpha-condition compare failure init-condition pkgs.jq release-condition ] ;
                                                                                                                 text =
                                                                                                                     ''
-                                                                                                                        exec 3< <( redis-cli SUBSCRIBE invalid-init invalid-release valid-init valid-release )
                                                                                                                         compare --message subscribe --channel invalid-init --payload 1
                                                                                                                         compare --message subscribe --channel invalid-release --payload 2
                                                                                                                         compare --message subscribe --channel valid-init --payload 3
@@ -404,8 +403,8 @@
                                                                                                                                         shift 3
                                                                                                                                     else
                                                                                                                                         PAYLOAD_IS_JSON=true
-                                                                                                                                        EXPECTED_PAYLOAD="$( jq "." )" || failure 32657
-                                                                                                                                        OBSERVED_PAYLOAD="$2"
+                                                                                                                                        EXPECTED_PAYLOAD="$( jq --compact-output "." )" || failure 32657
+                                                                                                                                        OBSERVED_PAYLOAD="$2""
                                                                                                                                         shift 2
                                                                                                                                     fi
                                                                                                                                     ;;
@@ -837,11 +836,12 @@
                                                                                                         pkgs.writeShellApplication
                                                                                                             {
                                                                                                                 name = "test" ;
-                                                                                                                runtimeInputs = [ alpha-stage beta-stage ] ;
+                                                                                                                runtimeInputs = [ alpha-stage beta-stage pkgs.redis-cli ] ;
                                                                                                                 text =
                                                                                                                     ''
-                                                                                                                        alpha-stage ${ arguments }
-                                                                                                                        beta-stage ${ arguments } &
+                                                                                                                        exec 3< <( redis-cli SUBSCRIBE invalid-init invalid-release valid-init valid-release )
+                                                                                                                        alpha-stage ${ arguments } <3
+                                                                                                                        beta-stage ${ arguments } <3 &
                                                                                                                     '' ;
                                                                                                             } ;
                                                                                                     in
