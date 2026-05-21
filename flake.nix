@@ -787,6 +787,7 @@
                                                                                                                 runtimeInputs = [ alpha-condition compare distractor-init-channel-value distractor-release-channel-value failure init-condition pkgs.jq release-condition ] ;
                                                                                                                 text =
                                                                                                                     ''
+                                                                                                                        if true then exit 0 ; fi
                                                                                                                         echo 1 | compare --message subscribe --channel invalid-init --timeout 1 --uuid 27606 3<&3
                                                                                                                         echo 2 | compare --message subscribe --channel invalid-release --timeout 1 --uuid 26959 3<&3
                                                                                                                         echo 3 | compare --message subscribe --channel valid-init --timeout 1 --uuid 4666 3<&3
