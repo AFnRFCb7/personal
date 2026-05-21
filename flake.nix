@@ -842,14 +842,14 @@
                                                                                                                             --compact-output \
                                                                                                                             --null-input \
                                                                                                                             '{
-                                                                                                                            }' | compare --message message --channel "$DISTRACTOR_INIT_CHANNEL" --uuid 25555 3<&3
+                                                                                                                            }' | compare --message message --channel "$DISTRACTOR_INIT_CHANNEL" --timeout 1 --uuid 25555 3<&3
                                                                                                                         if [[ "$INIT_CONDITION" == "false" ]]
                                                                                                                         then
                                                                                                                             jq \
                                                                                                                                 --compact-output \
                                                                                                                                 --null-input \
                                                                                                                                 '{
-                                                                                                                                }' | compare --message message --channel "$DISTRACTOR_RELEASE_CHANNEL" --uuid 7021 3<&3
+                                                                                                                                }' | compare --message message --channel "$DISTRACTOR_RELEASE_CHANNEL" --timeout 1 --uuid 7021 3<&3
                                                                                                                         fi
                                                                                                                         block --timeout 1 --uuid 10525 <&3
                                                                                                                         if true ; then exit 0 ; fi
