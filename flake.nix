@@ -795,10 +795,8 @@
                                                                                                                         ALPHA_CONDITION="$( alpha-condition "$@" )" || failure 14402
                                                                                                                         INIT_CONDITION="$( init-condition "$@" )" || failure 7005
                                                                                                                         RELEASE_CONDITION="$( release-condition "$@" )" || failure 17709
-                                                                                                                        ## if true ; then exit 0 ; fi
                                                                                                                         if [[ "$INIT_CONDITION" == "true" ]]
                                                                                                                         then
-                                                                                                                            ## if true ; then exit 0 ; fi
                                                                                                                             if [[ "$RELEASE_CONDITION" == "true" ]]
                                                                                                                             then
                                                                                                                                 DISTRACTOR=${ resources.checks.targets.true.true { failure = 2829 ; } }
@@ -809,12 +807,12 @@
                                                                                                                             # if true ; then exit 0 ; fi
                                                                                                                             if [[ "$RELEASE_CONDITION" == "true" ]]
                                                                                                                             then
-                                                                                                                                if ! DISTRACTOR=${ resources.checks.targets.false.true { failure = 13074 ; } }
+                                                                                                                                if DISTRACTOR=${ resources.checks.targets.false.true { failure = 13074 ; } }
                                                                                                                                 then
                                                                                                                                     failure 26505
                                                                                                                                 fi
                                                                                                                             else
-                                                                                                                                if ! DISTRACTOR=${ resources.checks.targets.false.false { failure = 27401 ; } }
+                                                                                                                                if DISTRACTOR=${ resources.checks.targets.false.false { failure = 27401 ; } }
                                                                                                                                 then
                                                                                                                                     failure 22382
                                                                                                                                 fi
