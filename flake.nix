@@ -269,15 +269,6 @@
                                                                                                                         echo "$1"
                                                                                                                     '' ;
                                                                                                             } ;
-                                                                                                    beta-stage =
-                                                                                                        pkgs.writeShellApplication
-                                                                                                            {
-                                                                                                                name = "beta-stage" ;
-                                                                                                                runtimeInputs = [ ] ;
-                                                                                                                text =
-                                                                                                                    ''
-                                                                                                                    '' ;
-                                                                                                            } ;
                                                                                                     block =
                                                                                                         pkgs.writeShellApplication
                                                                                                             {
@@ -330,7 +321,7 @@
                                                                                                                     ''
                                                                                                                         while [[ "$#" -gt 0 ]]
                                                                                                                         do
-                                                                                                                            echo 6698 "$*"
+                                                                                                                            echo 22318 "$*"
                                                                                                                             case "$1" in
                                                                                                                                 --channel)
                                                                                                                                     EXPECTED_CHANNEL="$2"
@@ -339,10 +330,6 @@
                                                                                                                                 --message)
                                                                                                                                     EXPECTED_MESSAGE="$2"
                                                                                                                                     shift 2
-                                                                                                                                    ;;
-                                                                                                                                --payload)
-                                                                                                                                    EXPECTED_PAYLOAD="$( cat )" || failure 32657
-                                                                                                                                    shift
                                                                                                                                     ;;
                                                                                                                                 --timeout)
                                                                                                                                     TIMEOUT="$2"
@@ -373,14 +360,7 @@
                                                                                                                         then
                                                                                                                             failure 9152341496876694 "$UUID"
                                                                                                                         fi
-                                                                                                                        if [[ -z "$EXPECTED_PAYLOAD" ]]
-                                                                                                                        then
-                                                                                                                            failure 8569324665781814 "$UUID"
-                                                                                                                        fi
-                                                                                                                        if [[ -z "$PAYLOAD_IS_JSON" ]]
-                                                                                                                        then
-                                                                                                                            failure 9331276634154662 "$UUID"
-                                                                                                                        fi
+                                                                                                                        EXPECTED_PAYLOAD="$( cat )" || failure 29375
                                                                                                                         if [[ -z "$TIMEOUT" ]]
                                                                                                                         then
                                                                                                                             failure d855cf3f4d0854ec "$UUID"
@@ -822,16 +802,35 @@
                                                                                                                         echo "We have created a distractor" ALPHA_CONDITION "$ALPHA_CONDITION" DISTRACTOR "$DISTRACTOR" DISTRACTOR_INIT_CHANNEL "$DISTRACTOR_INIT_CHANNEL"
                                                                                                                     '' ;
                                                                                                             } ;
+                                                                                                    stage-beta =
+                                                                                                        pkgs.writeShellApplication
+                                                                                                            {
+                                                                                                                name = "stage-beta" ;
+                                                                                                                runtimeInputs = [ ] ;
+                                                                                                                text =
+                                                                                                                    ''
+                                                                                                                    '' ;
+                                                                                                            } ;
+                                                                                                    stage-gamma =
+                                                                                                        pkgs.writeShellApplication
+                                                                                                            {
+                                                                                                                name = "stage-gamma" ;
+                                                                                                                runtimeInputs = [ ] ;
+                                                                                                                text =
+                                                                                                                    ''
+                                                                                                                    '' ;
+                                                                                                            } ;
                                                                                                     test =
                                                                                                         pkgs.writeShellApplication
                                                                                                             {
                                                                                                                 name = "test" ;
-                                                                                                                runtimeInputs = [ beta-stage pkgs.redis stage-alpha ] ;
+                                                                                                                runtimeInputs = [ pkgs.redis stage-alpha stage-beta stage-gamma ] ;
                                                                                                                 text =
                                                                                                                     ''
                                                                                                                         exec 3< <( redis-cli SUBSCRIBE invalid-init invalid-release valid-init valid-release )
                                                                                                                         stage-alpha "$@" <&3
-                                                                                                                        beta-stage "$@" <&3 &
+                                                                                                                        stage-beta "$@" <&3 &
+                                                                                                                        stage-gamma "$@"
                                                                                                                     '' ;
                                                                                                             } ;
                                                                                                     in
