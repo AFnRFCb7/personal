@@ -792,7 +792,7 @@
                                                                                                                         echo 3 | compare --message subscribe --channel valid-init --timeout 10 --uuid 4666 3<&3
                                                                                                                         ## if true ; then exit 0 ; fi
                                                                                                                         echo 4 | compare --message subscribe --channel valid-release --timeout 10 --uuid 20782 3<&3
-                                                                                                                        # if true ; then exit 0 ; fi
+                                                                                                                        ## if true ; then exit 0 ; fi
                                                                                                                         ALPHA_CONDITION="$( alpha-condition "$@" )" || failure 14402
                                                                                                                         INIT_CONDITION="$( init-condition "$@" )" || failure 7005
                                                                                                                         RELEASE_CONDITION="$( release-condition "$@" )" || failure 17709
