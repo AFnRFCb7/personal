@@ -277,7 +277,7 @@
                                                                                                                 text =
                                                                                                                     ''
                                                                                                                         # if true ; then exit 0 ; fi
-                                                                                                                        compare --message subscribe --channel invalid-init --payload 1 --timeout 1 --uuid 27606 <&3
+                                                                                                                        echo 1 | compare --message subscribe --channel invalid-init --payload 1 --timeout 1 --uuid 27606 <&3
                                                                                                                         if true ; then exit 0 ; fi
                                                                                                                         compare --message subscribe --channel invalid-release --payload 2 --timeout 1 --uuid 26959 <&3
                                                                                                                         compare --message subscribe --channel valid-init --payload 3 --timeout 1 --uuid 4666 <&3
@@ -405,18 +405,8 @@
                                                                                                                                     shift 2
                                                                                                                                     ;;
                                                                                                                                 --payload)
-                                                                                                                                    if [[ -t 0 ]]
-                                                                                                                                    then
-                                                                                                                                        echo 16084
-                                                                                                                                        PAYLOAD_IS_JSON=false
-                                                                                                                                        EXPECTED_PAYLOAD="$2"
-                                                                                                                                        shift 2
-                                                                                                                                    else
-                                                                                                                                        echo 7881
-                                                                                                                                        PAYLOAD_IS_JSON=true
-                                                                                                                                        EXPECTED_PAYLOAD="$( jq --compact-output "." <&2 )" || failure 32657
-                                                                                                                                        shift
-                                                                                                                                    fi
+                                                                                                                                    EXPECTED_PAYLOAD="$( jq --compact-output "." <&2 )" || failure 32657
+                                                                                                                                    shift
                                                                                                                                     ;;
                                                                                                                                 --timeout)
                                                                                                                                     TIMEOUT="$2"
@@ -470,25 +460,17 @@
                                                                                                                         then
                                                                                                                             failure 3246855689569956 "$UUID" EXPECTED_CHANNEL "$EXPECTED_CHANNEL" OBSERVED_CHANNEL "$OBSERVED_CHANNEL"
                                                                                                                         fi
-                                                                                                                        if [[ "$PAYLOAD_IS_JSON" == "true" ]]
+                                                                                                                        if [[ "$EXPECTED_PAYLOAD" != "$OBSERVED_PAYLOAD" ]]
                                                                                                                         then
-                                                                                                                            if [[ "$EXPECTED_PAYLOAD" != "$OBSERVED_PAYLOAD" ]]
-                                                                                                                            then
-                                                                                                                                EXPECTED_PRINT_PAYLOAD="$( yq --input-format=json eval --prettyPrint "." <<< "$EXPECTED_PAYLOAD" )" || failure 9695639117138292
-                                                                                                                                echo "$OBSERVED_PAYLOAD" >&2
-                                                                                                                                OBSERVED_PRINT_PAYLOAD="$( yq --input-format=json eval --prettyPrint "." <<< "$OBSERVED_PAYLOAD" )" || failure 3474923945839811 "$OBSERVED_PAYLOAD"
-                                                                                                                                EXPECTED_FILE="$( mktemp )" || failure 1812352358347461
-                                                                                                                                echo "$EXPECTED_PRINT_PAYLOAD" > "$EXPECTED_FILE"
-                                                                                                                                OBSERVED_FILE="$( mktemp )" || failure
-                                                                                                                                echo "$OBSERVED_PRINT_PAYLOAD" > "$OBSERVED_FILE"
-                                                                                                                                DIFF="$( diff --unified "$EXPECTED_FILE" "$OBSERVED_FILE" )" || true
-                                                                                                                                failure 2177767151764594 "$UUID" EXPECTED_PAYLOAD "$EXPECTED_PAYLOAD" OBSERVED_PAYLOAD "$OBSERVED_PAYLOAD" EXPECTED_PRINT_PAYLOAD "$EXPECTED_PRINT_PAYLOAD" OBSERVED_PRINT_PAYLOAD "$OBSERVED_PRINT_PAYLOAD" "" "" DIFF "$DIFF"
-                                                                                                                            fi
-                                                                                                                        else
-                                                                                                                            if [[ "$EXPECTED_PAYLOAD" != "$OBSERVED_PAYLOAD" ]]
-                                                                                                                            then
-                                                                                                                                failure 2376349973447483 "$UUID" EXPECTED_PAYLOAD "$EXPECTED_PAYLOAD" OBSERVED_PAYLOAD "$OBSERVED_PAYLOAD"
-                                                                                                                            fi
+                                                                                                                            EXPECTED_PRINT_PAYLOAD="$( yq --input-format=json eval --prettyPrint "." <<< "$EXPECTED_PAYLOAD" )" || failure 9695639117138292
+                                                                                                                            echo "$OBSERVED_PAYLOAD" >&2
+                                                                                                                            OBSERVED_PRINT_PAYLOAD="$( yq --input-format=json eval --prettyPrint "." <<< "$OBSERVED_PAYLOAD" )" || failure 3474923945839811 "$OBSERVED_PAYLOAD"
+                                                                                                                            EXPECTED_FILE="$( mktemp )" || failure 1812352358347461
+                                                                                                                            echo "$EXPECTED_PRINT_PAYLOAD" > "$EXPECTED_FILE"
+                                                                                                                            OBSERVED_FILE="$( mktemp )" || failure
+                                                                                                                            echo "$OBSERVED_PRINT_PAYLOAD" > "$OBSERVED_FILE"
+                                                                                                                            DIFF="$( diff --unified "$EXPECTED_FILE" "$OBSERVED_FILE" )" || true
+                                                                                                                            failure 2177767151764594 "$UUID" EXPECTED_PAYLOAD "$EXPECTED_PAYLOAD" OBSERVED_PAYLOAD "$OBSERVED_PAYLOAD" EXPECTED_PRINT_PAYLOAD "$EXPECTED_PRINT_PAYLOAD" OBSERVED_PRINT_PAYLOAD "$OBSERVED_PRINT_PAYLOAD" "" "" DIFF "$DIFF"
                                                                                                                         fi
                                                                                                                     '' ;
                                                                                                             } ;
@@ -1605,18 +1587,6 @@
                                                                                                     runtimeInputs = [ pkgs.git ] ;
                                                                                                     text =
                                                                                                         let
-                                                                                                            mirror =
-                                                                                                                let
-                                                                                                                    application =
-                                                                                                                        pkgs.writeShellApplication
-                                                                                                                            {
-                                                                                                                                name = "mirror" ;
-                                                                                                                                runtimeInputs = [ ] ;
-                                                                                                                                text =
-                                                                                                                                    ''
-                                                                                                                                    '' ;
-                                                                                                                            } ;
-                                                                                                                    in "${ application }/bin/mirror" ;
                                                                                                             immutable =
                                                                                                                 let
                                                                                                                     application =
@@ -1640,11 +1610,37 @@
                                                                                                                                     '' ;
                                                                                                                             } ;
                                                                                                                     in "${ application }/bin/immutable" ;
+                                                                                                            mirror =
+                                                                                                                let
+                                                                                                                    application =
+                                                                                                                        pkgs.writeShellApplication
+                                                                                                                            {
+                                                                                                                                name = "mirror" ;
+                                                                                                                                runtimeInputs = [ ] ;
+                                                                                                                                text =
+                                                                                                                                    ''
+                                                                                                                                    '' ;
+                                                                                                                            } ;
+                                                                                                                    in "${ application }/bin/mirror" ;
+                                                                                                            nix =
+                                                                                                                let
+                                                                                                                    application =
+                                                                                                                        pkgs.writeShellApplication
+                                                                                                                            {
+                                                                                                                                name = "nix" ;
+                                                                                                                                runtimeInputs = [ ] ;
+                                                                                                                                text =
+                                                                                                                                    ''
+                                                                                                                                        IMMUTABLE="$( git immutable )" || failure 24464
+                                                                                                                                    '' ;
+                                                                                                                            } ;
+                                                                                                                    in "${ application }/bin/nix" ;
                                                                                                             in
                                                                                                                 ''
                                                                                                                     git init 2>&1
-                                                                                                                    git config alias.mirror "!${ mirror }"
                                                                                                                     git config alias.immutable "!${ immutable }"
+                                                                                                                    git config alias.mirror "!${ mirror }"
+                                                                                                                    git config alias.nix "!${ nix }"
                                                                                                                     export GIT_SSH_COMMAND ${ resources.production.bin.ssh { failure = 14260 ; } }/bin/ssh
                                                                                                                     git config core.sshCommand "$GIT_SSH_COMMAND"
                                                                                                                     git config user.email ${ config.personal.repository.private.email }
