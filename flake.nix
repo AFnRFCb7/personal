@@ -276,7 +276,7 @@
                                                                                                                 runtimeInputs = [ alpha-condition compare failure init-condition pkgs.jq release-condition ] ;
                                                                                                                 text =
                                                                                                                     ''
-                                                                                                                        if true ; then exit 0 ; fi
+                                                                                                                        # if true ; then exit 0 ; fi
                                                                                                                         compare --message subscribe --channel invalid-init --payload 1 <&3
                                                                                                                         compare --message subscribe --channel invalid-release --payload 2 <&3
                                                                                                                         compare --message subscribe --channel valid-init --payload 3 <&3
@@ -285,6 +285,7 @@
                                                                                                                         ALPHA_CONDITION="$( alpha-condition ${ arguments } )" || failure 14402
                                                                                                                         INIT_CONDITION="$( init-condition ${ arguments } )" || failure 7005
                                                                                                                         RELEASE_CONDITION="$( release-condition ${ arguments } )" || failure 17709
+                                                                                                                        if true ; then exit 0 ; fi
                                                                                                                         if [[ "$INIT_CONDITION" == "true" ]]
                                                                                                                         then
                                                                                                                             if [[ "$RELEASE_CONDITION" == "true" ]]
@@ -307,11 +308,14 @@
                                                                                                                                 fi
                                                                                                                             fi
                                                                                                                         fi
+                                                                                                                        if true ; then exit 0 ; fi
                                                                                                                         DISTRACTOR_CHANNEL="$( distractor-channel ${ arguments } )" || failure 23974
+                                                                                                                        if true ; then exit 0 ; fi
                                                                                                                         jq \
                                                                                                                             --null-input \
                                                                                                                             '{
                                                                                                                             }' | compare --message message --channel "$CHANNEL" --payload --uuid 25555 <&3
+                                                                                                                        if true ; then exit 0 ; fi
                                                                                                                         if [[ "$INIT_CONDITION" == "false" ]]
                                                                                                                         then
                                                                                                                         jq \
@@ -319,9 +323,12 @@
                                                                                                                             '{
                                                                                                                             }' | compare --message message --channel "$CHANNEL" --payload --uuid 7021 <&3
                                                                                                                         fi
+                                                                                                                        if true ; then exit 0 ; fi
                                                                                                                         block --timeout 1 --uuid 10525 <&3
+                                                                                                                        if true ; then exit 0 ; fi
                                                                                                                         files \
                                                                                                                             --uuid 12121
+                                                                                                                        if true ; then exit 0 ; fi
                                                                                                                         echo "We have created a distractor" ALPHA_CONDITION "$ALPHA_CONDITION" DISTRACTOR "$DISTRACTOR" DISTRACTOR_CHANNEL "$DISTRACTOR_CHANNEL"
                                                                                                                     '' ;
                                                                                                             } ;
@@ -401,13 +408,11 @@
                                                                                                                                     then
                                                                                                                                         PAYLOAD_IS_JSON=false
                                                                                                                                         EXPECTED_PAYLOAD="$2"
-                                                                                                                                        OBSERVED_PAYLOAD="$3"
-                                                                                                                                        shift 3
+                                                                                                                                        shift 2
                                                                                                                                     else
                                                                                                                                         PAYLOAD_IS_JSON=true
                                                                                                                                         EXPECTED_PAYLOAD="$( jq --compact-output "." )" || failure 32657
-                                                                                                                                        OBSERVED_PAYLOAD="$2"
-                                                                                                                                        shift 2
+                                                                                                                                        shift
                                                                                                                                     fi
                                                                                                                                     ;;
                                                                                                                                 --timeout)
@@ -469,8 +474,6 @@
                                                                                                                                 EXPECTED_PRINT_PAYLOAD="$( yq --input-format=json eval --prettyPrint "." <<< "$EXPECTED_PAYLOAD" )" || failure 9695639117138292
                                                                                                                                 echo "$OBSERVED_PAYLOAD" >&2
                                                                                                                                 OBSERVED_PRINT_PAYLOAD="$( yq --input-format=json eval --prettyPrint "." <<< "$OBSERVED_PAYLOAD" )" || failure 3474923945839811 "$OBSERVED_PAYLOAD"
-                                                                                                                                # EXPECTED_PRINT_PAYLOAD="$( printf '%q\n' "$EXPECTED_PAYLOAD" )" || failure 4118273929999765
-                                                                                                                                # OBSERVED_PRINT_PAYLOAD="$( printf '%q\n' "$OBSERVED_PAYLOAD" )" || failure 6573627312252449
                                                                                                                                 EXPECTED_FILE="$( mktemp )" || failure 1812352358347461
                                                                                                                                 echo "$EXPECTED_PRINT_PAYLOAD" > "$EXPECTED_FILE"
                                                                                                                                 OBSERVED_FILE="$( mktemp )" || failure
