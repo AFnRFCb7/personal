@@ -777,6 +777,8 @@
                                                                                                                                             } ;
                                                                                                                                     in "${ application }/bin/release" ;
                                                                                                                         } ;
+                                                                                                                } ;
+                                                                                                        } ;
                                                                                                     test =
                                                                                                         pkgs.writeShellApplication
                                                                                                             {
