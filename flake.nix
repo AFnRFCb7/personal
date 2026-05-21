@@ -928,7 +928,7 @@
                                                                                                     standard-output-value =
                                                                                                         pkgs.writeShellApplication
                                                                                                             {
-                                                                                                                name = "stage-gamma" ;
+                                                                                                                name = "standard-output-value" ;
                                                                                                                 runtimeInputs = [ failure init-condition release-condition ] ;
                                                                                                                 text =
                                                                                                                     ''
