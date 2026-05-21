@@ -1990,7 +1990,7 @@
                                                                                         } ;
                                                                                     github =
                                                                                         {
-                                                                                            token = { } ;
+                                                                                            token = decrypt ;
                                                                                         } ;
                                                                                 } ;
                                                             } ;
