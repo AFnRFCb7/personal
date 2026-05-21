@@ -798,9 +798,7 @@
                                                                                                                         echo 4 | compare --message subscribe --channel valid-release --timeout 1 --uuid 20782 3<&3
                                                                                                                         # if true ; then exit 0 ; fi
                                                                                                                         ALPHA_CONDITION="$( alpha-condition "$@" )" || failure 14402
-                                                                                                                        if true ; then exit 0 ; fi
                                                                                                                         INIT_CONDITION="$( init-condition "$@" )" || failure 7005
-                                                                                                                        if true ; then exit 0 ; fi
                                                                                                                         RELEASE_CONDITION="$( release-condition "$@" )" || failure 17709
                                                                                                                         if true ; then exit 0 ; fi
                                                                                                                         if [[ "$INIT_CONDITION" == "true" ]]
