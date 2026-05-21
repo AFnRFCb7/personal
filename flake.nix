@@ -1775,7 +1775,7 @@
                                                                                                                     in "${ application }/bin/gh" ;
                                                                                                             in
                                                                                                                 ''
-                                                                                                                    GITHUB_TOKEN_DIR=${ resources.production.age.plaintext.github.token { failure = 25133 ; } }
+                                                                                                                    GITHUB_TOKEN_DIR=${ resources.production.secrets.plaintext.github.token { failure = 25133 ; } }
                                                                                                                     GITHUB_TOKEN="$( cat "$GITHUB_TOKEN_DIR/plaintext" )" || failure 31678
                                                                                                                     export GITHUB_TOKEN
                                                                                                                     wrap ${ gh } gh 0500 --inherit plain GITHUB_TOKEN --inherit plain PATH --uuid 32407
@@ -2083,103 +2083,78 @@
                                                                     targets = [ "private-keys-v1.d" "pubring.kbx" "trustdb.gpg" ] ;
                                                                 } ;
                                                         dot-ssh =
-                                                            {
-                                                                config =
-                                                                    ignore :
-                                                                        {
-                                                                            init =
-                                                                                { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
-                                                                                    let
-                                                                                        application =
-                                                                                            pkgs.writeShellApplication
-                                                                                                {
-                                                                                                    name = "init" ;
-                                                                                                    runtimeInputs = [ gc-root trace wrap ] ;
-                                                                                                    text =
-                                                                                                        let
-                                                                                                            config =
-                                                                                                                builtins.toFile
-                                                                                                                    "config"
-                                                                                                                    ''
-                                                                                                                        Host github.com
-                                                                                                                            ControlMaster auto
-                                                                                                                            ControlPath $GITHUB_CONTROL_PATH%C
-                                                                                                                            ControlPersist 5m
-                                                                                                                            HostName github.com
-                                                                                                                            IdentityFile $GITHUB_IDENTITY_FILE
-                                                                                                                            StrictHostKeyChecking yes
-                                                                                                                            User git
-                                                                                                                            UserKnownHostsFile $GITHUB_KNOWN_HOSTS
-                                                                                                                        Host mobile
-                                                                                                                            ControlMaster auto
-                                                                                                                            ControlPath $MOBILE_CONTROL_PATH/%C
-                                                                                                                            ControlPersist 5m
-                                                                                                                            HostName 192.168.1.192
-                                                                                                                            IdentityFile $MOBILE_IDENTITY_FILE
-                                                                                                                            Port 8022
-                                                                                                                            StrictHostKeyChecking yes
-                                                                                                                            User git
-                                                                                                                            UserKnownHostsFile $MOBILE_KNOWN_HOSTS
-                                                                                                                    '' ;
-                                                                                                            in
-                                                                                                                ''
-                                                                                                                    GITHUB_CONTROL_PATH=${ resources.production.temporary { failure = 12555 ; } }
-                                                                                                                    gc-root "$GITHUB_CONTROL_PATH"
-                                                                                                                    export GITHUB_CONTROL_PATH
-                                                                                                                    GITHUB_IDENTITY_RESOURCE=${ resources.production.secrets.plaintext.dot-ssh.github.identity { failure = 21662 ; } }
-                                                                                                                    gc-root "$GITHUB_IDENTITY_RESOURCE"
-                                                                                                                    export GITHUB_IDENTITY_FILE="$GITHUB_IDENTITY_RESOURCE/plaintext"
-                                                                                                                    GITHUB_KNOWN_RESOURCE=${ resources.production.secrets.plaintext.dot-ssh.github.known-hosts { failure = 15323 ; } }
-                                                                                                                    gc-root "$GITHUB_KNOWN_RESOURCE"
-                                                                                                                    export GITHUB_KNOWN_HOSTS="$GITHUB_KNOWN_RESOURCE/plaintext"
-                                                                                                                    MOBILE_CONTROL_PATH=${ resources.production.temporary { failure = 27748 ; } }
-                                                                                                                    gc-root "$MOBILE_CONTROL_PATH"
-                                                                                                                    export MOBILE_CONTROL_PATH
-                                                                                                                    MOBILE_IDENTITY_RESOURCE=${ resources.production.secrets.plaintext.dot-ssh.mobile.identity { failure = 28142 ; } }
-                                                                                                                    gc-root "$MOBILE_IDENTITY_RESOURCE"
-                                                                                                                    export MOBILE_IDENTITY_FILE="$MOBILE_IDENTITY_RESOURCE/plaintext"
-                                                                                                                    MOBILE_KNOWN_RESOURCE=${ resources.production.secrets.plaintext.dot-ssh.mobile.known-hosts { failure = 30122 ; } }
-                                                                                                                    gc-root "$MOBILE_KNOWN_RESOURCE"
-                                                                                                                    export MOBILE_KNOWN_HOSTS="$MOBILE_KNOWN_RESOURCE/plaintext"
-                                                                                                                    wrap \
-                                                                                                                        ${ config } \
-                                                                                                                        config \
-                                                                                                                        0400 \
-                                                                                                                        --inherit plain GITHUB_CONTROL_PATH \
-                                                                                                                        --inherit plain GITHUB_IDENTITY_FILE \
-                                                                                                                        --inherit plain GITHUB_KNOWN_HOSTS \
-                                                                                                                        --inherit plain MOBILE_CONTROL_PATH \
-                                                                                                                        --inherit plain MOBILE_IDENTITY_FILE \
-                                                                                                                        --inherit plain MOBILE_KNOWN_HOSTS \
-                                                                                                                        --uuid 15122
-                                                                                                                '' ;
-                                                                                                } ;
-                                                                                        in "${ application }/bin/init" ;
-                                                                            targets = [ "config" ] ;
-                                                                        } ;
-                                                                    control-path =
-                                                                        _visitor.implementation
-                                                                            {
-                                                                                null =
-                                                                                    path : value : ignore :
+                                                            ignore :
+                                                                {
+                                                                    init =
+                                                                        { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
+                                                                            let
+                                                                                application =
+                                                                                    pkgs.writeShellApplication
                                                                                         {
-                                                                                            init =
-                                                                                                { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
-                                                                                                    let
-                                                                                                        application =
-                                                                                                            pkgs.writeShellApplication
-                                                                                                                {
-                                                                                                                    name = "init" ;
-                                                                                                                    text = "" ;
-                                                                                                                } ;
-                                                                                                        in "${ application }/bin/init" ;
-                                                                                            targets = [ ] ;
+                                                                                            name = "init" ;
+                                                                                            runtimeInputs = [ gc-root trace wrap ] ;
+                                                                                            text =
+                                                                                                let
+                                                                                                    config =
+                                                                                                        builtins.toFile
+                                                                                                            "config"
+                                                                                                            ''
+                                                                                                                Host github.com
+                                                                                                                    ControlMaster auto
+                                                                                                                    ControlPath $GITHUB_CONTROL_PATH%C
+                                                                                                                    ControlPersist 5m
+                                                                                                                    HostName github.com
+                                                                                                                    IdentityFile $GITHUB_IDENTITY_FILE
+                                                                                                                    StrictHostKeyChecking yes
+                                                                                                                    User git
+                                                                                                                    UserKnownHostsFile $GITHUB_KNOWN_HOSTS
+                                                                                                                Host mobile
+                                                                                                                    ControlMaster auto
+                                                                                                                    ControlPath $MOBILE_CONTROL_PATH/%C
+                                                                                                                    ControlPersist 5m
+                                                                                                                    HostName 192.168.1.192
+                                                                                                                    IdentityFile $MOBILE_IDENTITY_FILE
+                                                                                                                    Port 8022
+                                                                                                                    StrictHostKeyChecking yes
+                                                                                                                    User git
+                                                                                                                    UserKnownHostsFile $MOBILE_KNOWN_HOSTS
+                                                                                                            '' ;
+                                                                                                    in
+                                                                                                        ''
+                                                                                                            GITHUB_CONTROL_PATH=${ resources.production.temporary { failure = 12555 ; } }
+                                                                                                            gc-root "$GITHUB_CONTROL_PATH"
+                                                                                                            export GITHUB_CONTROL_PATH
+                                                                                                            GITHUB_IDENTITY_RESOURCE=${ resources.production.secrets.plaintext.dot-ssh.github.identity { failure = 21662 ; } }
+                                                                                                            gc-root "$GITHUB_IDENTITY_RESOURCE"
+                                                                                                            export GITHUB_IDENTITY_FILE="$GITHUB_IDENTITY_RESOURCE/plaintext"
+                                                                                                            GITHUB_KNOWN_RESOURCE=${ resources.production.secrets.plaintext.dot-ssh.github.known-hosts { failure = 15323 ; } }
+                                                                                                            gc-root "$GITHUB_KNOWN_RESOURCE"
+                                                                                                            export GITHUB_KNOWN_HOSTS="$GITHUB_KNOWN_RESOURCE/plaintext"
+                                                                                                            MOBILE_CONTROL_PATH=${ resources.production.temporary { failure = 27748 ; } }
+                                                                                                            gc-root "$MOBILE_CONTROL_PATH"
+                                                                                                            export MOBILE_CONTROL_PATH
+                                                                                                            MOBILE_IDENTITY_RESOURCE=${ resources.production.secrets.plaintext.dot-ssh.mobile.identity { failure = 28142 ; } }
+                                                                                                            gc-root "$MOBILE_IDENTITY_RESOURCE"
+                                                                                                            export MOBILE_IDENTITY_FILE="$MOBILE_IDENTITY_RESOURCE/plaintext"
+                                                                                                            MOBILE_KNOWN_RESOURCE=${ resources.production.secrets.plaintext.dot-ssh.mobile.known-hosts { failure = 30122 ; } }
+                                                                                                            gc-root "$MOBILE_KNOWN_RESOURCE"
+                                                                                                            export MOBILE_KNOWN_HOSTS="$MOBILE_KNOWN_RESOURCE/plaintext"
+                                                                                                            wrap \
+                                                                                                                ${ config } \
+                                                                                                                config \
+                                                                                                                0400 \
+                                                                                                                --inherit plain GITHUB_CONTROL_PATH \
+                                                                                                                --inherit plain GITHUB_IDENTITY_FILE \
+                                                                                                                --inherit plain GITHUB_KNOWN_HOSTS \
+                                                                                                                --inherit plain MOBILE_CONTROL_PATH \
+                                                                                                                --inherit plain MOBILE_IDENTITY_FILE \
+                                                                                                                --inherit plain MOBILE_KNOWN_HOSTS \
+                                                                                                                --uuid 15122
+                                                                                                        '' ;
                                                                                         } ;
-                                                                            }
-                                                                            {
-                                                                                github = null ;
-                                                                                mobile = null ;
-                                                                            } ;
+                                                                                in "${ application }/bin/init" ;
+                                                                    targets = [ "config" ] ;
+                                                                } ;
                                                                 } ;
                                                             pad =
                                                                 let
