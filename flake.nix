@@ -1739,264 +1739,6 @@
                                                     } ;
                                                 production =
                                                     {
-                                                        age =
-                                                            {
-                                                                ciphertext =
-                                                                    ignore :
-                                                                        {
-                                                                            init =
-                                                                                { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
-                                                                                    let
-                                                                                        application =
-                                                                                            pkgs.writeShellApplication
-                                                                                                {
-                                                                                                    name = "init" ;
-                                                                                                    runtimeInputs = [ pkgs.age pkgs.git wrap ] ;
-                                                                                                    text =
-                                                                                                        let
-                                                                                                            post-commit =
-                                                                                                                let
-                                                                                                                    application =
-                                                                                                                        pkgs.writeShellApplication
-                                                                                                                            {
-                                                                                                                                name = "post-commit" ;
-                                                                                                                                runtimeInputs = [ pkgs.coreutils pkgs.git ] ;
-                                                                                                                                text =
-                                                                                                                                    ''
-                                                                                                                                        : "${ builtins.concatStringsSep "" [ "$" "{" "GIT_SSH_COMMAND:?must be exported" "}" ] }"
-                                                                                                                                        while ! git push ssh HEAD
-                                                                                                                                        do
-                                                                                                                                            sleep 1
-                                                                                                                                        done
-                                                                                                                                    '' ;
-                                                                                                                            } ;
-                                                                                                                        in "${ application }/bin/post-commit" ;
-                                                                                                            post-push =
-                                                                                                                let
-                                                                                                                    application =
-                                                                                                                        pkgs.writeShellApplication
-                                                                                                                            {
-                                                                                                                                name = "post-push" ;
-                                                                                                                                runtimeInputs = [ pkgs.openssh ] ;
-                                                                                                                                text =
-                                                                                                                                    ''
-                                                                                                                                        : "${ builtins.concatStringsSep "" [ "$" "{" "GIT_SSH_COMMAND:?must be exported" "}" ] }"
-                                                                                                                                        GPG_OWNERTRUST=${ resources.production.age.plaintext.dot-gnupg.ownertrust { failure = 21711 ; } }
-                                                                                                                                        echo false > "$GPG_OWNERTRUST/flag"
-                                                                                                                                        GPG_SECRET_KEYS=${ resources.production.age.plaintext.dot-gnupg.secret-keys { failure = 31244 ; } }
-                                                                                                                                        echo false > "$GPG_SECRET_KEYS/flag"
-                                                                                                                                        GITHUB_KNOWN_HOSTS=${ resources.production.age.plaintext.dot-ssh.github.known-hosts { failure = 17547 ; } }
-                                                                                                                                        echo false > "$GITHUB_KNOWN_HOSTS/flag"
-                                                                                                                                        GITHUB_IDENTITY=${ resources.production.age.plaintext.dot-ssh.github.identity { failure = 21755 ; } }
-                                                                                                                                        echo false > "$GITHUB_IDENTITY/flag"
-                                                                                                                                        MOBILE_KNOWN_HOSTS=${ resources.production.age.plaintext.dot-ssh.github.known-hosts { failure = 23344 ; } }
-                                                                                                                                        echo false > "$MOBILE_KNOWN_HOSTS/flag"
-                                                                                                                                        MOBILE_IDENTITY=${ resources.production.age.plaintext.dot-ssh.github.identity { failure = 10157 ; } }
-                                                                                                                                        echo false > "$MOBILE_IDENTITY/flag"
-                                                                                                                                        GITHUB_TOKEN=${ resources.production.age.plaintext.github.token { failure = 28945 ; } }
-                                                                                                                                        echo false > "$GITHUB_TOKEN/flag"
-                                                                                                                                    '' ;
-                                                                                                                            } ;
-                                                                                                                        in "${ application }/bin/post-push" ;
-                                                                                                            pre-commit =
-                                                                                                                let
-                                                                                                                    application =
-                                                                                                                        pkgs.writeShellApplication
-                                                                                                                            {
-                                                                                                                                name = "pre-commit" ;
-                                                                                                                                runtimeInputs = [ failure pkgs.age pkgs.git ] ;
-                                                                                                                                text =
-                                                                                                                                    ''
-                                                                                                                                        : "${ builtins.concatStringsSep "" [ "$" "{" "GIT_SSH_COMMAND:?must be exported" "}" ] }"
-                                                                                                                                        GPG_OWNERTRUST=${ resources.production.age.plaintext.dot-gnupg.ownertrust { failure = 25440 ; } }
-                                                                                                                                        GPG_OWNERTRUST_FLAG="$( cat "$GPG_OWNERTRUST/flag" )" || failure 4095
-                                                                                                                                        if "$GPG_OWNERTRUST_FLAG"
-                                                                                                                                        then
-                                                                                                                                            age --encrypt --recipient "$RECIPIENT" --output "/home/${ config.personal.name }/resources/mounts/$INDEX/dot-gnupg/ownertrust.asc.age" --armor "$GPG_OWNERTRUST/plaintext"
-                                                                                                                                            git -C "/home/${ config.personal.name }/resources/mounts/$INDEX" add dot-gnupg/ownertrust.asc.age
-                                                                                                                                        fi
-                                                                                                                                        GPG_SECRET_KEYS=${ resources.production.age.plaintext.dot-gnupg.secret-keys { failure = 31125 ; } }
-                                                                                                                                        GPG_SECRET_KEYS_FLAG="$( cat "$GPG_SECRET_KEYS/flag" )" || failure 19375
-                                                                                                                                        if "$GPG_SECRET_KEYS_FLAG"
-                                                                                                                                        then
-                                                                                                                                            age --encrypt --recipient "$RECIPIENT" --output "/home/${ config.personal.name }/resources/mounts/$INDEX/dot-gnupg/secret-keys.asc.age" --armor "$GPG_SECRET_KEYS/plaintext"
-                                                                                                                                            git -C "/home/${ config.personal.name }/resources/mounts/$INDEX" add dot-gnupg/secret-keys.asc.age
-                                                                                                                                        fi
-                                                                                                                                        GITHUB_KNOWN_HOSTS=${ resources.production.age.plaintext.dot-ssh.github.known-hosts { failure = 13704 ; } }
-                                                                                                                                        echo "GITHUB_KNOWN_HOSTS=$GITHUB_KNOWN_HOSTS"
-                                                                                                                                        GITHUB_KNOWN_HOSTS_FLAG="$( cat "$GITHUB_KNOWN_HOSTS/flag" )" || failure 23236
-                                                                                                                                        if "$GITHUB_KNOWN_HOSTS_FLAG"
-                                                                                                                                        then
-                                                                                                                                            age --encrypt --recipient "$RECIPIENT" --output "/home/${ config.personal.name }/resources/mounts/$INDEX/dot-ssh/github/known-hosts.asc.age" --armor "$GITHUB_KNOWN_HOSTS/plaintext"
-                                                                                                                                            git -C "/home/${ config.personal.name }/resources/mounts/$INDEX" add dot-ssh/github/known-hosts.asc.age
-                                                                                                                                        fi
-                                                                                                                                        GITHUB_IDENTITY=${ resources.production.age.plaintext.dot-ssh.github.identity { failure = 15209 ; } }
-                                                                                                                                        GITHUB_IDENTITY_FLAG="$( cat "$GITHUB_IDENTITY/flag" )" || failure 29560
-                                                                                                                                        if "$GITHUB_IDENTITY_FLAG"
-                                                                                                                                        then
-                                                                                                                                            age --encrypt --recipient "$RECIPIENT" --output "/home/${ config.personal.name }/resources/mounts/$INDEX/dot-ssh/github/identity.asc.age" --armor "$GITHUB_IDENTITY/plaintext"
-                                                                                                                                            git -C "/home/${ config.personal.name }/resources/mounts/$INDEX" add dot-ssh/github/known-hosts.asc.age
-                                                                                                                                        fi
-                                                                                                                                        MOBILE_KNOWN_HOSTS=${ resources.production.age.plaintext.dot-ssh.mobile.known-hosts { failure = 28909 ; } }
-                                                                                                                                        MOBILE_KNOWN_HOSTS_FLAG="$( cat "$MOBILE_KNOWN_HOSTS/flag" )" || failure 14272
-                                                                                                                                        if "$MOBILE_KNOWN_HOSTS_FLAG"
-                                                                                                                                        then
-                                                                                                                                            age --encrypt --recipient "$RECIPIENT" --output "/home/${ config.personal.name }/resources/mounts/$INDEX/dot-ssh/mobile/known-hosts.asc.age" --armor "$MOBILE_KNOWN_HOSTS/plaintext"
-                                                                                                                                            git -C "/home/${ config.personal.name }/resources/mounts/$INDEX" add dot-ssh/mobile/known-hosts.asc.age
-                                                                                                                                        fi
-                                                                                                                                        MOBILE_IDENTITY=${ resources.production.age.plaintext.dot-ssh.mobile.identity { failure = 13514 ; } }
-                                                                                                                                        MOBILE_IDENTITY_FLAG="$( cat "$MOBILE_IDENTITY/flag" )" || failure 16967
-                                                                                                                                        if "$MOBILE_IDENTITY_FLAG"
-                                                                                                                                        then
-                                                                                                                                            age --encrypt --recipient "$RECIPIENT" --output "/home/${ config.personal.name }/resources/mounts/$INDEX/dot-ssh/mobile/identity.asc.age" --armor "$MOBILE_IDENTITY/plaintext"
-                                                                                                                                            git -C "/home/${ config.personal.name }/resources/mounts/$INDEX" add dot-ssh/mobile/identity.asc.age
-                                                                                                                                        fi
-                                                                                                                                        GITHUB_TOKEN=${ resources.production.age.plaintext.github.token { failure = 31431 ; } }
-                                                                                                                                        GITHUB_TOKEN_FLAG="$( cat "$GITHUB_TOKEN/flag" )" || failure 27816
-                                                                                                                                        if "$GITHUB_TOKEN_FLAG"
-                                                                                                                                        then
-                                                                                                                                            age --encrypt --recipient "$RECIPIENT" --output "/home/${ config.personal.name }/resources/mounts/$INDEX/github/token.asc.age" --armor "$GITHUB_TOKEN/plaintext"
-                                                                                                                                            git -C "/home/${ config.personal.name }/resources/mounts/$INDEX" add github/token.asc.age
-                                                                                                                                        fi
-                                                                                                                                    '' ;
-                                                                                                                            } ;
-                                                                                                                    in "${ application }/bin/pre-commit" ;
-                                                                                                            in
-                                                                                                                ''
-                                                                                                                    cd /mount
-                                                                                                                    git init 2>&1
-                                                                                                                    git config user.email "${ config.personal.secrets.email }"
-                                                                                                                    git config user.name "${ config.personal.secrets.name }"
-                                                                                                                    git remote add https https://github.com/${ config.personal.secrets.organization }/${ config.personal.secrets.repository }.git
-                                                                                                                    git remote add ssh git@github.com:${ config.personal.secrets.organization }/${ config.personal.secrets.repository }.git
-                                                                                                                    wrap ${ post-commit } .git/hooks/post-commit 0500 --literal brace "GIT_SSH_COMMAND:?must be exported" --literal plain PATH --uuid 31150
-                                                                                                                    wrap \
-                                                                                                                        ${ post-push } \
-                                                                                                                        .git/hooks/post-push \
-                                                                                                                        0500 \
-                                                                                                                        --literal plain DERIVATION \
-                                                                                                                        --literal plain GITHUB_KNOWN_HOSTS \
-                                                                                                                        --literal plain GITHUB_IDENTITY \
-                                                                                                                        --literal plain GITHUB_TOKEN \
-                                                                                                                        --literal plain GPG_OWNERTRUST \
-                                                                                                                        --literal plain GPG_SECRET_KEYS \
-                                                                                                                        --literal plain MOBILE_KNOWN_HOSTS \
-                                                                                                                        --literal plain MOBILE_IDENTITY \
-                                                                                                                        --literal plain PATH \
-                                                                                                                        --uuid 28649
-                                                                                                                    RECIPIENT="$( age-keygen -y ${ config.personal.agenix } )" || failure 16231
-                                                                                                                    export RECIPIENT
-                                                                                                                    wrap \
-                                                                                                                        ${ pre-commit } \
-                                                                                                                        .git/hooks/pre-commit \
-                                                                                                                        0500 \
-                                                                                                                        --literal plain DERIVATION \
-                                                                                                                        --literal plain GITHUB_KNOWN_HOSTS \
-                                                                                                                        --literal plain GITHUB_KNOWN_HOSTS_FLAG \
-                                                                                                                        --literal plain GITHUB_IDENTITY \
-                                                                                                                        --literal plain GITHUB_IDENTITY_FLAG \
-                                                                                                                        --literal plain GITHUB_TOKEN \
-                                                                                                                        --literal plain GITHUB_TOKEN_FLAG \
-                                                                                                                        --literal plain GPG_OWNERTRUST \
-                                                                                                                        --literal plain GPG_OWNERTRUST_FLAG \
-                                                                                                                        --literal plain GPG_SECRET_KEYS \
-                                                                                                                        --literal plain GPG_SECRET_KEYS_FLAG \
-                                                                                                                        --inherit plain INDEX \
-                                                                                                                        --literal plain MOBILE_KNOWN_HOSTS \
-                                                                                                                        --literal plain MOBILE_KNOWN_HOSTS_FLAG \
-                                                                                                                        --literal plain MOBILE_IDENTITY \
-                                                                                                                        --literal plain MOBILE_IDENTITY_FLAG \
-                                                                                                                        --literal plain PATH \
-                                                                                                                        --inherit plain RECIPIENT \
-                                                                                                                        --uuid 12094
-                                                                                                                    git fetch https "${ config.personal.secrets.branch }" 2>&1
-                                                                                                                    git checkout "https/${ config.personal.secrets.branch }" 2>&1
-                                                                                                                '' ;
-                                                                                                } ;
-                                                                                        in "${ application }/bin/init" ;
-                                                                            targets = [ ".git" "dot-gnupg" "dot-ssh" "github" ] ;
-                                                                        } ;
-                                                                    plaintext =
-                                                                        let
-                                                                            decrypt =
-                                                                                ignore :
-                                                                                    {
-                                                                                        init =
-                                                                                            { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
-                                                                                                let
-                                                                                                    application =
-                                                                                                        pkgs.writeShellApplication
-                                                                                                            {
-                                                                                                                name = "init" ;
-                                                                                                                runtimeInputs = [ pkgs.age pkgs.coreutils ] ;
-                                                                                                                text =
-                                                                                                                    ''
-                                                                                                                        echo false > /mount/flag
-                                                                                                                        SECRETS=${ resources.production.age.ciphertext { failure = 11236 ; } }
-                                                                                                                        git -C "$SECRETS" fetch https ${ config.personal.secrets.branch } 2>&1
-                                                                                                                        git -C "$SECRETS" checkout https/${ config.personal.secrets.branch } 2>&1
-                                                                                                                        age --decrypt --identity ${ config.personal.agenix } --output /mount/plaintext "$SECRETS/${ builtins.concatStringsSep "/" seed }.asc.age"
-                                                                                                                        chmod 0400 /mount/plaintext
-                                                                                                                    '' ;
-                                                                                                            } ;
-                                                                                                        in "${ application }/bin/init" ;
-                                                                                        targets = [ "flag" "plaintext" ] ;
-                                                                                    } ;
-                                                                            in
-                                                                                {
-                                                                                    dot-gnupg =
-                                                                                        {
-                                                                                            ownertrust = decrypt ;
-                                                                                            secret-keys = decrypt ;
-                                                                                        } ;
-                                                                                    dot-ssh =
-                                                                                        {
-                                                                                            github =
-                                                                                                {
-                                                                                                    identity =
-                                                                                                        ignore :
-                                                                                                            {
-                                                                                                                init =
-                                                                                                                    { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
-                                                                                                                        let
-                                                                                                                            application =
-                                                                                                                                pkgs.writeShellApplication
-                                                                                                                                    {
-                                                                                                                                        name = "init" ;
-                                                                                                                                        text =
-                                                                                                                                            ''
-                                                                                                                                            '' ;
-                                                                                                                                    } ;
-                                                                                                                                in "${ application }/bin/init" ;
-                                                                                                                release =
-                                                                                                                    { } :
-                                                                                                                        let
-                                                                                                                            application =
-                                                                                                                                pkgs.writeShellApplication
-                                                                                                                                    {
-                                                                                                                                        name = "release" ;
-                                                                                                                                        runtimeInputs = [ ] ;
-                                                                                                                                        text =
-                                                                                                                                            ''
-                                                                                                                                            '' ;
-                                                                                                                                    } ;
-                                                                                                                            in "${ application }/bin/release" ;
-                                                                                                                targets = [ "plaintext" ] ;
-                                                                                                            } ;
-                                                                                                    known-hosts = decrypt ;
-                                                                                                } ;
-                                                                                            mobile =
-                                                                                                {
-                                                                                                    identity = decrypt ;
-                                                                                                    known-hosts = decrypt ;
-                                                                                                } ;
-                                                                                        } ;
-                                                                                    github =
-                                                                                        {
-                                                                                            token = decrypt ;
-                                                                                        } ;
-                                                                                } ;
-                                                            } ;
                                                         bin =
                                                             {
                                                                 gh =
@@ -2328,9 +2070,9 @@
                                                                                             text =
                                                                                                 ''
                                                                                                     export GNUPGHOME=/mount
-                                                                                                    SECRET_KEYS=${ resources.production.age.plaintext.dot-gnupg.secret-keys { failure = 31633 ; } }
+                                                                                                    SECRET_KEYS=${ resources.production.secrets.plaintext.dot-gnupg.secret-keys { failure = 31633 ; } }
                                                                                                     gpg --batch --yes --homedir "$GNUPGHOME" --import "$SECRET_KEYS/plaintext" 2>&1
-                                                                                                    OWNERTRUST=${ resources.production.age.plaintext.dot-gnupg.ownertrust { failure = 15072 ; } }
+                                                                                                    OWNERTRUST=${ resources.production.secrets.plaintext.dot-gnupg.ownertrust { failure = 15072 ; } }
                                                                                                     gpg --batch --yes --homedir "$GNUPGHOME" --import-ownertrust "$OWNERTRUST/plaintext" 2>&1
                                                                                                     gpg --batch --yes --homedir "$GNUPGHOME" --update-trustdb 2>&1
                                                                                                     rm --force "$GNUPGHOME"/*~
@@ -2381,22 +2123,22 @@
                                                                                                                     '' ;
                                                                                                             in
                                                                                                                 ''
-                                                                                                                    GITHUB_CONTROL_PATH=${ resources.production.dot-ssh.control-path.github { failure = 12555 ; } }
+                                                                                                                    GITHUB_CONTROL_PATH=${ resources.production.temporary { failure = 12555 ; } }
                                                                                                                     gc-root "$GITHUB_CONTROL_PATH"
                                                                                                                     export GITHUB_CONTROL_PATH
-                                                                                                                    GITHUB_IDENTITY_RESOURCE=${ resources.production.age.plaintext.dot-ssh.github.identity { failure = 21662 ; } }
+                                                                                                                    GITHUB_IDENTITY_RESOURCE=${ resources.production.secrets.plaintext.dot-ssh.github.identity { failure = 21662 ; } }
                                                                                                                     gc-root "$GITHUB_IDENTITY_RESOURCE"
                                                                                                                     export GITHUB_IDENTITY_FILE="$GITHUB_IDENTITY_RESOURCE/plaintext"
-                                                                                                                    GITHUB_KNOWN_RESOURCE=${ resources.production.age.plaintext.dot-ssh.github.known-hosts { failure = 15323 ; } }
+                                                                                                                    GITHUB_KNOWN_RESOURCE=${ resources.production.secrets.plaintext.dot-ssh.github.known-hosts { failure = 15323 ; } }
                                                                                                                     gc-root "$GITHUB_KNOWN_RESOURCE"
                                                                                                                     export GITHUB_KNOWN_HOSTS="$GITHUB_KNOWN_RESOURCE/plaintext"
-                                                                                                                    MOBILE_CONTROL_PATH=${ resources.production.dot-ssh.control-path.mobile { failure = 27748 ; } }
+                                                                                                                    MOBILE_CONTROL_PATH=${ resources.production.temporary { failure = 27748 ; } }
                                                                                                                     gc-root "$MOBILE_CONTROL_PATH"
                                                                                                                     export MOBILE_CONTROL_PATH
-                                                                                                                    MOBILE_IDENTITY_RESOURCE=${ resources.production.age.plaintext.dot-ssh.mobile.identity { failure = 28142 ; } }
+                                                                                                                    MOBILE_IDENTITY_RESOURCE=${ resources.production.secrets.plaintext.dot-ssh.mobile.identity { failure = 28142 ; } }
                                                                                                                     gc-root "$MOBILE_IDENTITY_RESOURCE"
                                                                                                                     export MOBILE_IDENTITY_FILE="$MOBILE_IDENTITY_RESOURCE/plaintext"
-                                                                                                                    MOBILE_KNOWN_RESOURCE=${ resources.production.age.plaintext.dot-ssh.mobile.known-hosts { failure = 30122 ; } }
+                                                                                                                    MOBILE_KNOWN_RESOURCE=${ resources.production.secrets.plaintext.dot-ssh.mobile.known-hosts { failure = 30122 ; } }
                                                                                                                     gc-root "$MOBILE_KNOWN_RESOURCE"
                                                                                                                     export MOBILE_KNOWN_HOSTS="$MOBILE_KNOWN_RESOURCE/plaintext"
                                                                                                                     wrap \
