@@ -1617,7 +1617,7 @@
                                                                                                                                     '' ;
                                                                                                                             } ;
                                                                                                                     in "${ application }/bin/mirror" ;
-                                                                                                            immmutable =
+                                                                                                            immutable =
                                                                                                                 let
                                                                                                                     application =
                                                                                                                         pkgs.writeShellApplication
