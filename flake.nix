@@ -801,15 +801,15 @@
                                                                                                                         printf -v DISTRACTOR_INDEX "%016d" $(( ALPHA + 4 ))
                                                                                                                         if [[ "$INIT_CONDITION" == "true" ]]
                                                                                                                         then
-                                                                                                                            if true ; then exit 0 ; fi
                                                                                                                             if [[ "$RELEASE_CONDITION" == "true" ]]
                                                                                                                             then
+                                                                                                                                if true ; then exit 0 ; fi
                                                                                                                                 DISTRACTOR=${ resources.checks.targets.true.true { failure = 2829 ; } }
                                                                                                                             else
+                                                                                                                                if true ; then exit 0 ; fi
                                                                                                                                 DISTRACTOR=${ resources.checks.targets.true.false { failure = 17544 ; } }
                                                                                                                             fi
                                                                                                                         else
-                                                                                                                            if true ; then exit 0 ; fi
                                                                                                                             if [[ "$RELEASE_CONDITION" == "true" ]]
                                                                                                                             then
                                                                                                                                 if true ; then exit 0 ; fi
