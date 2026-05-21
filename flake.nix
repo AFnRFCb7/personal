@@ -301,6 +301,7 @@
                                                                                                                                 fi
                                                                                                                             fi
                                                                                                                         fi
+                                                                                                                        echo "$DISTRACTOR"
                                                                                                                     '' ;
                                                                                                             } ;
                                                                                                     arguments = ''"${ builtins.concatStringsSep "" [ "$" "{" "@" "}" ] }"'' ;
@@ -782,7 +783,7 @@
                                                                                                     test =
                                                                                                         pkgs.writeShellApplication
                                                                                                             {
-                                                                                                                name = "post-test" ;
+                                                                                                                name = "test" ;
                                                                                                                 runtimeInputs =
                                                                                                                     [
                                                                                                                         alpha-stage
