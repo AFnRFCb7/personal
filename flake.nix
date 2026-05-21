@@ -1236,6 +1236,7 @@
                                                                                                                                             --arg ARGUMENT 3564731485791737 \
                                                                                                                                             --arg INDEX "$DISTRACTOR_INDEX" \
                                                                                                                                             --rawfile SCRIPT ${ scripts.false.true.init } \
+                                                                                                                                            --arg STANDARD_OUTPUT "$STANDARD_OUTPUT" \
                                                                                                                                             --arg TARGET "$TARGET" \
                                                                                                                                                 '{
                                                                                                                                                    "arguments" : [ $ARGUMENT ] ,
@@ -1245,6 +1246,7 @@
                                                                                                                                                    "script" : $SCRIPT ,
                                                                                                                                                    "standard-error" : "" ,
                                                                                                                                                    "standard-input" : "" ,
+                                                                                                                                                   "standard-output" : $STANDARD_OUTPUT ,
                                                                                                                                                    "status" : 114 ,
                                                                                                                                                    "targets" : { expected : $TARGET , observed : $TARGET } ,
                                                                                                                                                    "transient" : -1
@@ -2190,7 +2192,12 @@
                                                                                             text =
                                                                                                 ''
                                                                                                     git init 2>&1
-                                                                                                    git remote add origin ${ config.personal.repository.private.remote }
+                                                                                                    export GIT_SSH_COMMAND ${ scripts.production.bin.ssh }/bin/ssh
+                                                                                                    git config core.sshCommand "$GIT_SSH_COMMAND"
+                                                                                                    git config user.email ${ config.personal.repository.private.email }
+                                                                                                    git config user.name ${ config.personal.repository.private.name }
+                                                                                                    git remote add origin ${ config.personal.repository.private.remote } 2>&1
+                                                                                                    git fetch origin ${ config.personal.repository.private.remote } 2>&1
                                                                                                 '' ;
                                                                                         } ;
                                                                                 in "${ application }/bin/init" ;
