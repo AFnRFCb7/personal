@@ -799,7 +799,7 @@
                                                                                                                         # if true ; then exit 0 ; fi
                                                                                                                         if [[ "$INIT_CONDITION" == "true" ]]
                                                                                                                         then
-                                                                                                                            if true ; then exit 0 ; fi
+                                                                                                                            # if true ; then exit 0 ; fi
                                                                                                                             if [[ "$RELEASE_CONDITION" == "true" ]]
                                                                                                                             then
                                                                                                                                 DISTRACTOR=${ resources.checks.targets.true.true { failure = 2829 ; } }
