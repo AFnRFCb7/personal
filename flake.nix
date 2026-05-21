@@ -849,7 +849,7 @@
                                                                                                                                 "index" : $DISTRACTOR_INDEX ,
                                                                                                                                 "standard-error" : "" ,
                                                                                                                                 "standard-input" : "" ,
-                                                                                                                                "standard-output : $STANDARD_OUTPUT
+                                                                                                                                "standard-output" : $STANDARD_OUTPUT
                                                                                                                             }' | compare --message message --channel "$DISTRACTOR_INIT_CHANNEL" --payload --uuid 25555 <&3
                                                                                                                         if [[ "$INIT_CONDITION" == "false" ]]
                                                                                                                         then
