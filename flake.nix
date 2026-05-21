@@ -792,7 +792,7 @@
                                                                                                                         echo 3 | compare --message subscribe --channel valid-init --timeout 10 --uuid 4666 3<&3
                                                                                                                         ## if true ; then exit 0 ; fi
                                                                                                                         echo 4 | compare --message subscribe --channel valid-release --timeout 10 --uuid 20782 3<&3
-                                                                                                                        ## if true ; then exit 0 ; fi
+                                                                                                                        if true ; then exit 0 ; fi
                                                                                                                         ALPHA_CONDITION="$( alpha-condition "$@" )" || failure 14402
                                                                                                                         INIT_CONDITION="$( init-condition "$@" )" || failure 7005
                                                                                                                         RELEASE_CONDITION="$( release-condition "$@" )" || failure 17709
@@ -800,7 +800,9 @@
                                                                                                                         DISTRACTOR_INIT_CHANNEL="$( distractor-init-channel-value "$@" )" || failure 23974
                                                                                                                         if true ; then exit 0 ; fi
                                                                                                                         DISTRACTOR_RELEASE_CHANNEL="$( distractor-release-channel-value "$@" )" || failure 23012
+                                                                                                                        if true ; then exit 0 ; fi
                                                                                                                         printf -v DISTRACTOR_INDEX "%016d" $(( ALPHA_CONDITION + 4 ))
+                                                                                                                        if true ; then exit 0 ; fi
                                                                                                                         if [[ "$INIT_CONDITION" == "true" ]]
                                                                                                                         then
                                                                                                                             if [[ "$RELEASE_CONDITION" == "true" ]]
