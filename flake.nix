@@ -259,6 +259,51 @@
                                                                                             runtimeInputs = [ wrap ] ;
                                                                                             text =
                                                                                                 let
+                                                                                                    alpha-condition =
+                                                                                                        pkgs.writeShellApplication
+                                                                                                            {
+                                                                                                                name = "alpha-condition" ;
+                                                                                                                runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                                text =
+                                                                                                                    ''
+                                                                                                                        echo "$1"
+                                                                                                                    '' ;
+                                                                                                            }
+                                                                                                    alpha-stage =
+                                                                                                        pkgs.writeShellApplication
+                                                                                                            {
+                                                                                                                name = "alpha" ;
+                                                                                                                runtimeInputs = [ alpha-condition failure init-condition release-condition ] ;
+                                                                                                                text =
+                                                                                                                    ''
+                                                                                                                        ALPHA_CONDITION="$( alpha-condition ${ arguments } )" || failure 14402
+                                                                                                                        INIT_CONDITION="$( init-condition ${ arguments } )" || failure 7005
+                                                                                                                        RELEASE_CONDITION="$( release-condition ${ arguments } )" || failure 17709
+                                                                                                                        if [[ "$INIT_CONDITION" == "true" ]]
+                                                                                                                        then
+                                                                                                                            if [[ "$RELEASE_CONDITION" == "true" ]]
+                                                                                                                            then
+                                                                                                                                DISTRACTOR=${ resources.checks.targets.true.true { failure = 2829 ; } }
+                                                                                                                            else
+                                                                                                                                DISTRACTOR=${ resources.checks.targets.true.false { failure = 17544 ; } }
+                                                                                                                            fi
+                                                                                                                        else
+                                                                                                                            if [[ "$RELEASE_CONDITION" == "true" ]]
+                                                                                                                            then
+                                                                                                                                if ! DISTRACTOR=${ resources.checks.targets.false.true { failure = 13074 ; } }
+                                                                                                                                then
+                                                                                                                                    failure 26505
+                                                                                                                                fi
+                                                                                                                            else
+                                                                                                                                if ! DISTRACTOR=${ resources.checks.targets.false.false { failure = 27401 ; } }
+                                                                                                                                then
+                                                                                                                                    failure 22382
+                                                                                                                                fi
+                                                                                                                            fi
+                                                                                                                        fi
+                                                                                                                    '' ;
+                                                                                                            } ;
+                                                                                                    arguments = ''"${ builtins.concatStringsSep "" [ "$" "{" "@" "}" ] }"'' ;
                                                                                                     block =
                                                                                                         pkgs.writeShellApplication
                                                                                                             {
@@ -564,895 +609,190 @@
                                                                                                                         done
                                                                                                                     '' ;
                                                                                                             } ;
-                                                                                                    post-test =
-                                                                                                        let
-                                                                                                            application =
-                                                                                                                pkgs.writeShellApplication
-                                                                                                                    {
-                                                                                                                        name = "post-test" ;
-                                                                                                                        runtimeInputs =
-                                                                                                                            [
-                                                                                                                                block
-                                                                                                                                compare
-                                                                                                                                failure
-                                                                                                                                files
-                                                                                                                                pkgs.coreutils
-                                                                                                                                pkgs.redis
-                                                                                                                                (
-                                                                                                                                    pkgs.writeShellApplication
-                                                                                                                                        {
-                                                                                                                                            name = "pre-test" ;
-                                                                                                                                            runtimeInputs = [ block compare failure files pkgs.coreutils pkgs.jq pkgs.redis ] ;
-                                                                                                                                            text =
-                                                                                                                                                let
-                                                                                                                                                    in
-                                                                                                                                                        ''
-                                                                                                                                                            while [[ "$#" -gt 0 ]]
-                                                                                                                                                            do
-                                                                                                                                                                case "$1" in
-                                                                                                                                                                    --alpha)
-                                                                                                                                                                        if [[ "$#" -lt 2 ]]
-                                                                                                                                                                        then
-                                                                                                                                                                            failure 3253579886131153 "$*"
-                                                                                                                                                                        fi
-                                                                                                                                                                        ALPHA="$2"
-                                                                                                                                                                        shift 2
-                                                                                                                                                                        ;;
-                                                                                                                                                                    --distractor-index)
-                                                                                                                                                                        if [[ "$#" -lt 1 ]]
-                                                                                                                                                                        then
-                                                                                                                                                                            failure 13121 "$*"
-                                                                                                                                                                        fi
-                                                                                                                                                                        DISTRACTOR_INDEX="$2"
-                                                                                                                                                                        shift 2
-                                                                                                                                                                        ;;
-                                                                                                                                                                    --init)
-                                                                                                                                                                        if [[ "$#" -lt 2 ]]
-                                                                                                                                                                        then
-                                                                                                                                                                            failure 7356781469476321 "$*"
-                                                                                                                                                                        fi
-                                                                                                                                                                        INIT="$2"
-                                                                                                                                                                        if [[ "$INIT" != "true" ]] && [[ "$INIT" != "false" ]]
-                                                                                                                                                                        then
-                                                                                                                                                                            failure 6955793956212518 "$INIT"
-                                                                                                                                                                        fi
-                                                                                                                                                                        shift 2
-                                                                                                                                                                        ;;
-                                                                                                                                                                    --release)
-                                                                                                                                                                        if [[ "$#" -lt 2 ]]
-                                                                                                                                                                        then
-                                                                                                                                                                            failure 6729112877839317 "$*"
-                                                                                                                                                                        fi
-                                                                                                                                                                        RELEASE="$2"
-                                                                                                                                                                        if [[ "$RELEASE" != "true" ]] && [[ "$RELEASE" != "false" ]]
-                                                                                                                                                                        then
-                                                                                                                                                                            failure 7365993421498947 "$RELEASE"
-                                                                                                                                                                        fi
-                                                                                                                                                                        shift 2
-                                                                                                                                                                        ;;
-                                                                                                                                                                    --standard-output)
-                                                                                                                                                                        if [[ "$#" -lt 1 ]]
-                                                                                                                                                                        then
-                                                                                                                                                                            failure 14522
-                                                                                                                                                                        fi
-                                                                                                                                                                        STANDARD_OUTPUT="$2"
-                                                                                                                                                                        shift 2
-                                                                                                                                                                        ;;
-                                                                                                                                                                    --target)
-                                                                                                                                                                        if [[ "$#" -lt 1 ]]
-                                                                                                                                                                        then
-                                                                                                                                                                            failure 5298
-                                                                                                                                                                        fi
-                                                                                                                                                                        TARGET="$1"
-                                                                                                                                                                        shift 2
-                                                                                                                                                                        ;;
-                                                                                                                                                                    --uuid)
-                                                                                                                                                                        if [[ "$#" -lt 2 ]]
-                                                                                                                                                                        then
-                                                                                                                                                                            failure 6293418861389592 "$*"
-                                                                                                                                                                        fi
-                                                                                                                                                                        shift 2
-                                                                                                                                                                        ;;
-                                                                                                                                                                    *)
-                                                                                                                                                                        failure 3186874731515892 "$*"
-                                                                                                                                                                        ;;
-                                                                                                                                                                esac
-                                                                                                                                                            done
-                                                                                                                                                            if [[ -z "$ALPHA" ]]
-                                                                                                                                                            then
-                                                                                                                                                                failure 2468219387197693
-                                                                                                                                                            fi
-                                                                                                                                                            if [[ ! "$ALPHA" =~ ^-?[0-9]+$ ]]
-                                                                                                                                                            then
-                                                                                                                                                                failure 3514254328772311
-                                                                                                                                                            fi
-                                                                                                                                                            if [[ -z "$DISTRACTOR_INDEX" ]]
-                                                                                                                                                            then
-                                                                                                                                                                failure 12412
-                                                                                                                                                            fi
-                                                                                                                                                            if [[ -z "$INIT" ]]
-                                                                                                                                                            then
-                                                                                                                                                                failure 1871763771129953
-                                                                                                                                                            fi
-                                                                                                                                                            if [[ -z "$RELEASE" ]]
-                                                                                                                                                            then
-                                                                                                                                                                failure 4957596197169642
-                                                                                                                                                            fi
-                                                                                                                                                            if [[ -z "$STANDARD_OUTPUT" ]]
-                                                                                                                                                            then
-                                                                                                                                                                failure 18984
-                                                                                                                                                            fi
-                                                                                                                                                            if [[ -z "$TARGET" ]]
-                                                                                                                                                            then
-                                                                                                                                                                failure 28032
-                                                                                                                                                            fi
-                                                                                                                                                            block --timeout 1 --uuid 5984995243749875 3<&3
-                                                                                                                                                            files \
-                                                                                                                                                                --ceiling "$ALPHA" 0 2 \
-                                                                                                                                                                --uuid 7299736113522788
-                                                                                                                                                            if [[ "$INIT" == "true" ]]
-                                                                                                                                                            then
-                                                                                                                                                                if [[ "$RELEASE" == "true" ]]
-                                                                                                                                                                then
-                                                                                                                                                                    FRESH=${ resources.checks.targets.true.true { failure = 3438984915657231 ; } }
-                                                                                                                                                                    printf -v FRESH_INDEX "%016d" $(( ALPHA + 12 ))
-                                                                                                                                                                    jq \
-                                                                                                                                                                        --null-input \
-                                                                                                                                                                        --compact-output \
-                                                                                                                                                                        --arg INDEX "$FRESH_INDEX" \
-                                                                                                                                                                        --rawfile SCRIPT ${ scripts.true.true.init } \
-                                                                                                                                                                        --arg STANDARD_OUTPUT "$STANDARD_OUTPUT" \
-                                                                                                                                                                        --arg TARGET "$TARGET" \
-                                                                                                                                                                            '{
-                                                                                                                                                                               "arguments" : [ ] ,
-                                                                                                                                                                               "has-standard-input" : false ,
-                                                                                                                                                                               "index" : $INDEX ,
-                                                                                                                                                                               "script" : $SCRIPT ,
-                                                                                                                                                                               "seed" : [ "checks" , "targets" , "true" , "true" ] ,
-                                                                                                                                                                               "standard-error" : "" ,
-                                                                                                                                                                               "standard-input" : "" ,
-                                                                                                                                                                               "standard-output" : $STANDARD_OUTPUT ,
-                                                                                                                                                                               "status" : 0 ,
-                                                                                                                                                                               "targets" : [ $TARGET ] ,
-                                                                                                                                                                               "transient" : -1
-                                                                                                                                                                            }' | compare --message message --channel valid-init --payload false true --timeout 1 --uuid 8535513643619133 3<&3
-                                                                                                                                                                    block --timeout 1 --uuid 7411277161553272 3<&3
-                                                                                                                                                                    files \
-                                                                                                                                                                        --ceiling "$ALPHA" 8 18 \
-                                                                                                                                                                        --not-equals "$FRESH_INDEX" "$DISTRACTOR_INDEX" \
-                                                                                                                                                                        --equals "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" "$FRESH" \
-                                                                                                                                                                        --not-equals "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" "$DISTRACTOR" \
-                                                                                                                                                                        --directory "$FRESH" \
-                                                                                                                                                                        --file "$FRESH/$TARGET" \
-                                                                                                                                                                        --executable "/home/${ config.personal.name }/resources/release/$FRESH_INDEX" \
-                                                                                                                                                                        --does-not-exist "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX" \
-                                                                                                                                                                        --does-not-exist "/home/${ config.personal.name }/resources/invalid-release/$FRESH_INDEX" \
-                                                                                                                                                                        --uuid 9485816288686382
-                                                                                                                                                                    echo We created a fresh resource
-                                                                                                                                                                    STALE=${ resources.checks.targets.true.true { failure = 4599312279872888 ; } }
-                                                                                                                                                                    block --timeout 1 --uuid 2497785224611422 3<&3
-                                                                                                                                                                    files \
-                                                                                                                                                                        --ceiling "$ALPHA" 8 19 \
-                                                                                                                                                                        --equals "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" "$STALE" \
-                                                                                                                                                                        --equals "$STALE" "$FRESH" \
-                                                                                                                                                                        --not-equals "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" "$DISTRACTOR" \
-                                                                                                                                                                        --directory "$STALE" \
-                                                                                                                                                                        --file "$STALE/$TARGET" \
-                                                                                                                                                                        --executable "/home/${ config.personal.name }/resources/release/$FRESH_INDEX" \
-                                                                                                                                                                        --does-not-exist "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX" \
-                                                                                                                                                                        --does-not-exist "/home/${ config.personal.name }/resources/invalid-release/$FRESH_INDEX" \
-                                                                                                                                                                        --uuid 5556886441562925
-                                                                                                                                                                    echo We created a stale resource
-                                                                                                                                                                else
-                                                                                                                                                                    FRESH=${ resources.checks.targets.true.false { failure = 2198254319735746 ; } }
-                                                                                                                                                                    printf -v FRESH_INDEX "%016d" $(( ALPHA + 12 ))
-                                                                                                                                                                    jq \
-                                                                                                                                                                        --null-input \
-                                                                                                                                                                        --compact-output \
-                                                                                                                                                                        --arg INDEX "$FRESH_INDEX" \
-                                                                                                                                                                        --rawfile SCRIPT ${ scripts.true.false.init } \
-                                                                                                                                                                        --arg STANDARD_OUTPUT "$STANDARD_OUTPUT" \
-                                                                                                                                                                        --arg TARGET "$TARGET" \
-                                                                                                                                                                            '{
-                                                                                                                                                                               "arguments" : [ ] ,
-                                                                                                                                                                               "has-standard-input" : false ,
-                                                                                                                                                                               "index" : $INDEX ,
-                                                                                                                                                                               "script" : $SCRIPT ,
-                                                                                                                                                                               "seed" : [ "checks" , "targets" , "true" , "false" ] ,
-                                                                                                                                                                               "standard-error" : "" ,
-                                                                                                                                                                               "standard-input" : "" ,
-                                                                                                                                                                               "standard-output" : $STANDARD_OUTPUT ,
-                                                                                                                                                                               "status" : 0 ,
-                                                                                                                                                                               "targets" : [ $TARGET ] ,
-                                                                                                                                                                               "transient" : -1
-                                                                                                                                                                            }' | compare --message message --channel valid-init --payload false true --timeout 1 --uuid 1174392364636542 3<&3
-                                                                                                                                                                    block --timeout 1 --uuid 4699596933562198 3<&3
-                                                                                                                                                                    files \
-                                                                                                                                                                        --ceiling "$ALPHA" 8 18 \
-                                                                                                                                                                        --equals "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" "$FRESH" \
-                                                                                                                                                                        --not-equals "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" "$DISTRACTOR" \
-                                                                                                                                                                        --directory "$FRESH" \
-                                                                                                                                                                        --file "$FRESH/$TARGET" \
-                                                                                                                                                                        --executable "/home/${ config.personal.name }/resources/release/$FRESH_INDEX" \
-                                                                                                                                                                        --does-not-exist "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX" \
-                                                                                                                                                                        --does-not-exist "/home/${ config.personal.name }/resources/invalid-release/$FRESH_INDEX" \
-                                                                                                                                                                        --uuid 6824767566554982
-                                                                                                                                                                    echo We created a fresh resource
-                                                                                                                                                                    STALE=${ resources.checks.targets.true.false { failure = 7378826536491738 ; } }
-                                                                                                                                                                    block --timeout 1 --uuid 3651865773299727 3<&3
-                                                                                                                                                                    files \
-                                                                                                                                                                        --ceiling "$ALPHA" 8 19 \
-                                                                                                                                                                        --equals "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" "$STALE" \
-                                                                                                                                                                        --equals "$STALE" "$FRESH" \
-                                                                                                                                                                        --not-equals "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" "$DISTRACTOR" \
-                                                                                                                                                                        --directory "$STALE" \
-                                                                                                                                                                        --file "$STALE/$TARGET" \
-                                                                                                                                                                        --executable "/home/${ config.personal.name }/resources/release/$FRESH_INDEX" \
-                                                                                                                                                                        --does-not-exist "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX" \
-                                                                                                                                                                        --does-not-exist "/home/${ config.personal.name }/resources/invalid-release/$FRESH_INDEX" \
-                                                                                                                                                                        --uuid 1183691326215391
-                                                                                                                                                                    echo We created a stale resource
-                                                                                                                                                                fi
-                                                                                                                                                            else
-                                                                                                                                                                if [[ "$RELEASE" == "true" ]]
-                                                                                                                                                                then
-                                                                                                                                                                    TARGET=5494881573568661
-                                                                                                                                                                    if FRESH=${ resources.checks.targets.false.true { failure = 4524846869486114 ; } }
-                                                                                                                                                                    then
-                                                                                                                                                                        failure 5213962914665347
-                                                                                                                                                                    fi
-                                                                                                                                                                    printf -v FRESH_INDEX "%016d" $(( ALPHA + 4 ))
-                                                                                                                                                                    jq \
-                                                                                                                                                                        --null-input \
-                                                                                                                                                                        --compact-output \
-                                                                                                                                                                        --arg INDEX "$FRESH_INDEX" \
-                                                                                                                                                                        --rawfile SCRIPT ${ scripts.false.true.init } \
-                                                                                                                                                                        --arg TARGET "$TARGET" \
-                                                                                                                                                                            '{
-                                                                                                                                                                               "arguments" : [ ] ,
-                                                                                                                                                                               "has-standard-input" : false ,
-                                                                                                                                                                               "index" : $INDEX ,
-                                                                                                                                                                               "script" : $SCRIPT ,
-                                                                                                                                                                               "seed" : [ "checks" , "targets" , "false" , "true" ] ,
-                                                                                                                                                                               "standard-error" : "" ,
-                                                                                                                                                                               "standard-input" : "" ,
-                                                                                                                                                                               "standard-output" : "3148451947316331" ,
-                                                                                                                                                                               "status" : 114 ,
-                                                                                                                                                                               "targets" : { "expected" : [ $TARGET ] , "observed" : [ $TARGET ] } ,
-                                                                                                                                                                               "transient" : -1
-                                                                                                                                                                            }' | compare --message message --channel invalid-init --payload false true --timeout 1 --uuid 9746578686273853 3<&3
-                                                                                                                                                                    block --timeout 1 --uuid 2336958223494764 3<&3
-                                                                                                                                                                    files \
-                                                                                                                                                                        --ceiling "$ALPHA" 4 14 \
-                                                                                                                                                                        --equals "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" "$FRESH" \
-                                                                                                                                                                        --directory "$FRESH" \
-                                                                                                                                                                        --file "$FRESH/$TARGET" \
-                                                                                                                                                                        --does-not-exist "/home/${ config.personal.name }/resources/release/$FRESH_INDEX" \
-                                                                                                                                                                        --executable "/home/${ config.personal.name }/resources/invalid-init/default/$FRESH_INDEX/resolve.sh" \
-                                                                                                                                                                        --executable "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/resolutions/d9aeea696dd06d63/resolve.sh" \
-                                                                                                                                                                        --does-not-exist "/home/${ config.personal.name }/resources/invalid-release/$FRESH_INDEX" \
-                                                                                                                                                                        --uuid 1433129797798735
-                                                                                                                                                                    echo We failed to create a resource
-                                                                                                                                                                    if "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/resolutions/d9aeea696dd06d63/resolve.sh" 9554464665854115
-                                                                                                                                                                    then
-                                                                                                                                                                        failure 1446655397623276
-                                                                                                                                                                    fi
-                                                                                                                                                                    jq \
-                                                                                                                                                                        --null-input \
-                                                                                                                                                                        --compact-output \
-                                                                                                                                                                        --arg INDEX "$FRESH_INDEX" \
-                                                                                                                                                                        --rawfile SCRIPT ${ scripts.false.true.resolve.init } \
-                                                                                                                                                                        --arg TARGET "$TARGET" \
-                                                                                                                                                                            '{
-                                                                                                                                                                               "arguments" : [ "9554464665854115" ] ,
-                                                                                                                                                                               "has-standard-input" : false ,
-                                                                                                                                                                               "index" : $INDEX ,
-                                                                                                                                                                               "resolve-path" : [ "d9aeea696dd06d63" ] ,
-                                                                                                                                                                               "script" : $SCRIPT ,
-                                                                                                                                                                               "standard-error" : "" ,
-                                                                                                                                                                               "standard-input" : "" ,
-                                                                                                                                                                               "standard-output" :  "7669863784911683" ,
-                                                                                                                                                                               "status" : 185
-                                                                                                                                                                            }' | compare --message message --channel invalid-init --payload false true --timeout 1 --uuid 4487711927678726 3<&3
-                                                                                                                                                                    block --timeout 1 --uuid 891566c578f25dca 3<&3
-                                                                                                                                                                    files \
-                                                                                                                                                                        --ceiling "$ALPHA" 8 14 \
-                                                                                                                                                                        --equals "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" "$FRESH" \
-                                                                                                                                                                        --directory "$FRESH" \
-                                                                                                                                                                        --file "$FRESH/$TARGET" \
-                                                                                                                                                                        --does-not-exist "/home/${ config.personal.name }/resources/release/$FRESH_INDEX" \
-                                                                                                                                                                        --executable "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/resolve.sh" \
-                                                                                                                                                                        --executable "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/resolve/d9aeea696dd06d63/resolve.sh" \
-                                                                                                                                                                        --does-not-exist "/home/${ config.personal.name }/resources/invalid-release/$FRESH_INDEX" \
-                                                                                                                                                                        --uuid 1919721337591632
-                                                                                                                                                                    echo We failed to resolve a resource
-                                                                                                                                                                    "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/resolve/d9aeea696dd06d63/resolve.sh" 8363144534251594
-                                                                                                                                                                    jq \
-                                                                                                                                                                        --null-input \
-                                                                                                                                                                        --compact-output \
-                                                                                                                                                                        --arg INDEX "$FRESH_INDEX" \
-                                                                                                                                                                        --rawfile SCRIPT ${ scripts.false.true.resolve.init } \
-                                                                                                                                                                        --arg TARGET "$TARGET" \
-                                                                                                                                                                            '{
-                                                                                                                                                                               "arguments" : [ "8363144534251594" ] ,
-                                                                                                                                                                               "has-standard-input" : false ,
-                                                                                                                                                                               "index" : $INDEX ,
-                                                                                                                                                                               "resolve-path" : [ "d9aeea696dd06d63" ] ,
-                                                                                                                                                                               "script" : $SCRIPT ,
-                                                                                                                                                                               "standard-input" : "" ,
-                                                                                                                                                                               "standard-output" : "7669863784911683"
-                                                                                                                                                                            }' | compare --message message --channel valid-init --payload false true --timeout 1 --uuid 8398518585436176 3<&3
-                                                                                                                                                                    jq \
-                                                                                                                                                                        --null-input \
-                                                                                                                                                                        --compact-output \
-                                                                                                                                                                        --arg INDEX "$FRESH_INDEX" \
-                                                                                                                                                                        --rawfile SCRIPT ${ scripts.false.true.release } \
-                                                                                                                                                                        --arg TARGET "$TARGET" \
-                                                                                                                                                                            '{
-                                                                                                                                                                               "index" : $INDEX ,
-                                                                                                                                                                               "script" : $SCRIPT ,
-                                                                                                                                                                               "seed" : [ "checks" , "targets" , "false" , "true" ] ,
-                                                                                                                                                                               "standard-output" : "4657737859987722"
-                                                                                                                                                                            }' | compare --message message --channel valid-release --payload false true --timeout 60 --uuid 1118336254258565 3<&3
-                                                                                                                                                                    block --timeout 1 --uuid 1875f81650ebb984 3<&3
-                                                                                                                                                                    files \
-                                                                                                                                                                        --ceiling "$ALPHA" 8 23 \
-                                                                                                                                                                        --equals "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" "$FRESH" \
-                                                                                                                                                                        --does-not-exist "$FRESH" \
-                                                                                                                                                                        --does-not-exist "/home/${ config.personal.name }/resources/release/$FRESH_INDEX" \
-                                                                                                                                                                        --does-not-exist "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/resolve.sh" \
-                                                                                                                                                                        --does-not-exist "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/resolve/d9aeea696dd06d63/resolve.sh" \
-                                                                                                                                                                        --does-not-exist "/home/${ config.personal.name }/resources/invalid-release/$FRESH_INDEX" \
-                                                                                                                                                                        --uuid 3242249797342583
-                                                                                                                                                                    echo We resolved a resource
-                                                                                                                                                                else
-                                                                                                                                                                    TARGET=9427941488926681
-                                                                                                                                                                    if FRESH=${ resources.checks.targets.false.false { failure = 3762281293673372 ; } }
-                                                                                                                                                                    then
-                                                                                                                                                                        failure 8218882526454666
-                                                                                                                                                                    fi
-                                                                                                                                                                    printf -v FRESH_INDEX "%016d" $(( ALPHA + 4 ))
-                                                                                                                                                                    jq \
-                                                                                                                                                                        --null-input \
-                                                                                                                                                                        --compact-output \
-                                                                                                                                                                        --arg INDEX "$FRESH_INDEX" \
-                                                                                                                                                                        --rawfile SCRIPT ${ scripts.false.false.init } \
-                                                                                                                                                                        --arg TARGET "$TARGET" \
-                                                                                                                                                                            '{
-                                                                                                                                                                               "arguments" : [ ] ,
-                                                                                                                                                                               "has-standard-input" : false ,
-                                                                                                                                                                               "index" : $INDEX ,
-                                                                                                                                                                               "script" : $SCRIPT ,
-                                                                                                                                                                               "seed" : [ "checks" , "targets" , "false" , "false" ] ,
-                                                                                                                                                                               "standard-error" : "" ,
-                                                                                                                                                                               "standard-input" : "" ,
-                                                                                                                                                                               "standard-output" : "3346844943869582" ,
-                                                                                                                                                                               "status" : 117 ,
-                                                                                                                                                                               "targets" : { "expected" : [ $TARGET ] , "observed" : [ $TARGET ] } ,
-                                                                                                                                                                               "transient" : -1
-                                                                                                                                                                            }' | compare --message message --channel invalid-init --payload false true --timeout 1 --uuid 9138135958783964 3<&3
-                                                                                                                                                                    block --timeout 1 --uuid 3477585267872325 3<&3
-                                                                                                                                                                    files \
-                                                                                                                                                                        --ceiling "$ALPHA" 4 14 \
-                                                                                                                                                                        --directory "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" \
-                                                                                                                                                                        --file "$/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX/$TARGET" \
-                                                                                                                                                                        --does-not-exist "/home/${ config.personal.name }/resources/release/$FRESH_INDEX" \
-                                                                                                                                                                        --executable "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/default/resolve.sh" \
-                                                                                                                                                                        --executable "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/resolutions/ec36b9ba523f094d/resolve.sh" \
-                                                                                                                                                                        --does-not-exist "/home/${ config.personal.name }/resources/invalid-release/$FRESH_INDEX" \
-                                                                                                                                                                        --uuid 1136919975781834
-                                                                                                                                                                    echo We failed to create a resource
-                                                                                                                                                                    if "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/resolutions/ec36b9ba523f094d/resolve.sh" 7482446721679967
-                                                                                                                                                                    then
-                                                                                                                                                                        cat "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/resolutions/ec36b9ba523f094d/resolve.sh" >&2
-                                                                                                                                                                        failure 5127357481675282
-                                                                                                                                                                    fi
-                                                                                                                                                                    jq \
-                                                                                                                                                                        --null-input \
-                                                                                                                                                                        --compact-output \
-                                                                                                                                                                        --arg INDEX "$FRESH_INDEX" \
-                                                                                                                                                                        --rawfile SCRIPT ${ scripts.false.false.resolve.init } \
-                                                                                                                                                                        --arg TARGET "$TARGET" \
-                                                                                                                                                                            '{
-                                                                                                                                                                               "arguments" : [ "7482446721679967" ] ,
-                                                                                                                                                                               "has-standard-input" : false ,
-                                                                                                                                                                               "index" : $INDEX ,
-                                                                                                                                                                               "resolve-path" : [ "ec36b9ba523f094d" ] ,
-                                                                                                                                                                               "script" : $SCRIPT ,
-                                                                                                                                                                               "standard-error" : "" ,
-                                                                                                                                                                               "standard-input" : "" ,
-                                                                                                                                                                               "standard-output" :  "7669863784911683" ,
-                                                                                                                                                                               "status" : 208
-                                                                                                                                                                            }' | compare --message message --channel invalid-init --payload false true --timeout 1 --uuid 6677293467823958 3<&3
-                                                                                                                                                                    block --timeout 1 --uuid 6631241829779291a 3<&3
-                                                                                                                                                                    files \
-                                                                                                                                                                        --ceiling "$ALPHA" 8 14 \
-                                                                                                                                                                        --equals "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" "$FRESH" \
-                                                                                                                                                                        --directory "$FRESH" \
-                                                                                                                                                                        --file "$FRESH/$TARGET" \
-                                                                                                                                                                        --does-not-exist "/home/${ config.personal.name }/resources/release/$FRESH_INDEX" \
-                                                                                                                                                                        --executable "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/resolve.sh" \
-                                                                                                                                                                        --executable "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/resolve/ec36b9ba523f094d/resolve.sh" \
-                                                                                                                                                                        --does-not-exist "/home/${ config.personal.name }/resources/invalid-release/$FRESH_INDEX" \
-                                                                                                                                                                        --uuid 5499964149571681
-                                                                                                                                                                    echo We failed to resolve a resource
-                                                                                                                                                                    "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/resolve/ec36b9ba523f094d/resolve.sh" 7151639144478587
-                                                                                                                                                                    jq \
-                                                                                                                                                                        --null-input \
-                                                                                                                                                                        --compact-output \
-                                                                                                                                                                        --arg INDEX "$FRESH_INDEX" \
-                                                                                                                                                                        --rawfile SCRIPT ${ scripts.false.false.resolve.init } \
-                                                                                                                                                                        --arg TARGET "$TARGET" \
-                                                                                                                                                                            '{
-                                                                                                                                                                               "arguments" : [ "7151639144478587" ] ,
-                                                                                                                                                                               "has-standard-input" : false ,
-                                                                                                                                                                               "index" : $INDEX ,
-                                                                                                                                                                               "resolve-path" : [ "ec36b9ba523f094d" ] ,
-                                                                                                                                                                               "script" : $SCRIPT ,
-                                                                                                                                                                               "standard-input" : "" ,
-                                                                                                                                                                               "standard-output" : "7669863784911683"
-                                                                                                                                                                            }' | compare --message message --channel valid-init --payload false true --timeout 1 --uuid 9328879138585611 3<&3
-                                                                                                                                                                    jq \
-                                                                                                                                                                        --null-input \
-                                                                                                                                                                        --compact-output \
-                                                                                                                                                                        --arg INDEX "$FRESH_INDEX" \
-                                                                                                                                                                        --rawfile SCRIPT ${ scripts.false.false.resolve.release } \
-                                                                                                                                                                        '{
-                                                                                                                                                                           "index" : $INDEX ,
-                                                                                                                                                                           "script" : $SCRIPT ,
-                                                                                                                                                                           "seed" : [ "checks" , "targets" , "false" , "false" ] ,
-                                                                                                                                                                           "standard-error" : "" ,
-                                                                                                                                                                           "standard-output" : "3299938456476225" ,
-                                                                                                                                                                           "status" : 169
-                                                                                                                                                                        }' | compare --message message --channel invalid-release --payload false true --timeout 10 --uuid 4737219971119968 3<&3
-                                                                                                                                                                    block --timeout 1 --uuid 7322152747664447
-                                                                                                                                                                    files \
-                                                                                                                                                                        --ceiling "$ALPHA" 8 23 \
-                                                                                                                                                                        --equals "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" "$FRESH" \
-                                                                                                                                                                        --equals "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" "$FRESH" \
-                                                                                                                                                                        --directory "$FRESH" \
-                                                                                                                                                                        --file "$FRESH/$TARGET" \
-                                                                                                                                                                        --does-not-exist "/home/${ config.personal.name }/resources/release/$FRESH_INDEX" \
-                                                                                                                                                                        --does-not-exist "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/resolve.sh" \
-                                                                                                                                                                        --does-not-exist "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/resolve/ec36b9ba523f094d/resolve.sh" \
-                                                                                                                                                                        --executable "/home/${ config.personal.name }/resources/invalid-release/$FRESH_INDEX/resolve.sh" \
-                                                                                                                                                                        --executable "/home/${ config.personal.name }/resources/invalid-release/$FRESH_INDEX/resolve/c5cd75e157ecd42b/resolve.sh" \
-                                                                                                                                                                        --uuid 7491459288728827
-                                                                                                                                                                    echo We resolved the init of a resource
-                                                                                                                                                                    if "/home/${ config.personal.name }/resources/invalid-release/$FRESH_INDEX/resolve/c5cd75e157ecd42b/resolve.sh" 7486835568334252
-                                                                                                                                                                    then
-                                                                                                                                                                        failure 9153213577858634
-                                                                                                                                                                    fi
-                                                                                                                                                                    jq \
-                                                                                                                                                                        --null-input \
-                                                                                                                                                                        --compact-output \
-                                                                                                                                                                        --arg INDEX "$FRESH_INDEX" \
-                                                                                                                                                                        --rawfile SCRIPT ${ scripts.false.false.resolve.release } \
-                                                                                                                                                                        '{
-                                                                                                                                                                           "index" : $INDEX ,
-                                                                                                                                                                           "script" : $SCRIPT ,
-                                                                                                                                                                           "resolution-path" : [ "c5cd75e157ecd42b" ] ,
-                                                                                                                                                                           "standard-error" : "" ,
-                                                                                                                                                                           "standard-output" : "3299938456476225" ,
-                                                                                                                                                                           "status" : 169
-                                                                                                                                                                        }' | compare --message message --channel invalid-release --payload false true --timeout 1 --uuid 9164892789912192 3<&3
-                                                                                                                                                                    block --timeout 1 --uuid 6178141449558737
-                                                                                                                                                                    files \
-                                                                                                                                                                        --ceiling "$ALPHA" 8 18 \
-                                                                                                                                                                        --equals "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" "$FRESH" \
-                                                                                                                                                                        --equals "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" "$FRESH" \
-                                                                                                                                                                        --directory "$FRESH" \
-                                                                                                                                                                        --file "$FRESH/$TARGET" \
-                                                                                                                                                                        --does-not-exist "/home/${ config.personal.name }/resources/release/$FRESH_INDEX" \
-                                                                                                                                                                        --does-not-exist "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/resolve.sh" \
-                                                                                                                                                                        --does-not-exist "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/resolve/ec36b9ba523f094d/resolve.sh" \
-                                                                                                                                                                        --executable "/home/${ config.personal.name }/resources/invalid-release/$FRESH_INDEX/resolve.sh" \
-                                                                                                                                                                        --executable "/home/${ config.personal.name }/resources/invalid-release/$FRESH_INDEX/resolve/c5cd75e157ecd42b/resolve.sh" \
-                                                                                                                                                                        --uuid 1241561655493619
-                                                                                                                                                                    echo We failed to resolve the release of a resource
-                                                                                                                                                                    "/home/${ config.personal.name }/resources/invalid-release/$FRESH_INDEX/resolve/c5cd75e157ecd42b/resolve.sh" 7486835568334252
-                                                                                                                                                                    jq \
-                                                                                                                                                                        --null-input \
-                                                                                                                                                                        --compact-output \
-                                                                                                                                                                        --arg INDEX "$FRESH_INDEX" \
-                                                                                                                                                                        --rawfile SCRIPT ${ scripts.false.false.resolve.init } \
-                                                                                                                                                                        --arg TARGET "$TARGET" \
-                                                                                                                                                                            '{
-                                                                                                                                                                               "arguments" : [ "4597174954562694" ] ,
-                                                                                                                                                                               "has-standard-input" : false ,
-                                                                                                                                                                               "index" : $INDEX ,
-                                                                                                                                                                               "resolve-path" : [ "ec36b9ba523f094d" ] ,
-                                                                                                                                                                               "script" : $SCRIPT ,
-                                                                                                                                                                               "standard-input" : "" ,
-                                                                                                                                                                               "standard-output" : "7669863784911683"
-                                                                                                                                                                            }' | compare --message message --channel invalid-release --payload false true --timeout 1 --uuid 7239616579231963 3<&3
-                                                                                                                                                                    block --timeout 1 --uuid 7114515538226678
-                                                                                                                                                                    files \
-                                                                                                                                                                        --ceiling "$ALPHA" 8 18 \
-                                                                                                                                                                        --equals "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" "$FRESH" \
-                                                                                                                                                                        --equals "/home/${ config.personal.name }/resources/mounts/$FRESH_INDEX" "$FRESH" \
-                                                                                                                                                                        --directory "$FRESH" \
-                                                                                                                                                                        --file "$FRESH/$TARGET" \
-                                                                                                                                                                        --does-not-exist "/home/${ config.personal.name }/resources/release/$FRESH_INDEX" \
-                                                                                                                                                                        --does-not-exist "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/resolve.sh" \
-                                                                                                                                                                        --does-not-exist "/home/${ config.personal.name }/resources/invalid-init/$FRESH_INDEX/resolve/ec36b9ba523f094d/resolve.sh" \
-                                                                                                                                                                        --executable "/home/${ config.personal.name }/resources/invalid-release/$FRESH_INDEX/resolve.sh" \
-                                                                                                                                                                        --executable "/home/${ config.personal.name }/resources/invalid-release/$FRESH_INDEX/resolve/c5cd75e157ecd42b/resolve.sh" \
-                                                                                                                                                                        --uuid 1241561655493619
-                                                                                                                                                                    echo We resolved the release of a resource2
-                                                                                                                                                                fi
-                                                                                                                                                            fi
-                                                                                                                                                            block --timeout 1 --uuid 8293659991281846
-                                                                                                                                                        '' ;
-                                                                                                                                        }
-                                                                                                                                )
-                                                                                                                            ] ;
-                                                                                                                        text =
-                                                                                                                            ''
-                                                                                                                                while [[ "$#" -gt 0 ]]
-                                                                                                                                do
-                                                                                                                                    case "$1" in
-                                                                                                                                        --alpha)
-                                                                                                                                            ALPHA="$2"
-                                                                                                                                            shift 2
-                                                                                                                                            ;;
-                                                                                                                                        --init)
-                                                                                                                                            INIT="$2"
-                                                                                                                                            shift 2
-                                                                                                                                            ;;
-                                                                                                                                        --release)
-                                                                                                                                            RELEASE="$2"
-                                                                                                                                            shift 2
-                                                                                                                                            ;;
-                                                                                                                                        *)
-                                                                                                                                            failure 7725171477728387 "$*"
-                                                                                                                                            ;;
-                                                                                                                                    esac
-                                                                                                                                done
-                                                                                                                                if [[ -z "$ALPHA" ]]
-                                                                                                                                then
-                                                                                                                                    failure 2987265819228115
-                                                                                                                                fi
-                                                                                                                                if [[ ! "$ALPHA" =~ ^-?[0-9]+$ ]]
-                                                                                                                                then
-                                                                                                                                    failure 4368143965676452
-                                                                                                                                fi
-                                                                                                                                if [[ -z "$INIT" ]]
-                                                                                                                                then
-                                                                                                                                    failure 6984279614593412
-                                                                                                                                fi
-                                                                                                                                if [[ -z "$RELEASE" ]]
-                                                                                                                                then
-                                                                                                                                    failure 9276983686635566
-                                                                                                                                fi
-                                                                                                                                block --timeout 1 --uuid 4899964636364281 3<&3
-                                                                                                                                printf -v ALPHA_INDEX "%016d" $(( ALPHA ))
-                                                                                                                                files \
-                                                                                                                                    --does-not-exist "/home/${ config.personal.name }/resources/mounts/$ALPHA_INDEX" \
-                                                                                                                                    --does-not-exist "/home/${ config.personal.name }/resources/release/$ALPHA_INDEX" \
-                                                                                                                                    --does-not-exist "/home/${ config.personal.name }/resources/invalid-init/$ALPHA_INDEX" \
-                                                                                                                                    --does-not-exist "/home/${ config.personal.name }/resources/invalid-release/$ALPHA_INDEX" \
-                                                                                                                                    --uuid 1289673385791639
-                                                                                                                                exec 3< <( timeout 1m redis-cli SUBSCRIBE invalid-init invalid-release stale-init valid-init valid-release )
-                                                                                                                                compare --message subscribe --channel invalid-init --payload 1 false --timeout 1 --uuid 3376489199378444 3<&3
-                                                                                                                                compare --message subscribe --channel invalid-release --payload 2 false --timeout 1 --uuid 2339378822363186 3<&3
-                                                                                                                                compare --message subscribe --channel stale-init --payload  3 false --timeout 1 --uuid 3319464677934952 3<&3
-                                                                                                                                compare --message subscribe --channel valid-init --payload 4 false --timeout 1 --uuid 6233777653511116 3<&3
-                                                                                                                                compare --message subscribe --channel valid-release --payload 5 false --timeout 1 --uuid 3668165924724399 3<&3
-                                                                                                                                block --timeout 1 --uuid 8549964153339418 3<&3
-                                                                                                                                files \
-                                                                                                                                    --does-not-exist "/home/${ config.personal.name }/resources/mounts/$ALPHA_INDEX" \
-                                                                                                                                    --does-not-exist "/home/${ config.personal.name }/resources/release/$ALPHA_INDEX" \
-                                                                                                                                    --does-not-exist "/home/${ config.personal.name }/resources/invalid-init/$ALPHA_INDEX" \
-                                                                                                                                    --does-not-exist "/home/${ config.personal.name }/resources/invalid-release/$ALPHA_INDEX" \
-                                                                                                                                    --uuid 1289673385791639
-                                                                                                                                if [[ "$INIT" == "true" ]]
-                                                                                                                                then
-                                                                                                                                    if [[ "$RELEASE" == "true" ]]
-                                                                                                                                    then
-                                                                                                                                        DISTRACTOR=${ resources.checks.targets.true.true { failure = 8829996994479772 ; setup = setup : ''${ setup } 3564731485791737'' ; } }
-                                                                                                                                        printf -v DISTRACTOR_INDEX "%016d" $(( ALPHA + 4 ))
-                                                                                                                                        jq \
-                                                                                                                                            --null-input \
-                                                                                                                                            --compact-output \
-                                                                                                                                            --arg ARGUMENT 3564731485791737 \
-                                                                                                                                            --arg INDEX "$DISTRACTOR_INDEX" \
-                                                                                                                                            --rawfile SCRIPT ${ scripts.true.true.init } \
-                                                                                                                                            --arg STANDARD_OUTPUT "$STANDARD_OUTPUT" \
-                                                                                                                                            --arg TARGET "$TARGET" \
-                                                                                                                                                '{
-                                                                                                                                                   "has-standard-input" : false
-                                                                                                                                                }' | compare --message message --channel valid-init --payload false true --timeout 1 --uuid 6829 3<&3
-                                                                                                                                        block --timeout 1 --uuid 6925921732651899 3<&3
-                                                                                                                                        files \
-                                                                                                                                            --ceiling "$ALPHA" 2 10 \
-                                                                                                                                            --equals "/home/${ config.personal.name }/resources/mounts/$DISTRACTOR_INDEX" "$DISTRACTOR" \
-                                                                                                                                            --directory "$DISTRACTOR" \
-                                                                                                                                            --file "$DISTRACTOR/$TARGET" \
-                                                                                                                                            --executable "/home/${ config.personal.name }/resources/release/$DISTRACTOR_INDEX" \
-                                                                                                                                            --does-not-exist "/home/${ config.personal.name }/resources/invalid-init/$DISTRACTOR_INDEX" \
-                                                                                                                                            --does-not-exist "/home/${ config.personal.name }/resources/invalid-release/$DISTRACTOR_INDEX" \
-                                                                                                                                            --uuid 6764498451529627
-                                                                                                                                        echo We created a distractor resource
-                                                                                                                                    else
-                                                                                                                                        DISTRACTOR=${ resources.checks.targets.true.false { failure = 1965713756848597 ; setup = setup : ''${ setup } 2764421667212817'' ; } }
-                                                                                                                                        printf -v DISTRACTOR_INDEX "%016d" $(( ALPHA + 4 ))
-                                                                                                                                        STANDARD_OUTPUT=4725766637963872
-                                                                                                                                        TARGET=3297495737778474
-                                                                                                                                        jq \
-                                                                                                                                            --null-input \
-                                                                                                                                            --compact-output \
-                                                                                                                                            --arg ARGUMENT 2764421667212817 \
-                                                                                                                                            --arg INDEX "$DISTRACTOR_INDEX" \
-                                                                                                                                            --rawfile SCRIPT ${ scripts.true.false.init } \
-                                                                                                                                            --arg STANDARD_OUTPUT "$STANDARD_OUTPUT" \
-                                                                                                                                            --arg TARGET "$TARGET" \
-                                                                                                                                                '{
-                                                                                                                                                   "arguments" : [ $ARGUMENT ] ,
-                                                                                                                                                   "has-standard-input" : false ,
-                                                                                                                                                   "index" : $INDEX ,
-                                                                                                                                                   "script" : $SCRIPT ,
-                                                                                                                                                   "seed" : [ "checks" , "targets" , "true" , "false" ] ,
-                                                                                                                                                   "standard-error" : "" ,
-                                                                                                                                                   "standard-input" : "" ,
-                                                                                                                                                   "standard-output" : $STANDARD_OUTPUT ,
-                                                                                                                                                   "status" : 0 ,
-                                                                                                                                                   "targets" : [ $TARGET ] ,
-                                                                                                                                                   "transient" : -1
-                                                                                                                                                }' | compare --message message --channel valid-init --payload false true --timeout 1 --uuid 6784546776754448 3<&3
-                                                                                                                                        block --timeout 1 --uuid 7866414393983313 3<&3
-                                                                                                                                        files \
-                                                                                                                                            --ceiling "$ALPHA" 2 10 \
-                                                                                                                                            --equals "/home/${ config.personal.name }/resources/mounts/$DISTRACTOR_INDEX" "$DISTRACTOR" \
-                                                                                                                                            --directory "$DISTRACTOR" \
-                                                                                                                                            --file "$DISTRACTOR/$TARGET" \
-                                                                                                                                            --executable "/home/${ config.personal.name }/resources/release/$DISTRACTOR_INDEX" \
-                                                                                                                                            --does-not-exist "/home/${ config.personal.name }/resources/invalid-init/$DISTRACTOR_INDEX" \
-                                                                                                                                            --does-not-exist "/home/${ config.personal.name }/resources/invalid-release/$DISTRACTOR_INDEX" \
-                                                                                                                                            --uuid 5686665366486275
-                                                                                                                                        echo We created a distractor resource
-                                                                                                                                    fi
-                                                                                                                                else
-                                                                                                                                    if [[ "$RELEASE" == "true" ]]
-                                                                                                                                    then
-                                                                                                                                        if DISTRACTOR=${ resources.checks.targets.false.true { failure = 8829996994479772 ; setup = setup : ''${ setup } 3564731485791737'' ; } }
-                                                                                                                                        then
-                                                                                                                                            failure 18156
-                                                                                                                                        fi
-                                                                                                                                        printf -v DISTRACTOR_INDEX "%016d" $(( ALPHA + 4 ))
-                                                                                                                                        STANDARD_OUTPUT=3148451947316331
-                                                                                                                                        TARGET=5494881573568661
-                                                                                                                                        jq \
-                                                                                                                                            --null-input \
-                                                                                                                                            --compact-output \
-                                                                                                                                            --arg ARGUMENT 3564731485791737 \
-                                                                                                                                            --arg INDEX "$DISTRACTOR_INDEX" \
-                                                                                                                                            --rawfile SCRIPT ${ scripts.false.true.init } \
-                                                                                                                                            --arg STANDARD_OUTPUT "$STANDARD_OUTPUT" \
-                                                                                                                                            --arg TARGET "$TARGET" \
-                                                                                                                                                '{
-                                                                                                                                                   "arguments" : [ $ARGUMENT ] ,
-                                                                                                                                                   "has-standard-input" : false ,
-                                                                                                                                                   "index" : $INDEX ,
-                                                                                                                                                   "seed" : [ "checks" , "targets" , "false" , "true" ] ,
-                                                                                                                                                   "script" : $SCRIPT ,
-                                                                                                                                                   "standard-error" : "" ,
-                                                                                                                                                   "standard-input" : "" ,
-                                                                                                                                                   "standard-output" : $STANDARD_OUTPUT ,
-                                                                                                                                                   "status" : 114 ,
-                                                                                                                                                   "targets" : { expected : [ $TARGET ], observed : [ $TARGET ] } ,
-                                                                                                                                                   "transient" : -1
-                                                                                                                                                }' | compare --message message --channel invalid-init --payload false true --timeout 1 --uuid 31155 3<&3
-                                                                                                                                        block --timeout 1 --uuid 6925921732651899 3<&3
-                                                                                                                                        files \
-                                                                                                                                            --ceiling "$ALPHA" 2 10 \
-                                                                                                                                            --equals "/home/${ config.personal.name }/resources/mounts/$DISTRACTOR_INDEX" "$DISTRACTOR" \
-                                                                                                                                            --directory "$DISTRACTOR" \
-                                                                                                                                            --file "$DISTRACTOR/$TARGET" \
-                                                                                                                                            --executable "/home/${ config.personal.name }/resources/release/$DISTRACTOR_INDEX" \
-                                                                                                                                            --does-not-exist "/home/${ config.personal.name }/resources/invalid-init/$DISTRACTOR_INDEX" \
-                                                                                                                                            --does-not-exist "/home/${ config.personal.name }/resources/invalid-release/$DISTRACTOR_INDEX" \
-                                                                                                                                            --uuid 6764498451529627
-                                                                                                                                        echo We created a distractor resource
-                                                                                                                                    else
-                                                                                                                                        true
-                                                                                                                                    fi
-                                                                                                                                fi
-                                                                                                                                block --timeout 1 --uuid 11816
-                                                                                                                                pre-test --alpha "$ALPHA" --distractor-index "$DISTRACTOR_INDEX" --init "$INIT" --release "$RELEASE" --standard-output "$STANDARD_OUTPUT" --target "$TARGET" --uuid 3316116883378534 3<&3 &
-                                                                                                                                if [[ "$INIT" == "true" ]]
-                                                                                                                                then
-                                                                                                                                    if [[ "$RELEASE" == "true" ]]
-                                                                                                                                    then
-                                                                                                                                        true
-                                                                                                                                    else
-                                                                                                                                        true
-                                                                                                                                    fi
-                                                                                                                                else
-                                                                                                                                    if [[ "$RELEASE" == "true" ]]
-                                                                                                                                    then
-                                                                                                                                        true
-                                                                                                                                    else
-                                                                                                                                        true
-                                                                                                                                    fi
-                                                                                                                                fi
-                                                                                                                                block --timeout 1 --uuid 20622
-                                                                                                                            '' ;
-                                                                                                                    } ;
-                                                                                                                scripts =
-                                                                                                                    {
-                                                                                                                        false =
-                                                                                                                            {
-                                                                                                                                false =
-                                                                                                                                    {
-                                                                                                                                        init =
-                                                                                                                                            let
-                                                                                                                                                application =
-                                                                                                                                                    pkgs.writeShellApplication
-                                                                                                                                                        {
-                                                                                                                                                            name = "init" ;
-                                                                                                                                                            text = "/nix/store/xpf9hr2bfzc7fs4qf1szr3dzswm7k4vv-init/bin/init" ;
-                                                                                                                                                        } ;
-                                                                                                                                                in "${ application }/bin/init" ;
-                                                                                                                                        release =
-                                                                                                                                            ''
-                                                                                                                                            '' ;
-                                                                                                                                        resolve =
+                                                                                                    init-condition =
+                                                                                                         pkgs.writeShellApplication
+                                                                                                             {
+                                                                                                                 name = "init-condition" ;
+                                                                                                                 runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                                 text =
+                                                                                                                     ''
+                                                                                                                         echo "$2"
+                                                                                                                     '' ;
+                                                                                                             } ;
+                                                                                                   release-condition =
+                                                                                                        pkgs.writeShellApplication
+                                                                                                            {
+                                                                                                                name = "init-condition" ;
+                                                                                                                runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                                text =
+                                                                                                                    ''
+                                                                                                                        echo "$3"
+                                                                                                                    '' ;
+                                                                                                            } ;
+                                                                                                    scripts =
+                                                                                                        {
+                                                                                                            false =
+                                                                                                                {
+                                                                                                                    false =
+                                                                                                                        {
+                                                                                                                            init =
+                                                                                                                                let
+                                                                                                                                    application =
+                                                                                                                                        pkgs.writeShellApplication
                                                                                                                                             {
-                                                                                                                                                init =
-                                                                                                                                                    let
-                                                                                                                                                        application =
-                                                                                                                                                            pkgs.writeShellApplication
-                                                                                                                                                                {
-                                                                                                                                                                    name = "init" ;
-                                                                                                                                                                    text =
-                                                                                                                                                                        ''
-                                                                                                                                                                            echo -en 7669863784911683
-                                                                                                                                                                            if [[ "$1" == 7482446721679967 ]]
-                                                                                                                                                                            then
-                                                                                                                                                                                exit 208
-                                                                                                                                                                            elif [[ "$1" == 7151639144478587 ]]
-                                                                                                                                                                            then
-                                                                                                                                                                                exit
-                                                                                                                                                                            else
-                                                                                                                                                                                failure 6126927632687914 "$*"
-                                                                                                                                                                            fi'' ;
-                                                                                                                                                                } ;
-                                                                                                                                                        in "${ application }/bin/init" ;
-                                                                                                                                                release =
-                                                                                                                                                    let
-                                                                                                                                                        application =
-                                                                                                                                                            pkgs.writeShellApplication
-                                                                                                                                                                {
-                                                                                                                                                                    name = "release" ;
-                                                                                                                                                                    text = "/nix/store/pqhp7nlihwwy16vnfga1jpap8ml71hs6-release/bin/release" ;
-                                                                                                                                                                } ;
-                                                                                                                                                        in "${ application }/bin/release" ;
+                                                                                                                                                name = "init" ;
+                                                                                                                                                text = "/nix/store/xpf9hr2bfzc7fs4qf1szr3dzswm7k4vv-init/bin/init" ;
                                                                                                                                             } ;
-                                                                                                                                    } ;
-                                                                                                                                true =
-                                                                                                                                    {
-                                                                                                                                        init =
-                                                                                                                                            let
-                                                                                                                                                application =
-                                                                                                                                                    pkgs.writeShellApplication
-                                                                                                                                                        {
-                                                                                                                                                            name = "init" ;
-                                                                                                                                                            text = "/nix/store/zp158z04y8a09cravpnxxc8lm37hnwiv-init/bin/init" ;
-                                                                                                                                                        } ;
-                                                                                                                                                in "${ application }/bin/init" ;
-                                                                                                                                        release =
-                                                                                                                                            let
-                                                                                                                                                application =
-                                                                                                                                                    pkgs.writeShellApplication
-                                                                                                                                                        {
-                                                                                                                                                            name = "release" ;
-                                                                                                                                                            text = "/nix/store/baqdlg538bdxj07hr8n72jlpcfjhdnws-release/bin/release" ;
-                                                                                                                                                        } ;
-                                                                                                                                                in "${ application }/bin/release" ;
-                                                                                                                                        resolve =
-                                                                                                                                            {
-                                                                                                                                                init =
-                                                                                                                                                    builtins.toFile
-                                                                                                                                                        "script"
-                                                                                                                                                        ''
-                                                                                                                                                            #!/nix/store/mjhcjikhxps97mq5z54j4gjjfzgmsir5-bash-5.2p37/bin/bash
-                                                                                                                                                            set -o errexit
-                                                                                                                                                            set -o nounset
-                                                                                                                                                            set -o pipefail
-
-                                                                                                                                                            echo -en 7669863784911683
-                                                                                                                                                            if [[ "$1" == 9554464665854115 ]]
-                                                                                                                                                            then
-                                                                                                                                                                exit 185
-                                                                                                                                                            elif [[ "$1" == 8363144534251594 ]]
-                                                                                                                                                            then
-                                                                                                                                                                exit
-                                                                                                                                                            else
-                                                                                                                                                                failure 6126927632687914 "$*"
-                                                                                                                                                            fi
-                                                                                                                                                        '' ;
-                                                                                                                                            } ;
-                                                                                                                                    } ;
-                                                                                                                            } ;
-                                                                                                                        true =
-                                                                                                                            {
-                                                                                                                                false =
-                                                                                                                                    {
-                                                                                                                                        init =
-                                                                                                                                            builtins.toFile
-                                                                                                                                                "script"
-                                                                                                                                                ''
-                                                                                                                                                    #!/nix/store/mjhcjikhxps97mq5z54j4gjjfzgmsir5-bash-5.2p37/bin/bash
-                                                                                                                                                    set -o errexit
-                                                                                                                                                    set -o nounset
-                                                                                                                                                    set -o pipefail
-
-                                                                                                                                                    /nix/store/7l2i4v0ajggraxg79mwc0pqxlc8yhjcf-init/bin/init
-                                                                                                                                                '' ;
-                                                                                                                                        release =
-                                                                                                                                            ''
-                                                                                                                                            '' ;
-                                                                                                                                    } ;
-                                                                                                                                true =
-                                                                                                                                    {
-                                                                                                                                        init =
-                                                                                                                                            let
-                                                                                                                                                application =
-                                                                                                                                                    pkgs.writeShellApplication
-                                                                                                                                                        {
-                                                                                                                                                            name = "init" ;
-                                                                                                                                                            text = "/nix/store/qfcw4rcx08yqnfjj7ndxhcqbi719z9m2-init/bin/init" ;
-                                                                                                                                                        } ;
+                                                                                                                                    in "${ application }/bin/init" ;
+                                                                                                                            release =
+                                                                                                                                ''
+                                                                                                                                '' ;
+                                                                                                                            resolve =
+                                                                                                                                {
+                                                                                                                                    init =
+                                                                                                                                        let
+                                                                                                                                            application =
+                                                                                                                                                pkgs.writeShellApplication
+                                                                                                                                                    {
+                                                                                                                                                        name = "init" ;
+                                                                                                                                                        text =
+                                                                                                                                                            ''
+                                                                                                                                                                echo -en 7669863784911683
+                                                                                                                                                                if [[ "$1" == 7482446721679967 ]]
+                                                                                                                                                                then
+                                                                                                                                                                    exit 208
+                                                                                                                                                                elif [[ "$1" == 7151639144478587 ]]
+                                                                                                                                                                then
+                                                                                                                                                                    exit
+                                                                                                                                                                else
+                                                                                                                                                                    failure 6126927632687914 "$*"
+                                                                                                                                                                fi'' ;
+                                                                                                                                                    } ;
                                                                                                                                             in "${ application }/bin/init" ;
-                                                                                                                                        release =
-                                                                                                                                            let
-                                                                                                                                                application =
-                                                                                                                                                    pkgs.writeShellApplication
-                                                                                                                                                        {
-                                                                                                                                                            name = "release" ;
-                                                                                                                                                            text =
-                                                                                                                                                                ''
-                                                                                                                                                                    echo -en 7669863784911683q
-                                                                                                                                                                    if [[ "$1" == 7482446721679967 ]]
-                                                                                                                                                                    then
-                                                                                                                                                                        exit 208
-                                                                                                                                                                    elif [[ "$1" == 7151639144478587 ]]
-                                                                                                                                                                    then
-                                                                                                                                                                        exit
-                                                                                                                                                                    else
-                                                                                                                                                                        failure 6126927632687914 "$*"
-                                                                                                                                                                    fi
-                                                                                                                                                                '' ;
-                                                                                                                                                        } ;
-                                                                                                                                                in "${ application }/bin/release" ;
-                                                                                                                                    } ;
-                                                                                                                            } ;
-                                                                                                                    } ;
-                                                                                                            in "${ application }/bin/post-test" ;
+                                                                                                                                    release =
+                                                                                                                                        let
+                                                                                                                                            application =
+                                                                                                                                                pkgs.writeShellApplication
+                                                                                                                                                    {
+                                                                                                                                                        name = "release" ;
+                                                                                                                                                        text = "/nix/store/pqhp7nlihwwy16vnfga1jpap8ml71hs6-release/bin/release" ;
+                                                                                                                                                    } ;
+                                                                                                                                            in "${ application }/bin/release" ;
+                                                                                                                                } ;
+                                                                                                                        } ;
+                                                                                                                    true =
+                                                                                                                        {
+                                                                                                                            init =
+                                                                                                                                let
+                                                                                                                                    application =
+                                                                                                                                        pkgs.writeShellApplication
+                                                                                                                                            {
+                                                                                                                                                name = "init" ;
+                                                                                                                                                text = "/nix/store/zp158z04y8a09cravpnxxc8lm37hnwiv-init/bin/init" ;
+                                                                                                                                            } ;
+                                                                                                                                    in "${ application }/bin/init" ;
+                                                                                                                            release =
+                                                                                                                                let
+                                                                                                                                    application =
+                                                                                                                                        pkgs.writeShellApplication
+                                                                                                                                            {
+                                                                                                                                                name = "release" ;
+                                                                                                                                                text = "/nix/store/baqdlg538bdxj07hr8n72jlpcfjhdnws-release/bin/release" ;
+                                                                                                                                            } ;
+                                                                                                                                    in "${ application }/bin/release" ;
+                                                                                                                            resolve =
+                                                                                                                                {
+                                                                                                                                    init =
+                                                                                                                                        builtins.toFile
+                                                                                                                                            "script"
+                                                                                                                                            ''
+                                                                                                                                                #!/nix/store/mjhcjikhxps97mq5z54j4gjjfzgmsir5-bash-5.2p37/bin/bash
+                                                                                                                                                set -o errexit
+                                                                                                                                                set -o nounset
+                                                                                                                                                set -o pipefail
+
+                                                                                                                                                echo -en 7669863784911683
+                                                                                                                                                if [[ "$1" == 9554464665854115 ]]
+                                                                                                                                                then
+                                                                                                                                                    exit 185
+                                                                                                                                                elif [[ "$1" == 8363144534251594 ]]
+                                                                                                                                                then
+                                                                                                                                                    exit
+                                                                                                                                                else
+                                                                                                                                                    failure 6126927632687914 "$*"
+                                                                                                                                                fi
+                                                                                                                                            '' ;
+                                                                                                                                } ;
+                                                                                                                        } ;
+                                                                                                                } ;
+                                                                                                            true =
+                                                                                                                {
+                                                                                                                    false =
+                                                                                                                        {
+                                                                                                                            init =
+                                                                                                                                builtins.toFile
+                                                                                                                                    "script"
+                                                                                                                                    ''
+                                                                                                                                        #!/nix/store/mjhcjikhxps97mq5z54j4gjjfzgmsir5-bash-5.2p37/bin/bash
+                                                                                                                                        set -o errexit
+                                                                                                                                        set -o nounset
+                                                                                                                                        set -o pipefail
+
+                                                                                                                                        /nix/store/7l2i4v0ajggraxg79mwc0pqxlc8yhjcf-init/bin/init
+                                                                                                                                    '' ;
+                                                                                                                            release =
+                                                                                                                                ''
+                                                                                                                                '' ;
+                                                                                                                        } ;
+                                                                                                                    true =
+                                                                                                                        {
+                                                                                                                            init =
+                                                                                                                                let
+                                                                                                                                    application =
+                                                                                                                                        pkgs.writeShellApplication
+                                                                                                                                            {
+                                                                                                                                                name = "init" ;
+                                                                                                                                                text = "/nix/store/qfcw4rcx08yqnfjj7ndxhcqbi719z9m2-init/bin/init" ;
+                                                                                                                                            } ;
+                                                                                                                                in "${ application }/bin/init" ;
+                                                                                                                            release =
+                                                                                                                                let
+                                                                                                                                    application =
+                                                                                                                                        pkgs.writeShellApplication
+                                                                                                                                            {
+                                                                                                                                                name = "release" ;
+                                                                                                                                                text =
+                                                                                                                                                    ''
+                                                                                                                                                        echo -en 7669863784911683q
+                                                                                                                                                        if [[ "$1" == 7482446721679967 ]]
+                                                                                                                                                        then
+                                                                                                                                                            exit 208
+                                                                                                                                                        elif [[ "$1" == 7151639144478587 ]]
+                                                                                                                                                        then
+                                                                                                                                                            exit
+                                                                                                                                                        else
+                                                                                                                                                            failure 6126927632687914 "$*"
+                                                                                                                                                        fi
+                                                                                                                                                    '' ;
+                                                                                                                                            } ;
+                                                                                                                                    in "${ application }/bin/release" ;
+                                                                                                                        } ;
+                                                                                                    test =
+                                                                                                        pkgs.writeShellApplication
+                                                                                                            {
+                                                                                                                name = "post-test" ;
+                                                                                                                runtimeInputs =
+                                                                                                                    [
+                                                                                                                        alpha-stage
+                                                                                                                    ] ;
+                                                                                                                text =
+                                                                                                                    ''
+                                                                                                                        alpha-stage ${ arguments }
+                                                                                                                    '' ;
+                                                                                                            } ;
                                                                                                     in
                                                                                                         ''
-                                                                                                            wrap \
-                                                                                                                ${ post-test } \
-                                                                                                                test \
-                                                                                                                0500 \
-                                                                                                                --literal plain 1 \
-                                                                                                                --literal plain 2 \
-                                                                                                                --literal plain '#' \
-                                                                                                                --literal plain ALPHA \
-                                                                                                                --literal plain ALPHA_INDEX \
-                                                                                                                --literal plain ARGUMENT \
-                                                                                                                --literal plain DERIVATION \
-                                                                                                                --literal plain DISTRACTOR \
-                                                                                                                --literal plain DISTRACTOR_INDEX \
-                                                                                                                --literal plain INDEX \
-                                                                                                                --literal plain INIT \
-                                                                                                                --literal plain PATH \
-                                                                                                                --literal plain RELEASE \
-                                                                                                                --literal plain SCRIPT \
-                                                                                                                --literal plain STANDARD_OUTPUT \
-                                                                                                                --literal plain TARGET \
-                                                                                                                --uuid 7483697565341694
+                                                                                                            wrap ${ test }/bin/test test 0500 --literal plain "@" --uuid 7483697565341694
                                                                                                         '' ;
                                                                                         } ;
                                                                                 in "${ application }/bin/init" ;
@@ -3280,7 +2620,7 @@
                                                                                 text =
                                                                                     ''
                                                                                         SCRIPT="$( resource --resource '["checks","script"]' )"
-                                                                                        timeout 1m "$SCRIPT/test" --alpha 6 --init false --release false
+                                                                                        timeout 1m "$SCRIPT/test" 6 false false
                                                                                     '' ;
                                                                             } ;
                                                                     in "${ application }/bin/test" ;
@@ -3308,7 +2648,7 @@
                                                                                 text =
                                                                                     ''
                                                                                         SCRIPT="$( resource --resource '["checks","script"]' )"
-                                                                                        timeout 1m "$SCRIPT/test" --alpha 6 --init false --release true
+                                                                                        timeout 1m "$SCRIPT/test" 6 true true
                                                                                     '' ;
                                                                             } ;
                                                                     in "${ application }/bin/test" ;
@@ -3336,7 +2676,7 @@
                                                                                 text =
                                                                                     ''
                                                                                         SCRIPT="$( resource --resource '["checks","script"]' )"
-                                                                                        timeout 1m "$SCRIPT/test" --alpha 6 --init true --release false
+                                                                                        timeout 1m "$SCRIPT/test" 6 true false
                                                                                     '' ;
                                                                             } ;
                                                                     in "${ application }/bin/test" ;
@@ -3364,7 +2704,7 @@
                                                                                 text =
                                                                                     ''
                                                                                         SCRIPT="$( resource --resource '["checks","script"]' )"
-                                                                                        timeout 1m "$SCRIPT/test" --alpha 6 --init true --release true
+                                                                                        timeout 1m "$SCRIPT/test" 6 true true
                                                                                     '' ;
                                                                             } ;
                                                                     in "${ application }/bin/test" ;
