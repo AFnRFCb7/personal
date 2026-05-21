@@ -276,12 +276,12 @@
                                                                                                                 runtimeInputs = [ alpha-condition compare failure init-condition pkgs.jq release-condition ] ;
                                                                                                                 text =
                                                                                                                     ''
-                                                                                                                        # if true ; then exit 0 ; fi
+                                                                                                                        ## if true ; then exit 0 ; fi
                                                                                                                         compare --message subscribe --channel invalid-init --payload 1 <&3
                                                                                                                         compare --message subscribe --channel invalid-release --payload 2 <&3
                                                                                                                         compare --message subscribe --channel valid-init --payload 3 <&3
                                                                                                                         compare --message subscribe --channel valid-release --payload 4 <&3
-                                                                                                                        if true ; then exit 0 ; fi
+                                                                                                                        # if true ; then exit 0 ; fi
                                                                                                                         ALPHA_CONDITION="$( alpha-condition ${ arguments } )" || failure 14402
                                                                                                                         INIT_CONDITION="$( init-condition ${ arguments } )" || failure 7005
                                                                                                                         RELEASE_CONDITION="$( release-condition ${ arguments } )" || failure 17709
@@ -1583,6 +1583,7 @@
                                                                                             text =
                                                                                                 ''
                                                                                                     git init 2>&1
+                                                                                                    git config alias.snapshot "!${ snapshot }/bin/snapshot"
                                                                                                     export GIT_SSH_COMMAND ${ resources.production.bin.ssh { failure = 14260 ; } }/bin/ssh
                                                                                                     git config core.sshCommand "$GIT_SSH_COMMAND"
                                                                                                     git config user.email ${ config.personal.repository.private.email }
