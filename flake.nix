@@ -795,6 +795,8 @@
                                                                                                                         ALPHA_CONDITION="$( alpha-condition "$@" )" || failure 14402
                                                                                                                         INIT_CONDITION="$( init-condition "$@" )" || failure 7005
                                                                                                                         RELEASE_CONDITION="$( release-condition "$@" )" || failure 17709
+                                                                                                                        STANDARD_OUTPUT="$( standard-output-value "$@" )" || failure 10277
+                                                                                                                        printf -v DISTRACTOR_INDEX "%016d" $(( ALPHA + 4 ))
                                                                                                                         if [[ "$INIT_CONDITION" == "true" ]]
                                                                                                                         then
                                                                                                                             if [[ "$RELEASE_CONDITION" == "true" ]]
@@ -806,24 +808,33 @@
                                                                                                                         else
                                                                                                                             if [[ "$RELEASE_CONDITION" == "true" ]]
                                                                                                                             then
+                                                                                                                                if true ; then exit 0 ; fi
                                                                                                                                 if DISTRACTOR=${ resources.checks.targets.false.true { failure = 13074 ; } }
                                                                                                                                 then
                                                                                                                                     failure 26505
                                                                                                                                 fi
                                                                                                                             else
+                                                                                                                                if true ; then exit 0 ; fi
                                                                                                                                 if DISTRACTOR=${ resources.checks.targets.false.false { failure = 27401 ; } }
                                                                                                                                 then
                                                                                                                                     failure 22382
                                                                                                                                 fi
                                                                                                                             fi
                                                                                                                         fi
-                                                                                                                        ## if true ; then exit 0 ; fi
                                                                                                                         DISTRACTOR_INIT_CHANNEL="$( distractor-init-channel-value "$@" )" || failure 23974
                                                                                                                         DISTRACTOR_RELEASE_CHANNEL="$( distractor-release-channel-value "$@" )" || failure 23012
                                                                                                                         # if true ; then exit 0 ; fi
                                                                                                                         jq \
                                                                                                                             --null-input \
+                                                                                                                            --argjson DISTRACTOR_INDEX "$DISTRACTOR_INDEX" \
+                                                                                                                            --arg STANDARD_OUTPUT "$STANDARD_OUTPUT" \
                                                                                                                             '{
+                                                                                                                                "arguments" : [ ] ,
+                                                                                                                                "has-standard-input" : false ,
+                                                                                                                                "index" : $DISTRACTOR_INDEX ,
+                                                                                                                                "standard-error" : "" ,
+                                                                                                                                "standard-input" : "" ,
+                                                                                                                                "standard-output : $STANDARD_OUTPUT
                                                                                                                             }' | compare --message message --channel "$DISTRACTOR_INIT_CHANNEL" --payload --uuid 25555 <&3
                                                                                                                         if [[ "$INIT_CONDITION" == "false" ]]
                                                                                                                         then
