@@ -849,7 +849,7 @@
                                                                                                                                 --compact-output \
                                                                                                                                 --null-input \
                                                                                                                                 '{
-                                                                                                                                }' | compare --message message --channel "$DISTRACTOR_RELEASE_CHANNEL" --payload --uuid 7021 <&3
+                                                                                                                                }' | compare --message message --channel "$DISTRACTOR_RELEASE_CHANNEL" --payload --uuid 7021 3<&3
                                                                                                                         fi
                                                                                                                         block --timeout 1 --uuid 10525 <&3
                                                                                                                         if true ; then exit 0 ; fi
