@@ -1962,7 +1962,10 @@
                                                                                                                             application =
                                                                                                                                 pkgs.writeShellApplication
                                                                                                                                     {
-
+                                                                                                                                        name = "init" ;
+                                                                                                                                        text =
+                                                                                                                                            ''
+                                                                                                                                            '' ;
                                                                                                                                     } ;
                                                                                                                                 in "${ application }/bin/init" ;
                                                                                                                 release =
