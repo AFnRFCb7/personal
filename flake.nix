@@ -1581,16 +1581,30 @@
                                                                                             name = "init" ;
                                                                                             runtimeInputs = [ pkgs.git ] ;
                                                                                             text =
-                                                                                                ''
-                                                                                                    git init 2>&1
-                                                                                                    git config alias.snapshot "!${ snapshot }/bin/snapshot"
-                                                                                                    export GIT_SSH_COMMAND ${ resources.production.bin.ssh { failure = 14260 ; } }/bin/ssh
-                                                                                                    git config core.sshCommand "$GIT_SSH_COMMAND"
-                                                                                                    git config user.email ${ config.personal.repository.private.email }
-                                                                                                    git config user.name ${ config.personal.repository.private.name }
-                                                                                                    git remote add origin ${ config.personal.repository.private.remote } 2>&1
-                                                                                                    git fetch origin ${ config.personal.repository.private.remote } 2>&1
-                                                                                                '' ;
+                                                                                                let
+                                                                                                    snapshot =
+                                                                                                        let
+                                                                                                            application =
+                                                                                                                pkgs.writeShellApplication
+                                                                                                                    {
+                                                                                                                        name = "snapshot" ;
+                                                                                                                        runtimeInputs = [ ] ;
+                                                                                                                        text =
+                                                                                                                            ''
+                                                                                                                            '' ;
+                                                                                                                    } ;
+                                                                                                            in "${ application }/bin/snapshot" ;
+                                                                                                    in
+                                                                                                        ''
+                                                                                                            git init 2>&1
+                                                                                                            git config alias.snapshot "!${ snapshot }"
+                                                                                                            export GIT_SSH_COMMAND ${ resources.production.bin.ssh { failure = 14260 ; } }/bin/ssh
+                                                                                                            git config core.sshCommand "$GIT_SSH_COMMAND"
+                                                                                                            git config user.email ${ config.personal.repository.private.email }
+                                                                                                            git config user.name ${ config.personal.repository.private.name }
+                                                                                                            git remote add origin ${ config.personal.repository.private.remote } 2>&1
+                                                                                                            git fetch origin ${ config.personal.repository.private.remote } 2>&1
+                                                                                                        '' ;
                                                                                         } ;
                                                                                 in "${ application }/bin/init" ;
                                                                     targets = [ ] ;
