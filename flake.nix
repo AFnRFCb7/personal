@@ -360,7 +360,9 @@
                                                                                                                         then
                                                                                                                             failure 9152341496876694 "$UUID"
                                                                                                                         fi
+                                                                                                                        echo 5703
                                                                                                                         EXPECTED_PAYLOAD="$( cat )" || failure 29375
+                                                                                                                        echo 4088
                                                                                                                         if [[ -z "$TIMEOUT" ]]
                                                                                                                         then
                                                                                                                             failure d855cf3f4d0854ec "$UUID"
