@@ -839,6 +839,7 @@
                                                                                                                         fi
                                                                                                                         # if true ; then exit 0 ; fi
                                                                                                                         jq \
+                                                                                                                            --compact-output \
                                                                                                                             --null-input \
                                                                                                                             --arg DISTRACTOR_INDEX "$DISTRACTOR_INDEX" \
                                                                                                                             --arg STANDARD_OUTPUT "$STANDARD_OUTPUT" \
