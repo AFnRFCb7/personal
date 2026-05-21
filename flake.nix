@@ -1161,15 +1161,8 @@
                                                                                                                                             --arg STANDARD_OUTPUT "$STANDARD_OUTPUT" \
                                                                                                                                             --arg TARGET "$TARGET" \
                                                                                                                                                 '{
-                                                                                                                                                   "arguments" : [ $ARGUMENT ] ,
-                                                                                                                                                   "has-standard-input" : false ,
-                                                                                                                                                   "index" : $INDEX ,
-                                                                                                                                                   "script" : $SCRIPT ,
-                                                                                                                                                   "seed" : [ "checks" , "targets" , "true" , "true" ] ,
-                                                                                                                                                   "standard-error" : "" ,
-                                                                                                                                                   "standard-output" : $STANDARD_OUTPUT ,
-                                                                                                                                                   "status" : 0 ,
-                                                                                                                                                   "transient" : -1
+                                                                                                                                                   "arguments" : [ $ARGUMENT ]
+
                                                                                                                                                 }' | compare --message message --channel valid-init --payload false true --timeout 1 --uuid 6829 3<&3
                                                                                                                                         block --timeout 1 --uuid 6925921732651899 3<&3
                                                                                                                                         files \
