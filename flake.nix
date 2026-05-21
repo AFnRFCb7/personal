@@ -803,34 +803,30 @@
                                                                                                                         DISTRACTOR_RELEASE_CHANNEL="$( distractor-release-channel-value "$@" )" || failure 23012
                                                                                                                         ## if true ; then exit 0 ; fi
                                                                                                                         printf -v DISTRACTOR_INDEX "%016d" $(( ALPHA_CONDITION + 4 ))
-                                                                                                                        # if true ; then exit 0 ; fi
+                                                                                                                        ## if true ; then exit 0 ; fi
                                                                                                                         if [[ "$INIT_CONDITION" == "true" ]]
                                                                                                                         then
                                                                                                                             if [[ "$RELEASE_CONDITION" == "true" ]]
                                                                                                                             then
-                                                                                                                                if true ; then exit 0 ; fi
                                                                                                                                 DISTRACTOR=${ resources.checks.targets.true.true { failure = 2829 ; } }
                                                                                                                             else
-                                                                                                                                if true ; then exit 0 ; fi
                                                                                                                                 DISTRACTOR=${ resources.checks.targets.true.false { failure = 17544 ; } }
                                                                                                                             fi
                                                                                                                         else
                                                                                                                             if [[ "$RELEASE_CONDITION" == "true" ]]
                                                                                                                             then
-                                                                                                                                if true ; then exit 0 ; fi
                                                                                                                                 if DISTRACTOR=${ resources.checks.targets.false.true { failure = 13074 ; } }
                                                                                                                                 then
                                                                                                                                     failure 26505
                                                                                                                                 fi
                                                                                                                             else
-                                                                                                                                if true ; then exit 0 ; fi
                                                                                                                                 if DISTRACTOR=${ resources.checks.targets.false.false { failure = 27401 ; } }
                                                                                                                                 then
                                                                                                                                     failure 22382
                                                                                                                                 fi
                                                                                                                             fi
                                                                                                                         fi
-                                                                                                                        if true ; then exit 0 ; fi
+                                                                                                                        # if true ; then exit 0 ; fi
                                                                                                                         jq \
                                                                                                                             --null-input \
                                                                                                                             --argjson DISTRACTOR_INDEX "$DISTRACTOR_INDEX" \
