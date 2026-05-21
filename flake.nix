@@ -1949,7 +1949,7 @@
                                                                                                                     in "${ application }/bin/ssh" ;
                                                                                                         in
                                                                                                             ''
-                                                                                                                DOT_SSH=${ resources.production.dot-ssh.config { failure = 15989 ; } }
+                                                                                                                DOT_SSH=${ resources.production.dot-ssh { failure = 15989 ; } }
                                                                                                                 export DOT_SSH
                                                                                                                 gc-root "$DOT_SSH"
                                                                                                                 wrap \
