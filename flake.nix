@@ -273,7 +273,7 @@
                                                                                                         pkgs.writeShellApplication
                                                                                                             {
                                                                                                                 name = "alpha-stage" ;
-                                                                                                                runtimeInputs = [ alpha-condition compare distractor-init-challel-value failure init-condition pkgs.jq release-condition ] ;
+                                                                                                                runtimeInputs = [ alpha-condition compare distractor-init-channel-value failure init-condition pkgs.jq release-condition ] ;
                                                                                                                 text =
                                                                                                                     ''
                                                                                                                         if true ; then exit 0 ; fi
