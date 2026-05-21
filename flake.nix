@@ -269,6 +269,33 @@
                                                                                                                         echo "$1"
                                                                                                                     '' ;
                                                                                                             } ;
+                                                                                                    argument-value =
+                                                                                                        pkgs.writeShellApplication
+                                                                                                            {
+                                                                                                                name = "argument" ;
+                                                                                                                runtimeInputs = [ failure init-condition release-condition ] ;
+                                                                                                                text =
+                                                                                                                    ''
+                                                                                                                        INIT_CONDITION="$( init-condition "$@" )" || failure 15442
+                                                                                                                        RELEASE_CONDITION="$( release-condition "$@" )" || failure 24351
+                                                                                                                        if [[ "$INIT_CONDITION" == "true" ]]
+                                                                                                                        then
+                                                                                                                            if [[ "$RELEASE_CONDITION" == "true" ]]
+                                                                                                                            then
+                                                                                                                                echo
+                                                                                                                            else
+                                                                                                                                echo
+                                                                                                                            fi
+                                                                                                                        else
+                                                                                                                            if [[ "$RELEASE_CONDITION" == "true" ]]
+                                                                                                                            then
+                                                                                                                                echo
+                                                                                                                            else
+                                                                                                                                echo
+                                                                                                                            fi
+                                                                                                                        fi
+                                                                                                                    '' ;
+                                                                                                            } ;
                                                                                                     block =
                                                                                                         pkgs.writeShellApplication
                                                                                                             {
@@ -825,36 +852,36 @@
                                                                                                         pkgs.writeShellApplication
                                                                                                             {
                                                                                                                 name = "stage-beta" ;
-                                                                                                                runtimeInputs = [ alpha-condition init-condition release-condition standard-output-value ] ;
+                                                                                                                runtimeInputs = [ alpha-condition argument-value init-condition release-condition ] ;
                                                                                                                 text =
                                                                                                                     ''
                                                                                                                         ALPHA_CONDITION="$( alpha-condition "$@" )" || failure 14402
                                                                                                                         INIT_CONDITION="$( init-condition "$@" )" || failure 7005
                                                                                                                         RELEASE_CONDITION="$( release-condition "$@" )" || failure 17709
-                                                                                                                        STANDARD_OUTPUT="$( standard-output-value )" || failure 22866
+                                                                                                                        ARGUMENT="$( argument-value )" || failure 22866
                                                                                                                         if [[ "$INIT_CONDITION" == "true" ]]
                                                                                                                         then
                                                                                                                             if [[ "$RELEASE_CONDITION" == "true" ]]
                                                                                                                             then
-                                                                                                                                FRESH=${ resources.checks.targets.true.true { failure = 32618 ; setup = setup : ''${ setup } $STANDARD_OUTPUT'' ; } }
+                                                                                                                                FRESH=${ resources.checks.targets.true.true { failure = 32618 ; setup = setup : ''${ setup } $ARGUMENT'' ; } }
                                                                                                                             else
-                                                                                                                                FRESH=${ resources.checks.targets.true.false { failure = 5420 ; setup = setup : ''${ setup } $STANDARD_OUTPUT'' ; } }
+                                                                                                                                FRESH=${ resources.checks.targets.true.false { failure = 5420 ; setup = setup : ''${ setup } $ARGUMENT'' ; } }
                                                                                                                             fi
                                                                                                                         else
                                                                                                                             if [[ "$RELEASE_CONDITION" == "true" ]]
                                                                                                                             then
-                                                                                                                                if FRESH=${ resources.checks.targets.false.true { failure = 6677 ; setup = setup : ''${ setup } $STANDARD_OUTPUT'' ; } }
+                                                                                                                                if FRESH=${ resources.checks.targets.false.true { failure = 6677 ; setup = setup : ''${ setup } $ARGUMENT'' ; } }
                                                                                                                                 then
                                                                                                                                     failure 11332
                                                                                                                                 fi
                                                                                                                             else
-                                                                                                                                if FRESH=${ resources.checks.targets.false.false { failure = 27839 ; setup = setup : ''${ setup } $STANDARD_OUTPUT'' ; } }
+                                                                                                                                if FRESH=${ resources.checks.targets.false.false { failure = 27839 ; setup = setup : ''${ setup } $ARGUMENT'' ; } }
                                                                                                                                 then
                                                                                                                                     failure 17466
                                                                                                                                 fi
                                                                                                                             fi
                                                                                                                         fi
-                                                                                                                        echo "We have constructed the fresh resource" ALPHA_CONDITION "$ALPHA_CONDITION" INIT_CONDITION "$INIT_CONDITION" RELEASE_CONDITION "$RELEASE_CONDITION" STANDARD_OUTPUT "$STANDARD_OUTPUT"
+                                                                                                                        echo "We have constructed the fresh resource" FRESH "$FRESH" ALPHA_CONDITION "$ALPHA_CONDITION" INIT_CONDITION "$INIT_CONDITION" RELEASE_CONDITION "$RELEASE_CONDITION" STANDARD_OUTPUT "$STANDARD_OUTPUT"
                                                                                                                     '' ;
                                                                                                             } ;
                                                                                                     stage-gamma =
