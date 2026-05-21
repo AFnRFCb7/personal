@@ -273,15 +273,15 @@
                                                                                                         pkgs.writeShellApplication
                                                                                                             {
                                                                                                                 name = "alpha-stage" ;
-                                                                                                                runtimeInputs = [ alpha-condition compare failure init-condition pkgs.jq release-condition ] ;
+                                                                                                                runtimeInputs = [ alpha-condition compare distractor-init-challel-value failure init-condition pkgs.jq release-condition ] ;
                                                                                                                 text =
                                                                                                                     ''
-                                                                                                                        ## if true ; then exit 0 ; fi
+                                                                                                                        if true ; then exit 0 ; fi
                                                                                                                         compare --message subscribe --channel invalid-init --payload 1 <&3
                                                                                                                         compare --message subscribe --channel invalid-release --payload 2 <&3
                                                                                                                         compare --message subscribe --channel valid-init --payload 3 <&3
                                                                                                                         compare --message subscribe --channel valid-release --payload 4 <&3
-                                                                                                                        # if true ; then exit 0 ; fi
+                                                                                                                        if true ; then exit 0 ; fi
                                                                                                                         ALPHA_CONDITION="$( alpha-condition "$@" )" || failure 14402
                                                                                                                         INIT_CONDITION="$( init-condition "$@" )" || failure 7005
                                                                                                                         RELEASE_CONDITION="$( release-condition "$@" )" || failure 17709
@@ -309,12 +309,12 @@
                                                                                                                             fi
                                                                                                                         fi
                                                                                                                         if true ; then exit 0 ; fi
-                                                                                                                        DISTRACTOR_CHANNEL="$( distractor-channel "$@" )" || failure 23974
+                                                                                                                        DISTRACTOR_INIT_CHANNEL="$( distractor-init-channel-value "$@" )" || failure 23974
                                                                                                                         if true ; then exit 0 ; fi
                                                                                                                         jq \
                                                                                                                             --null-input \
                                                                                                                             '{
-                                                                                                                            }' | compare --message message --channel "$CHANNEL" --payload --uuid 25555 <&3
+                                                                                                                            }' | compare --message message --channel "$DISTRACTOR_INIT_CHANNEL" --payload --uuid 25555 <&3
                                                                                                                         if true ; then exit 0 ; fi
                                                                                                                         if [[ "$INIT_CONDITION" == "false" ]]
                                                                                                                         then
@@ -329,7 +329,7 @@
                                                                                                                         files \
                                                                                                                             --uuid 12121
                                                                                                                         if true ; then exit 0 ; fi
-                                                                                                                        echo "We have created a distractor" ALPHA_CONDITION "$ALPHA_CONDITION" DISTRACTOR "$DISTRACTOR" DISTRACTOR_CHANNEL "$DISTRACTOR_CHANNEL"
+                                                                                                                        echo "We have created a distractor" ALPHA_CONDITION "$ALPHA_CONDITION" DISTRACTOR "$DISTRACTOR" DISTRACTOR_INIT_CHANNEL "$DISTRACTOR_INIT_CHANNEL"
                                                                                                                     '' ;
                                                                                                             } ;
                                                                                                     beta-stage =
@@ -488,10 +488,10 @@
                                                                                                                         fi
                                                                                                                     '' ;
                                                                                                             } ;
-                                                                                                    distractor-channel-value =
+                                                                                                    distractor-init-channel-value =
                                                                                                         pkgs.writeShellApplication
                                                                                                             {
-                                                                                                                name = "distractor-channel-value" ;
+                                                                                                                name = "distractor-init-channel-value" ;
                                                                                                                 runtimeInputs = [ failure init-condition ] ;
                                                                                                                 text =
                                                                                                                     ''
