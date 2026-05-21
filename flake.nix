@@ -276,7 +276,7 @@
                                                                                                                 runtimeInputs = [ alpha-condition compare distractor-init-channel-value failure init-condition pkgs.jq release-condition ] ;
                                                                                                                 text =
                                                                                                                     ''
-                                                                                                                        if true ; then exit 0 ; fi
+                                                                                                                        # if true ; then exit 0 ; fi
                                                                                                                         compare --message subscribe --channel invalid-init --payload 1 --timeout 1 --uuid 27606 <&3
                                                                                                                         compare --message subscribe --channel invalid-release --payload 2 --timeout 1 --uuid 26959 <&3
                                                                                                                         compare --message subscribe --channel valid-init --payload 3 --timeout 1 --uuid 4666 <&3
@@ -1592,7 +1592,8 @@
                                                                                                                             ''
                                                                                                                             '' ;
                                                                                                                     } ;
-                                                                                                            in "${ application }/bin/mirror" ;                                                                                                    snapshot =
+                                                                                                            in "${ application }/bin/mirror" ;
+                                                                                                    snapshot =
                                                                                                         let
                                                                                                             application =
                                                                                                                 pkgs.writeShellApplication
@@ -1601,6 +1602,10 @@
                                                                                                                         runtimeInputs = [ ] ;
                                                                                                                         text =
                                                                                                                             ''
+                                                                                                                                if timeout 1m git commit -a --verbose --allow-empty
+                                                                                                                                then
+                                                                                                                                    git commit -am "" --allow-empty --allow-empty-message
+                                                                                                                                fi
                                                                                                                             '' ;
                                                                                                                     } ;
                                                                                                             in "${ application }/bin/snapshot" ;
