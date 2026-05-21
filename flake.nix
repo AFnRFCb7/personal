@@ -282,9 +282,9 @@
                                                                                                                         compare --message subscribe --channel valid-init --payload 3 <&3
                                                                                                                         compare --message subscribe --channel valid-release --payload 4 <&3
                                                                                                                         # if true ; then exit 0 ; fi
-                                                                                                                        ALPHA_CONDITION="$( alpha-condition ${ arguments } )" || failure 14402
-                                                                                                                        INIT_CONDITION="$( init-condition ${ arguments } )" || failure 7005
-                                                                                                                        RELEASE_CONDITION="$( release-condition ${ arguments } )" || failure 17709
+                                                                                                                        ALPHA_CONDITION="$( alpha-condition "$@" )" || failure 14402
+                                                                                                                        INIT_CONDITION="$( init-condition "$@" )" || failure 7005
+                                                                                                                        RELEASE_CONDITION="$( release-condition "$@" )" || failure 17709
                                                                                                                         if true ; then exit 0 ; fi
                                                                                                                         if [[ "$INIT_CONDITION" == "true" ]]
                                                                                                                         then
@@ -309,7 +309,7 @@
                                                                                                                             fi
                                                                                                                         fi
                                                                                                                         if true ; then exit 0 ; fi
-                                                                                                                        DISTRACTOR_CHANNEL="$( distractor-channel ${ arguments } )" || failure 23974
+                                                                                                                        DISTRACTOR_CHANNEL="$( distractor-channel "$@" )" || failure 23974
                                                                                                                         if true ; then exit 0 ; fi
                                                                                                                         jq \
                                                                                                                             --null-input \
@@ -332,7 +332,6 @@
                                                                                                                         echo "We have created a distractor" ALPHA_CONDITION "$ALPHA_CONDITION" DISTRACTOR "$DISTRACTOR" DISTRACTOR_CHANNEL "$DISTRACTOR_CHANNEL"
                                                                                                                     '' ;
                                                                                                             } ;
-                                                                                                    arguments = ''"${ builtins.concatStringsSep "" [ "$" "{" "@" "}" ] }"'' ;
                                                                                                     beta-stage =
                                                                                                         pkgs.writeShellApplication
                                                                                                             {
@@ -496,7 +495,7 @@
                                                                                                                 runtimeInputs = [ failure init-condition ] ;
                                                                                                                 text =
                                                                                                                     ''
-                                                                                                                        INIT_CONDITION="$( init-condition ${ arguments } )" || failure 20560
+                                                                                                                        INIT_CONDITION="$( init-condition "$@" )" || failure 20560
                                                                                                                         if [[ "$INIT_CONDITION" == "true" ]]
                                                                                                                         then
                                                                                                                             echo "valid-init"
@@ -845,13 +844,13 @@
                                                                                                                 text =
                                                                                                                     ''
                                                                                                                         exec 3< <( redis-cli SUBSCRIBE invalid-init invalid-release valid-init valid-release )
-                                                                                                                        alpha-stage ${ arguments } <&3
-                                                                                                                        beta-stage ${ arguments } <&3 &
+                                                                                                                        alpha-stage "$@" <&3
+                                                                                                                        beta-stage "$@" <&3 &
                                                                                                                     '' ;
                                                                                                             } ;
                                                                                                     in
                                                                                                         ''
-                                                                                                            wrap ${ test }/bin/test test 0500 --literal plain "@" --literal plain DERIVATION --literal plain PATH --uuid 7483697565341694
+                                                                                                            wrap ${ test }/bin/test test 0500 --literal plain "@" --literal plain PATH --uuid 7483697565341694
                                                                                                         '' ;
                                                                                         } ;
                                                                                 in "${ application }/bin/init" ;
