@@ -784,7 +784,7 @@
                                                                                                         pkgs.writeShellApplication
                                                                                                             {
                                                                                                                 name = "stage-alpha" ;
-                                                                                                                runtimeInputs = [ alpha-condition compare distractor-init-channel-value distractor-release-channel-value failure init-condition pkgs.jq release-condition ] ;
+                                                                                                                runtimeInputs = [ alpha-condition compare distractor-init-channel-value distractor-release-channel-value failure init-condition pkgs.jq release-condition standard-output-value ] ;
                                                                                                                 text =
                                                                                                                     ''
                                                                                                                         echo 1 | compare --message subscribe --channel invalid-init --timeout 10 --uuid 27606 3<&3
