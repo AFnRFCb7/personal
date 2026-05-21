@@ -2185,12 +2185,10 @@
                                                                                                                                 gc-root "$GPG"
                                                                                                                                 NONCE=${ resources.production.product.nonce { failure = 3193681222146392 ; } }
                                                                                                                                 gc-root "$NONCE"
-                                                                                                                                SECRETS=${ resources.production.product.secrets { failure = 22181 ; } }
-                                                                                                                                gc-root "$SECRETS"
                                                                                                                                 SSH=${ resources.production.product.ssh { failure = 11121 ; } }
                                                                                                                                 gc-root "$SSH"
-                                                                                                                                export BIN_PATH=${ builtins.concatStringsSep ":" ( builtins.map ( x : "${ x }/bin" ) [ "$GH" "$GPG" "$NONCE" "$SECRETS" "$SSH" ] ) }
-                                                                                                                                export MAN_PATH=${ builtins.concatStringsSep ":" ( builtins.map ( x : "${ x }/share/man" ) [ "$GH" "$GPG" "$NONCE" "$SECRETS" "$SSH" ] ) }
+                                                                                                                                export BIN_PATH=${ builtins.concatStringsSep ":" ( builtins.map ( x : "${ x }/bin" ) [ "$GH" "$GPG" "$NONCE" "$SSH" ] ) }
+                                                                                                                                export MAN_PATH=${ builtins.concatStringsSep ":" ( builtins.map ( x : "${ x }/share/man" ) [ "$GH" "$GPG" "$NONCE" "$SSH" ] ) }
                                                                                                                                 wrap ${ envrc } .envrc 0400 --inherit plain BIN_PATH --inherit plain MAN_PATH --uuid 30754
                                                                                                                             '' ;
                                                                                                             } ;
@@ -2256,27 +2254,6 @@
                                                                                                     text =
                                                                                                         ''
                                                                                                             BIN=${ resources.production.bin.nonce { failure = 4741951720755287 ; } }
-                                                                                                            gc-root "$BIN"
-                                                                                                            ln --symbolic "$BIN" /mount/bin
-                                                                                                        '' ;
-                                                                                                } ;
-                                                                                        in "${ application }/bin/init" ;
-                                                                            targets = [ "bin" ] ;
-                                                                        } ;
-                                                                secrets =
-                                                                    ignore :
-                                                                        {
-                                                                            init =
-                                                                                { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } :
-                                                                                    let
-                                                                                        application =
-                                                                                            pkgs.writeShellApplication
-                                                                                                {
-                                                                                                    name = "init" ;
-                                                                                                    runtimeInputs = [ gc-root pkgs.coreutils ] ;
-                                                                                                    text =
-                                                                                                        ''
-                                                                                                            BIN=${ resources.production.bin.secrets { failure = 16295 ; } }
                                                                                                             gc-root "$BIN"
                                                                                                             ln --symbolic "$BIN" /mount/bin
                                                                                                         '' ;
