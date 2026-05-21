@@ -1617,7 +1617,7 @@
                                                                                                                                     '' ;
                                                                                                                             } ;
                                                                                                                     in "${ application }/bin/mirror" ;
-                                                                                                            snapshot =
+                                                                                                            immmutable =
                                                                                                                 let
                                                                                                                     application =
                                                                                                                         pkgs.writeShellApplication
