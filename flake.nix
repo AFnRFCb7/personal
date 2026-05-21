@@ -276,10 +276,11 @@
                                                                                                                 runtimeInputs = [ alpha-condition compare failure init-condition pkgs.jq release-condition ] ;
                                                                                                                 text =
                                                                                                                     ''
-                                                                                                                        compare --message subscribe --channel invalid-init --payload 1
-                                                                                                                        compare --message subscribe --channel invalid-release --payload 2
-                                                                                                                        compare --message subscribe --channel valid-init --payload 3
-                                                                                                                        compare --message subscribe --channel valid-release --payload 4
+                                                                                                                        if true ; then exit 0 ; else
+                                                                                                                        compare --message subscribe --channel invalid-init --payload 1 <&3
+                                                                                                                        compare --message subscribe --channel invalid-release --payload 2 <&3
+                                                                                                                        compare --message subscribe --channel valid-init --payload 3 <&3
+                                                                                                                        compare --message subscribe --channel valid-release --payload 4 <&3
                                                                                                                         ALPHA_CONDITION="$( alpha-condition ${ arguments } )" || failure 14402
                                                                                                                         INIT_CONDITION="$( init-condition ${ arguments } )" || failure 7005
                                                                                                                         RELEASE_CONDITION="$( release-condition ${ arguments } )" || failure 17709
@@ -309,17 +310,17 @@
                                                                                                                         jq \
                                                                                                                             --null-input \
                                                                                                                             '{
-                                                                                                                            }' | compare --message message --channel "$CHANNEL" --payload --uuid 25555
+                                                                                                                            }' | compare --message message --channel "$CHANNEL" --payload --uuid 25555 <&3
                                                                                                                         if [[ "$INIT_CONDITION" == "false" ]]
                                                                                                                         then
                                                                                                                         jq \
                                                                                                                             --null-input \
                                                                                                                             '{
-                                                                                                                            }' | compare --message message --channel "$CHANNEL" --payload --uuid 7021
+                                                                                                                            }' | compare --message message --channel "$CHANNEL" --payload --uuid 7021 <&3
                                                                                                                         fi
+                                                                                                                        block --timeout 1 --uuid 10525 <&3
                                                                                                                         files \
                                                                                                                             --uuid 12121
-                                                                                                                        block --timeout 1 --uuid 10525
                                                                                                                         echo "We have created a distractor" ALPHA_CONDITION "$ALPHA_CONDITION" DISTRACTOR "$DISTRACTOR" DISTRACTOR_CHANNEL "$DISTRACTOR_CHANNEL"
                                                                                                                     '' ;
                                                                                                             } ;
