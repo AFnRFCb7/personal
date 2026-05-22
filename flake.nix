@@ -263,10 +263,10 @@
                                                                                                         pkgs.writeShellApplication
                                                                                                             {
                                                                                                                 name = "argument" ;
-                                                                                                                runtimeInputs = [ failure init-condition release-condition ] ;
+                                                                                                                runtimeInputs = [ failure condition-init release-condition ] ;
                                                                                                                 text =
                                                                                                                     ''
-                                                                                                                        INIT_CONDITION="$( init-condition "$@" )" || failure 15442
+                                                                                                                        INIT_CONDITION="$( condition-init "$@" )" || failure 15442
                                                                                                                         RELEASE_CONDITION="$( release-condition "$@" )" || failure 24351
                                                                                                                         if [[ "$INIT_CONDITION" == "true" ]]
                                                                                                                         then
@@ -376,14 +376,24 @@
                                                                                                                         echo "$1"
                                                                                                                     '' ;
                                                                                                             } ;
+                                                                                                    condition-init =
+                                                                                                         pkgs.writeShellApplication
+                                                                                                             {
+                                                                                                                 name = "condition-init" ;
+                                                                                                                 runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                                 text =
+                                                                                                                     ''
+                                                                                                                         echo "$2"
+                                                                                                                     '' ;
+                                                                                                             } ;
                                                                                                     distractor-init-channel-value =
                                                                                                         pkgs.writeShellApplication
                                                                                                             {
                                                                                                                 name = "distractor-init-channel-value" ;
-                                                                                                                runtimeInputs = [ failure init-condition ] ;
+                                                                                                                runtimeInputs = [ failure condition-init ] ;
                                                                                                                 text =
                                                                                                                     ''
-                                                                                                                        INIT_CONDITION="$( init-condition "$@" )" || failure 20560
+                                                                                                                        INIT_CONDITION="$( condition-init "$@" )" || failure 20560
                                                                                                                         if [[ "$INIT_CONDITION" == "true" ]]
                                                                                                                         then
                                                                                                                             echo "valid-init"
@@ -570,16 +580,6 @@
                                                                                                                         done
                                                                                                                     '' ;
                                                                                                             } ;
-                                                                                                    init-condition =
-                                                                                                         pkgs.writeShellApplication
-                                                                                                             {
-                                                                                                                 name = "init-condition" ;
-                                                                                                                 runtimeInputs = [ pkgs.coreutils ] ;
-                                                                                                                 text =
-                                                                                                                     ''
-                                                                                                                         echo "$2"
-                                                                                                                     '' ;
-                                                                                                             } ;
                                                                                                    release-condition =
                                                                                                         pkgs.writeShellApplication
                                                                                                             {
@@ -750,7 +750,7 @@
                                                                                                                         compare
                                                                                                                         distractor-init-channel-value
                                                                                                                         distractor-release-channel-value
-                                                                                                                        failure init-condition
+                                                                                                                        failure condition-init
                                                                                                                         pkgs.jq
                                                                                                                         release-condition
                                                                                                                         standard-output-value
@@ -768,7 +768,7 @@
                                                                                                                         printf -v DISTRACTOR_INDEX "%016d" $(( ALPHA + 6 ))
                                                                                                                         # DISTRACTOR_INIT_CHANNEL="$( distractor-init-channel-value "$@" )" || failure 23974
                                                                                                                         # DISTRACTOR_RELEASE_CHANNEL="$( distractor-release-channel-value "$@" )" || failure 23012
-                                                                                                                        INIT="$( init-condition "$@" )" || failure 7005
+                                                                                                                        INIT="$( condition-init "$@" )" || failure 7005
                                                                                                                         RELEASE="$( release-condition "$@" )" || failure 17709
                                                                                                                         # SCRIPT="$( value-script "$@" )" || failure 18622
                                                                                                                         # SEED="$( value-seed "$@" )" || failure 26515
@@ -809,59 +809,9 @@
                                                                                                         pkgs.writeShellApplication
                                                                                                             {
                                                                                                                 name = "stage-beta" ;
-                                                                                                                runtimeInputs = [ condition-alpha argument-value init-condition release-condition ] ;
+                                                                                                                runtimeInputs = [ condition-alpha argument-value condition-init release-condition ] ;
                                                                                                                 text =
                                                                                                                     ''
-                                                                                                                        ALPHA="$( condition-alpha "$@" )" || failure 14402
-                                                                                                                        INIT_CONDITION="$( init-condition "$@" )" || failure 7005
-                                                                                                                        RELEASE_CONDITION="$( release-condition "$@" )" || failure 17709
-                                                                                                                        ARGUMENT="$( argument-value )" || failure 22866
-                                                                                                                        if [[ "$INIT_CONDITION" == "true" ]]
-                                                                                                                        then
-                                                                                                                            if [[ "$RELEASE_CONDITION" == "true" ]]
-                                                                                                                            then
-                                                                                                                                FRESH=${ resources.checks.targets.true.true { failure = 32618 ; setup = setup : ''${ setup } "$ARGUMENT"'' ; } }
-                                                                                                                            else
-                                                                                                                                FRESH=${ resources.checks.targets.true.false { failure = 5420 ; setup = setup : ''${ setup } "$ARGUMENT"'' ; } }
-                                                                                                                            fi
-                                                                                                                        else
-                                                                                                                            if [[ "$RELEASE_CONDITION" == "true" ]]
-                                                                                                                            then
-                                                                                                                                if FRESH=${ resources.checks.targets.false.true { failure = 6677 ; setup = setup : ''${ setup } "$ARGUMENT"'' ; } }
-                                                                                                                                then
-                                                                                                                                    failure 11332
-                                                                                                                                fi
-                                                                                                                            else
-                                                                                                                                if FRESH=${ resources.checks.targets.false.false { failure = 27839 ; setup = setup : ''${ setup } "$ARGUMENT"'' ; } }
-                                                                                                                                then
-                                                                                                                                    failure 17466
-                                                                                                                                fi
-                                                                                                                            fi
-                                                                                                                        fi
-                                                                                                                        echo "We have constructed the fresh resource" FRESH "$FRESH" ALPHA_CONDITION "$ALPHA_CONDITION" INIT_CONDITION "$INIT_CONDITION" RELEASE_CONDITION "$RELEASE_CONDITION" STANDARD_OUTPUT "$STANDARD_OUTPUT"
-                                                                                                                        if [[ "$INIT_CONDITION" == "true" ]]
-                                                                                                                        then
-                                                                                                                            if [[ "$RELEASE_CONDITION" == "true" ]]
-                                                                                                                            then
-                                                                                                                                STALE=${ resources.checks.targets.true.true { failure = 14779 ; setup = setup : ''${ setup } "$ARGUMENT"'' ; } }
-                                                                                                                            else
-                                                                                                                                STALE=${ resources.checks.targets.true.false { failure = 23347 ; setup = setup : ''${ setup } "$ARGUMENT"'' ; } }
-                                                                                                                            fi
-                                                                                                                        else
-                                                                                                                            if [[ "$RELEASE_CONDITION" == "true" ]]
-                                                                                                                            then
-                                                                                                                                if STALE=${ resources.checks.targets.false.true { failure = 28390 ; setup = setup : ''${ setup } "$ARGUMENT"'' ; } }
-                                                                                                                                then
-                                                                                                                                    failure 22548
-                                                                                                                                fi
-                                                                                                                            else
-                                                                                                                                if STALE=${ resources.checks.targets.false.false { failure = 20176 ; setup = setup : ''${ setup } "$ARGUMENT"'' ; } }
-                                                                                                                                then
-                                                                                                                                    failure 32322
-                                                                                                                                fi
-                                                                                                                            fi
-                                                                                                                        fi
-                                                                                                                        echo "We have constructed the stale resource" STALE "$STALE" ALPHA_CONDITION "$ALPHA_CONDITION" INIT_CONDITION "$INIT_CONDITION" RELEASE_CONDITION "$RELEASE_CONDITION" STANDARD_OUTPUT "$STANDARD_OUTPUT"
                                                                                                                     '' ;
                                                                                                             } ;
                                                                                                     stage-gamma =
@@ -877,10 +827,10 @@
                                                                                                         pkgs.writeShellApplication
                                                                                                             {
                                                                                                                 name = "standard-output-value" ;
-                                                                                                                runtimeInputs = [ failure init-condition release-condition ] ;
+                                                                                                                runtimeInputs = [ failure condition-init release-condition ] ;
                                                                                                                 text =
                                                                                                                     ''
-                                                                                                                        INIT_CONDITION="$( init-condition "$@" )" || failure 15442
+                                                                                                                        INIT_CONDITION="$( condition-init "$@" )" || failure 15442
                                                                                                                         RELEASE_CONDITION="$( release-condition "$@" )" || failure 24351
                                                                                                                         if [[ "$INIT_CONDITION" == "true" ]]
                                                                                                                         then
