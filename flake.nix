@@ -783,7 +783,8 @@
                                                                                                                                     --null-input \
                                                                                                                                     --compact-output \
                                                                                                                                     --arg INDEX "$DISTRACTOR_INDEX" \
-                                                                                                                                    '{q
+                                                                                                                                    '{
+                                                                                                                                        "index" : $INDEX
                                                                                                                                     }' | compare message valid-init 10 23788 3<&3
                                                                                                                             else
                                                                                                                                 DISTRACTOR=${ resources.checks.targets.true.false { failure = 19892 ; } }
