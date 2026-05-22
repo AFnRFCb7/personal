@@ -784,7 +784,10 @@
                                                                                                                                     --compact-output \
                                                                                                                                     --arg ALPHA "$ALPHA" \
                                                                                                                                     '{
-                                                                                                                                        "alpha" : $ALPHA \
+                                                                                                                                        "debug" :
+                                                                                                                                            {
+                                                                                                                                                "alpha" : $ALPHA
+                                                                                                                                            } ,
                                                                                                                                         "index" : "WRONG"
                                                                                                                                     }' | compare message valid-init 10 23788 3<&3
                                                                                                                             else
