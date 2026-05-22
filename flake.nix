@@ -783,8 +783,11 @@
                                                                                                                                     --null-input \
                                                                                                                                     --arg INDEX "$DISTRACTOR_INDEX" \
                                                                                                                                     '{
-                                                                                                                                        "index" : $DISTRACTOR_INDEX
-                                                                                                                                    }' | compare --type message --channel valid-init 3<&3
+                                                                                                                                        "arguments" : [ ] ,
+                                                                                                                                        "has-standard-input" : false ,
+                                                                                                                                        "index" : $DISTRACTOR_INDEX ,
+                                                                                                                                        "transient" : false
+                                                                                                                                    }' | compare message valid-init 10 23788 3<&3
                                                                                                                             else
                                                                                                                                 DISTRACTOR=${ resources.checks.targets.true.false { failure = 19892 ; } }
                                                                                                                             fi
