@@ -764,7 +764,7 @@
                                                                                                                         echo 2 | compare subscribe invalid-release 10 26959 3<&3
                                                                                                                         echo 3 | compare subscribe valid-init 10 4666 3<&3
                                                                                                                         echo 4 | compare subscribe valid-release 10 20782 3<&3
-                                                                                                                        # ALPHA="$( condition-alpha "@" )" || failure 14402
+                                                                                                                        ALPHA="$( condition-alpha "@" )" || failure 14402
                                                                                                                         # printf -v DISTRACTOR_INDEX "%016d" $(( ALPHA + 6 ))
                                                                                                                         # DISTRACTOR_INIT_CHANNEL="$( distractor-init-channel-value "$@" )" || failure 23974
                                                                                                                         # DISTRACTOR_RELEASE_CHANNEL="$( distractor-release-channel-value "$@" )" || failure 23012
@@ -782,7 +782,9 @@
                                                                                                                                 jq \
                                                                                                                                     --null-input \
                                                                                                                                     --compact-output \
+                                                                                                                                    --arg ALPHA "$ALPHA" \
                                                                                                                                     '{
+                                                                                                                                        "alpha" : $ALPHA \
                                                                                                                                         "index" : "WRONG"
                                                                                                                                     }' | compare message valid-init 10 23788 3<&3
                                                                                                                             else
