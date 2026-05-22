@@ -794,6 +794,7 @@
                                                                                                                         pkgs.jq
                                                                                                                         release-condition
                                                                                                                         standard-output-value
+                                                                                                                        script-value
                                                                                                                         value-seed
                                                                                                                         value-target
                                                                                                                     ] ;
