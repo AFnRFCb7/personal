@@ -263,11 +263,11 @@
                                                                                                         pkgs.writeShellApplication
                                                                                                             {
                                                                                                                 name = "argument" ;
-                                                                                                                runtimeInputs = [ failure condition-init release-condition ] ;
+                                                                                                                runtimeInputs = [ failure condition-init condition-release ] ;
                                                                                                                 text =
                                                                                                                     ''
                                                                                                                         INIT_CONDITION="$( condition-init "$@" )" || failure 15442
-                                                                                                                        RELEASE_CONDITION="$( release-condition "$@" )" || failure 24351
+                                                                                                                        RELEASE_CONDITION="$( condition-release "$@" )" || failure 24351
                                                                                                                         if [[ "$INIT_CONDITION" == "true" ]]
                                                                                                                         then
                                                                                                                             if [[ "$RELEASE_CONDITION" == "true" ]]
@@ -386,6 +386,16 @@
                                                                                                                          echo "$2"
                                                                                                                      '' ;
                                                                                                              } ;
+                                                                                                   condition-release =
+                                                                                                        pkgs.writeShellApplication
+                                                                                                            {
+                                                                                                                name = "condition-release" ;
+                                                                                                                runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                                text =
+                                                                                                                    ''
+                                                                                                                        echo "$3"
+                                                                                                                    '' ;
+                                                                                                            } ;
                                                                                                     distractor-init-channel-value =
                                                                                                         pkgs.writeShellApplication
                                                                                                             {
@@ -406,10 +416,10 @@
                                                                                                         pkgs.writeShellApplication
                                                                                                             {
                                                                                                                 name = "distractor-release-channel-value" ;
-                                                                                                                runtimeInputs = [ failure release-condition ] ;
+                                                                                                                runtimeInputs = [ failure condition-release ] ;
                                                                                                                 text =
                                                                                                                     ''
-                                                                                                                        RELEASE_CONDITION="$( release-condition "$@" )" || failure 13339
+                                                                                                                        RELEASE_CONDITION="$( condition-release "$@" )" || failure 13339
                                                                                                                         if [[ "$RELEASE_CONDITION" == "true" ]]
                                                                                                                         then
                                                                                                                             echo "valid-release"
@@ -580,16 +590,6 @@
                                                                                                                         done
                                                                                                                     '' ;
                                                                                                             } ;
-                                                                                                   release-condition =
-                                                                                                        pkgs.writeShellApplication
-                                                                                                            {
-                                                                                                                name = "release-condition" ;
-                                                                                                                runtimeInputs = [ pkgs.coreutils ] ;
-                                                                                                                text =
-                                                                                                                    ''
-                                                                                                                        echo "$3"
-                                                                                                                    '' ;
-                                                                                                            } ;
                                                                                                     scripts =
                                                                                                         {
                                                                                                             false =
@@ -752,7 +752,7 @@
                                                                                                                         distractor-release-channel-value
                                                                                                                         failure condition-init
                                                                                                                         pkgs.jq
-                                                                                                                        release-condition
+                                                                                                                        condition-release
                                                                                                                         standard-output-value
                                                                                                                         value-script
                                                                                                                         value-seed
@@ -769,7 +769,7 @@
                                                                                                                         # DISTRACTOR_INIT_CHANNEL="$( distractor-init-channel-value "$@" )" || failure 23974
                                                                                                                         # DISTRACTOR_RELEASE_CHANNEL="$( distractor-release-channel-value "$@" )" || failure 23012
                                                                                                                         INIT="$( condition-init "$@" )" || failure 7005
-                                                                                                                        RELEASE="$( release-condition "$@" )" || failure 17709
+                                                                                                                        RELEASE="$( condition-release "$@" )" || failure 17709
                                                                                                                         # SCRIPT="$( value-script "$@" )" || failure 18622
                                                                                                                         # SEED="$( value-seed "$@" )" || failure 26515
                                                                                                                         # STANDARD_OUTPUT="$( standard-output-value "$@" )" || failure 10277
@@ -809,7 +809,7 @@
                                                                                                         pkgs.writeShellApplication
                                                                                                             {
                                                                                                                 name = "stage-beta" ;
-                                                                                                                runtimeInputs = [ condition-alpha argument-value condition-init release-condition ] ;
+                                                                                                                runtimeInputs = [ condition-alpha argument-value condition-init condition-release ] ;
                                                                                                                 text =
                                                                                                                     ''
                                                                                                                     '' ;
@@ -827,11 +827,11 @@
                                                                                                         pkgs.writeShellApplication
                                                                                                             {
                                                                                                                 name = "standard-output-value" ;
-                                                                                                                runtimeInputs = [ failure condition-init release-condition ] ;
+                                                                                                                runtimeInputs = [ failure condition-init condition-release ] ;
                                                                                                                 text =
                                                                                                                     ''
                                                                                                                         INIT_CONDITION="$( condition-init "$@" )" || failure 15442
-                                                                                                                        RELEASE_CONDITION="$( release-condition "$@" )" || failure 24351
+                                                                                                                        RELEASE_CONDITION="$( condition-release "$@" )" || failure 24351
                                                                                                                         if [[ "$INIT_CONDITION" == "true" ]]
                                                                                                                         then
                                                                                                                             if [[ "$RELEASE_CONDITION" == "true" ]]
