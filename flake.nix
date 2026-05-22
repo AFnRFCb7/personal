@@ -789,7 +789,7 @@
                                                                                                                                         "has-standard-input" : false ,
                                                                                                                                         "index" : $INDEX ,
                                                                                                                                         "script" : $SCRIPT ,
-                                                                                                                                        "seed" : [ "checks" "targets" "true" "true" ]
+                                                                                                                                        "seed" : $SEED
                                                                                                                                     }' | compare message valid-init 10 23788 3<&3
                                                                                                                             else
                                                                                                                                 DISTRACTOR=${ resources.checks.targets.true.false { failure = 19892 ; } }
