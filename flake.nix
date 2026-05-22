@@ -771,7 +771,7 @@
                                                                                                                         INIT="$( condition-init "$@" )" || failure 7005
                                                                                                                         INIT_SCRIPT="$( value-init-script "$@" )" || failure 18622
                                                                                                                         RELEASE="$( condition-release "$@" )" || failure 17709
-                                                                                                                        # SEED="$( value-seed "$@" )" || failure 26515
+                                                                                                                        SEED="$( value-seed "$@" )" || failure 26515
                                                                                                                         # STANDARD_OUTPUT="$( standard-output-value "$@" )" || failure 10277
                                                                                                                         # TARGET="$( value-target "@" )" || failure 20759
                                                                                                                         if [[ "$INIT" == "true" ]]
@@ -783,11 +783,13 @@
                                                                                                                                     --null-input \
                                                                                                                                     --arg INDEX "$DISTRACTOR_INDEX" \
                                                                                                                                     --arg SCRIPT "$INIT_SCRIPT" \
+                                                                                                                                    --argjson SEED "$SEED" \
                                                                                                                                     '{
                                                                                                                                         "arguments" : [ ] ,
                                                                                                                                         "has-standard-input" : false ,
                                                                                                                                         "index" : $INDEX ,
-                                                                                                                                        "script" : $SCRIPT
+                                                                                                                                        "script" : $SCRIPT ,
+                                                                                                                                        "seed" : [ "checks" "targets" "true" "true" ]
                                                                                                                                     }' | compare message valid-init 10 23788 3<&3
                                                                                                                             else
                                                                                                                                 DISTRACTOR=${ resources.checks.targets.true.false { failure = 19892 ; } }
