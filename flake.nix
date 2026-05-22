@@ -848,9 +848,15 @@
                                                                                                                             jq \
                                                                                                                                 --compact-output \
                                                                                                                                 --null-input \
+                                                                                                                                --arg ARGUMENT "$ARGUMENT" \
+                                                                                                                                --arg TARGET "$TARGET" \
                                                                                                                                 '{
-                                                                                                                                }' | compare --message message --channel "$DISTRACTOR_RELEASE_CHANNEL" --timeout 1 --uuid 7021 3<&3
-                                                                                                                        fi
+                                                                                                                                    "arguments" : [ $ARGUMENT ] ,
+                                                                                                                                    "has-standard-input" false ,
+                                                                                                                                    "standard-input" : "" ,
+                                                                                                                                    "targets" : [ $TARGET ] ,
+                                                                                                                                    "transient" : false
+                                                                                                 q                        fi
                                                                                                                         block --timeout 1 --uuid 10525 <&3
                                                                                                                         if true ; then exit 0 ; fi
                                                                                                                         files \
