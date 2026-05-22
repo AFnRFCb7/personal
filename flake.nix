@@ -871,7 +871,7 @@
                                                                                                                                     "targets" : [ $TARGET ] ,
                                                                                                                                     "transient" : false
                                                                                                                                 }'
-                                                                                                 q                        fi
+                                                                                                                        fi
                                                                                                                         block --timeout 1 --uuid 10525 <&3
                                                                                                                         if true ; then exit 0 ; fi
                                                                                                                         files \
@@ -988,16 +988,16 @@
                                                                                                                         then
                                                                                                                             if [[ "$RELEASE_CONDITION" == "true" ]]
                                                                                                                             then
-                                                                                                                                echo
+                                                                                                                                echo ${ scripts.true.true.init }
                                                                                                                             else
-                                                                                                                                echo
+                                                                                                                                echo ${ scripts.true.false.init }
                                                                                                                             fi
                                                                                                                         else
                                                                                                                             if [[ "$RELEASE_CONDITION" == "true" ]]
                                                                                                                             then
-                                                                                                                                echo
+                                                                                                                                echo ${ scripts.false.true.init }
                                                                                                                             else
-                                                                                                                                echo
+                                                                                                                                echo ${ scripts.false.false.init }
                                                                                                                             fi
                                                                                                                         fi
                                                                                                                     '' ;
