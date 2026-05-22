@@ -846,20 +846,16 @@
                                                                                                                         jq \
                                                                                                                             --compact-output \
                                                                                                                             --null-input \
+                                                                                                                            --arg SCRIPT "$SCRIPT" \
+                                                                                                                            --argjson SEED "$SEED" \
+                                                                                                                            --arg TARGET "$TARGET" \
                                                                                                                             '{
-                                                                                                                                --compact-output \
-                                                                                                                                --null-input \
-                                                                                                                                --arg SCRIPT "$SCRIPT" \
-                                                                                                                                --argjson SEED "$SEED" \
-                                                                                                                                --arg TARGET "$TARGET" \
-                                                                                                                                '{
-                                                                                                                                    "arguments" : [ ] ,
-                                                                                                                                    "has-standard-input" : false ,
-                                                                                                                                    "script" : $SCRIPT ,
-                                                                                                                                    "seed" : $SEED ,
-                                                                                                                                    "targets" : [ $TARGET ] ,
-                                                                                                                                    "transient" : false
-                                                                                                                                }'
+                                                                                                                                "arguments" : [ ] ,
+                                                                                                                                "has-standard-input" : false ,
+                                                                                                                                "script" : $SCRIPT ,
+                                                                                                                                "seed" : $SEED ,
+                                                                                                                                "targets" : [ $TARGET ] ,
+                                                                                                                                "transient" : false
                                                                                                                             }' | compare --message message --channel "$DISTRACTOR_INIT_CHANNEL" --timeout 1 --uuid 25555 3<&3
                                                                                                                         if [[ "$INIT_CONDITION" == "false" ]]
                                                                                                                         then
