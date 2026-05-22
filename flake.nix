@@ -781,6 +781,7 @@
                                                                                                                                 DISTRACTOR=${ resources.checks.targets.true.true { failure = 32621 ; } }
                                                                                                                                 jq \
                                                                                                                                     --null-input \
+                                                                                                                                    --compact-output \
                                                                                                                                     --arg INDEX "$DISTRACTOR_INDEX" \
                                                                                                                                     --arg SCRIPT "$SCRIPT" \
                                                                                                                                     '{
