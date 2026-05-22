@@ -259,16 +259,6 @@
                                                                                             runtimeInputs = [ wrap ] ;
                                                                                             text =
                                                                                                 let
-                                                                                                    alpha-condition =
-                                                                                                        pkgs.writeShellApplication
-                                                                                                            {
-                                                                                                                name = "alpha-condition" ;
-                                                                                                                runtimeInputs = [ pkgs.coreutils ] ;
-                                                                                                                text =
-                                                                                                                    ''
-                                                                                                                        echo "$1"
-                                                                                                                    '' ;
-                                                                                                            } ;
                                                                                                     argument-value =
                                                                                                         pkgs.writeShellApplication
                                                                                                             {
@@ -374,6 +364,16 @@
                                                                                                                             DIFF="$( diff --unified "$EXPECTED_FILE" "$OBSERVED_FILE" )" || true
                                                                                                                             failure 2177767151764594 "$UUID" EXPECTED_PAYLOAD "$EXPECTED_PAYLOAD" OBSERVED_PAYLOAD "$OBSERVED_PAYLOAD" EXPECTED_PRINT_PAYLOAD "$EXPECTED_PRINT_PAYLOAD" OBSERVED_PRINT_PAYLOAD "$OBSERVED_PRINT_PAYLOAD" "" "" DIFF "$DIFF"
                                                                                                                         fi
+                                                                                                                    '' ;
+                                                                                                            } ;
+                                                                                                    condition-alpha =
+                                                                                                        pkgs.writeShellApplication
+                                                                                                            {
+                                                                                                                name = "condition-alpha" ;
+                                                                                                                runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                                text =
+                                                                                                                    ''
+                                                                                                                        echo "$1"
                                                                                                                     '' ;
                                                                                                             } ;
                                                                                                     distractor-init-channel-value =
@@ -746,7 +746,7 @@
                                                                                                                 name = "stage-alpha" ;
                                                                                                                 runtimeInputs =
                                                                                                                     [
-                                                                                                                        alpha-condition
+                                                                                                                        condition-alpha
                                                                                                                         compare
                                                                                                                         distractor-init-channel-value
                                                                                                                         distractor-release-channel-value
@@ -809,10 +809,10 @@
                                                                                                         pkgs.writeShellApplication
                                                                                                             {
                                                                                                                 name = "stage-beta" ;
-                                                                                                                runtimeInputs = [ alpha-condition argument-value init-condition release-condition ] ;
+                                                                                                                runtimeInputs = [ condition-alpha argument-value init-condition release-condition ] ;
                                                                                                                 text =
                                                                                                                     ''
-                                                                                                                        ALPHA_CONDITION="$( alpha-condition "$@" )" || failure 14402
+                                                                                                                        ALPHA="$( condition-alpha "$@" )" || failure 14402
                                                                                                                         INIT_CONDITION="$( init-condition "$@" )" || failure 7005
                                                                                                                         RELEASE_CONDITION="$( release-condition "$@" )" || failure 17709
                                                                                                                         ARGUMENT="$( argument-value )" || failure 22866
