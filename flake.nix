@@ -866,10 +866,11 @@
                                                                                                                                 --arg TARGET "$TARGET" \
                                                                                                                                 '{
                                                                                                                                     "arguments" : [ $ARGUMENT ] ,
-                                                                                                                                    "has-standard-input" false ,
+                                                                                                                                    "has-standard-input" : false ,
                                                                                                                                     "standard-input" : "" ,
                                                                                                                                     "targets" : [ $TARGET ] ,
                                                                                                                                     "transient" : false
+                                                                                                                                }'
                                                                                                  q                        fi
                                                                                                                         block --timeout 1 --uuid 10525 <&3
                                                                                                                         if true ; then exit 0 ; fi
