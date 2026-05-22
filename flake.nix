@@ -340,7 +340,7 @@
                                                                                                                         EXPECTED_CHANNEL="$2"
                                                                                                                         TIMEOUT="$3"
                                                                                                                         UUID="$4"
-                                                                                                                        EXPECTED_PAYLOAD="$( timeout "$TIMEOUT" jq --compact-output "." )" || failure 29375
+                                                                                                                        EXPECTED_PAYLOAD="$( timeout "$TIMEOUT" cat )" || failure 29375
                                                                                                                         read -r -t "$TIMEOUT" -u 3 OBSERVED_TYPE || failure 8957413633575761 MESSAGE TIMEOUT "$TIMEOUT" UUID "$UUID"
                                                                                                                         read -r -t "$TIMEOUT" -u 3 OBSERVED_CHANNEL || failure 3194389162774953 CHANNEL TIMEOUT "$TIMEOUT" UUID "$UUID"
                                                                                                                         read -r -t "$TIMEOUT" -u 3 OBSERVED_PAYLOAD || failure 8294241659373935 PAYLOAD TIMEOUT "$TIMEOUT" UUID "$UUID"
@@ -770,7 +770,7 @@
                                                                                                                         # DISTRACTOR_RELEASE_CHANNEL="$( distractor-release-channel-value "$@" )" || failure 23012
                                                                                                                         INIT="$( condition-init "$@" )" || failure 7005
                                                                                                                         RELEASE="$( condition-release "$@" )" || failure 17709
-                                                                                                                        # SCRIPT="$( value-script "$@" )" || failure 18622
+                                                                                                                        SCRIPT="$( value-script "$@" )" || failure 18622
                                                                                                                         # SEED="$( value-seed "$@" )" || failure 26515
                                                                                                                         # STANDARD_OUTPUT="$( standard-output-value "$@" )" || failure 10277
                                                                                                                         # TARGET="$( value-target "@" )" || failure 20759
@@ -782,10 +782,12 @@
                                                                                                                                 jq \
                                                                                                                                     --null-input \
                                                                                                                                     --arg INDEX "$DISTRACTOR_INDEX" \
+                                                                                                                                    --arg SCRIPT "$SCRIPT" \
                                                                                                                                     '{
                                                                                                                                         "arguments" : [ ] ,
                                                                                                                                         "has-standard-input" : false ,
                                                                                                                                         "index" : $DISTRACTOR_INDEX ,
+                                                                                                                                        "script" : $SCRIPT ,
                                                                                                                                         "transient" : false
                                                                                                                                     }' | compare message valid-init 10 23788 3<&3
                                                                                                                             else
