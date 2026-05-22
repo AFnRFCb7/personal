@@ -794,6 +794,7 @@
                                                                                                                         pkgs.jq
                                                                                                                         release-condition
                                                                                                                         standard-output-value
+                                                                                                                        value-target
                                                                                                                     ] ;
                                                                                                                 text =
                                                                                                                     ''
@@ -813,6 +814,7 @@
                                                                                                                         ## if true ; then exit 0 ; fi
                                                                                                                         DISTRACTOR_INIT_CHANNEL="$( distractor-init-channel-value "$@" )" || failure 23974
                                                                                                                         DISTRACTOR_RELEASE_CHANNEL="$( distractor-release-channel-value "$@" )" || failure 23012
+                                                                                                                        TARGET="$( value-target "@" )" || failure 20759
                                                                                                                         printf -v DISTRACTOR_INDEX "%016d" $(( ALPHA_CONDITION + 4 ))
                                                                                                                         ## if true ; then exit 0 ; fi
                                                                                                                         if [[ "$INIT_CONDITION" == "true" ]]
@@ -960,6 +962,33 @@
                                                                                                                         fi
                                                                                                                     '' ;
                                                                                                             } ;
+                                                                                                    value-target =
+                                                                                                        pkgs.writeShellApplication
+                                                                                                            {
+                                                                                                                name = "value-target" ;
+                                                                                                                runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                                text =
+                                                                                                                    ''
+                                                                                                                        INIT_CONDITION="$2"
+                                                                                                                        RELEASE_CONDITION="$3"
+                                                                                                                        if [[ "$INIT_CONDITION" == "true" ]]
+                                                                                                                        then
+                                                                                                                            if [[ "$RELEASE_CONDITION" == "true" ]]
+                                                                                                                            then
+                                                                                                                                echo
+                                                                                                                            else
+                                                                                                                                echo
+                                                                                                                            fi
+                                                                                                                        else
+                                                                                                                            if [[ "$RELEASE_CONDITION" == "true" ]]
+                                                                                                                            then
+                                                                                                                                echo
+                                                                                                                            else
+                                                                                                                                echo
+                                                                                                                            fi
+                                                                                                                        fi
+                                                                                                                    '' ;
+                                                                                                            }
                                                                                                     test =
                                                                                                         pkgs.writeShellApplication
                                                                                                             {
