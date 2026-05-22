@@ -786,7 +786,7 @@
                                                                                                                                     '{
                                                                                                                                         "arguments" : [ ] ,
                                                                                                                                         "has-standard-input" : false ,
-                                                                                                                                        "index" : $DISTRACTOR_INDEX ,
+                                                                                                                                        "index" : $INDEX ,
                                                                                                                                         "script" : $SCRIPT ,
                                                                                                                                         "transient" : false
                                                                                                                                     }' | compare message valid-init 10 23788 3<&3
