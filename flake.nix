@@ -783,13 +783,12 @@
                                                                                                                                     --null-input \
                                                                                                                                     --arg INDEX "$DISTRACTOR_INDEX" \
                                                                                                                                     --arg SCRIPT "$INIT_SCRIPT" \
-                                                                                                                                    --argjson SEED "$SEED" \
                                                                                                                                     '{
                                                                                                                                         "arguments" : [ ] ,
                                                                                                                                         "has-standard-input" : false ,
                                                                                                                                         "index" : $INDEX ,
                                                                                                                                         "script" : $SCRIPT ,
-                                                                                                                                        "seed" : $SEED
+                                                                                                                                        "seed" : null
                                                                                                                                     }' | compare message valid-init 10 23788 3<&3
                                                                                                                             else
                                                                                                                                 DISTRACTOR=${ resources.checks.targets.true.false { failure = 19892 ; } }
