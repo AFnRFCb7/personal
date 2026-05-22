@@ -341,7 +341,7 @@
                                                                                                                         TIMEOUT="$3"
                                                                                                                         UUID="$4"
                                                                                                                         EXPECTED_PAYLOAD="$( timeout "$TIMEOUT" jq --compact-output "." )" || failure 29375
-                                                                                                                        read -r -t "$TIMEOUT" -u 3 OBSERVED_MESSAGE || failure 8957413633575761 MESSAGE TIMEOUT "$TIMEOUT" UUID "$UUID"
+                                                                                                                        read -r -t "$TIMEOUT" -u 3 OBSERVED_TYPE || failure 8957413633575761 MESSAGE TIMEOUT "$TIMEOUT" UUID "$UUID"
                                                                                                                         read -r -t "$TIMEOUT" -u 3 OBSERVED_CHANNEL || failure 3194389162774953 CHANNEL TIMEOUT "$TIMEOUT" UUID "$UUID"
                                                                                                                         read -r -t "$TIMEOUT" -u 3 OBSERVED_PAYLOAD || failure 8294241659373935 PAYLOAD TIMEOUT "$TIMEOUT" UUID "$UUID"
                                                                                                                         if [[ "$EXPECTED_TYPE" != "$OBSERVED_TYPE" ]]
