@@ -784,6 +784,7 @@
                                                                                                                                     --arg INDEX "$DISTRACTOR_INDEX" \
                                                                                                                                     '{
                                                                                                                                         "arguments" : [ ] ,
+                                                                                                                                        "has-standard-input" : false ,
                                                                                                                                         "index" : $INDEX
                                                                                                                                     }' | compare message valid-init 10 23788 3<&3
                                                                                                                             else
