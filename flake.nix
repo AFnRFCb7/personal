@@ -754,7 +754,7 @@
                                                                                                                         pkgs.jq
                                                                                                                         condition-release
                                                                                                                         standard-output-value
-                                                                                                                        value-script
+                                                                                                                        value-init-script
                                                                                                                         value-seed
                                                                                                                         value-target
                                                                                                                     ] ;
@@ -765,12 +765,12 @@
                                                                                                                         echo 3 | compare subscribe valid-init 10 4666 3<&3
                                                                                                                         echo 4 | compare subscribe valid-release 10 20782 3<&3
                                                                                                                         ALPHA="$( condition-alpha "$@" )" || failure 14402
-                                                                                                                        printf -v DISTRACTOR_INDEX "%016d" $(( ALPHA + 6 ))
+                                                                                                                        printf -v DISTRACTOR_INDEX "%016d" $(( ALPHA + 4 ))
                                                                                                                         # DISTRACTOR_INIT_CHANNEL="$( distractor-init-channel-value "$@" )" || failure 23974
                                                                                                                         # DISTRACTOR_RELEASE_CHANNEL="$( distractor-release-channel-value "$@" )" || failure 23012
                                                                                                                         INIT="$( condition-init "$@" )" || failure 7005
+                                                                                                                        INIT_SCRIPT="$( value-init-script "$@" )" || failure 18622
                                                                                                                         RELEASE="$( condition-release "$@" )" || failure 17709
-                                                                                                                        # SCRIPT="$( value-script "$@" )" || failure 18622
                                                                                                                         # SEED="$( value-seed "$@" )" || failure 26515
                                                                                                                         # STANDARD_OUTPUT="$( standard-output-value "$@" )" || failure 10277
                                                                                                                         # TARGET="$( value-target "@" )" || failure 20759
@@ -782,10 +782,12 @@
                                                                                                                                 jq \
                                                                                                                                     --null-input \
                                                                                                                                     --arg INDEX "$DISTRACTOR_INDEX" \
+                                                                                                                                    --arg SCRIPT "$INIT_SCRIPT" \
                                                                                                                                     '{
                                                                                                                                         "arguments" : [ ] ,
                                                                                                                                         "has-standard-input" : false ,
-                                                                                                                                        "index" : $INDEX
+                                                                                                                                        "index" : $INDEX ,
+                                                                                                                                        "script" : $SCRIPT
                                                                                                                                     }' | compare message valid-init 10 23788 3<&3
                                                                                                                             else
                                                                                                                                 DISTRACTOR=${ resources.checks.targets.true.false { failure = 19892 ; } }
@@ -852,10 +854,10 @@
                                                                                                                         fi
                                                                                                                     '' ;
                                                                                                             } ;
-                                                                                                    value-script =
+                                                                                                    value-init-script =
                                                                                                         pkgs.writeShellApplication
                                                                                                             {
-                                                                                                                name = "value-script" ;
+                                                                                                                name = "value-init-script" ;
                                                                                                                 runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                                 text =
                                                                                                                     ''
