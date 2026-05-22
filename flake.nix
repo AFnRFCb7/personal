@@ -988,7 +988,7 @@
                                                                                                                             fi
                                                                                                                         fi
                                                                                                                     '' ;
-                                                                                                            }
+                                                                                                            } ;
                                                                                                     test =
                                                                                                         pkgs.writeShellApplication
                                                                                                             {
