@@ -815,6 +815,7 @@
                                                                                                                         ## if true ; then exit 0 ; fi
                                                                                                                         DISTRACTOR_INIT_CHANNEL="$( distractor-init-channel-value "$@" )" || failure 23974
                                                                                                                         DISTRACTOR_RELEASE_CHANNEL="$( distractor-release-channel-value "$@" )" || failure 23012
+                                                                                                                        SCRIPT="$( script-value "$@" )" || failure 18622
                                                                                                                         SEED="$( seed-value "$@" )" || failure 26515
                                                                                                                         TARGET="$( value-target "@" )" || failure 20759
                                                                                                                         printf -v DISTRACTOR_INDEX "%016d" $(( ALPHA_CONDITION + 4 ))
@@ -848,11 +849,14 @@
                                                                                                                             '{
                                                                                                                                 --compact-output \
                                                                                                                                 --null-input \
+                                                                                                                                --arg SCRIPT "$SCRIPT" \
+                                                                                                                                --argjson SEED "$SEED" \
                                                                                                                                 --arg TARGET "$TARGET" \
                                                                                                                                 '{
                                                                                                                                     "arguments" : [ ] ,
                                                                                                                                     "has-standard-input" : false ,
-                                                                                                                                    "standard-input" : "" ,
+                                                                                                                                    "script" : $SCRIPT ,
+                                                                                                                                    "seed" : $SEED ,
                                                                                                                                     "targets" : [ $TARGET ] ,
                                                                                                                                     "transient" : false
                                                                                                                                 }'
@@ -957,6 +961,33 @@
                                                                                                                     ''
                                                                                                                         INIT_CONDITION="$( init-condition "$@" )" || failure 15442
                                                                                                                         RELEASE_CONDITION="$( release-condition "$@" )" || failure 24351
+                                                                                                                        if [[ "$INIT_CONDITION" == "true" ]]
+                                                                                                                        then
+                                                                                                                            if [[ "$RELEASE_CONDITION" == "true" ]]
+                                                                                                                            then
+                                                                                                                                echo
+                                                                                                                            else
+                                                                                                                                echo
+                                                                                                                            fi
+                                                                                                                        else
+                                                                                                                            if [[ "$RELEASE_CONDITION" == "true" ]]
+                                                                                                                            then
+                                                                                                                                echo
+                                                                                                                            else
+                                                                                                                                echo
+                                                                                                                            fi
+                                                                                                                        fi
+                                                                                                                    '' ;
+                                                                                                            } ;
+                                                                                                    value-script =
+                                                                                                        pkgs.writeShellApplication
+                                                                                                            {
+                                                                                                                name = "value-script" ;
+                                                                                                                runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                                text =
+                                                                                                                    ''
+                                                                                                                        INIT_CONDITION="$2"
+                                                                                                                        RELEASE_CONDITION="$3"
                                                                                                                         if [[ "$INIT_CONDITION" == "true" ]]
                                                                                                                         then
                                                                                                                             if [[ "$RELEASE_CONDITION" == "true" ]]
