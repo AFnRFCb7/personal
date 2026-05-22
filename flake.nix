@@ -783,6 +783,7 @@
                                                                                                                                     --null-input \
                                                                                                                                     --arg INDEX "$DISTRACTOR_INDEX" \
                                                                                                                                     --arg SCRIPT "$INIT_SCRIPT" \
+                                                                                                                                    --argjson SEED "$SEED" \
                                                                                                                                     '{
                                                                                                                                         "arguments" : [ ] ,
                                                                                                                                         "has-standard-input" : false ,
@@ -895,7 +896,7 @@
                                                                                                                         then
                                                                                                                             if [[ "$RELEASE_CONDITION" == "true" ]]
                                                                                                                             then
-                                                                                                                                echo
+                                                                                                                                echo '[ "checks" , "targets" , true , true ]'
                                                                                                                             else
                                                                                                                                 echo
                                                                                                                             fi
