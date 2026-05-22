@@ -346,57 +346,17 @@
                                                                                                                 runtimeInputs = [ failure pkgs.coreutils pkgs.diffutils pkgs.jq pkgs.yq-go ] ;
                                                                                                                 text =
                                                                                                                     ''
-                                                                                                                        while [[ "$#" -gt 0 ]]
-                                                                                                                        do
-                                                                                                                            case "$1" in
-                                                                                                                                --channel)
-                                                                                                                                    EXPECTED_CHANNEL="$2"
-                                                                                                                                    shift 2
-                                                                                                                                    ;;
-                                                                                                                                --message)
-                                                                                                                                    EXPECTED_MESSAGE="$2"
-                                                                                                                                    shift 2
-                                                                                                                                    ;;
-                                                                                                                                --timeout)
-                                                                                                                                    TIMEOUT="$2"
-                                                                                                                                    shift 2
-                                                                                                                                    if [[ ! "$TIMEOUT" =~ ^-?[0-9]+$ ]]
-                                                                                                                                    then
-                                                                                                                                        failure 1a9dadf7736235ea "$TIMEOUT"
-                                                                                                                                    fi
-                                                                                                                                    ;;
-                                                                                                                                --uuid)
-                                                                                                                                    UUID="$2"
-                                                                                                                                    shift 2
-                                                                                                                                    ;;
-                                                                                                                                *)
-                                                                                                                                    failure 8175862286564631 "$*"
-                                                                                                                                    ;;
-                                                                                                                            esac
-                                                                                                                        done
-                                                                                                                        if [[ -z "$UUID" ]]
-                                                                                                                        then
-                                                                                                                            failure d597a2fab86c6288
-                                                                                                                        fi
-                                                                                                                        if [[ -z "$EXPECTED_CHANNEL" ]]
-                                                                                                                        then
-                                                                                                                            failure 9262853791516192 "$UUID"
-                                                                                                                        fi
-                                                                                                                        if [[ -z "$EXPECTED_MESSAGE" ]]
-                                                                                                                        then
-                                                                                                                            failure 9152341496876694 "$UUID"
-                                                                                                                        fi
-                                                                                                                        EXPECTED_PAYLOAD="$( cat )" || failure 29375
-                                                                                                                        if [[ -z "$TIMEOUT" ]]
-                                                                                                                        then
-                                                                                                                            failure d855cf3f4d0854ec "$UUID"
-                                                                                                                        fi
+                                                                                                                        EXPECTED_TYPE="$1"
+                                                                                                                        EXPECTED_CHANNEL="$2"
+                                                                                                                        TIMEOUT="$3"
+                                                                                                                        UUID="$4"
+                                                                                                                        EXPECTED_PAYLOAD="$( timeout "$TIMEOUT" jq --compact-output "." )" || failure 29375
                                                                                                                         read -r -t "$TIMEOUT" -u 3 OBSERVED_MESSAGE || failure 8957413633575761 MESSAGE TIMEOUT "$TIMEOUT" UUID "$UUID"
                                                                                                                         read -r -t "$TIMEOUT" -u 3 OBSERVED_CHANNEL || failure 3194389162774953 CHANNEL TIMEOUT "$TIMEOUT" UUID "$UUID"
                                                                                                                         read -r -t "$TIMEOUT" -u 3 OBSERVED_PAYLOAD || failure 8294241659373935 PAYLOAD TIMEOUT "$TIMEOUT" UUID "$UUID"
-                                                                                                                        if [[ "$EXPECTED_MESSAGE" != "$OBSERVED_MESSAGE" ]]
+                                                                                                                        if [[ "$EXPECTED_TYPE" != "$OBSERVED_TYPE" ]]
                                                                                                                         then
-                                                                                                                            failure 9358462855663219 "$UUID" EXPECTED_MESSAGE "$EXPECTED_MESSAGE" OBSERVED_MESSAGE "$OBSERVED_MESSAGE"
+                                                                                                                            failure 9358462855663219 "$UUID" EXPECTED_TYPE "$EXPECTED_TYPE" OBSERVED_MESSAGE "$OBSERVED_MESSAGE"
                                                                                                                         fi
                                                                                                                         if [[ "$EXPECTED_CHANNEL" != "$OBSERVED_CHANNEL" ]]
                                                                                                                         then
@@ -800,85 +760,46 @@
                                                                                                                     ] ;
                                                                                                                 text =
                                                                                                                     ''
-                                                                                                                        echo 1 | compare --message subscribe --channel invalid-init --timeout 10 --uuid 27606 3<&3
-                                                                                                                        echo 2 | compare --message subscribe --channel invalid-release --timeout 10 --uuid 26959 3<&3
-                                                                                                                        echo 3 | compare --message subscribe --channel valid-init --timeout 10 --uuid 4666 3<&3
-                                                                                                                        ## if true ; then exit 0 ; fi
-                                                                                                                        echo 4 | compare --message subscribe --channel valid-release --timeout 10 --uuid 20782 3<&3
-                                                                                                                        ## if true ; then exit 0 ; fi
-                                                                                                                        ALPHA_CONDITION="$( alpha-condition "$@" )" || failure 14402
-                                                                                                                        ## if true ; then exit 0 ; fi
-                                                                                                                        INIT_CONDITION="$( init-condition "$@" )" || failure 7005
-                                                                                                                        ## if true ; then exit 0 ; fi
-                                                                                                                        RELEASE_CONDITION="$( release-condition "$@" )" || failure 17709
-                                                                                                                        ## if true ; then exit 0 ; fi
-                                                                                                                        STANDARD_OUTPUT="$( standard-output-value "$@" )" || failure 10277
-                                                                                                                        ## if true ; then exit 0 ; fi
+                                                                                                                        echo 1 | compare subscribe invalid-init 10 27606 3<&3
+                                                                                                                        echo 2 | compare subscribe invalid-release 10 26959 3<&3
+                                                                                                                        echo 3 | compare subscribe valid-init 10 4666 3<&3
+                                                                                                                        echo 4 | compare subscribe valid-release 10 20782 3<&3
+                                                                                                                        ALPHA="$( alpha-condition "$@" )" || failure 14402
                                                                                                                         DISTRACTOR_INIT_CHANNEL="$( distractor-init-channel-value "$@" )" || failure 23974
                                                                                                                         DISTRACTOR_RELEASE_CHANNEL="$( distractor-release-channel-value "$@" )" || failure 23012
+                                                                                                                        INIT="$( init-condition "$@" )" || failure 7005
+                                                                                                                        RELEASE_CONDITION="$( release-condition "$@" )" || failure 17709
                                                                                                                         SCRIPT="$( value-script "$@" )" || failure 18622
                                                                                                                         SEED="$( value-seed "$@" )" || failure 26515
+                                                                                                                        STANDARD_OUTPUT="$( standard-output-value "$@" )" || failure 10277
                                                                                                                         TARGET="$( value-target "@" )" || failure 20759
-                                                                                                                        printf -v DISTRACTOR_INDEX "%016d" $(( ALPHA_CONDITION + 4 ))
-                                                                                                                        ## if true ; then exit 0 ; fi
-                                                                                                                        if [[ "$INIT_CONDITION" == "true" ]]
+                                                                                                                        if [[ "$INIT" == "true" ]]
                                                                                                                         then
-                                                                                                                            if [[ "$RELEASE_CONDITION" == "true" ]]
+                                                                                                                            if [[ "$RELEASE" == "true" ]]
                                                                                                                             then
-                                                                                                                                DISTRACTOR=${ resources.checks.targets.true.true { failure = 2829 ; } }
+                                                                                                                                DISTRACTOR=${ resources.checks.targets.true.true { failure = 32621 ; } }
+                                                                                                                                jq \
+                                                                                                                                    --null-input \
+                                                                                                                                    --compact-output \
+                                                                                                                                    '{
+                                                                                                                                    }' | compare --type message --channel valid-init 3<&3
                                                                                                                             else
-                                                                                                                                DISTRACTOR=${ resources.checks.targets.true.false { failure = 17544 ; } }
+                                                                                                                                DISTRACTOR=${ resources.checks.targets.true.false { failure = 19892 ; } }
                                                                                                                             fi
                                                                                                                         else
-                                                                                                                            if [[ "$RELEASE_CONDITION" == "true" ]]
+                                                                                                                            if [[ "$RELEASE" == "true" ]]
                                                                                                                             then
-                                                                                                                                if DISTRACTOR=${ resources.checks.targets.false.true { failure = 13074 ; } }
+                                                                                                                                if DISTRACTOR=${ resources.checks.targets.false.true { failure = 28804 ; } }
                                                                                                                                 then
-                                                                                                                                    failure 26505
+                                                                                                                                    failure 26720
                                                                                                                                 fi
                                                                                                                             else
-                                                                                                                                if DISTRACTOR=${ resources.checks.targets.false.false { failure = 27401 ; } }
+                                                                                                                                if DISTRACTOR=${ resources.checks.targets.false.false { failure = 31524 ; } }
                                                                                                                                 then
-                                                                                                                                    failure 22382
+                                                                                                                                    failure 30560
                                                                                                                                 fi
                                                                                                                             fi
                                                                                                                         fi
-                                                                                                                        # if true ; then exit 0 ; fi
-                                                                                                                        jq \
-                                                                                                                            --compact-output \
-                                                                                                                            --null-input \
-                                                                                                                            --arg SCRIPT "$SCRIPT" \
-                                                                                                                            --argjson SEED "$SEED" \
-                                                                                                                            --arg TARGET "$TARGET" \
-                                                                                                                            '{
-                                                                                                                                "arguments" : [ ] ,
-                                                                                                                                "has-standard-input" : false ,
-                                                                                                                                "script" : $SCRIPT ,
-                                                                                                                                "seed" : $SEED ,
-                                                                                                                                "targets" : [ $TARGET ] ,
-                                                                                                                                "transient" : false
-                                                                                                                            }' | compare --message message --channel "$DISTRACTOR_INIT_CHANNEL" --timeout 1 --uuid 25555 3<&3
-                                                                                                                        if [[ "$INIT_CONDITION" == "false" ]]
-                                                                                                                        then
-                                                                                                                            jq \
-                                                                                                                                --compact-output \
-                                                                                                                                --null-input \
-                                                                                                                                --arg ARGUMENT "$ARGUMENT" \
-                                                                                                                                --arg TARGET "$TARGET" \
-                                                                                                                                '{
-                                                                                                                                    "arguments" : [ $ARGUMENT ] ,
-                                                                                                                                    "has-standard-input" : false ,
-                                                                                                                                    "standard-input" : "" ,
-                                                                                                                                    "targets" : [ $TARGET ] ,
-                                                                                                                                    "transient" : false
-                                                                                                                                }'
-                                                                                                                        fi
-                                                                                                                        block --timeout 1 --uuid 10525 <&3
-                                                                                                                        if true ; then exit 0 ; fi
-                                                                                                                        files \
-                                                                                                                            --uuid 12121
-                                                                                                                        echo "STANDARD_OUTPUT" "$STANDARD_OUTPUT"
-                                                                                                                        echo "We have created a distractor" ALPHA_CONDITION "$ALPHA_CONDITION" DISTRACTOR "$DISTRACTOR" DISTRACTOR_INIT_CHANNEL "$DISTRACTOR_INIT_CHANNEL" DISTRACTOR_RELEASE_CHANNEL "$DISTRACTOR_RELEASE_CHANNEL" DISTRACTOR_INDEX "$DISTRACTOR_INDEX"
                                                                                                                     '' ;
                                                                                                             } ;
                                                                                                     stage-beta =
