@@ -794,6 +794,7 @@
                                                                                                                         pkgs.jq
                                                                                                                         release-condition
                                                                                                                         standard-output-value
+                                                                                                                        value-seed
                                                                                                                         value-target
                                                                                                                     ] ;
                                                                                                                 text =
@@ -814,6 +815,7 @@
                                                                                                                         ## if true ; then exit 0 ; fi
                                                                                                                         DISTRACTOR_INIT_CHANNEL="$( distractor-init-channel-value "$@" )" || failure 23974
                                                                                                                         DISTRACTOR_RELEASE_CHANNEL="$( distractor-release-channel-value "$@" )" || failure 23012
+                                                                                                                        SEED="$( seed-value "$@" )" || failure 26515
                                                                                                                         TARGET="$( value-target "@" )" || failure 20759
                                                                                                                         printf -v DISTRACTOR_INDEX "%016d" $(( ALPHA_CONDITION + 4 ))
                                                                                                                         ## if true ; then exit 0 ; fi
@@ -844,6 +846,16 @@
                                                                                                                             --compact-output \
                                                                                                                             --null-input \
                                                                                                                             '{
+                                                                                                                                --compact-output \
+                                                                                                                                --null-input \
+                                                                                                                                --arg TARGET "$TARGET" \
+                                                                                                                                '{
+                                                                                                                                    "arguments" : [ ] ,
+                                                                                                                                    "has-standard-input" : false ,
+                                                                                                                                    "standard-input" : "" ,
+                                                                                                                                    "targets" : [ $TARGET ] ,
+                                                                                                                                    "transient" : false
+                                                                                                                                }'
                                                                                                                             }' | compare --message message --channel "$DISTRACTOR_INIT_CHANNEL" --timeout 1 --uuid 25555 3<&3
                                                                                                                         if [[ "$INIT_CONDITION" == "false" ]]
                                                                                                                         then
@@ -944,6 +956,33 @@
                                                                                                                     ''
                                                                                                                         INIT_CONDITION="$( init-condition "$@" )" || failure 15442
                                                                                                                         RELEASE_CONDITION="$( release-condition "$@" )" || failure 24351
+                                                                                                                        if [[ "$INIT_CONDITION" == "true" ]]
+                                                                                                                        then
+                                                                                                                            if [[ "$RELEASE_CONDITION" == "true" ]]
+                                                                                                                            then
+                                                                                                                                echo
+                                                                                                                            else
+                                                                                                                                echo
+                                                                                                                            fi
+                                                                                                                        else
+                                                                                                                            if [[ "$RELEASE_CONDITION" == "true" ]]
+                                                                                                                            then
+                                                                                                                                echo
+                                                                                                                            else
+                                                                                                                                echo
+                                                                                                                            fi
+                                                                                                                        fi
+                                                                                                                    '' ;
+                                                                                                            } ;
+                                                                                                    value-seed =
+                                                                                                        pkgs.writeShellApplication
+                                                                                                            {
+                                                                                                                name = "value-seed" ;
+                                                                                                                runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                                text =
+                                                                                                                    ''
+                                                                                                                        INIT_CONDITION="$2"
+                                                                                                                        RELEASE_CONDITION="$3"
                                                                                                                         if [[ "$INIT_CONDITION" == "true" ]]
                                                                                                                         then
                                                                                                                             if [[ "$RELEASE_CONDITION" == "true" ]]
