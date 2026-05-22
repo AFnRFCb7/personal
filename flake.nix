@@ -781,7 +781,7 @@
                                                                                                                                 DISTRACTOR=${ resources.checks.targets.true.true { failure = 32621 ; } }
                                                                                                                                 jq \
                                                                                                                                     --null-input \
-                                                                                                                                    --compact-output \
+                                                                                                                                    --arg INDEX "$DISTRACTOR_INDEX" \
                                                                                                                                     '{
                                                                                                                                         "index" : $DISTRACTOR_INDEX
                                                                                                                                     }' | compare --type message --channel valid-init 3<&3
