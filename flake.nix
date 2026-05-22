@@ -784,11 +784,7 @@
                                                                                                                                     --arg INDEX "$DISTRACTOR_INDEX" \
                                                                                                                                     --arg SCRIPT "$SCRIPT" \
                                                                                                                                     '{
-                                                                                                                                        "arguments" : [ ] ,
-                                                                                                                                        "has-standard-input" : false ,
-                                                                                                                                        "index" : $INDEX ,
-                                                                                                                                        "script" : $SCRIPT ,
-                                                                                                                                        "transient" : false
+                                                                                                                                        "arguments" : [ ]
                                                                                                                                     }' | compare message valid-init 10 23788 3<&3
                                                                                                                             else
                                                                                                                                 DISTRACTOR=${ resources.checks.targets.true.false { failure = 19892 ; } }
