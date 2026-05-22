@@ -816,7 +816,7 @@
                                                                                                                         ## if true ; then exit 0 ; fi
                                                                                                                         DISTRACTOR_INIT_CHANNEL="$( distractor-init-channel-value "$@" )" || failure 23974
                                                                                                                         DISTRACTOR_RELEASE_CHANNEL="$( distractor-release-channel-value "$@" )" || failure 23012
-                                                                                                                        SCRIPT="$( script-value "$@" )" || failure 18622
+                                                                                                                        SCRIPT="$( value-script "$@" )" || failure 18622
                                                                                                                         SEED="$( seed-value "$@" )" || failure 26515
                                                                                                                         TARGET="$( value-target "@" )" || failure 20759
                                                                                                                         printf -v DISTRACTOR_INDEX "%016d" $(( ALPHA_CONDITION + 4 ))
