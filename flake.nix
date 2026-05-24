@@ -863,18 +863,18 @@
                                                                                                                 runtimeInputs = [ pkgs.coreutils ] ;
                                                                                                                 text =
                                                                                                                     ''
-                                                                                                                        INIT_CONDITION="$2"
-                                                                                                                        RELEASE_CONDITION="$3"
-                                                                                                                        if [[ "$INIT_CONDITION" == "true" ]]
+                                                                                                                        INIT="$2"
+                                                                                                                        RELEASE="$3"
+                                                                                                                        if [[ "$INIT" == "true" ]]
                                                                                                                         then
-                                                                                                                            if [[ "$RELEASE_CONDITION" == "true" ]]
+                                                                                                                            if [[ "$RELEASE" == "true" ]]
                                                                                                                             then
                                                                                                                                 echo ${ scripts.true.true.init }
                                                                                                                             else
                                                                                                                                 echo ${ scripts.true.false.init }
                                                                                                                             fi
                                                                                                                         else
-                                                                                                                            if [[ "$RELEASE_CONDITION" == "true" ]]
+                                                                                                                            if [[ "$RELEASE" == "true" ]]
                                                                                                                             then
                                                                                                                                 echo ${ scripts.false.true.init }
                                                                                                                             else
