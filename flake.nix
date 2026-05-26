@@ -943,8 +943,8 @@
                                                                                                                 runtimeInputs = [ failure condition-init condition-release ] ;
                                                                                                                 text =
                                                                                                                     ''
-                                                                                                                        INIT="$( init-condition "$@" )" || failure 31573
-                                                                                                                        RELEASE="$( release-condition "$@" )" || failure 31402
+                                                                                                                        INIT="$( condition-init "$@" )" || failure 31573
+                                                                                                                        RELEASE="$( condition-release "$@" )" || failure 31402
                                                                                                                         if [[ "$INIT" == "true" ]]
                                                                                                                         then
                                                                                                                             if [[ "$RELEASE" == "true" ]]
