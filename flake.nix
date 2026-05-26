@@ -767,6 +767,7 @@
                                                                                                                         distractor-init-channel-value
                                                                                                                         distractor-release-channel-value
                                                                                                                         failure condition-init
+                                                                                                                        files
                                                                                                                         pkgs.jq
                                                                                                                         condition-release
                                                                                                                         value-standard-output
@@ -790,6 +791,12 @@
                                                                                                                         TARGET="$( value-target "$@" )" || failure 20759
                                                                                                                         files \
                                                                                                                             --ceiling "$ALPHA" 0 0 \
+                                                                                                                            --does-not-exist "/home/${ config.personal.name }/resources/canonical" \
+                                                                                                                            --does-not-exist "/home/${ config.personal.name }/resources/locks" \
+                                                                                                                            --does-not-exist "/home/${ config.personal.name }/resources/logs" \
+                                                                                                                            --does-not-exist "/home/${ config.personal.name }/resources/marks" \
+                                                                                                                            --does-not-exist "/home/${ config.personal.name }/resources/originator-pid" \
+                                                                                                                            --does-not-exist "/home/${ config.personal.name }/resources/sequential" \
                                                                                                                             --uuid 17389
                                                                                                                         if [[ "$INIT" == "true" ]]
                                                                                                                         then
