@@ -435,7 +435,7 @@
                                                                                                                                                                 NAME="$( basename "$FILE" )" || failure 6413594228638844
                                                                                                                                                                 if [[ "$NAME" > "$INDEX" ]]
                                                                                                                                                                 then
-                                                                                                                                                                    echo "$FILE"
+                                                                                                                                                                    echo "$NAME"
                                                                                                                                                                 fi
                                                                                                                                                             '' ;
                                                                                                                                                     }
@@ -449,7 +449,7 @@
                                                                                                                                             INDEX="$2"
                                                                                                                                             if [[ -d "$ROOT" ]]
                                                                                                                                             then
-                                                                                                                                                ZERO="$( find "$ROOT" -type f -mindepth 1 -exec ceiling {} "$INDEX" \; )" || failure 7516122857653918 ROOT "$ROOT" INDEX "$INDEX"
+                                                                                                                                                ZERO="$( find "$ROOT" -type f -mindepth 1 -maxdepth 1 -exec ceiling {} "$INDEX" \; )" || failure 7516122857653918 ROOT "$ROOT" INDEX "$INDEX"
                                                                                                                                                 if [[ -n "$ZERO" ]]
                                                                                                                                                 then
                                                                                                                                                     failure 4894458326934832 ROOT "$ROOT" INDEX "$INDEX" ZERO "$ZERO" "$*"
