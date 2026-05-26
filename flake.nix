@@ -466,8 +466,7 @@
                                                                                                                 text =
                                                                                                                     ''
                                                                                                                         while [[ "$#" -gt 0 ]]
-                                                                                                                        do
-                                                                                                                            echo 16963 "$*"
+                                                                                                                        doq
                                                                                                                             case "$1" in
                                                                                                                                 --ceiling)
                                                                                                                                     if [[ "$#" -lt 4 ]]
@@ -774,7 +773,6 @@
                                                                                                                                     --arg STANDARD_OUTPUT "$STANDARD_OUTPUT" \
                                                                                                                                     --arg TARGET "$TARGET" \
                                                                                                                                     '{
-                                                                                                                                        "WTF" : true ,
                                                                                                                                         "arguments" : [ ] ,
                                                                                                                                         "index" : $INDEX ,
                                                                                                                                         "script" : $SCRIPT ,
@@ -783,7 +781,10 @@
                                                                                                                                         "targets" : [ $TARGET ] ,
                                                                                                                                         "transient" : false
                                                                                                                                     }' | compare message valid-init 10 23788 3<&3
-                                                                                                                                files \
+                                                                                                                                echo | files \
+                                                                                                                                    --ceiling "$ALPHA" 1 7 \
+                                                                                                                                    --equals "/home/${ config.personal.name }/resources/mounts/$DISTRACTOR_INDEX" "$DISTRACTOR" \
+                                                                                                                                    --executable "$DISTRACTOR/$TARGET" \
                                                                                                                                     --uuid 25695
                                                                                                                             else
                                                                                                                                 DISTRACTOR=${ resources.checks.targets.true.false { failure = 19892 ; } }
