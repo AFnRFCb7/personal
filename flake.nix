@@ -528,13 +528,17 @@
                                                                                                                                     echo 29151 "$*"
                                                                                                                                     if [[ "$#" -lt 2 ]]
                                                                                                                                     then
+                                                                                                                                        echo 9455 "$*" >&2
                                                                                                                                         failure 2634964638877756 "$*"
                                                                                                                                     fi
                                                                                                                                     if [[ -e "$2" ]]
                                                                                                                                     then
+                                                                                                                                        echo 22886 "$*" >&2
                                                                                                                                         failure 3686358689564748 "$*"
                                                                                                                                     fi
+                                                                                                                                    echo 27807 "$*" >&2
                                                                                                                                     shift 2
+                                                                                                                                    echo 14638 "$*" >&2
                                                                                                                                     ;;
                                                                                                                                 --equals)
                                                                                                                                     if [[ "$#" -lt 3 ]]
