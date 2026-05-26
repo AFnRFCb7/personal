@@ -752,7 +752,7 @@
                                                                                                                         echo 4 | compare subscribe valid-release 10 20782 3<&3
                                                                                                                         ALPHA="$( condition-alpha "$@" )" || failure 14402
                                                                                                                         # printf -v ALPHA_INDEX "%016d" "$ALPHA"
-                                                                                                                        printf -v DISTRACTOR_INDEX "%016d" $(( ALPHA + 4 ))
+                                                                                                                        printf -v DISTRACTOR_INDEX "%016d" $(( ALPHA + 8 ))
                                                                                                                         INIT="$( condition-init "$@" )" || failure 7005
                                                                                                                         INIT_SCRIPT="$( value-init-script "$@" )" || failure 18622
                                                                                                                         RELEASE="$( condition-release "$@" )" || failure 17709
