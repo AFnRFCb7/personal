@@ -763,11 +763,12 @@
                                                                                                                 name = "stage-alpha" ;
                                                                                                                 runtimeInputs =
                                                                                                                     [
-                                                                                                                        condition-alpha
                                                                                                                         compare
+                                                                                                                        condition-alpha
+                                                                                                                        condition-init
                                                                                                                         distractor-init-channel-value
                                                                                                                         distractor-release-channel-value
-                                                                                                                        failure condition-init
+                                                                                                                        failure
                                                                                                                         files
                                                                                                                         pkgs.jq
                                                                                                                         condition-release
@@ -790,8 +791,9 @@
                                                                                                                         SEED="$( value-seed "$@" )" || failure 26515
                                                                                                                         STANDARD_OUTPUT="$( value-standard-output "$@" )" || failure 10277
                                                                                                                         TARGET="$( value-target "$@" )" || failure 20759
-                                                                                                                        ${ pkgs.findutils }/bin/find /home/${ config.personal.name }"
+                                                                                                                        ${ pkgs.findutils }/bin/find /home/${ config.personal.name }
                                                                                                                         files \
+                                                                                                                            --ceiling "$ALPHA" 0 0 \
                                                                                                                             --directory /home/${ config.personal.name }/resources/canonical \
                                                                                                                             --directory /home/${ config.personal.name }/resources/locks \
                                                                                                                             --directory /home/${ config.personal.name }/resources/logs \
