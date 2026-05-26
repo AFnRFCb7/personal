@@ -519,10 +519,11 @@
                                                                                                                                     then
                                                                                                                                         failure 1149448538394568 ALPHA "$ALPHA" BETA "$BETA" GAMMA "$GAMMA" DELTA "$DELTA" EPSILON "$EPSILON" DELTA_PRIME "$DELTA_PRIME" EPSILON_PRIME "$EPSILON_PRIME" SEQUENTIAL "$SEQUENTIAL" SEQUENTIAL "$SEQUENTIAL_PRIME" "$*"
                                                                                                                                     fi
-                                                                                                                                    ceiling /home/${ config.personal.name }/mounts "$DELTA_PRIME"
-                                                                                                                                    ceiling /home/${ config.personal.name }/release "$DELTA_PRIME"
-                                                                                                                                    ceiling /home/${ config.personal.name }/invalid-init "$DELTA_PRIME"
-                                                                                                                                    ceiling /home/${ config.personal.name }/invalid-release "$DELTA_PRIME"
+                                                                                                                                    ceiling /home/${ config.personal.name }/.gc-root "$DELTA_PRIME"
+                                                                                                                                    ceiling /home/${ config.personal.name }/resources/mounts "$DELTA_PRIME"
+                                                                                                                                    ceiling /home/${ config.personal.name }/resources/release "$DELTA_PRIME"
+                                                                                                                                    ceiling /home/${ config.personal.name }/resources/invalid-init "$DELTA_PRIME"
+                                                                                                                                    ceiling /home/${ config.personal.name }/resources/invalid-release "$DELTA_PRIME"
                                                                                                                                     shift 4
                                                                                                                                     ;;
                                                                                                                                 --does-not-exist)
