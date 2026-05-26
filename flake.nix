@@ -181,6 +181,22 @@
                                                                             resources = resources ;
                                                                             resources-directory = "/home/${ config.personal.name }/resources" ;
                                                                         } ;
+                                                                nulls =
+                                                                    let
+                                                                        null =
+                                                                            let
+                                                                                application =
+                                                                                    pkgs.writeShellApplication
+                                                                                        {
+                                                                                            name = "null" ;
+                                                                                            text = "" ;
+                                                                                        } ;
+                                                                                in "${ application }/bin/null" ;
+                                                                        in
+                                                                            {
+                                                                                init = { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } : null ;
+                                                                                release = { failure , pkgs , resources , seed , sequential , trace } : null ;
+                                                                            } ;
                                                                 r = value null ;
                                                                 resolutions =
                                                                     {
@@ -226,22 +242,6 @@
                                                                                                     '' ;
                                                                                             } ;
                                                                                     in "${ application }/bin/resolve" ;
-                                                                        nulls =
-                                                                            let
-                                                                                null =
-                                                                                    let
-                                                                                        application =
-                                                                                            pkgs.writeShellApplication
-                                                                                                {
-                                                                                                    name = "null" ;
-                                                                                                    text = "" ;
-                                                                                                } ;
-                                                                                        in "${ application }/bin/null" ;
-                                                                                in
-                                                                                    {
-                                                                                        init = { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } : null ;
-                                                                                        release = { failure , pkgs , resources , seed , sequential , trace } : null ;
-                                                                                    } ;
                                                                     } ;
                                                                 in
                                                                     factory.implementation
