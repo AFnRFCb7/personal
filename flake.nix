@@ -784,7 +784,10 @@
                                                                                                                                 echo | files \
                                                                                                                                     --ceiling "$ALPHA" 1 6 \
                                                                                                                                     --equals "/home/${ config.personal.name }/resources/mounts/$DISTRACTOR_INDEX" "$DISTRACTOR" \
-                                                                                                                                    --executable "$DISTRACTOR/$TARGET" \
+                                                                                                                                    --exists "$DISTRACTOR/$TARGET" \
+                                                                                                                                    --executable "/home/${ config.personal.name }/resources/release/$DISTRACTOR_INDEX" \
+                                                                                                                                    --does-not-exist "/home/${ config.personal.name }/resources/invalid-init/$DISTRACTOR_INDEX" \
+                                                                                                                                    --does-not-exist "/home/${ config.personal.name }/resources/invalid-release/$DISTRACTOR_INDEX" \
                                                                                                                                     --uuid 25695
                                                                                                                             else
                                                                                                                                 DISTRACTOR=${ resources.checks.targets.true.false { failure = 19892 ; } }
