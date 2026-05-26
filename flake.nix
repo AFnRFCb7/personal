@@ -729,7 +729,11 @@
                                                                                                                                         pkgs.writeShellApplication
                                                                                                                                             {
                                                                                                                                                 name = "init" ;
-                                                                                                                                                text = "/nix/store/qfcw4rcx08yqnfjj7ndxhcqbi719z9m2-init/bin/init" ;
+                                                                                                                                                text =
+                                                                                                                                                    ''
+                                                                                                                                                        touch /mount/2862437261978116
+                                                                                                                                                        echo -en 5175697994459272
+                                                                                                                                                    '' ;
                                                                                                                                             } ;
                                                                                                                                 in "${ application }/bin/init" ;
                                                                                                                             release =
