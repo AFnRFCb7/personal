@@ -675,16 +675,14 @@
                                                                                                                     false =
                                                                                                                         {
                                                                                                                             init =
-                                                                                                                                builtins.toFile
-                                                                                                                                    "script"
-                                                                                                                                    ''
-                                                                                                                                        #!/nix/store/mjhcjikhxps97mq5z54j4gjjfzgmsir5-bash-5.2p37/bin/bash
-                                                                                                                                        set -o errexit
-                                                                                                                                        set -o nounset
-                                                                                                                                        set -o pipefail
-
-                                                                                                                                        /nix/store/7l2i4v0ajggraxg79mwc0pqxlc8yhjcf-init/bin/init
-                                                                                                                                    '' ;
+                                                                                                                                let
+                                                                                                                                    application =
+                                                                                                                                        pkgs.writeShellApplication
+                                                                                                                                            {
+                                                                                                                                                name = "init" ;
+                                                                                                                                                text = "/nix/store/7l2i4v0ajggraxg79mwc0pqxlc8yhjcf-init/bin/init" ;
+                                                                                                                                            } ;
+                                                                                                                                    in "${ application }/bin/init" ;
                                                                                                                             release =
                                                                                                                                 ''
                                                                                                                                 '' ;
@@ -750,7 +748,7 @@
                                                                                                                         echo 4 | compare subscribe valid-release 10 20782 3<&3
                                                                                                                         ALPHA="$( condition-alpha "$@" )" || failure 14402
                                                                                                                         printf -v DISTRACTOR_INDEX "%016d" $(( ALPHA + 7 ))
-                                                                                                                        INIT="$( condition-init "$@" )" || failure 7005
+                                                                                                                        INIT="$( condition-init "$@" )" nix log /nix/store/5kjcgiiq5vcv419863ms9pvxbn7ji0b5-vm-test-run-resource-true-false.drvva|| failure 7005
                                                                                                                         INIT_SCRIPT="$( value-init-script "$@" )" || failure 18622
                                                                                                                         RELEASE="$( condition-release "$@" )" || failure 17709
                                                                                                                         SEED="$( value-seed "$@" )" || failure 26515
@@ -781,7 +779,6 @@
                                                                                                                                         "targets" : [ $TARGET ] ,
                                                                                                                                         "transient" : false
                                                                                                                                     }' | compare message valid-init 10 23788 3<&3
-                                                                                                                                ${ pkgs.findutils }/bin/find "$DISTRACTOR"
                                                                                                                                 echo | files \
                                                                                                                                     --ceiling "$ALPHA" 10 13 \
                                                                                                                                     --equals "/home/${ config.personal.name }/resources/mounts/$DISTRACTOR_INDEX" "$DISTRACTOR" \
@@ -808,7 +805,6 @@
                                                                                                                                         "targets" : [ $TARGET ] ,
                                                                                                                                         "transient" : false
                                                                                                                                     }' | compare message valid-init 10 23788 3<&3
-                                                                                                                                ${ pkgs.findutils }/bin/find "$DISTRACTOR"
                                                                                                                                 echo | files \
                                                                                                                                     --ceiling "$ALPHA" 10 13 \
                                                                                                                                     --equals "/home/${ config.personal.name }/resources/mounts/$DISTRACTOR_INDEX" "$DISTRACTOR" \
@@ -899,14 +895,14 @@
                                                                                                                             then
                                                                                                                                 jq --null-input --compact-output '[ "checks" , "targets" , "true" , "true" ]'
                                                                                                                             else
-                                                                                                                                echo
+                                                                                                                                jq --null-input --compact-output '[ "checks" , "targets" , "true" , "false" ]'
                                                                                                                             fi
                                                                                                                         else
                                                                                                                             if [[ "$RELEASE_CONDITION" == "true" ]]
                                                                                                                             then
-                                                                                                                                echo
+                                                                                                                                jq --null-input --compact-output '[ "checks" , "targets" , "false" , "true" ]'
                                                                                                                             else
-                                                                                                                                echo
+                                                                                                                                jq --null-input --compact-output '[ "checks" , "targets" , "false" , "false" ]'
                                                                                                                             fi
                                                                                                                         fi
                                                                                                                     '' ;
@@ -953,14 +949,14 @@
                                                                                                                             then
                                                                                                                                 echo 2862437261978116
                                                                                                                             else
-                                                                                                                                echo
+                                                                                                                                echo 3297495737778474
                                                                                                                             fi
                                                                                                                         else
                                                                                                                             if [[ "$RELEASE_CONDITION" == "true" ]]
                                                                                                                             then
-                                                                                                                                echo
+                                                                                                                                echo 5494881573568661
                                                                                                                             else
-                                                                                                                                echo
+                                                                                                                                echo 9427941488926681
                                                                                                                             fi
                                                                                                                         fi
                                                                                                                     '' ;
