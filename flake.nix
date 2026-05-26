@@ -961,7 +961,8 @@
                                                                                                             } ;
                                                                                                     in
                                                                                                         ''
-                                                                                                            wrap ${ test }/bin/test test 0500 --literal plain "@" --literal plain PATH --uuid 7483697565341694
+                                                                                                            export MOUNT="/home/${ config.personal.name }/resources/mounts/$INDEX"
+                                                                                                            wrap ${ test }/bin/test test 0500 --literal plain "@" --literal plain BETA_SEQUENCE --literal plain BETA_STATUS --inherit plain MOUNT --literal plain PATH --uuid 7483697565341694
                                                                                                         '' ;
                                                                                         } ;
                                                                                 in "${ application }/bin/init" ;
