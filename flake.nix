@@ -978,7 +978,7 @@
                                                                                                                             then
                                                                                                                                 echo -en 5175697994459272
                                                                                                                             else
-                                                                                                                                echo -en 6116634951182671
+                                                                                                                                echo -en 4725766637963872
                                                                                                                             fi
                                                                                                                         else
                                                                                                                             if [[ "$RELEASE_CONDITION" == "true" ]]
