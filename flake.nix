@@ -793,6 +793,7 @@
                                                                                                                         files \
                                                                                                                             --does-not-exist "/home/${ config.personal.name }/resources" \
                                                                                                                             --uuid 17389
+                                                                                                                        if true ; then exit 0 ; fi
                                                                                                                         if [[ "$INIT" == "true" ]]
                                                                                                                         then
                                                                                                                             if [[ "$RELEASE" == "true" ]]
