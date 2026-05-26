@@ -781,6 +781,7 @@
                                                                                                                                         "targets" : [ $TARGET ] ,
                                                                                                                                         "transient" : false
                                                                                                                                     }' | compare message valid-init 10 23788 3<&3
+                                                                                                                                ${ pkgs.findutils }/bin/find "$DISTRACTOR"
                                                                                                                                 echo | files \
                                                                                                                                     --ceiling "$ALPHA" 10 13 \
                                                                                                                                     --equals "/home/${ config.personal.name }/resources/mounts/$DISTRACTOR_INDEX" "$DISTRACTOR" \
