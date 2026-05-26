@@ -499,6 +499,7 @@
                                                                                                                     ''
                                                                                                                         while [[ "$#" -gt 0 ]]
                                                                                                                         do
+                                                                                                                            echo 16963 "$*"
                                                                                                                             case "$1" in
                                                                                                                                 --ceiling)
                                                                                                                                     if [[ "$#" -lt 4 ]]
@@ -528,17 +529,17 @@
                                                                                                                                     echo 29151 "$*"
                                                                                                                                     if [[ "$#" -lt 2 ]]
                                                                                                                                     then
-                                                                                                                                        echo 9455 "$*" >&2
+                                                                                                                                        echo 9455 "$*"
                                                                                                                                         failure 2634964638877756 "$*"
                                                                                                                                     fi
                                                                                                                                     if [[ -e "$2" ]]
                                                                                                                                     then
-                                                                                                                                        echo 22886 "$*" >&2
+                                                                                                                                        echo 22886 "$*"
                                                                                                                                         failure 3686358689564748 "$*"
                                                                                                                                     fi
-                                                                                                                                    echo 27807 "$*" >&2
+                                                                                                                                    echo 27807 "$*"
                                                                                                                                     shift 2
-                                                                                                                                    echo 14638 "$*" >&2
+                                                                                                                                    echo 14638 "$*"
                                                                                                                                     ;;
                                                                                                                                 --equals)
                                                                                                                                     if [[ "$#" -lt 3 ]]
@@ -796,9 +797,9 @@
                                                                                                                         TARGET="$( value-target "$@" )" || failure 20759
                                                                                                                         echo files \
                                                                                                                             --does-not-exist "/home/${ config.personal.name }" \
-                                                                                                                            --uuid 17389 >&2
+                                                                                                                            --uuid 17389
                                                                                                                         files \
-                                                                                                                            --does-not-exist "/home/${ config.personal.name }" \
+                                                                                                                            --does-not-exist "/home/${ config.personal.name }/resources" \
                                                                                                                             --uuid 17389
                                                                                                                         if true ; then exit 0 ; fi
                                                                                                                         if [[ "$INIT" == "true" ]]
