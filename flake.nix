@@ -916,7 +916,7 @@
                                                                                                                         then
                                                                                                                             if [[ "$RELEASE_CONDITION" == "true" ]]
                                                                                                                             then
-                                                                                                                                jq --null-input --compact-output '[ "checks" , "targets" , true , true ]'
+                                                                                                                                jq --null-input --compact-output '[ "checks" , "targets" , "true" , "true" ]'
                                                                                                                             else
                                                                                                                                 echo
                                                                                                                             fi
