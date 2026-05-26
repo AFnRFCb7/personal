@@ -792,8 +792,8 @@
                                                                                                                         SEED="$( value-seed "$@" )" || failure 26515
                                                                                                                         STANDARD_OUTPUT="$( value-standard-output "$@" )" || failure 10277
                                                                                                                         TARGET="$( value-target "$@" )" || failure 20759
-                                                                                                                        ${ pkgs.findutils }/bin/find /home/${ config.personal.name }
                                                                                                                         files \
+                                                                                                                            --ceiling "$ALPHA" 0 0 \
                                                                                                                             --uuid 17389
                                                                                                                         if [[ "$INIT" == "true" ]]
                                                                                                                         then
@@ -808,7 +808,6 @@
                                                                                                                                     --arg STANDARD_OUTPUT "$STANDARD_OUTPUT" \
                                                                                                                                     --arg TARGET "$TARGET" \
                                                                                                                                     '{
-                                                                                                                                        "WTF" : true ,
                                                                                                                                         "arguments" : [ ] ,
                                                                                                                                         "index" : $INDEX ,
                                                                                                                                         "script" : $SCRIPT ,
@@ -2886,7 +2885,7 @@
                                                                                 text =
                                                                                     ''
                                                                                         SCRIPT="$( resource --resource '["checks","script"]' )"
-                                                                                        timeout 1m "$SCRIPT/test" 6 false false
+                                                                                        timeout 1m "$SCRIPT/test" 2 false false
                                                                                     '' ;
                                                                             } ;
                                                                     in "${ application }/bin/test" ;
@@ -2914,7 +2913,7 @@
                                                                                 text =
                                                                                     ''
                                                                                         SCRIPT="$( resource --resource '["checks","script"]' )"
-                                                                                        timeout 1m "$SCRIPT/test" 6 true true
+                                                                                        timeout 1m "$SCRIPT/test" 2 true true
                                                                                     '' ;
                                                                             } ;
                                                                     in "${ application }/bin/test" ;
@@ -2942,7 +2941,7 @@
                                                                                 text =
                                                                                     ''
                                                                                         SCRIPT="$( resource --resource '["checks","script"]' )"
-                                                                                        timeout 1m "$SCRIPT/test" 6 true false
+                                                                                        timeout 1m "$SCRIPT/test" 2 true false
                                                                                     '' ;
                                                                             } ;
                                                                     in "${ application }/bin/test" ;
@@ -2970,7 +2969,7 @@
                                                                                 text =
                                                                                     ''
                                                                                         SCRIPT="$( resource --resource '["checks","script"]' )"
-                                                                                        timeout 1m "$SCRIPT/test" 6 true true
+                                                                                        timeout 1m "$SCRIPT/test" 2 true true
                                                                                     '' ;
                                                                             } ;
                                                                     in "${ application }/bin/test" ;
