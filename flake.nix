@@ -791,7 +791,7 @@
                                                                                                                         STANDARD_OUTPUT="$( value-standard-output "$@" )" || failure 10277
                                                                                                                         TARGET="$( value-target "$@" )" || failure 20759
                                                                                                                         files \
-                                                                                                                            --does-not-exist "/home/${ config.personal.name }/resources" \
+                                                                                                                            --does-not-exist "/home/${ config.personal.name }" \
                                                                                                                             --uuid 17389
                                                                                                                         if true ; then exit 0 ; fi
                                                                                                                         if [[ "$INIT" == "true" ]]
