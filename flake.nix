@@ -790,14 +790,16 @@
                                                                                                                         SEED="$( value-seed "$@" )" || failure 26515
                                                                                                                         STANDARD_OUTPUT="$( value-standard-output "$@" )" || failure 10277
                                                                                                                         TARGET="$( value-target "$@" )" || failure 20759
+                                                                                                                        ${ pkgs.findutils }/bin/find /home/${ config.personal.name }"
                                                                                                                         files \
-                                                                                                                            --directory "/home/${ config.personal.name }/resources/canonical" \
-                                                                                                                            --directory "/home/${ config.personal.name }/resources/locks" \
-                                                                                                                            --directory "/home/${ config.personal.name }/resources/logs" \
-                                                                                                                            --directory "/home/${ config.personal.name }/resources/mounts" \
-                                                                                                                            --directory "/home/${ config.personal.name }/resources/release" \
-                                                                                                                            --does-not-exist "/home/${ config.personal.name }/resources/canonical/invalid-init" \
-                                                                                                                            --does-not-exist "/home/${ config.personal.name }/resources/canonical/invalid-release" \
+                                                                                                                            --directory /home/${ config.personal.name }/resources/canonical \
+                                                                                                                            --directory /home/${ config.personal.name }/resources/locks \
+                                                                                                                            --directory /home/${ config.personal.name }/resources/logs \
+                                                                                                                            --directory /home/${ config.personal.name }/resources/mounts \
+                                                                                                                            --directory /home/${ config.personal.name }/resources/release \
+                                                                                                                            --does-not-exist /home/${ config.personal.name }/resources/canonical/invalid-init \
+                                                                                                                            --does-not-exist /home/${ config.personal.name }/resources/canonical/invalid-release \
+                                                                                                                            --does-not-exist /home/${ config.personal.name }/resources
                                                                                                                             --uuid 17389
                                                                                                                         if [[ "$INIT" == "true" ]]
                                                                                                                         then
