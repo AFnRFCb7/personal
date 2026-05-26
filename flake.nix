@@ -466,7 +466,7 @@
                                                                                                                 text =
                                                                                                                     ''
                                                                                                                         while [[ "$#" -gt 0 ]]
-                                                                                                                        doq
+                                                                                                                        do
                                                                                                                             case "$1" in
                                                                                                                                 --ceiling)
                                                                                                                                     if [[ "$#" -lt 4 ]]
