@@ -759,7 +759,7 @@
                                                                                                                         STANDARD_OUTPUT="$( value-standard-output "$@" )" || failure 10277
                                                                                                                         TARGET="$( value-target "$@" )" || failure 20759
                                                                                                                         echo | files \
-                                                                                                                            --ceiling "$ALPHA" 0 0 \
+                                                                                                                            --ceiling "$ALPHA" 0 6 \
                                                                                                                             --uuid 17389
                                                                                                                         if [[ "$INIT" == "true" ]]
                                                                                                                         then
