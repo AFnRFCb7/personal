@@ -803,7 +803,6 @@
                                                                                                                                     --arg STANDARD_OUTPUT "$STANDARD_OUTPUT" \
                                                                                                                                     '{
                                                                                                                                         "arguments" : [ ] ,
-                                                                                                                                        "has-standard-input" : false ,
                                                                                                                                         "index" : $INDEX ,
                                                                                                                                         "script" : $SCRIPT ,
                                                                                                                                         "seed" : $SEED ,
