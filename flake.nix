@@ -920,16 +920,16 @@
                                                                                                                         then
                                                                                                                             if [[ "$RELEASE_CONDITION" == "true" ]]
                                                                                                                             then
-                                                                                                                                echo 5175697994459272
+                                                                                                                                echo -en 5175697994459272
                                                                                                                             else
-                                                                                                                                echo 5175697994459272
+                                                                                                                                echo -en 6116634951182671
                                                                                                                             fi
                                                                                                                         else
                                                                                                                             if [[ "$RELEASE_CONDITION" == "true" ]]
                                                                                                                             then
-                                                                                                                                echo 5175697994459272
+                                                                                                                                echo -en 4725766637963872
                                                                                                                             else
-                                                                                                                                echo 5175697994459272
+                                                                                                                                echo -en 4657737859987722
                                                                                                                             fi
                                                                                                                         fi
                                                                                                                     '' ;
