@@ -713,6 +713,7 @@
                                                                                                                         condition-release
                                                                                                                         value-standard-output
                                                                                                                         value-init-script
+                                                                                                                        value-release-script
                                                                                                                         value-seed
                                                                                                                         value-status
                                                                                                                         value-target
@@ -728,6 +729,7 @@
                                                                                                                         INIT="$( condition-init "$@" )" || failure 7005
                                                                                                                         INIT_SCRIPT="$( value-init-script "$@" )" || failure 18622
                                                                                                                         RELEASE="$( condition-release "$@" )" || failure 17709
+                                                                                                                        RELEASE_SCRIPT="$( value-release-script "$@" )" || failure 30447
                                                                                                                         SEED="$( value-seed "$@" )" || failure 26515
                                                                                                                         STANDARD_OUTPUT="$( value-standard-output "$@" )" || failure 10277
                                                                                                                         STATUS="$( value-status "$@" )" || failure 12017
@@ -818,6 +820,23 @@
                                                                                                                                         "targets" : { "expected" : $TARGET , "observed" : $TARGET } ,
                                                                                                                                         "transient" : false
                                                                                                                                     }' | compare message invalid-init 10 26077 3<&3
+                                                                                                                                jq \
+                                                                                                                                    --null-input \
+                                                                                                                                    --arg INDEX "$DISTRACTOR_INDEX" \
+                                                                                                                                    --rawfile SCRIPT "$RELEASE_SCRIPT" \
+                                                                                                                                    --argjson SEED "$SEED" \
+                                                                                                                                    --arg STANDARD_OUTPUT "$STANDARD_OUTPUT" \
+                                                                                                                                    --argjson STATUS "$STATUS" \
+                                                                                                                                    --arg TARGET "$TARGET" \
+                                                                                                                                    '{
+                                                                                                                                        "index" : $INDEX ,
+                                                                                                                                        "script" : $SCRIPT ,
+                                                                                                                                        "seed" : $SEED ,
+                                                                                                                                        "standard-output" : $STANDARD_OUTPUT ,
+                                                                                                                                        "status" : $STATUS ,
+                                                                                                                                        "targets" : { "expected" : $TARGET , "observed" : $TARGET } ,
+                                                                                                                                        "transient" : false
+                                                                                                                                    }' | compare message valid-release 10 23493 3<&3
                                                                                                                                 echo | files \
                                                                                                                                     --ceiling "$ALPHA" 10 13 \
                                                                                                                                     --equals "/home/${ config.personal.name }/resources/mounts/$DISTRACTOR_INDEX" "$DISTRACTOR" \
@@ -926,6 +945,33 @@
                                                                                                                                 echo ${ scripts.false.true.init }
                                                                                                                             else
                                                                                                                                 echo ${ scripts.false.false.init }
+                                                                                                                            fi
+                                                                                                                        fi
+                                                                                                                    '' ;
+                                                                                                            } ;
+                                                                                                    value-release-script =
+                                                                                                        pkgs.writeShellApplication
+                                                                                                            {
+                                                                                                                name = "value-release-script" ;
+                                                                                                                runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                                text =
+                                                                                                                    ''
+                                                                                                                        INIT="$2"
+                                                                                                                        RELEASE="$3"
+                                                                                                                        if [[ "$INIT" == "true" ]]
+                                                                                                                        then
+                                                                                                                            if [[ "$RELEASE" == "true" ]]
+                                                                                                                            then
+                                                                                                                                echo ${ scripts.true.true.release }
+                                                                                                                            else
+                                                                                                                                echo ${ scripts.true.false.release }
+                                                                                                                            fi
+                                                                                                                        else
+                                                                                                                            if [[ "$RELEASE" == "true" ]]
+                                                                                                                            then
+                                                                                                                                echo ${ scripts.false.true.release }
+                                                                                                                            else
+                                                                                                                                echo ${ scripts.false.false.release }
                                                                                                                             fi
                                                                                                                         fi
                                                                                                                     '' ;
