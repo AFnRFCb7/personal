@@ -794,7 +794,6 @@
                                                                                                                         STANDARD_OUTPUT="$( value-standard-output "$@" )" || failure 10277
                                                                                                                         TARGET="$( value-target "$@" )" || failure 20759
                                                                                                                         files \
-                                                                                                                            --executable "/home/${ config.personal.name }/mounts/$ALPHA_INDEX/test" \
                                                                                                                             --uuid 17389
                                                                                                                         if [[ "$INIT" == "true" ]]
                                                                                                                         then
