@@ -306,36 +306,11 @@
                                                                                                         pkgs.writeShellApplication
                                                                                                             {
                                                                                                                 name = "block" ;
-                                                                                                                runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                                runtimeInputs = [ pkgs.coreutils failure ] ;
                                                                                                                 text =
                                                                                                                     ''
-                                                                                                                        while [[ "$#" -gt 0 ]]
-                                                                                                                        do
-                                                                                                                            case "$1" in
-                                                                                                                                --timeout)
-                                                                                                                                    TIMEOUT="$2"
-                                                                                                                                    if [[ ! "$TIMEOUT" =~ ^-?[0-9]+$ ]]
-                                                                                                                                    then
-                                                                                                                                        failure ff4b2472e9efae44 "$TIMEOUT"
-                                                                                                                                    fi
-                                                                                                                                    shift 2
-                                                                                                                                    ;;
-                                                                                                                                --uuid)
-                                                                                                                                    shift 2
-                                                                                                                                    ;;
-                                                                                                                                *)
-                                                                                                                                    failure 6734766152668717 "$*"
-                                                                                                                                    ;;
-                                                                                                                            esac
-                                                                                                                        done
-                                                                                                                        if [[ -z "$TIMEOUT" ]]
-                                                                                                                        then
-                                                                                                                            failure 7269648125756695
-                                                                                                                        fi
-                                                                                                                        if [[ -z "$UUID" ]]
-                                                                                                                        then
-                                                                                                                            failure 1535338844795893
-                                                                                                                        fi
+                                                                                                                        TIMEOUT="$1"
+                                                                                                                        UUID="$2"
                                                                                                                         if timeout "$TIMEOUT" read -r -u 3
                                                                                                                         then
                                                                                                                             failure 7951884354751442 "We are not expecting a message but we got one anyway"
@@ -884,7 +859,7 @@
                                                                                                                                     --uuid 28422
                                                                                                                             fi
                                                                                                                         fi
-                                                                                                                        echo "$DISTRACTOR"
+                                                                                                                        block 1 19895
                                                                                                                     '' ;
                                                                                                             } ;
                                                                                                     stage-beta =
@@ -2974,7 +2949,7 @@
                                                             resources-directory = "/build/resources" ;
                                                         } ;
                                                 in
-                                                    factory.check { expected = "/nix/store/ayrqjrkz54hkjl2d79i4dqdmrb8q76a4-setup/bin/setup" ; mkDerivation = pkgs.stdenv.mkDerivation ; } ;
+                                                    factory.check { expected = "/nix/store/5q4v7j7nx2vb8srcx5pix84ipdas0sr5-setup/bin/setup" ; mkDerivation = pkgs.stdenv.mkDerivation ; } ;
                                         resource--false-false =
                                             pkgs.nixosTest
                                                 {
