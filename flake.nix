@@ -839,7 +839,7 @@
                                                                                                                                         "standard-error" : "" ,
                                                                                                                                         "standard-output" : $STANDARD_OUTPUT ,
                                                                                                                                         "status" : $STATUS ,
-                                                                                                                                        "targets" : [ $TARGET ] ,
+                                                                                                                                        "targets" : { "expected" : $TARGET , "observed" : $TARGET } ,
                                                                                                                                         "transient" : false
                                                                                                                                     }' | compare message invalid-init 10 26077 3<&3
                                                                                                                                 echo | files \
@@ -871,7 +871,7 @@
                                                                                                                                         "standard-error" : "" ,
                                                                                                                                         "standard-output" : $STANDARD_OUTPUT ,
                                                                                                                                         "status" : $STATUS ,
-                                                                                                                                        "targets" : [ $TARGET ] ,
+                                                                                                                                        "targets" : { "expected" : $TARGET , "observed" : $TARGET } ,
                                                                                                                                         "transient" : false
                                                                                                                                     }' | compare message invalid-init 10 15099 3<&3
                                                                                                                                 echo | files \
@@ -1012,7 +1012,7 @@
                                                                                                                             then
                                                                                                                                 echo -en 118
                                                                                                                             else
-                                                                                                                                echo -en 0
+                                                                                                                                echo -en 117
                                                                                                                             fi
                                                                                                                         fi
                                                                                                                     '' ;
