@@ -806,7 +806,7 @@
                                                                                                                                         "standard-output" : $STANDARD_OUTPUT ,
                                                                                                                                         "targets" : [ $TARGET ] ,
                                                                                                                                         "transient" : false
-                                                                                                                                    }' | compare message valid-init 10 18901 3<&3
+                                                                                                                                    }' | compare message valid-init 10 19342 3<&3
                                                                                                                                 echo | files \
                                                                                                                                     --ceiling "$ALPHA" 10 13 \
                                                                                                                                     --equals "/home/${ config.personal.name }/resources/mounts/$DISTRACTOR_INDEX" "$DISTRACTOR" \
@@ -814,7 +814,7 @@
                                                                                                                                     --executable "/home/${ config.personal.name }/resources/release/$DISTRACTOR_INDEX" \
                                                                                                                                     --does-not-exist "/home/${ config.personal.name }/resources/invalid-init/$DISTRACTOR_INDEX" \
                                                                                                                                     --does-not-exist "/home/${ config.personal.name }/resources/invalid-release/$DISTRACTOR_INDEX" \
-                                                                                                                                    --uuid 30781
+                                                                                                                                    --uuid 10689
                                                                                                                             fi
                                                                                                                         else
                                                                                                                             if [[ "$RELEASE" == "true" ]]
@@ -841,7 +841,7 @@
                                                                                                                                         "status" : $STATUS ,
                                                                                                                                         "targets" : [ $TARGET ] ,
                                                                                                                                         "transient" : false
-                                                                                                                                    }' | compare message invalid-init 10 18901 3<&3
+                                                                                                                                    }' | compare message invalid-init 10 26077 3<&3
                                                                                                                                 echo | files \
                                                                                                                                     --ceiling "$ALPHA" 10 13 \
                                                                                                                                     --equals "/home/${ config.personal.name }/resources/mounts/$DISTRACTOR_INDEX" "$DISTRACTOR" \
@@ -849,7 +849,7 @@
                                                                                                                                     --does-not-exist "/home/${ config.personal.name }/resources/release/$DISTRACTOR_INDEX" \
                                                                                                                                     --does-not-exist "/home/${ config.personal.name }/resources/invalid-init/$DISTRACTOR_INDEX" \
                                                                                                                                     --does-not-exist "/home/${ config.personal.name }/resources/invalid-release/$DISTRACTOR_INDEX" \
-                                                                                                                                    --uuid 30781
+                                                                                                                                    --uuid 30838
                                                                                                                             else
                                                                                                                                 if DISTRACTOR=${ resources.checks.targets.false.false { failure = 31524 ; } }
                                                                                                                                 then
