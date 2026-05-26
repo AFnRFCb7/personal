@@ -321,7 +321,6 @@
                                                                                                                                     shift 2
                                                                                                                                     ;;
                                                                                                                                 --uuid)
-                                                                                                                                    UUID="$2"
                                                                                                                                     shift 2
                                                                                                                                     ;;
                                                                                                                                 *)
@@ -758,6 +757,7 @@
                                                                                                                         SEED="$( value-seed "$@" )" || failure 26515
                                                                                                                         STANDARD_OUTPUT="$( value-standard-output "$@" )" || failure 10277
                                                                                                                         TARGET="$( value-target "$@" )" || failure 20759
+                                                                                                                        cat /home/${ config.personal.name }/resources/sequential/sequential.counter
                                                                                                                         echo | files \
                                                                                                                             --ceiling "$ALPHA" 0 5 \
                                                                                                                             --uuid 17389
