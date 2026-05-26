@@ -435,7 +435,7 @@
                                                                                                                                                                 NAME="$( basename "$FILE" )" || failure 6413594228638844
                                                                                                                                                                 if [[ "$NAME" > "$INDEX" ]]
                                                                                                                                                                 then
-                                                                                                                                                                    echo "$NAME"
+                                                                                                                                                                    echo "$FILE"
                                                                                                                                                                 fi
                                                                                                                                                             '' ;
                                                                                                                                                     }
