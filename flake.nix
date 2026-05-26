@@ -817,7 +817,7 @@
                                                                                                                                         "standard-error" : "" ,
                                                                                                                                         "standard-output" : $STANDARD_OUTPUT ,
                                                                                                                                         "status" : $STATUS ,
-                                                                                                                                        "targets" : { "expected" : $TARGET , "observed" : $TARGET } ,
+                                                                                                                                        "targets" : { "expected" : [ $TARGET ] , "observed" : [ $TARGET ] } ,
                                                                                                                                         "transient" : false
                                                                                                                                     }' | compare message invalid-init 10 26077 3<&3
                                                                                                                                 jq \
@@ -834,7 +834,7 @@
                                                                                                                                         "seed" : $SEED ,
                                                                                                                                         "standard-output" : $STANDARD_OUTPUT ,
                                                                                                                                         "status" : $STATUS ,
-                                                                                                                                        "targets" : { "expected" : $TARGET , "observed" : $TARGET } ,
+                                                                                                                                        "targets" : { "expected" : [ $TARGET ] , "observed" : [ $TARGET ] } ,
                                                                                                                                         "transient" : false
                                                                                                                                     }' | compare message valid-release 10 23493 3<&3
                                                                                                                                 echo | files \
@@ -866,7 +866,7 @@
                                                                                                                                         "standard-error" : "" ,
                                                                                                                                         "standard-output" : $STANDARD_OUTPUT ,
                                                                                                                                         "status" : $STATUS ,
-                                                                                                                                        "targets" : { "expected" : $TARGET , "observed" : $TARGET } ,
+                                                                                                                                        "targets" : { "expected" : [ $TARGET ] , "observed" : [ $TARGET ] } ,
                                                                                                                                         "transient" : false
                                                                                                                                     }' | compare message invalid-init 10 15099 3<&3
                                                                                                                                 echo | files \
