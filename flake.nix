@@ -742,7 +742,6 @@
                                                                                                                     ] ;
                                                                                                                 text =
                                                                                                                     ''
-                                                                                                                        if true ; then exit 0 ; fi
                                                                                                                         echo 1 | compare subscribe invalid-init 10 27606 3<&3
                                                                                                                         echo 2 | compare subscribe invalid-release 10 26959 3<&3
                                                                                                                         echo 3 | compare subscribe valid-init 10 4666 3<&3
@@ -752,13 +751,19 @@
                                                                                                                         INIT="$( condition-init "$@" )" nix log /nix/store/5kjcgiiq5vcv419863ms9pvxbn7ji0b5-vm-test-run-resource-true-false.drvva|| failure 7005
                                                                                                                         INIT_SCRIPT="$( value-init-script "$@" )" || failure 18622
                                                                                                                         RELEASE="$( condition-release "$@" )" || failure 17709
+                                                                                                                        if true ; then exit 0 ; fi
                                                                                                                         SEED="$( value-seed "$@" )" || failure 26515
+                                                                                                                        if true ; then exit 0 ; fi
                                                                                                                         STANDARD_OUTPUT="$( value-standard-output "$@" )" || failure 10277
+                                                                                                                        if true ; then exit 0 ; fi
                                                                                                                         TARGET="$( value-target "$@" )" || failure 20759
+                                                                                                                        if true ; then exit 0 ; fi
                                                                                                                         cat /home/${ config.personal.name }/resources/sequential/sequential.counter
+                                                                                                                        if true ; then exit 0 ; fi
                                                                                                                         echo | files \
                                                                                                                             --ceiling "$ALPHA" 0 5 \
                                                                                                                             --uuid 17389
+                                                                                                                        if true ; then exit 0 ; fi
                                                                                                                         if [[ "$INIT" == "true" ]]
                                                                                                                         then
                                                                                                                             if [[ "$RELEASE" == "true" ]]
