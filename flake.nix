@@ -903,7 +903,7 @@
                                                                                                         pkgs.writeShellApplication
                                                                                                             {
                                                                                                                 name = "value-seed" ;
-                                                                                                                runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                                                runtimeInputs = [ pkgs.jq ] ;
                                                                                                                 text =
                                                                                                                     ''
                                                                                                                         INIT_CONDITION="$2"
@@ -912,7 +912,7 @@
                                                                                                                         then
                                                                                                                             if [[ "$RELEASE_CONDITION" == "true" ]]
                                                                                                                             then
-                                                                                                                                echo '[ "checks" , "targets" , true , true ]'
+                                                                                                                                jq --null-input --compact-output '[ "checks" , "targets" , true , true ]'
                                                                                                                             else
                                                                                                                                 echo
                                                                                                                             fi
