@@ -789,7 +789,6 @@
                                                                                                                         SEED="$( value-seed "$@" )" || failure 26515
                                                                                                                         STANDARD_OUTPUT="$( value-standard-output "$@" )" || failure 10277
                                                                                                                         TARGET="$( value-target "$@" )" || failure 20759
-                                                                                                                        if true ; then exit 0 ; fi
                                                                                                                         files \
                                                                                                                             --does-not-exist "/home/${ config.personal.name }/resources" \
                                                                                                                             --uuid 17389
