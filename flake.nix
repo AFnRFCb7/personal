@@ -769,7 +769,7 @@
                                                                                                                         failure condition-init
                                                                                                                         pkgs.jq
                                                                                                                         condition-release
-                                                                                                                        standard-output-value
+                                                                                                                        value-standard-output
                                                                                                                         value-init-script
                                                                                                                         value-seed
                                                                                                                         value-target
@@ -788,7 +788,7 @@
                                                                                                                         INIT_SCRIPT="$( value-init-script "$@" )" || failure 18622
                                                                                                                         RELEASE="$( condition-release "$@" )" || failure 17709
                                                                                                                         SEED="$( value-seed "$@" )" || failure 26515
-                                                                                                                        # STANDARD_OUTPUT="$( standard-output-value "$@" )" || failure 10277
+                                                                                                                        STANDARD_OUTPUT="$( value-standard-output "$@" )" || failure 10277
                                                                                                                         # TARGET="$( value-target "@" )" || failure 20759
                                                                                                                         if [[ "$INIT" == "true" ]]
                                                                                                                         then
@@ -800,12 +800,14 @@
                                                                                                                                     --arg INDEX "$DISTRACTOR_INDEX" \
                                                                                                                                     --rawfile SCRIPT "$INIT_SCRIPT" \
                                                                                                                                     --argjson SEED "$SEED" \
+                                                                                                                                    --arg STANDARD_OUTPUT "$STANDARD_OUTPUT" \
                                                                                                                                     '{
                                                                                                                                         "arguments" : [ ] ,
                                                                                                                                         "has-standard-input" : false ,
                                                                                                                                         "index" : $INDEX ,
                                                                                                                                         "script" : $SCRIPT ,
-                                                                                                                                        "seed" : $SEED
+                                                                                                                                        "seed" : $SEED ,
+                                                                                                                                        "standard-output" : $STANDARD_OUTPUT
                                                                                                                                     }' | compare message valid-init 10 23788 3<&3
                                                                                                                             else
                                                                                                                                 DISTRACTOR=${ resources.checks.targets.true.false { failure = 19892 ; } }
@@ -843,33 +845,6 @@
                                                                                                                 runtimeInputs = [ ] ;
                                                                                                                 text =
                                                                                                                     ''
-                                                                                                                    '' ;
-                                                                                                            } ;
-                                                                                                    standard-output-value =
-                                                                                                        pkgs.writeShellApplication
-                                                                                                            {
-                                                                                                                name = "standard-output-value" ;
-                                                                                                                runtimeInputs = [ failure condition-init condition-release ] ;
-                                                                                                                text =
-                                                                                                                    ''
-                                                                                                                        INIT_CONDITION="$( condition-init "$@" )" || failure 15442
-                                                                                                                        RELEASE_CONDITION="$( condition-release "$@" )" || failure 24351
-                                                                                                                        if [[ "$INIT_CONDITION" == "true" ]]
-                                                                                                                        then
-                                                                                                                            if [[ "$RELEASE_CONDITION" == "true" ]]
-                                                                                                                            then
-                                                                                                                                echo
-                                                                                                                            else
-                                                                                                                                echo
-                                                                                                                            fi
-                                                                                                                        else
-                                                                                                                            if [[ "$RELEASE_CONDITION" == "true" ]]
-                                                                                                                            then
-                                                                                                                                echo
-                                                                                                                            else
-                                                                                                                                echo
-                                                                                                                            fi
-                                                                                                                        fi
                                                                                                                     '' ;
                                                                                                             } ;
                                                                                                     value-init-script =
@@ -913,6 +888,33 @@
                                                                                                                             if [[ "$RELEASE_CONDITION" == "true" ]]
                                                                                                                             then
                                                                                                                                 jq --null-input --compact-output '[ "checks" , "targets" , "true" , "true" ]'
+                                                                                                                            else
+                                                                                                                                echo
+                                                                                                                            fi
+                                                                                                                        else
+                                                                                                                            if [[ "$RELEASE_CONDITION" == "true" ]]
+                                                                                                                            then
+                                                                                                                                echo
+                                                                                                                            else
+                                                                                                                                echo
+                                                                                                                            fi
+                                                                                                                        fi
+                                                                                                                    '' ;
+                                                                                                            } ;
+                                                                                                    value-standard-output =
+                                                                                                        pkgs.writeShellApplication
+                                                                                                            {
+                                                                                                                name = "value-standard-output" ;
+                                                                                                                runtimeInputs = [ failure condition-init condition-release ] ;
+                                                                                                                text =
+                                                                                                                    ''
+                                                                                                                        INIT_CONDITION="$( condition-init "$@" )" || failure 15442
+                                                                                                                        RELEASE_CONDITION="$( condition-release "$@" )" || failure 24351
+                                                                                                                        if [[ "$INIT_CONDITION" == "true" ]]
+                                                                                                                        then
+                                                                                                                            if [[ "$RELEASE_CONDITION" == "true" ]]
+                                                                                                                            then
+                                                                                                                                echo 5175697994459272
                                                                                                                             else
                                                                                                                                 echo
                                                                                                                             fi
