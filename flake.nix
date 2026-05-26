@@ -782,7 +782,7 @@
                                                                                                                                         "transient" : false
                                                                                                                                     }' | compare message valid-init 10 23788 3<&3
                                                                                                                                 echo | files \
-                                                                                                                                    --ceiling "$ALPHA" 1 6 \
+                                                                                                                                    --ceiling "$ALPHA" 1 14 \
                                                                                                                                     --equals "/home/${ config.personal.name }/resources/mounts/$DISTRACTOR_INDEX" "$DISTRACTOR" \
                                                                                                                                     --exists "$DISTRACTOR/$TARGET" \
                                                                                                                                     --executable "/home/${ config.personal.name }/resources/release/$DISTRACTOR_INDEX" \
@@ -939,18 +939,23 @@
                                                                                                         pkgs.writeShellApplication
                                                                                                             {
                                                                                                                 name = "test" ;
-                                                                                                                runtimeInputs = [ pkgs.redis stage-alpha stage-beta stage-gamma ] ;
+                                                                                                                runtimeInputs = [ failure pkgs.inotify-tools pkgs.redis sequential stage-alpha stage-beta stage-gamma wrap ] ;
                                                                                                                 text =
-                                                                                                                    ''
-                                                                                                                        exec 3< <( redis-cli SUBSCRIBE invalid-init invalid-release valid-init valid-release )
-                                                                                                                        stage-alpha "$@" <&3
-                                                                                                                        stage-beta "$@" <&3 &
-                                                                                                                        stage-gamma "$@"
-                                                                                                                    '' ;
+                                                                                                                    let
+                                                                                                                        null = pkgs.toFile "null" "" ;
+                                                                                                                        in
+                                                                                                                            ''
+                                                                                                                                exec 3< <( redis-cli SUBSCRIBE invalid-init invalid-release valid-init valid-release )
+                                                                                                                                stage-alpha "$@" <&3
+                                                                                                                                BETA_SEQUENCE="$( sequential )" || failure 28922
+                                                                                                                                wrap ${ null } "$BETA_SEQUENCE" 0600
+                                                                                                                                stage-beta "$@" <&3 &
+                                                                                                                                stage-gamma "$@"
+                                                                                                                            '' ;
                                                                                                             } ;
                                                                                                     in
                                                                                                         ''
-                                                                                                            wrap ${ test }/bin/test test 0500 --literal plain "@" --literal plain PATH --uuid 7483697565341694
+                                                                                                            wrap ${ test }/bin/test test 0500 --literal plain "@" --literal plain PATH --literal plain TEMPORARY "$MOUNT/temporary" --uuid 7483697565341694
                                                                                                         '' ;
                                                                                         } ;
                                                                                 in "${ application }/bin/init" ;
