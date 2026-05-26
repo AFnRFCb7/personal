@@ -226,14 +226,30 @@
                                                                                                     '' ;
                                                                                             } ;
                                                                                     in "${ application }/bin/resolve" ;
+                                                                        nulls =
+                                                                            let
+                                                                                null =
+                                                                                    let
+                                                                                        application =
+                                                                                            pkgs.writeShellApplication
+                                                                                                {
+                                                                                                    name = "null" ;
+                                                                                                    text = "" ;
+                                                                                                } ;
+                                                                                        in "${ application }/bin/null" ;
+                                                                                in
+                                                                                    {
+                                                                                        init = { failure , gc-root , pkgs , resources , seed , sequential , trace , wrap } : null ;
+                                                                                        release = { failure , pkgs , resources , seed , sequential , trace } : null ;
+                                                                                    } ;
                                                                     } ;
                                                                 in
                                                                     factory.implementation
                                                                         {
                                                                             depth = r.depth or 0 ;
-                                                                            init = r.init or null ;
+                                                                            init = r.init or nulls.init ;
                                                                             init-resolutions = r.init-resolutions or resolutions ;
-                                                                            release = r.release or null ;
+                                                                            release = r.release or nulls.release ;
                                                                             release-resolutions = r.release-resolutions or resolutions ;
                                                                             seed = r.path or path ;
                                                                             targets = r.targets or [ ] ;
