@@ -790,6 +790,9 @@
                                                                                                                         SEED="$( value-seed "$@" )" || failure 26515
                                                                                                                         STANDARD_OUTPUT="$( value-standard-output "$@" )" || failure 10277
                                                                                                                         TARGET="$( value-target "$@" )" || failure 20759
+                                                                                                                        echo files \
+                                                                                                                            --does-not-exist "/home/${ config.personal.name }" \
+                                                                                                                            --uuid 17389 >&2
                                                                                                                         files \
                                                                                                                             --does-not-exist "/home/${ config.personal.name }" \
                                                                                                                             --uuid 17389
