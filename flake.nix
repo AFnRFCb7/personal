@@ -789,7 +789,7 @@
                                                                                                                         RELEASE="$( condition-release "$@" )" || failure 17709
                                                                                                                         SEED="$( value-seed "$@" )" || failure 26515
                                                                                                                         STANDARD_OUTPUT="$( value-standard-output "$@" )" || failure 10277
-                                                                                                                        TARGET="$( value-target "@" )" || failure 20759
+                                                                                                                        TARGET="$( value-target "$@" )" || failure 20759
                                                                                                                         if [[ "$INIT" == "true" ]]
                                                                                                                         then
                                                                                                                             if [[ "$RELEASE" == "true" ]]
