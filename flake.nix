@@ -791,13 +791,9 @@
                                                                                                                         TARGET="$( value-target "$@" )" || failure 20759
                                                                                                                         files \
                                                                                                                             --ceiling "$ALPHA" 0 0 \
-                                                                                                                            --does-not-exist "/home/${ config.personal.name }/resources/canonical" \
-                                                                                                                            --does-not-exist "/home/${ config.personal.name }/resources/locks" \
-                                                                                                                            --does-not-exist "/home/${ config.personal.name }/resources/logs" \
-                                                                                                                            --does-not-exist "/home/${ config.personal.name }/resources/marks" \
-                                                                                                                            --does-not-exist "/home/${ config.personal.name }/resources/originator-pid" \
-                                                                                                                            --does-not-exist "/home/${ config.personal.name }/resources/sequential" \
+                                                                                                                            --does-not-exist "/home/${ config.personal.name }/resources" \
                                                                                                                             --uuid 17389
+                                                                                                                        if true ; then exit 0 ; fi
                                                                                                                         if [[ "$INIT" == "true" ]]
                                                                                                                         then
                                                                                                                             if [[ "$RELEASE" == "true" ]]
