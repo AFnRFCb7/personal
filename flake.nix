@@ -738,6 +738,7 @@
                                                                                                                         value-standard-output
                                                                                                                         value-init-script
                                                                                                                         value-seed
+                                                                                                                        value-status
                                                                                                                         value-target
                                                                                                                     ] ;
                                                                                                                 text =
@@ -753,6 +754,7 @@
                                                                                                                         RELEASE="$( condition-release "$@" )" || failure 17709
                                                                                                                         SEED="$( value-seed "$@" )" || failure 26515
                                                                                                                         STANDARD_OUTPUT="$( value-standard-output "$@" )" || failure 10277
+                                                                                                                        STATUS="$( value-status "$@" )" || failure 12017
                                                                                                                         TARGET="$( value-target "$@" )" || failure 20759
                                                                                                                         cat /home/${ config.personal.name }/resources/sequential/sequential.counter
                                                                                                                         echo | files \
@@ -821,6 +823,33 @@
                                                                                                                                 then
                                                                                                                                     failure 26720
                                                                                                                                 fi
+                                                                                                                                jq \
+                                                                                                                                    --null-input \
+                                                                                                                                    --arg INDEX "$DISTRACTOR_INDEX" \
+                                                                                                                                    --rawfile SCRIPT "$INIT_SCRIPT" \
+                                                                                                                                    --argjson SEED "$SEED" \
+                                                                                                                                    --arg STANDARD_OUTPUT "$STANDARD_OUTPUT" \
+                                                                                                                                    --argjson STATUS "$STATUS" \
+                                                                                                                                    --arg TARGET "$TARGET" \
+                                                                                                                                    '{
+                                                                                                                                        "arguments" : [ ] ,
+                                                                                                                                        "index" : $INDEX ,
+                                                                                                                                        "script" : $SCRIPT ,
+                                                                                                                                        "seed" : $SEED ,
+                                                                                                                                        "standard-error" : "" ,
+                                                                                                                                        "standard-output" : $STANDARD_OUTPUT ,
+                                                                                                                                        "status" : $STATUS ,
+                                                                                                                                        "targets" : [ $TARGET ] ,
+                                                                                                                                        "transient" : false
+                                                                                                                                    }' | compare message invalid-init 10 18901 3<&3
+                                                                                                                                echo | files \
+                                                                                                                                    --ceiling "$ALPHA" 10 13 \
+                                                                                                                                    --equals "/home/${ config.personal.name }/resources/mounts/$DISTRACTOR_INDEX" "$DISTRACTOR" \
+                                                                                                                                    --file "$DISTRACTOR/$TARGET" \
+                                                                                                                                    --does-not-exist "/home/${ config.personal.name }/resources/release/$DISTRACTOR_INDEX" \
+                                                                                                                                    --does-not-exist "/home/${ config.personal.name }/resources/invalid-init/$DISTRACTOR_INDEX" \
+                                                                                                                                    --does-not-exist "/home/${ config.personal.name }/resources/invalid-release/$DISTRACTOR_INDEX" \
+                                                                                                                                    --uuid 30781
                                                                                                                             else
                                                                                                                                 if DISTRACTOR=${ resources.checks.targets.false.false { failure = 31524 ; } }
                                                                                                                                 then
@@ -907,6 +936,33 @@
                                                                                                                         fi
                                                                                                                     '' ;
                                                                                                             } ;
+                                                                                                    value-status =
+                                                                                                        pkgs.writeShellApplication
+                                                                                                            {
+                                                                                                                name = "value-status" ;
+                                                                                                                runtimeInputs = [ failure condition-init condition-release ] ;
+                                                                                                                text =
+                                                                                                                    ''
+                                                                                                                        INIT="$( init-condition "$@" )" || failure 31573
+                                                                                                                        RELEASE="$( release-condition "$@" )" || failure 31402
+                                                                                                                        if [[ "$INIT" == "true" ]]
+                                                                                                                        then
+                                                                                                                            if [[ "$RELEASE" == "true" ]]
+                                                                                                                            then
+                                                                                                                                echo 0
+                                                                                                                            else
+                                                                                                                                echo 0
+                                                                                                                            fi
+                                                                                                                        else
+                                                                                                                            if [[ "$INIT" == "true" ]]
+                                                                                                                            then
+                                                                                                                                echo 0
+                                                                                                                            else
+                                                                                                                                echo 0
+                                                                                                                            fi
+                                                                                                                        fi
+                                                                                                                    '' ;
+                                                                                                            } ;
                                                                                                     value-standard-output =
                                                                                                         pkgs.writeShellApplication
                                                                                                             {
@@ -922,7 +978,7 @@
                                                                                                                             then
                                                                                                                                 echo -en 5175697994459272
                                                                                                                             else
-                                                                                                                                echo -en 6116634951182671
+                                                                                                                                echo -en 4725766637963872
                                                                                                                             fi
                                                                                                                         else
                                                                                                                             if [[ "$RELEASE_CONDITION" == "true" ]]
