@@ -791,8 +791,8 @@
                                                                                                                         SEED="$( value-seed "$@" )" || failure 26515
                                                                                                                         STANDARD_OUTPUT="$( value-standard-output "$@" )" || failure 10277
                                                                                                                         TARGET="$( value-target "$@" )" || failure 20759
+                                                                                                                        ${ pkgs.findutils }/bin/find /home/${ config.personal.name }
                                                                                                                         files \
-                                                                                                                            --ceiling "$ALPHA" 0 0 \
                                                                                                                             --uuid 17389
                                                                                                                         if [[ "$INIT" == "true" ]]
                                                                                                                         then
@@ -807,6 +807,7 @@
                                                                                                                                     --arg STANDARD_OUTPUT "$STANDARD_OUTPUT" \
                                                                                                                                     --arg TARGET "$TARGET" \
                                                                                                                                     '{
+                                                                                                                                        "WTF" : true ,
                                                                                                                                         "arguments" : [ ] ,
                                                                                                                                         "index" : $INDEX ,
                                                                                                                                         "script" : $SCRIPT ,
@@ -816,6 +817,9 @@
                                                                                                                                         "transient" : false
                                                                                                                                     }' | compare message valid-init 10 23788 3<&3
                                                                                                                                 files \
+                                                                                                                                    --ceiling "$ALPHA" 0 0 \
+                                                                                                                                    --exists "/home/${ config.personal.name }/resources/mounts/$DISTRACTOR_INDEX/test" \
+                                                                                                                                    --executable "/home/${ config.personal.name }/resources/release/$DISTRACTOR_INDEX" \
                                                                                                                                     --uuid 25695
                                                                                                                             else
                                                                                                                                 DISTRACTOR=${ resources.checks.targets.true.false { failure = 19892 ; } }
