@@ -816,6 +816,10 @@
                                                                                                                 runtimeInputs = [ condition-alpha argument-value condition-init condition-release ] ;
                                                                                                                 text =
                                                                                                                     ''
+                                                                                                                        cleanup ( ) {
+                                                                                                                            echo "$?" > "$MOUNT/temporary/$BETA_SEQUENTIAL"
+                                                                                                                        }
+                                                                                                                        trap cleanup EXIT
                                                                                                                     '' ;
                                                                                                             } ;
                                                                                                     stage-gamma =
@@ -947,9 +951,9 @@
                                                                                                                             ''
                                                                                                                                 exec 3< <( redis-cli SUBSCRIBE invalid-init invalid-release valid-init valid-release )
                                                                                                                                 stage-alpha "$@" <&3
-                                                                                                                                # BETA_SEQUENCE="$( sequential )" || failure 28922
-                                                                                                                                # wrap ${ null }/null "temporary/$BETA_SEQUENCE" 0600
-                                                                                                                                stage-beta "$@" <&3 &
+                                                                                                                                BETA_SEQUENCE="$( sequential )" || failure 28922
+                                                                                                                                wrap ${ null }/null "temporary/$BETA_SEQUENCE" 0600
+                                                                                                                                BETA_SEQUENCE="$BETA_SEQUENCE" MOUNT="$MOUNT" stage-beta "$@" <&3 &
                                                                                                                                 # inotifywait --event "$MOUNT/temporary/$BETA_SEQUENCE"
                                                                                                                                 # BETA_STATUS="$( cat "$MOUNT/temporary/$BETA_SEQUENCE" )" || failure 11251
                                                                                                                                 # if [[ "$BETA_STATUS" != 0 ]]
