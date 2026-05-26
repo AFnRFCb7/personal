@@ -535,6 +535,7 @@
                                                                                                                                     if [[ -e "$2" ]]
                                                                                                                                     then
                                                                                                                                         echo 22886 "$*"
+                                                                                                                                        ${ pkgs.which }/bin/which failure
                                                                                                                                         failure 3686358689564748 "$*"
                                                                                                                                     fi
                                                                                                                                     echo 27807 "$*"
