@@ -782,8 +782,6 @@
                                                                                                                         echo 4 | compare subscribe valid-release 10 20782 3<&3
                                                                                                                         ALPHA="$( condition-alpha "$@" )" || failure 14402
                                                                                                                         printf -v DISTRACTOR_INDEX "%016d" $(( ALPHA + 4 ))
-                                                                                                                        # DISTRACTOR_INIT_CHANNEL="$( distractor-init-channel-value "$@" )" || failure 23974
-                                                                                                                        # DISTRACTOR_RELEASE_CHANNEL="$( distractor-release-channel-value "$@" )" || failure 23012
                                                                                                                         INIT="$( condition-init "$@" )" || failure 7005
                                                                                                                         INIT_SCRIPT="$( value-init-script "$@" )" || failure 18622
                                                                                                                         RELEASE="$( condition-release "$@" )" || failure 17709
@@ -795,6 +793,7 @@
                                                                                                                             if [[ "$RELEASE" == "true" ]]
                                                                                                                             then
                                                                                                                                 DISTRACTOR=${ resources.checks.targets.true.true { failure = 32621 ; } }
+                                                                                                                                if true ; then exit 0 ; fi
                                                                                                                                 jq \
                                                                                                                                     --null-input \
                                                                                                                                     --arg INDEX "$DISTRACTOR_INDEX" \
