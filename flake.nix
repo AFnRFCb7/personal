@@ -313,9 +313,9 @@
                                                                                                                         UUID="$2"
                                                                                                                         if timeout "$TIMEOUT" read -r -u 3
                                                                                                                         then
-                                                                                                                            failure 7951884354751442 "We are not expecting a message but we got one anyway"
+                                                                                                                            failure 7951884354751442 "We are not expecting a message but we got one anyway" UUID "$UUID"
                                                                                                                         else
-                                                                                                                            echo We are not expecting a message and we did not get one
+                                                                                                                            echo "We are not expecting a message and we did not get one" UUID "$UUID"
                                                                                                                         fi
                                                                                                                     '' ;
                                                                                                             } ;
