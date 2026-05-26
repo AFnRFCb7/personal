@@ -735,8 +735,6 @@
                                                                                                                         compare
                                                                                                                         condition-alpha
                                                                                                                         condition-init
-                                                                                                                        distractor-init-channel-value
-                                                                                                                        distractor-release-channel-value
                                                                                                                         failure
                                                                                                                         files
                                                                                                                         pkgs.jq
@@ -753,7 +751,7 @@
                                                                                                                         echo 3 | compare subscribe valid-init 10 4666 3<&3
                                                                                                                         echo 4 | compare subscribe valid-release 10 20782 3<&3
                                                                                                                         ALPHA="$( condition-alpha "$@" )" || failure 14402
-                                                                                                                        #### printf -v ALPHA_INDEX "%016d" "$ALPHA"
+                                                                                                                        # printf -v ALPHA_INDEX "%016d" "$ALPHA"
                                                                                                                         printf -v DISTRACTOR_INDEX "%016d" $(( ALPHA + 4 ))
                                                                                                                         INIT="$( condition-init "$@" )" || failure 7005
                                                                                                                         INIT_SCRIPT="$( value-init-script "$@" )" || failure 18622
