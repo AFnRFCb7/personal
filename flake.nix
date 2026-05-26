@@ -963,33 +963,6 @@
                                                                                                                         fi
                                                                                                                     '' ;
                                                                                                             } ;
-                                                                                                    value-status =
-                                                                                                        pkgs.writeShellApplication
-                                                                                                            {
-                                                                                                                name = "value-status" ;
-                                                                                                                runtimeInputs = [ failure condition-init condition-release ] ;
-                                                                                                                text =
-                                                                                                                    ''
-                                                                                                                        INIT="$( condition-init "$@" )" || failure 31573
-                                                                                                                        RELEASE="$( condition-release "$@" )" || failure 31402
-                                                                                                                        if [[ "$INIT" == "true" ]]
-                                                                                                                        then
-                                                                                                                            if [[ "$RELEASE" == "true" ]]
-                                                                                                                            then
-                                                                                                                                echo 0
-                                                                                                                            else
-                                                                                                                                echo 0
-                                                                                                                            fi
-                                                                                                                        else
-                                                                                                                            if [[ "$INIT" == "true" ]]
-                                                                                                                            then
-                                                                                                                                echo 0
-                                                                                                                            else
-                                                                                                                                echo 0
-                                                                                                                            fi
-                                                                                                                        fi
-                                                                                                                    '' ;
-                                                                                                            } ;
                                                                                                     value-standard-output =
                                                                                                         pkgs.writeShellApplication
                                                                                                             {
@@ -1012,7 +985,34 @@
                                                                                                                             then
                                                                                                                                 echo -en 4725766637963872
                                                                                                                             else
-                                                                                                                                echo -en 4657737859987722
+                                                                                                                                echo -en 3346844943869582
+                                                                                                                            fi
+                                                                                                                        fi
+                                                                                                                    '' ;
+                                                                                                            } ;
+                                                                                                    value-status =
+                                                                                                        pkgs.writeShellApplication
+                                                                                                            {
+                                                                                                                name = "value-status" ;
+                                                                                                                runtimeInputs = [ failure condition-init condition-release ] ;
+                                                                                                                text =
+                                                                                                                    ''
+                                                                                                                        INIT="$( condition-init "$@" )" || failure 31573
+                                                                                                                        RELEASE="$( condition-release "$@" )" || failure 31402
+                                                                                                                        if [[ "$INIT" == "true" ]]
+                                                                                                                        then
+                                                                                                                            if [[ "$RELEASE" == "true" ]]
+                                                                                                                            then
+                                                                                                                                echo -en 0
+                                                                                                                            else
+                                                                                                                                echo -en 0
+                                                                                                                            fi
+                                                                                                                        else
+                                                                                                                            if [[ "$INIT" == "true" ]]
+                                                                                                                            then
+                                                                                                                                echo -en 118
+                                                                                                                            else
+                                                                                                                                echo -en 0
                                                                                                                             fi
                                                                                                                         fi
                                                                                                                     '' ;
