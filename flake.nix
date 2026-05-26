@@ -748,22 +748,16 @@
                                                                                                                         echo 4 | compare subscribe valid-release 10 20782 3<&3
                                                                                                                         ALPHA="$( condition-alpha "$@" )" || failure 14402
                                                                                                                         printf -v DISTRACTOR_INDEX "%016d" $(( ALPHA + 7 ))
-                                                                                                                        INIT="$( condition-init "$@" )" nix log /nix/store/5kjcgiiq5vcv419863ms9pvxbn7ji0b5-vm-test-run-resource-true-false.drvva|| failure 7005
+                                                                                                                        INIT="$( condition-init "$@" )" || failure 7005
                                                                                                                         INIT_SCRIPT="$( value-init-script "$@" )" || failure 18622
                                                                                                                         RELEASE="$( condition-release "$@" )" || failure 17709
-                                                                                                                        if true ; then exit 0 ; fi
                                                                                                                         SEED="$( value-seed "$@" )" || failure 26515
-                                                                                                                        if true ; then exit 0 ; fi
                                                                                                                         STANDARD_OUTPUT="$( value-standard-output "$@" )" || failure 10277
-                                                                                                                        if true ; then exit 0 ; fi
                                                                                                                         TARGET="$( value-target "$@" )" || failure 20759
-                                                                                                                        if true ; then exit 0 ; fi
                                                                                                                         cat /home/${ config.personal.name }/resources/sequential/sequential.counter
-                                                                                                                        if true ; then exit 0 ; fi
                                                                                                                         echo | files \
                                                                                                                             --ceiling "$ALPHA" 0 5 \
                                                                                                                             --uuid 17389
-                                                                                                                        if true ; then exit 0 ; fi
                                                                                                                         if [[ "$INIT" == "true" ]]
                                                                                                                         then
                                                                                                                             if [[ "$RELEASE" == "true" ]]
@@ -795,6 +789,30 @@
                                                                                                                                     --uuid 25695
                                                                                                                             else
                                                                                                                                 DISTRACTOR=${ resources.checks.targets.true.false { failure = 19892 ; } }
+                                                                                                                                jq \
+                                                                                                                                    --null-input \
+                                                                                                                                    --arg INDEX "$DISTRACTOR_INDEX" \
+                                                                                                                                    --rawfile SCRIPT "$INIT_SCRIPT" \
+                                                                                                                                    --argjson SEED "$SEED" \
+                                                                                                                                    --arg STANDARD_OUTPUT "$STANDARD_OUTPUT" \
+                                                                                                                                    --arg TARGET "$TARGET" \
+                                                                                                                                    '{
+                                                                                                                                        "arguments" : [ ] ,
+                                                                                                                                        "index" : $INDEX ,
+                                                                                                                                        "script" : $SCRIPT ,
+                                                                                                                                        "seed" : $SEED ,
+                                                                                                                                        "standard-output" : $STANDARD_OUTPUT ,
+                                                                                                                                        "targets" : [ $TARGET ] ,
+                                                                                                                                        "transient" : false
+                                                                                                                                    }' | compare message valid-init 10 18901 3<&3
+                                                                                                                                echo | files \
+                                                                                                                                    --ceiling "$ALPHA" 10 13 \
+                                                                                                                                    --equals "/home/${ config.personal.name }/resources/mounts/$DISTRACTOR_INDEX" "$DISTRACTOR" \
+                                                                                                                                    --file "$DISTRACTOR/$TARGET" \
+                                                                                                                                    --executable "/home/${ config.personal.name }/resources/release/$DISTRACTOR_INDEX" \
+                                                                                                                                    --does-not-exist "/home/${ config.personal.name }/resources/invalid-init/$DISTRACTOR_INDEX" \
+                                                                                                                                    --does-not-exist "/home/${ config.personal.name }/resources/invalid-release/$DISTRACTOR_INDEX" \
+                                                                                                                                    --uuid 30781
                                                                                                                             fi
                                                                                                                         else
                                                                                                                             if [[ "$RELEASE" == "true" ]]
