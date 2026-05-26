@@ -453,7 +453,7 @@
                                                                                                                                                 ZERO="$( find "$ROOT" -type f -mindepth 1 -exec ceiling {} "$INDEX" \; )" || failure 7516122857653918 ROOT "$ROOT" INDEX "$INDEX"
                                                                                                                                                 if [[ -n "$ZERO" ]]
                                                                                                                                                 then
-                                                                                                                                                    failure 4894458326934832 ROOT "$ROOT" INDEX "$INDEX" ZERO "$ZERO"
+                                                                                                                                                    failure 4894458326934832 ROOT "$ROOT" INDEX "$INDEX" ZERO "$ZERO" "$*"
                                                                                                                                                 fi
                                                                                                                                             fi
                                                                                                                                         '' ;
@@ -486,11 +486,11 @@
                                                                                                                                     then
                                                                                                                                         failure 1149448538394568 ALPHA "$ALPHA" BETA "$BETA" GAMMA "$GAMMA" DELTA "$DELTA" EPSILON "$EPSILON" DELTA_PRIME "$DELTA_PRIME" EPSILON_PRIME "$EPSILON_PRIME" SEQUENTIAL "$SEQUENTIAL" SEQUENTIAL "$SEQUENTIAL_PRIME" "$*"
                                                                                                                                     fi
-                                                                                                                                    ceiling /home/${ config.personal.name }/.gc-root "$DELTA_PRIME"
-                                                                                                                                    ceiling /home/${ config.personal.name }/resources/mounts "$DELTA_PRIME"
-                                                                                                                                    ceiling /home/${ config.personal.name }/resources/release "$DELTA_PRIME"
-                                                                                                                                    ceiling /home/${ config.personal.name }/resources/invalid-init "$DELTA_PRIME"
-                                                                                                                                    ceiling /home/${ config.personal.name }/resources/invalid-release "$DELTA_PRIME"
+                                                                                                                                    ceiling /home/${ config.personal.name }/.gc-root "$DELTA_PRIME" "$*"
+                                                                                                                                    ceiling /home/${ config.personal.name }/resources/mounts "$DELTA_PRIME" "$*"
+                                                                                                                                    ceiling /home/${ config.personal.name }/resources/release "$DELTA_PRIME" "$*"
+                                                                                                                                    ceiling /home/${ config.personal.name }/resources/invalid-init "$DELTA_PRIME" "$*"
+                                                                                                                                    ceiling /home/${ config.personal.name }/resources/invalid-release "$DELTA_PRIME" "$*"
                                                                                                                                     shift 4
                                                                                                                                     ;;
                                                                                                                                 --does-not-exist)
@@ -566,6 +566,7 @@
                                                                                                                                     then
                                                                                                                                         failure 8553559657979292 "$*"
                                                                                                                                     fi
+                                                                                                                                    UUID="$2"
                                                                                                                                     shift 2
                                                                                                                                     ;;
                                                                                                                                 *)
@@ -782,7 +783,7 @@
                                                                                                                                         "transient" : false
                                                                                                                                     }' | compare message valid-init 10 23788 3<&3
                                                                                                                                 echo | files \
-                                                                                                                                    --ceiling "$ALPHA" 1 7 \
+                                                                                                                                    --ceiling "$ALPHA" 1 6 \
                                                                                                                                     --equals "/home/${ config.personal.name }/resources/mounts/$DISTRACTOR_INDEX" "$DISTRACTOR" \
                                                                                                                                     --executable "$DISTRACTOR/$TARGET" \
                                                                                                                                     --uuid 25695
