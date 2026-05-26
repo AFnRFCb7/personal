@@ -565,7 +565,6 @@
                                                                                                                                     then
                                                                                                                                         failure 8553559657979292 "$*"
                                                                                                                                     fi
-                                                                                                                                    UUID="$2"
                                                                                                                                     shift 2
                                                                                                                                     ;;
                                                                                                                                 *)
