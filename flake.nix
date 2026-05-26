@@ -802,7 +802,7 @@
                                                                                                                                 jq \
                                                                                                                                     --null-input \
                                                                                                                                     --arg INDEX "$DISTRACTOR_INDEX" \
-                                                                                                                                    --arg SCRIPT "$INIT_SCRIPT" \
+                                                                                                                                    --rawfile SCRIPT "$INIT_SCRIPT" \
                                                                                                                                     --argjson SEED "$SEED" \
                                                                                                                                     '{
                                                                                                                                         "arguments" : [ ] ,
