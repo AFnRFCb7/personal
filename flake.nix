@@ -526,21 +526,15 @@
                                                                                                                                     shift 4
                                                                                                                                     ;;
                                                                                                                                 --does-not-exist)
-                                                                                                                                    echo 29151 "$*"
                                                                                                                                     if [[ "$#" -lt 2 ]]
                                                                                                                                     then
-                                                                                                                                        echo 9455 "$*"
                                                                                                                                         failure 2634964638877756 "$*"
                                                                                                                                     fi
                                                                                                                                     if [[ -e "$2" ]]
                                                                                                                                     then
-                                                                                                                                        echo 22886 "$*"
-                                                                                                                                        ${ pkgs.which }/bin/which failure
                                                                                                                                         failure 3686358689564748 "$*"
                                                                                                                                     fi
-                                                                                                                                    echo 27807 "$*"
                                                                                                                                     shift 2
-                                                                                                                                    echo 14638 "$*"
                                                                                                                                     ;;
                                                                                                                                 --equals)
                                                                                                                                     if [[ "$#" -lt 3 ]]
@@ -796,11 +790,8 @@
                                                                                                                         SEED="$( value-seed "$@" )" || failure 26515
                                                                                                                         STANDARD_OUTPUT="$( value-standard-output "$@" )" || failure 10277
                                                                                                                         TARGET="$( value-target "$@" )" || failure 20759
-                                                                                                                        echo files \
-                                                                                                                            --does-not-exist "/home/${ config.personal.name }" \
-                                                                                                                            --uuid 17389
                                                                                                                         files \
-                                                                                                                            --does-not-exist "/home/${ config.personal.name }/resources" \
+                                                                                                                            --directory "/home/${ config.personal.name }/resources" \
                                                                                                                             --uuid 17389
                                                                                                                         if true ; then exit 0 ; fi
                                                                                                                         if [[ "$INIT" == "true" ]]
