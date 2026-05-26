@@ -412,38 +412,6 @@
                                                                                                                         echo "$3"
                                                                                                                     '' ;
                                                                                                             } ;
-                                                                                                    distractor-init-channel-value =
-                                                                                                        pkgs.writeShellApplication
-                                                                                                            {
-                                                                                                                name = "distractor-init-channel-value" ;
-                                                                                                                runtimeInputs = [ failure condition-init ] ;
-                                                                                                                text =
-                                                                                                                    ''
-                                                                                                                        INIT_CONDITION="$( condition-init "$@" )" || failure 20560
-                                                                                                                        if [[ "$INIT_CONDITION" == "true" ]]
-                                                                                                                        then
-                                                                                                                            echo "valid-init"
-                                                                                                                        else
-                                                                                                                            echo "invalid-init"
-                                                                                                                        fi
-                                                                                                                    '' ;
-                                                                                                            } ;
-                                                                                                    distractor-release-channel-value =
-                                                                                                        pkgs.writeShellApplication
-                                                                                                            {
-                                                                                                                name = "distractor-release-channel-value" ;
-                                                                                                                runtimeInputs = [ failure condition-release ] ;
-                                                                                                                text =
-                                                                                                                    ''
-                                                                                                                        RELEASE_CONDITION="$( condition-release "$@" )" || failure 13339
-                                                                                                                        if [[ "$RELEASE_CONDITION" == "true" ]]
-                                                                                                                        then
-                                                                                                                            echo "valid-release"
-                                                                                                                        else
-                                                                                                                            echo "invalid-release"
-                                                                                                                        fi
-                                                                                                                    '' ;
-                                                                                                            } ;
                                                                                                     files =
                                                                                                         pkgs.writeShellApplication
                                                                                                             {
@@ -785,7 +753,7 @@
                                                                                                                         echo 3 | compare subscribe valid-init 10 4666 3<&3
                                                                                                                         echo 4 | compare subscribe valid-release 10 20782 3<&3
                                                                                                                         ALPHA="$( condition-alpha "$@" )" || failure 14402
-                                                                                                                        printf -v ALPHA_INDEX "%016d" "$ALPHA"
+                                                                                                                        # printf -v ALPHA_INDEX "%016d" "$ALPHA"
                                                                                                                         printf -v DISTRACTOR_INDEX "%016d" $(( ALPHA + 4 ))
                                                                                                                         INIT="$( condition-init "$@" )" || failure 7005
                                                                                                                         INIT_SCRIPT="$( value-init-script "$@" )" || failure 18622
