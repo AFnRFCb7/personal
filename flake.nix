@@ -922,14 +922,14 @@
                                                                                                                             then
                                                                                                                                 echo 5175697994459272
                                                                                                                             else
-                                                                                                                                echo
+                                                                                                                                echo 5175697994459272
                                                                                                                             fi
                                                                                                                         else
                                                                                                                             if [[ "$RELEASE_CONDITION" == "true" ]]
                                                                                                                             then
-                                                                                                                                echo
+                                                                                                                                echo 5175697994459272
                                                                                                                             else
-                                                                                                                                echo
+                                                                                                                                echo 5175697994459272
                                                                                                                             fi
                                                                                                                         fi
                                                                                                                     '' ;
