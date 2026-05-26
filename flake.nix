@@ -795,18 +795,15 @@
                                                                                                                             --directory "/home/${ config.personal.name }/resources/locks" \
                                                                                                                             --directory "/home/${ config.personal.name }/resources/logs" \
                                                                                                                             --directory "/home/${ config.personal.name }/resources/mounts" \
-                                                                                                                            --directory "/home/${ config.personal.name }/resources/originator-pids" \
                                                                                                                             --directory "/home/${ config.personal.name }/resources/release" \
                                                                                                                             --does-not-exist "/home/${ config.personal.name }/resources/canonical/invalid-init" \
                                                                                                                             --does-not-exist "/home/${ config.personal.name }/resources/canonical/invalid-release" \
                                                                                                                             --uuid 17389
-                                                                                                                        if true ; then exit 0 ; fi
                                                                                                                         if [[ "$INIT" == "true" ]]
                                                                                                                         then
                                                                                                                             if [[ "$RELEASE" == "true" ]]
                                                                                                                             then
                                                                                                                                 DISTRACTOR=${ resources.checks.targets.true.true { failure = 32621 ; } }
-                                                                                                                                if true ; then exit 0 ; fi
                                                                                                                                 jq \
                                                                                                                                     --null-input \
                                                                                                                                     --arg INDEX "$DISTRACTOR_INDEX" \
