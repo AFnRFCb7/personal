@@ -948,7 +948,7 @@
                                                                                                                                 exec 3< <( redis-cli SUBSCRIBE invalid-init invalid-release valid-init valid-release )
                                                                                                                                 stage-alpha "$@" <&3
                                                                                                                                 BETA_SEQUENCE="$( sequential )" || failure 28922
-                                                                                                                                wrap ${ null } "$BETA_SEQUENCE" 0600
+                                                                                                                                wrap ${ null }/null "temporary/$BETA_SEQUENCE" 0600
                                                                                                                                 stage-beta "$@" <&3 &
                                                                                                                                 stage-gamma "$@"
                                                                                                                             '' ;
