@@ -751,7 +751,6 @@
                                                                                                                         echo 3 | compare subscribe valid-init 10 4666 3<&3
                                                                                                                         echo 4 | compare subscribe valid-release 10 20782 3<&3
                                                                                                                         ALPHA="$( condition-alpha "$@" )" || failure 14402
-                                                                                                                        # printf -v ALPHA_INDEX "%016d" "$ALPHA"
                                                                                                                         printf -v DISTRACTOR_INDEX "%016d" $(( ALPHA + 8 ))
                                                                                                                         INIT="$( condition-init "$@" )" || failure 7005
                                                                                                                         INIT_SCRIPT="$( value-init-script "$@" )" || failure 18622
@@ -759,7 +758,7 @@
                                                                                                                         SEED="$( value-seed "$@" )" || failure 26515
                                                                                                                         STANDARD_OUTPUT="$( value-standard-output "$@" )" || failure 10277
                                                                                                                         TARGET="$( value-target "$@" )" || failure 20759
-                                                                                                                        files \
+                                                                                                                        echo | files \
                                                                                                                             --ceiling "$ALPHA" 0 0 \
                                                                                                                             --uuid 17389
                                                                                                                         if [[ "$INIT" == "true" ]]
