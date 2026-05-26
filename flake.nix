@@ -782,7 +782,7 @@
                                                                                                                                         "transient" : false
                                                                                                                                     }' | compare message valid-init 10 23788 3<&3
                                                                                                                                 echo | files \
-                                                                                                                                    --ceiling "$ALPHA" 1 14 \
+                                                                                                                                    --ceiling "$ALPHA" 1 13 \
                                                                                                                                     --equals "/home/${ config.personal.name }/resources/mounts/$DISTRACTOR_INDEX" "$DISTRACTOR" \
                                                                                                                                     --exists "$DISTRACTOR/$TARGET" \
                                                                                                                                     --executable "/home/${ config.personal.name }/resources/release/$DISTRACTOR_INDEX" \
