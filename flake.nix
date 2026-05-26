@@ -789,7 +789,7 @@
                                                                                                                         RELEASE="$( condition-release "$@" )" || failure 17709
                                                                                                                         SEED="$( value-seed "$@" )" || failure 26515
                                                                                                                         STANDARD_OUTPUT="$( value-standard-output "$@" )" || failure 10277
-                                                                                                                        # TARGET="$( value-target "@" )" || failure 20759
+                                                                                                                        TARGET="$( value-target "@" )" || failure 20759
                                                                                                                         if [[ "$INIT" == "true" ]]
                                                                                                                         then
                                                                                                                             if [[ "$RELEASE" == "true" ]]
@@ -801,12 +801,14 @@
                                                                                                                                     --rawfile SCRIPT "$INIT_SCRIPT" \
                                                                                                                                     --argjson SEED "$SEED" \
                                                                                                                                     --arg STANDARD_OUTPUT "$STANDARD_OUTPUT" \
+                                                                                                                                    --arg TARGET "$TARGET" \
                                                                                                                                     '{
                                                                                                                                         "arguments" : [ ] ,
                                                                                                                                         "index" : $INDEX ,
                                                                                                                                         "script" : $SCRIPT ,
                                                                                                                                         "seed" : $SEED ,
-                                                                                                                                        "standard-output" : $STANDARD_OUTPUT
+                                                                                                                                        "standard-output" : $STANDARD_OUTPUT ,
+                                                                                                                                        "targets" : [ $TARGET ]
                                                                                                                                     }' | compare message valid-init 10 23788 3<&3
                                                                                                                             else
                                                                                                                                 DISTRACTOR=${ resources.checks.targets.true.false { failure = 19892 ; } }
@@ -940,7 +942,7 @@
                                                                                                                         then
                                                                                                                             if [[ "$RELEASE_CONDITION" == "true" ]]
                                                                                                                             then
-                                                                                                                                echo
+                                                                                                                                echo 2862437261978116
                                                                                                                             else
                                                                                                                                 echo
                                                                                                                             fi
