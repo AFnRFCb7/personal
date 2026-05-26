@@ -758,7 +758,7 @@
                                                                                                                         STANDARD_OUTPUT="$( value-standard-output "$@" )" || failure 10277
                                                                                                                         TARGET="$( value-target "$@" )" || failure 20759
                                                                                                                         echo | files \
-                                                                                                                            --ceiling "$ALPHA" 0 6 \
+                                                                                                                            --ceiling "$ALPHA" 0 5 \
                                                                                                                             --uuid 17389
                                                                                                                         if [[ "$INIT" == "true" ]]
                                                                                                                         then
@@ -2850,7 +2850,7 @@
                                                                                 text =
                                                                                     ''
                                                                                         SCRIPT="$( resource --resource '["checks","script"]' )"
-                                                                                        timeout 1m "$SCRIPT/test" 2 false false
+                                                                                        timeout 1m "$SCRIPT/test" 3 false false
                                                                                     '' ;
                                                                             } ;
                                                                     in "${ application }/bin/test" ;
@@ -2878,7 +2878,7 @@
                                                                                 text =
                                                                                     ''
                                                                                         SCRIPT="$( resource --resource '["checks","script"]' )"
-                                                                                        timeout 1m "$SCRIPT/test" 2 true true
+                                                                                        timeout 1m "$SCRIPT/test" 3 true true
                                                                                     '' ;
                                                                             } ;
                                                                     in "${ application }/bin/test" ;
@@ -2906,7 +2906,7 @@
                                                                                 text =
                                                                                     ''
                                                                                         SCRIPT="$( resource --resource '["checks","script"]' )"
-                                                                                        timeout 1m "$SCRIPT/test" 2 true false
+                                                                                        timeout 1m "$SCRIPT/test" 3 true false
                                                                                     '' ;
                                                                             } ;
                                                                     in "${ application }/bin/test" ;
@@ -2934,7 +2934,7 @@
                                                                                 text =
                                                                                     ''
                                                                                         SCRIPT="$( resource --resource '["checks","script"]' )"
-                                                                                        timeout 1m "$SCRIPT/test" 2 true true
+                                                                                        timeout 1m "$SCRIPT/test" 3 true true
                                                                                     '' ;
                                                                             } ;
                                                                     in "${ application }/bin/test" ;
