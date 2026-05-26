@@ -703,6 +703,7 @@
                                                                                                                 name = "stage-alpha" ;
                                                                                                                 runtimeInputs =
                                                                                                                     [
+                                                                                                                        block
                                                                                                                         compare
                                                                                                                         condition-alpha
                                                                                                                         condition-init
