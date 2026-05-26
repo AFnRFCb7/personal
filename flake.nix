@@ -942,7 +942,7 @@
                                                                                                                 runtimeInputs = [ failure pkgs.inotify-tools pkgs.redis sequential stage-alpha stage-beta stage-gamma wrap ] ;
                                                                                                                 text =
                                                                                                                     let
-                                                                                                                        null = pkgs.toFile "null" "" ;
+                                                                                                                        null = builtins.toFile "null" "" ;
                                                                                                                         in
                                                                                                                             ''
                                                                                                                                 exec 3< <( redis-cli SUBSCRIBE invalid-init invalid-release valid-init valid-release )
