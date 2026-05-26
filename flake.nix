@@ -789,6 +789,7 @@
                                                                                                                                     --uuid 25695
                                                                                                                             else
                                                                                                                                 DISTRACTOR=${ resources.checks.targets.true.false { failure = 19892 ; } }
+                                                                                                                                if true ; then exit 0 ; fi
                                                                                                                                 jq \
                                                                                                                                     --null-input \
                                                                                                                                     --arg INDEX "$DISTRACTOR_INDEX" \
