@@ -855,6 +855,33 @@
                                                                                                                                 then
                                                                                                                                     failure 30560
                                                                                                                                 fi
+                                                                                                                                jq \
+                                                                                                                                    --null-input \
+                                                                                                                                    --arg INDEX "$DISTRACTOR_INDEX" \
+                                                                                                                                    --rawfile SCRIPT "$INIT_SCRIPT" \
+                                                                                                                                    --argjson SEED "$SEED" \
+                                                                                                                                    --arg STANDARD_OUTPUT "$STANDARD_OUTPUT" \
+                                                                                                                                    --argjson STATUS "$STATUS" \
+                                                                                                                                    --arg TARGET "$TARGET" \
+                                                                                                                                    '{
+                                                                                                                                        "arguments" : [ ] ,
+                                                                                                                                        "index" : $INDEX ,
+                                                                                                                                        "script" : $SCRIPT ,
+                                                                                                                                        "seed" : $SEED ,
+                                                                                                                                        "standard-error" : "" ,
+                                                                                                                                        "standard-output" : $STANDARD_OUTPUT ,
+                                                                                                                                        "status" : $STATUS ,
+                                                                                                                                        "targets" : [ $TARGET ] ,
+                                                                                                                                        "transient" : false
+                                                                                                                                    }' | compare message invalid-init 10 15099 3<&3
+                                                                                                                                echo | files \
+                                                                                                                                    --ceiling "$ALPHA" 10 13 \
+                                                                                                                                    --equals "/home/${ config.personal.name }/resources/mounts/$DISTRACTOR_INDEX" "$DISTRACTOR" \
+                                                                                                                                    --file "$DISTRACTOR/$TARGET" \
+                                                                                                                                    --does-not-exist "/home/${ config.personal.name }/resources/release/$DISTRACTOR_INDEX" \
+                                                                                                                                    --does-not-exist "/home/${ config.personal.name }/resources/invalid-init/$DISTRACTOR_INDEX" \
+                                                                                                                                    --does-not-exist "/home/${ config.personal.name }/resources/invalid-release/$DISTRACTOR_INDEX" \
+                                                                                                                                    --uuid 28422
                                                                                                                             fi
                                                                                                                         fi
                                                                                                                         echo "$DISTRACTOR"
